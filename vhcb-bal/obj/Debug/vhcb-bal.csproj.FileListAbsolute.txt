@@ -1,0 +1,5 @@
+C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCB.VHCBCloud.dll.config
+C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCB.VHCBCloud.dll
+C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCB.VHCBCloud.pdb
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCB.VHCBCloud.dll
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCB.VHCBCloud.pdb

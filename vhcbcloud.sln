@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbcloud", "vhcbcloud\vhcbcloud.csproj", "{83544686-8FAA-4B6F-A226-314C49BAC5CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbcloud.Tests", "vhcbcloud.Tests\vhcbcloud.Tests.csproj", "{5340BFE5-9739-4AAA-A3E3-57456903CA22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbcommon", "vhcb-bal\vhcbcommon.csproj", "{FB0D9857-EB88-406D-9D58-07FE74675955}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83544686-8FAA-4B6F-A226-314C49BAC5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83544686-8FAA-4B6F-A226-314C49BAC5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83544686-8FAA-4B6F-A226-314C49BAC5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83544686-8FAA-4B6F-A226-314C49BAC5CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5340BFE5-9739-4AAA-A3E3-57456903CA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5340BFE5-9739-4AAA-A3E3-57456903CA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5340BFE5-9739-4AAA-A3E3-57456903CA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5340BFE5-9739-4AAA-A3E3-57456903CA22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB0D9857-EB88-406D-9D58-07FE74675955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB0D9857-EB88-406D-9D58-07FE74675955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB0D9857-EB88-406D-9D58-07FE74675955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB0D9857-EB88-406D-9D58-07FE74675955}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

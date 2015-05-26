@@ -1,0 +1,551 @@
+﻿.lbl_footer {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+}
+
+.infoHeader {
+    font-family: helvetica, sans-serif;
+    font-size: X-Large;
+    color: Gray;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.lbl {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.cssWater {
+    height: 16px;
+    width: 140px;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: small;
+    font-style: italic;
+    font-family: Microsoft Sans Serif;
+    background-color: #edeeee;
+    color: Gray;
+    text-align: center;
+    font-weight: lighter;
+}
+
+.gridViewLbl {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.igTabStyle {
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-transform: lowercase;
+    border-color: #f78b0e;
+}
+
+.lbllogin {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: left;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.lblWelcome {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #f78b0e;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblWelcomeGreen {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #c1ca66;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblWelcomeBlue {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblCopyright {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: gray;
+    text-align: left;
+    font-size: 8pt;
+    text-transform: lowercase;
+}
+
+.lblErrMsg {
+    font-size: 8pt;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: Red;
+    text-align: left;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.ChkBox {
+    font-size: Smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.lblSM {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: right;
+    text-transform: lowercase;
+}
+
+.lblshow {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.hlink {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: Blue;
+    text-transform: lowercase;
+}
+
+.txbox {
+    background-color: #DEE6F4;
+    border-bottom-width: medium;
+    height: 16px;
+    width: 150px;
+    font-family: helvetica, sans-serif;
+    font-size: 8pt;
+    text-transform: lowercase;
+}
+
+.ignav {
+    font-family: helvetica, sans-serif;
+    Font-Size: 8pt;
+    Cursor: Default;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.style14 {
+    text-align: center;
+    font-size: small;
+    color: #FFFFFF;
+    background-color: #40839a;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-family: helvetica, sans-serif;
+}
+
+.Line {
+    text-align: center;
+    font-size: small;
+    color: #3589a4; /*#709AD1;*/
+    background-color: #E6F4FB;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+    width: 100%;
+}
+
+.style13 {
+    border: 1px solid #f78b0e;
+    background-color: White;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+}
+
+.clsTextBoxBlue {
+    height: 16px;
+    width: 140px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDown {
+    border: 1px solid #678FC2;
+    width: 140px;
+    background-color: #edeeee;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDownLong {
+    height: 20px;
+    width: 200px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDownDynamic {
+    height: 20px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSMDL {
+    height: 20px;
+    width: 100px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlue1 {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 140px;
+    background-color: #edeeee;
+    margin-left: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDownSall {
+    height: 20px;
+    width: 50px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSm {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 100px;
+    background-color: #edeeee;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSmMid {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 100px;
+    background-color: #edeeee;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    text-align: center;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDollorAmts {
+    height: 16px;
+    width: 140px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+    text-align: right;
+}
+
+.clsDollorAmtsSM {
+}
+
+
+.clsEditItemTextBox {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 70px;
+    background-color: #edeeee;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.DDLBoxBlue {
+    height: 20px;
+    width: 70px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+}
+
+.modalBackground {
+    background-color: Gray;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+}
+
+.modalPopup {
+    font-size: 8pt;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    background-color: #ffffdd;
+    border-width: 3px;
+    border-style: solid;
+    border-color: Gray;
+    padding: 3px;
+    width: 250px;
+}
+
+.popupControl {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    background-color: #AAD4FF;
+    position: absolute;
+    visibility: hidden;
+    border-style: solid;
+    border-color: Black;
+    border-width: 2px;
+    text-transform: lowercase;
+}
+
+.hidePanel {
+    visibility: hidden;
+    text-transform: lowercase;
+}
+
+.Menu {
+    text-align: left;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.MainMenu {
+    text-align: center;
+    font-family: helvetica, sans-serif;
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+.LineHt {
+    padding: 0 !important;
+    height: 6px !important;
+    line-height: 6px !important;
+    font-size: 12px !important;
+}
+
+.gridviewChkBox {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+.gridView {
+    font-family: helvetica,sans-serif;
+    background-color: White;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.alternativeRowStyle {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    text-align: center;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: center;
+    height: 30px;
+}
+
+.pagerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: left;
+    height: 2px;
+}
+
+.headerStyle {
+    font-family: helvetica,sans-serif;
+    color: #546407;
+    font-weight: bold;
+    text-transform: lowercase;
+    background-color: #c1ca66;
+    font-size: small;
+    vertical-align: middle;
+    height: 30px;
+    
+}
+
+.rowStyle {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    text-align: center;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: center;
+    height: 30px;
+}
+
+.footerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: center;
+    height: 5px;
+}
+
+.footerStyleTotals {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: center;
+    height: 5px;
+}
+
+.detailView {
+    font-family: helvetica,sans-serif;
+    background-color: White;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.detailViewalternativeRowStyle {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewpagerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: left;
+    height: 2px;
+}
+
+.detailViewheaderStyle {
+    font-family: helvetica,sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    text-transform: lowercase;
+    background-color: #c1ca66;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewrowStyle {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewfooterStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: left;
+    height: 5px;
+}
+
+.WizardStyle {
+    vertical-align: top;
+    text-transform: lowercase;
+    font-family: helvetica,sans-serif;
+}
+
+.modalBackgroundProcess {
+    background-color: Gray;
+    filter: alpha(opacity=60);
+    opacity: 0.60;
+}
+
+.updateProgress {
+    border-width: 1px;
+    border-style: solid;
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    vertical-align: middle;
+}
+
+.updateProgressMessage {
+    margin: auto;
+    font-family: helvetica,sans-serif;
+    font-size: small;
+    vertical-align: middle;
+}
+
+.divUpdateProgress {
+    text-align: center;
+    margin: 4px;
+    vertical-align: middle;
+}
