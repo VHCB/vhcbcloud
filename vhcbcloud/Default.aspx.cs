@@ -15,7 +15,7 @@ namespace vhcbcloud
             if(!Page.IsPostBack)
             {
                 GetAllProjects();
-                BindSelectedProjects(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                BindSelectedProjects();
             }
         }
 
@@ -34,7 +34,7 @@ namespace vhcbcloud
             }
         }
 
-        private void BindSelectedProjects( int projId)
+        private void BindSelectedProjects()
         {
             try 
 	        {
@@ -50,26 +50,37 @@ namespace vhcbcloud
 
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindSelectedProjects(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+            BindSelectedProjects();
         }
 
         protected void gvProject_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvProject.EditIndex = -1;
-            BindSelectedProjects(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+            BindSelectedProjects();
         }
 
         protected void gvProject_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-
+            try
+            {
+                int rowIndex = e.RowIndex;
+                int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
+                string projName = ((TextBox)gvProject.Rows[rowIndex].FindControl("txtProjName")).Text;
+                Project.UpdateProjectName(projName, nameId);
+                gvProject.EditIndex = -1;
+                BindSelectedProjects();
+            }
+            catch (Exception)
+            {
+                lblErrorMsg.Text = "Error updating the project name";
+                lblErrorMsg.Visible = true;
+            }
         }
 
         protected void gvProject_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvProject.EditIndex = e.NewEditIndex;
-            BindSelectedProjects(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
-
-
+            BindSelectedProjects();
         }
     }
 }

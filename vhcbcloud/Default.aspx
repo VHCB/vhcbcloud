@@ -4,14 +4,15 @@
 
     <div class="jumbotron">
         
-        <p class="lead">VHCB Project Details</p>
+        <p class="lead">VHCB Projects</p>
         <p>
-            <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDownLong" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
+            <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDownLong" AutoPostBack="true" Visible="false" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                         </asp:DropDownList>
+            
         </p>
         <p class="lblErrMsg"><asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
         <p>
-            <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="projectid"
+            <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="nameId"
                                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
                                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -21,8 +22,16 @@
                                 <RowStyle CssClass="rowStyle" />
                                 <Columns>
                                     <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
-                                    <asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />
-                                    <asp:BoundField DataField="projectid" HeaderText="Project ID" ReadOnly="True" SortExpression="projectid" />
+                                     <asp:TemplateField HeaderText="Project Name">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblProjName" runat="Server" Text='<%# Eval("proj_name") %>' />
+                                        </ItemTemplate>
+                                         <EditItemTemplate>
+                                             <asp:TextBox ID="txtProjName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("proj_name") %>'></asp:TextBox>
+                                         </EditItemTemplate>
+                                    </asp:TemplateField>
+                                    <%--<asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />--%>
+                                    <asp:BoundField DataField="nameid" HeaderText="Name ID" ReadOnly="True" SortExpression="nameid" />
                                     <asp:CommandField ShowEditButton="True" />
                                 </Columns>
                                 <FooterStyle CssClass="footerStyle" />

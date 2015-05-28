@@ -232,8 +232,9 @@
 }
 
 .clsTextBoxBlueSMDL {
-    height: 20px;
-    width: 100px;
+    height: 22px;
+    text-align:left;
+    width: 150px;
     background-color: #edeeee;
     border-color: #678FC2;
     border-style: solid;
@@ -425,6 +426,7 @@
     background-color: #c1ca66;
     font-size: small;
     vertical-align: middle;
+    text-align:center;
     height: 30px;
     
 }

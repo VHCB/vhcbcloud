@@ -46,19 +46,22 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static void UpdateProjectName(string projName)
+        public static void UpdateProjectName(string projName, int nameId)
         {
              var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
              try
              {
                  SqlCommand command = new SqlCommand();
                  command.CommandType = CommandType.StoredProcedure;
-                 command.CommandText = "GetProjectsByProjectId";
-                 command.Parameters.Add(new SqlParameter("projId", projectID));
+                 command.CommandText = "UpdateProject";
+                 command.Parameters.Add(new SqlParameter("projName", projName));
+                 command.Parameters.Add(new SqlParameter("nameId", nameId));
+                 
                  using (connection)
                  {
                      connection.Open();
                      command.Connection = connection;
+                     command.ExecuteNonQuery();
                  }
              }
              catch (Exception ex)
