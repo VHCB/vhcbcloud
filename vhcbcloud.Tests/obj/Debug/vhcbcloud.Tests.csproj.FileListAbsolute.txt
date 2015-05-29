@@ -28,3 +28,4 @@ C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\VHCBCommon.pdb
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.csprojResolveAssemblyReference.cache
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.dll
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.pdb
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\vhcbcloud.Tests.dll.config

@@ -52,3 +52,9 @@ C:\Sandbox\vhcbcloud\vhcbcloud\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Sandbox\vhcbcloud\vhcbcloud\obj\Release\vhcbcloud.csprojResolveAssemblyReference.cache
 C:\Sandbox\vhcbcloud\vhcbcloud\obj\Release\VHCB.dll
 C:\Sandbox\vhcbcloud\vhcbcloud\obj\Release\VHCB.pdb
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Net.Http.Formatting.dll
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.dll
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.WebHost.dll
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Net.Http.Formatting.xml
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.xml
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.WebHost.xml

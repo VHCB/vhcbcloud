@@ -12,6 +12,7 @@
     </asp:PlaceHolder>
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="Content/chosen.css" />
 </head>
 <body>
     <form runat="server">
@@ -37,7 +38,8 @@
 
                     <asp:ScriptReference Name="WebFormsBundle" />
                     <%--Site Scripts--%>
-                </Scripts>
+                    
+                  </Scripts>
             </asp:ScriptManager>
             <br />
             <div class="navbar navbar-inverse ">
@@ -50,26 +52,16 @@
                         </button>
 
                     </div>
-                    <asp:Menu ID="menuHeader" CssClass="infoHeader" runat="server" Visible="false" Orientation="Horizontal">
-                        <Items>
-                            <asp:MenuItem Text="Project" Value="File">
-                                <asp:MenuItem Text="New Project" Value="New"></asp:MenuItem>
-                                <asp:MenuItem Text="Open" Value="Open"></asp:MenuItem>
-                            </asp:MenuItem>
-                            <asp:MenuItem Text="Edit" Value="Edit">
-                                <asp:MenuItem Text="Copy" Value="Copy"></asp:MenuItem>
-                                <asp:MenuItem Text="Paste" Value="Paste"></asp:MenuItem>
-                            </asp:MenuItem>
-                            <asp:MenuItem Text="View" Value="View">
-                                <asp:MenuItem Text="Normal" Value="Normal"></asp:MenuItem>
-                                <asp:MenuItem Text="Preview" Value="Preview"></asp:MenuItem>
-                            </asp:MenuItem>
-                        </Items>
-                    </asp:Menu>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li><a runat="server" href="~/">Project</a>
-                                <%--<ul><li><a runat="server" href="~/">Project</a></li></ul>--%>
+                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" runat="server" href="~/">Home<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a runat="server" href="~/">Project</a></li>
+                                    <li><a runat="server" href="~/Applicant">Applicant</a></li>
+                                    <li><a runat="server" href="~/Americorps">Americorps</a></li>
+                                    <li><a runat="server" href="~/BoardDates">Board Dates</a></li>
+                                    <li><a runat="server" href="~/FundingSource">Funding Source</a></li>
+                                </ul>
                             </li>
                             <li><a runat="server" href="~/FileHold">FileHold</a></li>
                             <li><a runat="server" href="~/Exago">Exago</a></li>
@@ -77,6 +69,7 @@
                             <li><a runat="server" href="~/About">About</a></li>
                             <li><a runat="server" href="~/Contact">Contact</a></li>
                         </ul>
+
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>
                                 <ul class="nav navbar-nav navbar-right">

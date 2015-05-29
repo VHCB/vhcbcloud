@@ -23,6 +23,14 @@
     text-transform: lowercase;
 }
 
+.labelClass
+{
+    margin-bottom: 20px;
+    font-size: 12.099999999999998px;
+    font-weight: 160;
+    line-height: 1.4;
+}
+
 .cssWater {
     height: 16px;
     width: 140px;

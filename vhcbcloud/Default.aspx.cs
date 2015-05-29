@@ -23,10 +23,11 @@ namespace vhcbcloud
         {
             try
             {
-                ddlProjFilter.DataSource = Project.GetProjects("GetGroupProjects");
-                ddlProjFilter.DataValueField= "ProjectId";
-                ddlProjFilter.DataTextField = "proj_num";
-                ddlProjFilter.DataBind();
+                cboProject.DataSource = Project.GetProjects("GetGroupProjects");
+                cboProject.DataValueField= "ProjectId";
+                cboProject.DataTextField = "proj_num";
+                cboProject.DataBind();
+                
             }
             catch (Exception ex)
             {

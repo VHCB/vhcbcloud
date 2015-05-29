@@ -3,3 +3,4 @@ C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.dll
 C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.pdb
 C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.dll
 C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.pdb
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\vhcbcommon.csprojResolveAssemblyReference.cache

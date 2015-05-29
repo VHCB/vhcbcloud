@@ -44,7 +44,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -146,7 +159,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
+    <Content Include="Americorps.aspx" />
+    <Content Include="Applicant.aspx" />
     <Content Include="Blog.aspx" />
+    <Content Include="Boarddates.aspx" />
+    <Content Include="Content\chosen.css" />
     <Content Include="FileHold.aspx" />
     <Content Include="Exago.aspx" />
     <Content Include="About.aspx" />
@@ -173,6 +190,10 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Fundingsource.aspx" />
+    <Content Include="Images\BtnSubmit.gif" />
+    <Content Include="Images\BtnSubmit.png" />
+    <Content Include="Images\BtnSubmit2.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -184,8 +205,10 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -229,12 +252,33 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Americorps.aspx.cs">
+      <DependentUpon>Americorps.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Americorps.aspx.designer.cs">
+      <DependentUpon>Americorps.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Applicant.aspx.cs">
+      <DependentUpon>Applicant.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Applicant.aspx.designer.cs">
+      <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Blog.aspx.designer.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Boarddates.aspx.cs">
+      <DependentUpon>Boarddates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Boarddates.aspx.designer.cs">
+      <DependentUpon>Boarddates.aspx</DependentUpon>
     </Compile>
     <Compile Include="FileHold.aspx.cs">
       <DependentUpon>FileHold.aspx</DependentUpon>
@@ -379,6 +423,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Fundingsource.aspx.cs">
+      <DependentUpon>Fundingsource.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Fundingsource.aspx.designer.cs">
+      <DependentUpon>Fundingsource.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
