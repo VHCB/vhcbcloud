@@ -58,3 +58,4 @@ C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.WebHost.dll
 C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Net.Http.Formatting.xml
 C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.xml
 C:\Sandbox\vhcbcloud\vhcbcloud\bin\System.Web.Http.WebHost.xml
+C:\Sandbox\vhcbcloud\vhcbcloud\bin\AjaxControlToolkit.dll

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,33 +13,33 @@ namespace vhcbcloud
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!Page.IsPostBack)
+            if (!Page.IsPostBack)
             {
-                GetAllProjects();
+                GetApplicant();
                 BindSelectedProjects();
             }
         }
 
-        private void GetAllProjects()
+        private void GetApplicant()
         {
             try
             {
-                cboProject.DataSource = Project.GetProjects("GetGroupProjects");
-                cboProject.DataValueField= "ProjectId";
-                cboProject.DataTextField = "proj_num";
-                cboProject.DataBind();
-                
+                ddlApplicantName.DataSource = ApplicantData.GetApplicants();
+                ddlApplicantName.DataValueField = "ApplicantID";
+                ddlApplicantName.DataTextField = "Applicantname";
+                ddlApplicantName.DataBind();
             }
             catch (Exception ex)
             {
+
                 lblErrorMsg.Text = ex.Message;
             }
         }
-
+        
         private void BindSelectedProjects()
         {
-            try 
-	        {
+            try
+            {
                 gvProject.DataSource = Project.GetProjects("GetAllProjects");
                 gvProject.DataBind();
 
@@ -65,11 +66,15 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
+               // int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
+                int nameId = Convert.ToInt32(((Label)gvProject.Rows[rowIndex].FindControl("lblNameId")).Text);
                 string projName = ((TextBox)gvProject.Rows[rowIndex].FindControl("txtProjName")).Text;
                 Project.UpdateProjectName(projName, nameId);
                 gvProject.EditIndex = -1;
                 BindSelectedProjects();
+                lblErrorMsg.Text = "Project updated successfully";
+                txtPName.Text = "";
+                txtProjNum.Text = "";
             }
             catch (Exception)
             {
@@ -82,6 +87,37 @@ namespace vhcbcloud
         {
             gvProject.EditIndex = e.NewEditIndex;
             BindSelectedProjects();
+        }
+
+        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
+        {
+            try
+            {
+                Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
+                BindSelectedProjects();
+                lblErrorMsg.Text = "Project saved successfully";
+                txtPName.Text = "";
+                txtProjNum.Text = "";
+
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        [System.Web.Script.Services.ScriptMethod]        
+        [System.Web.Services.WebMethod]
+        public static List<string> GetProjectName(string prefixText)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjectName(prefixText);
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add(dt.Rows[i][1].ToString());
+            }
+            return ProjNames;
         }
     }
 }

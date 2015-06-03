@@ -29,3 +29,4 @@ C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.csprojResolveAsse
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.dll
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.pdb
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\vhcbcloud.Tests.dll.config
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\AjaxControlToolkit.dll

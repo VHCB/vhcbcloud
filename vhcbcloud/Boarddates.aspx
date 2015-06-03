@@ -5,10 +5,10 @@
         <p class="lead">Board Dates</p>
         <p>
             <span class="labelClass">Board Date :</span>
-            <asp:TextBox ID="txtLName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-
+            <asp:TextBox ID="txtBDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <ajaxToolkit:CalendarExtender runat="server" ID="aceBoardDate" TargetControlID ="txtBdate"></ajaxToolkit:CalendarExtender>
             <span class="labelClass">Meeting Type :</span>
-            <asp:TextBox ID="txtFName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtMType" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
             <br />
             <asp:RequiredFieldValidator ID="rfvLname" runat="server" ErrorMessage="Board Date required" CssClass="lblErrMsg" ControlToValidate="txtLName"></asp:RequiredFieldValidator>
             <asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="Meeting type required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>
@@ -20,7 +20,7 @@
             <asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
 
         <p>
-            <asp:GridView ID="gvAmeriCorps" runat="server" AutoGenerateColumns="False" DataKeyNames="ContactId"
+            <asp:GridView ID="gvBoardDates" runat="server" AutoGenerateColumns="False" DataKeyNames="TypeId"
                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -29,9 +29,9 @@
                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
-                    <asp:BoundField DataField="ContactId" HeaderText="Contact ID" ReadOnly="True" Visible="false" />
-                    <asp:BoundField DataField="Boarddate" HeaderText="First Name" ReadOnly="True" />
-                    <asp:BoundField DataField="MeetingType" HeaderText="Last Name" ReadOnly="True" />
+                    <asp:BoundField DataField="TypeId" HeaderText="Type ID" ReadOnly="True" Visible="false" />
+                    <asp:BoundField DataField="Boarddate" HeaderText="Board Date" ReadOnly="True" />
+                    <asp:BoundField DataField="MeetingType" HeaderText="Meeting Type" ReadOnly="True" />
                 </Columns>
                 <FooterStyle CssClass="footerStyle" />
             </asp:GridView>

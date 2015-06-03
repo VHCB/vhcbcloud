@@ -13,22 +13,31 @@ namespace vhcbcloud {
     public partial class Boarddates {
         
         /// <summary>
-        /// txtLName control.
+        /// txtBDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLName;
+        protected global::System.Web.UI.WebControls.TextBox txtBDate;
         
         /// <summary>
-        /// txtFName control.
+        /// aceBoardDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFName;
+        protected global::AjaxControlToolkit.CalendarExtender aceBoardDate;
+        
+        /// <summary>
+        /// txtMType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMType;
         
         /// <summary>
         /// rfvLname control.
@@ -67,12 +76,12 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// gvAmeriCorps control.
+        /// gvBoardDates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvAmeriCorps;
+        protected global::System.Web.UI.WebControls.GridView gvBoardDates;
     }
 }

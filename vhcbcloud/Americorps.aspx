@@ -12,6 +12,10 @@
             <asp:TextBox ID="txtFName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="First name required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>
             <br />
+            <span class="labelClass">Applicant :</span>
+            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDownLong" runat="server">
+            </asp:DropDownList>
+            <br />
             <br />
             <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />
         </p>

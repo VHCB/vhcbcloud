@@ -15,6 +15,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindACContacts();
+                GetApplicant();
             }
         }
 
@@ -28,6 +29,21 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+        private void GetApplicant()
+        {
+            try
+            {
+                ddlApplicantName.DataSource = ApplicantData.GetApplicants();
+                ddlApplicantName.DataValueField = "ApplicantID";
+                ddlApplicantName.DataTextField = "Applicantname";
+                ddlApplicantName.DataBind();
+            }
+            catch (Exception ex)
+            {
+
                 lblErrorMsg.Text = ex.Message;
             }
         }
