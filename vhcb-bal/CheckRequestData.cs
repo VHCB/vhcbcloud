@@ -7,19 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace VHCBCommon.DataAccessLayer
 {
-    public static class FundingSourceData
+    public static class CheckRequestData
     {
-        public static DataTable GetFundingSource()
+        public static DataTable GetApplicantByProjId(int projectID)
         {
-            DataTable dtFSource = null;
+            DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "GetFundingSource";
+                command.CommandText = "GetApplicantByProjId";
+                command.Parameters.Add(new SqlParameter("projId", projectID));
                 using (connection)
                 {
                     connection.Open();
@@ -30,7 +32,8 @@ namespace VHCBCommon.DataAccessLayer
                     da.Fill(ds);
                     if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
                     {
-                        dtFSource = ds.Tables[0];
+                        dtProjects = ds.Tables[0];
+
                     }
                 }
             }
@@ -42,17 +45,55 @@ namespace VHCBCommon.DataAccessLayer
             {
                 connection.Close();
             }
-            return dtFSource;
+            return dtProjects;
         }
-        public static void AddFSName(string fsName)
+
+        public static DataTable GetAllCheckRequests()
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAllCheckRequests";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static void AddNewCheckRequest(int projId, int applicantId, decimal transAmt, DateTime dtVoucherDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "AddFundingSource";
-                command.Parameters.Add(new SqlParameter("fsName", fsName));
+                command.CommandText = "AddNewCheckRequest";
+                command.Parameters.Add(new SqlParameter("projId", projId));
+                command.Parameters.Add(new SqlParameter("applicantId", applicantId));
+                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
+                command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
                 using (connection)
                 {
@@ -71,16 +112,17 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateFSource(string fsName, int fundId)
+        public static void UpdateCheckRequest(int projectApplicantID,  decimal transAmt, DateTime dtVoucherDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "UpdateFSource";
-                command.Parameters.Add(new SqlParameter("fsName", fsName));
-                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.CommandText = "UpdateCheckRequest";
+                command.Parameters.Add(new SqlParameter("projectApplicantID", projectApplicantID));
+                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
+                command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
                 using (connection)
                 {

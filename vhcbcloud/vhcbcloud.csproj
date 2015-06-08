@@ -167,6 +167,7 @@
     <Content Include="Applicant.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Boarddates.aspx" />
+    <Content Include="CheckRequest.aspx" />
     <Content Include="Content\chosen.css" />
     <Content Include="FileHold.aspx" />
     <Content Include="Exago.aspx" />
@@ -285,6 +286,13 @@
     </Compile>
     <Compile Include="Boarddates.aspx.designer.cs">
       <DependentUpon>Boarddates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CheckRequest.aspx.cs">
+      <DependentUpon>CheckRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckRequest.aspx.designer.cs">
+      <DependentUpon>CheckRequest.aspx</DependentUpon>
     </Compile>
     <Compile Include="FileHold.aspx.cs">
       <DependentUpon>FileHold.aspx</DependentUpon>

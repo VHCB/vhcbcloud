@@ -45,7 +45,7 @@
         <p>
             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="nameId"
                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating">
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />

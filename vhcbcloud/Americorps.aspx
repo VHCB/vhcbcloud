@@ -24,16 +24,42 @@
         <p>
             <asp:GridView ID="gvAmeriCorps" runat="server" AutoGenerateColumns="False" DataKeyNames="ContactId"
                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" >
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvAmeriCorps_RowCancelingEdit" OnRowEditing="gvAmeriCorps_RowEditing" OnRowUpdating="gvAmeriCorps_RowUpdating">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />
                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
-                    <asp:BoundField DataField="ContactId" HeaderText="Contact ID" ReadOnly="True" Visible="false" />
-                    <asp:BoundField DataField="FirstName" HeaderText="First Name" ReadOnly="True" />
-                    <asp:BoundField DataField="LastName" HeaderText="Last Name" ReadOnly="True" />
+                    <asp:TemplateField HeaderText="First Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lblFName" runat="Server" Text='<%# Eval("FirstName") %>' />
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:TextBox ID="txtFName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("FirstName") %>'></asp:TextBox>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Last Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lbllName" runat="Server" Text='<%# Eval("LastName") %>' />
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:TextBox ID="txtLName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LastName") %>'></asp:TextBox>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Applicant Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lblapplName" runat="Server" Text='<%# Eval("Applicantname") %>' />
+                            </ItemTemplate>
+                           
+                        </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Contact ID" Visible="false">
+                            <ItemTemplate>
+                                <asp:Label ID="lblcontId" runat="Server" Text='<%# Eval("ContactId") %>' />
+                            </ItemTemplate>
+                           
+                        </asp:TemplateField>
+                     <asp:CommandField ShowEditButton="True" />
                 </Columns>
                 <FooterStyle CssClass="footerStyle" />
             </asp:GridView>

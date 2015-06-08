@@ -242,7 +242,7 @@
 .clsTextBoxBlueSMDL {
     height: 22px;
     text-align:left;
-    width: 150px;
+    width: 200px;
     background-color: #edeeee;
     border-color: #678FC2;
     border-style: solid;
@@ -253,7 +253,7 @@
 
 .clsTextBoxBlue1 {
     border: 1px solid #678FC2;
-    height: 16px;
+    height: 22px;
     width: 140px;
     background-color: #edeeee;
     margin-left: 0px;
@@ -274,7 +274,7 @@
 
 .clsTextBoxBlueSm {
     border: 1px solid #678FC2;
-    height: 16px;
+    height: 20px;
     width: 100px;
     background-color: #edeeee;
     margin-left: 0px;
@@ -408,12 +408,20 @@
 .alternativeRowStyle {
     color: #4D4D4D;
     background-color: #EDEEEE;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
-    
     font-size: smaller;
     vertical-align: middle;
-    text-align: center;
+    height: 30px;
+}
+
+.alternativeRowStyleLeft {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    font-weight: bold;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
     height: 30px;
 }
 
@@ -446,12 +454,20 @@
 .rowStyle {
     font-family: helvetica,sans-serif;
     color: #4D4D4D;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
-    
     font-size: smaller;
     vertical-align: middle;
-    text-align: center;
+    height: 30px;
+}
+
+.rowStyleLeft {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    text-align: left;
+    font-weight: bold;
+    font-size: smaller;
+    vertical-align: middle;
     height: 30px;
 }
 

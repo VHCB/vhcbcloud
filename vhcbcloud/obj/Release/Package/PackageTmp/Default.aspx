@@ -10,13 +10,38 @@
             </asp:DropDownList>
 
         </p>
+        <p>
+            <span class="labelClass">Project # :</span>
+            <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
+                MaskType="Number" TargetControlID="txtProjNum">
+            </ajaxToolkit:MaskedEditExtender>
+
+            &nbsp;<span class="labelClass">Name :</span>
+
+            <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
+                CompletionInterval="1000" ServiceMethod="GetProjectName">
+            </ajaxToolkit:AutoCompleteExtender>
+
+            &nbsp;<span class="labelClass">Applicant :</span>
+            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDownLong" runat="server">
+            </asp:DropDownList>
+            <br />
+            <br />
+            <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />
+            <br />
+            <%--<ajaxToolkit:MaskedEditValidator ID="mevProjNum" runat="server" ControlExtender="ameProjNum"
+                ControlToValidate="txtProjNum" Display="Dynamic" EmptyValueMessage="Project number is required"
+                ErrorMessage="Project number is required" InvalidValueMessage="Invalid project number" 
+                IsValidEmpty="false" CssClass="lblErrMsg"></ajaxToolkit:MaskedEditValidator>--%>
+            <%--<br />
+            <asp:RequiredFieldValidator ID="rfvLname" runat="server" ErrorMessage="Project name required" CssClass="lblErrMsg" ControlToValidate="txtPName"></asp:RequiredFieldValidator>--%>
+        </p>
         <p class="lblErrMsg">
             <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
         </p>
-        <p>
-            <asp:DropDownList data-placeholder="Choose a Project..." runat="server" ID="cboProject" class="chzn-search" Style="width: 350px;"></asp:DropDownList>
 
-        </p>
         <p>
             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="nameId"
                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
@@ -37,13 +62,16 @@
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <%--<asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />--%>
-                    <asp:BoundField DataField="nameid" HeaderText="Name ID" ReadOnly="True" SortExpression="nameid" />
+                    <asp:TemplateField Visible="false" HeaderText="Name Id">
+                        <ItemTemplate>
+                            <asp:Label ID="lblNameId" runat="Server" Text='<%# Eval("nameid") %>' />
+                        </ItemTemplate>
+                        </asp:TemplateField>
+                    <asp:BoundField DataField="nameid" HeaderText="Name ID" ReadOnly="True" Visible="false" SortExpression="nameid" />
                     <asp:CommandField ShowEditButton="True" />
                 </Columns>
                 <FooterStyle CssClass="footerStyle" />
             </asp:GridView>
         </p>
     </div>
-    <script src="Scripts/jquery.min.js" type="text/javascript"></script>
-    <script src="Scripts/chosen.jquery.js" type="text/javascript"></script>
 </asp:Content>

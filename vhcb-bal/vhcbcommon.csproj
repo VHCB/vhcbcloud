@@ -43,6 +43,7 @@
     <Compile Include="Americorpsmembers.cs" />
     <Compile Include="ApplicantData.cs" />
     <Compile Include="BoarddatesData.cs" />
+    <Compile Include="CheckRequestData.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="FundingSourceData.cs" />
     <Compile Include="Project.cs" />

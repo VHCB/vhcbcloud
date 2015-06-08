@@ -46,7 +46,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtMembers;
         }
 
-        public static void AddACContact (string fName, string lName)
+        public static void AddACContact (string fName, string lName, int applId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -56,7 +56,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddACContact";
                 command.Parameters.Add(new SqlParameter("fName", fName));
                 command.Parameters.Add(new SqlParameter("lName", lName));
-
+                command.Parameters.Add(new SqlParameter("applId", applId));
                 using (connection)
                 {
                     connection.Open();
@@ -73,5 +73,33 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+         public static void UpdateACContact (string fName, string lName, int contactId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateACContact";
+                command.Parameters.Add(new SqlParameter("fName", fName));
+                command.Parameters.Add(new SqlParameter("lName", lName));
+                command.Parameters.Add(new SqlParameter("applId", contactId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+    
     }
 }

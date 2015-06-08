@@ -2,7 +2,7 @@
     font-size: xx-small;
     font-style: normal;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
 }
 
 .infoHeader {
@@ -10,7 +10,7 @@
     font-size: X-Large;
     color: Gray;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .lbl {
@@ -20,7 +20,7 @@
     color: #3589a4;
     text-align: center;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .labelClass
@@ -52,13 +52,13 @@
     color: #3589a4;
     text-align: center;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .igTabStyle {
     font-family: helvetica, sans-serif;
     color: #3589a4;
-    text-transform: lowercase;
+    
     border-color: #f78b0e;
 }
 
@@ -69,7 +69,7 @@
     color: #3589a4;
     text-align: left;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .lblWelcome {
@@ -105,7 +105,7 @@
     color: gray;
     text-align: left;
     font-size: 8pt;
-    text-transform: lowercase;
+    
 }
 
 .lblErrMsg {
@@ -114,7 +114,7 @@
     font-family: helvetica, sans-serif;
     color: Red;
     text-align: left;
-    text-transform: lowercase;
+    
     font-weight: bold;
 }
 
@@ -124,7 +124,7 @@
     font-family: helvetica, sans-serif;
     color: #3589a4;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .lblSM {
@@ -133,7 +133,7 @@
     font-family: helvetica, sans-serif;
     color: #3589a4;
     text-align: right;
-    text-transform: lowercase;
+    
 }
 
 .lblshow {
@@ -142,7 +142,7 @@
     font-family: helvetica, sans-serif;
     color: #3589a4;
     text-align: center;
-    text-transform: lowercase;
+    
     font-weight: bold;
 }
 
@@ -151,7 +151,7 @@
     font-style: normal;
     font-family: helvetica, sans-serif;
     color: Blue;
-    text-transform: lowercase;
+    
 }
 
 .txbox {
@@ -161,7 +161,7 @@
     width: 150px;
     font-family: helvetica, sans-serif;
     font-size: 8pt;
-    text-transform: lowercase;
+    
 }
 
 .ignav {
@@ -169,7 +169,7 @@
     Font-Size: 8pt;
     Cursor: Default;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .style14 {
@@ -178,7 +178,7 @@
     color: #FFFFFF;
     background-color: #40839a;
     font-weight: bold;
-    text-transform: lowercase;
+    
     font-family: helvetica, sans-serif;
 }
 
@@ -188,7 +188,7 @@
     color: #3589a4; /*#709AD1;*/
     background-color: #E6F4FB;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
     width: 100%;
 }
 
@@ -196,7 +196,7 @@
     border: 1px solid #f78b0e;
     background-color: White;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
 }
 
 .clsTextBoxBlue {
@@ -242,7 +242,7 @@
 .clsTextBoxBlueSMDL {
     height: 22px;
     text-align:left;
-    width: 150px;
+    width: 200px;
     background-color: #edeeee;
     border-color: #678FC2;
     border-style: solid;
@@ -253,7 +253,7 @@
 
 .clsTextBoxBlue1 {
     border: 1px solid #678FC2;
-    height: 16px;
+    height: 22px;
     width: 140px;
     background-color: #edeeee;
     margin-left: 0px;
@@ -274,7 +274,7 @@
 
 .clsTextBoxBlueSm {
     border: 1px solid #678FC2;
-    height: 16px;
+    height: 20px;
     width: 100px;
     background-color: #edeeee;
     margin-left: 0px;
@@ -330,7 +330,7 @@
     border-width: 1px;
     font-size: 8pt;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
 }
 
 .modalBackground {
@@ -361,25 +361,25 @@
     border-style: solid;
     border-color: Black;
     border-width: 2px;
-    text-transform: lowercase;
+    
 }
 
 .hidePanel {
     visibility: hidden;
-    text-transform: lowercase;
+    
 }
 
 .Menu {
     text-align: left;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
     font-weight: bold;
 }
 
 .MainMenu {
     text-align: center;
     font-family: helvetica, sans-serif;
-    text-transform: lowercase;
+    
     font-weight: bold;
 }
 
@@ -395,7 +395,7 @@
     font-family: helvetica, sans-serif;
     color: #3589a4;
     font-weight: bold;
-    text-transform: lowercase;
+    
 }
 
 .gridView {
@@ -410,10 +410,18 @@
     background-color: #EDEEEE;
     text-align: center;
     font-weight: bold;
-    text-transform: lowercase;
     font-size: smaller;
     vertical-align: middle;
-    text-align: center;
+    height: 30px;
+}
+
+.alternativeRowStyleLeft {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    font-weight: bold;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
     height: 30px;
 }
 
@@ -430,7 +438,7 @@
     font-family: helvetica,sans-serif;
     color: #546407;
     font-weight: bold;
-    text-transform: lowercase;
+    
     background-color: #c1ca66;
     font-size: small;
     vertical-align: middle;
@@ -438,16 +446,28 @@
     height: 30px;
     
 }
+.headerClass > th 
+{
+    text-align:center;
+}
 
 .rowStyle {
     font-family: helvetica,sans-serif;
     color: #4D4D4D;
     text-align: center;
     font-weight: bold;
-    text-transform: lowercase;
     font-size: smaller;
     vertical-align: middle;
-    text-align: center;
+    height: 30px;
+}
+
+.rowStyleLeft {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    text-align: left;
+    font-weight: bold;
+    font-size: smaller;
+    vertical-align: middle;
     height: 30px;
 }
 
@@ -480,7 +500,7 @@
     color: #4D4D4D;
     background-color: #EDEEEE;
     font-weight: bold;
-    text-transform: lowercase;
+    
     font-size: smaller;
     vertical-align: middle;
     text-align: left;
@@ -499,7 +519,7 @@
     font-family: helvetica,sans-serif;
     color: #3589a4;
     font-weight: bold;
-    text-transform: lowercase;
+    
     background-color: #c1ca66;
     font-size: smaller;
     vertical-align: middle;
@@ -510,7 +530,7 @@
     font-family: helvetica,sans-serif;
     color: #4D4D4D;
     font-weight: bold;
-    text-transform: lowercase;
+    
     font-size: smaller;
     vertical-align: middle;
     text-align: left;
@@ -527,7 +547,7 @@
 
 .WizardStyle {
     vertical-align: top;
-    text-transform: lowercase;
+    
     font-family: helvetica,sans-serif;
 }
 

@@ -52,14 +52,49 @@ namespace vhcbcloud
         {
             try
             {
-
-                Americorpsmembers.AddACContact(txtFName.Text, txtLName.Text);
+                Americorpsmembers.AddACContact(txtFName.Text, txtLName.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString() != "0" ? ddlApplicantName.SelectedValue.ToString() : "0"));
                 BindACContacts();
+                lblErrorMsg.Text = "AC Contact added successfully";
+                txtFName.Text = "";
+                txtLName.Text = "";
             }
             catch (Exception ex)
             {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
 
-                lblErrorMsg.Text = ex.Message ;
+        protected void gvAmeriCorps_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAmeriCorps.EditIndex = -1;
+            BindACContacts();
+        }
+
+        protected void gvAmeriCorps_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAmeriCorps.EditIndex = e.NewEditIndex;
+            BindACContacts();
+        }
+
+        protected void gvAmeriCorps_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                int contId = Convert.ToInt32(((Label)gvAmeriCorps.Rows[rowIndex].FindControl("lblcontId")).Text);
+                string fName = ((TextBox)gvAmeriCorps.Rows[rowIndex].FindControl("txtFName")).Text;
+                string LName = ((TextBox)gvAmeriCorps.Rows[rowIndex].FindControl("txtLName")).Text;
+                Americorpsmembers.UpdateACContact(fName,LName,contId);
+                gvAmeriCorps.EditIndex = -1;
+                BindACContacts();
+                lblErrorMsg.Text = "AC Contact updated successfully";
+                txtFName.Text = "";
+                txtLName.Text = "";
+            }
+            catch (Exception)
+            {
+                lblErrorMsg.Text = "Error updating the AC contact";
+                lblErrorMsg.Visible = true;
             }
         }
 

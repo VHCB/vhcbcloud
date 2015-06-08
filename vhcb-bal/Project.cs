@@ -68,7 +68,10 @@ namespace VHCBCommon.DataAccessLayer
              {
                  throw ex;
              }
-             
+             finally
+             {
+                 connection.Close();
+             }
         }
 
         public static void UpdateProjectName(string projName, int nameId)
@@ -97,6 +100,33 @@ namespace VHCBCommon.DataAccessLayer
              {
                  connection.Close();
              }
+        }
+
+        public static void DeleteProject(string projName, int nameId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteProject";
+                command.Parameters.Add(new SqlParameter("nameId", nameId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public static DataTable GetProjectsByProjectId(int projectID)
@@ -143,7 +173,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "GetProjectName";
+                command.CommandText = "ProjNamePrefix";
                 using (connection)
                 {
                     connection.Open();

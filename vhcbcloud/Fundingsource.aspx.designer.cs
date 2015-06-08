@@ -22,15 +22,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtFName;
         
         /// <summary>
-        /// txtAbbr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAbbr;
-        
-        /// <summary>
         /// rfvFname control.
         /// </summary>
         /// <remarks>
@@ -56,5 +47,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        
+        /// <summary>
+        /// gvFSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvFSource;
     }
 }

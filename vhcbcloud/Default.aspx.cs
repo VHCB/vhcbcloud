@@ -35,7 +35,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-        
+
         private void BindSelectedProjects()
         {
             try
@@ -66,7 +66,7 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-               // int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
+                // int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
                 int nameId = Convert.ToInt32(((Label)gvProject.Rows[rowIndex].FindControl("lblNameId")).Text);
                 string projName = ((TextBox)gvProject.Rows[rowIndex].FindControl("txtProjName")).Text;
                 Project.UpdateProjectName(projName, nameId);
@@ -106,7 +106,7 @@ namespace vhcbcloud
             }
         }
 
-        [System.Web.Script.Services.ScriptMethod]        
+        [System.Web.Script.Services.ScriptMethod]
         [System.Web.Services.WebMethod]
         public static List<string> GetProjectName(string prefixText)
         {
@@ -118,6 +118,11 @@ namespace vhcbcloud
                 ProjNames.Add(dt.Rows[i][1].ToString());
             }
             return ProjNames;
+        }
+
+        protected void gvProject_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvProject.PageIndex = e.NewPageIndex;   
         }
     }
 }

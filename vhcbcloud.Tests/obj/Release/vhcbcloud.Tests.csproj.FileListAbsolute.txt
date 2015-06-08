@@ -28,3 +28,5 @@ C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Release\VHCBCommon.pdb
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Release\vhcbcloud.Tests.csprojResolveAssemblyReference.cache
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Release\vhcbcloud.Tests.dll
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Release\vhcbcloud.Tests.pdb
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Release\vhcbcloud.Tests.dll.config
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Release\AjaxControlToolkit.dll
