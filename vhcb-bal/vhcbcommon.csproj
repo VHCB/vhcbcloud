@@ -46,6 +46,7 @@
     <Compile Include="CheckRequestData.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="FundingSourceData.cs" />
+    <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

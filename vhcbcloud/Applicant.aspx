@@ -33,7 +33,7 @@
                     <tr style="float: left">
                         <td><span class="labelClass">Applicant Name: </span></td>
                         <td>
-                            <asp:TextBox ID="txtApplicantName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
+                            <asp:TextBox ID="txtApplicantName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
                     </tr>
                 </table>
                 <table id="tblIndividual" runat="server" visible="false">
@@ -56,10 +56,9 @@
             <p class="lblErrMsg">
                 <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
             </p>
-
             <p>
                 <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False" DataKeyNames="ApplicantId"
-                    Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                    Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                     GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" OnPageIndexChanging="gvApplicant_PageIndexChanging">
                     <AlternatingRowStyle CssClass="alternativeRowStyleLeft" />
                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />

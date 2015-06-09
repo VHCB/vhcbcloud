@@ -11,15 +11,15 @@
 
         </p>
         <p>
-            <span class="labelClass">Project # :</span>
-            <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <span class="labelClass">New Project # :</span>
+            <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                 MaskType="Number" TargetControlID="txtProjNum">
             </ajaxToolkit:MaskedEditExtender>
 
             &nbsp;<span class="labelClass">Name :</span>
 
-            <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                 CompletionInterval="1000" ServiceMethod="GetProjectName">
             </ajaxToolkit:AutoCompleteExtender>

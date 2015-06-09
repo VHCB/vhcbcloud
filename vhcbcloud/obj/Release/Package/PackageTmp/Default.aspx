@@ -11,15 +11,15 @@
 
         </p>
         <p>
-            <span class="labelClass">Project # :</span>
-            <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <span class="labelClass">New Project # :</span>
+            <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                 MaskType="Number" TargetControlID="txtProjNum">
             </ajaxToolkit:MaskedEditExtender>
 
             &nbsp;<span class="labelClass">Name :</span>
 
-            <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                 CompletionInterval="1000" ServiceMethod="GetProjectName">
             </ajaxToolkit:AutoCompleteExtender>
@@ -45,7 +45,7 @@
         <p>
             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="nameId"
                 Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating">
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />

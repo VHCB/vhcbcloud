@@ -195,6 +195,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
     <Content Include="Images\BtnSubmit.png" />
@@ -438,6 +439,13 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LookupMaintenance.aspx.cs">
+      <DependentUpon>LookupMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LookupMaintenance.aspx.designer.cs">
+      <DependentUpon>LookupMaintenance.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Fundingsource.aspx.cs">
       <DependentUpon>Fundingsource.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -498,7 +506,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1163</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1310/</IISUrl>
+          <IISUrl>http://localhost:1230/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

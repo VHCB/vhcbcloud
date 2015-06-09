@@ -60,6 +60,8 @@
                                     <li><a runat="server" href="~/Americorps">Americorps</a></li>
                                     <li><a runat="server" href="~/BoardDates">Board Dates</a></li>
                                     <li><a runat="server" href="~/FundingSource">Funding Source</a></li>
+                                    <li><a runat="server" href="~/CheckRequest">Check Request</a></li>
+                                    <li><a runat="server" href="~/LookupMaintenance">Lookup Maintenance</a></li>
                                 </ul>
                             </li>
                             <li><a runat="server" href="~/FileHold">FileHold</a></li>

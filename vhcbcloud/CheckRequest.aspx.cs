@@ -24,10 +24,9 @@ namespace vhcbcloud
             try
             {
                 ddlProjFilter.DataSource = Project.GetProjects("GetAllProjects");
-                ddlApplicantName.DataValueField = "ProjectId";
-                ddlApplicantName.DataTextField = "Proj_num";
+                ddlProjFilter.DataValueField = "projectId";
+                ddlProjFilter.DataTextField = "Proj_num";
                 ddlProjFilter.DataBind();
-
             }
             catch (Exception ex)
             {
