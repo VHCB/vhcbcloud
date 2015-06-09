@@ -5,7 +5,7 @@
         <p class="lead">Lookup Maintenance</p>
         <p>
             <span class="labelClass">Lookup Table :</span>
-            <asp:DropDownList ID="ddlLkLookup" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookup_SelectedIndexChanged">
+            <asp:DropDownList ID="ddlLkLookup" CssClass="clsDropDownLong" runat="server" >
             </asp:DropDownList>
             &nbsp;<span class="labelClass">Description :</span>
             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
