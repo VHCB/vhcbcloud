@@ -276,7 +276,7 @@
 .clsTextBoxBlueSm {
     border: 1px solid #678FC2;
     height: 22px;
-    width: 100px;
+    width: 80px;
     background-color: #edeeee;
     margin-left: 0px;
     margin-bottom: 0px;
@@ -402,15 +402,14 @@
 .gridView {
     font-family: helvetica,sans-serif;
     background-color: White;
-    font-weight: bold;
+    font-weight:normal;
     font-size: smaller;
 }
 
 .alternativeRowStyle {
     color: #4D4D4D;
     background-color: #EDEEEE;
-    text-align: left;
-    font-weight: bold;
+    text-align: left;    
     font-size: smaller;
     vertical-align: middle;
     height: 30px;
@@ -456,7 +455,6 @@
     font-family: helvetica,sans-serif;
     color: #4D4D4D;
     text-align: left;
-    font-weight: bold;
     font-size: smaller;
     vertical-align: middle;
     height: 30px;

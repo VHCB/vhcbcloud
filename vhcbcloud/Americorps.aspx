@@ -23,7 +23,7 @@
         
         <p>
             <asp:GridView ID="gvAmeriCorps" runat="server" AutoGenerateColumns="False" DataKeyNames="ContactId"
-                Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvAmeriCorps_RowCancelingEdit" OnRowEditing="gvAmeriCorps_RowEditing" OnRowUpdating="gvAmeriCorps_RowUpdating">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />

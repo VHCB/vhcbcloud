@@ -25,7 +25,7 @@
         </p>
         <p>
             <asp:GridView ID="gvCheckReq" runat="server" AutoGenerateColumns="False" 
-                Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvCheckReq_RowCancelingEdit" OnRowEditing="gvCheckReq_RowEditing" OnRowUpdating="gvCheckReq_RowUpdating" 
                 OnPageIndexChanging="gvCheckReq_PageIndexChanging">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
