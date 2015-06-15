@@ -25,7 +25,7 @@
         </p>
         <p>
             <asp:GridView ID="gvCheckReq" runat="server" AutoGenerateColumns="False" 
-                Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvCheckReq_RowCancelingEdit" OnRowEditing="gvCheckReq_RowEditing" OnRowUpdating="gvCheckReq_RowUpdating" 
                 OnPageIndexChanging="gvCheckReq_PageIndexChanging">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -38,18 +38,18 @@
                     
                     <asp:TemplateField HeaderText="Amount">
                         <ItemTemplate>
-                            <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("TransAmt") %>' />
+                            <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("TransAmt", "{0:c2}") %>' />
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
+                            <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt", "{0:c2}") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Voucher Date">
                         <ItemTemplate>
-                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("VoucherDate") %>' />
+                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>' />
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="txtVouDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("VoucherDate") %>'></asp:TextBox>
+                            <asp:TextBox ID="txtVouDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>'></asp:TextBox>
                             <ajaxToolkit:CalendarExtender runat="server" ID="aceVDate" TargetControlID="txtVouDate"></ajaxToolkit:CalendarExtender>
            
                         </EditItemTemplate>

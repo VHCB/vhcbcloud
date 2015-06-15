@@ -59,12 +59,13 @@
             <p>
                 <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False" DataKeyNames="ApplicantId"
                     Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                    GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" OnPageIndexChanging="gvApplicant_PageIndexChanging">
-                    <AlternatingRowStyle CssClass="alternativeRowStyleLeft" />
+                    GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" 
+                    OnPageIndexChanging="gvApplicant_PageIndexChanging">
+                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                     <HeaderStyle CssClass="headerStyle" />
                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                    <RowStyle CssClass="rowStyleLeft" />
+                    <RowStyle CssClass="rowStyle" />
                     <Columns>
                         <asp:TemplateField HeaderText="Applicant Name">
                             <ItemTemplate>

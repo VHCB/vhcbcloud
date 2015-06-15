@@ -94,11 +94,12 @@ namespace vhcbcloud
             try
             {
                 Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
-                BindSelectedProjects();
+
                 lblErrorMsg.Text = "Project saved successfully";
                 txtPName.Text = "";
                 txtProjNum.Text = "";
-
+                gvProject.PageIndex = 0;
+                BindSelectedProjects();
             }
             catch (Exception ex)
             {
@@ -122,7 +123,50 @@ namespace vhcbcloud
 
         protected void gvProject_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvProject.PageIndex = e.NewPageIndex;   
+            if (gvProject.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvProject.PageIndex = e.NewPageIndex;
+                BindSelectedProjects();
+            }
+        }
+
+      
+        protected void gvProject_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = Project.GetProjects("GetAllProjects");
+            SortDireaction = CommonHelper.GridSorting(gvProject, dt, e, SortDireaction);
+        }
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
+        }
+
+        protected void gvProject_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
         }
     }
 }

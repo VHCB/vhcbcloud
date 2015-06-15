@@ -5,7 +5,7 @@
         <p class="lead">Lookup Maintenance</p>
         <p>
             <span class="labelClass">Lookup Table :</span>
-            <asp:DropDownList ID="ddlLkLookup" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookup_SelectedIndexChanged">
+            <asp:DropDownList ID="ddlLkLookup" CssClass="clsDropDownLong" runat="server" >
             </asp:DropDownList>
             &nbsp;<span class="labelClass">Description :</span>
             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
@@ -20,7 +20,7 @@
 
         <p>
             <asp:GridView ID="gvLookup" runat="server" AutoGenerateColumns="False"
-                Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvLookup_RowCancelingEdit"
                 OnRowEditing="gvLookup_RowEditing" OnRowUpdating="gvLookup_RowUpdating"
                 OnPageIndexChanging="gvLookup_PageIndexChanging">

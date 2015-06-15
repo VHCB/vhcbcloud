@@ -20,7 +20,7 @@
 
         <p>
             <asp:GridView ID="gvFSource" runat="server" AutoGenerateColumns="False" DataKeyNames="fundid"
-                Width="90%" CssClass="gridView" PageSize="15" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvFSource_RowCancelingEdit"
                 OnRowEditing="gvFSource_RowEditing" OnRowUpdating="gvFSource_RowUpdating"
                 OnPageIndexChanging="gvFSource_PageIndexChanging">

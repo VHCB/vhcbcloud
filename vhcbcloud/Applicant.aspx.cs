@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using System.Data;
 
 namespace vhcbcloud
 {
@@ -56,12 +57,14 @@ namespace vhcbcloud
                     ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtLName.Text + ", " + txtFName.Text, isPayee, isIndividual);
                 else
                     ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtApplicantName.Text, isPayee, isIndividual);
-                BindApplicants();
+                
                 lblErrorMsg.Text = "Applicant added successfully";
                 txtApplicantName.Text = "";
                 txtFName.Text = "";
                 txtLName.Text = "";
                 pnlappl.Visible = false;
+                gvApplicant.PageIndex = 0;
+                BindApplicants();
             }
             catch (Exception ex)
             {
@@ -70,7 +73,7 @@ namespace vhcbcloud
         }
 
         protected void gvApplicant_RowEditing(object sender, GridViewEditEventArgs e)
-        {
+        {          
             gvApplicant.EditIndex = e.NewEditIndex;
             BindApplicants();
         }
@@ -106,7 +109,50 @@ namespace vhcbcloud
 
         protected void gvApplicant_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvApplicant.PageIndex = e.NewPageIndex;
+            if (gvApplicant.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvApplicant.PageIndex = e.NewPageIndex;
+                BindApplicants();
+            }
+        }
+
+        protected void gvApplicant_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+        }
+
+        protected void gvApplicant_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = ApplicantData.GetApplicants();
+            SortDireaction=CommonHelper.GridSorting(gvApplicant, dt, e, SortDireaction);
+        }
+
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
         }
     }
 }
