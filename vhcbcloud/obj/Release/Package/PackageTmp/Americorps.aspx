@@ -6,11 +6,11 @@
         <p>
             <span class="labelClass">Last Name :</span>
             <asp:TextBox ID="txtLName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="rfvLname" runat="server" ErrorMessage="Last name required" CssClass="lblErrMsg" ControlToValidate="txtLName"></asp:RequiredFieldValidator>
+            <%--<asp:RequiredFieldValidator ID="rfvLname" runat="server" ErrorMessage="Last name required" CssClass="lblErrMsg" ControlToValidate="txtLName"></asp:RequiredFieldValidator>--%>
             <br />
             <span class="labelClass">First Name :</span>
             <asp:TextBox ID="txtFName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="First name required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>
+            <%--<asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="First name required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>--%>
             <br />
             <span class="labelClass">Applicant :</span>
             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDownLong" runat="server">
@@ -23,15 +23,15 @@
         
         <p>
             <asp:GridView ID="gvAmeriCorps" runat="server" AutoGenerateColumns="False" DataKeyNames="ContactId"
-                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvAmeriCorps_RowCancelingEdit" OnRowEditing="gvAmeriCorps_RowEditing" OnRowUpdating="gvAmeriCorps_RowUpdating">
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast" AllowSorting="true"    
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvAmeriCorps_RowCancelingEdit" OnRowEditing="gvAmeriCorps_RowEditing" OnRowUpdating="gvAmeriCorps_RowUpdating" OnPageIndexChanging="gvAmeriCorps_PageIndexChanging" OnRowDataBound="gvAmeriCorps_RowDataBound" OnSorting="gvAmeriCorps_Sorting">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />
                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
-                    <asp:TemplateField HeaderText="First Name">
+                    <asp:TemplateField HeaderText="First Name" SortExpression="firstname">
                             <ItemTemplate>
                                 <asp:Label ID="lblFName" runat="Server" Text='<%# Eval("FirstName") %>' />
                             </ItemTemplate>
@@ -39,7 +39,7 @@
                                 <asp:TextBox ID="txtFName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("FirstName") %>'></asp:TextBox>
                             </EditItemTemplate>
                         </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Last Name">
+                    <asp:TemplateField HeaderText="Last Name" SortExpression="lastname">
                             <ItemTemplate>
                                 <asp:Label ID="lbllName" runat="Server" Text='<%# Eval("LastName") %>' />
                             </ItemTemplate>
@@ -47,7 +47,7 @@
                                 <asp:TextBox ID="txtLName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LastName") %>'></asp:TextBox>
                             </EditItemTemplate>
                         </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Applicant Name">
+                    <asp:TemplateField HeaderText="Applicant Name" SortExpression="applicantname">
                             <ItemTemplate>
                                 <asp:Label ID="lblapplName" runat="Server" Text='<%# Eval("Applicantname") %>' />
                             </ItemTemplate>

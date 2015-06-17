@@ -46,7 +46,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtMembers;
         }
 
-        public static void AddACContact (string fName, string lName, int applId)
+        public static string AddACContact (string fName, string lName, int applId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -61,7 +61,8 @@ namespace VHCBCommon.DataAccessLayer
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.ExecuteNonQuery();
+                    var result = command.ExecuteNonQuery();
+                    return result.ToString();
                 }
             }
             catch (Exception ex)

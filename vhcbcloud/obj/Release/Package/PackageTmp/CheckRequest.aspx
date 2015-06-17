@@ -25,9 +25,9 @@
         </p>
         <p>
             <asp:GridView ID="gvCheckReq" runat="server" AutoGenerateColumns="False" 
-                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast" AllowSorting="true"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvCheckReq_RowCancelingEdit" OnRowEditing="gvCheckReq_RowEditing" OnRowUpdating="gvCheckReq_RowUpdating" 
-                OnPageIndexChanging="gvCheckReq_PageIndexChanging">
+                OnPageIndexChanging="gvCheckReq_PageIndexChanging" OnRowDataBound="gvCheckReq_RowDataBound" OnSorting="gvCheckReq_Sorting">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />
@@ -36,7 +36,7 @@
                 <Columns>
                     <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True"  SortExpression="Applicantname" />
                     
-                    <asp:TemplateField HeaderText="Amount">
+                    <asp:TemplateField HeaderText="Amount" SortExpression="Transamt">
                         <ItemTemplate>
                             <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("TransAmt", "{0:c2}") %>' />
                         </ItemTemplate>
@@ -44,7 +44,7 @@
                             <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt", "{0:c2}") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Voucher Date">
+                    <asp:TemplateField HeaderText="Voucher Date" SortExpression="VoucherDate">
                         <ItemTemplate>
                             <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>' />
                         </ItemTemplate>
@@ -60,7 +60,7 @@
                             <asp:Label ID="lblProjapplId" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
                         </ItemTemplate>
                         </asp:TemplateField>
-                    <asp:CommandField ShowEditButton="True" />
+                    <asp:CommandField ShowEditButton="True"  />
                 </Columns>
                 <FooterStyle CssClass="footerStyle" />
             </asp:GridView>

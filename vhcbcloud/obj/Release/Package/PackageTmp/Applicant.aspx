@@ -33,7 +33,7 @@
                     <tr style="float: left">
                         <td><span class="labelClass">Applicant Name: </span></td>
                         <td>
-                            <asp:TextBox ID="txtApplicantName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
+                            <asp:TextBox ID="txtApplicantName" CssClass="clsApplicantBlue" runat="server"></asp:TextBox></td>
                     </tr>
                 </table>
                 <table id="tblIndividual" runat="server" visible="false">
@@ -59,20 +59,20 @@
             <p>
                 <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False" DataKeyNames="ApplicantId"
                     Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                    GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" 
-                    OnPageIndexChanging="gvApplicant_PageIndexChanging">
+                    GridLines="None" EnableTheming="True" AllowPaging="True" AllowSorting="true" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" 
+                    OnPageIndexChanging="gvApplicant_PageIndexChanging" OnRowDataBound="gvApplicant_RowDataBound" OnSorting="gvApplicant_Sorting">
                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                     <HeaderStyle CssClass="headerStyle" />
                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                     <RowStyle CssClass="rowStyle" />
                     <Columns>
-                        <asp:TemplateField HeaderText="Applicant Name">
+                        <asp:TemplateField HeaderText="Applicant Name" SortExpression="applicantname" >
                             <ItemTemplate>
                                 <asp:Label ID="lblapplName" runat="Server" Text='<%# Eval("applicantname") %>' />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="txtApplName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("applicantname") %>'></asp:TextBox>
+                                <asp:TextBox ID="txtApplName" runat="Server" CssClass="clsApplicantBlue" Text='<%# Eval("applicantname") %>'></asp:TextBox>
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField Visible="false" HeaderText="Applicant Id">

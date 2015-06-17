@@ -24,8 +24,8 @@
                 CompletionInterval="1000" ServiceMethod="GetProjectName">
             </ajaxToolkit:AutoCompleteExtender>
 
-            &nbsp;<span class="labelClass">Applicant :</span>
-            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDownLong" runat="server">
+            <br /><span class="labelClass">Applicant :</span>
+            <asp:DropDownList ID="ddlApplicantName" CssClass="clsApplicantBlue" runat="server">
             </asp:DropDownList>
             <br />
             <br />
@@ -45,7 +45,9 @@
         <p>
             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="nameId"
                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit" OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging">
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit"
+                OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging" AllowSorting="true"
+                OnSorting="gvProject_Sorting" OnRowDataBound="gvProject_RowDataBound">
                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />
@@ -53,8 +55,7 @@
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
                     <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
-                     <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
-                    <asp:TemplateField HeaderText="Project Name">
+                   <asp:TemplateField HeaderText="Project Name" SortExpression="proj_name">
                         <ItemTemplate>
                             <asp:Label ID="lblProjName" runat="Server" Text='<%# Eval("proj_name") %>' />
                         </ItemTemplate>
@@ -62,12 +63,14 @@
                             <asp:TextBox ID="txtProjName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("proj_name") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
+                     <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
+                    
                     <%--<asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />--%>
-                    <asp:TemplateField Visible="false" HeaderText="Name Id">
+                    <asp:TemplateField Visible="false" HeaderText="Name Id" SortExpression="nameid">
                         <ItemTemplate>
                             <asp:Label ID="lblNameId" runat="Server" Text='<%# Eval("nameid") %>' />
                         </ItemTemplate>
-                        </asp:TemplateField>
+                    </asp:TemplateField>
                     <asp:BoundField DataField="nameid" HeaderText="Name ID" ReadOnly="True" Visible="false" SortExpression="nameid" />
                     <asp:CommandField ShowEditButton="True" />
                 </Columns>

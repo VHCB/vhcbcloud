@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +28,7 @@ namespace vhcbcloud
                 ddlProjFilter.DataValueField = "projectId";
                 ddlProjFilter.DataTextField = "Proj_num";
                 ddlProjFilter.DataBind();
+                ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -39,6 +41,8 @@ namespace vhcbcloud
             try
             {
                 ddlApplicantName.DataSource = CheckRequestData.GetApplicantByProjId(projectID);
+                ddlApplicantName.DataValueField = "ApplicantId";
+                ddlApplicantName.DataTextField = "ApplicantName";
                 ddlApplicantName.DataBind();
             }
             catch (Exception ex)
@@ -64,6 +68,9 @@ namespace vhcbcloud
             try
             {
                 CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
+                lblErrorMsg.Text = "View name details saved successfully";
+                gvCheckReq.PageIndex = 0;
+                BindCheckRequests();
             }
             catch (Exception ex)
             {
@@ -78,7 +85,23 @@ namespace vhcbcloud
 
         protected void gvCheckReq_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvCheckReq.PageIndex = e.NewPageIndex;
+            if (gvCheckReq.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvCheckReq.PageIndex = e.NewPageIndex;
+                BindCheckRequests();
+            }
         }
 
         protected void gvCheckReq_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -113,6 +136,33 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = "Error updating the project name";
                 lblErrorMsg.Visible = true;
+            }
+        }
+
+        protected void gvCheckReq_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = LookupMaintenanceData.GetLkLookupDetails();
+            SortDireaction = CommonHelper.GridSorting(gvCheckReq, dt, e, SortDireaction);
+        }
+
+        protected void gvCheckReq_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+        }
+
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
             }
         }
     }

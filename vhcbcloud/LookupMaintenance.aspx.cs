@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -15,6 +16,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindLookupMaintenance();
+                BindViewName();
             }
         }
 
@@ -22,7 +24,9 @@ namespace vhcbcloud
         {
             try
             {
-                LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookup.SelectedValue.ToString()), txtDescription.Text);
+                LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()), txtDescription.Text);
+                lblErrorMsg.Text = "View name details saved successfully";
+                gvLookup.PageIndex = 0;
                 BindLookupMaintenance();
             }
             catch (Exception ex)
@@ -44,11 +48,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void gvLookup_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            gvLookup.PageIndex = e.NewPageIndex;
-        }
-
         protected void gvLookup_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvLookup.EditIndex = -1;
@@ -66,7 +65,7 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lblName")).Text);
+                int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lbltypeid")).Text);
                 string lkDescription = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtDesc")).Text;
                 LookupMaintenanceData.UpdateLookups(recordId, lkDescription);
                 gvLookup.EditIndex = -1;
@@ -80,17 +79,68 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindLookup()
+        protected void BindViewName()
         {
             try
             {
-                gvLookup.DataSource = LookupMaintenanceData.GetLookups();
-                gvLookup.DataBind();
+                ddlLkLookupViewname.DataSource = LookupMaintenanceData.GetLookupsViewName();
+                ddlLkLookupViewname.DataValueField = "RecordId";
+                ddlLkLookupViewname.DataTextField = "Viewname";
+                ddlLkLookupViewname.DataBind();
+                ddlLkLookupViewname.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
+        }
+
+        protected void gvLookup_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = LookupMaintenanceData.GetLkLookupDetails();
+            SortDireaction = CommonHelper.GridSorting(gvLookup, dt, e, SortDireaction);
+        }
+
+        protected void gvLookup_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            if (gvLookup.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvLookup.PageIndex = e.NewPageIndex;
+                BindLookupMaintenance();
+            }
+        }
+
+        protected void gvLookup_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -53,10 +54,11 @@ namespace vhcbcloud
             try
             {
                 Americorpsmembers.AddACContact(txtFName.Text, txtLName.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString() != "0" ? ddlApplicantName.SelectedValue.ToString() : "0"));
-                BindACContacts();
                 lblErrorMsg.Text = "AC Contact added successfully";
                 txtFName.Text = "";
                 txtLName.Text = "";
+                gvAmeriCorps.PageIndex = 0;
+                BindACContacts();
             }
             catch (Exception ex)
             {
@@ -98,6 +100,52 @@ namespace vhcbcloud
             }
         }
 
+        protected void gvAmeriCorps_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            if (gvAmeriCorps.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
 
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvAmeriCorps.PageIndex = e.NewPageIndex;
+                BindACContacts();
+            }
+        }
+
+        protected void gvAmeriCorps_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = Americorpsmembers.GetAmericorps();
+            SortDireaction = CommonHelper.GridSorting(gvAmeriCorps, dt, e, SortDireaction);
+        }
+
+        protected void gvAmeriCorps_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+        }
+
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@
             <asp:TextBox ID="txtFName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
 
             <br />
-            <asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="funding name required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>
+            <%--<asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="funding name required" CssClass="lblErrMsg" ControlToValidate="txtFName"></asp:RequiredFieldValidator>--%>
 
             <br />
             <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />
@@ -21,16 +21,16 @@
         <p>
             <asp:GridView ID="gvFSource" runat="server" AutoGenerateColumns="False" DataKeyNames="fundid"
                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvFSource_RowCancelingEdit"
+                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvFSource_RowCancelingEdit" AllowSorting="true"
                 OnRowEditing="gvFSource_RowEditing" OnRowUpdating="gvFSource_RowUpdating"
-                OnPageIndexChanging="gvFSource_PageIndexChanging">
-                <AlternatingRowStyle CssClass="alternativeRowStyleLeft" />
+                OnPageIndexChanging="gvFSource_PageIndexChanging" OnRowDataBound="gvFSource_RowDataBound" OnSorting="gvFSource_Sorting">
+                <AlternatingRowStyle CssClass="alternativeRowStyle" />
                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                 <HeaderStyle CssClass="headerStyle" />
                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                <RowStyle CssClass="rowStyleLeft" />
+                <RowStyle CssClass="rowStyle" />
                 <Columns>
-                    <asp:TemplateField HeaderText="Funding Source Name">
+                    <asp:TemplateField HeaderText="Funding Source Name" SortExpression="name">
                         <ItemTemplate>
                             <asp:Label ID="lblName" runat="Server" Text='<%# Eval("name") %>' />
                         </ItemTemplate>

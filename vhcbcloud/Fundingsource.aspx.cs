@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -66,19 +67,46 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                // int nameId = Convert.ToInt32(gvProject.Rows[rowIndex].Cells[2].Text == "" ? "0" : gvProject.Rows[rowIndex].Cells[2].Text);
-                int nameId = Convert.ToInt32(((Label)gvFSource.Rows[rowIndex].FindControl("lblName")).Text);
+                int nameId = Convert.ToInt32(((Label)gvFSource.Rows[rowIndex].FindControl("lblFundId")).Text);
                 string fSourceName = ((TextBox)gvFSource.Rows[rowIndex].FindControl("txtName")).Text;
                 FundingSourceData.UpdateFSource(fSourceName, nameId);
                 gvFSource.EditIndex = -1;
-                BindFundingSource();
+               
                 lblErrorMsg.Text = "Name updated successfully";
                 txtFName.Text = "";
+                gvFSource.PageIndex = 0;
+                BindFundingSource(); ;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
 
-                throw;
+        protected void gvFSource_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = FundingSourceData.GetFundingSource();
+            SortDireaction = CommonHelper.GridSorting(gvFSource, dt, e, SortDireaction);
+        }
+
+        protected void gvFSource_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+        }
+
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
             }
         }
     }

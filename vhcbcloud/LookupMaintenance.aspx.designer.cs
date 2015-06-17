@@ -8,19 +8,18 @@
 //------------------------------------------------------------------------------
 
 namespace vhcbcloud {
-
-
-    public partial class LookupMaintenance
-    {
+    
+    
+    public partial class LookupMaintenance {
         
         /// <summary>
-        /// ddlLkLookup control.
+        /// ddlLkLookupViewname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLkLookup;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLkLookupViewname;
         
         /// <summary>
         /// txtDescription control.
@@ -30,15 +29,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-        
-        /// <summary>
-        /// rfvFname control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFname;
         
         /// <summary>
         /// btnSubmit control.

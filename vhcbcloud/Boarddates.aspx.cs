@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -40,9 +41,11 @@ namespace vhcbcloud
             {
                 DateTime dt = Convert.ToDateTime(txtBDate.Text);
                 BoarddatesData.AddBoardDate(txtMType.Text, dt);
-                BindBoardDates();
+                
                 txtBDate.Text = "";
                 txtMType.Text = "";
+                gvBoardDates.PageIndex = 0;
+                BindBoardDates();
             }
             catch (Exception ex)
             {
@@ -67,9 +70,9 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                int typeId = Convert.ToInt32(((Label)gvBoardDates.Rows[rowIndex].FindControl("lblcontId")).Text);
+                int typeId = Convert.ToInt32(((Label)gvBoardDates.Rows[rowIndex].FindControl("lblTypeId")).Text);
                 string mType = ((TextBox)gvBoardDates.Rows[rowIndex].FindControl("txtMeetType")).Text;
-                DateTime bDate = Convert.ToDateTime(((TextBox)gvBoardDates.Rows[rowIndex].FindControl("txtMeetType")).Text);
+                DateTime bDate = Convert.ToDateTime(((TextBox)gvBoardDates.Rows[rowIndex].FindControl("txtBoardDate")).Text);
 
                 BoarddatesData.UpdateBoardDates(mType, bDate, typeId);
                 gvBoardDates.EditIndex = -1;
@@ -81,6 +84,53 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = "Error updating the Board deatils: " + ex.Message;
                 lblErrorMsg.Visible = true;
+            }
+        }
+
+        protected void gvBoardDates_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataTable dt = BoarddatesData.GetBoardDates();
+            SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, e, SortDireaction);
+        }
+
+        protected void gvBoardDates_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+        }
+        public string SortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString();
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
+        }
+
+        protected void gvBoardDates_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            if (gvBoardDates.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvBoardDates.PageIndex = e.NewPageIndex;
+                BindBoardDates();
             }
         }
     }

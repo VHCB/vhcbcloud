@@ -28,6 +28,7 @@ namespace vhcbcloud
                 ddlApplicantName.DataValueField = "ApplicantID";
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
+                ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -100,6 +101,7 @@ namespace vhcbcloud
                 txtProjNum.Text = "";
                 gvProject.PageIndex = 0;
                 BindSelectedProjects();
+                ddlApplicantName.SelectedIndex = 0;
             }
             catch (Exception ex)
             {

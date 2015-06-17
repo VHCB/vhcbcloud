@@ -40,7 +40,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLookups(int recordId, string description)
+        public static void UpdateLookups(int typeId, string description)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -48,7 +48,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "updateLookups";
-                command.Parameters.Add(new SqlParameter("recordId", recordId));
+                command.Parameters.Add(new SqlParameter("typeId", typeId));
                 command.Parameters.Add(new SqlParameter("description", description));
                
                 using (connection)
@@ -68,7 +68,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetLookups()
+        public static DataTable GetLookupsViewName()
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -76,7 +76,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "GetLookups";
+                command.CommandText = "GetLookupsViewName";
                 using (connection)
                 {
                     connection.Open();

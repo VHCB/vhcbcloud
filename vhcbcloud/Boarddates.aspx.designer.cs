@@ -40,24 +40,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtMType;
         
         /// <summary>
-        /// rfvBDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBDate;
-        
-        /// <summary>
-        /// rfvMType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMType;
-        
-        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>

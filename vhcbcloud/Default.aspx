@@ -24,7 +24,7 @@
                 CompletionInterval="1000" ServiceMethod="GetProjectName">
             </ajaxToolkit:AutoCompleteExtender>
 
-            &nbsp;<span class="labelClass">Applicant :</span>
+            <br /><span class="labelClass">Applicant :</span>
             <asp:DropDownList ID="ddlApplicantName" CssClass="clsApplicantBlue" runat="server">
             </asp:DropDownList>
             <br />
@@ -55,8 +55,7 @@
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
                     <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
-                    <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
-                    <asp:TemplateField HeaderText="Project Name" SortExpression="proj_name">
+                   <asp:TemplateField HeaderText="Project Name" SortExpression="proj_name">
                         <ItemTemplate>
                             <asp:Label ID="lblProjName" runat="Server" Text='<%# Eval("proj_name") %>' />
                         </ItemTemplate>
@@ -64,6 +63,8 @@
                             <asp:TextBox ID="txtProjName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("proj_name") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
+                     <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
+                    
                     <%--<asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />--%>
                     <asp:TemplateField Visible="false" HeaderText="Name Id" SortExpression="nameid">
                         <ItemTemplate>
