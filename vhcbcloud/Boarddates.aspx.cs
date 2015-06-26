@@ -89,8 +89,9 @@ namespace vhcbcloud
 
         protected void gvBoardDates_Sorting(object sender, GridViewSortEventArgs e)
         {
+            SortExpression = e.SortExpression;
             DataTable dt = BoarddatesData.GetBoardDates();
-            SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, e, SortDireaction);
+            SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, SortExpression, SortDireaction);
         }
 
         protected void gvBoardDates_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -110,6 +111,21 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortDireaction"] = value;
+            }
+        }
+
+        public string SortExpression
+        {
+            get
+            {
+                if (ViewState["SortExpression"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortExpression"].ToString();
+            }
+            set
+            {
+                ViewState["SortExpression"] = value;
             }
         }
 

@@ -160,10 +160,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 17:47:01</publishTime>
     </File>
     <File Include="bin/VHCB.dll">
-      <publishTime>06/16/2015 00:04:04</publishTime>
+      <publishTime>06/26/2015 00:46:05</publishTime>
     </File>
     <File Include="bin/VHCBCommon.dll">
-      <publishTime>06/16/2015 00:04:03</publishTime>
+      <publishTime>06/26/2015 00:29:57</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>05/17/2015 17:46:47</publishTime>
@@ -247,7 +247,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 23:03:06</publishTime>
     </File>
     <File Include="LookupMaintenance.aspx">
-      <publishTime>06/15/2015 22:47:37</publishTime>
+      <publishTime>06/26/2015 00:37:25</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>05/31/2015 13:16:21</publishTime>

@@ -54,23 +54,23 @@ namespace VHCBCommon.DataAccessLayer
 
         protected static void SetSortDirection(string sortDirection)
         {
-            if (sortDirection == "ASC")
-            {
-                _sortDirection = "DESC";
-            }
-            else
+            if (sortDirection == "")
             {
                 _sortDirection = "ASC";
             }
+            else
+            {
+                _sortDirection = sortDirection;
+            }
         }
 
-        public static string GridSorting(GridView gv, DataTable dt, GridViewSortEventArgs e, string SortDireaction)
+        public static string GridSorting(GridView gv, DataTable dt, string SortExpression, string SortDireaction)
         {
             SetSortDirection(SortDireaction);
             if (dt != null)
             {
                 //Sort the data.
-                dt.DefaultView.Sort = e.SortExpression + " " + _sortDirection;
+                dt.DefaultView.Sort = SortExpression + " " + _sortDirection;
                 gv.DataSource = dt;
                 gv.DataBind();
                 return _sortDirection;

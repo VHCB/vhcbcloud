@@ -85,8 +85,9 @@ namespace vhcbcloud
 
         protected void gvFSource_Sorting(object sender, GridViewSortEventArgs e)
         {
+            SortExpression = e.SortExpression;
             DataTable dt = FundingSourceData.GetFundingSource();
-            SortDireaction = CommonHelper.GridSorting(gvFSource, dt, e, SortDireaction);
+            SortDireaction = CommonHelper.GridSorting(gvFSource, dt, SortExpression, SortDireaction);
         }
 
         protected void gvFSource_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -107,6 +108,21 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortDireaction"] = value;
+            }
+        }
+
+        public string SortExpression
+        {
+            get
+            {
+                if (ViewState["SortExpression"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortExpression"].ToString();
+            }
+            set
+            {
+                ViewState["SortExpression"] = value;
             }
         }
     }

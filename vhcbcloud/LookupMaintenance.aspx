@@ -4,12 +4,38 @@
     <div class="jumbotron">
         <p class="lead">Lookup Maintenance</p>
         <p>
-            <span class="labelClass">View name :</span>
-            <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" >
+            <span class="labelClass">New View name :</span>
+            <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookupViewname_SelectedIndexChanged" AutoPostBack="true" >
             </asp:DropDownList>
             &nbsp;<span class="labelClass">Description :</span>
             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
             <br />
+            <asp:GridView ID="gvLkDescription" runat="server" AutoGenerateColumns="False"
+                Width="90%" CssClass="gridView"
+                GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvLkDescription_RowCancelingEdit"
+                OnRowEditing="gvLkDescription_RowEditing" OnRowUpdating="gvLkDescription_RowUpdating">
+                <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                <HeaderStyle CssClass="headerStyle" />
+                <RowStyle CssClass="rowStyle" />
+                <Columns>
+                    <asp:TemplateField HeaderText="RecordID">
+                        <ItemTemplate>
+                            <asp:Label ID="lblRecordId" runat="Server" Text='<%# Eval("RecordID") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>                  
+
+                    <asp:TemplateField HeaderText="Description">
+                        <ItemTemplate>
+                            <asp:Label ID="lbllkDesc" runat="Server" Text='<%# Eval("LKDescription") %>' />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtlkDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LKDescription") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+                    <asp:CommandField ShowEditButton="True" />
+                </Columns>
+            </asp:GridView>
             <%--<asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="Description is required" CssClass="lblErrMsg" ControlToValidate="txtDescription"></asp:RequiredFieldValidator>--%>
             <br />
             <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />
@@ -30,11 +56,17 @@
                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                 <RowStyle CssClass="rowStyle" />
                 <Columns>
-                    <asp:TemplateField  HeaderText="View name" SortExpression="Viewname">
+                    <asp:TemplateField HeaderText="Type ID" SortExpression="typeid">
+                        <ItemTemplate>
+                            <asp:Label ID="lbltypeid" runat="Server" Text='<%# Eval("typeid") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="View name" SortExpression="Viewname">
                         <ItemTemplate>
                             <asp:Label ID="lblViewname" runat="Server" Text='<%# Eval("Viewname") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+
                     <asp:TemplateField HeaderText="Description" SortExpression="description">
                         <ItemTemplate>
                             <asp:Label ID="lbldesc" runat="Server" Text='<%# Eval("description") %>' />
@@ -43,12 +75,23 @@
                             <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField Visible="false" HeaderText="Type ID">
+                    <asp:TemplateField HeaderText="Standard" SortExpression="standard">
                         <ItemTemplate>
-                            <asp:Label ID="lbltypeid" runat="Server" Text='<%# Eval("typeid") %>' />
+                            <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("standard") %>' />
                         </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:CheckBox ID="chkStandardEdit" runat="server" Checked='<%# Eval("standard") %>' />
+                        </EditItemTemplate>
                     </asp:TemplateField>
-                     <asp:TemplateField Visible="false" HeaderText="Record ID">
+                    <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField Visible="false" HeaderText="Record ID">
                         <ItemTemplate>
                             <asp:Label ID="lblrecordId" runat="Server" Text='<%# Eval("recordId") %>' />
                         </ItemTemplate>

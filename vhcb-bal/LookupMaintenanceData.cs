@@ -40,7 +40,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLookups(int typeId, string description)
+        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isStandard, bool isActive)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -50,7 +50,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "updateLookups";
                 command.Parameters.Add(new SqlParameter("typeId", typeId));
                 command.Parameters.Add(new SqlParameter("description", description));
-               
+                command.Parameters.Add(new SqlParameter("lookupTypeid", lookupTypeId));
+                command.Parameters.Add(new SqlParameter("isStandard", isStandard));
+                command.Parameters.Add(new SqlParameter("isActive", isActive));
                 using (connection)
                 {
                     connection.Open();
@@ -68,9 +70,70 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateLkDescription(int recordId, string lkDescription)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateLkDescription";
+                command.Parameters.Add(new SqlParameter("recordId", recordId));
+                command.Parameters.Add(new SqlParameter("lkDescription", lkDescription));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public static DataTable GetLookupsById(int recordId)
+        {
+            DataTable dtLks = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLookupsById";
+                command.Parameters.Add(new SqlParameter("recordId", recordId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtLks = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtLks;
+        }
+
         public static DataTable GetLookupsViewName()
         {
-            DataTable dtProjects = null;
+            DataTable dtlkVname = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
@@ -87,7 +150,7 @@ namespace VHCBCommon.DataAccessLayer
                     da.Fill(ds);
                     if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
                     {
-                        dtProjects = ds.Tables[0];
+                        dtlkVname = ds.Tables[0];
                     }
                 }
             }
@@ -99,7 +162,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 connection.Close();
             }
-            return dtProjects;
+            return dtlkVname;
         }
 
         public static DataTable GetLkLookupDetails()

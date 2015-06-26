@@ -123,8 +123,9 @@ namespace vhcbcloud
 
         protected void gvAmeriCorps_Sorting(object sender, GridViewSortEventArgs e)
         {
+            SortExpression = e.SortExpression;
             DataTable dt = Americorpsmembers.GetAmericorps();
-            SortDireaction = CommonHelper.GridSorting(gvAmeriCorps, dt, e, SortDireaction);
+            SortDireaction = CommonHelper.GridSorting(gvAmeriCorps, dt, SortExpression, SortDireaction);
         }
 
         protected void gvAmeriCorps_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -145,6 +146,21 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortDireaction"] = value;
+            }
+        }
+
+        public string SortExpression
+        {
+            get
+            {
+                if (ViewState["SortExpression"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortExpression"].ToString();
+            }
+            set
+            {
+                ViewState["SortExpression"] = value;
             }
         }
     }
