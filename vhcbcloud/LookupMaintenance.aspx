@@ -4,11 +4,12 @@
     <div class="jumbotron">
         <p class="lead">Lookup Maintenance</p>
         <p>
-            <span class="labelClass">New View name :</span>
-            <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookupViewname_SelectedIndexChanged" AutoPostBack="true" >
+            <span class="labelClass">View name :</span>
+            <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookupViewname_SelectedIndexChanged" AutoPostBack="true">
             </asp:DropDownList>
-            &nbsp;<span class="labelClass">Description :</span>
+            &nbsp;<span class="labelClass">New description :</span>
             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
+            <%--&nbsp;<asp:ImageButton ID="imgSearch" runat="server" Height="25px" ImageUrl="~/Images/image004.png" Width="25px" OnClick="imgSearch_Click" />--%>
             <br />
             <asp:GridView ID="gvLkDescription" runat="server" AutoGenerateColumns="False"
                 Width="90%" CssClass="gridView"
@@ -23,8 +24,7 @@
                         <ItemTemplate>
                             <asp:Label ID="lblRecordId" runat="Server" Text='<%# Eval("RecordID") %>' />
                         </ItemTemplate>
-                    </asp:TemplateField>                  
-
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="Description">
                         <ItemTemplate>
                             <asp:Label ID="lbllkDesc" runat="Server" Text='<%# Eval("LKDescription") %>' />
@@ -75,14 +75,14 @@
                             <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Standard" SortExpression="standard">
+                    <%-- <asp:TemplateField HeaderText="Standard" SortExpression="standard">
                         <ItemTemplate>
                             <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("standard") %>' />
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:CheckBox ID="chkStandardEdit" runat="server" Checked='<%# Eval("standard") %>' />
                         </EditItemTemplate>
-                    </asp:TemplateField>
+                    </asp:TemplateField>--%>
                     <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
                         <ItemTemplate>
                             <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />

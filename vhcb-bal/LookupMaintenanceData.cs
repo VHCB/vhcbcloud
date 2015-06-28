@@ -40,7 +40,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isStandard, bool isActive)
+        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -51,7 +51,6 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("typeId", typeId));
                 command.Parameters.Add(new SqlParameter("description", description));
                 command.Parameters.Add(new SqlParameter("lookupTypeid", lookupTypeId));
-                command.Parameters.Add(new SqlParameter("isStandard", isStandard));
                 command.Parameters.Add(new SqlParameter("isActive", isActive));
                 using (connection)
                 {
@@ -165,7 +164,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtlkVname;
         }
 
-        public static DataTable GetLkLookupDetails()
+        public static DataTable GetLkLookupDetails(int recordId)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -174,6 +173,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetLkLookupDetails";
+                command.Parameters.Add(new SqlParameter("recordId", recordId));
                 using (connection)
                 {
                     connection.Open();

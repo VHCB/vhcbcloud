@@ -11,6 +11,9 @@ namespace vhcbcloud
 {
     public partial class LookupMaintenance : System.Web.UI.Page
     {
+        private int _recordId = 0;
+        public int recordId { get { return _recordId; } set { _recordId = value; } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -39,7 +42,12 @@ namespace vhcbcloud
         {
             try
             {
-                gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails();
+                recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+                if (ddlLkLookupViewname.SelectedIndex == 0 || recordId == 0)
+                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(0);
+                else
+                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(recordId);
+
                 gvLookup.DataBind();
             }
             catch (Exception ex)
@@ -48,11 +56,15 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindLKDescription(int recordId)
+        protected void BindLKDescription()
         {
             try
             {
-                gvLkDescription.DataSource = LookupMaintenanceData.GetLookupsById(recordId);
+                recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+                if (recordId == 0)
+                    gvLkDescription.DataSource = null;
+                else
+                    gvLkDescription.DataSource = LookupMaintenanceData.GetLookupsById(recordId);
                 gvLkDescription.DataBind();
             }
             catch (Exception ex)
@@ -81,10 +93,9 @@ namespace vhcbcloud
                 int typeId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lbltypeid")).Text);
                 string lkDescription = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtDesc")).Text;
                 int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lblrecordId")).Text);
-                bool isStandard = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkStandardEdit")).Checked);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
-                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isStandard, isActive);
+                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive);
                 gvLookup.EditIndex = -1;
                 BindLookupMaintenance();
                 lblErrorMsg.Text = "Lookup details updated successfully";
@@ -144,7 +155,12 @@ namespace vhcbcloud
 
         protected void BindGridWithSort()
         {
-            DataTable dt = LookupMaintenanceData.GetLkLookupDetails();
+            DataTable dt = new DataTable();
+            if (ddlLkLookupViewname.SelectedIndex == 0)
+                dt = LookupMaintenanceData.GetLkLookupDetails(0);
+            else
+                dt = LookupMaintenanceData.GetLkLookupDetails(recordId);
+
             SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction);
         }
 
@@ -184,14 +200,14 @@ namespace vhcbcloud
         protected void gvLkDescription_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvLkDescription.EditIndex = -1;
-            BindLKDescription(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
+            BindLKDescription();
 
         }
 
         protected void gvLkDescription_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvLkDescription.EditIndex = e.NewEditIndex;
-            BindLKDescription(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
+            BindLKDescription();
         }
 
         protected void gvLkDescription_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -201,20 +217,16 @@ namespace vhcbcloud
             int recordId = Convert.ToInt32(((Label)gvLkDescription.Rows[rowIndex].FindControl("lblRecordId")).Text);
             LookupMaintenanceData.UpdateLkDescription(recordId, lkDescription);
             gvLkDescription.EditIndex = -1;
-            BindViewName();
-            BindLKDescription(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
+            BindLookupMaintenance();
+            BindLKDescription();
             lblErrorMsg.Text = "Lookup description updated successfully";
             txtDescription.Text = "";
         }
 
         protected void ddlLkLookupViewname_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlLkLookupViewname.SelectedIndex != 0)
-            {
-                BindLKDescription(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
-            }
-            else
-                gvLkDescription.Visible = false;
+            BindLookupMaintenance();
+            BindLKDescription();
         }
     }
 }

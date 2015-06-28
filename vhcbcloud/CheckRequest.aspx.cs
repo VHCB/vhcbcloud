@@ -24,7 +24,7 @@ namespace vhcbcloud
         {
             try
             {
-                ddlProjFilter.DataSource = Project.GetProjects("GetAllProjects");
+                ddlProjFilter.DataSource = Project.GetProjects("GetProjects");
                 ddlProjFilter.DataValueField = "projectId";
                 ddlProjFilter.DataTextField = "Proj_num";
                 ddlProjFilter.DataBind();
@@ -142,7 +142,7 @@ namespace vhcbcloud
         protected void gvCheckReq_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
-            DataTable dt = LookupMaintenanceData.GetLkLookupDetails();
+            DataTable dt = CheckRequestData.GetAllCheckRequests();
             SortDireaction = CommonHelper.GridSorting(gvCheckReq, dt, SortExpression, SortDireaction);
         }
 
