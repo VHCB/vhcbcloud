@@ -21,7 +21,7 @@
 
             <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
-                CompletionInterval="1000" ServiceMethod="GetProjectName">
+                CompletionInterval="100" ServiceMethod="GetProjectName">
             </ajaxToolkit:AutoCompleteExtender>
 
             <br /><span class="labelClass">Applicant :</span>

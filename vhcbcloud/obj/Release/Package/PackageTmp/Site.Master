@@ -25,7 +25,7 @@
                     <%--Framework Scripts--%>                   
                     <asp:ScriptReference Name="jquery" />
                     <asp:ScriptReference Name="bootstrap" />
-                    <asp:ScriptReference Name="respond" />
+                    <%--<asp:ScriptReference Name="respond" />--%>
                     <asp:ScriptReference Name="WebForms.js" Path="~/Scripts/WebForms/WebForms.js" />
                     <asp:ScriptReference Name="WebUIValidation.js"  Path="~/Scripts/WebForms/WebUIValidation.js" />
                     <asp:ScriptReference Name="MenuStandards.js"  Path="~/Scripts/WebForms/MenuStandards.js" />

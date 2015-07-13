@@ -45,11 +45,12 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static void AddNewProject (string projName, string projNum, int applicantId)
+        public static string AddNewProject (string projName, string projNum, int applicantId)
         {
              var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
              try
              {
+                 object returnMsg="";
                  SqlCommand command = new SqlCommand();
                  command.CommandType = CommandType.StoredProcedure;
                  command.CommandText = "AddNewProject";
@@ -61,7 +62,8 @@ namespace VHCBCommon.DataAccessLayer
                  {
                      connection.Open();
                      command.Connection = connection;
-                     command.ExecuteNonQuery();
+                     returnMsg = command.ExecuteScalar();
+                     return returnMsg==null ? "" : returnMsg.ToString();
                  }
              }
              catch (Exception ex)
@@ -173,7 +175,8 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "ProjNamePrefix";
+                command.CommandText = "GetProjectName";
+                command.Parameters.Add(new SqlParameter("projName", ProjNamePrefix));
                 using (connection)
                 {
                     connection.Open();

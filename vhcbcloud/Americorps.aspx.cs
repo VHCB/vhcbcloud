@@ -37,10 +37,11 @@ namespace vhcbcloud
         {
             try
             {
-                ddlApplicantName.DataSource = ApplicantData.GetApplicants();
-                ddlApplicantName.DataValueField = "ApplicantID";
+                ddlApplicantName.DataSource = ApplicantData.GetSortedApplicants();
+                ddlApplicantName.DataValueField = "appnameid";
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
+                ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -58,6 +59,7 @@ namespace vhcbcloud
                 txtFName.Text = "";
                 txtLName.Text = "";
                 gvAmeriCorps.PageIndex = 0;
+                GetApplicant();
                 BindACContacts();
             }
             catch (Exception ex)
@@ -92,6 +94,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "AC Contact updated successfully";
                 txtFName.Text = "";
                 txtLName.Text = "";
+
             }
             catch (Exception)
             {
@@ -117,15 +120,20 @@ namespace vhcbcloud
                 // Clear the error message.
                 lblErrorMsg.Text = "";
                 gvAmeriCorps.PageIndex = e.NewPageIndex;
-                BindACContacts();
+                BindGridWithSort();
             }
+        }
+
+        protected void BindGridWithSort()
+        {
+            DataTable dt = Americorpsmembers.GetAmericorps();
+            SortDireaction = CommonHelper.GridSorting(gvAmeriCorps, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
 
         protected void gvAmeriCorps_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
-            DataTable dt = Americorpsmembers.GetAmericorps();
-            SortDireaction = CommonHelper.GridSorting(gvAmeriCorps, dt, SortExpression, SortDireaction);
+            BindGridWithSort();
         }
 
         protected void gvAmeriCorps_RowDataBound(object sender, GridViewRowEventArgs e)

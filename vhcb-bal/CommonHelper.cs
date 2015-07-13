@@ -70,7 +70,8 @@ namespace VHCBCommon.DataAccessLayer
             if (dt != null)
             {
                 //Sort the data.
-                dt.DefaultView.Sort = SortExpression + " " + _sortDirection;
+                if (SortExpression != "")
+                    dt.DefaultView.Sort = SortExpression + " " + _sortDirection;
                 gv.DataSource = dt;
                 gv.DataBind();
                 return _sortDirection;

@@ -124,8 +124,14 @@ namespace vhcbcloud
                 // Clear the error message.
                 lblErrorMsg.Text = "";
                 gvApplicant.PageIndex = e.NewPageIndex;
-                BindApplicants();
+                BindGridWithSort();
             }
+        }
+
+        protected void BindGridWithSort ()
+        {
+           DataTable dt = ApplicantData.GetApplicants();
+           SortDireaction = CommonHelper.GridSorting(gvApplicant, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
 
         protected void gvApplicant_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -147,8 +153,9 @@ namespace vhcbcloud
             {
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
-                else
-                    return ViewState["SortDireaction"].ToString();
+                else                    
+                    return
+                         ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
             }
             set
             {

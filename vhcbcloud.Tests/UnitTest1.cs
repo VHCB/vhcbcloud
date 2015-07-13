@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace vhcbcloud.Tests
 {
@@ -9,6 +10,7 @@ namespace vhcbcloud.Tests
         [TestMethod]
         public void TestMethod1()
         {
+          List<string> a =    vhcbcloud._Default.GetProjectName("a");
         }
     }
 }

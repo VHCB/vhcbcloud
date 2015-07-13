@@ -46,7 +46,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtMembers;
         }
 
-        public static string AddACContact (string fName, string lName, int applId)
+        public static string AddACContact (string fName, string lName, int appnameId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -56,7 +56,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddACContact";
                 command.Parameters.Add(new SqlParameter("fName", fName));
                 command.Parameters.Add(new SqlParameter("lName", lName));
-                command.Parameters.Add(new SqlParameter("applId", applId));
+                command.Parameters.Add(new SqlParameter("appnameId", appnameId));
                 using (connection)
                 {
                     connection.Open();

@@ -155,13 +155,15 @@ namespace vhcbcloud
 
         protected void BindGridWithSort()
         {
+            recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+               
             DataTable dt = new DataTable();
             if (ddlLkLookupViewname.SelectedIndex == 0)
                 dt = LookupMaintenanceData.GetLkLookupDetails(0);
             else
                 dt = LookupMaintenanceData.GetLkLookupDetails(recordId);
 
-            SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction);
+            SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
 
         protected void gvLookup_Sorting(object sender, GridViewSortEventArgs e)
@@ -225,6 +227,7 @@ namespace vhcbcloud
 
         protected void ddlLkLookupViewname_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lblErrorMsg.Text = "";
             BindLookupMaintenance();
             BindLKDescription();
         }

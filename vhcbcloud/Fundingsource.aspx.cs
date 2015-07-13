@@ -47,7 +47,23 @@ namespace vhcbcloud
 
         protected void gvFSource_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvFSource.PageIndex = e.NewPageIndex;
+            if (gvFSource.EditIndex != -1)
+            {
+                // Use the Cancel property to cancel the paging operation.
+                e.Cancel = true;
+
+                // Display an error message.
+                int newPageNumber = e.NewPageIndex + 1;
+                lblErrorMsg.Text = "Please update the record before moving to page " +
+                  newPageNumber.ToString() + ".";
+            }
+            else
+            {
+                // Clear the error message.
+                lblErrorMsg.Text = "";
+                gvFSource.PageIndex = e.NewPageIndex;
+                BindGridWithSort();
+            }
         }
 
         protected void gvFSource_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -71,7 +87,7 @@ namespace vhcbcloud
                 string fSourceName = ((TextBox)gvFSource.Rows[rowIndex].FindControl("txtName")).Text;
                 FundingSourceData.UpdateFSource(fSourceName, nameId);
                 gvFSource.EditIndex = -1;
-               
+
                 lblErrorMsg.Text = "Name updated successfully";
                 txtFName.Text = "";
                 gvFSource.PageIndex = 0;
@@ -81,6 +97,13 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void BindGridWithSort()
+        {
+            DataTable dt = FundingSourceData.GetFundingSource();
+            SortDireaction = CommonHelper.GridSorting(gvFSource, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+
         }
 
         protected void gvFSource_Sorting(object sender, GridViewSortEventArgs e)
@@ -103,7 +126,7 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString();
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
             }
             set
             {

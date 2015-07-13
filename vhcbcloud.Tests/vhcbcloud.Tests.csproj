@@ -52,6 +52,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\vhcb-bal\vhcbcommon.csproj">
+      <Project>{fb0d9857-eb88-406d-9d58-07fe74675955}</Project>
+      <Name>vhcbcommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\vhcbcloud\vhcbcloud.csproj">
       <Project>{83544686-8FAA-4B6F-A226-314C49BAC5CC}</Project>
       <Name>vhcbcloud</Name>

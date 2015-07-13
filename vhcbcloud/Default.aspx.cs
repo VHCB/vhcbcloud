@@ -24,8 +24,8 @@ namespace vhcbcloud
         {
             try
             {
-                ddlApplicantName.DataSource = ApplicantData.GetApplicants();
-                ddlApplicantName.DataValueField = "ApplicantID";
+                ddlApplicantName.DataSource = ApplicantData.GetSortedApplicants();
+                ddlApplicantName.DataValueField = "appnameid";
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
                 ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
@@ -94,9 +94,8 @@ namespace vhcbcloud
         {
             try
             {
-                Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
-
-                lblErrorMsg.Text = "Project saved successfully";
+                string returnMsg= Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
+                lblErrorMsg.Text = returnMsg == "" ? "Project saved successfully" : returnMsg.ToString();
                 txtPName.Text = "";
                 txtProjNum.Text = "";
                 gvProject.PageIndex = 0;
@@ -118,7 +117,7 @@ namespace vhcbcloud
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                ProjNames.Add(dt.Rows[i][1].ToString());
+                ProjNames.Add(dt.Rows[i][0].ToString());
             }
             return ProjNames;
         }
@@ -140,7 +139,7 @@ namespace vhcbcloud
                 // Clear the error message.
                 lblErrorMsg.Text = "";
                 gvProject.PageIndex = e.NewPageIndex;
-                BindSelectedProjects();
+                BindGridWithSort();
             }
         }
 
@@ -158,12 +157,18 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString();
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
             }
             set
             {
                 ViewState["SortDireaction"] = value;
             }
+        }
+        protected void BindGridWithSort()
+        {
+            DataTable dt = Project.GetProjects("GetAllProjects");
+            SortDireaction = CommonHelper.GridSorting(gvProject, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+
         }
 
         public string SortExpression

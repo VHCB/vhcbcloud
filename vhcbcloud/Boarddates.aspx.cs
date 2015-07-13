@@ -87,6 +87,12 @@ namespace vhcbcloud
             }
         }
 
+        protected void BindSortedGrid()
+        {
+            DataTable dt = BoarddatesData.GetBoardDates();
+            SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+        }
+
         protected void gvBoardDates_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
@@ -106,7 +112,7 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString();
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
             }
             set
             {

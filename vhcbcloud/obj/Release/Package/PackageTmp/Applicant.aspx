@@ -57,7 +57,7 @@
                 <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
             </p>
             <p>
-                <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False" DataKeyNames="ApplicantId"
+                <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False" 
                     Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                     GridLines="None" EnableTheming="True" AllowPaging="True" AllowSorting="true" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating" 
                     OnPageIndexChanging="gvApplicant_PageIndexChanging" OnRowDataBound="gvApplicant_RowDataBound" OnSorting="gvApplicant_Sorting">
@@ -77,7 +77,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField Visible="false" HeaderText="Applicant Id">
                             <ItemTemplate>
-                                <asp:Label ID="lblApplId" runat="Server" Text='<%# Eval("applicantId") %>' />
+                                <asp:Label ID="lblApplId" runat="Server" Text='<%# Eval("appnameid") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:CommandField ShowEditButton="True" />
