@@ -41,9 +41,11 @@ namespace vhcbcloud
             try
             {
                 ddlApplicantName.DataSource = CheckRequestData.GetApplicantByProjId(projectID);
-                ddlApplicantName.DataValueField = "ApplicantId";
+                ddlApplicantName.DataValueField = "AppNameID";
                 ddlApplicantName.DataTextField = "ApplicantName";
                 ddlApplicantName.DataBind();
+                if (ddlApplicantName.Items.Count > 1)
+                    ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -60,17 +62,21 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Text = ex.Message;
             }
         }
         protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
         {
             try
             {
-                CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
-                lblErrorMsg.Text = "View name details saved successfully";
+                string returnMsg = CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
+                lblErrorMsg.Text = returnMsg == "" ? "View name details saved successfully" : returnMsg.ToString();
                 gvCheckReq.PageIndex = 0;
                 BindCheckRequests();
+                txtAmt.Text = "";
+                txtVoucherDate.Text = "";
+                ddlApplicantName.Items.Clear();
+                ddlProjFilter.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -80,7 +86,8 @@ namespace vhcbcloud
 
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindAssociatedApplicants(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+            if (ddlApplicantName.SelectedIndex != 0)
+                BindAssociatedApplicants(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
         }
 
         protected void gvCheckReq_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -100,8 +107,14 @@ namespace vhcbcloud
                 // Clear the error message.
                 lblErrorMsg.Text = "";
                 gvCheckReq.PageIndex = e.NewPageIndex;
-                BindCheckRequests();
+                BindGridWithSort();
             }
+        }
+        protected void BindGridWithSort()
+        {
+            DataTable dt = CheckRequestData.GetAllCheckRequests();
+            SortDireaction = CommonHelper.GridSorting(gvCheckReq, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+
         }
 
         protected void gvCheckReq_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -159,7 +172,7 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString();
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
             }
             set
             {

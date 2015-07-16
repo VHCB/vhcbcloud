@@ -82,16 +82,17 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static void AddNewCheckRequest(int projId, int applicantId, decimal transAmt, DateTime dtVoucherDate)
+        public static string AddNewCheckRequest(int projId, int appNameID, decimal transAmt, DateTime dtVoucherDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
+                object returnMsg = "";
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddNewCheckRequest";
                 command.Parameters.Add(new SqlParameter("projId", projId));
-                command.Parameters.Add(new SqlParameter("applicantId", applicantId));
+                command.Parameters.Add(new SqlParameter("appNameID", appNameID));
                 command.Parameters.Add(new SqlParameter("transAmt", transAmt));
                 command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
@@ -99,7 +100,8 @@ namespace VHCBCommon.DataAccessLayer
                 {
                     connection.Open();
                     command.Connection = connection;
-                    command.ExecuteNonQuery();
+                    returnMsg = command.ExecuteScalar();
+                    return returnMsg == null ? "" : returnMsg.ToString();
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="vhcbcloud.SiteMaster" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,25 +21,24 @@
             <img alt="" src="Images/vhcb_logo_1_rgb_sm.png" />
 
             <ajaxToolkit:ToolkitScriptManager runat="server">
-                <scripts>
+                <Scripts>
                     <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                    <%--Framework Scripts--%>                   
+                    <%--Framework Scripts--%>
                     <asp:ScriptReference Name="jquery" />
                     <asp:ScriptReference Name="bootstrap" />
                     <%--<asp:ScriptReference Name="respond" />--%>
                     <asp:ScriptReference Name="WebForms.js" Path="~/Scripts/WebForms/WebForms.js" />
-                    <asp:ScriptReference Name="WebUIValidation.js"  Path="~/Scripts/WebForms/WebUIValidation.js" />
-                    <asp:ScriptReference Name="MenuStandards.js"  Path="~/Scripts/WebForms/MenuStandards.js" />
-                    <asp:ScriptReference Name="GridView.js"  Path="~/Scripts/WebForms/GridView.js" />
-                    <asp:ScriptReference Name="DetailsView.js"  Path="~/Scripts/WebForms/DetailsView.js" />
+                    <asp:ScriptReference Name="WebUIValidation.js" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                    <asp:ScriptReference Name="MenuStandards.js" Path="~/Scripts/WebForms/MenuStandards.js" />
+                    <asp:ScriptReference Name="GridView.js" Path="~/Scripts/WebForms/GridView.js" />
+                    <asp:ScriptReference Name="DetailsView.js" Path="~/Scripts/WebForms/DetailsView.js" />
                     <asp:ScriptReference Name="TreeView.js" Path="~/Scripts/WebForms/TreeView.js" />
-                    <asp:ScriptReference Name="WebParts.js"  Path="~/Scripts/WebForms/WebParts.js" />
+                    <asp:ScriptReference Name="WebParts.js" Path="~/Scripts/WebForms/WebParts.js" />
                     <asp:ScriptReference Name="Focus.js" Path="~/Scripts/WebForms/Focus.js" />
 
                     <asp:ScriptReference Name="WebFormsBundle" />
                     <%--Site Scripts--%>
-                    
-                  </scripts>
+                </Scripts>
             </ajaxToolkit:ToolkitScriptManager>
             <br />
             <div class="navbar navbar-inverse ">
@@ -55,8 +55,8 @@
                         <ul class="nav navbar-nav">
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" runat="server" href="~/">Home<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a runat="server" href="~/">Project</a></li>
                                     <li><a runat="server" href="~/Applicant">Applicant</a></li>
+                                    <li><a runat="server" href="~/">Project</a></li>
                                     <li><a runat="server" href="~/Americorps">Americorps</a></li>
                                     <li><a runat="server" href="~/BoardDates">Board Dates</a></li>
                                     <li><a runat="server" href="~/FundingSource">Funding Source</a></li>
@@ -70,7 +70,36 @@
                             <li><a runat="server" href="~/About">About</a></li>
                             <li><a runat="server" href="~/Contact">Contact</a></li>
                         </ul>
-
+                        <%-- 
+                             <ul class="nav navbar-nav">
+                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" runat="server" href="~/">Home<span class="caret"></span></a>
+                                <ul class="dropdown-menu multi-level">
+                                    <li class="dropdown-submenu"><a href="#">File Maintenance<span class="caret-right"></span></a>
+                                        <ul class="dropdown-menu  dropdown-menu-right">
+                                            <li><a runat="server" href="~/Applicant">Applicant</a></li>
+                                            <li><a runat="server" href="~/">Project</a></li>
+                                            <li><a runat="server" href="~/Americorps">Americorps</a></li>
+                                            <li><a runat="server" href="~/BoardDates">Board Dates</a></li>
+                                            <li><a runat="server" href="~/FundingSource">Funding Source</a></li>
+                                            <li><a runat="server" href="~/CheckRequest">Check Request</a></li>
+                                            <li><a runat="server" href="~/LookupMaintenance">Lookup Maintenance</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu"><a href="#">Financial Transactions<span class="caret-right"></span></a>
+                                        <ul class="dropdown-menu  dropdown-menu-right">
+                                            <li><a runat="server">Commitment</a></li>
+                                            <li><a runat="server">Decommitment</a></li>
+                                            <li><a runat="server">Reallocation</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a runat="server" href="~/FileHold">FileHold</a></li>
+                            <li><a runat="server" href="~/Exago">Exago</a></li>
+                            <li><a runat="server" href="~/Blog">Blog</a></li>
+                            <li><a runat="server" href="~/About">About</a></li>
+                            <li><a runat="server" href="~/Contact">Contact</a></li>
+                        </ul> --%>
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>
                                 <ul class="nav navbar-nav navbar-right">

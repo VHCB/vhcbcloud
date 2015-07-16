@@ -41,7 +41,7 @@
                             <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("TransAmt", "{0:c2}") %>' />
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt", "{0:c2}") %>'></asp:TextBox>
+                            <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Voucher Date" SortExpression="VoucherDate">

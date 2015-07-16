@@ -45,7 +45,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static string AddNewProject (string projName, string projNum, int applicantId)
+        public static string AddNewProject (string projName, string projNum, int appNameId)
         {
              var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
              try
@@ -56,7 +56,7 @@ namespace VHCBCommon.DataAccessLayer
                  command.CommandText = "AddNewProject";
                  command.Parameters.Add(new SqlParameter("projName", projName));
                  command.Parameters.Add(new SqlParameter("projNum", projNum));
-                 command.Parameters.Add(new SqlParameter("applicantId", applicantId));
+                 command.Parameters.Add(new SqlParameter("appNameId", appNameId));
 
                  using (connection)
                  {

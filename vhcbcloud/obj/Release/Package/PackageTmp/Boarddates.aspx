@@ -21,7 +21,7 @@
         </p>
 
         <p>
-            <asp:GridView ID="gvBoardDates" runat="server" AutoGenerateColumns="False" DataKeyNames="TypeId"
+             <asp:GridView ID="gvBoardDates" runat="server" AutoGenerateColumns="False" DataKeyNames="TypeId"
                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                 GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvBoardDates_RowCancelingEdit" AllowSorting="true"
                  OnRowEditing="gvBoardDates_RowEditing" OnRowUpdating="gvBoardDates_RowUpdating" OnRowDataBound="gvBoardDates_RowDataBound" OnSorting="gvBoardDates_Sorting" OnPageIndexChanging="gvBoardDates_PageIndexChanging">
@@ -57,7 +57,6 @@
                     <asp:CommandField ShowEditButton="True" />
                 </Columns>
                 <FooterStyle CssClass="footerStyle" />
-            </asp:GridView>
-        </p>
+            </asp:GridView></p>
     </div>
 </asp:Content>
