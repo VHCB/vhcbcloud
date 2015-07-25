@@ -84,7 +84,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "UpdateACContact";
                 command.Parameters.Add(new SqlParameter("fName", fName));
                 command.Parameters.Add(new SqlParameter("lName", lName));
-                command.Parameters.Add(new SqlParameter("applId", contactId));
+                command.Parameters.Add(new SqlParameter("contactId", contactId));
                 using (connection)
                 {
                     connection.Open();

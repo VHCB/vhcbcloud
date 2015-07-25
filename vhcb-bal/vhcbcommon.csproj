@@ -47,6 +47,7 @@
     <Compile Include="CheckRequestData.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="DataHelper.cs" />
+    <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="Project.cs" />
