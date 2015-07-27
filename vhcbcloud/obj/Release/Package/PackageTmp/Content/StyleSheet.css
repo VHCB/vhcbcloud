@@ -422,8 +422,6 @@
 .alternativeRowStyle {
     color: #4D4D4D;
     background-color: #EDEEEE;
-    text-align: left;    
-    font-size: smaller;
     vertical-align: middle;
     height: 30px;
 }
@@ -432,7 +430,6 @@
     color: #4D4D4D;
     background-color: #EDEEEE;
     font-weight: bold;
-    font-size: smaller;
     vertical-align: middle;
     text-align: left;
     height: 30px;
@@ -468,7 +465,6 @@
     font-family: helvetica,sans-serif;
     color: #4D4D4D;
     text-align: left;
-    font-size: smaller;
     vertical-align: middle;
     height: 30px;
 }
@@ -478,7 +474,6 @@
     color: #4D4D4D;
     text-align: left;
     font-weight: bold;
-    font-size: smaller;
     vertical-align: middle;
     height: 30px;
 }
@@ -512,8 +507,6 @@
     color: #4D4D4D;
     background-color: #EDEEEE;
     font-weight: bold;
-    
-    font-size: smaller;
     vertical-align: middle;
     text-align: left;
 }

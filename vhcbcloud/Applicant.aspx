@@ -49,6 +49,7 @@
                             <asp:TextBox ID="txtLName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                     </tr>
                 </table>
+                <br />
                 <p>
                     <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />
                 </p>

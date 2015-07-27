@@ -168,6 +168,10 @@
     <Content Include="Blog.aspx" />
     <Content Include="Boarddates.aspx" />
     <Content Include="CheckRequest.aspx" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.js" />
+    <Content Include="Content\bootstrap.min.js" />
     <Content Include="Content\chosen.css" />
     <Content Include="FileHold.aspx" />
     <Content Include="Exago.aspx" />
