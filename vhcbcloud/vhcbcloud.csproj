@@ -166,6 +166,7 @@
     <Content Include="Americorps.aspx" />
     <Content Include="Applicant.aspx" />
     <Content Include="Blog.aspx" />
+    <Content Include="BoardCommitment.aspx" />
     <Content Include="Boarddates.aspx" />
     <Content Include="CheckRequest.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -286,6 +287,13 @@
     </Compile>
     <Compile Include="Blog.aspx.designer.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardCommitment.aspx.cs">
+      <DependentUpon>BoardCommitment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardCommitment.aspx.designer.cs">
+      <DependentUpon>BoardCommitment.aspx</DependentUpon>
     </Compile>
     <Compile Include="Boarddates.aspx.cs">
       <DependentUpon>Boarddates.aspx</DependentUpon>
