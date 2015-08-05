@@ -1,4 +1,11 @@
-﻿.lbl_footer {
+﻿
+.CustomTabStyle .ajax__tab_header
+{
+    font-family: helvetica, sans-serif;
+    height:60px;
+}
+
+.lbl_footer {
     font-size: xx-small;
     font-style: normal;
     font-family: helvetica, sans-serif;
@@ -213,6 +220,7 @@
 .clsDropDown {
     border: 1px solid #678FC2;
     width: 140px;
+    height: 20px;
     background-color: #edeeee;
     font-size: 8pt;
     font-family: helvetica, sans-serif;

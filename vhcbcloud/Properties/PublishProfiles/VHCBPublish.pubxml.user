@@ -76,13 +76,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 17:46:47</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/26/2015 13:09:26</publishTime>
+      <publishTime>08/02/2015 09:21:37</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/26/2015 13:09:26</publishTime>
+      <publishTime>08/02/2015 09:21:36</publishTime>
     </File>
     <File Include="bin/App_global.asax.pdb">
-      <publishTime>07/26/2015 13:09:26</publishTime>
+      <publishTime>08/02/2015 09:21:36</publishTime>
     </File>
     <File Include="bin/AspNet.ScriptManager.bootstrap.dll">
       <publishTime>05/17/2015 17:46:49</publishTime>
@@ -169,16 +169,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 17:47:01</publishTime>
     </File>
     <File Include="bin/VHCB.dll">
-      <publishTime>07/26/2015 13:09:04</publishTime>
+      <publishTime>08/02/2015 09:20:00</publishTime>
     </File>
     <File Include="bin/VHCBCommon.dll">
-      <publishTime>07/26/2015 13:09:02</publishTime>
+      <publishTime>08/02/2015 09:19:59</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>05/17/2015 17:46:47</publishTime>
     </File>
     <File Include="Blog.aspx">
       <publishTime>05/27/2015 23:12:14</publishTime>
+    </File>
+    <File Include="BoardCommitment.aspx">
+      <publishTime>07/26/2015 21:27:37</publishTime>
     </File>
     <File Include="Boarddates.aspx">
       <publishTime>07/16/2015 09:08:30</publishTime>
@@ -202,7 +205,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/26/2015 09:19:36</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>07/26/2015 11:16:30</publishTime>
+      <publishTime>07/28/2015 20:59:05</publishTime>
     </File>
     <File Include="Content/bootstrap.js">
       <publishTime>07/26/2015 09:19:36</publishTime>
@@ -256,7 +259,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/15/2015 23:55:59</publishTime>
     </File>
     <File Include="FundType.aspx">
-      <publishTime>07/21/2015 07:05:38</publishTime>
+      <publishTime>07/28/2015 20:59:07</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>05/17/2015 17:46:32</publishTime>
@@ -280,10 +283,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/27/2015 09:17:15</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>05/31/2015 13:16:21</publishTime>
+      <publishTime>08/02/2015 09:19:26</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/26/2015 13:09:21</publishTime>
+      <publishTime>08/02/2015 09:21:31</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>07/16/2015 08:36:32</publishTime>
@@ -379,10 +382,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 17:46:51</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>07/26/2015 10:57:42</publishTime>
+      <publishTime>08/02/2015 09:11:39</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>07/26/2015 12:19:10</publishTime>
+      <publishTime>08/02/2015 09:20:29</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>05/17/2015 17:46:53</publishTime>
@@ -391,7 +394,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2015 17:46:53</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/26/2015 13:09:19</publishTime>
+      <publishTime>08/02/2015 20:46:33</publishTime>
     </File>
   </ItemGroup>
 </Project>
