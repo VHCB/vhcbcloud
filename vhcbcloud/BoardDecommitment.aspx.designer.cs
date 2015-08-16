@@ -10,7 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class BoardCommitment {
+    public partial class BoardDecommitment {
         
         /// <summary>
         /// ddlProjFilter control.

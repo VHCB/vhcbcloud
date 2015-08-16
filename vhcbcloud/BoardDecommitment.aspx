@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BoardCommitment.aspx.cs" Inherits="vhcbcloud.BoardCommitment" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BoardDecommitment.aspx.cs" Inherits="vhcbcloud.BoardDecommitment" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
 
-        <p class="lead">Board Commitment</p>
+        <p class="lead">Board Decommitment</p>
         <div class="container">
             <div class="panel panel-default">
 
@@ -50,7 +50,7 @@
                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                         <RowStyle CssClass="rowStyle" />
                         <Columns>
-                            <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
+                            <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" Visible="false" SortExpression="proj_num" />
                             <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
                                 <ItemTemplate>
                                     <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
@@ -74,7 +74,7 @@
                                     <asp:Label ID="lblTransStatus" runat="Server" Text='<%# Eval("Description") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                     <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" data runat="server"></asp:DropDownList>
                                     <asp:TextBox ID="txtTransStatus" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lkStatus") %>' Visible="false"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
@@ -108,11 +108,11 @@
                     <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" OnClick="btnSubmit_Click" />
                     <br />
                     <p class="lblErrMsg">
-                        <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
+                        <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
                     </p>
                     <br />
                     <asp:GridView ID="gvBCommit" runat="server" AutoGenerateColumns="False"
-                        Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                        Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                         GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
                         OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnPageIndexChanging="gvBCommit_PageIndexChanging" AllowSorting="true"
                         OnSorting="gvBCommit_Sorting" OnRowDataBound="gvBCommit_RowDataBound">
@@ -122,51 +122,30 @@
                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                         <RowStyle CssClass="rowStyle" />
                         <Columns>
-                            <asp:TemplateField HeaderText="Account Number" SortExpression="Account">
+                            <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
+                            <asp:TemplateField HeaderText="Project Name" SortExpression="Description">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
+                                    <asp:Label ID="lblProjName" runat="Server" Text='<%# Eval("Description") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Account") %>'></asp:TextBox>
+                                    <asp:TextBox ID="txtProjName" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("Description") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
-                                </ItemTemplate>
-                                <EditItemTemplate>
-                                    <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
-                                </EditItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Fund Type" SortExpression="Description">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("Description") %>' />
-                                </ItemTemplate>
-                                <EditItemTemplate>
-                                    <asp:DropDownList ID="ddlFundsType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                    <asp:TextBox ID="txtFundType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
-                                </EditItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Account Number" SortExpression="Account">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
-                                </ItemTemplate>
-                                <EditItemTemplate>
-                                    <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Account") %>'></asp:TextBox>
-                                </EditItemTemplate>
-                            </asp:TemplateField>
+                            <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
 
-                            <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
+                            <%--<asp:BoundField DataField="proj_name" HeaderText="Name" SortExpression="proj_name" />--%>
+                            <asp:TemplateField Visible="false" HeaderText="Name Id" SortExpression="TypeID">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
+                                    <asp:Label ID="lblNameId" runat="Server" Text='<%# Eval("TypeID") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
+                            <asp:BoundField DataField="TypeID" HeaderText="Name ID" ReadOnly="True" Visible="false" SortExpression="TypeID" />
                             <asp:CommandField ShowEditButton="True" />
                         </Columns>
                         <FooterStyle CssClass="footerStyle" />
                     </asp:GridView>
                 </div>
             </div>
-        </div>
+        </div>       
     </div>
 </asp:Content>
