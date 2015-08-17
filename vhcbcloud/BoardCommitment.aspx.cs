@@ -19,6 +19,7 @@ namespace vhcbcloud
                 BindProjects();
                 BindLkStatus();
                 BindLkTransType();
+
             }
         }
 
@@ -33,6 +34,25 @@ namespace vhcbcloud
                 ddlProjFilter.DataTextField = "Proj_num";
                 ddlProjFilter.DataBind();
                 ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void BindGranteeByProject()
+        {
+            try
+            {
+                DataTable dtGrantee = FinancialTransactions.GetGranteeByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                ddlGrantee.DataSource = dtGrantee;
+                ddlGrantee.DataValueField = "applicantid";
+                ddlGrantee.DataTextField = "Applicantname";
+                ddlGrantee.DataBind();
+                if (dtGrantee.Rows.Count > 1)
+                    ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
+
             }
             catch (Exception ex)
             {
@@ -73,11 +93,11 @@ namespace vhcbcloud
             }
         }
 
-        private void BindFundDetails()
+        private void BindFundDetails(int projectid)
         {
             try
             {
-                DataTable dtFundDet = FinancialTransactions.GetFundDetailsByProjectId(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                DataTable dtFundDet = FinancialTransactions.GetFundDetailsByProjectId(projectid);
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();
             }
@@ -97,18 +117,25 @@ namespace vhcbcloud
                     DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
 
                     lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
-                    txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
-
-                    DataTable dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                    //txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
+                    BindGranteeByProject();
+                    DataTable dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
                     if (dtTrans.Rows.Count > 0)
                     {
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
-                        txtTransDate.Text = Convert.ToDateTime( dtTrans.Rows[0]["Date"].ToString()).ToShortDateString();
+                        txtTransDate.Text = Convert.ToDateTime(dtTrans.Rows[0]["Date"].ToString()).ToShortDateString();
                         txtTotAmt.Text = dtTrans.Rows[0]["TransAmt"].ToString();
                         ddlStatus.SelectedValue = dtTrans.Rows[0]["lkStatus"].ToString();
-
-                        BindFundDetails();
+                        if (dtTrans.Rows.Count == 1)
+                        {
+                            BindFundDetails(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                        }
+                        else
+                        {
+                            gvBCommit.DataSource = null;
+                            gvBCommit.DataBind();
+                        }
                     }
                     else
                     {
@@ -214,9 +241,9 @@ namespace vhcbcloud
                 DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
 
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
-                txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
-
-                dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+               // txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
+                BindGranteeByProject();
+                dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
                 if (dtTrans.Rows.Count > 0)
                 {
                     gvPTrans.DataSource = dtTrans;
@@ -278,6 +305,34 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortExpression"] = value;
+            }
+        }
+
+        protected void gvPTrans_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+            GridViewRow row = gvPTrans.Rows[e.NewSelectedIndex];
+            Label lblProjectId = new Label();
+            lblProjectId.Text = ((Label)gvPTrans.Rows[e.NewSelectedIndex].Cells[4].FindControl("lblProjId")).Text;
+            BindFundDetails(Convert.ToInt32(lblProjectId.Text));
+        }
+
+        protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //txt_ID.Text = gvPTrans.Rows[e.].Cells[1].Text;
+            //txt_FN.Text = gvPTrans.Rows[e.NewSelectedIndex].Cells[1].Text;
+        }
+
+        protected void btnTransSubmit_Click(object sender, ImageClickEventArgs e)
+        {
+            try
+            {
+                FinancialTransactions.AddBoardCommitmentTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text), Convert.ToDecimal(txtTotAmt.Text),
+                    Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment", Convert.ToInt32(ddlStatus.SelectedValue.ToString()));
+                BindSelectedProjects();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
     }
