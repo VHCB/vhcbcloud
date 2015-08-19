@@ -11,19 +11,19 @@
 
                     <table style="width: 100%">
                         <tr>
-                            <td style="width:10%; float:left"><span class="labelClass">Project # :</span></td>
-                            <td style="width:20%; float:left">
+                            <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
+                            <td style="width: 20%; float: left">
                                 <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                 </asp:DropDownList></td>
-                            <td style="width:10%; float:left">
+                            <td style="width: 10%; float: left">
                                 <span class="labelClass">Project Name :</span>
                             </td>
-                            <td style="width:20%; float:left">
+                            <td style="width: 20%; float: left">
                                 <asp:Label ID="lblProjName" class="labelClass" Text="" runat="server"></asp:Label>
                             </td>
-                            <td  style="width:10%; float:left"><span class="labelClass">Grantee :</span></td>
-                            <td style="width:30%; float:left">
-                                 <asp:DropDownList ID="ddlGrantee" CssClass="clsDropDown"  runat="server"></asp:DropDownList>
+                            <td style="width: 10%; float: left"><span class="labelClass">Grantee :</span></td>
+                            <td style="width: 30%; float: left">
+                                <asp:DropDownList ID="ddlGrantee" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                 <%--<asp:TextBox ID="txtGrantee" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>--%>
                             </td>
                         </tr>
@@ -46,7 +46,6 @@
                             <td>
                                 <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList></td>
-                            
                         </tr>
                     </table>
                     <br />
@@ -57,14 +56,19 @@
                         Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                         GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit"
                         OnRowEditing="gvPTrans_RowEditing" OnRowUpdating="gvPTrans_RowUpdating" OnPageIndexChanging="gvPTrans_PageIndexChanging" AllowSorting="true"
-                        OnSorting="gvPTrans_Sorting" OnRowDataBound="gvPTrans_RowDataBound" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged" OnSelectedIndexChanging="gvPTrans_SelectedIndexChanging">
+                        OnSorting="gvPTrans_Sorting" OnRowDataBound="gvPTrans_RowDataBound" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged" OnSelectedIndexChanging="gvPTrans_SelectedIndexChanging" OnRowDeleting="gvPTrans_RowDeleting">
                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                         <HeaderStyle CssClass="headerStyle" />
                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                         <RowStyle CssClass="rowStyle" />
                         <Columns>
-                            <asp:BoundField DataField="proj_num" HeaderText="Number" ReadOnly="True" SortExpression="proj_num" />
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Center"  HeaderText="Select">
+                                <ItemTemplate>
+                                    <asp:RadioButton ID="rdBtnSelect"  runat="server" onclick="RadioCheck(this);" />
+                                    <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
                                 <ItemTemplate>
                                     <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
@@ -97,8 +101,8 @@
                                     <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ShowEditButton="True" ShowDeleteButton="true"/>
-                            <asp:CommandField ShowSelectButton ="true" />
+                            <asp:CommandField ShowEditButton="True" />
+                            <asp:CommandField ShowDeleteButton="true" />
                         </Columns>
                         <FooterStyle CssClass="footerStyle" />
                     </asp:GridView>
@@ -184,4 +188,21 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvPTrans.ClientID%>");
+         var rbs = gv.getElementsByTagName("input");
+
+         var row = rb.parentNode.parentNode;
+         for (var i = 0; i < rbs.length; i++) {
+             if (rbs[i].type == "radio") {
+                 if (rbs[i].checked && rbs[i] != rb) {
+                     rbs[i].checked = false;
+                     break;
+                 }
+             }
+         }
+     }
+    </script>
 </asp:Content>

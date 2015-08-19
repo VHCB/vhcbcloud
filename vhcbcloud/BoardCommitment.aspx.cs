@@ -19,8 +19,8 @@ namespace vhcbcloud
                 BindProjects();
                 BindLkStatus();
                 BindLkTransType();
-
             }
+            GetSelectedRecord();
         }
 
         protected void BindProjects()
@@ -228,7 +228,7 @@ namespace vhcbcloud
 
         protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-
+            
         }
 
         protected void gvPTrans_Sorting(object sender, GridViewSortEventArgs e)
@@ -241,7 +241,7 @@ namespace vhcbcloud
                 DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
 
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
-               // txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
+                // txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
                 BindGranteeByProject();
                 dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
                 if (dtTrans.Rows.Count > 0)
@@ -318,8 +318,7 @@ namespace vhcbcloud
 
         protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //txt_ID.Text = gvPTrans.Rows[e.].Cells[1].Text;
-            //txt_FN.Text = gvPTrans.Rows[e.NewSelectedIndex].Cells[1].Text;
+            GetSelectedRecord();
         }
 
         protected void btnTransSubmit_Click(object sender, ImageClickEventArgs e)
@@ -328,6 +327,60 @@ namespace vhcbcloud
             {
                 FinancialTransactions.AddBoardCommitmentTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text), Convert.ToDecimal(txtTotAmt.Text),
                     Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment", Convert.ToInt32(ddlStatus.SelectedValue.ToString()));
+                BindSelectedProjects();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        private void GetSelectedRecord()
+        {
+            for (int i = 0; i < gvPTrans.Rows.Count; i++)
+            {
+                RadioButton rb = (RadioButton)gvPTrans.Rows[i].Cells[0].FindControl("rdBtnSelect");
+                if (rb != null)
+                {
+                    if (rb.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvPTrans.Rows[i].Cells[0].FindControl("HiddenField1");
+                        if (hf != null)
+                        {
+                            ViewState["SelectedContact"] = hf.Value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void SetSelectedRecord()
+        {
+            for (int i = 0; i < gvPTrans.Rows.Count; i++)
+            {
+                RadioButton rb = (RadioButton)gvPTrans.Rows[i].Cells[0].FindControl("rdBtnSelect");
+                if (rb != null)
+                {
+                    HiddenField hf = (HiddenField)gvPTrans.Rows[i].Cells[0].FindControl("HiddenField1");
+                    if (hf != null && ViewState["SelectedContact"] != null)
+                    {
+                        if (hf.Value.Equals(ViewState["SelectedContact"].ToString()))
+                        {
+                            rb.Checked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                HiddenField hf = (HiddenField)gvPTrans.Rows[e.RowIndex].Cells[0].FindControl("HiddenField1");
+                FinancialTransactions.DeleteProjectFund(Convert.ToInt32(hf.Value));
                 BindSelectedProjects();
             }
             catch (Exception ex)

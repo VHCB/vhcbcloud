@@ -79,6 +79,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void DeleteProjectFund(int transid)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteProjectFund";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable GetBoardCommitmentTrans(int projectId, string commitmentType)
         {
             DataTable dtBCommit = null;
