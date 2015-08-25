@@ -228,7 +228,31 @@ namespace vhcbcloud
 
         protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            
+            try
+            {
+                int rowIndex = e.RowIndex;
+                int transId = Convert.ToInt32(((HiddenField)gvPTrans.Rows[rowIndex].FindControl("HiddenField1")).Value);
+                string TransDate = ((TextBox)gvPTrans.Rows[rowIndex].FindControl("txtTransDate")).Text;
+                DateTime dtTrans = TransDate == "" ? DateTime.Today : Convert.ToDateTime(TransDate);
+                decimal transAmt = 0;
+                if (((TextBox)gvPTrans.Rows[rowIndex].FindControl("txtTransAmt")).Text == "")
+                {
+                    lblErrorMsg.Text = "Please enter transaction amount";
+                    return;
+                }
+                else
+                {
+                    transAmt = Convert.ToDecimal(((TextBox)gvPTrans.Rows[rowIndex].FindControl("txtTransAmt")).Text);
+                }
+                int transType = Convert.ToInt32(((DropDownList)gvPTrans.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
+                FinancialTransactions.UpdateBoardCommitmentTransaction(transId, dtTrans, transAmt, "Board Commitment", transType);
+                gvPTrans.EditIndex = -1; 
+                BindSelectedProjects();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         protected void gvPTrans_Sorting(object sender, GridViewSortEventArgs e)

@@ -31,13 +31,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblProjName;
         
         /// <summary>
-        /// txtGrantee control.
+        /// ddlGrantee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrantee;
+        protected global::System.Web.UI.WebControls.DropDownList ddlGrantee;
         
         /// <summary>
         /// txtTransDate control.
@@ -76,6 +76,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
         
         /// <summary>
+        /// btnTransSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnTransSubmit;
+        
+        /// <summary>
         /// gvPTrans control.
         /// </summary>
         /// <remarks>
@@ -83,6 +92,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvPTrans;
+        
+        /// <summary>
+        /// lblErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
         /// txtAcctNum control.
@@ -128,15 +146,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton btnSubmit;
-        
-        /// <summary>
-        /// lblErrorMsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
         /// gvBCommit control.
