@@ -300,6 +300,37 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateBoardCommitmentTransaction(int transId, DateTime transDate, decimal transAmt, string CommitmentType, int lkStatus)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateBoardCommitmentTransaction";
+                command.Parameters.Add(new SqlParameter("transId", transId));
+                command.Parameters.Add(new SqlParameter("transDate", transDate));
+                command.Parameters.Add(new SqlParameter("transAmt", transAmt));                
+                command.Parameters.Add(new SqlParameter("commitmentType", CommitmentType));
+                command.Parameters.Add(new SqlParameter("lkStatus", lkStatus));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable GetGranteeByProject(int ProjectId)
         {
             DataTable dtStatus = null;
@@ -334,5 +365,375 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtStatus;
         }
+
+        public static void AddFundInfo(string name,string abbr, int lkFundTypeId, string acct, string vHCBCode, int lkAcctMethod, string deptId, bool drawDown)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddFundInfo";
+                command.Parameters.Add(new SqlParameter("name", name));
+                command.Parameters.Add(new SqlParameter("abbr", abbr));
+                command.Parameters.Add(new SqlParameter("lkFundTypeId", lkFundTypeId));
+                command.Parameters.Add(new SqlParameter("acct", acct));
+                command.Parameters.Add(new SqlParameter("vHCBCode", vHCBCode));
+                command.Parameters.Add(new SqlParameter("lkAcctMethod", lkAcctMethod));
+                command.Parameters.Add(new SqlParameter("deptId", deptId));
+                command.Parameters.Add(new SqlParameter("drawDown", drawDown));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fTransType)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateFundInfo";
+                command.Parameters.Add(new SqlParameter("fundId", fundid));
+                command.Parameters.Add(new SqlParameter("fAcct", fAcct));
+                command.Parameters.Add(new SqlParameter("fName", fName));
+                command.Parameters.Add(new SqlParameter("fAbbrv", fAbbrv));
+                command.Parameters.Add(new SqlParameter("fTransType", fTransType));
+               
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static DataTable GetFundInfoDetails()
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFundInfoDetails";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
+        public static DataTable GetGrantInfoDetailsByFund(int FundId)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetGrantInfoDetailsByFund";
+                command.Parameters.Add(new SqlParameter("FundId", FundId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
+        public static void AddGrantInfo( string GrantName
+           ,string VHCBName
+           ,int LkGrantor
+           ,int LkGrantSource
+           ,string AwardNum
+           ,decimal AwardAmt
+           ,DateTime BeginDate
+           ,DateTime EndDate
+           ,int Staff
+           ,int ContactID
+           ,string CFDA
+           ,bool SignAgree
+           ,bool FedFunds
+           ,bool Match
+           ,bool Fundsrec
+           ,bool Admin)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddGrantInfo";
+                command.Parameters.Add(new SqlParameter("GrantName", GrantName));
+                command.Parameters.Add(new SqlParameter("VHCBName", VHCBName));
+                command.Parameters.Add(new SqlParameter("LkGrantor", LkGrantor));
+                command.Parameters.Add(new SqlParameter("LkGrantSource", LkGrantSource));
+                command.Parameters.Add(new SqlParameter("AwardNum", AwardNum));
+                command.Parameters.Add(new SqlParameter("AwardAmt", AwardAmt));
+                command.Parameters.Add(new SqlParameter("BeginDate", BeginDate));
+                command.Parameters.Add(new SqlParameter("EndDate", EndDate));
+                command.Parameters.Add(new SqlParameter("Staff", Staff));
+                command.Parameters.Add(new SqlParameter("ContactID", ContactID));
+                command.Parameters.Add(new SqlParameter("CFDA", CFDA));
+                command.Parameters.Add(new SqlParameter("SignAgree", SignAgree));
+                command.Parameters.Add(new SqlParameter("FedFunds", FedFunds));
+                command.Parameters.Add(new SqlParameter("Match", Match));
+                command.Parameters.Add(new SqlParameter("Fundsrec", Fundsrec));
+                command.Parameters.Add(new SqlParameter("Admin", Admin));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateGrantInfo(int GrantInfoId, string GrantName, string VHCBName, int LkGrantor)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateGrantInfo";
+                command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
+                command.Parameters.Add(new SqlParameter("GrantName", GrantName));
+                command.Parameters.Add(new SqlParameter("VHCBName", VHCBName));
+                command.Parameters.Add(new SqlParameter("LkGrantor", LkGrantor));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void DeleteGrantInfo(int GrantInfoId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteGrantInfo";
+                command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static DataTable GetGrantInfoFYAmount(int GrantInfoFy)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetGrantInfoFYAmount";
+                command.Parameters.Add(new SqlParameter("GrantInfoFy", GrantInfoFy));
+               
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
+        public static void AddGrantInfoFyAmt(int GrantInfoId, int LkYear, decimal Amount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddGrantInfoFyAmt";
+                command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
+                command.Parameters.Add(new SqlParameter("LkYear", LkYear));
+                command.Parameters.Add(new SqlParameter("Amount", Amount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateGrantInfoFYAmt(int GrantInfoFy, int LkYear, decimal Amount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateGrantInfoFYAmt";
+                command.Parameters.Add(new SqlParameter("GrantInfoFy", GrantInfoFy));
+                command.Parameters.Add(new SqlParameter("LkYear", LkYear));
+                command.Parameters.Add(new SqlParameter("Amount", Amount));
+               
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void DeleteGrantInfoFyAmt(int GrantInfoFy)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteGrantInfoFyAmt";
+                command.Parameters.Add(new SqlParameter("GrantInfoFy", GrantInfoFy));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 }
