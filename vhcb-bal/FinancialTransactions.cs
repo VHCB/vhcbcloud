@@ -614,7 +614,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetGrantInfoFYAmount(int GrantInfoFy)
+        public static DataTable GetGrantInfoFYAmount(int GrantInfoId)
         {
             DataTable dtStatus = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -623,7 +623,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetGrantInfoFYAmount";
-                command.Parameters.Add(new SqlParameter("GrantInfoFy", GrantInfoFy));
+                command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
                
                 using (connection)
                 {
