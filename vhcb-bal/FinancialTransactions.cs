@@ -177,6 +177,40 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
+        public static DataTable GetDataTableByProcName(string procName)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = procName;
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static DataTable GetFundDetailsByProjectId(int ProjectId)
         {
             DataTable dtStatus = null;
@@ -211,6 +245,42 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtStatus;
         }
+
+        public static DataTable GetFundDetailsByFundId(int fundId)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.CommandText = "GetFundDetailsByFundId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static void AddFundType(string description, int typeid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -400,7 +470,35 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fTransType)
+        public static void DeleteFundInfo(int fundId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteFund";
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fFundsType, 
+                                            string vhcbCode, int lkAcctMethod, string deptId, bool drawDown)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -409,10 +507,15 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "UpdateFundInfo";
                 command.Parameters.Add(new SqlParameter("fundId", fundid));
-                command.Parameters.Add(new SqlParameter("fAcct", fAcct));
+                command.Parameters.Add(new SqlParameter("fAccount", fAcct));
                 command.Parameters.Add(new SqlParameter("fName", fName));
                 command.Parameters.Add(new SqlParameter("fAbbrv", fAbbrv));
-                command.Parameters.Add(new SqlParameter("fTransType", fTransType));
+                command.Parameters.Add(new SqlParameter("fFundsType", fFundsType));
+
+                command.Parameters.Add(new SqlParameter("vHCBCode", vhcbCode));
+                command.Parameters.Add(new SqlParameter("lkAcctMethod", lkAcctMethod));
+                command.Parameters.Add(new SqlParameter("deptId", deptId));
+                command.Parameters.Add(new SqlParameter("drawDown", drawDown));
                
                 using (connection)
                 {
@@ -500,7 +603,8 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
-        public static void AddGrantInfo( string GrantName
+        public static void AddGrantInfo(int fundId,
+            string GrantName
            ,string VHCBName
            ,int LkGrantor
            ,int LkGrantSource
@@ -523,6 +627,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddGrantInfo";
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.Parameters.Add(new SqlParameter("GrantName", GrantName));
                 command.Parameters.Add(new SqlParameter("VHCBName", VHCBName));
                 command.Parameters.Add(new SqlParameter("LkGrantor", LkGrantor));
