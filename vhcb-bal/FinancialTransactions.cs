@@ -281,6 +281,41 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
+        public static DataTable GetGrantInfoDetailsByGrantInfoId(int GrantInfoId)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
+                command.CommandText = "GetGrantInfoDetailsByGrantInfoId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static void AddFundType(string description, int typeid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -568,6 +603,40 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
+        public static DataTable GetFundInfoDetailsByLastModified()
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFundInfoDetailsByLastModified";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static DataTable GetGrantInfoDetailsByFund(int FundId)
         {
             DataTable dtStatus = null;
@@ -662,7 +731,23 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateGrantInfo(int GrantInfoId, string GrantName, string VHCBName, int LkGrantor)
+        public static void UpdateGrantInfo(int GrantInfoId, 
+                                            string GrantName, 
+                                            string VHCBName, 
+                                            int LkGrantor
+                                            ,int LkGrantSource 
+                                            ,string AwardNum
+                                            ,decimal AwardAmt 
+                                            ,DateTime BeginDate 
+                                            ,DateTime EndDate 
+                                            ,int Staff 
+                                            ,int ContactID 
+                                            ,string CFDA 
+                                            ,bool SignAgree 
+                                            ,bool FedFunds 
+                                            ,bool Match
+                                            ,bool Fundsrec
+                                            ,bool Admin )
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -674,6 +759,19 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("GrantName", GrantName));
                 command.Parameters.Add(new SqlParameter("VHCBName", VHCBName));
                 command.Parameters.Add(new SqlParameter("LkGrantor", LkGrantor));
+                command.Parameters.Add(new SqlParameter("LkGrantSource", LkGrantSource));
+                command.Parameters.Add(new SqlParameter("AwardNum", AwardNum));
+                command.Parameters.Add(new SqlParameter("AwardAmt", AwardAmt));
+                command.Parameters.Add(new SqlParameter("BeginDate", BeginDate));
+                command.Parameters.Add(new SqlParameter("EndDate", EndDate));
+                command.Parameters.Add(new SqlParameter("Staff", Staff));
+                command.Parameters.Add(new SqlParameter("ContactID", ContactID));
+                command.Parameters.Add(new SqlParameter("CFDA", CFDA));
+                command.Parameters.Add(new SqlParameter("SignAgree", SignAgree));
+                command.Parameters.Add(new SqlParameter("FedFunds", FedFunds));
+                command.Parameters.Add(new SqlParameter("Match", Match));
+                command.Parameters.Add(new SqlParameter("Fundsrec", Fundsrec));
+                command.Parameters.Add(new SqlParameter("Admin", Admin));
 
                 using (connection)
                 {
