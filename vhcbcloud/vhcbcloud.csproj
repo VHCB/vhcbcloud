@@ -168,7 +168,7 @@
     <Content Include="Blog.aspx" />
     <Content Include="FundGrantMaintenance.aspx" />
     <Content Include="BoardDecommitment.aspx" />
-    <Content Include="BoardCommitment.aspx" />
+    <Content Include="BoardFinancialTransactions.aspx" />
     <Content Include="Boarddates.aspx" />
     <Content Include="CheckRequest.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -304,12 +304,12 @@
     <Compile Include="BoardDecommitment.aspx.designer.cs">
       <DependentUpon>BoardDecommitment.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BoardCommitment.aspx.cs">
-      <DependentUpon>BoardCommitment.aspx</DependentUpon>
+    <Compile Include="BoardFinancialTransactions.aspx.cs">
+      <DependentUpon>BoardFinancialTransactions.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BoardCommitment.aspx.designer.cs">
-      <DependentUpon>BoardCommitment.aspx</DependentUpon>
+    <Compile Include="BoardFinancialTransactions.aspx.designer.cs">
+      <DependentUpon>BoardFinancialTransactions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Boarddates.aspx.cs">
       <DependentUpon>Boarddates.aspx</DependentUpon>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BoardCommitment.aspx.cs" Inherits="vhcbcloud.BoardCommitment" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="BoardFinancialTransactions.aspx.cs" Inherits="vhcbcloud.BoardFinancialTransactions" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
@@ -63,11 +63,13 @@
                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                         <RowStyle CssClass="rowStyle" />
                         <Columns>
-                            <asp:TemplateField ItemStyle-HorizontalAlign="Center"  HeaderText="Select">
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                 <ItemTemplate>
-                                    <asp:RadioButton ID="rdBtnSelect"  runat="server" onclick="RadioCheck(this);" />
+                                    <asp:RadioButton ID="rdBtnSelect" runat="server" onclick="RadioCheck(this);" AutoPostBack="true" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
                                     <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
                                 </ItemTemplate>
+
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
                                 <ItemTemplate>
@@ -116,16 +118,28 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Commitment Detail</div>
                 <div class="panel-body">
-                    <span class="labelClass">Account # :</span>
-                    <asp:TextBox ID="txtAcctNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                    &nbsp;<span class="labelClass">Fund Name :</span>
-                    <asp:TextBox ID="txtFundName" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                    &nbsp;<span class="labelClass">Transaction Type :</span>
-                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
-                    </asp:DropDownList>
-                    &nbsp;<span class="labelClass">Amount :</span>
-                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                    <br />
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <span class="labelClass">Account # :</span></td>
+                            <td>
+                                <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
+                            </td>
+                            <td><span class="labelClass">Fund Name :</span></td>
+                            <td>
+                                <asp:TextBox ID="txtFundName" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            </td>
+                            <td><span class="labelClass">Transaction Type :</span></td>
+                            <td>
+                                <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
+                            </td>
+                            <td><span class="labelClass">Amount :</span></td>
+                            <td>
+                                <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                        </tr>
+                    </table>
                     <br />
                     <asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" OnClick="btnSubmit_Click" />
                     <br />
@@ -157,21 +171,21 @@
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Fund Type" SortExpression="Description">
+                            <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("Description") %>' />
+                                    <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList ID="ddlFundsType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                    <asp:TextBox ID="txtFundType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
+                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                    <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Account Number" SortExpression="Account">
+                            <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
+                                    <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Amount") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Account") %>'></asp:TextBox>
+                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
 
@@ -192,17 +206,17 @@
     <script type="text/javascript">
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
-         var rbs = gv.getElementsByTagName("input");
+            var rbs = gv.getElementsByTagName("input");
 
-         var row = rb.parentNode.parentNode;
-         for (var i = 0; i < rbs.length; i++) {
-             if (rbs[i].type == "radio") {
-                 if (rbs[i].checked && rbs[i] != rb) {
-                     rbs[i].checked = false;
-                     break;
-                 }
-             }
-         }
-     }
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
     </script>
 </asp:Content>

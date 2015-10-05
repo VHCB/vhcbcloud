@@ -10,7 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class BoardCommitment {
+    public partial class BoardFinancialTransactions {
         
         /// <summary>
         /// ddlProjFilter control.
@@ -103,13 +103,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// txtAcctNum control.
+        /// ddlAcctNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAcctNum;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAcctNum;
         
         /// <summary>
         /// txtFundName control.

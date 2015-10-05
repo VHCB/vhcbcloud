@@ -55,7 +55,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "AddFundType";
+                command.CommandText = "AddProjectFundDetails";
                 command.Parameters.Add(new SqlParameter("transid", transid));
                 command.Parameters.Add(new SqlParameter("account", account));
                 command.Parameters.Add(new SqlParameter("fundname", fundname));
@@ -211,15 +211,15 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
-        public static DataTable GetFundDetailsByProjectId(int ProjectId)
+        public static DataTable GetFundDetailsByProjectId(int transId)
         {
             DataTable dtStatus = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
                 SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("projectid", ProjectId));
+                command.CommandType = CommandType.StoredProcedure;                
+                command.Parameters.Add(new SqlParameter("transId", transId));
                 command.CommandText = "GetFundDetailsByProjectId";
                 using (connection)
                 {
@@ -676,11 +676,11 @@ namespace VHCBCommon.DataAccessLayer
             string GrantName
            ,string VHCBName
            ,int LkGrantor
-           ,int LkGrantSource
+           ,Nullable<int> LkGrantSource
            ,string AwardNum
            ,decimal AwardAmt
-           ,DateTime BeginDate
-           ,DateTime EndDate
+           , Nullable<DateTime> BeginDate
+           , Nullable<DateTime> EndDate
            ,int Staff
            ,int ContactID
            ,string CFDA
@@ -735,11 +735,11 @@ namespace VHCBCommon.DataAccessLayer
                                             string GrantName, 
                                             string VHCBName, 
                                             int LkGrantor
-                                            ,int LkGrantSource 
+                                            ,Nullable<int> LkGrantSource 
                                             ,string AwardNum
                                             ,decimal AwardAmt 
-                                            ,DateTime BeginDate 
-                                            ,DateTime EndDate 
+                                            ,Nullable<DateTime> BeginDate 
+                                            ,Nullable<DateTime> EndDate 
                                             ,int Staff 
                                             ,int ContactID 
                                             ,string CFDA 

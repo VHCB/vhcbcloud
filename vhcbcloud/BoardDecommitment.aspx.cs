@@ -9,7 +9,7 @@ using System.Data;
 
 namespace vhcbcloud
 {
-    public partial class BoardCommitment : System.Web.UI.Page
+    public partial class BoardDecommitment : System.Web.UI.Page
     {
         DataTable dtProjects;
         protected void Page_Load(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace vhcbcloud
                     lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
                     //txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
                     BindGranteeByProject();
-                    DataTable dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
+                    DataTable dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Decommitment");
                     if (dtTrans.Rows.Count > 0)
                     {
                         gvPTrans.DataSource = dtTrans;
@@ -245,8 +245,8 @@ namespace vhcbcloud
                     transAmt = Convert.ToDecimal(((TextBox)gvPTrans.Rows[rowIndex].FindControl("txtTransAmt")).Text);
                 }
                 int transType = Convert.ToInt32(((DropDownList)gvPTrans.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
-                FinancialTransactions.UpdateBoardCommitmentTransaction(transId, dtTrans, transAmt, "Board Commitment", transType);
-                gvPTrans.EditIndex = -1; 
+                FinancialTransactions.UpdateBoardCommitmentTransaction(transId, dtTrans, transAmt, "Board Decommitment", transType);
+                gvPTrans.EditIndex = -1;
                 BindSelectedProjects();
             }
             catch (Exception ex)
@@ -267,7 +267,7 @@ namespace vhcbcloud
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
                 // txtGrantee.Text = dtProjects.Rows[0]["Applicantname"].ToString();
                 BindGranteeByProject();
-                dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
+                dtTrans = FinancialTransactions.GetBoardCommitmentTrans(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Decommitment");
                 if (dtTrans.Rows.Count > 0)
                 {
                     gvPTrans.DataSource = dtTrans;
@@ -350,7 +350,7 @@ namespace vhcbcloud
             try
             {
                 FinancialTransactions.AddBoardCommitmentTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text), Convert.ToDecimal(txtTotAmt.Text),
-                    Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment", Convert.ToInt32(ddlStatus.SelectedValue.ToString()));
+                    Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Decommitment", Convert.ToInt32(ddlStatus.SelectedValue.ToString()));
                 BindSelectedProjects();
             }
             catch (Exception ex)
