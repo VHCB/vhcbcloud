@@ -32,6 +32,18 @@ namespace VHCBCommon.DataAccessLayer
                     break;
             }
         }
+        public static string myDollarFormat(object amount)
+        {
+
+            if (amount is DBNull)
+            {
+                amount = 0.0;
+            }
+            decimal val = Convert.ToDecimal(amount);
+
+            return string.Format("{0:c}", val);
+
+        }
 
         public static void GridViewSetFocus(GridViewRow row)
         {

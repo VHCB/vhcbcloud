@@ -22,7 +22,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "GetBoardCommitmentsByProject";
                 command.Parameters.Add(new SqlParameter("projectId", projectId));
                 //
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -47,7 +47,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtBCommit;
         }
-                
+
         public static void AddProjectFundDetails(int transid, string account, string fundname, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -79,6 +79,35 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateTransDetails(int detailId, int fundtranstype, decimal fundamount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateTransDetails";
+                command.Parameters.Add(new SqlParameter("detailId", detailId));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void DeleteProjectFund(int transid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -88,7 +117,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "DeleteProjectFund";
                 command.Parameters.Add(new SqlParameter("transid", transid));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -218,7 +247,7 @@ namespace VHCBCommon.DataAccessLayer
             try
             {
                 SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;                
+                command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("transId", transId));
                 command.CommandText = "GetFundDetailsByProjectId";
                 using (connection)
@@ -415,7 +444,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "UpdateBoardCommitmentTransaction";
                 command.Parameters.Add(new SqlParameter("transId", transId));
                 command.Parameters.Add(new SqlParameter("transDate", transDate));
-                command.Parameters.Add(new SqlParameter("transAmt", transAmt));                
+                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
                 command.Parameters.Add(new SqlParameter("commitmentType", CommitmentType));
                 command.Parameters.Add(new SqlParameter("lkStatus", lkStatus));
 
@@ -471,7 +500,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
-        public static void AddFundInfo(string name,string abbr, int lkFundTypeId, string acct, string vHCBCode, int lkAcctMethod, string deptId, bool drawDown)
+        public static void AddFundInfo(string name, string abbr, int lkFundTypeId, string acct, string vHCBCode, int lkAcctMethod, string deptId, bool drawDown)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -532,7 +561,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fFundsType, 
+        public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fFundsType,
                                             string vhcbCode, int lkAcctMethod, string deptId, bool drawDown)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -551,7 +580,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("lkAcctMethod", lkAcctMethod));
                 command.Parameters.Add(new SqlParameter("deptId", deptId));
                 command.Parameters.Add(new SqlParameter("drawDown", drawDown));
-               
+
                 using (connection)
                 {
                     connection.Open();
@@ -674,21 +703,21 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void AddGrantInfo(int fundId,
             string GrantName
-           ,string VHCBName
-           ,int LkGrantor
-           ,Nullable<int> LkGrantSource
-           ,string AwardNum
-           ,decimal AwardAmt
+           , string VHCBName
+           , int LkGrantor
+           , Nullable<int> LkGrantSource
+           , string AwardNum
+           , decimal AwardAmt
            , Nullable<DateTime> BeginDate
            , Nullable<DateTime> EndDate
-           ,int Staff
-           ,int ContactID
-           ,string CFDA
-           ,bool SignAgree
-           ,bool FedFunds
-           ,bool Match
-           ,bool Fundsrec
-           ,bool Admin)
+           , Nullable<int> Staff
+           , Nullable<int> ContactID
+           , string CFDA
+           , bool SignAgree
+           , bool FedFunds
+           , bool Match
+           , bool Fundsrec
+           , bool Admin)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -731,23 +760,23 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateGrantInfo(int GrantInfoId, 
-                                            string GrantName, 
-                                            string VHCBName, 
+        public static void UpdateGrantInfo(int GrantInfoId,
+                                            string GrantName,
+                                            string VHCBName,
                                             int LkGrantor
-                                            ,Nullable<int> LkGrantSource 
-                                            ,string AwardNum
-                                            ,decimal AwardAmt 
-                                            ,Nullable<DateTime> BeginDate 
-                                            ,Nullable<DateTime> EndDate 
-                                            ,int Staff 
-                                            ,int ContactID 
-                                            ,string CFDA 
-                                            ,bool SignAgree 
-                                            ,bool FedFunds 
-                                            ,bool Match
-                                            ,bool Fundsrec
-                                            ,bool Admin )
+                                            , Nullable<int> LkGrantSource
+                                            , string AwardNum
+                                            , decimal AwardAmt
+                                            , Nullable<DateTime> BeginDate
+                                            , Nullable<DateTime> EndDate
+                                            , Nullable<int> Staff
+                                            , Nullable<int> ContactID
+                                            , string CFDA
+                                            , bool SignAgree
+                                            , bool FedFunds
+                                            , bool Match
+                                            , bool Fundsrec
+                                            , bool Admin)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -827,7 +856,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetGrantInfoFYAmount";
                 command.Parameters.Add(new SqlParameter("GrantInfoId", GrantInfoId));
-               
+
                 using (connection)
                 {
                     connection.Open();
@@ -893,7 +922,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("GrantInfoFy", GrantInfoFy));
                 command.Parameters.Add(new SqlParameter("LkYear", LkYear));
                 command.Parameters.Add(new SqlParameter("Amount", Amount));
-               
+
                 using (connection)
                 {
                     connection.Open();

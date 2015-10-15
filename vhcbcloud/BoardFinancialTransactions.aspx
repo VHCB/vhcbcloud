@@ -3,8 +3,17 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
 
-        <p class="lead">Board Commitment</p>
+        <p class="lead">Board Financial Transactions</p>
         <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" RepeatDirection="Horizontal">
+                        <asp:ListItem> Commitment &nbsp;</asp:ListItem>
+                        <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
+                        <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
+                    </asp:RadioButtonList>
+                </div>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Select Project</div>
                 <div class="panel-body">
@@ -19,7 +28,7 @@
                                 <span class="labelClass">Project Name :</span>
                             </td>
                             <td style="width: 20%; float: left">
-                                <asp:Label ID="lblProjName" class="labelClass" Text="" runat="server"></asp:Label>
+                                <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label>
                             </td>
                             <td style="width: 10%; float: left"><span class="labelClass">Grantee :</span></td>
                             <td style="width: 30%; float: left">
@@ -31,19 +40,21 @@
                 </div>
             </div>
             <div class="panel panel-default">
+
                 <div class="panel-body">
                     <table style="width: 100%">
+
                         <tr>
-                            <td><span class="labelClass">Trans Date :</span></td>
-                            <td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Trans Date :</span></td>
+                            <td style="width: 20%; float: left">
                                 <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                             </td>
-                            <td><span class="labelClass">Total Amount  $ :</span></td>
-                            <td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
+                            <td style="width: 20%; float: left">
                                 <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
-                            <td><span class="labelClass">Status :</span></td>
-                            <td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Status :</span></td>
+                            <td style="width: 30%; float: left">
                                 <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList></td>
                         </tr>
@@ -68,7 +79,6 @@
                                     <asp:RadioButton ID="rdBtnSelect" runat="server" onclick="RadioCheck(this);" AutoPostBack="true" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
                                     <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
                                 </ItemTemplate>
-
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
@@ -120,23 +130,23 @@
                 <div class="panel-body">
                     <table style="width: 100%">
                         <tr>
-                            <td>
+                            <td style="width: 10%; float: left">
                                 <span class="labelClass">Account # :</span></td>
-                            <td>
-                                <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server">
+                            <td style="width: 20%; float: left">
+                                <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True">
                                 </asp:DropDownList>
                             </td>
-                            <td><span class="labelClass">Fund Name :</span></td>
-                            <td>
-                                <asp:TextBox ID="txtFundName" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
+                            <td style="width: 15%; float: left">
+                                <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
                             </td>
-                            <td><span class="labelClass">Transaction Type :</span></td>
-                            <td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
+                            <td style="width: 15%; float: left">
                                 <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>
                             </td>
-                            <td><span class="labelClass">Amount :</span></td>
-                            <td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
+                            <td style="width: 10%; float: left">
                                 <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                         </tr>
                     </table>
@@ -148,28 +158,29 @@
                         Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                         GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
                         OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnPageIndexChanging="gvBCommit_PageIndexChanging" AllowSorting="true"
-                        OnSorting="gvBCommit_Sorting" OnRowDataBound="gvBCommit_RowDataBound">
+                        OnSorting="gvBCommit_Sorting" OnRowDataBound="gvBCommit_RowDataBound" ShowFooter="True">
                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                         <HeaderStyle CssClass="headerStyle" />
                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                         <RowStyle CssClass="rowStyle" />
+                        <FooterStyle CssClass="footerStyleTotals" />
                         <Columns>
                             <asp:TemplateField HeaderText="Account Number" SortExpression="Account">
                                 <ItemTemplate>
                                     <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
                                 </ItemTemplate>
-                                <EditItemTemplate>
+                                <%--<EditItemTemplate>
                                     <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Account") %>'></asp:TextBox>
-                                </EditItemTemplate>
+                                </EditItemTemplate>--%>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                 <ItemTemplate>
                                     <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
                                 </ItemTemplate>
-                                <EditItemTemplate>
+                               <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
-                                </EditItemTemplate>
+                                </EditItemTemplate>--%>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
                                 <ItemTemplate>
@@ -179,19 +190,29 @@
                                     <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
                                 </EditItemTemplate>
+                                <FooterTemplate>
+                                    Running Total :
+                                </FooterTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Amount") %>' />
+                                    <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
                                 </EditItemTemplate>
+                                <FooterTemplate>
+                                    <asp:Label runat="server" ID="lblFooterAmount" Text=""></asp:Label>
+                                </FooterTemplate>                                
                             </asp:TemplateField>
-
                             <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                 <ItemTemplate>
                                     <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField Visible="false" HeaderText="Detail Id" SortExpression="detailid">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:CommandField ShowEditButton="True" />
