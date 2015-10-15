@@ -492,8 +492,8 @@
     font-weight: bold;
     color: #f78b0e;
     vertical-align: middle;
-    text-align: center;
-    height: 5px;
+    text-align: left;
+    height: 20px
 }
 
 .footerStyleTotals {
@@ -502,7 +502,7 @@
     color: #f78b0e;
     vertical-align: middle;
     text-align: left;
-    height: 5px;
+     height: 20px
 }
 
 .detailView {
