@@ -18,7 +18,7 @@
 <body>
     <form runat="server">
         <div class="page">
-            <img alt="" src="Images/vhcb_logo_1_rgb_sm.png" />
+            
 
             <ajaxToolkit:ToolkitScriptManager runat="server">
                 <Scripts>
@@ -48,8 +48,9 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
-                        </button>
 
+                        </button>
+                        <a class="navbar-brand" href="default.aspx"> <img alt="" src="Images/vhcb_logo_1_rgb_sm.png" class="img-responsive img-rounded" /></a>
                     </div>
                     <div class="navbar-collapse collapse">
                         <%--  <ul class="nav navbar-nav">
@@ -73,6 +74,8 @@
                         </ul>--%>
 
                         <ul class="nav navbar-nav">
+                           
+                            
                             <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File Maintenance</a>

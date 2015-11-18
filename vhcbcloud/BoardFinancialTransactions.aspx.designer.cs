@@ -22,6 +22,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnFinancial;
         
         /// <summary>
+        /// pnlHide control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlHide;
+        
+        /// <summary>
         /// ddlProjFilter control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlProjFilter;
+        
+        /// <summary>
+        /// ddlGrantee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGrantee;
         
         /// <summary>
         /// lblProjName control.
@@ -40,13 +58,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblProjName;
         
         /// <summary>
-        /// ddlGrantee control.
+        /// divPtransEntry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlGrantee;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPtransEntry;
         
         /// <summary>
         /// txtTransDate control.
@@ -91,7 +109,7 @@ namespace vhcbcloud {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnTransSubmit;
+        protected global::System.Web.UI.WebControls.LinkButton btnTransSubmit;
         
         /// <summary>
         /// gvPTrans control.
@@ -112,6 +130,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
+        /// lblTransDetHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTransDetHeader;
+        
+        /// <summary>
+        /// divTransDetailEntry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTransDetailEntry;
+        
+        /// <summary>
         /// ddlAcctNum control.
         /// </summary>
         /// <remarks>
@@ -121,15 +157,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlAcctNum;
         
         /// <summary>
-        /// lblFundName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFundName;
-        
-        /// <summary>
         /// ddlTransType control.
         /// </summary>
         /// <remarks>
@@ -137,6 +164,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTransType;
+        
+        /// <summary>
+        /// lblFundName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFundName;
         
         /// <summary>
         /// txtAmt control.
@@ -154,7 +190,7 @@ namespace vhcbcloud {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnSubmit;
+        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
         
         /// <summary>
         /// gvBCommit control.
@@ -184,13 +220,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.HiddenField hfBalAmt;
         
         /// <summary>
-        /// divReallocateFrom control.
+        /// hfTransId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReallocateFrom;
+        protected global::System.Web.UI.WebControls.HiddenField hfTransId;
+        
+        /// <summary>
+        /// divReallocate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReallocate;
         
         /// <summary>
         /// txtRfrom control.
@@ -209,33 +254,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
-        
-        /// <summary>
-        /// ddlRFromProj control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRFromProj;
-        
-        /// <summary>
-        /// ddlRFromSource control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRFromSource;
-        
-        /// <summary>
-        /// ddlRFromType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRFromType;
         
         /// <summary>
         /// txtRfromAmt control.
@@ -308,5 +326,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
+        
+        /// <summary>
+        /// imgBtnReallocate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton imgBtnReallocate;
     }
 }

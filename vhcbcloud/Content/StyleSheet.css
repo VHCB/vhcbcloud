@@ -490,7 +490,7 @@
 .footerStyle {
     background-color: #3589a4;
     font-weight: bold;
-    color: #f78b0e;
+    color: #FFFFFF;
     vertical-align: middle;
     text-align: left;
     height: 20px
@@ -499,7 +499,7 @@
 .footerStyleTotals {
     background-color: #3589a4;
     font-weight: bold;
-    color: #f78b0e;
+    color: #FFFFFF;
     vertical-align: middle;
     text-align: left;
      height: 20px
@@ -553,7 +553,7 @@
 .detailViewfooterStyle {
     background-color: #3589a4;
     font-weight: bold;
-    color: #f78b0e;
+    color: #FFFFFF;
     vertical-align: middle;
     text-align: left;
     height: 5px;
