@@ -30,3 +30,6 @@ C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.dll
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\obj\Debug\vhcbcloud.Tests.pdb
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\vhcbcloud.Tests.dll.config
 C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\AjaxControlToolkit.dll
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Sandbox\vhcbcloud\vhcbcloud.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml

@@ -13,7 +13,7 @@
             <br />
             <span class="labelClass">Amount :</span>
             <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-            &nbsp;<span class="labelClass">Voucher Date :</span>
+            &nbsp;<span class="labelClass">Initiation Date :</span>
             <asp:TextBox ID="txtVoucherDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
             <ajaxToolkit:CalendarExtender runat="server" ID="aceVoucherDate" TargetControlID="txtVoucherDate"></ajaxToolkit:CalendarExtender>
             <br />
@@ -44,7 +44,7 @@
                             <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Voucher Date" SortExpression="VoucherDate">
+                    <asp:TemplateField HeaderText="Initiation Date" SortExpression="VoucherDate">
                         <ItemTemplate>
                             <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>' />
                         </ItemTemplate>

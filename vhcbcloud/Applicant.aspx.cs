@@ -51,6 +51,19 @@ namespace vhcbcloud
         {
             try
             {
+                if (rdBtnPayee.SelectedIndex<0)
+                {
+                    lblErrorMsg.Text = "Select payee or not.";
+                    rdBtnPayee.Focus();
+                    return;
+                }
+                if(rdBtnIndividual.SelectedIndex<0)
+                {
+                    lblErrorMsg.Text = "Select individual or not.";
+                    rdBtnIndividual.Focus();
+                    return;
+                }
+
                 bool isPayee = rdBtnPayee.SelectedItem.Text == "Yes" ? true : false;
                 bool isIndividual = rdBtnIndividual.SelectedItem.Text == "Yes" ? true : false;
                 if (isIndividual)

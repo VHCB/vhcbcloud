@@ -229,6 +229,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.HiddenField hfTransId;
         
         /// <summary>
+        /// hfRFromTransId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfRFromTransId;
+        
+        /// <summary>
         /// divReallocate control.
         /// </summary>
         /// <remarks>
@@ -238,13 +247,31 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReallocate;
         
         /// <summary>
-        /// txtRfrom control.
+        /// pnlReallocations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRfrom;
+        protected global::System.Web.UI.WebControls.Panel pnlReallocations;
+        
+        /// <summary>
+        /// ddlRFromProj control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRFromProj;
+        
+        /// <summary>
+        /// txtRfromDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRfromDate;
         
         /// <summary>
         /// CalendarExtender1 control.
@@ -256,6 +283,24 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
         
         /// <summary>
+        /// ddlRFromFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRFromFund;
+        
+        /// <summary>
+        /// ddlRFromFundType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRFromFundType;
+        
+        /// <summary>
         /// txtRfromAmt control.
         /// </summary>
         /// <remarks>
@@ -263,6 +308,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRfromAmt;
+        
+        /// <summary>
+        /// lblRErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblRErrorMsg;
         
         /// <summary>
         /// divReallocateTo control.
@@ -274,24 +328,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReallocateTo;
         
         /// <summary>
-        /// txtRto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRto;
-        
-        /// <summary>
-        /// CalendarExtender2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
-        
-        /// <summary>
         /// ddlRToProj control.
         /// </summary>
         /// <remarks>
@@ -301,22 +337,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlRToProj;
         
         /// <summary>
-        /// ddlRToSource control.
+        /// ddlRToFund control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRToSource;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRToFund;
         
         /// <summary>
-        /// ddlRtoType control.
+        /// ddlRtoFundType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRtoType;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRtoFundType;
         
         /// <summary>
         /// txtRToAmt control.
@@ -335,5 +371,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton imgBtnReallocate;
+        
+        /// <summary>
+        /// gvReallocate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvReallocate;
     }
 }

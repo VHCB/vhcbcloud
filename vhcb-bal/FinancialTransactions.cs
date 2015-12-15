@@ -48,6 +48,79 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetFundByProject(int projectId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFundByProject";
+                command.Parameters.Add(new SqlParameter("projId", projectId));
+                //
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+        public static DataTable GetCommittedFundByProject(int projectId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetCommittedFundByProject";
+                command.Parameters.Add(new SqlParameter("projId", projectId));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
         public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -78,6 +151,125 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate,  int Fromfundid, int Fromfundtranstype,
+                                decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtable = null;
+            try
+            {               
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddBoardReallocationTransaction";
+                command.Parameters.Add(new SqlParameter("FromProjectId", FromProjectId));
+                command.Parameters.Add(new SqlParameter("ToProjectId", ToProjectId));
+                command.Parameters.Add(new SqlParameter("transDate", transDate));                
+                command.Parameters.Add(new SqlParameter("Fromfundid", Fromfundid));
+                command.Parameters.Add(new SqlParameter("Fromfundtranstype", Fromfundtranstype));
+                command.Parameters.Add(new SqlParameter("Fromfundamount", Fromfundamount));
+                command.Parameters.Add(new SqlParameter("Tofundid", Tofundid));
+                command.Parameters.Add(new SqlParameter("Tofundtranstype", Tofundtranstype));
+                command.Parameters.Add(new SqlParameter("Tofundamount", Tofundamount));
+                command.Parameters.Add(new SqlParameter("fromTransId", fromTransId));
+                command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+        public static DataTable GetReallocationDetailsTransId(int fromProjId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetReallocationDetailsTransId";
+                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                //command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+
+        public static DataTable IsDuplicateReallocation(int FromProjectId, int fromTransId, int toTransId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "IsDuplicateReallocation";
+                command.Parameters.Add(new SqlParameter("FromProjectId", FromProjectId));
+                command.Parameters.Add(new SqlParameter("fromTransId", fromTransId));
+                command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
         public static void UpdateTransDetails(int detailId, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -88,6 +280,35 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "UpdateTransDetails";
                 command.Parameters.Add(new SqlParameter("detailId", detailId));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateReallocationTransDetails(int detailId, int FromProjId, decimal fundamount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateReallocationTransDetails";
+                command.Parameters.Add(new SqlParameter("detailId", detailId));
+                command.Parameters.Add(new SqlParameter("FromProjId", FromProjId));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
 
                 using (connection)
