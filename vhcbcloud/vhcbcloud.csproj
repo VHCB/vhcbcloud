@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -165,6 +166,7 @@
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Americorps.aspx" />
     <Content Include="Applicant.aspx" />
+    <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="FundGrantMaintenance.aspx" />
     <Content Include="BoardDecommitment.aspx" />
@@ -282,6 +284,13 @@
     </Compile>
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="awardsummary.aspx.cs">
+      <DependentUpon>awardsummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="awardsummary.aspx.designer.cs">
+      <DependentUpon>awardsummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>

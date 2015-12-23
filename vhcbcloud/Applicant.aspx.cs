@@ -47,44 +47,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                if (rdBtnPayee.SelectedIndex<0)
-                {
-                    lblErrorMsg.Text = "Select payee or not.";
-                    rdBtnPayee.Focus();
-                    return;
-                }
-                if(rdBtnIndividual.SelectedIndex<0)
-                {
-                    lblErrorMsg.Text = "Select individual or not.";
-                    rdBtnIndividual.Focus();
-                    return;
-                }
-
-                bool isPayee = rdBtnPayee.SelectedItem.Text == "Yes" ? true : false;
-                bool isIndividual = rdBtnIndividual.SelectedItem.Text == "Yes" ? true : false;
-                if (isIndividual)
-                    ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtLName.Text + ", " + txtFName.Text, isPayee, isIndividual);
-                else
-                    ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtApplicantName.Text, isPayee, isIndividual);
-                
-                lblErrorMsg.Text = "Applicant added successfully";
-                txtApplicantName.Text = "";
-                txtFName.Text = "";
-                txtLName.Text = "";
-                pnlappl.Visible = false;
-                gvApplicant.PageIndex = 0;
-                BindApplicants();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
+       
         protected void gvApplicant_RowEditing(object sender, GridViewEditEventArgs e)
         {          
             gvApplicant.EditIndex = e.NewEditIndex;
@@ -188,6 +151,46 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortExpression"] = value;
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdBtnPayee.SelectedIndex < 0)
+                {
+                    lblErrorMsg.Text = "Select payee or not.";
+                    rdBtnPayee.Focus();
+                    return;
+                }
+                if (rdBtnIndividual.SelectedIndex < 0)
+                {
+                    lblErrorMsg.Text = "Select individual or not.";
+                    rdBtnIndividual.Focus();
+                    return;
+                }
+
+                bool isPayee = rdBtnPayee.SelectedItem.Text == "Yes" ? true : false;
+                bool isIndividual = rdBtnIndividual.SelectedItem.Text == "Yes" ? true : false;
+                if (isIndividual)
+                    ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtLName.Text + ", " + txtFName.Text, isPayee, isIndividual);
+                else
+                    ApplicantData.AddNewApplicant(txtFName.Text, txtLName.Text, txtApplicantName.Text, isPayee, isIndividual);
+
+                lblErrorMsg.Text = "Applicant added successfully";
+                txtApplicantName.Text = "";
+                txtFName.Text = "";
+                txtLName.Text = "";
+                pnlappl.Visible = false;
+                gvApplicant.PageIndex = 0;
+                BindApplicants();
+
+                rdBtnIndividual.ClearSelection();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
     }

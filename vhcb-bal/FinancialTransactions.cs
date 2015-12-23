@@ -355,6 +355,37 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+
+        public static DataSet GetFinancialFundDetailsByProjectId(int projectId)
+        {
+            DataSet ds = new DataSet();
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFinancialFundDetailsByProjectId";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(ds);                    
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return ds;
+        }
+
         public static DataTable GetBoardCommitmentTrans(int projectId, string commitmentType)
         {
             DataTable dtBCommit = null;
@@ -494,6 +525,34 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
             return dtStatus;
+        }
+
+        public static DataSet GetDataSetByProcName(string procName)
+        {
+            DataSet ds = new DataSet();
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = procName;
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;                    
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);                   
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return ds;
         }
 
         public static DataTable GetFundDetailsByProjectId(int transId)

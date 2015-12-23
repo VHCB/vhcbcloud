@@ -10,25 +10,34 @@
 namespace vhcbcloud {
     
     
-    public partial class FundType {
+    public partial class awardsummary {
         
         /// <summary>
-        /// txtDescription control.
+        /// ddlProj control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescription;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProj;
         
         /// <summary>
-        /// ddlLkLookupViewname control.
+        /// Panel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLkLookupViewname;
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+        
+        /// <summary>
+        /// gvCurrentAwdStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvCurrentAwdStatus;
         
         /// <summary>
         /// lblErrorMsg control.
@@ -40,21 +49,21 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// btnSubmit control.
+        /// pnlTransDet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
+        protected global::System.Web.UI.WebControls.Panel pnlTransDet;
         
         /// <summary>
-        /// gvLkDescription control.
+        /// gvTransDetail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvLkDescription;
+        protected global::System.Web.UI.WebControls.GridView gvTransDetail;
     }
 }

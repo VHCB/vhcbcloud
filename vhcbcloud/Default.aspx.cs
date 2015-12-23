@@ -90,24 +90,7 @@ namespace vhcbcloud
             BindSelectedProjects();
         }
 
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                string returnMsg= Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
-                lblErrorMsg.Text = returnMsg == "" ? "Project saved successfully" : returnMsg.ToString();
-                txtPName.Text = "";
-                txtProjNum.Text = "";
-                gvProject.PageIndex = 0;
-                BindSelectedProjects();
-                ddlApplicantName.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
+       
         [System.Web.Script.Services.ScriptMethod]
         [System.Web.Services.WebMethod]
         public static List<string> GetProjectName(string prefixText)
@@ -190,6 +173,24 @@ namespace vhcbcloud
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 CommonHelper.GridViewSetFocus(e.Row);
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string returnMsg = Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
+                lblErrorMsg.Text = returnMsg == "" ? "Project saved successfully" : returnMsg.ToString();
+                txtPName.Text = "";
+                txtProjNum.Text = "";
+                gvProject.PageIndex = 0;
+                BindSelectedProjects();
+                ddlApplicantName.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
     }
 }

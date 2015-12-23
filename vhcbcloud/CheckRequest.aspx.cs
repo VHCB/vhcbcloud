@@ -65,25 +65,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                string returnMsg = CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
-                lblErrorMsg.Text = returnMsg == "" ? "View name details saved successfully" : returnMsg.ToString();
-                gvCheckReq.PageIndex = 0;
-                BindCheckRequests();
-                txtAmt.Text = "";
-                txtVoucherDate.Text = "";
-                ddlApplicantName.Items.Clear();
-                ddlProjFilter.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
+     
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlApplicantName.SelectedIndex != 0)
@@ -192,6 +174,26 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortExpression"] = value;
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                string returnMsg = CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
+                lblErrorMsg.Text = returnMsg == "" ? "View name details saved successfully" : returnMsg.ToString();
+                gvCheckReq.PageIndex = 0;
+                BindCheckRequests();
+                txtAmt.Text = "";
+                txtVoucherDate.Text = "";
+                ddlApplicantName.Items.Clear();
+                ddlProjFilter.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
     }

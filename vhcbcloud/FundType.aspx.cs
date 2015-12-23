@@ -20,27 +20,7 @@ namespace vhcbcloud
                 BindfundType();
             }
         }
-
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                if (ddlLkLookupViewname.SelectedIndex != 0 && txtDescription.Text != "")
-                {
-                    FundTypeData.AddFundType(txtDescription.Text, Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
-                    lblErrorMsg.Text = "Fund Type saved successfully";
-                    BindFundTypeData();
-                    txtDescription.Text = "";
-                }
-                else
-                    lblErrorMsg.Text = "Please select fund type source and add description";
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
+               
         protected void BindfundType()
         {
             try
@@ -172,5 +152,25 @@ namespace vhcbcloud
             }
         }
 
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (ddlLkLookupViewname.SelectedIndex != 0 && txtDescription.Text != "")
+                {
+                    FundTypeData.AddFundType(txtDescription.Text, Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()));
+                    lblErrorMsg.Text = "Fund Type saved successfully";
+                    BindFundTypeData();
+                    txtDescription.Text = "";
+                }
+                else
+                    lblErrorMsg.Text = "Please select fund type source and add description";
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
     }
 }

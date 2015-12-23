@@ -50,23 +50,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                Americorpsmembers.AddACContact(txtFName.Text, txtLName.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString() != "0" ? ddlApplicantName.SelectedValue.ToString() : "0"));
-                lblErrorMsg.Text = "AC Contact added successfully";
-                txtFName.Text = "";
-                txtLName.Text = "";
-                gvAmeriCorps.PageIndex = 0;
-                GetApplicant();
-                BindACContacts();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
+       
 
         protected void gvAmeriCorps_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
@@ -169,6 +153,24 @@ namespace vhcbcloud
             set
             {
                 ViewState["SortExpression"] = value;
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Americorpsmembers.AddACContact(txtFName.Text, txtLName.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString() != "0" ? ddlApplicantName.SelectedValue.ToString() : "0"));
+                lblErrorMsg.Text = "AC Contact added successfully";
+                txtFName.Text = "";
+                txtLName.Text = "";
+                gvAmeriCorps.PageIndex = 0;
+                GetApplicant();
+                BindACContacts();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
     }

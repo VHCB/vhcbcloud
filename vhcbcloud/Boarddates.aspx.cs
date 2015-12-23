@@ -34,25 +34,6 @@ namespace vhcbcloud
             }
         }
 
-
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                DateTime dt = Convert.ToDateTime(txtBDate.Text);
-                BoarddatesData.AddBoardDate(txtMType.Text, dt);
-                
-                txtBDate.Text = "";
-                txtMType.Text = "";
-                gvBoardDates.PageIndex = 0;
-                BindBoardDates();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
         protected void gvBoardDates_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvBoardDates.EditIndex = -1;
@@ -153,6 +134,24 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "";
                 gvBoardDates.PageIndex = e.NewPageIndex;
                 BindBoardDates();
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime dt = Convert.ToDateTime(txtBDate.Text);
+                BoarddatesData.AddBoardDate(txtMType.Text, dt);
+                
+                txtBDate.Text = "";
+                txtMType.Text = "";
+                gvBoardDates.PageIndex = 0;
+                BindBoardDates();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
     }
