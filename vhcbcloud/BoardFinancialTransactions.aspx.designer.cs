@@ -121,15 +121,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.LinkButton btnTransSubmit;
         
         /// <summary>
-        /// Panel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel2;
-        
-        /// <summary>
         /// gvPTrans control.
         /// </summary>
         /// <remarks>
@@ -328,6 +319,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtRfromAmt;
         
         /// <summary>
+        /// lbtnFromAwdSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnFromAwdSummary;
+        
+        /// <summary>
         /// lblRErrorMsg control.
         /// </summary>
         /// <remarks>
@@ -389,15 +389,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton imgBtnReallocate;
-        
-        /// <summary>
-        /// Panel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
         /// gvReallocate control.

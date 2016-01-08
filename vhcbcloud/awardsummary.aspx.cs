@@ -17,8 +17,11 @@ namespace vhcbcloud
             {
                 string projId = Request.QueryString["projectid"];
                 if (projId != null)
+                {
                     BindAwardSummary(Convert.ToInt32(projId));
-                
+                   
+                }
+                GetProjects();
             }
         }
 

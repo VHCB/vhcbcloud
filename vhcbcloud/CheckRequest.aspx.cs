@@ -68,7 +68,7 @@ namespace vhcbcloud
      
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlApplicantName.SelectedIndex != 0)
+            if (ddlProjFilter.SelectedIndex != 0)
                 BindAssociatedApplicants(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
         }
 

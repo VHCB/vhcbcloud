@@ -7,10 +7,10 @@
 
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading">Current Award Status</div>
+                <div class="panel-heading"><span class="labelClass">Current Award Status for project #</span> <asp:Label runat="server" ID="lblProjId"></asp:Label></div>
 
                 <div class="panel-body">
-                    <p style="visibility: hidden">
+                    <p>
                         Project # :
                         <asp:DropDownList ID="ddlProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProj_SelectedIndexChanged"></asp:DropDownList>
                     </p>
@@ -87,7 +87,7 @@
                     <p class="lblErrMsg">
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
                     </p>
-
+7
                 </div>
                 <br />
                 <div class="panel-heading">Transaction Detail</div>
@@ -107,7 +107,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Date" SortExpression="TransDate">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransDate") %>' />
+                                        <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransDate", "{0:M-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Fund Name" SortExpression="name">
@@ -145,3 +145,4 @@
     </div>
 
 </asp:Content>
+
