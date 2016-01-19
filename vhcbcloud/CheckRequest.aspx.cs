@@ -65,7 +65,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-     
+
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlProjFilter.SelectedIndex != 0)
@@ -117,19 +117,17 @@ namespace vhcbcloud
             {
                 int rowIndex = e.RowIndex;
                 int projectApplicantID = Convert.ToInt32(((Label)gvCheckReq.Rows[rowIndex].FindControl("lblProjapplId")).Text);
-                decimal transAmt = Convert.ToDecimal(((TextBox)gvCheckReq.Rows[rowIndex].FindControl("txtTrAmount")).Text);
                 DateTime dtVoucherDate = Convert.ToDateTime(((TextBox)gvCheckReq.Rows[rowIndex].FindControl("txtVouDate")).Text);
 
-                CheckRequestData.UpdateCheckRequest(projectApplicantID, transAmt, dtVoucherDate);
+                CheckRequestData.UpdateCheckRequest(projectApplicantID, dtVoucherDate);
                 gvCheckReq.EditIndex = -1;
                 BindCheckRequests();
                 lblErrorMsg.Text = "Check request updated successfully";
                 txtVoucherDate.Text = "";
-                txtAmt.Text = "";
             }
             catch (Exception)
             {
-                lblErrorMsg.Text = "Error updating the project name";
+                lblErrorMsg.Text = "Error updating the check request";
                 lblErrorMsg.Visible = true;
             }
         }
@@ -182,11 +180,10 @@ namespace vhcbcloud
 
             try
             {
-                string returnMsg = CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDecimal(txtAmt.Text), Convert.ToDateTime(txtVoucherDate.Text));
-                lblErrorMsg.Text = returnMsg == "" ? "View name details saved successfully" : returnMsg.ToString();
+                string returnMsg = CheckRequestData.AddNewCheckRequest(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()), Convert.ToDateTime(txtVoucherDate.Text));
+                lblErrorMsg.Text = returnMsg == "" ? "Check request was saved successfully" : returnMsg.ToString();
                 gvCheckReq.PageIndex = 0;
                 BindCheckRequests();
-                txtAmt.Text = "";
                 txtVoucherDate.Text = "";
                 ddlApplicantName.Items.Clear();
                 ddlProjFilter.SelectedIndex = 0;

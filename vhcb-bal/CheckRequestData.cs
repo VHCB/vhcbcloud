@@ -82,7 +82,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static string AddNewCheckRequest(int projId, int appNameID, decimal transAmt, DateTime dtVoucherDate)
+        public static string AddNewCheckRequest(int projId, int appNameID,  DateTime dtVoucherDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -92,8 +92,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddNewCheckRequest";
                 command.Parameters.Add(new SqlParameter("projId", projId));
-                command.Parameters.Add(new SqlParameter("appNameID", appNameID));
-                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
+                command.Parameters.Add(new SqlParameter("appNameID", appNameID));              
                 command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
                 using (connection)
@@ -114,7 +113,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateCheckRequest(int projectApplicantID,  decimal transAmt, DateTime dtVoucherDate)
+        public static void UpdateCheckRequest(int projectApplicantID,  DateTime dtVoucherDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -123,7 +122,6 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "UpdateCheckRequest";
                 command.Parameters.Add(new SqlParameter("projectApplicantID", projectApplicantID));
-                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
                 command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
                 using (connection)

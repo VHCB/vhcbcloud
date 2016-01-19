@@ -8,15 +8,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p>
-                        <span class="labelClass">Project # :</span><asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDownLong" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
+                        <span class="labelClass">Project # : </span><asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDownLong" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                         </asp:DropDownList>
                         &nbsp;<span class="labelClass">Applicant Name :</span>
                         <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDownLong" AutoPostBack="true" runat="server">
                         </asp:DropDownList>
-                        <br />
-                        <span class="labelClass">Amount :</span>
-                        <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                        &nbsp;<span class="labelClass">Initiation Date :</span>
+                        &nbsp;
+                        <span class="labelClass">Initiation Date :</span>
                         <asp:TextBox ID="txtVoucherDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                         <ajaxToolkit:CalendarExtender runat="server" ID="aceVoucherDate" TargetControlID="txtVoucherDate"></ajaxToolkit:CalendarExtender>
                         <br />
@@ -42,21 +40,22 @@
                                 <RowStyle CssClass="rowStyle" />
                                 <Columns>
                                     <asp:BoundField DataField="Applicantname" HeaderText="Applicant Name" ReadOnly="True" SortExpression="Applicantname" />
+                                     <asp:BoundField DataField="proj_num" HeaderText="Project #" ReadOnly="True" SortExpression="proj_num" />
 
-                                    <asp:TemplateField HeaderText="Amount" SortExpression="Transamt">
+                                    <%--<asp:TemplateField HeaderText="Amount" SortExpression="Transamt">
                                         <ItemTemplate>
                                             <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("TransAmt", "{0:c2}") %>' />
                                         </ItemTemplate>
                                         <EditItemTemplate>
                                             <asp:TextBox ID="txtTrAmount" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
                                         </EditItemTemplate>
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>--%>
                                     <asp:TemplateField HeaderText="Initiation Date" SortExpression="VoucherDate">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>' />
+                                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("InitDate", "{0:M-dd-yyyy}") %>' />
                                         </ItemTemplate>
                                         <EditItemTemplate>
-                                            <asp:TextBox ID="txtVouDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("VoucherDate", "{0:M-dd-yyyy}") %>'></asp:TextBox>
+                                            <asp:TextBox ID="txtVouDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("InitDate", "{0:M-dd-yyyy}") %>'></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="aceVDate" TargetControlID="txtVouDate"></ajaxToolkit:CalendarExtender>
 
                                         </EditItemTemplate>
