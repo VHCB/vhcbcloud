@@ -11,9 +11,9 @@
     <div class="jumbotron">
 
         <p class="lead">Fund/Grant Maintenance</p>        
-        <div class="container">
+        <div class="container"> 
             <div class="panel panel-default">
-                <div class="panel-heading">Fund Information</div>
+                <div class="panel-heading">Fund Information</div> 
                 <div class="panel-body">
                     <table style="width: 90%">
                         <tr>

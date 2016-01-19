@@ -1070,7 +1070,7 @@ namespace vhcbcloud
                         }
                     }
 
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt); 
                     if (txtRfromAmt.Text != "")
                     {
                         lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
