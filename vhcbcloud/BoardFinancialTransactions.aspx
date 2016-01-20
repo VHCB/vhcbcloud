@@ -7,7 +7,8 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;" RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
+                    <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;" RepeatDirection="Horizontal" 
+                        OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
                         <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                         <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                         <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
@@ -270,8 +271,8 @@
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
                         </asp:GridView>
-                        <asp:HiddenField ID="hfTransAmt" runat="server" />
-                        <asp:HiddenField ID="hfBalAmt" runat="server" />
+                        <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
+                        <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                         <asp:HiddenField ID="hfTransId" runat="server" />
                         <asp:HiddenField ID="hfRFromTransId" runat="server" />
                     </div>

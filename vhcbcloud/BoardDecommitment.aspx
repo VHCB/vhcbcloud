@@ -6,12 +6,12 @@
         <p class="lead">Board Decommitment</p>
          <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading">Select Project</div>
+                <div class="panel-heading">Select Project123</div>
                 <div class="panel-body">
 
                     <table style="width: 100%">
                         <tr>
-                            <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
+                            <td style="width: 10%; float: left"><span class="labelClass">Project 123# :</span></td>
                             <td style="width: 20%; float: left">
                                 <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                 </asp:DropDownList></td>
