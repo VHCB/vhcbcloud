@@ -12,5 +12,10 @@ namespace vhcbcloud.Tests
         {
           List<string> a =    vhcbcloud._Default.GetProjectName("a");
         }
+
+        public void TestMethod2()
+        {
+            List<string> a = vhcbcloud._Default.GetProjectName("a");
+        }
     }
 }
