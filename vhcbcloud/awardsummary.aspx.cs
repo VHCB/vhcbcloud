@@ -16,19 +16,33 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 string projId = Request.QueryString["projectid"];
+                DataTable dtProjects = GetProjects();
+                BindProjects(dtProjects);
+
                 if (projId != null)
                 {
+                    lblProjId.Text = GetProjectName(dtProjects, projId) + " - " + projId;
+                    ddlProj.Items.FindByValue(projId).Selected = true;
                     BindAwardSummary(Convert.ToInt32(projId));
-                   
                 }
-                GetProjects();
             }
         }
 
-        private void GetProjects()
+        private string GetProjectName(DataTable dtProjects, string projId)
+        {
+            DataRow[] dr = dtProjects.Select("projectid = '" + projId + "'");
+            return dr[0]["Description"].ToString();
+        }
+
+        private DataTable GetProjects()
         {
             DataTable dtProjects = new DataTable();
             dtProjects = Project.GetProjects("GetProjects");
+            return dtProjects;
+        }
+
+        private void BindProjects(DataTable dtProjects)
+        {
             ddlProj.DataSource = dtProjects;
             ddlProj.DataValueField = "projectId";
             ddlProj.DataTextField = "Proj_num";
@@ -96,6 +110,8 @@ namespace vhcbcloud
         {
             if (ddlProj.SelectedIndex > 0)
             {
+                DataTable dtProjects = GetProjects();
+                lblProjId.Text = GetProjectName(dtProjects, ddlProj.SelectedValue.ToString()) + " - " + ddlProj.SelectedValue.ToString();
                 BindAwardSummary(Convert.ToInt32(ddlProj.SelectedValue.ToString()));
             }
         }
