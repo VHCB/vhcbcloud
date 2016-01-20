@@ -21,12 +21,10 @@
                         </ajaxToolkit:MaskedEditExtender>
 
                         &nbsp;<span class="labelClass">Name :</span>
-
-                        <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
                         <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                             CompletionInterval="100" ServiceMethod="GetProjectName">
                         </ajaxToolkit:AutoCompleteExtender>
-
                         <br />
                         <span class="labelClass">Applicant :</span>
                         <asp:DropDownList ID="ddlApplicantName" CssClass="clsApplicantBlue" runat="server">

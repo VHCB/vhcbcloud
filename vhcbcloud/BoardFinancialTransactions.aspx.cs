@@ -204,8 +204,16 @@ namespace vhcbcloud
                     GetTransSelectedRecord(gvPTrans); // this method is only for single transaction grid
                     if (hfTransAmt.Value != "")
                     {
-                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(hfTransAmt.Value) - totAmt);
-                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(hfTransAmt.Value) - totAmt);
+                        if (rdBtnFinancial.SelectedIndex == 1)
+                        { 
+                            lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(hfTransAmt.Value) + totAmt);
+                            hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(hfTransAmt.Value) + totAmt);
+                        }
+                        else
+                        {
+                            lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(hfTransAmt.Value) - totAmt);
+                            hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(hfTransAmt.Value) - totAmt);
+                        }
                     }
                     if (rdBtnFinancial.SelectedIndex == 2)
                     {
@@ -316,7 +324,11 @@ namespace vhcbcloud
                 gvBCommit.DataSource = null;
                 gvBCommit.DataBind();
                 ClearDetailSelection();
-
+            }
+            else
+            {
+                lbAwardSummary.Visible = false;
+                lblProjName.Text = "";
             }
         }
 
@@ -456,8 +468,12 @@ namespace vhcbcloud
                         }
                         else
                         {
-
-                            if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(hfTransAmt.Value))
+                            if (rdBtnFinancial.SelectedIndex == 1 && (Convert.ToDecimal(txtAmt.Text) > -Convert.ToDecimal(hfTransAmt.Value)))
+                            {
+                                lblErrorMsg.Text = "Detail amount adjusted to maximum allowed amount.";
+                                txtAmt.Text = (-Convert.ToDecimal(hfTransAmt.Value)).ToString();
+                            }
+                            else if (rdBtnFinancial.SelectedIndex != 1 && (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(hfTransAmt.Value)))
                             {
                                 lblErrorMsg.Text = "Detail amount adjusted to maximum allowed amount.";
                                 txtAmt.Text = hfTransAmt.Value;
@@ -466,7 +482,16 @@ namespace vhcbcloud
                             {
                                 if (hfBalAmt.Value != "" && hfBalAmt.Value != "0.00")
                                 {
-                                    if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(hfBalAmt.Value))
+                                    if (rdBtnFinancial.SelectedIndex == 1)
+                                    {
+                                         if (Convert.ToDecimal(txtAmt.Text) + Convert.ToDecimal(hfBalAmt.Value) > 0)
+                                        {
+                                            lblErrorMsg.Text = "Detail amount adjusted to maximum allowed amount.";
+                                            txtAmt.Text = (-Convert.ToDecimal(hfBalAmt.Value)).ToString();
+                                        }
+                                    }
+
+                                    if (rdBtnFinancial.SelectedIndex != 1 && (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(hfBalAmt.Value)))
                                     {
                                         lblErrorMsg.Text = "Detail amount adjusted to maximum allowed amount.";
                                         txtAmt.Text = hfBalAmt.Value;
@@ -476,7 +501,8 @@ namespace vhcbcloud
                                 {
                                     lblErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
                                     ClearDetailSelection();
-                                    btnTransSubmit.Enabled = true;
+                                    //btnTransSubmit.Enabled = false;
+                                    //btnSubmit.Enabled = false;
                                     return;
                                 }
                             }
@@ -679,7 +705,11 @@ namespace vhcbcloud
                     }
                     lblErrorMsg.Text = "";
                     decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);//rdBtnFinancial.SelectedIndex == 1 ? -Convert.ToDecimal(txtTotAmt.Text) : Convert.ToDecimal(txtTotAmt.Text);
-                    DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text), TransAmount,
+
+                    if (rdBtnFinancial.SelectedIndex == 1)
+                        TransAmount = -TransAmount;
+
+                        DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text), TransAmount,
                         Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment", TRANS_PENDING_STATUS);//Convert.ToInt32(ddlStatus.SelectedValue.ToString()));
                     BindSelectedProjects(dtTrans);
                     txtTransDate.Text = DateTime.Now.ToShortDateString();
@@ -870,6 +900,7 @@ namespace vhcbcloud
             ddlStatus.SelectedIndex = 0;
             ddlProjFilter.SelectedIndex = 0;
             lblProjName.Text = "";
+            lbAwardSummary.Visible = false;
             ddlGrantee.DataSource = null;
             ddlGrantee.DataBind();
             gvPTrans.DataSource = null;
@@ -880,6 +911,8 @@ namespace vhcbcloud
 
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
+            hfTransAmt.Value = "";
+            hfBalAmt.Value = "";
 
             if (rdBtnFinancial.SelectedIndex == 2)
             {
@@ -1259,7 +1292,7 @@ namespace vhcbcloud
         {
             if (ddlProjFilter.SelectedIndex > 0)
             {
-                string url = "https://vhcbcloud.org/awardsummary.aspx?projectid="+ ddlProjFilter.SelectedValue.ToString();
+                string url = "/awardsummary.aspx?projectid="+ ddlProjFilter.SelectedValue.ToString();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<script type = 'text/javascript'>");
                 sb.Append("window.open('");

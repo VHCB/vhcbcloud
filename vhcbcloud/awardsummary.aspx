@@ -7,14 +7,14 @@
 
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="labelClass">Current Award Status for project #</span> <asp:Label runat="server" ID="lblProjId"></asp:Label></div>
+                <div class="panel-heading"><span class="labelClass">Current Award Status for project: </span> <b><asp:Label runat="server" ID="lblProjId"></asp:Label></b></div>
 
                 <div class="panel-body">
                     <p>
                         Project # :
                         <asp:DropDownList ID="ddlProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProj_SelectedIndexChanged"></asp:DropDownList>
                     </p>
-                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="350px" ScrollBars="Vertical">
+                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
                             ShowFooter="True" Width="90%">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -87,9 +87,7 @@
                     <p class="lblErrMsg">
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
                     </p>
-7
                 </div>
-                <br />
                 <div class="panel-heading">Transaction Detail</div>
                 <div class="panel-body">
                     <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="350px" ScrollBars="Vertical">
