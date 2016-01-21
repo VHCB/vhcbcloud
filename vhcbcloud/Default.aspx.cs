@@ -90,21 +90,6 @@ namespace vhcbcloud
             BindSelectedProjects();
         }
 
-       
-        [System.Web.Script.Services.ScriptMethod]
-        [System.Web.Services.WebMethod]
-        public static List<string> GetProjectName(string prefixText)
-        {
-            DataTable dt = new DataTable();
-            dt = Project.GetProjectName(prefixText);
-            List<string> ProjNames = new List<string>();
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                ProjNames.Add(dt.Rows[i][0].ToString());
-            }
-            return ProjNames;
-        }
-
         protected void gvProject_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             if (gvProject.EditIndex != -1)
@@ -191,6 +176,21 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectName(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjectName(prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add(dt.Rows[i][0].ToString());
+            }
+            return ProjNames.ToArray();
         }
     }
 }
