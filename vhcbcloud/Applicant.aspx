@@ -67,7 +67,7 @@
                             <asp:GridView ID="gvApplicant" runat="server" AutoGenerateColumns="False"
                                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                 GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCancelingEdit="gvApplicant_RowCancelingEdit" OnRowEditing="gvApplicant_RowEditing" OnRowUpdating="gvApplicant_RowUpdating"
-                                OnPageIndexChanging="gvApplicant_PageIndexChanging" OnRowDataBound="gvApplicant_RowDataBound" OnSorting="gvApplicant_Sorting">
+                                OnRowDataBound="gvApplicant_RowDataBound" OnSorting="gvApplicant_Sorting">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                 <HeaderStyle CssClass="headerStyle" />
