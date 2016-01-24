@@ -45,7 +45,10 @@
                                 <td colspan="6" style="height: 8px"></td>
                             </tr>
                             <tr>
-                                <td style="width: 10%; float: left"><span class="labelClass">Project Name :</span></td>
+                                <td style="width: 10%; float: left"><asp:Label ID="lblProjNameText" class="labelClass" Visible="false" Text="Project Name :" runat="server"></asp:Label>
+                                   <%-- <span class="labelClass">Project Name :</span>--%>
+
+                                </td>
                                 <td style="width: 20%; float: left">
                                     <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                 <td style="width: 10%; float: left">&nbsp;</td>

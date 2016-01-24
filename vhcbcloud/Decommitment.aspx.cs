@@ -77,9 +77,12 @@ namespace vhcbcloud
             ddlGrantee.Items.Clear();
             ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
 
+            ClearTransactionDetailForm();
+
             if (ddlProjFilter.SelectedIndex != 0)
             {
                 DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                lblProjNameText.Visible = true;
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
                 BindGranteeByProject(); //Bind Grantee Drop Down
                 lbAwardSummary.Visible = true;
@@ -89,6 +92,7 @@ namespace vhcbcloud
             else
             {
                 lbAwardSummary.Visible = false;
+                lblProjNameText.Visible = false;
                 lblProjName.Text = "";
             }
         }
@@ -163,10 +167,15 @@ namespace vhcbcloud
 
         private void ClearTransactionDetailForm()
         {
+
             lblFundName.Text = "";
-            ddlTransType.SelectedIndex = 0;
             txtAmt.Text = "";
-            ddlAcctNum.SelectedIndex = 0;
+            try {
+                ddlTransType.SelectedIndex = 0;
+                ddlAcctNum.SelectedIndex = 0;
+            }
+            catch(Exception e)
+            { }
         }
 
         private void BindFundDetails(int transId)
@@ -185,7 +194,8 @@ namespace vhcbcloud
 
                 if (dtFundDet.Rows.Count > 0)
                 {
-                    tranAmount = Convert.ToDecimal(dtFundDet.Rows[0]["TransAmt"].ToString());
+                    //tranAmount = Convert.ToDecimal(dtFundDet.Rows[0]["TransAmt"].ToString());
+                    tranAmount = -Convert.ToDecimal(this.hfTransAmt.Value);
 
                     Label lblTotAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterAmount");
                     Label lblBalAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterBalance");
@@ -368,13 +378,15 @@ namespace vhcbcloud
                 this.hfTransAmt.Value = TransAmount.ToString();
                 this.hfBalAmt.Value = TransAmount.ToString();
 
-                if (pnlTranDetails.Visible)
-                    ClearTransactionDetailForm();
+                //if (pnlTranDetails.Visible)
+                //    ClearTransactionDetailForm();
 
                 gvBCommit.DataSource = null;
                 gvBCommit.DataBind();
 
                 pnlTranDetails.Visible = true;
+                //ClearTransactionDetailForm();
+
                 EnableButton(btnDecommitmentSubmit);
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
@@ -432,7 +444,7 @@ namespace vhcbcloud
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
 
-               
+
 
                 if (amount == allowed_amount)
                 {
