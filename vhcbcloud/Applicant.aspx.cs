@@ -38,8 +38,19 @@ namespace vhcbcloud
         {
             try
             {
-                gvApplicant.DataSource = ApplicantData.GetApplicants();
-                gvApplicant.DataBind();
+                if (Session["SortExp"] == null)
+                {
+                    gvApplicant.DataSource = ApplicantData.GetApplicants();
+                    gvApplicant.DataBind();
+                }
+                else
+                {
+                    DataTable table = ApplicantData.GetApplicants();
+                    DataView view = table.DefaultView;
+                    view.Sort = Session["SortExp"].ToString();
+                    gvApplicant.DataSource = view.ToTable();
+                    gvApplicant.DataBind();
+                }
             }
             catch (Exception ex)
             {
@@ -47,7 +58,6 @@ namespace vhcbcloud
             }
         }
 
-       
         protected void gvApplicant_RowEditing(object sender, GridViewEditEventArgs e)
         {          
             gvApplicant.EditIndex = e.NewEditIndex;
@@ -83,75 +93,37 @@ namespace vhcbcloud
             }
         }
 
-        protected void gvApplicant_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            if (gvApplicant.EditIndex != -1)
-            {
-                // Use the Cancel property to cancel the paging operation.
-                e.Cancel = true;
+        //protected void gvApplicant_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        //{
+        //    if (gvApplicant.EditIndex != -1)
+        //    {
+        //        // Use the Cancel property to cancel the paging operation.
+        //        e.Cancel = true;
 
-                // Display an error message.
-                int newPageNumber = e.NewPageIndex + 1;
-                lblErrorMsg.Text = "Please update the record before moving to page " +
-                  newPageNumber.ToString() + ".";
-            }
-            else
-            {
-                // Clear the error message.
-                lblErrorMsg.Text = "";
-                gvApplicant.PageIndex = e.NewPageIndex;
-                BindGridWithSort();
-            }
-        }
+        //        // Display an error message.
+        //        int newPageNumber = e.NewPageIndex + 1;
+        //        lblErrorMsg.Text = "Please update the record before moving to page " +
+        //          newPageNumber.ToString() + ".";
+        //    }
+        //    else
+        //    {
+        //        // Clear the error message.
+        //        lblErrorMsg.Text = "";
+        //        gvApplicant.PageIndex = e.NewPageIndex;
+        //        BindGridWithSort();
+        //    }
+        //}
 
-        protected void BindGridWithSort ()
-        {
-           DataTable dt = ApplicantData.GetApplicants();
-           SortDireaction = CommonHelper.GridSorting(gvApplicant, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
-        }
+        //protected void BindGridWithSort ()
+        //{
+        //   DataTable dt = ApplicantData.GetApplicants();
+        //   SortDireaction = CommonHelper.GridSorting(gvApplicant, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+        //}
 
         protected void gvApplicant_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 CommonHelper.GridViewSetFocus(e.Row);
-        }
-
-        protected void gvApplicant_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            SortExpression = e.SortExpression;
-            DataTable dt = ApplicantData.GetApplicants();
-            SortDireaction=CommonHelper.GridSorting(gvApplicant, dt, SortExpression, SortDireaction);
-        }
-
-        public string SortDireaction
-        {
-            get
-            {
-                if (ViewState["SortDireaction"] == null)
-                    return string.Empty;
-                else                    
-                    return
-                         ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
-            }
-            set
-            {
-                ViewState["SortDireaction"] = value;
-            }
-        }
-
-        public string SortExpression
-        {
-            get
-            {
-                if (ViewState["SortExpression"] == null)
-                    return string.Empty;
-                else
-                    return ViewState["SortExpression"].ToString();
-            }
-            set
-            {
-                ViewState["SortExpression"] = value;
-            }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -193,5 +165,77 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
+
+        #region GridView Sorting Functions
+        protected void gvApplicant_Sorting(object sender, GridViewSortEventArgs e)
+        {
+
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvApplicant.DataSource = SortDataTable(ApplicantData.GetApplicants(), false);
+            gvApplicant.DataBind();
+            gvApplicant.PageIndex = pageIndex;
+        }
+
+        //======================================== GRIDVIEW EventHandlers END
+
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        //===========================SORTING PROPERTIES START
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        //===========================SORTING PROPERTIES END
+        #endregion
     }
 }
