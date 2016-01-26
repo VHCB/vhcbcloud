@@ -19,6 +19,7 @@ namespace vhcbcloud
         private int BOARD_DECOMMITMENT = 239;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Redirect("Commitments.aspx");
             if (!IsPostBack)
             {
                 BindProjects();
