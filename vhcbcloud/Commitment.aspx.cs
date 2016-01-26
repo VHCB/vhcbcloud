@@ -10,12 +10,11 @@ using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
-    public partial class Decommitment : System.Web.UI.Page
+    public partial class Commitment : System.Web.UI.Page
     {
         DataTable dtProjects;
-        private int TRANS_PENDING_STATUS = 261;
         private int BOARD_COMMITMENT = 238;
-        private int BOARD_DECOMMITMENT = 239;
+        private int TRANS_PENDING_STATUS = 261;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -170,11 +169,12 @@ namespace vhcbcloud
 
             lblFundName.Text = "";
             txtAmt.Text = "";
-            try {
+            try
+            {
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             { }
         }
 
@@ -183,7 +183,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT);
+                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_COMMITMENT);
 
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();
@@ -195,7 +195,7 @@ namespace vhcbcloud
                 if (dtFundDet.Rows.Count > 0)
                 {
                     //tranAmount = Convert.ToDecimal(dtFundDet.Rows[0]["TransAmt"].ToString());
-                    tranAmount = -Convert.ToDecimal(this.hfTransAmt.Value);
+                    tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
 
                     Label lblTotAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterAmount");
                     Label lblBalAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterBalance");
@@ -208,8 +208,8 @@ namespace vhcbcloud
                         }
                     }
 
-                    totBalAmt = tranAmount + totFundAmt;
-                    hfBalAmt.Value = (-totBalAmt).ToString();
+                    totBalAmt = tranAmount - totFundAmt;
+                    hfBalAmt.Value = totBalAmt.ToString();
 
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
                     lblBalAmt.Text = CommonHelper.myDollarFormat(totBalAmt);
@@ -234,7 +234,7 @@ namespace vhcbcloud
         private int GetTransId()
         {
             DataTable dtable = new DataTable();
-            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board DeCommitment");
+            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
             if (dtable.Rows.Count > 0)
                 return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
             else
@@ -390,7 +390,7 @@ namespace vhcbcloud
                 EnableButton(btnDecommitmentSubmit);
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
-                    -TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
+                    TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment",
                     TRANS_PENDING_STATUS);
 
                 gvPTrans.DataSource = dtTrans;

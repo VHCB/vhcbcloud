@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Decommitment.aspx.cs" Inherits="vhcbcloud.Decommitment" %>
+    CodeBehind="Commitment.aspx.cs" Inherits="vhcbcloud.Commitment" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
@@ -11,8 +11,8 @@
                     <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
                         RepeatDirection="Horizontal"
                         OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
-                        <asp:ListItem> Commitment &nbsp;</asp:ListItem>
-                        <asp:ListItem Selected="true"> DeCommitment &nbsp;</asp:ListItem>
+                        <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
+                        <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                         <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
@@ -275,7 +275,7 @@
             var balAmt = document.getElementById("<%=hfBalAmt.ClientID%>").value;
             //var traAmt = document.getElementById("<%=hfTransAmt.ClientID%>").value;
 
-            if (needToConfirm && balAmt != 0)
+            if (needToConfirm && balAmt > 0)
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
     </script>
