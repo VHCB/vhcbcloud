@@ -69,8 +69,17 @@ select [name], abbrv from [dbo].[ptorgsvhcb$]
 insert into ApplicantAppName(ApplicantID, AppNameID)
 select [AppNameID], [AppNameID] from [dbo].[AppName]
 
-insert into [dbo].[Applicant]([ApplicantId])
+insert into [dbo].[Applicant](ApplicantId)
 select ApplicantID from ApplicantAppName
+
+insert into [dbo].[ProjectApplicant] ([ProjectId],[ApplicantId], [LkApplicantRole])
+select p.ProjectId, p.ProjectId,358 from Project p join ptprojectvhcb$ pt on pt.number = p.Proj_num where pt.number is not null order by p.ProjectId
+
+insert into [dbo].[ProjectApplicant] ([ProjectId],[ApplicantId], [LkApplicantRole])
+
+select distinct p.ProjectId,p.ProjectId,358 from [dbo].[translead$] tl join [dbo].[leadprojectsvhcb$]
+ lp on tl.[proj_key] = lp.[key]
+ join Project p on p.Proj_num COLLATE SQL_Latin1_General_CP1_CI_AS = tl.pnumber where tl.pnumber is not null
 
 
 insert into [dbo].[Contact]([Firstname],[Lastname])
