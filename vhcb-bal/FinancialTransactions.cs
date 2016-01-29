@@ -1393,5 +1393,106 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataTable GetFinancialTransactions(int projectId, DateTime transStartDate, DateTime transEndDate, int financial_tran_action_id)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtTrans = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFinancialTransactionDetails";
+                command.Parameters.Add(new SqlParameter("project_id", projectId));
+                command.Parameters.Add(new SqlParameter("tran_start_date", transStartDate));
+                command.Parameters.Add(new SqlParameter("tran_end_date", transEndDate));
+                command.Parameters.Add(new SqlParameter("financial_transaction_action_id", financial_tran_action_id));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTrans = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTrans;
+        }
+
+        public static DataTable GetFinancialTransactionDetails(int TransId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtTrans = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFinancialTransactionDetailDetails";
+                command.Parameters.Add(new SqlParameter("transId", TransId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTrans = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTrans;
+        }
+
+
+        public static void UpdateFinancialTransactionStatus(int TransId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateFinancialTransactionStatus";
+                command.Parameters.Add(new SqlParameter("transId", TransId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 }
