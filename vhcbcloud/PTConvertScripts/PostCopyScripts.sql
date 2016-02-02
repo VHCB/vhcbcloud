@@ -19,7 +19,7 @@ delete from [dbo].[Project]
 delete from [dbo].[ProjectApplicant]
 delete from [dbo].[ProjectContact]
 delete from [dbo].[ProjectName]
-delete from [LookupValues] where [LookupType] = 118
+delete from [LookupValues] where [LookupType] = 118 
 
 --select * from project
 --select * from AppName
@@ -60,27 +60,17 @@ insert into [LookupValues] ([LookupType],[Description], pnumber)
 select 118, name, number from #temp
 --select * from #temp
 
-insert into AppName(Applicantname, ApplicantAbbrv)
-select org, abbrv from [dbo].[leadorgsvhcb$] 
+insert into AppName(Applicantname, ApplicantAbbrv, appkey)
+select org, abbrv, [key] from [dbo].[leadorgsvhcb$] 
 
-insert into AppName(Applicantname, ApplicantAbbrv)
-select [name], abbrv from [dbo].[ptorgsvhcb$]
+insert into AppName(Applicantname, ApplicantAbbrv, appkey)
+select [name], abbrv,[key] from [dbo].[ptorgsvhcb$]
 
 insert into ApplicantAppName(ApplicantID, AppNameID)
 select [AppNameID], [AppNameID] from [dbo].[AppName]
 
 insert into [dbo].[Applicant](ApplicantId)
 select ApplicantID from ApplicantAppName
-
-insert into [dbo].[ProjectApplicant] ([ProjectId],[ApplicantId], [LkApplicantRole])
-select p.ProjectId, p.ProjectId,358 from Project p join ptprojectvhcb$ pt on pt.number = p.Proj_num where pt.number is not null order by p.ProjectId
-
-insert into [dbo].[ProjectApplicant] ([ProjectId],[ApplicantId], [LkApplicantRole])
-
-select distinct p.ProjectId,p.ProjectId,358 from [dbo].[translead$] tl join [dbo].[leadprojectsvhcb$]
- lp on tl.[proj_key] = lp.[key]
- join Project p on p.Proj_num COLLATE SQL_Latin1_General_CP1_CI_AS = tl.pnumber where tl.pnumber is not null
-
 
 insert into [dbo].[Contact]([Firstname],[Lastname])
 select dbo.fnFirstName(org), dbo.fnLastName(org) from [dbo].[leadorgsvhcb$] where Contact =1
@@ -96,5 +86,30 @@ insert into [dbo].[ProjectName] ([LkProjectname],[ProjectID])
  where lv.LookupType = 118
  
  
- 
+--create table #tempProj (number varchar(50), keyid varchar(10))
+--insert into #tempProj(number, keyid)
+--select number,app1key as [key]  from ptprojectvhcb$ where number is not null 
+
+--insert into #tempProj(number, keyid)
+--select distinct tl.[pnumber] as number, tl.[key] from [dbo].[translead$] tl join [dbo].[leadprojectsvhcb$]
+-- lp on tl.[proj_key]  COLLATE SQL_Latin1_General_CP1_CI_AS = lp.[key] where pnumber is not null
+
+
+-- insert into [dbo].[ProjectApplicant] ([ProjectId],[ApplicantId], [LkApplicantRole])
+-- select distinct p.ProjectId, an.AppNameID, 358 from #tempProj tp join AppName an on tp.keyid = an.appkey COLLATE SQL_Latin1_General_CP1_CI_AS
+-- join Project p on p.Proj_num = tp.number COLLATE SQL_Latin1_General_CP1_CI_AS
+-- order by an.AppNameID
+
+
+insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+select ApplicantID, ProjectId, 358 from [VW_LeadProjectorgconnection] where ApplicantID is not null
+
+insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+select ApplicantID, ProjectId, 358 from [VW_PTProjectorgconnection] where ApplicantID is not null
+
+insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+select ApplicantID, ProjectId, 6359 from [VW_PTProjectorg2connection] where ApplicantID is not null and ProjectId is not null
+
+
+ drop table #tempProj
  drop table #temp
