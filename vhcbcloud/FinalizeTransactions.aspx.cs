@@ -32,6 +32,7 @@ namespace vhcbcloud
                 ddlProjFilter.DataTextField = "Proj_num";
                 ddlProjFilter.DataBind();
                 ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlProjFilter.Items.Insert(1, new ListItem("All", "-1"));
             }
             catch (Exception ex)
             {
@@ -49,17 +50,24 @@ namespace vhcbcloud
 
             pnlTranDetails.Visible = false;
 
-            //if (ddlProjFilter.SelectedIndex != 0)
-            //{
-            //    DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
-            //    //lblProjNameText.Visible = true;
-            //    //lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
-            //}
-            //else
-            //{
-            //    //lblProjNameText.Visible = false;
-            //    //lblProjName.Text = "";
-            //}
+            if (ddlProjFilter.SelectedIndex != 0)
+            {
+                int ProjectNo = Convert.ToInt32(ddlProjFilter.SelectedValue.ToString());
+                lblProjNameText.Visible = true;
+
+                if (ProjectNo == -1)
+                    lblProjName.Text = "All";
+                else
+                {
+                    DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(ProjectNo);
+                    lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+                }
+            }
+            else
+            {
+                lblProjNameText.Visible = false;
+                lblProjName.Text = "";
+            }
         }
 
         protected void btnSubit_click(object sender, EventArgs e)
