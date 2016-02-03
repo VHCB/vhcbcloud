@@ -21,7 +21,7 @@
                         </ajaxToolkit:MaskedEditExtender>
 
                         &nbsp;<span class="labelClass">Name :</span>
-                                                <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" runat="server" Width="363px"></asp:TextBox>
                         <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                             CompletionInterval="100" ServiceMethod="GetProjectName">
                         </ajaxToolkit:AutoCompleteExtender>
@@ -49,7 +49,7 @@
                         <asp:Panel runat="server" ID="Panel1" Width="100%" Height="350px" ScrollBars="Vertical">
                             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="typeid"
                                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit"
+                                GridLines="None" EnableTheming="True"  OnRowCancelingEdit="gvProject_RowCancelingEdit"
                                 OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging" AllowSorting="true"
                                 OnSorting="gvProject_Sorting" OnRowDataBound="gvProject_RowDataBound">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />

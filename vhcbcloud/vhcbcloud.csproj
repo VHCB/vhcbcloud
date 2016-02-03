@@ -166,6 +166,7 @@
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Americorps.aspx" />
     <Content Include="Applicant.aspx" />
+    <Content Include="CheckRequestDates.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
@@ -289,6 +290,13 @@
     </Compile>
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CheckRequestDates.aspx.cs">
+      <DependentUpon>CheckRequestDates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckRequestDates.aspx.designer.cs">
+      <DependentUpon>CheckRequestDates.aspx</DependentUpon>
     </Compile>
     <Compile Include="FinalizeTransactions.aspx.cs">
       <DependentUpon>FinalizeTransactions.aspx</DependentUpon>

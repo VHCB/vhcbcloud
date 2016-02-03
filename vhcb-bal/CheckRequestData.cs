@@ -81,6 +81,39 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtProjects;
         }
+        public static DataTable GetAllCheckRequestDates()
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAllCheckRequestDates";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
 
         public static string AddNewCheckRequest(int projId, int appNameID,  DateTime dtVoucherDate)
         {
@@ -94,6 +127,35 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("projId", projId));
                 command.Parameters.Add(new SqlParameter("appNameID", appNameID));              
                 command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    returnMsg = command.ExecuteScalar();
+                    return returnMsg == null ? "" : returnMsg.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static string AddNewCheckRequestDate( DateTime dtVoucherDate)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddNewCheckRequestDate";                
+                command.Parameters.Add(new SqlParameter("crdate", dtVoucherDate));
 
                 using (connection)
                 {
