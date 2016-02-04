@@ -33,6 +33,13 @@ namespace vhcbcloud
                 ddlProjFilter.DataBind();
                 ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
                 ddlProjFilter.Items.Insert(1, new ListItem("All", "-1"));
+
+                ddlFinancialTrans.DataSource = FinancialTransactions.GetBoardFinancialTrans();
+                ddlFinancialTrans.DataValueField = "TypeID";
+                ddlFinancialTrans.DataTextField = "Description";
+                ddlFinancialTrans.DataBind();
+                ddlFinancialTrans.Items.Insert(0, new ListItem("Select Financial Transaction", "0"));
+                ddlFinancialTrans.Items.Insert(1, new ListItem("All", "-1"));
             }
             catch (Exception ex)
             {
@@ -215,7 +222,7 @@ namespace vhcbcloud
                 }
             }
 
-            PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()), 
+            PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
                 Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
         }
     }

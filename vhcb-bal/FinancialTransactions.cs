@@ -392,7 +392,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
-        public static DataSet GetFinancialFundDetailsByProjectId(int projectId)
+        public static DataSet GetFinancialFundDetailsByProjectId(int projectId, bool isReallocation)
         {
             DataSet ds = new DataSet();
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -402,6 +402,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetFinancialFundDetailsByProjectId";
                 command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("isReallocation", isReallocation));
                 
                 using (connection)
                 {
@@ -1494,5 +1495,38 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataTable GetBoardFinancialTrans()
+        {
+            DataTable dtBoardFinancialTrans = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetBoardFinancialTrans";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBoardFinancialTrans = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBoardFinancialTrans;
+        }
     }
 }

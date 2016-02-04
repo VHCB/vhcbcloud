@@ -11,17 +11,23 @@ namespace vhcbcloud
 {
     public partial class awardsummary : System.Web.UI.Page
     {
+        bool isReallocation = false;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            string reallocarionFlag = Request.QueryString["Reallocations"];
+            isReallocation = reallocarionFlag == "true";
+
             if (!IsPostBack)
             {
                 string projId = Request.QueryString["projectid"];
+
                 DataTable dtProjects = GetProjects();
                 BindProjects(dtProjects);
 
                 if (projId != null)
                 {
-                    lblProjId.Text = GetProjectName(dtProjects, projId) + " - " + projId;
+                    lblProjId.Text = GetProjectName(dtProjects, projId);
                     ddlProj.Items.FindByValue(projId).Selected = true;
                     BindAwardSummary(Convert.ToInt32(projId));
                 }
@@ -55,8 +61,9 @@ namespace vhcbcloud
             try
             {
                 lblErrorMsg.Text = ""; DataTable dtAwdStatus = null; DataTable dtTransDetail = null;
-                dtAwdStatus = FinancialTransactions.GetFinancialFundDetailsByProjectId(projectid).Tables[0];
-                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(projectid).Tables[1];
+                dtAwdStatus = FinancialTransactions.GetFinancialFundDetailsByProjectId(projectid, isReallocation).Tables[0];
+                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(projectid, isReallocation).Tables[1];
+
                 gvCurrentAwdStatus.DataSource = dtAwdStatus;
                 gvCurrentAwdStatus.DataBind();
 
@@ -106,12 +113,24 @@ namespace vhcbcloud
             }
         }
 
+        protected void gvCurrentAwdStatus_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            e.Row.Cells[0].Visible = isReallocation;
+
+            if (!isReallocation && e.Row.RowType == DataControlRowType.Footer)
+            {
+                Label l = new Label();
+                l.Text = "Totals :";
+                e.Row.Cells[2].Controls.Add(l);
+            }
+        }
+
         protected void ddlProj_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlProj.SelectedIndex > 0)
             {
                 DataTable dtProjects = GetProjects();
-                lblProjId.Text = GetProjectName(dtProjects, ddlProj.SelectedValue.ToString()) + " - " + ddlProj.SelectedValue.ToString();
+                lblProjId.Text = GetProjectName(dtProjects, ddlProj.SelectedValue.ToString());// +" - " + ddlProj.SelectedValue.ToString();
                 BindAwardSummary(Convert.ToInt32(ddlProj.SelectedValue.ToString()));
             }
         }
