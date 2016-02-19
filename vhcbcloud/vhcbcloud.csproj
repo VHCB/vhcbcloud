@@ -49,6 +49,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -164,8 +166,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
+    <Content Include="Account\SetPassword.aspx" />
     <Content Include="Americorps.aspx" />
     <Content Include="Applicant.aspx" />
+    <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -277,6 +281,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\LdapAuthentication.cs" />
+    <Compile Include="Account\SetPassword.aspx.cs">
+      <DependentUpon>SetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SetPassword.aspx.designer.cs">
+      <DependentUpon>SetPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Americorps.aspx.cs">
       <DependentUpon>Americorps.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -290,6 +302,13 @@
     </Compile>
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashRefund.aspx.cs">
+      <DependentUpon>CashRefund.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashRefund.aspx.designer.cs">
+      <DependentUpon>CashRefund.aspx</DependentUpon>
     </Compile>
     <Compile Include="CheckRequestDates.aspx.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>

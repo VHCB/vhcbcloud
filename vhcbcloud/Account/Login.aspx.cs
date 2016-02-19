@@ -5,57 +5,99 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using vhcbcloud.Models;
+using VHCBCommon.DataAccessLayer;
+using System.Configuration;
+using System.Web.Security;
 
 namespace vhcbcloud.Account
 {
     public partial class Login : Page
     {
+        private bool IsValidUser;
+        private bool IsFirstTimeUser;
+        private string adPath, domainName;
+        private string _UserName;
+        private LdapAuthentication adAuth;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "Register";
-            // Enable this once you have account confirmation enabled for password reset functionality
-            //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            if (!String.IsNullOrEmpty(returnUrl))
+            adPath = ConfigurationManager.AppSettings["LDAPServer"];
+            domainName = ConfigurationManager.AppSettings["DomainName"];
+            adAuth = new LdapAuthentication(adPath);
+        }
+
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["IsUseLDAP"] == "true")
+                LDAPLogin();
+            else
+                GeneralLogin();
+        }
+
+        private void LDAPLogin()
+        {
+            if (IsADAuthenticated())
             {
-                RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
+                FormsAuthentication.SetAuthCookie(UserId.Text, false);
+
+                string url = FormsAuthentication.DefaultUrl;
+
+                if (Request["page"] != null) url = Request["page"];
+                Response.Redirect(url);
             }
         }
 
-        protected void LogIn(object sender, EventArgs e)
+        private bool IsADAuthenticated()
         {
-            if (IsValid)
+            try
             {
-                // Validate the user password
-                var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var signinManager = Context.GetOwinContext().GetUserManager<ApplicationSignInManager>();
-
-                // This doen't count login failures towards account lockout
-                // To enable password failures to trigger lockout, change to shouldLockout: true
-                var result = signinManager.PasswordSignIn(Email.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
-
-                switch (result)
+                // LDAP Authentication
+                if (true == adAuth.IsAuthenticated(domainName, UserId.Text, Password.Text))
                 {
-                    case SignInStatus.Success:
-                        IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
-                        break;
-                    case SignInStatus.LockedOut:
-                        Response.Redirect("/Account/Lockout");
-                        break;
-                    case SignInStatus.RequiresVerification:
-                        Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}", 
-                                                        Request.QueryString["ReturnUrl"],
-                                                        RememberMe.Checked),
-                                          true);
-                        break;
-                    case SignInStatus.Failure:
-                    default:
-                        FailureText.Text = "Invalid login attempt";
-                        ErrorMessage.Visible = true;
-                        break;
+                    //Do whatever we want
+                    return true;
+                }
+                else
+                {
+                    FailureText.Text = "Authentication did not succeed. Check user name and password.";
+                    ErrorMessage.Visible = true;
                 }
             }
+            catch (Exception ex)
+            {
+                FailureText.Text = "Error authenticating. " + ex.Message;
+                ErrorMessage.Visible = true;
+            }
+            return false;
+        }
+
+
+        private void GeneralLogin()
+        {
+            IsLoginValid(UserId.Text, Password.Text);
+
+            if (IsValidUser)
+            {
+                Session["UserId"] = UserId.Text;
+
+                if (IsFirstTimeUser)
+                    Response.Redirect("SetPassword.aspx");
+                else
+                    Response.Redirect("../BoardFinancialTransactions.aspx");
+            }
+            else
+            {
+                Session["UserId"] = "";
+                FailureText.Text = "Invalid login attempt";
+                ErrorMessage.Visible = true;
+            }
+        }
+
+        private void IsLoginValid(string UserName, string Password)
+        {
+            string[] UserAccountData = AccountData.CheckUserLogin(UserName, Password).Split('|');
+            IsValidUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[0]));
+            IsFirstTimeUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[1]));
         }
     }
 }

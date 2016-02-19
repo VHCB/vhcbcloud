@@ -16,6 +16,7 @@
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
+                             OnRowCreated="gvCurrentAwdStatus_RowCreated"
                             ShowFooter="True" Width="90%">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -23,6 +24,16 @@
                             <RowStyle CssClass="rowStyle" />
                             <FooterStyle CssClass="footerStyleTotals" />
                             <Columns>
+                                
+                                 <asp:TemplateField HeaderText="Reallocate To">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblReallocateTo" runat="Server" Text='<%# Eval("ProjectName") %>' />
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                        Totals :
+                                    </FooterTemplate>
+                                </asp:TemplateField>
+
                                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
                                     <ItemTemplate>
                                         <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("fundid")%>' />
@@ -33,9 +44,6 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                     </ItemTemplate>
-                                    <FooterTemplate>
-                                        Totals :
-                                    </FooterTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Grant/Loan/Contract" SortExpression="FundType">
                                     <ItemTemplate>

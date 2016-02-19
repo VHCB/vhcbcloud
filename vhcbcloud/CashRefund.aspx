@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Decommitments.aspx.cs" Inherits="vhcbcloud.Decommitments" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" 
+    CodeBehind="CashRefund.aspx.cs" Inherits="vhcbcloud.CashRefund" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
@@ -12,9 +12,9 @@
                         RepeatDirection="Horizontal"
                         OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
                         <asp:ListItem> Commitment &nbsp;</asp:ListItem>
-                        <asp:ListItem Selected="true"> DeCommitment &nbsp;</asp:ListItem>
+                        <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                         <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                         <asp:ListItem> Cash Refund &nbsp;</asp:ListItem>
+                        <asp:ListItem Selected="true"> Cash Refund &nbsp;</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
             </div>

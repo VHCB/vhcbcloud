@@ -1,16 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
-using System.Data;
 
 namespace vhcbcloud
 {
     public partial class Applicant : System.Web.UI.Page
     {
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetApplicantNames(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetApplicantNames(prefixText);
+
+            List<string> applicantNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                applicantNames.Add(dt.Rows[i][0].ToString());
+            }
+            return applicantNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetApplicantLastNames(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetApplicantNamesByLastName(prefixText);
+
+            List<string> applicantLastNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                applicantLastNames.Add(dt.Rows[i][0].ToString());
+            }
+            return applicantLastNames.ToArray();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -21,7 +51,7 @@ namespace vhcbcloud
 
         protected void rdBtnIndividual_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pnlappl.Visible=true;
+            pnlappl.Visible = true;
             if (rdBtnIndividual.SelectedItem.Text == "Yes")
             {
                 tblIndividual.Visible = true;
@@ -59,7 +89,7 @@ namespace vhcbcloud
         }
 
         protected void gvApplicant_RowEditing(object sender, GridViewEditEventArgs e)
-        {          
+        {
             gvApplicant.EditIndex = e.NewEditIndex;
             BindApplicants();
         }
@@ -132,13 +162,13 @@ namespace vhcbcloud
             {
                 if (rdBtnPayee.SelectedIndex < 0)
                 {
-                    lblErrorMsg.Text = "Select payee or not.";
+                    lblErrorMsg.Text = "Select payee";
                     rdBtnPayee.Focus();
                     return;
                 }
                 if (rdBtnIndividual.SelectedIndex < 0)
                 {
-                    lblErrorMsg.Text = "Select individual or not.";
+                    lblErrorMsg.Text = "Select individual";
                     rdBtnIndividual.Focus();
                     return;
                 }

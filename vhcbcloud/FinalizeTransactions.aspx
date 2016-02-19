@@ -26,15 +26,13 @@
                                 <td style="width: 20%; float: left"><span class="labelClass">Project # :</span></td>
                                 <td style="width: 20%; float: left">
                                     <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
-                                        OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged"  Width="111px">
+                                        OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" Width="111px">
                                     </asp:DropDownList></td>
                                 <td style="width: 10%; float: left">
                                     <asp:Label ID="lblProjNameText" class="labelClass" Visible="false" Text="Project Name :" runat="server"></asp:Label>
                                 </td>
-                                <td style="width: 15%; float: left">
+                                <td style="float: left" colspan="3">
                                     <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                <td style="width: 10%; float: left"></td>
-                                <td style="width: 20%; float: right"></td>
                             </tr>
                             <tr> <td colspan="6" style="height: 8px"></td>
                                 </tr>
@@ -42,12 +40,12 @@
                                 <td style="width: 20%; float: left"><span class="labelClass">Board Financial Transactions :</span></td>
                                 <td style="width: 20%; float: left" colspan="5">
                                     <asp:DropDownList ID="ddlFinancialTrans" CssClass="clsDropDown" runat="server" Width="161px">
-                                        <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>
+                                      <%--  <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>
                                         <asp:ListItem Text="All" Value="-1"></asp:ListItem>
                                         <asp:ListItem Text="Commitments" Value="238"></asp:ListItem>
                                         <asp:ListItem Text="DeCommitments" Value="239"></asp:ListItem>
                                         <asp:ListItem Text="Board Reallocation" Value="240"></asp:ListItem>
-                                        <asp:ListItem Text="Cash Refund" Value="237"></asp:ListItem>
+                                        <asp:ListItem Text="Cash Refund" Value="237"></asp:ListItem>--%>
                                     </asp:DropDownList>
                                 </td>
                             </tr>
@@ -118,7 +116,7 @@
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransactionDate", "{0:MM-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Trans Amount" ItemStyle-Width="90px">
+                                <asp:TemplateField HeaderText="Trans Amount" ItemStyle-Width="90px" ItemStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -144,9 +142,9 @@
                                                             Total :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount">
+                                                    <asp:TemplateField HeaderText="Amount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("amount") %>' />
+                                                            <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterAmount" Text=""></asp:Label>

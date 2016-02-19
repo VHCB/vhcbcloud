@@ -26,8 +26,10 @@ namespace vhcbcloud
                 Response.Redirect("Commitments.aspx");
             else if (rdBtnFinancial.SelectedIndex == 1)
                 Response.Redirect("Decommitments.aspx");
-            else
+            else if (rdBtnFinancial.SelectedIndex == 2)
                 Response.Redirect("Reallocations.aspx");
+            else
+                Response.Redirect("CashRefund.aspx");
         }
 
         protected void BindProjects()
@@ -35,7 +37,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtProjects = new DataTable();
-                dtProjects = Project.GetProjects("GetProjects");
+                dtProjects = Project.GetProjects("GetProjectsByFinalizedStatus");
 
                 ddlRFromProj.DataSource = dtProjects;
                 ddlRFromProj.DataValueField = "projectId";
@@ -318,7 +320,7 @@ namespace vhcbcloud
         {
             if (ddlRFromProj.SelectedIndex > 0)
             {
-                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString();
+                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString() + "&Reallocations=true";
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<script type = 'text/javascript'>");
                 sb.Append("window.open('");

@@ -61,8 +61,10 @@ namespace vhcbcloud
                 Response.Redirect("Commitments.aspx");
             else if (rdBtnFinancial.SelectedIndex == 1)
                 Response.Redirect("Decommitments.aspx");
-            else
+            else if (rdBtnFinancial.SelectedIndex == 2)
                 Response.Redirect("Reallocations.aspx");
+            else
+                Response.Redirect("CashRefund.aspx");
         }
 
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)

@@ -58,6 +58,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtApplicantName;
         
         /// <summary>
+        /// aaceProjName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender aaceProjName;
+        
+        /// <summary>
         /// tblIndividual control.
         /// </summary>
         /// <remarks>
@@ -67,15 +76,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlTable tblIndividual;
         
         /// <summary>
-        /// txtFName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFName;
-        
-        /// <summary>
         /// txtLName control.
         /// </summary>
         /// <remarks>
@@ -83,6 +83,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLName;
+        
+        /// <summary>
+        /// AutoCompleteExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender1;
+        
+        /// <summary>
+        /// txtFName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFName;
         
         /// <summary>
         /// btnSubmit control.

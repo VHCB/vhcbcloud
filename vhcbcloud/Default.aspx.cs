@@ -164,8 +164,8 @@ namespace vhcbcloud
         {
             try
             {
-                string returnMsg = Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
-                lblErrorMsg.Text = returnMsg == "" ? "Project saved successfully" : returnMsg.ToString();
+                string isDuplicate = Project.AddNewProject(txtPName.Text, txtProjNum.Text, Convert.ToInt32(ddlApplicantName.SelectedValue.ToString()));
+                lblErrorMsg.Text = isDuplicate.ToLower() == "true" ? "Project already exist" : "Project saved successfully";
                 txtPName.Text = "";
                 txtProjNum.Text = "";
                 gvProject.PageIndex = 0;

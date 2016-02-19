@@ -58,12 +58,17 @@ namespace VHCBCommon.DataAccessLayer
                  command.Parameters.Add(new SqlParameter("projNum", projNum));
                  command.Parameters.Add(new SqlParameter("appNameId", appNameId));
 
+                 SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                 parmMessage.Direction = ParameterDirection.Output;
+                 command.Parameters.Add(parmMessage);
+
                  using (connection)
                  {
                      connection.Open();
                      command.Connection = connection;
-                     returnMsg = command.ExecuteScalar();
-                     return returnMsg==null ? "" : returnMsg.ToString();
+                     command.ExecuteNonQuery();
+
+                     return command.Parameters["@isDuplicate"].Value.ToString(); //returnMsg==null ? "" : returnMsg.ToString();
                  }
              }
              catch (Exception ex)

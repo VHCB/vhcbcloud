@@ -15,6 +15,7 @@
                         <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                         <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                         <asp:ListItem Selected="true"> Reallocation &nbsp;</asp:ListItem>
+                        <asp:ListItem> Cash Refund &nbsp;</asp:ListItem>
                     </asp:RadioButtonList>
                 </div>
             </div>

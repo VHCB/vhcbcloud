@@ -8,14 +8,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
+
 namespace vhcbcloud
 {
-    public partial class Decommitments: System.Web.UI.Page
+    public partial class CashRefund : System.Web.UI.Page
     {
         DataTable dtProjects;
         private int TRANS_PENDING_STATUS = 261;
-        private int BOARD_COMMITMENT = 238;
-        private int BOARD_DECOMMITMENT = 239;
+        private int BOARD_CASHREFUND = 237;
+        private string COMMITMENT_TYPE = "Cash Refund";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -62,7 +63,7 @@ namespace vhcbcloud
                 Response.Redirect("Commitments.aspx");
             else if (rdBtnFinancial.SelectedIndex == 1)
                 Response.Redirect("Decommitments.aspx");
-            else if (rdBtnFinancial.SelectedIndex == 2)
+            else if(rdBtnFinancial.SelectedIndex == 2)
                 Response.Redirect("Reallocations.aspx");
             else
                 Response.Redirect("CashRefund.aspx");
@@ -172,11 +173,12 @@ namespace vhcbcloud
 
             lblFundName.Text = "";
             txtAmt.Text = "";
-            try {
+            try
+            {
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             { }
         }
 
@@ -185,7 +187,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT);
+                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_CASHREFUND);
 
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();
@@ -236,7 +238,7 @@ namespace vhcbcloud
         private int GetTransId()
         {
             DataTable dtable = new DataTable();
-            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board DeCommitment");
+            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), COMMITMENT_TYPE);
             if (dtable.Rows.Count > 0)
                 return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
             else
@@ -392,8 +394,7 @@ namespace vhcbcloud
                 EnableButton(btnDecommitmentSubmit);
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
-                    -TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
-                    TRANS_PENDING_STATUS);
+                    -TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), COMMITMENT_TYPE, TRANS_PENDING_STATUS);
 
                 gvPTrans.DataSource = dtTrans;
                 gvPTrans.DataBind();
@@ -513,6 +514,5 @@ namespace vhcbcloud
             }
 
         }
-
     }
 }

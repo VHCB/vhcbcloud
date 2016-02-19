@@ -155,7 +155,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddNewCheckRequestDate";                
-                command.Parameters.Add(new SqlParameter("crdate", dtVoucherDate));
+                command.Parameters.Add(new SqlParameter("dtVoucherDate", dtVoucherDate));
 
                 using (connection)
                 {

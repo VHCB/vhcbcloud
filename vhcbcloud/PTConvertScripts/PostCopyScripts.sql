@@ -2,23 +2,24 @@ USE PTConvert
 GO
 TRUNCATE TABLE  Applicant
 TRUNCATE TABLE  ApplicantAppName
-truncate table ApplicantContact
+truncate table [dbo].[ProjectName]
 truncate table [dbo].[AppName]
 truncate table [dbo].[Contact]
 truncate table [dbo].[Project]
 truncate table [dbo].[ProjectApplicant]
 truncate table [dbo].[ProjectContact]
-truncate table [dbo].[ProjectName]
+truncate table ApplicantContact
+
 
 delete from  Applicant
 delete from  ApplicantAppName
-delete from ApplicantContact
+delete from [dbo].[ProjectName]
 delete from [dbo].[AppName]
 delete from [dbo].[Contact]
 delete from [dbo].[Project]
 delete from [dbo].[ProjectApplicant]
 delete from [dbo].[ProjectContact]
-delete from [dbo].[ProjectName]
+delete from ApplicantContact
 delete from [LookupValues] where [LookupType] = 118 
 
 --select * from project
@@ -58,7 +59,7 @@ insert into #temp (name, number)
 
 insert into [LookupValues] ([LookupType],[Description], pnumber)
 select 118, name, number from #temp
---select * from #temp
+--select * from [LookupValues]
 
 insert into AppName(Applicantname, ApplicantAbbrv, appkey)
 select org, abbrv, [key] from [dbo].[leadorgsvhcb$] 
@@ -72,11 +73,11 @@ select [AppNameID], [AppNameID] from [dbo].[AppName]
 insert into [dbo].[Applicant](ApplicantId)
 select ApplicantID from ApplicantAppName
 
-insert into [dbo].[Contact]([Firstname],[Lastname])
-select dbo.fnFirstName(org), dbo.fnLastName(org) from [dbo].[leadorgsvhcb$] where Contact =1
+insert into [dbo].[Contact]([Firstname],[Lastname], KeyId)
+select dbo.fnFirstName(org), dbo.fnLastName(org), [key] from [dbo].[leadorgsvhcb$] where Contact =1
 
-insert into [dbo].[Contact]([Firstname],[Lastname])
-select dbo.fnFirstName([name]), dbo.fnLastName(name) from [dbo].[ptorgsvhcb$] where Contact = 1
+insert into [dbo].[Contact]([Firstname],[Lastname], KeyId)
+select dbo.fnFirstName([name]), dbo.fnLastName(name), [key] from [dbo].[ptorgsvhcb$] where Contact = 1
 
 insert into [dbo].[ProjectName] ([LkProjectname],[ProjectID])
  select distinct lv.TypeID, p.ProjectId  from
@@ -86,7 +87,7 @@ insert into [dbo].[ProjectName] ([LkProjectname],[ProjectID])
  where lv.LookupType = 118
  
  
---create table #tempProj (number varchar(50), keyid varchar(10))
+create table #tempProj (number varchar(50), keyid varchar(10))
 --insert into #tempProj(number, keyid)
 --select number,app1key as [key]  from ptprojectvhcb$ where number is not null 
 
@@ -110,6 +111,26 @@ select ApplicantID, ProjectId, 358 from [VW_PTProjectorgconnection] where Applic
 insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
 select ApplicantID, ProjectId, 6359 from [VW_PTProjectorg2connection] where ApplicantID is not null and ProjectId is not null
 
+insert into ApplicantContact (ContactID,ApplicantID)
+select ContactId, ApplicantID from [dbo].[Manoj Lead Contacts]
+union all
+select ContactId, ApplicantID from [dbo].[Manoj PT Contacts]
+
+--select  aan.ApplicantID, c.ContactId from  ApplicantAppName aan join AppName an on an.AppNameID = aan.AppNameID
+--join Contact c on c.KeyId = an.appkey
+--join ProjectApplicant pa on pa.ApplicantId = aan.ApplicantID
+
+insert into ProjectContact (ProjectID, ContactID)
+select ProjectId, ContactId from [dbo].[Manoj Lead Contacts] where ProjectId is not null
+union all
+select ProjectId, ContactId from [dbo].[Manoj PT Contacts] where ProjectId is not null
+
+--select  pa.ProjectId, c.ContactId from  ApplicantAppName aan join AppName an on an.AppNameID = aan.AppNameID
+--join Contact c on c.KeyId = an.appkey
+--join ProjectApplicant pa on pa.ApplicantId = aan.ApplicantID
+
 
  drop table #tempProj
  drop table #temp
+
+ select * from ProjectContact
