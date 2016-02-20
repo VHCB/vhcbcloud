@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 using System.Data;
+using System.Globalization;
 
 namespace vhcbcloud
 {
@@ -493,7 +494,7 @@ namespace vhcbcloud
                                                                Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
                                                                ddlGrantSource.SelectedIndex != 0 ? Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()) : nullable,
                                                                txtAwardNum.Text,
-                                                               txtAwdAmt.Text == "" ? 0 : Convert.ToDecimal(txtAwdAmt.Text),
+                                                               txtAwdAmt.Text == "" ? 0 : decimal.Parse(txtAwdAmt.Text, NumberStyles.Currency),// Convert.ToDecimal(txtAwdAmt.Text),
                                                                txtBeginDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtBeginDate.Text),
                                                                txtEndDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtEndDate.Text),
                                                                ddlStaff.SelectedIndex != 0 ? Convert.ToInt32(ddlStaff.SelectedValue.ToString()) : nullable,
@@ -564,6 +565,7 @@ namespace vhcbcloud
 
         protected void gvGranInfo_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+            ClearGrantInfo();
             gvGranInfo.EditIndex = -1;
             BindFundGrantInfo();
         }
@@ -653,7 +655,7 @@ namespace vhcbcloud
                     txtVHCBGrantName.Text = dr["VHCBName"].ToString();
 
                     txtAwardNum.Text = dr["AwardNum"].ToString();
-                    txtAwdAmt.Text = dr["AwardAmt"].ToString();
+                    txtAwdAmt.Text = string.Format("{0:C2}", Convert.ToDecimal(dr["AwardAmt"].ToString()));
                     txtBeginDate.Text = dr["BeginDate"].ToString();
                     txtEndDate.Text = dr["EndDate"].ToString();
 
