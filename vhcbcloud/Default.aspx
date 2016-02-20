@@ -31,7 +31,7 @@
                         </asp:DropDownList>
                         <br />
                         <br />
-                        <asp:LinkButton ID="btnSubmit" runat="server" class="btn btn-info" Text="Add new applicant" TabIndex="3" OnClick="btnSubmit_Click" />
+                        <asp:LinkButton ID="btnSubmit" runat="server" class="btn btn-info" Text="Add new project" TabIndex="3" OnClick="btnSubmit_Click" />
                         <br />
                         <%--<ajaxToolkit:MaskedEditValidator ID="mevProjNum" runat="server" ControlExtender="ameProjNum"
                 ControlToValidate="txtProjNum" Display="Dynamic" EmptyValueMessage="Project number is required"
@@ -49,7 +49,7 @@
                         <asp:Panel runat="server" ID="Panel1" Width="100%" Height="350px" ScrollBars="Vertical">
                             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="typeid"
                                 Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                GridLines="None" EnableTheming="True" AllowPaging="True" OnRowCancelingEdit="gvProject_RowCancelingEdit"
+                                GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvProject_RowCancelingEdit"
                                 OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging" AllowSorting="true"
                                 OnSorting="gvProject_Sorting" OnRowDataBound="gvProject_RowDataBound">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
