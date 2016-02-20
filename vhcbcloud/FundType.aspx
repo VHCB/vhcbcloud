@@ -9,6 +9,10 @@
                     <p>
                         <span class="labelClass">New Fund Type:</span>
                         <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
+
+                        <ajaxToolkit:AutoCompleteExtender ID="newFundType" runat="server" TargetControlID="txtDescription" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
+                            CompletionInterval="100" ServiceMethod="GetFundTypes">
+                        </ajaxToolkit:AutoCompleteExtender>
                         &nbsp;
             <span class="labelClass">Source :</span>
                         <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server">
