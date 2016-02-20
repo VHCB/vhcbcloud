@@ -7,7 +7,7 @@ truncate table [dbo].[AppName]
 truncate table [dbo].[Contact]
 truncate table [dbo].[Project]
 truncate table [dbo].[ProjectApplicant]
-truncate table [dbo].[ProjectContact]
+--truncate table [dbo].[ProjectContact]
 truncate table ApplicantContact
 
 
@@ -18,7 +18,7 @@ delete from [dbo].[AppName]
 delete from [dbo].[Contact]
 delete from [dbo].[Project]
 delete from [dbo].[ProjectApplicant]
-delete from [dbo].[ProjectContact]
+--delete from [dbo].[ProjectContact]
 delete from ApplicantContact
 delete from [LookupValues] where [LookupType] = 118 
 
@@ -101,15 +101,18 @@ create table #tempProj (number varchar(50), keyid varchar(10))
 -- join Project p on p.Proj_num = tp.number COLLATE SQL_Latin1_General_CP1_CI_AS
 -- order by an.AppNameID
 
+--insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+--select ApplicantID, ProjectId, 358 from [VW_LeadProjectorgconnection] where ApplicantID is not null
+
+--insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+--select ApplicantID, ProjectId, 358 from [VW_PTProjectorgconnection] where ApplicantID is not null
+
+--insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
+--select ApplicantID, ProjectId, 6359 from [VW_PTProjectorg2connection] where ApplicantID is not null and ProjectId is not null
 
 insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
-select ApplicantID, ProjectId, 358 from [VW_LeadProjectorgconnection] where ApplicantID is not null
+select ApplicantID, ProjectId, lkapprole  from VW_ImportProjectApplicants where ProjectId is not null
 
-insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
-select ApplicantID, ProjectId, 358 from [VW_PTProjectorgconnection] where ApplicantID is not null
-
-insert into [dbo].[ProjectApplicant] (ApplicantId, ProjectId, LkApplicantRole)
-select ApplicantID, ProjectId, 6359 from [VW_PTProjectorg2connection] where ApplicantID is not null and ProjectId is not null
 
 insert into ApplicantContact (ContactID,ApplicantID)
 select ContactId, ApplicantID from [dbo].[Manoj Lead Contacts]
@@ -120,10 +123,10 @@ select ContactId, ApplicantID from [dbo].[Manoj PT Contacts]
 --join Contact c on c.KeyId = an.appkey
 --join ProjectApplicant pa on pa.ApplicantId = aan.ApplicantID
 
-insert into ProjectContact (ProjectID, ContactID)
-select ProjectId, ContactId from [dbo].[Manoj Lead Contacts] where ProjectId is not null
-union all
-select ProjectId, ContactId from [dbo].[Manoj PT Contacts] where ProjectId is not null
+--insert into ProjectContact (ProjectID, ContactID)
+--select ProjectId, ContactId from [dbo].[Manoj Lead Contacts] where ProjectId is not null
+--union all
+--select ProjectId, ContactId from [dbo].[Manoj PT Contacts] where ProjectId is not null
 
 --select  pa.ProjectId, c.ContactId from  ApplicantAppName aan join AppName an on an.AppNameID = aan.AppNameID
 --join Contact c on c.KeyId = an.appkey
