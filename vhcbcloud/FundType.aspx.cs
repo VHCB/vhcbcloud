@@ -12,6 +12,21 @@ namespace vhcbcloud
     public partial class FundType : System.Web.UI.Page
     {
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetFundTypes(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetApplicantNames(prefixText);
+
+            List<string> applicantNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                applicantNames.Add(dt.Rows[i][0].ToString());
+            }
+            return applicantNames.ToArray();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
