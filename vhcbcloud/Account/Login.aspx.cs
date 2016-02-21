@@ -83,7 +83,13 @@ namespace vhcbcloud.Account
                 if (IsFirstTimeUser)
                     Response.Redirect("SetPassword.aspx");
                 else
-                    Response.Redirect("../BoardFinancialTransactions.aspx");
+                {
+                    FormsAuthentication.SetAuthCookie(UserId.Text, RememberMe.Checked);
+                    string url = FormsAuthentication.DefaultUrl;
+                    if (Request["ReturnUrl"] != null) url = Request["ReturnUrl"];
+                    Response.Redirect(url);
+                }
+                //Response.Redirect("../BoardFinancialTransactions.aspx");
             }
             else
             {
