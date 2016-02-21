@@ -182,36 +182,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnFundSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                if (ddlFundType.SelectedIndex != 0)
-                    if (ddlAcctMethod.SelectedIndex != 0)
-                        if (hdUpdateMode.Value == "false")
-                        {
-                            FinancialTransactions.AddFundInfo(txtFname.Text, txtFAbbr.Text, Convert.ToInt32(ddlFundType.SelectedValue.ToString()), txtAcctNumber.Text, txtVHCBCode.Text,
-                                Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()), txtDeptId.Text, rdBtnDrawDown.SelectedItem.Text == "Yes" ? true : false);
-                        }
-                        else
-                        {
-                            FinancialTransactions.UpdateFundInfo(Convert.ToInt32(hfFundId.Value), txtAcctNumber.Text, txtFname.Text, txtFAbbr.Text, Convert.ToInt32(ddlFundType.SelectedValue.ToString()), txtVHCBCode.Text,
-                            Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()), txtDeptId.Text, rdBtnDrawDown.SelectedItem.Text == "Yes" ? true : false);
-                            hdUpdateMode.Value = "false";
-                            gvFund.EditIndex = -1;
-                            ClearFundInfo();
-                        }
-                    else lblErrorMsg.Text = "Select Account Method to add new fund.";
-                else lblErrorMsg.Text = "Select Fund type to add new fund.";
-                ClearFundInfo();
-                BindFundInfoAddUpdate();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
         protected void ClearFundInfo()
         {
             txtFname.Text = "";
@@ -433,96 +403,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnGrantSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                lblErrorMsg.Text = "";
-                int? nullable = null;
-                DateTime? nullableDateTime = null;
-                if (ViewState["SelectedFundId"] != null && ViewState["SelectedFundId"].ToString() != "")
-                {
-                    if (txtBeginDate.Text != "")
-                    {
-                        if (txtEndDate.Text != "")
-                            if (Convert.ToDateTime(txtBeginDate.Text) > Convert.ToDateTime(txtEndDate.Text))
-                            {
-                                lblErrorMsg.Text = "Grant end date can't be less than begin date.";
-                                txtEndDate.Focus();
-                                return;
-                            }
-                    }
-                    if (txtVHCBGrantName.Text == "")
-                    {
-                        lblErrorMsg.Text = "Enter VHCB Name to add the Grant Info details for the fund ";
-                        txtVHCBGrantName.Focus();
-                        return;
-                    }
-                    //if (ddlGrantSource.SelectedIndex == 0 || ddlContact.SelectedIndex==0 || ddlStaff.SelectedIndex==0)
-                    //{
-                    //    lblErrorMsg.Text = "Source of Grant, Contact and Staff were required to add Grant information. ";
-                    //    return;
-                    //}
-                    if (ddlGrantor.SelectedIndex != 0)
-                    {
-                        if (hfGIUpdateMode.Value == "false")
-                        {
-                            FinancialTransactions.AddGrantInfo(Convert.ToInt32(ViewState["SelectedFundId"]),
-                                                               txtGrantName.Text,
-                                                               txtVHCBGrantName.Text,
-                                                               Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
-                                                               ddlGrantSource.SelectedIndex != 0 ? Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()) : nullable,
-                                                               txtAwardNum.Text,
-                                                               txtAwdAmt.Text == "" ? 0 : Convert.ToDecimal(txtAwdAmt.Text),
-                                                               txtBeginDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtBeginDate.Text),
-                                                               txtEndDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtEndDate.Text),
-                                                               ddlStaff.SelectedIndex != 0 ? Convert.ToInt32(ddlStaff.SelectedValue.ToString()) : nullable,
-                                                               ddlContact.SelectedIndex != 0 ? Convert.ToInt32(ddlContact.SelectedValue.ToString()) : nullable,
-                                                               txtCGDANum.Text,
-                                                               rdbtnSignedGrant.SelectedIndex == 0 ? true : false,
-                                                               rdBtnFedFunds.SelectedIndex == 0 ? true : false,
-                                                               rdBtnMatch.SelectedIndex == 0 ? true : false,
-                                                               rdBtnFundsRec.SelectedIndex == 0 ? true : false,
-                                                               rdBtnAdmin.SelectedIndex == 0 ? true : false
-                                                               );
-                        }
-                        else
-                        {
-                            FinancialTransactions.UpdateGrantInfo(Convert.ToInt32(hfGInfoId.Value),
-                                                               txtGrantName.Text,
-                                                               txtVHCBGrantName.Text,
-                                                               Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
-                                                               ddlGrantSource.SelectedIndex != 0 ? Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()) : nullable,
-                                                               txtAwardNum.Text,
-                                                               txtAwdAmt.Text == "" ? 0 : decimal.Parse(txtAwdAmt.Text, NumberStyles.Currency),// Convert.ToDecimal(txtAwdAmt.Text),
-                                                               txtBeginDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtBeginDate.Text),
-                                                               txtEndDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtEndDate.Text),
-                                                               ddlStaff.SelectedIndex != 0 ? Convert.ToInt32(ddlStaff.SelectedValue.ToString()) : nullable,
-                                                               ddlContact.SelectedIndex != 0 ? Convert.ToInt32(ddlContact.SelectedValue.ToString()) : nullable,
-                                                               txtCGDANum.Text,
-                                                               rdbtnSignedGrant.SelectedIndex == 0 ? true : false,
-                                                               rdBtnFedFunds.SelectedIndex == 0 ? true : false,
-                                                               rdBtnMatch.SelectedIndex == 0 ? true : false,
-                                                               rdBtnFundsRec.SelectedIndex == 0 ? true : false,
-                                                               rdBtnAdmin.SelectedIndex == 0 ? true : false
-                                                               );
-                            hfGIUpdateMode.Value = "false";
-                            gvGranInfo.EditIndex = -1;
-                        }
-                        ClearGrantInfo();
-                    }
-                    else lblErrorMsg.Text = "Select Grantor to add Grant Information.";
-                }
-                else lblErrorMsg.Text = "Select Fund to add associated Grant information.";
-
-                BindFundGrantInfo();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
         protected void gvGranInfo_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetGrantInfoSelectedRecord(gvGranInfo);
@@ -597,17 +477,20 @@ namespace vhcbcloud
                 int rowIndex = e.RowIndex;
                 int grantInfoId = Convert.ToInt32(((Label)gvGranInfo.Rows[rowIndex].FindControl("lblGIId")).Text);
 
+                decimal gAwardAmt = decimal.Parse(txtAwdAmt.Text, NumberStyles.Currency);
+                int? nullable = null;
+
                 FinancialTransactions.UpdateGrantInfo(grantInfoId,
                                                     txtGrantName.Text,
                                                     txtVHCBGrantName.Text,
                                                     Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
                                                     Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()),
                                                     txtAwardNum.Text,
-                                                    Convert.ToDecimal(txtAwdAmt.Text),
+                                                    gAwardAmt,
                                                     Convert.ToDateTime(txtBeginDate.Text),
                                                     Convert.ToDateTime(txtEndDate.Text),
                                                     Convert.ToInt32(ddlStaff.SelectedValue.ToString()),
-                                                    Convert.ToInt32(ddlContact.SelectedValue.ToString()),
+                                                    ddlContact.SelectedIndex != 0 ? Convert.ToInt32(ddlContact.SelectedValue.ToString()) : nullable,
                                                     txtCGDANum.Text,
                                                     rdbtnSignedGrant.SelectedIndex == 0 ? true : false,
                                                     rdBtnFedFunds.SelectedIndex == 0 ? true : false,
@@ -615,6 +498,7 @@ namespace vhcbcloud
                                                     rdBtnFundsRec.SelectedIndex == 0 ? true : false,
                                                     rdBtnAdmin.SelectedIndex == 0 ? true : false);
                 gvGranInfo.EditIndex = -1;
+                ClearGrantInfo();
                 BindFundGrantInfo();
 
             }
@@ -811,29 +695,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnFisYrAmt_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                lblErrorMsg.Text = "";
-                if (ViewState["SelectedGrantInfoId"] != null && ViewState["SelectedGrantInfoId"].ToString() != "")
-                {
-                    if (ddlFiscalYr.SelectedIndex != 0)
-                        FinancialTransactions.AddGrantInfoFyAmt(Convert.ToInt32(ViewState["SelectedGrantInfoId"]), Convert.ToInt32(ddlFiscalYr.SelectedValue.ToString()), Convert.ToDecimal(txtAmount.Text));
-                    else lblErrorMsg.Text = "Select Fiscal Year for Grant.";
-                    BindFiscalYr();
-                    ddlFiscalYr.SelectedIndex = 0;
-                    txtAmount.Text = "";
-                }
-                else
-                    lblErrorMsg.Text = "Select Grant to add Fiscal Year Amount";
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
         protected void gvFund_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetFundSelectedRecord(gvFund);
@@ -889,7 +750,9 @@ namespace vhcbcloud
                 int gInfoFyId = Convert.ToInt32(((Label)gvFrantInfoFy.Rows[rowIndex].FindControl("lblGrantInfoFY")).Text);
                 int gInfoYr = Convert.ToInt32(((DropDownList)gvFrantInfoFy.Rows[rowIndex].FindControl("ddlFiscalYr")).SelectedValue.ToString());
                 string gInfoYrAmt = ((TextBox)gvFrantInfoFy.Rows[rowIndex].FindControl("txtAmount")).Text;
-                FinancialTransactions.UpdateGrantInfoFYAmt(gInfoFyId, gInfoYr, Convert.ToDecimal(gInfoYrAmt.ToString()));
+                decimal gYrAmt = decimal.Parse(gInfoYrAmt, NumberStyles.Currency);
+
+                FinancialTransactions.UpdateGrantInfoFYAmt(gInfoFyId, gInfoYr, gYrAmt);
                 gvFrantInfoFy.EditIndex = -1;
                 BindFiscalYr();
                 ddlFiscalYr.SelectedIndex = 0;
@@ -901,5 +764,147 @@ namespace vhcbcloud
             }
         }
 
+        protected void btnFundSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ddlFundType.SelectedIndex != 0)
+                    if (ddlAcctMethod.SelectedIndex != 0)
+                        if (hdUpdateMode.Value == "false")
+                        {
+                            FinancialTransactions.AddFundInfo(txtFname.Text, txtFAbbr.Text, Convert.ToInt32(ddlFundType.SelectedValue.ToString()), txtAcctNumber.Text, txtVHCBCode.Text,
+                                Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()), txtDeptId.Text, rdBtnDrawDown.SelectedItem.Text == "Yes" ? true : false);
+                        }
+                        else
+                        {
+                            FinancialTransactions.UpdateFundInfo(Convert.ToInt32(hfFundId.Value), txtAcctNumber.Text, txtFname.Text, txtFAbbr.Text, Convert.ToInt32(ddlFundType.SelectedValue.ToString()), txtVHCBCode.Text,
+                            Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()), txtDeptId.Text, rdBtnDrawDown.SelectedItem.Text == "Yes" ? true : false);
+                            hdUpdateMode.Value = "false";
+                            gvFund.EditIndex = -1;
+                            ClearFundInfo();
+                        }
+                    else lblErrorMsg.Text = "Select Account Method to add new fund.";
+                else lblErrorMsg.Text = "Select Fund type to add new fund.";
+                ClearFundInfo();
+                BindFundInfoAddUpdate();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void btnGrantSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lblErrorMsg.Text = "";
+                int? nullable = null;
+                DateTime? nullableDateTime = null;
+                if (ViewState["SelectedFundId"] != null && ViewState["SelectedFundId"].ToString() != "")
+                {
+                    if (txtBeginDate.Text != "")
+                    {
+                        if (txtEndDate.Text != "")
+                            if (Convert.ToDateTime(txtBeginDate.Text) > Convert.ToDateTime(txtEndDate.Text))
+                            {
+                                lblErrorMsg.Text = "Grant end date can't be less than begin date.";
+                                txtEndDate.Focus();
+                                return;
+                            }
+                    }
+                    if (txtVHCBGrantName.Text == "")
+                    {
+                        lblErrorMsg.Text = "Enter VHCB Name to add the Grant Info details for the fund ";
+                        txtVHCBGrantName.Focus();
+                        return;
+                    }
+                    //if (ddlGrantSource.SelectedIndex == 0 || ddlContact.SelectedIndex==0 || ddlStaff.SelectedIndex==0)
+                    //{
+                    //    lblErrorMsg.Text = "Source of Grant, Contact and Staff were required to add Grant information. ";
+                    //    return;
+                    //}
+                    if (ddlGrantor.SelectedIndex != 0)
+                    {
+                        if (hfGIUpdateMode.Value == "false")
+                        {
+                            FinancialTransactions.AddGrantInfo(Convert.ToInt32(ViewState["SelectedFundId"]),
+                                                               txtGrantName.Text,
+                                                               txtVHCBGrantName.Text,
+                                                               Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
+                                                               ddlGrantSource.SelectedIndex != 0 ? Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()) : nullable,
+                                                               txtAwardNum.Text,
+                                                               txtAwdAmt.Text == "" ? 0 : Convert.ToDecimal(txtAwdAmt.Text),
+                                                               txtBeginDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtBeginDate.Text),
+                                                               txtEndDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtEndDate.Text),
+                                                               ddlStaff.SelectedIndex != 0 ? Convert.ToInt32(ddlStaff.SelectedValue.ToString()) : nullable,
+                                                               ddlContact.SelectedIndex != 0 ? Convert.ToInt32(ddlContact.SelectedValue.ToString()) : nullable,
+                                                               txtCGDANum.Text,
+                                                               rdbtnSignedGrant.SelectedIndex == 0 ? true : false,
+                                                               rdBtnFedFunds.SelectedIndex == 0 ? true : false,
+                                                               rdBtnMatch.SelectedIndex == 0 ? true : false,
+                                                               rdBtnFundsRec.SelectedIndex == 0 ? true : false,
+                                                               rdBtnAdmin.SelectedIndex == 0 ? true : false
+                                                               );
+                        }
+                        else
+                        {
+                            FinancialTransactions.UpdateGrantInfo(Convert.ToInt32(hfGInfoId.Value),
+                                                               txtGrantName.Text,
+                                                               txtVHCBGrantName.Text,
+                                                               Convert.ToInt32(ddlGrantor.SelectedValue.ToString()),
+                                                               ddlGrantSource.SelectedIndex != 0 ? Convert.ToInt32(ddlGrantSource.SelectedValue.ToString()) : nullable,
+                                                               txtAwardNum.Text,
+                                                               txtAwdAmt.Text == "" ? 0 : decimal.Parse(txtAwdAmt.Text, NumberStyles.Currency),// Convert.ToDecimal(txtAwdAmt.Text),
+                                                               txtBeginDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtBeginDate.Text),
+                                                               txtEndDate.Text == "" ? nullableDateTime : Convert.ToDateTime(txtEndDate.Text),
+                                                               ddlStaff.SelectedIndex != 0 ? Convert.ToInt32(ddlStaff.SelectedValue.ToString()) : nullable,
+                                                               ddlContact.SelectedIndex != 0 ? Convert.ToInt32(ddlContact.SelectedValue.ToString()) : nullable,
+                                                               txtCGDANum.Text,
+                                                               rdbtnSignedGrant.SelectedIndex == 0 ? true : false,
+                                                               rdBtnFedFunds.SelectedIndex == 0 ? true : false,
+                                                               rdBtnMatch.SelectedIndex == 0 ? true : false,
+                                                               rdBtnFundsRec.SelectedIndex == 0 ? true : false,
+                                                               rdBtnAdmin.SelectedIndex == 0 ? true : false
+                                                               );
+                            hfGIUpdateMode.Value = "false";
+                            gvGranInfo.EditIndex = -1;
+                        }
+                        ClearGrantInfo();
+                    }
+                    else lblErrorMsg.Text = "Select Grantor to add Grant Information.";
+                }
+                else lblErrorMsg.Text = "Select Fund to add associated Grant information.";
+
+                BindFundGrantInfo();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void btnFisYrAmt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lblErrorMsg.Text = "";
+                if (ViewState["SelectedGrantInfoId"] != null && ViewState["SelectedGrantInfoId"].ToString() != "")
+                {
+                    if (ddlFiscalYr.SelectedIndex != 0)
+                        FinancialTransactions.AddGrantInfoFyAmt(Convert.ToInt32(ViewState["SelectedGrantInfoId"]), Convert.ToInt32(ddlFiscalYr.SelectedValue.ToString()), Convert.ToDecimal(txtAmount.Text));
+                    else lblErrorMsg.Text = "Select Fiscal Year for Grant.";
+                    BindFiscalYr();
+                    ddlFiscalYr.SelectedIndex = 0;
+                    txtAmount.Text = "";
+                }
+                else
+                    lblErrorMsg.Text = "Select Grant to add Fiscal Year Amount";
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
     }
 }
