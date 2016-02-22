@@ -73,7 +73,7 @@
                     <asp:HiddenField ID="hdUpdateMode" Value="false" runat="server" />
                     <asp:HiddenField ID="hfFundId" runat="server" />
                     <br />
-                    <asp:ImageButton ID="btnFundSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" OnClick="btnFundSubmit_Click" />
+                    <asp:Button ID="btnFundSubmit" runat="server" Text="Submit" class="btn btn-info"  OnClick="btnFundSubmit_Click" />
                     <br />
                     <br />
                     <asp:Panel runat="server" ID="pnlFund" Width="100%" Height="300px" ScrollBars="Vertical">
@@ -280,7 +280,7 @@
                     <asp:HiddenField ID="hfGInfoId" runat="server" />
                     <br />
                     <br />
-                    <asp:ImageButton ID="btnGrantSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" OnClick="btnGrantSubmit_Click" />
+                    <asp:Button ID="btnGrantSubmit" runat="server" Text="Submit" class="btn btn-info"  OnClick="btnGrantSubmit_Click" />
                     <br />
                     <br />
                     <asp:GridView ID="gvGranInfo" runat="server" AutoGenerateColumns="False"
@@ -368,7 +368,7 @@
                         </tr>
                     </table>
                     <br />
-                    <asp:ImageButton ID="btnFisYrAmt" runat="server" ImageUrl="~/Images/BtnSubmit.gif" OnClick="btnFisYrAmt_Click" />
+                    <asp:Button ID="btnFisYrAmt" runat="server" Text="Submit" class="btn btn-info"  OnClick="btnFisYrAmt_Click" />
                     <br />
                     <br />
                     <asp:GridView ID="gvFrantInfoFy" runat="server" AutoGenerateColumns="False"
@@ -398,10 +398,10 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblAmount" runat="Server" Text='<%# String.Format("{0:C}", Eval("Amount"))%>' />
+                                    <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>' onkeypress="return isNumber(event)"> </asp:TextBox>
+                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:C2}") %>' onkeypress="return isNumber(event)"> </asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
 

@@ -109,7 +109,7 @@ namespace vhcbcloud {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnFundSubmit;
+        protected global::System.Web.UI.WebControls.Button btnFundSubmit;
         
         /// <summary>
         /// pnlFund control.
@@ -334,7 +334,7 @@ namespace vhcbcloud {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnGrantSubmit;
+        protected global::System.Web.UI.WebControls.Button btnGrantSubmit;
         
         /// <summary>
         /// gvGranInfo control.
@@ -379,7 +379,7 @@ namespace vhcbcloud {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnFisYrAmt;
+        protected global::System.Web.UI.WebControls.Button btnFisYrAmt;
         
         /// <summary>
         /// gvFrantInfoFy control.
