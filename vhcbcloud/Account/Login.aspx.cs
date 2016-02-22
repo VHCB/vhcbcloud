@@ -80,15 +80,15 @@ namespace vhcbcloud.Account
             {
                 Session["UserId"] = UserId.Text;
 
-                if (IsFirstTimeUser)
-                    Response.Redirect("SetPassword.aspx");
-                else
-                {
-                    FormsAuthentication.SetAuthCookie(UserId.Text, RememberMe.Checked);
-                    string url = FormsAuthentication.DefaultUrl;
-                    if (Request["ReturnUrl"] != null) url = Request["ReturnUrl"];
-                    Response.Redirect(url);
-                }
+                //if (IsFirstTimeUser)
+                //    Response.Redirect("SetPassword.aspx");
+                //else
+                //{
+                FormsAuthentication.SetAuthCookie(UserId.Text, RememberMe.Checked);
+                string url = FormsAuthentication.DefaultUrl;
+                if (Request["ReturnUrl"] != null) url = Request["ReturnUrl"];
+                Response.Redirect(url);
+                // }
                 //Response.Redirect("../BoardFinancialTransactions.aspx");
             }
             else
