@@ -428,8 +428,8 @@ namespace vhcbcloud
 
                 if (((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")
                 {
-                    int n;
-                    bool isNumeric = int.TryParse(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim(), out n);
+                    decimal n;
+                    bool isNumeric = decimal.TryParse(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim(), out n);
 
                     if (!isNumeric || Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim()) <= 0)
                     {
@@ -443,7 +443,7 @@ namespace vhcbcloud
                 int transType = Convert.ToInt32(((DropDownList)gvBCommit.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
 
-                decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
+                decimal old_amount = -Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
 
@@ -463,7 +463,7 @@ namespace vhcbcloud
                     if (!btnDecommitmentSubmit.Enabled)
                         EnableButton(btnDecommitmentSubmit);
                 }
-                FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
+                FinancialTransactions.UpdateTransDetails(detailId, transType, -amount);
                 //lblErrorMsg.Text = "";
                 gvBCommit.EditIndex = -1;
                 //BindFundDetails(Convert.ToInt32(ViewState["SelectedTransId"]));
