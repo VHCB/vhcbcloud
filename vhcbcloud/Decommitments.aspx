@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <asp:Panel ID="pnlHide" runat="server" Visible="true">
+        <asp:Panel ID="pnlHide" runat="server" Visible="true"> 
             <div class="container">
                 <div class="panel panel-default">
                     <div class="panel-heading">Select Project</div>

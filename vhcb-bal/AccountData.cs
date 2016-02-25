@@ -72,5 +72,99 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static DataTable GetUserInfo()
+        {
+            DataTable dtUserInfo = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetUserInfo";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtUserInfo = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtUserInfo;
+        }
+
+        public static void AddUserInfo(string firstName, string lastName, string password, string email)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddUserInfo";
+                command.Parameters.Add(new SqlParameter("Fname", firstName));
+                command.Parameters.Add(new SqlParameter("Lname", lastName));
+                command.Parameters.Add(new SqlParameter("password", password));
+                command.Parameters.Add(new SqlParameter("email", email));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateUserInfo";
+                command.Parameters.Add(new SqlParameter("UserId", UserId));
+                command.Parameters.Add(new SqlParameter("Fname", firstName));
+                command.Parameters.Add(new SqlParameter("Lname", lastName));
+                command.Parameters.Add(new SqlParameter("password", password));
+                command.Parameters.Add(new SqlParameter("email", email));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
