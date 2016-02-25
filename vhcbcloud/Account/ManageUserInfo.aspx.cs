@@ -39,14 +39,32 @@ namespace vhcbcloud.Account
             }
             catch (Exception ex)
             {
-                //lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void ClearFields()
+        {
+            txtFname.Text = "";
+            txtLname.Text = "";
+            txtPassword.Text = "";
+            txtCPassword.Text = "";
+            txt1Email.Text = "";
         }
 
         protected void btnUserInfoSubmit_Click(object sender, EventArgs e)
         {
-            AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text);
-            BindUserInfo();
+            try
+            {
+                AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text);
+                BindUserInfo();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
         }
 
         protected void gvUserInfo_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -68,19 +86,28 @@ namespace vhcbcloud.Account
 
         protected void gvUserInfo_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            int rowIndex = e.RowIndex;
+            try
+            {
 
-            int UserlId = Convert.ToInt32(((Label)gvUserInfo.Rows[rowIndex].FindControl("lblUserId")).Text);
 
-            string strFirstName = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtFirstName")).Text.Trim();
-            string strLastName = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtLastName")).Text.Trim();
-            string strEmail = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtEmail")).Text.Trim();
-            string strPassword = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtPassword")).Text.Trim();
+                int rowIndex = e.RowIndex;
 
-            AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail);
+                int UserlId = Convert.ToInt32(((Label)gvUserInfo.Rows[rowIndex].FindControl("lblUserId")).Text);
 
-            gvUserInfo.EditIndex = -1;
-            BindUserInfo();
+                string strFirstName = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtFirstName")).Text.Trim();
+                string strLastName = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtLastName")).Text.Trim();
+                string strEmail = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtEmail")).Text.Trim();
+                string strPassword = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtPassword")).Text.Trim();
+
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail);
+
+                gvUserInfo.EditIndex = -1;
+                BindUserInfo();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         protected void gvUserInfo_Sorting(object sender, GridViewSortEventArgs e)

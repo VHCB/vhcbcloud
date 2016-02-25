@@ -52,7 +52,7 @@
                         <tr>
                             <td style="width: 22%; float: left"><span class="labelClass">Password </span></td>
                             <td style="width: 45%; float: left">
-                                <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server" TextMode="Password"></asp:TextBox>
+                                <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server" ></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPassword"
                                     CssClass="text-danger" ErrorMessage="The password field is required." />
                                 <br />
@@ -64,7 +64,7 @@
                         <tr>
                             <td style="width: 22%; float: left"><span class="labelClass">Confirm Password </span></td>
                             <td style="width: 65%; float: left">
-                                <asp:TextBox ID="txtCPassword" CssClass="clsTextBoxBlue1" runat="server" TextMode="Password"></asp:TextBox>
+                                <asp:TextBox ID="txtCPassword" CssClass="clsTextBoxBlue1" runat="server" ></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtCPassword"
                                     CssClass="text-danger" Display="Dynamic" ErrorMessage="The confirm password field is required." />
                                 <asp:CompareValidator runat="server" ControlToCompare="txtPassword" ControlToValidate="txtCPassword"
@@ -74,8 +74,12 @@
                         </tr>
                         <tr>
                             <td style="height: 4px" colspan="2" />
+
                         </tr>
                     </table>
+                    <p>
+                        <asp:Label ID="lblErrorMsg" class="lblErrMsg" runat="server"></asp:Label>
+                    </p>
                     <br />
                     <asp:Button ID="btnUserInfoSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnUserInfoSubmit_Click" />
                     <br />

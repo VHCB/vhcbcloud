@@ -17,14 +17,14 @@ namespace vhcbcloud
         public static string[] GetFundTypes(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = ApplicantData.GetApplicantNames(prefixText);
+            dt = FundTypeData.GetFundTypeDescription(prefixText);
 
-            List<string> applicantNames = new List<string>();
+            List<string> ftDesc = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                applicantNames.Add(dt.Rows[i][0].ToString());
+                ftDesc.Add(dt.Rows[i][0].ToString());
             }
-            return applicantNames.ToArray();
+            return ftDesc.ToArray();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -35,7 +35,8 @@ namespace vhcbcloud
                 BindfundType();
             }
         }
-               
+
+       
         protected void BindfundType()
         {
             try

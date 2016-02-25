@@ -1,13 +1,13 @@
-create procedure GetUserInfo
+alter procedure GetUserInfo
 as
 begin
 --exec GetUserInfo
 
-	select userid, Fname, Lname, Username, password, email from UserInfo(nolock)
+	select userid, Fname, Lname, Username, password, email from UserInfo(nolock) order by DateModified desc 
 end
 go
 
-create procedure AddUserInfo
+alter procedure AddUserInfo
 (
 	@Fname		varchar(40), 
 	@Lname		varchar(50), 
@@ -25,7 +25,7 @@ begin
 end
 go
 
-create procedure UpdateUserInfo
+alter procedure UpdateUserInfo
 (
 	@userid		int,
 	@Fname		varchar(40), 
@@ -46,4 +46,13 @@ begin
 end
 go
 
---select * from UserInfo
+alter procedure GetFundTypeDescription
+(
+	@fundTypedesc varchar(150)	
+)
+as 
+Begin
+	select lkf.Description from lkfundtype  lkf join LookupValues lkv on lkv.TypeID = lkf.LkSource
+	where lkv.LookupType = 40 and lkf.Description like @fundTypedesc +'%'  order by lkf.Description 
+
+end
