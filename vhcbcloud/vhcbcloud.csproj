@@ -266,6 +266,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
+    <Content Include="SQL\Login Creation Script.sql" />
+    <Content Include="SQL\ManageUserInfo.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
