@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
+    <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />
     <Content Include="Americorps.aspx" />
     <Content Include="Applicant.aspx" />
@@ -265,6 +266,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
+    <Content Include="SQL\Login Creation Script.sql" />
+    <Content Include="SQL\ManageUserInfo.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -282,6 +285,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\LdapAuthentication.cs" />
+    <Compile Include="Account\ManageUserInfo.aspx.cs">
+      <DependentUpon>ManageUserInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ManageUserInfo.aspx.designer.cs">
+      <DependentUpon>ManageUserInfo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Account\SetPassword.aspx.cs">
       <DependentUpon>SetPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
