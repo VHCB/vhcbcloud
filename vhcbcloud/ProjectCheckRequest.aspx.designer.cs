@@ -13,6 +13,15 @@ namespace vhcbcloud {
     public partial class ProjectCheckRequest {
         
         /// <summary>
+        /// lblErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        
+        /// <summary>
         /// ddlProjFilter control.
         /// </summary>
         /// <remarks>
@@ -31,49 +40,40 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblProjName;
         
         /// <summary>
-        /// txtTransDate control.
+        /// ddlDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTransDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDate;
         
         /// <summary>
-        /// aceTransDate control.
+        /// ddlApplicantName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender aceTransDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlApplicantName;
         
         /// <summary>
-        /// lblApplicantName control.
+        /// ddlPayee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblApplicantName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPayee;
         
         /// <summary>
-        /// DropDownList1 control.
+        /// ddlProgram control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
-        
-        /// <summary>
-        /// txtDisbursementAmt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDisbursementAmt;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProgram;
         
         /// <summary>
         /// chkLegalReview control.
@@ -112,13 +112,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtEligibleAmt;
         
         /// <summary>
-        /// DropDownList2 control.
+        /// ddlMatchingGrant control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList2;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMatchingGrant;
         
         /// <summary>
         /// TextBox3 control.
@@ -128,6 +128,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        
+        /// <summary>
+        /// txtDisbursementAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDisbursementAmt;
         
         /// <summary>
         /// DropDownList3 control.

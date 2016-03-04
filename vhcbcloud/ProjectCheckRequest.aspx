@@ -7,23 +7,27 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Check Request</div>
                 <div class="panel-body">
-
+                     <p class="lblErrMsg">
+                        <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
+                    </p>
                     <table style="width: 100%">
                         <tr>
                             <td><span class="labelClass">Project # :</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                 </asp:DropDownList></td>
                             <td>
                                 <span class="labelClass">Project Name :</span>
                             </td>
                             <td>
-                                <asp:Label ID="lblProjName" class="labelClass" Text="Hello Project Name" runat="server"></asp:Label>
+                                <asp:Label ID="lblProjName" class="labelClass" Text="--" runat="server"></asp:Label>
                             </td>
                             <td><span class="labelClass">Date :</span></td>
                             <td>
-                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
+                                 <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
+                               <%-- <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>--%>
                             </td>
                         </tr>
                         <tr>
@@ -32,19 +36,21 @@
                         <tr>
                             <td><span class="labelClass">Applicant :</span></td>
                             <td>
-                                <asp:Label ID="lblApplicantName" class="labelClass" Text="Hello Applicant Name" runat="server"></asp:Label>
+                                 <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
 
                             </td>
                             <td>
                                 <span class="labelClass">Payee :</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="DropDownList1" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlPayee" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>
                             </td>
-                            <td><span class="labelClass">Disbursement $:</span></td>
+                            <td><span class="labelClass">Program:</span></td>
                             <td>
-                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                 <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>
@@ -77,14 +83,14 @@
 
                             </td>
                             <td>
-                                <span class="labelClass">Amount Eligible For Match :</span>
+                                <span class="labelClass">Amount Eligible For Match $ :</span>
                             </td>
                             <td>
                                 <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
                             <td><span class="labelClass">Matching Grant :</span></td>
                             <td>
-                                <asp:DropDownList ID="DropDownList2" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlMatchingGrant" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>
                             </td>
                         </tr>
@@ -93,8 +99,12 @@
                         </tr>
                         <tr>
                             <td><span class="labelClass">Notes :</span></td>
-                            <td colspan="5">
+                            <td colspan="3">
                                 <asp:TextBox ID="TextBox3" TextMode="multiline" Columns="50" Rows="2" runat="server" />
+                            </td>
+                             <td><span class="labelClass">Disbursement $:</span></td>
+                            <td>
+                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
