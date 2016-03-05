@@ -49,6 +49,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlDate;
         
         /// <summary>
+        /// txtTransDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTransDate;
+        
+        /// <summary>
+        /// aceTransDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender aceTransDate;
+        
+        /// <summary>
         /// ddlApplicantName control.
         /// </summary>
         /// <remarks>
@@ -94,13 +112,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox chkFinalPayment;
         
         /// <summary>
-        /// chkReqFinalized control.
+        /// chkLCB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkReqFinalized;
+        protected global::System.Web.UI.WebControls.CheckBox chkLCB;
         
         /// <summary>
         /// txtEligibleAmt control.
@@ -121,13 +139,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlMatchingGrant;
         
         /// <summary>
-        /// TextBox3 control.
+        /// txtNotes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtNotes;
         
         /// <summary>
         /// txtDisbursementAmt control.
@@ -139,67 +157,85 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtDisbursementAmt;
         
         /// <summary>
-        /// DropDownList3 control.
+        /// btnCRSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList3;
+        protected global::System.Web.UI.WebControls.Button btnCRSubmit;
         
         /// <summary>
-        /// DropDownList4 control.
+        /// ddlFundTypeCommitments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList4;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundTypeCommitments;
         
         /// <summary>
-        /// TextBox1 control.
+        /// ddlTransType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransType;
         
         /// <summary>
-        /// DropDownList5 control.
+        /// txtTransDetailAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList5;
+        protected global::System.Web.UI.WebControls.TextBox txtTransDetailAmt;
         
         /// <summary>
-        /// Button1 control.
+        /// ddlStateVHCBS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStateVHCBS;
         
         /// <summary>
-        /// gvPTrans control.
+        /// btnPCRTransDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvPTrans;
+        protected global::System.Web.UI.WebControls.Button btnPCRTransDetails;
         
         /// <summary>
-        /// DropDownList6 control.
+        /// gvPTransDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList6;
+        protected global::System.Web.UI.WebControls.GridView gvPTransDetails;
+        
+        /// <summary>
+        /// lbNOD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox lbNOD;
+        
+        /// <summary>
+        /// ddlPCRQuestions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPCRQuestions;
         
         /// <summary>
         /// Button2 control.
@@ -211,12 +247,30 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button Button2;
         
         /// <summary>
-        /// GridView1 control.
+        /// hfTransId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.HiddenField hfTransId;
+        
+        /// <summary>
+        /// hfTransAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTransAmt;
+        
+        /// <summary>
+        /// hfBalAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfBalAmt;
     }
 }

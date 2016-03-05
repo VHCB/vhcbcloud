@@ -24,10 +24,10 @@
                             </td>
                             <td><span class="labelClass">Date :</span></td>
                             <td>
-                                 <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server">
+                                 <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false">
                                 </asp:DropDownList>
-                               <%-- <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>--%>
+                               <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                             </td>
                         </tr>
                         <tr>
@@ -59,7 +59,7 @@
                         <tr>
                             <td><span class="labelClass">Closing/Legal Review :</span></td>
                             <td>
-                                <asp:CheckBox ID="chkLegalReview" runat="server" Text="Yes"></asp:CheckBox>
+                                <asp:CheckBox ID="chkLegalReview" runat="server" Text="Yes" OnCheckedChanged="chkLegalReview_CheckedChanged" AutoPostBack="True"></asp:CheckBox>
 
                             </td>
                             <td>
@@ -77,9 +77,9 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass">Check Request Finalized :</span></td>
+                            <td><span class="labelClass">LCB :</span></td>
                             <td>
-                                <asp:CheckBox ID="chkReqFinalized" runat="server" Text="Yes"></asp:CheckBox>
+                                <asp:CheckBox ID="chkLCB" runat="server" Text="Yes"></asp:CheckBox>
 
                             </td>
                             <td>
@@ -100,12 +100,16 @@
                         <tr>
                             <td><span class="labelClass">Notes :</span></td>
                             <td colspan="3">
-                                <asp:TextBox ID="TextBox3" TextMode="multiline" Columns="50" Rows="2" runat="server" />
+                                <asp:TextBox ID="txtNotes" TextMode="multiline" Columns="50" Rows="2" runat="server" />
                             </td>
                              <td><span class="labelClass">Disbursement $:</span></td>
                             <td>
                                 <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
+                        </tr>
+                         <tr>
+                            <td colspan="6" style="height: 5px">
+                                <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" /></td>
                         </tr>
                     </table>
 
@@ -114,17 +118,17 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Disbursements</div>
                 <div class="panel-body">
-                    <table style="width: 70%">
+                    <table style="width: 100%">
                         <tr>
                             <td><span class="labelClass">Source (Based on Commitments)</span></td>
                             <td>
-                                <asp:DropDownList ID="DropDownList3" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlFundTypeCommitments" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList></td>
                             <td>
                                 <span class="labelClass">Grant/Loan/Contract :</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="DropDownList4" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>
                             </td>
                             <td></td>
@@ -135,11 +139,11 @@
                         <tr>
                             <td><span class="labelClass">Amount $:</span></td>
                             <td>
-                                <asp:TextBox ID="TextBox1" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtTransDetailAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
                             <td><span class="labelClass">State/VHCB #s:</span></td>
                             <td>
-                                <asp:DropDownList ID="DropDownList5" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList></td>
                             <td></td>
                         </tr>
@@ -148,59 +152,87 @@
                         </tr>
                         <tr>
                             <td colspan="5" style="height: 5px">
-                                <asp:Button ID="Button1" runat="server" Text="Submit" class="btn btn-info" /></td>
+                                <asp:Button ID="btnPCRTransDetails" runat="server" Text="Add" Enabled="true" class="btn btn-info" OnClick="btnPCRTransDetails_Click" />
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="5"></td>
                         </tr>
                         <tr>
-                            <td colspan="5">
-                                <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
-                                    Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <%-- <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtTransDate" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>'></asp:TextBox>
-                                                <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
-                                                <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
-
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Trans Status" SortExpression="Description">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTransStatus" runat="Server" Text='<%# Eval("Description") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" Visible="false" runat="server"></asp:DropDownList>
-                                                <asp:Label ID="lblTransStatusView" runat="Server" Text='<%# Eval("Description") %>' />
-                                                <asp:TextBox ID="txtTransStatus" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lkStatus") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="ProjectID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>--%>
-                                    </Columns>
-                                    <FooterStyle CssClass="footerStyle" />
-                                </asp:GridView>
+                            <td colspan="5"><br />
+                                 <asp:GridView ID="gvPTransDetails" runat="server" AutoGenerateColumns="False"
+                                Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                                GridLines="None" EnableTheming="True" AllowPaging="false"
+                                AllowSorting="true" ShowFooter="True" OnRowCancelingEdit="gvPTransDetails_RowCancelingEdit" OnRowDataBound="gvPTransDetails_RowDataBound" OnRowEditing="gvPTransDetails_RowEditing" OnRowUpdating="gvPTransDetails_RowUpdating">
+                                <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                <HeaderStyle CssClass="headerStyle" />
+                                <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                <RowStyle CssClass="rowStyle" />
+                                <FooterStyle CssClass="footerStyleTotals" />
+                                <Columns>
+                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
+                                        <ItemTemplate>
+                                            <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("detailid")%>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Fund #" SortExpression="Account">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            Running Total :
+                                        </FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                        </ItemTemplate>
+                                        <%-- <EditItemTemplate>
+                                    <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
+                                </EditItemTemplate>--%>
+                                        <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterAmount" Text=""></asp:Label>
+                                        </FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
+                                        </EditItemTemplate>
+                                        <FooterTemplate>
+                                            Balance Amount :
+                                        </FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                        </EditItemTemplate>
+                                        <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
+                                        </FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField Visible="false" HeaderText="Detail Id" SortExpression="detailid">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:CommandField ShowEditButton="True" />
+                                </Columns>
+                                <FooterStyle CssClass="footerStyle" />
+                            </asp:GridView>
                             </td>
                         </tr>
                     </table>
@@ -213,13 +245,13 @@
                         <tr>
                             <td><span class="labelClass">Nature of Disbursements :</span></td>
                             <td>
-                                <asp:ListBox runat="server" SelectionMode="Multiple">
-                                    <asp:ListItem Text="test1 Nature of Disbursements"></asp:ListItem>
+                                <asp:ListBox runat="server" SelectionMode="Multiple" ID ="lbNOD">
+                                    <%--<asp:ListItem Text="test1 Nature of Disbursements"></asp:ListItem>
                                     <asp:ListItem Text="test2 Nature of Disbursements"></asp:ListItem>
                                     <asp:ListItem Text="test3 Nature of Disbursements"></asp:ListItem>
                                     <asp:ListItem Text="test1 Nature of Disbursements"></asp:ListItem>
                                     <asp:ListItem Text="test2 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test3 Nature of Disbursements"></asp:ListItem>
+                                    <asp:ListItem Text="test3 Nature of Disbursements"></asp:ListItem>--%>
                                 </asp:ListBox></td>
                         </tr>
                         <tr>
@@ -232,23 +264,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Approvals</div>
                 <div class="panel-body">
-                    <table style="width: 70%">
+                    <table style="width: 100%">
                         <tr>
                             <td><span class="labelClass">Question :</span></td>
                             <td>
-                                <asp:DropDownList ID="DropDownList6" CssClass="clsDropDown" AutoPostBack="true" runat="server">
+                                <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="231px">
                                 </asp:DropDownList></td>
                             <td>
                                 <span class="labelClass">Approved By :</span>
                             </td>
                             <td>
-                                <span class="labelClass">Default Login Name</span>
+                                <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>
                             </td>
                             <td>
                                 <span class="labelClass">Date :</span>
                             </td>
                             <td>
-                                <span class="labelClass">Default Todays Date</span>
+                                <span class="labelClass"><%:DateTime.Now.ToString() %></span>
                             </td>
                         </tr>
                         <tr>
@@ -264,23 +296,14 @@
                         </tr>
                         <tr>
                             <td colspan="6">
-                                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-                                    Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                    </Columns>
-                                    <FooterStyle CssClass="footerStyle" />
-                                </asp:GridView>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
+        <asp:HiddenField ID="hfTransId" runat="server" />
+        <asp:HiddenField ID="hfTransAmt" runat="server" />
+        <asp:HiddenField ID="hfBalAmt" runat="server" />
     </div>
 </asp:Content>
