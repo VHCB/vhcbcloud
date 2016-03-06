@@ -217,18 +217,18 @@ begin
 
 	while charindex('|', @LKNODs, @pos+1)>0
 	begin
-		set @len = charindex(',', @LKNODs, @pos+1) - @pos
+		set @len = charindex('|', @LKNODs, @pos+1) - @pos
 		set @value = substring(@LKNODs, @pos, @len)
 		--select @pos, @len, @value 
 		--print @value
 		insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD) values(@ProjectCheckReqID, @value)
 
-		set @pos = charindex(',', @LKNODs, @pos+@len) +1
+		set @pos = charindex('|', @LKNODs, @pos+@len) +1
 	end
 end
 go
 
-create procedure PCR_Submit_NOD
+alter procedure PCR_Submit_NOD
 (
 	@ProjectCheckReqID	int, 
 	@LKNOD				int
@@ -240,6 +240,7 @@ begin
 end
 go
 
+--truncate table ProjectCheckReqNOD
 --select * from ProjectCheckReqNOD
 --sp_help ProjectCheckReqQuestions
 --select * from ProjectCheckReqQuestions 
