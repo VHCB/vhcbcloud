@@ -46,8 +46,78 @@ namespace DataAccessLayer
             return dtData;
         }
 
-        public static PCRDetails SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview, bool Final, 
-            bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, string Notes, int UserID)
+        public static DataTable GetPCRTranDetails(string TransId)
+        {
+            DataTable dtTranDetails = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("transId", TransId));
+                command.CommandText = "PCR_Trans_Detail_Load";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTranDetails = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTranDetails;
+        }
+
+        public static DataTable GetPCRQuestions(bool IsLegal)
+        {
+            DataTable dtPCRQuestions = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
+                command.CommandText = "PCR_Questions";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRQuestions = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtPCRQuestions;
+        }
+
+        public static PCRDetails SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview, bool Final,
+           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, string Notes, int UserID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -130,28 +200,29 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetPCRTranDetails(string TransId)
+        public static void SubmitPCRForm(int ProjectCheckReqID, int LkPCRQuestionsID, bool Approved, DateTime Date,
+          int StaffID, string LKNODs)
         {
-            DataTable dtTranDetails = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
+                object returnMsg = "";
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("transId", TransId));
-                command.CommandText = "PCR_Trans_Detail_Load";
+                command.CommandText = "PCR_Submit_Questions";
+
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
+                command.Parameters.Add(new SqlParameter("LkPCRQuestionsID", LkPCRQuestionsID));
+                command.Parameters.Add(new SqlParameter("Approved", Approved));
+                command.Parameters.Add(new SqlParameter("Date", Date));
+                command.Parameters.Add(new SqlParameter("StaffID", StaffID));
+                command.Parameters.Add(new SqlParameter("LKNODs", LKNODs));
+
                 using (connection)
                 {
                     connection.Open();
                     command.Connection = connection;
-
-                    var ds = new DataSet();
-                    var da = new SqlDataAdapter(command);
-                    da.Fill(ds);
-                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
-                    {
-                        dtTranDetails = ds.Tables[0];
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
@@ -162,42 +233,6 @@ namespace DataAccessLayer
             {
                 connection.Close();
             }
-            return dtTranDetails;
-        }
-
-        public static DataTable GetPCRQuestions(bool IsLegal)
-        {
-            DataTable dtPCRQuestions = null;
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
-            try
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
-                command.CommandText = "PCR_Questions";
-                using (connection)
-                {
-                    connection.Open();
-                    command.Connection = connection;
-
-                    var ds = new DataSet();
-                    var da = new SqlDataAdapter(command);
-                    da.Fill(ds);
-                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
-                    {
-                        dtPCRQuestions = ds.Tables[0];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return dtPCRQuestions;
         }
     }
 

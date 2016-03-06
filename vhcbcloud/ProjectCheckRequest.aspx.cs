@@ -288,7 +288,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-        
+
         protected void BindPCRQuestions(bool IsLegal)
         {
             try
@@ -336,6 +336,7 @@ namespace vhcbcloud
                     txtNotes.Text, 1234);
 
                 this.hfTransId.Value = pcr.TransID.ToString();
+                this.hfPCRId.Value = pcr.ProjectCheckReqID.ToString();
                 this.hfTransAmt.Value = txtDisbursementAmt.Text;
             }
             catch (Exception ex)
@@ -349,15 +350,54 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), 
-                    decimal.Parse(txtTransDetailAmt.Text));
+                decimal currentTranAmount = 0;
+                decimal currentTranFudAmount = 0;
+                decimal currentBalAmount = 0;
 
-                BindPCRTransDetails();
+                currentTranAmount = Convert.ToDecimal(hfTransAmt.Value);
+                currentTranFudAmount = decimal.Parse(txtTransDetailAmt.Text);
+                currentBalAmount = Convert.ToDecimal(hfBalAmt.Value);
+
+                hfTransId.Value = this.hfTransId.Value;
+
+                if (hfTransId.Value != null)
+                {
+                    int transId = Convert.ToInt32(hfTransId.Value);
+
+                    if(gvPTransDetails.Rows.Count == 0)
+                        currentBalAmount = currentTranAmount;
+
+                    if (currentBalAmount == 0 && gvPTransDetails.Rows.Count > 0)
+                    {
+                        lblErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
+                        ClearTransactionDetailForm();
+                        DisableButton(btnPCRTransDetails);
+                        return;
+                    }
+                    else if (currentTranFudAmount > currentBalAmount)
+                    {
+                        currentTranFudAmount = currentBalAmount;
+                        lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                    }
+
+                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()),
+                    currentTranFudAmount);
+
+                    BindPCRTransDetails();
+                    ClearTransactionDetailForm();
+                }
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message;
             }
+        }
+
+        private void ClearTransactionDetailForm()
+        {
+            ddlFundTypeCommitments.SelectedIndex = 0;
+            ddlTransType.SelectedIndex = 0;
+            txtTransDetailAmt.Text = "";
         }
 
         public static void DisableButton(Button btn)
@@ -478,6 +518,25 @@ namespace vhcbcloud
         protected void chkLegalReview_CheckedChanged(object sender, EventArgs e)
         {
             BindPCRQuestions(chkLegalReview.Checked);
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            string lbNODS = string.Empty;
+
+            foreach (ListItem listItem in lbNOD.Items)
+            {
+                if (listItem.Selected == true)
+                {
+                    if (lbNODS.Length == 0)
+                        lbNODS = listItem.Value;
+                    else
+                        lbNODS = lbNODS + "|"+ listItem.Value;
+                }
+            }
+
+            ProjectCheckRequestData.SubmitPCRForm(int.Parse(this.hfPCRId.Value), int.Parse(ddlPCRQuestions.SelectedValue.ToString()),
+                true, DateTime.Parse(DateTime.Now.ToString()), 1234, lbNODS);
         }
     }
 }

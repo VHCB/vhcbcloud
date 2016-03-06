@@ -289,7 +289,7 @@
 
                         <tr>
                             <td colspan="6" style="height: 5px">
-                                <asp:Button ID="Button2" runat="server" Text="Submit" class="btn btn-info" /></td>
+                                <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                         </tr>
                         <tr>
                             <td colspan="6"></td>
@@ -303,7 +303,8 @@
             </div>
         </div>
         <asp:HiddenField ID="hfTransId" runat="server" />
-        <asp:HiddenField ID="hfTransAmt" runat="server" />
-        <asp:HiddenField ID="hfBalAmt" runat="server" />
+        <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
+        <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
+         <asp:HiddenField ID="hfPCRId" runat="server" />
     </div>
 </asp:Content>

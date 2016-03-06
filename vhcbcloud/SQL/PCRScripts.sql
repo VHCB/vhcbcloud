@@ -193,18 +193,38 @@ begin
 end
 go
 
-create procedure PCR_Submit_Questions
+alter procedure PCR_Submit_Questions
 (
 	@ProjectCheckReqID	int, 
 	@LkPCRQuestionsID	int, 
 	@Approved			bit, 
 	@Date				date, 
-	@StaffID			int
+	@StaffID			int,
+	@LKNODs				varchar(50)
 )
 as
 begin
 	insert into ProjectCheckReqQuestions(ProjectCheckReqID, LkPCRQuestionsID, Approved, Date, StaffID)
 	values(@ProjectCheckReqID, @LkPCRQuestionsID, @Approved, @Date, @StaffID)
+
+	
+	declare @pos int
+	declare @len int
+	declare @value varchar(10)
+
+	set @pos = 0
+	set @len = 0
+
+	while charindex('|', @LKNODs, @pos+1)>0
+	begin
+		set @len = charindex(',', @LKNODs, @pos+1) - @pos
+		set @value = substring(@LKNODs, @pos, @len)
+		--select @pos, @len, @value 
+		--print @value
+		insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD) values(@ProjectCheckReqID, @value)
+
+		set @pos = charindex(',', @LKNODs, @pos+@len) +1
+	end
 end
 go
 
