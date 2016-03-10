@@ -5,10 +5,11 @@ alter procedure PCR_Projects
 as
 begin
 	select project_id, proj_num, project_name,  convert(varchar(25), project_id) +'|' + project_name as project_id_name
-	from project_v where project_id in(
-			select distinct ProjectId  from [dbo].[ProjectCheckReq]
-			union
-			select distinct ProjectId from [dbo].[Trans])
+	from project_v 
+	--where project_id in(
+	--		select distinct ProjectId  from [dbo].[ProjectCheckReq]
+	--		union
+	--		select distinct ProjectId from [dbo].[Trans])
 	order by proj_num
 end
 go
@@ -24,12 +25,18 @@ end
 go
 
 alter procedure PCR_ApplicantName
+(
+	@ProjectID int
+)
 as
 begin
+
 	select an.Applicantname 
 	from [dbo].[AppName] an(nolock)
 	join [dbo].[ApplicantAppName] aan(nolock) on an.AppNameID = aan.AppNameID
-	where aan.DefName = 1
+	join Applicant a on a.ApplicantId = aan.ApplicantID
+	join ProjectApplicant pa on pa.ApplicantID = a.ApplicantID
+	where aan.DefName = 1 and projectID = @ProjectID
 	order by an.Applicantname
 end
 go
@@ -47,7 +54,7 @@ end
 go
 
 
-create procedure PCR_Program
+alter procedure PCR_Program
 as
 begin
 	select typeid, LookupType, Description from LookupValues 
@@ -57,7 +64,7 @@ begin
 end
 go
 
-create procedure PCR_MatchingGrant
+alter procedure PCR_MatchingGrant
 as
 begin
 	select typeid, LookupType, Description from LookupValues 
@@ -67,7 +74,7 @@ begin
 end
 go
 
-create procedure PCR_FundName_Commitments
+alter procedure PCR_FundName_Commitments
 as
 begin
 	select distinct name, f.FundId from fund f(nolock)
@@ -77,7 +84,7 @@ end
 go
 
 
-create procedure PCR_TransType
+alter procedure PCR_TransType
 as
 begin
 	select distinct v.Description, v.typeid from LkTransType_v v(nolock)
@@ -86,7 +93,7 @@ begin
 end
 go
 
-create procedure PCR_State_VHCBS
+alter procedure PCR_State_VHCBS
 as
 begin
 	select StateAcctnum
@@ -95,19 +102,19 @@ begin
 end
 go
 
-create procedure PCR_Submit
+alter procedure PCR_Submit
 (
 	@ProjectID int, 
 	@InitDate date, 
 	@LkProgram	int, 
 	@LegalReview	bit, 
-	@Final	bit, 
 	@LCB	bit, 
 	@MatchAmt	money, 
 	@LkFVGrantMatch	int, 
 	@Notes	nvarchar(2000), 
 	@Disbursement decimal,
 	@Payee int,
+	@LkStatus int,
 	@UserID	int,
 	@ProjectCheckReqID	int output,
 	@TransID	int output
@@ -116,21 +123,22 @@ as
 begin
 
 	insert into ProjectCheckReq(ProjectID, InitDate, LkProgram, LegalReview, 
-		Final, LCB, MatchAmt, LkFVGrantMatch, Notes, UserID)
+		LCB, MatchAmt, LkFVGrantMatch, Notes, UserID)
 	values(@ProjectID, @InitDate, @LkProgram, @LegalReview, 
-		@Final, @LCB, @MatchAmt, @LkFVGrantMatch, @Notes, @UserID)
+		@LCB, @MatchAmt, @LkFVGrantMatch, @Notes, @UserID)
 
 	set @ProjectCheckReqID = @@IDENTITY
 
 	insert into Trans(ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
-	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, 124)
+	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus)
 
 	set @TransID = @@IDENTITY
 
 end
 go
 
-create procedure PCR_Trans_Detail_Submit
+
+alter procedure PCR_Trans_Detail_Submit
 (
 	@transid int,
 	@fundid int,	
@@ -146,7 +154,7 @@ begin
 end
 go
 
-create procedure PCR_Trans_Detail_Load
+alter procedure PCR_Trans_Detail_Load
 (
 	@transid int
 )
@@ -163,7 +171,7 @@ from Fund f
 end
 go
 
-create procedure PCR_NOD_Load
+alter procedure PCR_NOD_Load
 as
 begin
 	select typeid, LookupType, Description 
@@ -173,7 +181,7 @@ begin
 end
 go
 
-create procedure PCR_Questions
+alter procedure PCR_Questions
 (
 	@IsLegal bit = 0
 )
@@ -204,10 +212,14 @@ alter procedure PCR_Submit_Questions
 )
 as
 begin
+
+	delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
+
 	insert into ProjectCheckReqQuestions(ProjectCheckReqID, LkPCRQuestionsID, Approved, Date, StaffID)
 	values(@ProjectCheckReqID, @LkPCRQuestionsID, @Approved, @Date, @StaffID)
 
-	
+	delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+
 	declare @pos int
 	declare @len int
 	declare @value varchar(10)
@@ -215,6 +227,7 @@ begin
 	set @pos = 0
 	set @len = 0
 
+	set @LKNODs = @LKNODs + '|';
 	while charindex('|', @LKNODs, @pos+1)>0
 	begin
 		set @len = charindex('|', @LKNODs, @pos+1) - @pos
@@ -239,36 +252,3 @@ begin
 	values(@ProjectCheckReqID, @LKNOD)
 end
 go
-
---truncate table ProjectCheckReqNOD
---select * from ProjectCheckReqNOD
---sp_help ProjectCheckReqQuestions
---select * from ProjectCheckReqQuestions 
---select * from LkPCRQuestions
-----select * from [dbo].[LkLookups] where recordid = 34
-----select * from [dbo].[Lkstatus_v]LkProgram
-
-----sp_helptext Lkstatus_v
-
---select distinct LkTransType from Detail
---select distinct v.Description, v.typeid from LkTransType_v v(nolock)
---join Detail d(nolock) on v.typeid = d.LkTransType
---order by v.typeid
-
-
---select StateAcctnum, * 
---from dbo.stateaccount sa(nolock)
---where LkTransType = 241
-
---select DeptID, VHCBCode, * from fund 
---select * from Detail
---select * from [ProjectCheckReq] order by DateModified desc
---select * from trans order by DateModified desc
---select * from detail order by DateModified desc
---delete from [ProjectCheckReq] where [ProjectCheckReqID] = 33
---delete from trans where transID = 1608
-
---PCR_Program
-
---select * from UserInfo
---sp_help ProjectCheckReq

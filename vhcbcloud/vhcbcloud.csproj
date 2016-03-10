@@ -269,6 +269,7 @@
     <Content Include="SQL\Login Creation Script.sql" />
     <Content Include="SQL\ManageUserInfo.sql" />
     <Content Include="SQL\PCRScripts.sql" />
+    <Content Include="SQL\PCRScripts2.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
