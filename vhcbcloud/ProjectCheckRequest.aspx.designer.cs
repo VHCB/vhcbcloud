@@ -22,6 +22,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+        
+        /// <summary>
         /// ddlProjFilter control.
         /// </summary>
         /// <remarks>
@@ -103,15 +112,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox chkLegalReview;
         
         /// <summary>
-        /// chkFinalPayment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkFinalPayment;
-        
-        /// <summary>
         /// chkLCB control.
         /// </summary>
         /// <remarks>
@@ -121,6 +121,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox chkLCB;
         
         /// <summary>
+        /// ddlStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+        
+        /// <summary>
+        /// lblAmtEligibleForMatch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAmtEligibleForMatch;
+        
+        /// <summary>
         /// txtEligibleAmt control.
         /// </summary>
         /// <remarks>
@@ -128,6 +146,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEligibleAmt;
+        
+        /// <summary>
+        /// lblMatchingGrant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMatchingGrant;
         
         /// <summary>
         /// ddlMatchingGrant control.
@@ -164,6 +191,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCRSubmit;
+        
+        /// <summary>
+        /// pnlPCRData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlPCRData;
+        
+        /// <summary>
+        /// gvPCRData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPCRData;
         
         /// <summary>
         /// ddlFundTypeCommitments control.
@@ -281,5 +326,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfPCRId;
+        
+        /// <summary>
+        /// hfEditPCRId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEditPCRId;
     }
 }
