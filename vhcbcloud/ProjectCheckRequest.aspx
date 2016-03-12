@@ -154,7 +154,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Disbursement" SortExpression="TransAmt">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt") %>' />
+                                                    <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Payee" SortExpression="Payee">
@@ -297,20 +297,14 @@
                     </table>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <%-- <div class="panel panel-default">
                 <div class="panel-heading">Nature of Disbursements</div>
                 <div class="panel-body">
                     <table style="width: 50%">
                         <tr>
                             <td><span class="labelClass">Nature of Disbursements :</span></td>
                             <td>
-                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD">
-                                    <%--<asp:ListItem Text="test1 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test2 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test3 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test1 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test2 Nature of Disbursements"></asp:ListItem>
-                                    <asp:ListItem Text="test3 Nature of Disbursements"></asp:ListItem>--%>
+                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD1">
                                 </asp:ListBox></td>
                         </tr>
                         <tr>
@@ -318,17 +312,25 @@
                         </tr>
                     </table>
                 </div>
-            </div>
+            </div>--%>
 
             <div class="panel panel-default">
                 <div class="panel-heading">Approvals</div>
                 <div class="panel-body">
                     <table style="width: 100%">
                         <tr>
+                            <td><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td>
+                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD"></asp:ListBox></td>
                             <td><span class="labelClass">Question :</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="231px">
+                                <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="250px">
                                 </asp:DropDownList></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="height: 5px"></td>
+                        </tr>
+                        <tr>
                             <td>
                                 <span class="labelClass">Approved By :</span>
                             </td>
@@ -343,17 +345,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="height: 5px"></td>
+                            <td colspan="4" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="height: 5px">
+                            <td colspan="4" style="height: 5px">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                         </tr>
                         <tr>
-                            <td colspan="6"></td>
+                            <td colspan="4"></td>
                         </tr>
                         <tr>
-                            <td colspan="6"></td>
+                            <td colspan="4"></td>
                         </tr>
                     </table>
                 </div>
