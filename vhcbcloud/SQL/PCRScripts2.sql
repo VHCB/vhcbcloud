@@ -115,3 +115,24 @@ begin
 
 end
 go
+
+alter procedure PCR_Disbursment_Detail_Total
+(
+	@ProjectCheckReqID int,
+	@total		decimal output
+)
+as
+begin
+
+	select @total = isnull(sum(amount) , 0)
+	from detail(nolock)
+	where TransId = (select TransID from Trans where ProjectCheckReqID = @ProjectCheckReqID)
+
+end
+go
+
+select * from detail
+
+select * from ProjectCheckReq
+
+exec PCR_Disbursment_Detail_Total 25, null

@@ -22,9 +22,11 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
+                DisableButton(btnSubmit);
+                DisableButton(btnPCRTransDetails);
                 BindProjects();
                 //BindTransDate();
-               // BindApplicantName();
+                // BindApplicantName();
                 BindPayee();
                 BindProgram();
                 BindStatus();
@@ -156,7 +158,7 @@ namespace vhcbcloud
                 ddlStatus.DataValueField = "typeid";
                 ddlStatus.DataTextField = "Description";
                 ddlStatus.DataBind();
-                ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlStatus.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -286,7 +288,10 @@ namespace vhcbcloud
                     //lblTransDetHeader.Text = "Transaction Detail";
 
                     if (totBalAmt == 0)
+                    {
                         DisableButton(btnPCRTransDetails);
+                        EnableButton(btnSubmit);
+                    }
 
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
@@ -360,7 +365,8 @@ namespace vhcbcloud
             try
             {
                 ClearPCRForm();
-
+                EnableButton(btnPCRTransDetails);
+                DisableButton(btnSubmit);
                 BindPCRTransDetails();
 
                 lbNOD.SelectedIndex = -1;
@@ -371,8 +377,8 @@ namespace vhcbcloud
 
                 foreach (ListItem item in lbNOD.Items)
                 {
-                    foreach(DataRow dr in dtNOD.Rows)
-                        if(dr["LKNOD"].ToString() == item.Value.ToString())
+                    foreach (DataRow dr in dtNOD.Rows)
+                        if (dr["LKNOD"].ToString() == item.Value.ToString())
                             item.Selected = true;
                 }
 
@@ -475,7 +481,10 @@ namespace vhcbcloud
                 else if (amount < allowed_amount)
                 {
                     if (!btnPCRTransDetails.Enabled)
+                    {
                         EnableButton(btnPCRTransDetails);
+                        DisableButton(btnSubmit);
+                    }
                 }
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
 
@@ -484,7 +493,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message;
             }
 
         }
@@ -544,13 +553,107 @@ namespace vhcbcloud
         protected void btnCRSubmit_Click(object sender, EventArgs e)
         {
             string PCRID = this.hfEditPCRId.Value;
+
+            #region Validations
+            if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select Project#";
+                ddlProjFilter.Focus();
+                return;
+            }
+            else if (txtTransDate.Text == "")
+            {
+                lblErrorMsg.Text = "Select Transaction Date";
+                txtTransDate.Focus();
+                return;
+            }
+            else if (txtTransDate.Text.Trim() != "")
+            {
+                DateTime dt;
+                bool isDateTime = DateTime.TryParse(txtTransDate.Text.Trim(), out dt);
+
+                if (!isDateTime)
+                {
+                    lblErrorMsg.Text = "Select a valid Transaction Date";
+                    txtTransDate.Focus();
+                    return;
+                }
+            }
+
+            if (ddlPayee.Items.Count > 1 && ddlPayee.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select Payee";
+                ddlPayee.Focus();
+                return;
+            }
+            else if (ddlProgram.Items.Count > 1 && ddlProgram.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select Program";
+                ddlProgram.Focus();
+                return;
+            }
+            else if (ddlStatus.Items.Count > 1 && ddlStatus.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select Status";
+                ddlStatus.Focus();
+                return;
+            }
+            else if (txtEligibleAmt.Visible)
+            {
+                if (txtEligibleAmt.Text.Trim() == "")
+                {
+                    lblErrorMsg.Text = "Select Eligible Amount";
+                    txtEligibleAmt.Focus();
+                    return;
+                }
+                else if (txtEligibleAmt.Text.Trim() != "")
+                {
+                    decimal n;
+                    bool isDecimal = decimal.TryParse(txtEligibleAmt.Text.Trim(), out n);
+
+                    if (!isDecimal || Convert.ToDecimal(txtEligibleAmt.Text) <= 0)
+                    {
+                        lblErrorMsg.Text = "Select a valid Eligible amount";
+                        txtEligibleAmt.Focus();
+                        return;
+                    }
+                }
+            }
+
+            if (txtEligibleAmt.Visible && ddlMatchingGrant.Items.Count > 1 && ddlMatchingGrant.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select Matching Grant";
+                ddlMatchingGrant.Focus();
+                return;
+            }
+
+            if (txtDisbursementAmt.Text.Trim() == "")
+            {
+                lblErrorMsg.Text = "Select Disbursement Amount";
+                txtDisbursementAmt.Focus();
+                return;
+            }
+            else if (txtDisbursementAmt.Text.Trim() != "")
+            {
+                decimal n;
+                bool isDecimal = decimal.TryParse(txtDisbursementAmt.Text.Trim(), out n);
+
+                if (!isDecimal || Convert.ToDecimal(txtDisbursementAmt.Text) <= 0)
+                {
+                    lblErrorMsg.Text = "Select a valid Disbursement amount";
+                    txtDisbursementAmt.Focus();
+                    return;
+                }
+            }
+            #endregion
+
             try
             {
                 string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
 
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);
 
-                int MatchingGrant=0;
+                int MatchingGrant = 0;
                 decimal EligibleAmt = 0;
 
                 if (txtEligibleAmt.Visible)
@@ -572,11 +675,23 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
-                        decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, 1234);
-                    lblMessage.Text = "Successfully Updated Check Request";
+                    //Get PCR Disbursement Details Total
+                    decimal TotalDisbursementDetail = ProjectCheckRequestData.GetPCRDisbursemetDetailTotal(int.Parse(PCRID));
+
+                    if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
+                    {
+                        pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
+                            chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                            decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
+                            txtNotes.Text, 1234);
+                        lblMessage.Text = "Successfully Updated Check Request";
+                    }
+                    else
+                    {
+                        lblMessage.Text = "Disbursement value cannot be less than total disbursement detail " + TotalDisbursementDetail + " value";
+                        txtDisbursementAmt.Focus();
+                        return;
+                    }
                 }
 
                 this.hfTransId.Value = pcr.TransID.ToString();
@@ -585,6 +700,7 @@ namespace vhcbcloud
 
                 BindPCRData();
                 ClearPCRForm();
+                ClearPCRDetails();
                 this.hfEditPCRId.Value = "";
             }
             catch (Exception ex)
@@ -598,6 +714,41 @@ namespace vhcbcloud
         {
             try
             {
+
+                #region Validations
+                if (ddlFundTypeCommitments.Items.Count > 1 && ddlFundTypeCommitments.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Source";
+                    ddlFundTypeCommitments.Focus();
+                    return;
+                }
+                else if (ddlTransType.Items.Count > 1 && ddlTransType.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Grant/Loan/Contract";
+                    ddlTransType.Focus();
+                    return;
+                }
+
+                if (txtTransDetailAmt.Text.Trim() == "")
+                {
+                    lblErrorMsg.Text = "Select Amount";
+                    txtTransDetailAmt.Focus();
+                    return;
+                }
+                else if (txtTransDetailAmt.Text.Trim() != "")
+                {
+                    decimal n;
+                    bool isDecimal = decimal.TryParse(txtTransDetailAmt.Text.Trim(), out n);
+
+                    if (!isDecimal || Convert.ToDecimal(txtTransDetailAmt.Text) <= 0)
+                    {
+                        lblErrorMsg.Text = "Select a valid Amount";
+                        txtTransDetailAmt.Focus();
+                        return;
+                    }
+                }
+                #endregion
+
                 decimal currentTranAmount = 0;
                 decimal currentTranFudAmount = 0;
                 decimal currentBalAmount = 0;
@@ -644,6 +795,19 @@ namespace vhcbcloud
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             string lbNODS = string.Empty;
+
+            if (lbNOD.Items.Count > 1 && lbNOD.SelectedIndex == -1)
+            {
+                lblErrorMsg.Text = "Select NOD";
+                lbNOD.Focus();
+                return;
+            }
+            else if (ddlPCRQuestions.Items.Count > 1 && ddlPCRQuestions.SelectedIndex == 0)
+            {
+                lblErrorMsg.Text = "Select PCR Question";
+                ddlPCRQuestions.Focus();
+                return;
+            }
 
             foreach (ListItem listItem in lbNOD.Items)
             {
@@ -706,8 +870,8 @@ namespace vhcbcloud
                             }
                         }
                         
-                        txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : drPCR["InitDate"].ToString();
-                        
+                        txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : DateTime.Parse(drPCR["InitDate"].ToString()).ToShortDateString();
+
                         foreach (ListItem item in ddlPayee.Items)
                         {
                             if (drTrans["PayeeApplicant"].ToString() == item.Value.ToString())
@@ -738,9 +902,9 @@ namespace vhcbcloud
 
                         chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
                         chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
-                        txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ?  "" : drPCR["MatchAmt"].ToString();
+                        txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();
                         txtNotes.Text = String.IsNullOrEmpty(drPCR["Notes"].ToString()) ? "" : drPCR["Notes"].ToString();
-                        txtDisbursementAmt.Text = String.IsNullOrEmpty(drTrans["TransAmt"].ToString()) ? "" : drTrans["TransAmt"].ToString();
+                        txtDisbursementAmt.Text = String.IsNullOrEmpty(drTrans["TransAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drTrans["TransAmt"].ToString()), 2).ToString();
 
                         foreach (ListItem item in ddlMatchingGrant.Items)
                         {
@@ -798,7 +962,7 @@ namespace vhcbcloud
                 txtEligibleAmt.Text = "";
                 ddlMatchingGrant.SelectedIndex = 0;
             }
-            
+
             txtNotes.Text = "";
             txtDisbursementAmt.Text = "";
         }

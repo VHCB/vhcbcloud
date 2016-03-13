@@ -421,6 +421,42 @@ namespace DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static decimal GetPCRDisbursemetDetailTotal(int ProjectCheckReqID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                decimal total = 0;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Disbursment_Detail_Total";
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
+
+                SqlParameter parmMessage1 = new SqlParameter("@total", SqlDbType.Decimal);
+                parmMessage1.Direction = ParameterDirection.Output;
+                command.Parameters.Add(parmMessage1);
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+
+                    total = decimal.Parse(command.Parameters["@total"].Value.ToString());
+                    
+                    return total;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 
     public class PCRDetails
