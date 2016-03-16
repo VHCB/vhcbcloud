@@ -116,6 +116,7 @@ alter procedure PCR_Submit
 	@Payee int,
 	@LkStatus int,
 	@UserID	int,
+	@LKNODs 	varchar(50),
 	@ProjectCheckReqID	int output,
 	@TransID	int output
 )
@@ -133,6 +134,8 @@ begin
 	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus)
 
 	set @TransID = @@IDENTITY
+
+	exec PCR_Submit_NOD @ProjectCheckReqID, @LKNODs
 
 end
 go
@@ -161,12 +164,13 @@ alter procedure PCR_Trans_Detail_Load
 as
 begin
 Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
-			d.LkTransType, t.LkTransaction  
+			d.LkTransType, t.LkTransaction, StateAcctnum +' - '+ isnull(f.DeptID, '') +' - '+ isnull(f.VHCBCode, '') as StateVHCBNos
 from Fund f 
-			join Detail d on d.FundId = f.FundId
-			join Trans t on t.TransId = d.TransId
-			join LookupValues lv on lv.TypeID = d.LkTransType
-		Where     f.RowIsActive = 1 --and t.LkTransaction = @commitmentType
+	join Detail d on d.FundId = f.FundId
+	join Trans t on t.TransId = d.TransId
+	join LookupValues lv on lv.TypeID = d.LkTransType
+	left join stateaccount sa(nolock) on sa.LkTransType = d.LkTransType
+Where     f.RowIsActive = 1 --and t.LkTransaction = @commitmentType
 		and t.TransId = @transid 
 end
 go
@@ -204,51 +208,43 @@ go
 alter procedure PCR_Submit_Questions
 (
 	@ProjectCheckReqID	int, 
-	@LkPCRQuestionsID	int, 
-	@Approved			bit, 
-	@Date				date, 
-	@StaffID			int,
-	@LKNODs				varchar(50)
+	@LkPCRQuestionsID	int
 )
 as
 begin
 
-	delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
-
-	insert into ProjectCheckReqQuestions(ProjectCheckReqID, LkPCRQuestionsID, Approved, Date, StaffID)
-	values(@ProjectCheckReqID, @LkPCRQuestionsID, @Approved, @Date, @StaffID)
-
-	delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
-
-	declare @pos int
-	declare @len int
-	declare @value varchar(10)
-
-	set @pos = 0
-	set @len = 0
-
-	set @LKNODs = @LKNODs + '|';
-	while charindex('|', @LKNODs, @pos+1)>0
+	if not exists (select ProjectCheckReqID from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID and LkPCRQuestionsID = @LkPCRQuestionsID)
 	begin
-		set @len = charindex('|', @LKNODs, @pos+1) - @pos
-		set @value = substring(@LKNODs, @pos, @len)
-		--select @pos, @len, @value 
-		--print @value
-		insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD) values(@ProjectCheckReqID, @value)
-
-		set @pos = charindex('|', @LKNODs, @pos+@len) +1
+		insert into ProjectCheckReqQuestions(ProjectCheckReqID, LkPCRQuestionsID)
+		values(@ProjectCheckReqID, @LkPCRQuestionsID)
 	end
 end
 go
 
-alter procedure PCR_Submit_NOD
+alter procedure PCR_Load_Questions_For_Approval
 (
-	@ProjectCheckReqID	int, 
-	@LKNOD				int
+	@ProjectCheckReqID	int
 )
 as
 begin
-	insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD)
-	values(@ProjectCheckReqID, @LKNOD)
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, pcrq.StaffID 
+	from ProjectCheckReqQuestions pcrq(nolock) 
+	left join  LkPCRQuestions q(nolock) on pcrq.LkPCRQuestionsID = q.TypeID 
+	where ProjectCheckReqID = @ProjectCheckReqID
+end
+go
+
+
+alter procedure PCR_Update_Questions_For_Approval
+(
+	@ProjectCheckReqQuestionid	int,
+	@Approved bit,
+	@StaffID int
+)
+as
+begin
+	update ProjectCheckReqQuestions set Approved = @Approved, Date = CONVERT(char(10), GetDate(),126), StaffID = @StaffID
+	from ProjectCheckReqQuestions
+	where ProjectCheckReqQuestionid = @ProjectCheckReqQuestionid
 end
 go
