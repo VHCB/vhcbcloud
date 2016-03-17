@@ -97,16 +97,29 @@
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
+                  
                         <tr>
                             <td><span class="labelClass">Notes :</span></td>
-                            <td colspan="3">
-                                <asp:TextBox ID="txtNotes" TextMode="multiline" Columns="50" Rows="2" runat="server" />
+                            <td>
+                                <asp:TextBox ID="txtNotes" TextMode="multiline" Columns="50" Rows="2" runat="server" Width="294px" />
                             </td>
+                            
                             <td><span class="labelClass">Disbursement $:</span></td>
                             <td>
                                 <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
+                           
                         </tr>
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                             <td><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td>
+                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD"></asp:ListBox></td>
+
+                        </tr>
+
                         <tr>
                             <td colspan="6" style="height: 5px">
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" /></td>
@@ -200,10 +213,15 @@
                             <td>
                                 <asp:TextBox ID="txtTransDetailAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
-                            <td><span class="labelClass">State/VHCB #s:</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
-                                </asp:DropDownList></td>
+                               <%-- <span class="labelClass">State/VHCB #s:</span>--%>
+
+                            </td>
+                            <td>
+                               <%-- <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>--%>
+
+                            </td>
                             <td></td>
                         </tr>
                         <tr>
@@ -223,7 +241,7 @@
                                 <asp:GridView ID="gvPTransDetails" runat="server" AutoGenerateColumns="False"
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    AllowSorting="true" ShowFooter="True" OnRowCancelingEdit="gvPTransDetails_RowCancelingEdit" OnRowDataBound="gvPTransDetails_RowDataBound" OnRowEditing="gvPTransDetails_RowEditing" OnRowUpdating="gvPTransDetails_RowUpdating">
+                                    ShowFooter="True" OnRowCancelingEdit="gvPTransDetails_RowCancelingEdit" OnRowDataBound="gvPTransDetails_RowDataBound" OnRowEditing="gvPTransDetails_RowEditing" OnRowUpdating="gvPTransDetails_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -278,6 +296,12 @@
                                                 <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
                                             </FooterTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="State/VHCB #s">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblStateVHCBNos" runat="Server" Text='<%# Eval("StateVHCBNos") %>' />
+                                            </ItemTemplate>
+                                           
+                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
@@ -319,43 +343,80 @@
                 <div class="panel-body">
                     <table style="width: 100%">
                         <tr>
-                            <td><span class="labelClass">Nature of Disbursements :</span></td>
-                            <td>
-                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD"></asp:ListBox></td>
                             <td><span class="labelClass">Question :</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="250px">
                                 </asp:DropDownList></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" style="height: 5px"></td>
-                        </tr>
-                        <tr>
                             <td>
-                                <span class="labelClass">Approved By :</span>
+                               <%-- <span class="labelClass">Approved By :</span>--%>
                             </td>
                             <td>
-                                <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>
+                               <%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%>
                             </td>
                             <td>
-                                <span class="labelClass">Date :</span>
+                                <%--<span class="labelClass">Date :</span>--%>
                             </td>
                             <td>
-                                <span class="labelClass"><%:DateTime.Now.ToString() %></span>
+                               <%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" style="height: 5px"></td>
+                            <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="4" style="height: 5px">
+                            <td colspan="6" style="height: 5px">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                         </tr>
                         <tr>
-                            <td colspan="4"></td>
+                            <td colspan="6"></td>
                         </tr>
                         <tr>
-                            <td colspan="4"></td>
+                            <td colspan="6">
+                                 <br />
+                                <asp:GridView ID="gvQuestionsForApproval" runat="server" AutoGenerateColumns="False"
+                                    Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    ShowFooter="True" OnRowCancelingEdit="gvQuestionsForApproval_RowCancelingEdit" 
+                                    OnRowDataBound="gvQuestionsForApproval_RowDataBound" 
+                                    OnRowEditing="gvQuestionsForApproval_RowEditing" 
+                                    OnRowUpdating="gvQuestionsForApproval_RowUpdating" >
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Question" SortExpression="Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblQuestion" runat="Server" Text='<%# Eval("Description") %>' />
+                                                <asp:HiddenField ID="hfProjectCheckReqQuestionID" runat="server" Value='<%#Eval("ProjectCheckReqQuestionID")%>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Approved" SortExpression="Approved">
+                                             <ItemTemplate>
+                                                <asp:Label ID="lblApproved" runat="Server" Text='<%# Eval("Approved") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("Approved") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Staff ID" SortExpression="StaffID">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblStaffId" runat="Server" Text='<%# Eval("StaffID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                         <asp:TemplateField HeaderText="Date" SortExpression="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                    <FooterStyle CssClass="footerStyle" />
+                                </asp:GridView>
+                                </td>
                         </tr>
                     </table>
                 </div>

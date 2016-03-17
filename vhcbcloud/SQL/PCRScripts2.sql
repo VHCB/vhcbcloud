@@ -1,7 +1,7 @@
 use vhcbsandbox
 go
 
-create procedure PCR_Trans_Status
+alter procedure PCR_Trans_Status
 as
 begin
 	select typeid, Description 
@@ -11,7 +11,7 @@ begin
 end
 go
 
-create procedure GetPCRData
+alter procedure GetPCRData
 as
 begin
 	select pcr.ProjectCheckReqId, t.transid, pcr.ProjectID, pv.project_name, pcr.InitDate, pcr.LegalReview, t.TransAmt, an.Applicantname as Payee
@@ -26,9 +26,9 @@ begin
 end
 go
 
---exec GetPCRDetails 25
+--exec GetPCRDetails 93
 
-create procedure GetPCRDetails
+alter procedure GetPCRDetails
 (
 	@ProjectCheckReqId int
 )
@@ -61,7 +61,7 @@ end
 go
 
 --exec GetNODDataByPCRID 66
-create procedure GetNODDataByPCRID
+alter procedure GetNODDataByPCRID
 (
 	@ProjectCheckReqId int
 )
@@ -72,7 +72,7 @@ end
 go
 
 --exec GetQuestionsByPCRID 66
-create procedure GetQuestionsByPCRID
+alter procedure GetQuestionsByPCRID
 (
 	@ProjectCheckReqId int
 )
@@ -82,7 +82,7 @@ begin
 end
 go
 
-create procedure PCR_Update
+alter procedure PCR_Update
 (
 	@ProjectCheckReqID int,
 	@ProjectID int, 
@@ -97,6 +97,7 @@ create procedure PCR_Update
 	@Payee int,
 	@LkStatus int,
 	@UserID	int,
+	@LKNODs 	varchar(50),
 	@TransID	int output
 )
 as
@@ -112,6 +113,8 @@ begin
 	update Trans set ProjectID = ProjectID, Date = @InitDate, TransAmt = @Disbursement, PayeeApplicant = @Payee, LkTransaction = 236, LkStatus = @LkStatus
 	from Trans
 	where TransID = @TransID
+
+	exec PCR_Submit_NOD @ProjectCheckReqID, @LKNODs
 
 end
 go
@@ -131,8 +134,33 @@ begin
 end
 go
 
-select * from detail
+alter procedure PCR_Submit_NOD
+(
+	@ProjectCheckReqID int,
+	@LKNODs	varchar(50)
+)
+as
+begin
 
-select * from ProjectCheckReq
+	delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
 
-exec PCR_Disbursment_Detail_Total 25, null
+	declare @pos int
+	declare @len int
+	declare @value varchar(10)
+
+	set @pos = 0
+	set @len = 0
+
+	set @LKNODs = @LKNODs + '|';
+	while charindex('|', @LKNODs, @pos+1)>0
+	begin
+		set @len = charindex('|', @LKNODs, @pos+1) - @pos
+		set @value = substring(@LKNODs, @pos, @len)
+		--select @pos, @len, @value 
+		--print @value
+		insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD) values(@ProjectCheckReqID, @value)
+
+		set @pos = charindex('|', @LKNODs, @pos+@len) +1
+	end
+end
+go

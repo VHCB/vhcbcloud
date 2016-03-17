@@ -184,6 +184,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtDisbursementAmt;
         
         /// <summary>
+        /// lbNOD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox lbNOD;
+        
+        /// <summary>
         /// btnCRSubmit control.
         /// </summary>
         /// <remarks>
@@ -238,15 +247,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtTransDetailAmt;
         
         /// <summary>
-        /// ddlStateVHCBS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlStateVHCBS;
-        
-        /// <summary>
         /// btnPCRTransDetails control.
         /// </summary>
         /// <remarks>
@@ -265,15 +265,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.GridView gvPTransDetails;
         
         /// <summary>
-        /// lbNOD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox lbNOD;
-        
-        /// <summary>
         /// ddlPCRQuestions control.
         /// </summary>
         /// <remarks>
@@ -290,6 +281,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// gvQuestionsForApproval control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvQuestionsForApproval;
         
         /// <summary>
         /// hfTransId control.
