@@ -2,16 +2,33 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
-        <p class="lead">Check Request</p>
+        <p class="lead">Project Check Request</p>
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading">Check Request</div>
+                <div class="panel-heading">
+                    <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
+                        RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelect_SelectedIndexChanged">
+                        <asp:ListItem Selected="true"> New &nbsp;</asp:ListItem>
+                        <asp:ListItem> Existing &nbsp;</asp:ListItem>
+
+                    </asp:RadioButtonList>
+                </div>
                 <div class="panel-body">
                     <p class="lblErrMsg">
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
                         <asp:Label runat="server" ID="lblMessage" Font-Size="Small"></asp:Label>
                     </p>
                     <table style="width: 100%">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;</td>
+                            <td colspan="2">
+                                &nbsp;<asp:LinkButton ID="lbAwardSummary" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton></td>
+                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;</td>
+                        </tr>
                         <tr>
                             <td><span class="labelClass">Project # :</span></td>
                             <td>
@@ -25,7 +42,7 @@
                             </td>
                             <td><span class="labelClass">Date :</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false">
+                                <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDate_SelectedIndexChanged">
                                 </asp:DropDownList>
                                 <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
@@ -97,26 +114,27 @@
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
-                  
+
                         <tr>
-                            <td><span class="labelClass">Notes :</span></td>
-                            <td>
-                                <asp:TextBox ID="txtNotes" TextMode="multiline" Columns="50" Rows="2" runat="server" Width="294px" />
-                            </td>
-                            
+
+
                             <td><span class="labelClass">Disbursement $:</span></td>
-                            <td>
+                            <td colspan="5">
                                 <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
-                           
+
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                             <td><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td style="vertical-align:top"><span class="labelClass">Nature of Disbursements :</span></td>
                             <td>
-                                <asp:ListBox runat="server" SelectionMode="Multiple" ID="lbNOD"></asp:ListBox></td>
+                                <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="294px"></asp:ListBox></td>
+                            <td style="vertical-align:top"><span class="labelClass">Notes :</span></td>
+                            <td colspan="3">
+                                <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="294px" Height="80px" />
+                            </td>
 
                         </tr>
 
@@ -127,8 +145,8 @@
                         <tr>
                             <td colspan="6">
                                 <br />
-                                <asp:Panel runat="server" ID="pnlPCRData" Width="100%" Height="300px" ScrollBars="Vertical">
-                                    <asp:GridView ID="gvPCRData" runat="server" AutoGenerateColumns="False"
+                                <asp:Panel runat="server" ID="pnlPCRData" Width="100%" Height="300px" ScrollBars="Vertical" Visible="false">
+                                    <asp:GridView ID="gvPCRData" runat="server" AutoGenerateColumns="False" Visible="false"
                                         Width="100%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                         GridLines="None"
                                         EnableTheming="True"
@@ -187,7 +205,7 @@
 
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="pnlDisbursement" runat="server">
                 <div class="panel-heading">Disbursements</div>
                 <div class="panel-body">
                     <table style="width: 100%">
@@ -214,11 +232,11 @@
                                 <asp:TextBox ID="txtTransDetailAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
                             <td>
-                               <%-- <span class="labelClass">State/VHCB #s:</span>--%>
+                                <%-- <span class="labelClass">State/VHCB #s:</span>--%>
 
                             </td>
                             <td>
-                               <%-- <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
+                                <%-- <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>--%>
 
                             </td>
@@ -296,11 +314,11 @@
                                                 <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
                                             </FooterTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="State/VHCB #s">
+                                        <asp:TemplateField HeaderText="State/VHCB #s">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblStateVHCBNos" runat="Server" Text='<%# Eval("StateVHCBNos") %>' />
                                             </ItemTemplate>
-                                           
+
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                             <ItemTemplate>
@@ -338,7 +356,7 @@
                 </div>
             </div>--%>
 
-            <div class="panel panel-default">
+            <div class="panel panel-default" runat="server" id="pnlApprovals">
                 <div class="panel-heading">Approvals</div>
                 <div class="panel-body">
                     <table style="width: 100%">
@@ -348,16 +366,16 @@
                                 <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="250px">
                                 </asp:DropDownList></td>
                             <td>
-                               <%-- <span class="labelClass">Approved By :</span>--%>
+                                <%-- <span class="labelClass">Approved By :</span>--%>
                             </td>
                             <td>
-                               <%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%>
+                                <%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%>
                             </td>
                             <td>
                                 <%--<span class="labelClass">Date :</span>--%>
                             </td>
                             <td>
-                               <%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%>
+                                <%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%>
                             </td>
                         </tr>
                         <tr>
@@ -372,14 +390,14 @@
                         </tr>
                         <tr>
                             <td colspan="6">
-                                 <br />
+                                <br />
                                 <asp:GridView ID="gvQuestionsForApproval" runat="server" AutoGenerateColumns="False"
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    ShowFooter="True" OnRowCancelingEdit="gvQuestionsForApproval_RowCancelingEdit" 
-                                    OnRowDataBound="gvQuestionsForApproval_RowDataBound" 
-                                    OnRowEditing="gvQuestionsForApproval_RowEditing" 
-                                    OnRowUpdating="gvQuestionsForApproval_RowUpdating" >
+                                    ShowFooter="True" OnRowCancelingEdit="gvQuestionsForApproval_RowCancelingEdit"
+                                    OnRowDataBound="gvQuestionsForApproval_RowDataBound"
+                                    OnRowEditing="gvQuestionsForApproval_RowEditing"
+                                    OnRowUpdating="gvQuestionsForApproval_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -394,7 +412,7 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Approved" SortExpression="Approved">
-                                             <ItemTemplate>
+                                            <ItemTemplate>
                                                 <asp:Label ID="lblApproved" runat="Server" Text='<%# Eval("Approved") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -407,7 +425,7 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                         <asp:TemplateField HeaderText="Date" SortExpression="Date">
+                                        <asp:TemplateField HeaderText="Date" SortExpression="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
                                             </ItemTemplate>
@@ -416,7 +434,7 @@
                                     </Columns>
                                     <FooterStyle CssClass="footerStyle" />
                                 </asp:GridView>
-                                </td>
+                            </td>
                         </tr>
                     </table>
                 </div>

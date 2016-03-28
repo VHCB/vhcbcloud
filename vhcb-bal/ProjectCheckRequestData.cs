@@ -11,7 +11,7 @@ namespace DataAccessLayer
 {
     public static class ProjectCheckRequestData
     {
-        
+
         public static DataTable GetData(string ProcName)
         {
             DataTable dtData = null;
@@ -217,6 +217,41 @@ namespace DataAccessLayer
             return dtTranDetails;
         }
 
+        public static DataTable GetPCRDataById(string ProjectCheckReqId)
+        {
+            DataTable dtTranDetails = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", Convert.ToInt32( ProjectCheckReqId)));
+                command.CommandText = "GetPCRDataById";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTranDetails = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTranDetails;
+        }
+
         public static DataTable GetPCRQuestions(string ProjectCheckReqId)
         {
             DataTable dtTranDetails = null;
@@ -287,10 +322,11 @@ namespace DataAccessLayer
             return dtPCRQuestions;
         }
 
-        public static PCRDetails SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
+        public static DataTable SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
            bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtPCRDet = null;
             try
             {
                 object returnMsg = "";
@@ -302,8 +338,8 @@ namespace DataAccessLayer
                 command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                 command.Parameters.Add(new SqlParameter("LegalReview", LegalReview));
                 command.Parameters.Add(new SqlParameter("LCB", LCB));
-                command.Parameters.Add(new SqlParameter("MatchAmt", (MatchAmt == 0) ? System.Data.SqlTypes.SqlDecimal.Null: MatchAmt));
-                command.Parameters.Add(new SqlParameter("LkFVGrantMatch", (LkFVGrantMatch == 0 ) ? System.Data.SqlTypes.SqlInt32.Null : LkFVGrantMatch));
+                command.Parameters.Add(new SqlParameter("MatchAmt", (MatchAmt == 0) ? System.Data.SqlTypes.SqlDecimal.Null : MatchAmt));
+                command.Parameters.Add(new SqlParameter("LkFVGrantMatch", (LkFVGrantMatch == 0) ? System.Data.SqlTypes.SqlInt32.Null : LkFVGrantMatch));
                 command.Parameters.Add(new SqlParameter("Notes", Notes));
                 command.Parameters.Add(new SqlParameter("Disbursement", Disbursement));
                 command.Parameters.Add(new SqlParameter("Payee", PayeeApplicant));
@@ -328,8 +364,15 @@ namespace DataAccessLayer
                     PCRDetails pcr = new PCRDetails();
                     pcr.ProjectCheckReqID = int.Parse(command.Parameters["@ProjectCheckReqID"].Value.ToString());
                     pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
-
-                    return pcr;
+                  
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
+                    return dtPCRDet;
                 }
             }
             catch (Exception ex)
@@ -436,7 +479,7 @@ namespace DataAccessLayer
 
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
                 command.Parameters.Add(new SqlParameter("LkPCRQuestionsID", LkPCRQuestionsID));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -476,7 +519,7 @@ namespace DataAccessLayer
                     command.ExecuteNonQuery();
 
                     total = decimal.Parse(command.Parameters["@total"].Value.ToString());
-                    
+
                     return total;
                 }
             }
@@ -526,5 +569,6 @@ namespace DataAccessLayer
     {
         public int ProjectCheckReqID;
         public int TransID;
+        public string pcrDetails;
     }
 }
