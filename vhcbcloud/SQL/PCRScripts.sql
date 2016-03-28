@@ -18,7 +18,7 @@ alter procedure PCR_Dates
 as
 begin
 	select distinct convert(varchar(10), InitDate) as Date  from [dbo].[ProjectCheckReq]
-	union
+	union all
 	select distinct convert(varchar(10), Date) as Date from [dbo].[Trans]
 	order by Date
 end
@@ -137,6 +137,18 @@ begin
 
 	exec PCR_Submit_NOD @ProjectCheckReqID, @LKNODs
 
+	select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as TransId
+	from ProjectCheckReq pcr(nolock)
+		join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+		join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+		join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+		join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+		join AppName an(nolock) on aan.AppNameID = an.AppNameID
+		join LookupValues lv on lv.TypeID = t.LkStatus
+	where pcr.ProjectCheckReqID = @ProjectCheckReqID
+	order by pcr.ProjectCheckReqId desc
+
+
 end
 go
 
@@ -246,5 +258,39 @@ begin
 	update ProjectCheckReqQuestions set Approved = @Approved, Date = CONVERT(char(10), GetDate(),126), StaffID = @StaffID
 	from ProjectCheckReqQuestions
 	where ProjectCheckReqQuestionid = @ProjectCheckReqQuestionid
+end
+go
+
+alter procedure GetExistingPCR
+as
+Begin
+	select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	join LookupValues lv on lv.TypeID = t.LkStatus
+	order by pcr.ProjectCheckReqId desc
+End
+
+
+alter procedure GetPCRDataById
+(
+	@ProjectCheckReqID	int
+)
+as
+begin
+	select pcr.ProjectCheckReqId, t.transid, pcr.ProjectID, pv.project_name, pcr.InitDate, pcr.LegalReview, t.TransAmt, an.Applicantname as Payee
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	where pcr.ProjectCheckReqId = @ProjectCheckReqID
+	order by pcr.ProjectCheckReqId desc
+
 end
 go
