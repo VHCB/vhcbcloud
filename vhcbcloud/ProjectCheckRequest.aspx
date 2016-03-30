@@ -6,12 +6,16 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
+                   
+                     <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
                         RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelect_SelectedIndexChanged">
                         <asp:ListItem Selected="true"> New &nbsp;</asp:ListItem>
                         <asp:ListItem> Existing &nbsp;</asp:ListItem>
 
                     </asp:RadioButtonList>
+                    
+                        <asp:LinkButton ID="lbAwardSummary" style="float: right;margin:0" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
+                     <div style="clear: right;"></div>
                 </div>
                 <div class="panel-body">
                     <p class="lblErrMsg">
@@ -19,16 +23,7 @@
                         <asp:Label runat="server" ID="lblMessage" Font-Size="Small"></asp:Label>
                     </p>
                     <table style="width: 100%">
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>
-                                &nbsp;</td>
-                            <td colspan="2">
-                                &nbsp;<asp:LinkButton ID="lbAwardSummary" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton></td>
-                            <td>&nbsp;</td>
-                            <td>
-                                &nbsp;</td>
-                        </tr>
+                        
                         <tr>
                             <td><span class="labelClass">Project # :</span></td>
                             <td>
@@ -89,8 +84,9 @@
                                 <span class="labelClass">Status :</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown"  runat="server" Enabled="false">
                                 </asp:DropDownList>
+
                             </td>
                         </tr>
                         <tr>
@@ -128,10 +124,10 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td style="vertical-align:top"><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td style="vertical-align: top"><span class="labelClass">Nature of Disbursements :</span></td>
                             <td>
                                 <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="294px"></asp:ListBox></td>
-                            <td style="vertical-align:top"><span class="labelClass">Notes :</span></td>
+                            <td style="vertical-align: top"><span class="labelClass">Notes :</span></td>
                             <td colspan="3">
                                 <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="294px" Height="80px" />
                             </td>

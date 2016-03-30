@@ -10,7 +10,7 @@
                 <div class="panel-heading"><span class="labelClass">Current Award Status for project: </span> <b><asp:Label runat="server" ID="lblProjId"></asp:Label></b></div>
 
                 <div class="panel-body">
-                    <p>
+                    <p class="labelClass">
                         Project # :
                         <asp:DropDownList ID="ddlProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProj_SelectedIndexChanged"></asp:DropDownList>
                     </p>
