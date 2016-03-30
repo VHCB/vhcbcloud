@@ -57,6 +57,8 @@ begin
 
 	select ProjectCheckReqID, LkPCRQuestionsID, Approved, Date, StaffID from ProjectCheckReqQuestions(nolock)  where ProjectCheckReqID = @ProjectCheckReqID
 
+	select pa.applicantid from project p join projectapplicant pa on pa.ProjectId = p.ProjectId
+		join projectcheckreq pcr on pcr.ProjectID = p.ProjectId where pa.FinLegal = 1 and pcr.ProjectCheckReqID = @ProjectCheckReqID
 end
 go
 

@@ -274,7 +274,7 @@ Begin
 	join LookupValues lv on lv.TypeID = t.LkStatus
 	order by pcr.ProjectCheckReqId desc
 End
-
+go
 
 alter procedure GetPCRDataById
 (
