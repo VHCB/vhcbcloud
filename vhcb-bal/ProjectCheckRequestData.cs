@@ -81,6 +81,41 @@ namespace DataAccessLayer
             return dtApplicantNames;
         }
 
+        public static DataTable GetPayeeNameByProjectId(int ProjectId)
+        {
+            DataTable dtApplicantNames = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("ProjectID", ProjectId));
+                command.CommandText = "GetPayeeNameByProjectId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtApplicantNames = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtApplicantNames;
+        }
+
         public static DataTable GetQuestionsForApproval(int ProjectCheckReqId)
         {
             DataTable dtQuestionsForApproval = null;
@@ -358,12 +393,9 @@ namespace DataAccessLayer
                 using (connection)
                 {
                     connection.Open();
-                    command.Connection = connection;
-                    command.ExecuteNonQuery();
+                    command.Connection = connection;                 
 
-                    PCRDetails pcr = new PCRDetails();
-                    pcr.ProjectCheckReqID = int.Parse(command.Parameters["@ProjectCheckReqID"].Value.ToString());
-                    pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
+                    PCRDetails pcr = new PCRDetails();            
                   
                     var ds = new DataSet();
                     var da = new SqlDataAdapter(command);
@@ -372,6 +404,8 @@ namespace DataAccessLayer
                     {
                         dtPCRDet = ds.Tables[0];
                     }
+                    pcr.ProjectCheckReqID = int.Parse(command.Parameters["@ProjectCheckReqID"].Value.ToString());
+                    pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
                     return dtPCRDet;
                 }
             }

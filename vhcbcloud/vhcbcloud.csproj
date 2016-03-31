@@ -172,6 +172,7 @@
     <Content Include="Applicant.aspx" />
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
+    <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
@@ -266,8 +267,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
+    <Content Include="SQL\EntiryScripts.sql" />
     <Content Include="SQL\Login Creation Script.sql" />
     <Content Include="SQL\ManageUserInfo.sql" />
+    <Content Include="SQL\PCRInfo.sql" />
     <Content Include="SQL\PCRScripts.sql" />
     <Content Include="SQL\PCRScripts2.sql" />
     <Content Include="ViewSwitcher.ascx" />
@@ -328,6 +331,13 @@
     </Compile>
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity.aspx.cs">
+      <DependentUpon>Entity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Entity.aspx.designer.cs">
+      <DependentUpon>Entity.aspx</DependentUpon>
     </Compile>
     <Compile Include="FinalizeTransactions.aspx.cs">
       <DependentUpon>FinalizeTransactions.aspx</DependentUpon>
