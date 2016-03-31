@@ -24,7 +24,6 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 DisableButton(btnSubmit);
-                DisableButton(btnPCRTransDetails);
                 BindProjects();
                 //BindTransDate();
                 // BindApplicantName();
@@ -122,6 +121,32 @@ namespace vhcbcloud
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
                 //ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
+
+                dtApplicantname = new DataTable();
+                dtApplicantname = ProjectCheckRequestData.GetPayeeNameByProjectId(ProjectId);
+                if (dtApplicantname != null)
+                {
+                    DataRow drAppl = dtApplicantname.Rows[0];
+                    foreach (ListItem item in ddlProgram.Items)
+                    {
+                        if (drAppl["LkProgram"].ToString() == item.Value.ToString())
+                        {
+                            ddlProgram.ClearSelection();
+                            item.Selected = true;
+                            DisplayControls(item.Text);
+                        }
+                    }
+
+                    foreach (ListItem item in ddlPayee.Items)
+                    {
+                        if (drAppl["applicantid"].ToString() == item.Value.ToString())
+                        {
+                            ddlPayee.ClearSelection();
+                            item.Selected = true;
+                        }
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -183,7 +208,7 @@ namespace vhcbcloud
                 ddlStatus.DataValueField = "typeid";
                 ddlStatus.DataTextField = "Description";
                 ddlStatus.DataBind();
-                
+
             }
             catch (Exception ex)
             {
@@ -445,10 +470,11 @@ namespace vhcbcloud
         {
             if (ddlProjFilter.SelectedIndex != 0)
             {
+                ClearPCRForm();
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 lblProjName.Text = tokens[1];
                 BindApplicantName(int.Parse(tokens[0]));
-                lbAwardSummary.Visible = true;
+                lbAwardSummary.Visible = true;                
             }
             else
             {
@@ -772,7 +798,7 @@ namespace vhcbcloud
                 pnlApprovals.Visible = true;
 
                 ddlDate.Visible = true;
-                txtTransDate.Visible = false;               
+                txtTransDate.Visible = false;
 
             }
             catch (Exception ex)
@@ -781,8 +807,6 @@ namespace vhcbcloud
             }
 
         }
-
-
 
         protected void btnPCRTransDetails_Click(object sender, EventArgs e)
         {
@@ -1004,7 +1028,7 @@ namespace vhcbcloud
 
         private void DisablePCR()
         {
-            ddlProjFilter.Enabled = false;
+            // ddlProjFilter.Enabled = false;
             ddlApplicantName.Enabled = false;
             txtTransDate.Enabled = false;
             ddlPayee.Enabled = false;
@@ -1061,8 +1085,7 @@ namespace vhcbcloud
         }
 
         private void ClearPCRForm()
-        {
-            ddlProjFilter.SelectedIndex = 0;
+        {            
             ddlApplicantName.Items.Clear();
             lblProjName.Text = "--";
             txtTransDate.Text = "";
@@ -1088,7 +1111,8 @@ namespace vhcbcloud
                 txtEligibleAmt.Text = "";
                 ddlMatchingGrant.SelectedIndex = 0;
             }
-
+            ddlDate.Visible = false;
+            txtTransDate.Visible = true;
             lbNOD.SelectedIndex = -1;
             txtNotes.Text = "";
             txtDisbursementAmt.Text = "";
@@ -1270,7 +1294,7 @@ namespace vhcbcloud
                 this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
                 this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                 this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
-                EnableButton(btnPCRTransDetails);                
+                EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
@@ -1294,20 +1318,22 @@ namespace vhcbcloud
         {
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
+            ClearPCRForm();
             if (rdBtnSelect.SelectedIndex == 0)
             {
-                ClearPCRForm();
+               
                 EnablePCR();
                 ddlDate.Visible = false;
                 txtTransDate.Visible = true;
+                EnableButton(btnCRSubmit);
             }
             else
             {
+                ddlProjFilter.SelectedIndex = 0;
                 BindExistingPCR();
                 EnableButton(btnPCRTransDetails);
-                
                 DisableButton(btnCRSubmit);
-                DisablePCR();              
+                DisablePCR();
                 ddlDate.Visible = true;
                 txtTransDate.Visible = false;
             }
@@ -1326,7 +1352,7 @@ namespace vhcbcloud
                 DataRow drTrans = ds.Tables[1].Rows[0];
 
                 DataTable dtNOD = new DataTable();
-                dtNOD = ds.Tables[4];               
+                dtNOD = ds.Tables[4];
 
                 lblProjName.Text = projName;
 
