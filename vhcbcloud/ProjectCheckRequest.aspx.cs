@@ -772,8 +772,7 @@ namespace vhcbcloud
                 pnlApprovals.Visible = true;
 
                 ddlDate.Visible = true;
-                txtTransDate.Visible = false;
-                DisableButton(btnCRSubmit);
+                txtTransDate.Visible = false;               
 
             }
             catch (Exception ex)
