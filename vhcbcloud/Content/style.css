@@ -8,7 +8,39 @@ orange: #f78b0e;
 blue: #3589a4;
 
 */
+ .panel-width {
+  padding: 5px;
+}
+ /*.legend {
+    display: block;
+    -webkit-padding-start: 2px;
+    -webkit-padding-end: 2px;
+    border: none;
+}*/
+ .fieldset {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
 
+ .legend {
+    width:inherit; /* Or auto */
+    padding:0 10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+}
+/*.fieldset {
+    display: block;
+    -webkit-margin-start: 2px;
+    -webkit-margin-end: 2px;
+    -webkit-padding-before: 0.35em;
+    -webkit-padding-start: 0.75em;
+    -webkit-padding-end: 0.75em;
+    -webkit-padding-after: 0.625em;
+    min-width: -webkit-min-content;
+    border: 2px groove threedface;
+}*/
 	a { color:#3589a4; text-decoration:none;}
 	a:link { color:#3589a4; text-decoration:none;}
 	a:visited { color:#3589a4; text-decoration:none;}

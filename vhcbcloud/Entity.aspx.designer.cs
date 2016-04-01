@@ -184,15 +184,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel pnlIndividualForm;
         
         /// <summary>
-        /// ddlPrefix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPrefix;
-        
-        /// <summary>
         /// txtFirstName control.
         /// </summary>
         /// <remarks>
@@ -209,15 +200,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLastName;
-        
-        /// <summary>
-        /// ddlSuffix control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSuffix;
         
         /// <summary>
         /// ddlPosition control.
@@ -373,6 +355,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnAddress;
         
         /// <summary>
+        /// btnAddressCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddressCancel;
+        
+        /// <summary>
         /// hfAddressId control.
         /// </summary>
         /// <remarks>
@@ -416,6 +407,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSubmit;
+        
+        /// <summary>
+        /// btnAddAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddAddress;
         
         /// <summary>
         /// btnEntitySubmit control.
