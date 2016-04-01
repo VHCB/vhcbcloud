@@ -267,6 +267,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
+    <Content Include="SQL\EntiryInfo.sql" />
     <Content Include="SQL\EntiryScripts.sql" />
     <Content Include="SQL\Login Creation Script.sql" />
     <Content Include="SQL\ManageUserInfo.sql" />

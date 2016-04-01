@@ -31,11 +31,8 @@ namespace vhcbcloud
         {
             BindLookUP(ddlEntityType, 103);
             BindLookUP(ddlPhoneType, 29);
-            BindLookUP(ddlSuffix, 49);
             BindLookUP(ddlPosition, 117);
             //BindLookUP(ddlTown, 89);
-            BindLookUP(ddlPrefix, 32);
-
             BindLookUP(ddlAddressType, 1);
         }
 
@@ -66,6 +63,7 @@ namespace vhcbcloud
         protected void DisplayControls()
         {
             dvAddressGrid.Visible = false;
+            cbInd.Enabled = true;
 
             if (rdBtnIndividual.SelectedValue.ToLower() == "existing")
             {
@@ -79,6 +77,7 @@ namespace vhcbcloud
                 btnEntitySubmit.Text = "Update";
 
                 dvAddressButton.Visible = true;
+                btnAddAddress.Visible = true;
                 //BindApplicants();
             }
             else
@@ -93,6 +92,7 @@ namespace vhcbcloud
                 //dvGrid.Visible = false;
                 dvExistingSearch.Visible = false;
                 dvAddressButton.Visible = false;
+                btnAddAddress.Visible = false;
             }
         }
 
@@ -107,11 +107,9 @@ namespace vhcbcloud
             ddlPhoneType.SelectedIndex = -1; ;
             txtPhone.Text = "";
             txtApplicantName.Text = "";
-            ddlPrefix.SelectedIndex = -1;
 
             txtFirstName.Text = "";
             txtLastName.Text = "";
-            ddlSuffix.SelectedIndex = -1;
             ddlPosition.SelectedIndex = -1;
             txtTitle.Text = "";
             txtEmail.Text = "";
@@ -175,29 +173,8 @@ namespace vhcbcloud
                 if (DataUtils.GetBool(dr["Individual"].ToString()))
                 {
                     dvIndividual.Visible = true;
-
-                    ddlPrefix.ClearSelection();
-                    foreach (ListItem item in ddlPrefix.Items)
-                    {
-                        if (dr["LkPrefix"].ToString() == item.Value.ToString())
-                        {
-                            item.Selected = true;
-                            break;
-                        }
-                    }
-
                     txtFirstName.Text = dr["Firstname"].ToString();
                     txtLastName.Text = dr["Lastname"].ToString();
-
-                    ddlSuffix.ClearSelection();
-                    foreach (ListItem item in ddlSuffix.Items)
-                    {
-                        if (dr["LkSuffix"].ToString() == item.Value.ToString())
-                        {
-                            item.Selected = true;
-                            break;
-                        }
-                    }
 
                     ddlPosition.ClearSelection();
                     foreach (ListItem item in ddlPosition.Items)
@@ -263,7 +240,9 @@ namespace vhcbcloud
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
 
+                    dvAddress.Visible = true;
                     btnAddress.Text = "Update";
+                    btnAddAddress.Visible = false;
 
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
@@ -314,6 +293,7 @@ namespace vhcbcloud
         {
             ClearaddressInfo();
             btnAddress.Text = "Add";
+            dvAddress.Visible = false;
             gvAddress.EditIndex = -1;
             BindApplicantAddressGrid();
         }
@@ -330,7 +310,7 @@ namespace vhcbcloud
             txtCounty.Text = "";
             //ddlCounty.SelectedIndex = -1;
             ddlAddressType.SelectedIndex = -1;
-            cbIsActive.Checked = false;
+            cbIsActive.Checked = true;
             cbIsDefault.Checked = false;
         }
 
@@ -394,46 +374,8 @@ namespace vhcbcloud
                 }
             }
 
-            if (txtFiscalYearEnd.Text.Trim() == "")
-            {
-                LogMessage("Enter Fiscal Year End");
-                txtFiscalYearEnd.Focus();
-                return false;
-            }
-            if (txtWebsite.Text.Trim() == "")
-            {
-                LogMessage("Enter Website");
-                txtWebsite.Focus();
-                return false;
-            }
-            if (txtStateVendorId.Text.Trim() == "")
-            {
-                LogMessage("Enter State Vendor Id");
-                txtStateVendorId.Focus();
-                return false;
-            }
-            if (ddlPhoneType.Items.Count > 1 && ddlPhoneType.SelectedIndex == 0)
-            {
-                LogMessage("Select Phone Type");
-                ddlPhoneType.Focus();
-                return false;
-            }
-            if (txtPhone.Text.Trim() == "")
-            {
-                LogMessage("Enter Phone");
-                txtPhone.Focus();
-                return false;
-            }
-
             if (cbInd.Checked)
             {
-
-                if (ddlPrefix.Items.Count > 1 && ddlPrefix.SelectedIndex == 0)
-                {
-                    LogMessage("Select Prefix");
-                    ddlPrefix.Focus();
-                    return false;
-                }
                 if (txtFirstName.Text.Trim() == "")
                 {
                     LogMessage("Enter First Name");
@@ -444,30 +386,6 @@ namespace vhcbcloud
                 {
                     LogMessage("Enter Last Name");
                     txtLastName.Focus();
-                    return false;
-                }
-                if (ddlSuffix.Items.Count > 1 && ddlSuffix.SelectedIndex == 0)
-                {
-                    LogMessage("Select Suffix");
-                    ddlSuffix.Focus();
-                    return false;
-                }
-                if (ddlPosition.Items.Count > 1 && ddlPosition.SelectedIndex == 0)
-                {
-                    LogMessage("Select Position");
-                    ddlPosition.Focus();
-                    return false;
-                }
-                if (txtTitle.Text.Trim() == "")
-                {
-                    LogMessage("Enter Title");
-                    txtTitle.Focus();
-                    return false;
-                }
-                if (txtEmail.Text.Trim() == "")
-                {
-                    LogMessage("Enter Email");
-                    txtEmail.Focus();
                     return false;
                 }
             }
@@ -497,11 +415,13 @@ namespace vhcbcloud
 
                 dvCommonForm.Visible = true;
                 dvIndividual.Visible = true;
-                dvAddress.Visible = true;
+                dvAddress.Visible = false;
                 dvAddressButton.Visible = true;
-
+                gvAddress.EditIndex = -1;
                 BindApplicantAddressGrid();
                 dvSubmit.Visible = true;
+                
+                btnAddAddress.Visible = true;
             }
             catch (Exception ex)
             {
@@ -527,7 +447,6 @@ namespace vhcbcloud
                     hfAddressId.Value = "";
                     btnAddress.Text = "Add";
                     LogMessage("Address updated successfully");
-                    gvAddress.EditIndex = -1;
                 }
 
                 else //Add
@@ -539,12 +458,12 @@ namespace vhcbcloud
                         txtCounty.Text, //ddlCounty.SelectedValue.ToString(), 
                         int.Parse(ddlAddressType.SelectedValue.ToString()), cbIsActive.Checked, cbIsDefault.Checked);
 
-                    hfApplicatId.Value = "";
+                   // hfApplicatId.Value = "";
                     btnAddress.Text = "Add";
                     LogMessage("New Address added successfully");
                 }
                 BindApplicantAddressGrid();
-                ClearaddressInfo();
+                ClearAddressPanel();
             }
             catch (Exception ex)
             {
@@ -562,18 +481,18 @@ namespace vhcbcloud
                     {
                         if (cbInd.Checked)
                             EntityData.AddEntity(cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                               int.Parse(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, int.Parse(ddlPrefix.SelectedValue.ToString()),
-                               txtFirstName.Text, txtLastName.Text, int.Parse(ddlSuffix.SelectedValue.ToString()), int.Parse(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text,
-                               txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, //ddlTown.SelectedItem.Text, 
-                               txtState.Text, txtZip.Text, txtCounty.Text, //ddlCounty.SelectedValue.ToString(), 
-                               int.Parse(ddlAddressType.SelectedValue.ToString()),
+                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, 
+                               txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text,
+                               txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, 
+                               txtState.Text, txtZip.Text, txtCounty.Text,
+                               DataUtils.GetInt(ddlAddressType.SelectedValue.ToString()),
                                cbIsActive.Checked, cbIsDefault.Checked);
                         else
                             EntityData.AddEntity(cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                               int.Parse(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, null,
-                               null, null, null, null, null, null,
-                               txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text,//ddlTown.SelectedItem.Text, 
-                               txtState.Text, txtZip.Text, txtCounty.Text, int.Parse(ddlAddressType.SelectedValue.ToString()),
+                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, null,
+                               null, 0, null, null,
+                               txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, 
+                               txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetInt(ddlAddressType.SelectedValue.ToString()),
                                cbIsActive.Checked, cbIsDefault.Checked);
 
                         LogMessage("New Entity added successfully");
@@ -590,15 +509,24 @@ namespace vhcbcloud
                             int ApplicantId = DataUtils.GetInt(hfApplicatId.Value);
 
                             EntityData.UpdateApplicantDetails(ApplicantId, cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                              int.Parse(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, int.Parse(ddlPrefix.SelectedValue.ToString()),
-                              txtFirstName.Text, txtLastName.Text, int.Parse(ddlSuffix.SelectedValue.ToString()), int.Parse(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text);
+                              DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, 
+                              txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text);
 
                             LogMessage("Applicant updated successfully");
                             CleanForms();
+
                             ddlApplicantNameSearch.SelectedIndex = -1;
                             gvAddress.DataSource = null;
                             gvAddress.DataBind();
                             dvAddressGrid.Visible = false;
+
+                            dvCommonForm.Visible = false;
+                            dvIndividual.Visible = false;
+                            dvAddress.Visible = false;
+                            dvSubmit.Visible = false;
+                            
+                            //dvAddressButton.Visible = true;
+                            //btnAddAddress.Visible = true;
                         }
                     }
                     else
@@ -626,6 +554,28 @@ namespace vhcbcloud
         {
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
+        }
+
+        protected void btnAddAddress_Click(object sender, EventArgs e)
+        {
+            dvAddress.Visible = true;
+            btnAddAddress.Visible = false;
+            ClearaddressInfo();
+        }
+
+        protected void btnAddressCancel_Click(object sender, EventArgs e)
+        {
+            ClearAddressPanel();
+        }
+
+        private void ClearAddressPanel()
+        {
+            ClearaddressInfo();
+            btnAddress.Text = "Add";
+            dvAddress.Visible = false;
+            gvAddress.EditIndex = -1;
+            BindApplicantAddressGrid();
+            btnAddAddress.Visible = true;
         }
     }
 }

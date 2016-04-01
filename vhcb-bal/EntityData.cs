@@ -9,7 +9,7 @@ namespace DataAccessLayer
     public class EntityData
     {
         public static void AddEntity(bool IsIndividual, int EntityType, string FiscalYearEnd, string Website, string StateVendorId, int PhoneType, string Phone, string ApplicantName,
-            int? Prefix, string Fname, string Lname, int? Suffix, int? Position, string Title, string Email,
+            string Fname, string Lname, int Position, string Title, string Email,
             string StreetNo, string Address1, string Address2, string Town, string State, string Zip, string County, int AddressType, bool IsActive, bool DefAddress)
         {
             try
@@ -27,20 +27,18 @@ namespace DataAccessLayer
                         //25 Parameters
                         command.Parameters.Add(new SqlParameter("IsIndividual", IsIndividual));
                         command.Parameters.Add(new SqlParameter("EntityType", EntityType));
-                        command.Parameters.Add(new SqlParameter("FiscalYearEnd", FiscalYearEnd));
-                        command.Parameters.Add(new SqlParameter("Website", Website));
-                        command.Parameters.Add(new SqlParameter("StateVendorId", StateVendorId));
-                        command.Parameters.Add(new SqlParameter("PhoneType", PhoneType));
-                        command.Parameters.Add(new SqlParameter("Phone", Phone));
+                        command.Parameters.Add(new SqlParameter("FiscalYearEnd", FiscalYearEnd == "" ? System.Data.SqlTypes.SqlString.Null : FiscalYearEnd));
+                        command.Parameters.Add(new SqlParameter("Website", Website == ""? System.Data.SqlTypes.SqlString.Null : Website));
+                        command.Parameters.Add(new SqlParameter("StateVendorId", StateVendorId == "" ? System.Data.SqlTypes.SqlString.Null : StateVendorId));
+                        command.Parameters.Add(new SqlParameter("PhoneType", PhoneType == 0 ? System.Data.SqlTypes.SqlInt32.Null : PhoneType));
+                        command.Parameters.Add(new SqlParameter("Phone", Phone == "" ? System.Data.SqlTypes.SqlString.Null : Phone));
                         command.Parameters.Add(new SqlParameter("ApplicantName", ApplicantName));
 
-                        command.Parameters.Add(new SqlParameter("Prefix", Prefix));
                         command.Parameters.Add(new SqlParameter("Fname", Fname));
                         command.Parameters.Add(new SqlParameter("Lname", Lname));
-                        command.Parameters.Add(new SqlParameter("Suffix", Suffix));
-                        command.Parameters.Add(new SqlParameter("Position", Position));
-                        command.Parameters.Add(new SqlParameter("Title", Title));
-                        command.Parameters.Add(new SqlParameter("Email", Email));
+                        command.Parameters.Add(new SqlParameter("Position", Position == 0 ? System.Data.SqlTypes.SqlInt32.Null : Position));
+                        command.Parameters.Add(new SqlParameter("Title", Title == "" ? System.Data.SqlTypes.SqlString.Null : Title));
+                        command.Parameters.Add(new SqlParameter("Email", Email == "" ? System.Data.SqlTypes.SqlString.Null : Email));
 
                         command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
@@ -66,7 +64,7 @@ namespace DataAccessLayer
         }
 
         public static void UpdateApplicantDetails(int @ApplicantId, bool IsIndividual, int EntityType, string FiscalYearEnd, string Website, string StateVendorId, int PhoneType, string Phone, string ApplicantName,
-           int? Prefix, string Fname, string Lname, int? Suffix, int? Position, string Title, string Email)
+           string Fname, string Lname, int Position, string Title, string Email)
         {
             try
             {
@@ -84,20 +82,18 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
                         command.Parameters.Add(new SqlParameter("IsIndividual", IsIndividual));
                         command.Parameters.Add(new SqlParameter("EntityType", EntityType));
-                        command.Parameters.Add(new SqlParameter("FiscalYearEnd", FiscalYearEnd));
-                        command.Parameters.Add(new SqlParameter("Website", Website));
-                        command.Parameters.Add(new SqlParameter("StateVendorId", StateVendorId));
-                        command.Parameters.Add(new SqlParameter("PhoneType", PhoneType));
-                        command.Parameters.Add(new SqlParameter("Phone", Phone));
+                        command.Parameters.Add(new SqlParameter("FiscalYearEnd", FiscalYearEnd == "" ? System.Data.SqlTypes.SqlString.Null : FiscalYearEnd));
+                        command.Parameters.Add(new SqlParameter("Website", Website == "" ? System.Data.SqlTypes.SqlString.Null : Website));
+                        command.Parameters.Add(new SqlParameter("StateVendorId", StateVendorId == "" ? System.Data.SqlTypes.SqlString.Null : StateVendorId));
+                        command.Parameters.Add(new SqlParameter("PhoneType", PhoneType == 0 ? System.Data.SqlTypes.SqlInt32.Null : PhoneType));
+                        command.Parameters.Add(new SqlParameter("Phone", Phone == "" ? System.Data.SqlTypes.SqlString.Null : Phone));
                         command.Parameters.Add(new SqlParameter("ApplicantName", ApplicantName));
 
-                        command.Parameters.Add(new SqlParameter("Prefix", Prefix));
                         command.Parameters.Add(new SqlParameter("Fname", Fname));
                         command.Parameters.Add(new SqlParameter("Lname", Lname));
-                        command.Parameters.Add(new SqlParameter("Suffix", Suffix));
-                        command.Parameters.Add(new SqlParameter("Position", Position));
-                        command.Parameters.Add(new SqlParameter("Title", Title));
-                        command.Parameters.Add(new SqlParameter("Email", Email));
+                        command.Parameters.Add(new SqlParameter("Position", Position == 0 ? System.Data.SqlTypes.SqlInt32.Null : Position));
+                        command.Parameters.Add(new SqlParameter("Title", Title == "" ? System.Data.SqlTypes.SqlString.Null : Title));
+                        command.Parameters.Add(new SqlParameter("Email", Email == "" ? System.Data.SqlTypes.SqlString.Null : Email));
 
                         command.CommandTimeout = 60 * 5;
 

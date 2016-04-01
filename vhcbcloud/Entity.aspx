@@ -138,59 +138,38 @@
                             <asp:Panel runat="server" ID="pnlIndividualForm">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Prefix</span></td>
+                                        <td style="width: 150px">First Name</td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlPrefix" CssClass="clsDropDown" runat="server">
-                                                <%-- <asp:ListItem Text="Select" Value="NA"></asp:ListItem>
-                                                <asp:ListItem Text="Mr." Value="Mr"></asp:ListItem>
-                                                <asp:ListItem Text="Ms." Value="Mr"></asp:ListItem>
-                                                <asp:ListItem Text="Dr." Value="Dr"></asp:ListItem>--%>
-                                            </asp:DropDownList>
-                                        </td>
+                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                                         <td style="width: 100px">
-                                            <span class="labelClass">First Name</span>
+                                            <span class="labelClass">Last Name</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 170px"><span class="labelClass">Last Name</span></td>
-                                        <td>
                                             <asp:TextBox ID="txtLastName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
+                                        <td style="width: 170px"><span class="labelClass">Position</span></td>
+                                        <td>
+                                             <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Suffix</span></td>
+                                        <td style="width: 150px">Title</td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlSuffix" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
+                                            <asp:TextBox ID="txtTitle" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                                         <td style="width: 100px">
-                                            <span class="labelClass">Position</span>
+                                            <span class="labelClass">Email</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                           <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Title</span></td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
                                         <td>
-                                            <asp:TextBox ID="txtTitle" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 150px"><span class="labelClass">Email</span></td>
-                                        <td style="width: 250px">
-                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -266,7 +245,7 @@
                                         </td>
                                         <td><span class="labelClass">Active</span></td>
                                         <td>
-                                            <asp:CheckBox ID="cbIsActive" CssClass="ChkBox" runat="server" Text="Yes" />
+                                            <asp:CheckBox ID="cbIsActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -293,6 +272,7 @@
                                         <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
                                         <td style="height: 5px">
                                             <asp:Button ID="btnAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddress_Click" />
+                                            &nbsp;&nbsp;<asp:Button ID="btnAddressCancel" runat="server" Text="Cancel" class="btn btn-info" OnClick="btnAddressCancel_Click"/>
                                             <asp:HiddenField ID="hfAddressId" runat="server" />
                                         </td>
                                     </tr>
@@ -352,12 +332,17 @@
                     <table>
                         <tr>
                             <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
+                             <td style="height: 5px"> <asp:Button ID="btnAddAddress" runat="server" Text="Add Address" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
+                            <td style="height: 5px">&nbsp;&nbsp;</td>
                             <td style="height: 5px">
                                 <asp:Button ID="btnEntitySubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnEntitySubmit_Click" />
                             </td>
+
+
+
                         </tr>
                         <tr>
-                            <td style="height: 10px" colspan="2"></td>
+                            <td style="height: 10px"></td>
                         </tr>
                     </table>
                 </div>
@@ -436,14 +421,14 @@
     </script>
     <script type="text/javascript">
         
-        <%--  $(window).load(function () {
-            alert('load');
-            $('#<%= pnlIndividualForm.ClientID %>').hide();
-        });--%>
+        $('#<%= txtFirstName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtApplicantName.ClientID %>').val($(this).val());
+        });
 
-        <%-- $('#<%= pnlIndividualForm.ClientID %>').load(function () {
-             alert('rama');
-        });--%>
+         $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
+         });
+
 
         if (!$('#<%= cbInd.ClientID %>').is(":checked")) {
             $('#<%= dvIndividual.ClientID %>').hide();
