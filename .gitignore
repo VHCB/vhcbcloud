@@ -6,3 +6,9 @@ obj
 packages
 VHCB.dll
 vhcb.pdb
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages

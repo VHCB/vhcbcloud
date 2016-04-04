@@ -90,5 +90,17 @@ namespace VHCBCommon.DataAccessLayer
             }
             return null;
         }
+
+        public static void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
     }
 }

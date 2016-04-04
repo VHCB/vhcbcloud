@@ -151,6 +151,42 @@ namespace DataAccessLayer
             return dtQuestionsForApproval;
         }
 
+        public static DataTable GetDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId)
+        {
+            DataTable dtDefaultQuetions = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
+                command.CommandText = "GetDefaultPCRQuestions";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtDefaultQuetions = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtDefaultQuetions;
+        }
+
         public static DataSet GetPCRDetails(int ProjectCheckReqId)
         {
             DataSet dsData = null;
