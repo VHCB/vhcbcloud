@@ -6,10 +6,7 @@ as
 begin
 	select project_id, proj_num, project_name,  convert(varchar(25), project_id) +'|' + project_name as project_id_name
 	from project_v 
-	--where project_id in(
-	--		select distinct ProjectId  from [dbo].[ProjectCheckReq]
-	--		union
-	--		select distinct ProjectId from [dbo].[Trans])
+	where DefName = 1
 	order by proj_num
 end
 go
@@ -261,6 +258,7 @@ begin
 end
 go
 
+
 alter procedure GetExistingPCR
 as
 Begin
@@ -272,9 +270,11 @@ Begin
 	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
 	join AppName an(nolock) on aan.AppNameID = an.AppNameID
 	join LookupValues lv on lv.TypeID = t.LkStatus
+	where pv.defname = 1
 	order by pcr.ProjectCheckReqId desc
 End
 go
+
 
 alter procedure GetPCRDataById
 (
@@ -295,19 +295,22 @@ begin
 end
 go
 
-CREATE procedure GetPayeeNameByProjectId
+
+alter procedure GetPayeeNameByProjectId
 (
 	@ProjectID int
 )
 as
 begin
 
-	select an.Applicantname 
+	select an.Applicantname, p.LkProgram 
 	from [dbo].[AppName] an(nolock)
 	join [dbo].[ApplicantAppName] aan(nolock) on an.AppNameID = aan.AppNameID
 	join Applicant a on a.ApplicantId = aan.ApplicantID
 	join ProjectApplicant pa on pa.ApplicantID = a.ApplicantID
-	where pa.finlegal=1 and projectID = @ProjectID
+	join project p on p.projectid = pa.ProjectId
+	join ProjectName pn(nolock) on p.ProjectId = pn.ProjectID
+	where pa.finlegal=1 and pn.defname=1 and pa.projectID = @ProjectID
 	order by an.Applicantname
 end
 go
