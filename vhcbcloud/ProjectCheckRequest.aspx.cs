@@ -77,7 +77,7 @@ namespace vhcbcloud
             try
             {
                 dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("PCR_Projects");
+                dtProjects = ProjectCheckRequestData.GetData("getprojectslist");
                 ddlProjFilter.Items.Clear();
                 ddlProjFilter.DataSource = dtProjects;
                 ddlProjFilter.DataValueField = "project_id_name";
@@ -121,31 +121,13 @@ namespace vhcbcloud
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
                 //ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
+                              
 
-                dtApplicantname = new DataTable();
-                dtApplicantname = ProjectCheckRequestData.GetPayeeNameByProjectId(ProjectId);
-                if (dtApplicantname != null)
-                {
-                    DataRow drAppl = dtApplicantname.Rows[0];
-                    foreach (ListItem item in ddlProgram.Items)
-                    {
-                        if (drAppl["LkProgram"].ToString() == item.Value.ToString())
-                        {
-                            ddlProgram.ClearSelection();
-                            item.Selected = true;
-                            DisplayControls(item.Text);
-                        }
-                    }
+                DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
+                CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
+                CommonHelper.PopulateDropDown(ddlPayee, drProjectDetails["AppNameId"].ToString());
 
-                    foreach (ListItem item in ddlPayee.Items)
-                    {
-                        if (drAppl["applicantid"].ToString() == item.Value.ToString())
-                        {
-                            ddlPayee.ClearSelection();
-                            item.Selected = true;
-                        }
-                    }
-                }
+                DisplayControls(ddlProgram.SelectedItem.ToString());
 
             }
             catch (Exception ex)
@@ -345,6 +327,9 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+
+                    BindPCRQuestionsForApproval();
+
                 }
             }
             catch (Exception ex)
@@ -415,7 +400,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtPCRQuestionsForApproval = new DataTable();
-                dtPCRQuestionsForApproval = ProjectCheckRequestData.GetQuestionsForApproval(int.Parse(this.hfPCRId.Value));
+                dtPCRQuestionsForApproval = ProjectCheckRequestData.GetDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value));
                 gvQuestionsForApproval.DataSource = dtPCRQuestionsForApproval;
                 gvQuestionsForApproval.DataBind();
             }
