@@ -2,7 +2,7 @@
 
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
-    
+
     <div class="jumbotron">
         <p class="lead">Entity (Organization / Individual) </p>
         <div class="container">
@@ -32,13 +32,13 @@
                               <ajaxToolkit:AutoCompleteExtender ID="aceApplicantName" runat="server" TargetControlID="txtApplicantNameSearch" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                             CompletionInterval="100" ServiceMethod="GetApplicantName">
                         </ajaxToolkit:AutoCompleteExtender>--%>
-                                <asp:DropDownList ID="ddlApplicantNameSearch" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlApplicantNameSearch" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantNameSearch_SelectedIndexChanged" AutoPostBack="True">
                                 </asp:DropDownList>
                                 <asp:HiddenField ID="hfApplicatId" runat="server" />
                             </td>
                             <td style="width: 2px">
-                            <asp:Button ID="btnApplicantSearch" runat="server" Text="Search" class="btn btn-info" OnClick="btnApplicantSearch_Click" />
-                                    <%-- <button id="btnApplicantSearch" runat="server"  class="btn btn-info">
+                                <%--<asp:Button ID="btnApplicantSearch" runat="server" Text="Search" class="btn btn-info" OnClick="btnApplicantSearch_Click" />--%>
+                                <%-- <button id="btnApplicantSearch" runat="server"  class="btn btn-info">
                                     <span class="glyphicon glyphicon-search"></span>Search
                                 </button>--%>
                             </td>
@@ -47,14 +47,13 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="height: 5px">
-                                </td>
+                            <td colspan="6" style="height: 5px"></td>
                         </tr>
                     </table>
                 </div>
 
                 <div id="dvMessage" runat="server">
-                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
+                    <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
 
                 <div class="panel-width" runat="server" id="dvCommonForm">
@@ -127,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                     
+
                 <div class="panel-width" runat="server" id="dvIndividual">
                     <div class="panel panel-primary ">
                         <div class="panel-heading ">
@@ -149,7 +148,7 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Position</span></td>
                                         <td>
-                                             <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -164,12 +163,10 @@
                                             <span class="labelClass">Email</span>
                                         </td>
                                         <td style="width: 270px">
-                                           <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass"></span></td>
-                                        <td>
-                                            
-                                        </td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -272,7 +269,7 @@
                                         <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
                                         <td style="height: 5px">
                                             <asp:Button ID="btnAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddress_Click" />
-                                            &nbsp;&nbsp;<asp:Button ID="btnAddressCancel" runat="server" Text="Cancel" class="btn btn-info" OnClick="btnAddressCancel_Click"/>
+                                            &nbsp;&nbsp;<asp:Button ID="btnAddressCancel" runat="server" Text="Cancel" class="btn btn-info" OnClick="btnAddressCancel_Click" />
                                             <asp:HiddenField ID="hfAddressId" runat="server" />
                                         </td>
                                     </tr>
@@ -286,7 +283,8 @@
                     <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="150px" ScrollBars="Vertical">
                         <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCancelingEdit="gvAddress_RowCancelingEdit" OnRowDataBound="gvAddress_RowDataBound" OnRowEditing="gvAddress_RowEditing" >                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCancelingEdit="gvAddress_RowCancelingEdit" OnRowDataBound="gvAddress_RowDataBound" OnRowEditing="gvAddress_RowEditing">
+                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
@@ -332,7 +330,8 @@
                     <table>
                         <tr>
                             <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
-                             <td style="height: 5px"> <asp:Button ID="btnAddAddress" runat="server" Text="Add Address" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
+                            <td style="height: 5px">
+                                <asp:Button ID="btnAddAddress" runat="server" Text="Add Address" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
                             <td style="height: 5px">&nbsp;&nbsp;</td>
                             <td style="height: 5px">
                                 <asp:Button ID="btnEntitySubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnEntitySubmit_Click" />
@@ -420,19 +419,19 @@
         }
     </script>
     <script type="text/javascript">
-        
+
         $('#<%= txtFirstName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val());
         });
 
-         $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
+        $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
          });
 
-
-        if (!$('#<%= cbInd.ClientID %>').is(":checked")) {
+         if (!$('#<%= cbInd.ClientID %>').is(":checked")) {
             $('#<%= dvIndividual.ClientID %>').hide();
         }
+
         $('#<%= cbInd.ClientID %>').click(function () {
             if ($('#<%= cbInd.ClientID %>').is(":checked")) {
                 $('#<%= txtApplicantName.ClientID %>')
@@ -447,6 +446,9 @@
                 //.css("background-color", "white");
 
                 $('#<%= dvIndividual.ClientID %>').hide();
+                $('#<%= txtApplicantName.ClientID %>').val("");
+                $('#<%= txtFirstName.ClientID %>').val("");
+                $('#<%= txtLastName.ClientID %>').val("");
             }
         });
     </script>
