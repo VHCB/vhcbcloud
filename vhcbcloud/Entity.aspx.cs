@@ -19,6 +19,9 @@ namespace vhcbcloud
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
 
+            if(cbInd.Checked)
+                this.txtApplicantName.Text = this.txtLastName.Text + ", " + this.txtFirstName.Text;
+
             if (!IsPostBack)
             {
                 DisplayControls();
@@ -395,39 +398,39 @@ namespace vhcbcloud
             else return true;
         }
 
-        protected void btnApplicantSearch_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                hfApplicatId.Value = "";
+        //protected void btnApplicantSearch_Click(object sender, EventArgs e)
+        //{
+            //try
+            //{
+            //    hfApplicatId.Value = "";
 
-                if (ddlApplicantNameSearch.Items.Count > 1 && ddlApplicantNameSearch.SelectedIndex == 0)
-                {
-                    LogMessage("Select Applicant Name");
-                    ddlApplicantNameSearch.Focus();
-                    return;
-                }
+            //    if (ddlApplicantNameSearch.Items.Count > 1 && ddlApplicantNameSearch.SelectedIndex == 0)
+            //    {
+            //        LogMessage("Select Applicant Name");
+            //        ddlApplicantNameSearch.Focus();
+            //        return;
+            //    }
 
-                DataTable dt = EntityData.GetApplicantDetails(int.Parse(ddlApplicantNameSearch.SelectedValue.ToString()));
+            //    DataTable dt = EntityData.GetApplicantDetails(int.Parse(ddlApplicantNameSearch.SelectedValue.ToString()));
 
-                if (dt.Rows != null)
-                    FillFormsWithExistingData(dt.Rows[0]);
+            //    if (dt.Rows != null)
+            //        FillFormsWithExistingData(dt.Rows[0]);
 
-                dvCommonForm.Visible = true;
-                dvIndividual.Visible = true;
-                dvAddress.Visible = false;
-                dvAddressButton.Visible = true;
-                gvAddress.EditIndex = -1;
-                BindApplicantAddressGrid();
-                dvSubmit.Visible = true;
+            //    dvCommonForm.Visible = true;
+            //    dvIndividual.Visible = true;
+            //    dvAddress.Visible = false;
+            //    dvAddressButton.Visible = true;
+            //    gvAddress.EditIndex = -1;
+            //    BindApplicantAddressGrid();
+            //    dvSubmit.Visible = true;
                 
-                btnAddAddress.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "btnApplicantSearch_Click", "", ex.Message);
-            }
-        }
+            //    btnAddAddress.Visible = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogError(Pagename, "btnApplicantSearch_Click", "", ex.Message);
+            //}
+        //}
 
         protected void btnAddress_Click(object sender, EventArgs e)
         {
@@ -513,20 +516,7 @@ namespace vhcbcloud
                               txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text);
 
                             LogMessage("Applicant updated successfully");
-                            CleanForms();
-
-                            ddlApplicantNameSearch.SelectedIndex = -1;
-                            gvAddress.DataSource = null;
-                            gvAddress.DataBind();
-                            dvAddressGrid.Visible = false;
-
-                            dvCommonForm.Visible = false;
-                            dvIndividual.Visible = false;
-                            dvAddress.Visible = false;
-                            dvSubmit.Visible = false;
-                            
-                            //dvAddressButton.Visible = true;
-                            //btnAddAddress.Visible = true;
+                            TurnOffExistingFormControls();
                         }
                     }
                     else
@@ -576,6 +566,53 @@ namespace vhcbcloud
             gvAddress.EditIndex = -1;
             BindApplicantAddressGrid();
             btnAddAddress.Visible = true;
+        }
+
+        protected void ddlApplicantNameSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                hfApplicatId.Value = "";
+
+                if (ddlApplicantNameSearch.Items.Count > 1 && ddlApplicantNameSearch.SelectedIndex == 0)
+                {
+                    ddlApplicantNameSearch.Focus();
+                    TurnOffExistingFormControls();
+                    return;
+                }
+
+                DataTable dt = EntityData.GetApplicantDetails(int.Parse(ddlApplicantNameSearch.SelectedValue.ToString()));
+
+                if (dt.Rows != null)
+                    FillFormsWithExistingData(dt.Rows[0]);
+
+                dvCommonForm.Visible = true;
+                dvIndividual.Visible = true;
+                dvAddress.Visible = false;
+                dvAddressButton.Visible = true;
+                gvAddress.EditIndex = -1;
+                BindApplicantAddressGrid();
+                dvSubmit.Visible = true;
+
+                btnAddAddress.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnApplicantSearch_Click", "", ex.Message);
+            }
+        }
+
+        private void TurnOffExistingFormControls()
+        {
+            CleanForms();
+            ddlApplicantNameSearch.SelectedIndex = -1;
+            dvCommonForm.Visible = false;
+            dvIndividual.Visible = false;
+            dvAddress.Visible = false;
+            dvSubmit.Visible = false;
+            gvAddress.DataSource = null;
+            gvAddress.DataBind();
+            dvAddressGrid.Visible = false;
         }
     }
 }

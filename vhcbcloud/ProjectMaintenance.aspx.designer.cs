@@ -10,43 +10,16 @@
 namespace vhcbcloud {
     
     
-    public partial class Entity {
+    public partial class ProjectMaintenance {
         
         /// <summary>
-        /// rdBtnIndividual control.
+        /// rdBtnSelection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnIndividual;
-        
-        /// <summary>
-        /// dvExistingSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvExistingSearch;
-        
-        /// <summary>
-        /// ddlApplicantNameSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlApplicantNameSearch;
-        
-        /// <summary>
-        /// hfApplicatId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfApplicatId;
+        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
         
         /// <summary>
         /// dvMessage control.
@@ -67,157 +40,283 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// dvCommonForm control.
+        /// dvProjectInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvCommonForm;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectInfo;
         
         /// <summary>
-        /// pnlCommonForm control.
+        /// pnlProjectInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlCommonForm;
+        protected global::System.Web.UI.WebControls.Panel pnlProjectInfo;
         
         /// <summary>
-        /// cbInd control.
+        /// txtProjNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbInd;
+        protected global::System.Web.UI.WebControls.TextBox txtProjNum;
         
         /// <summary>
-        /// ddlEntityType control.
+        /// ameProjNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEntityType;
+        protected global::AjaxControlToolkit.MaskedEditExtender ameProjNum;
         
         /// <summary>
-        /// txtApplicantName control.
+        /// ddlProject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtApplicantName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProject;
         
         /// <summary>
-        /// txtFiscalYearEnd control.
+        /// txtProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFiscalYearEnd;
+        protected global::System.Web.UI.WebControls.TextBox txtProjectName;
         
         /// <summary>
-        /// txtWebsite control.
+        /// ddlPrimaryApplicant control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWebsite;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryApplicant;
         
         /// <summary>
-        /// txtStateVendorId control.
+        /// ddlProgram control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStateVendorId;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProgram;
         
         /// <summary>
-        /// ddlPhoneType control.
+        /// ddlProjectType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPhoneType;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProjectType;
         
         /// <summary>
-        /// txtPhone control.
+        /// ddlAppStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPhone;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAppStatus;
         
         /// <summary>
-        /// dvIndividual control.
+        /// txtApplicationReceived control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvIndividual;
+        protected global::System.Web.UI.WebControls.TextBox txtApplicationReceived;
         
         /// <summary>
-        /// pnlIndividualForm control.
+        /// ce_txtApplicationReceived control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlIndividualForm;
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtApplicationReceived;
         
         /// <summary>
-        /// txtFirstName control.
+        /// ddlManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFirstName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlManager;
         
         /// <summary>
-        /// txtLastName control.
+        /// ddlBoardDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLastName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBoardDate;
         
         /// <summary>
-        /// ddlPosition control.
+        /// cbVerified control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPosition;
+        protected global::System.Web.UI.WebControls.CheckBox cbVerified;
         
         /// <summary>
-        /// txtTitle control.
+        /// txtClosingDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtClosingDate;
         
         /// <summary>
-        /// txtEmail control.
+        /// ce_txtClosingDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtClosingDate;
+        
+        /// <summary>
+        /// txtGrantExpirationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGrantExpirationDate;
+        
+        /// <summary>
+        /// ce_txtGrantExpirationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
+        
+        /// <summary>
+        /// dvNewProjectName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewProjectName;
+        
+        /// <summary>
+        /// cbAddProjectName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddProjectName;
+        
+        /// <summary>
+        /// dvProjectName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectName;
+        
+        /// <summary>
+        /// Panel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+        
+        /// <summary>
+        /// txtProject_Name control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProject_Name;
+        
+        /// <summary>
+        /// cbDefName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbDefName;
+        
+        /// <summary>
+        /// btnAddProjectName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddProjectName;
+        
+        /// <summary>
+        /// dvProjectNamesGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectNamesGrid;
+        
+        /// <summary>
+        /// pnlGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlGrid;
+        
+        /// <summary>
+        /// gvProjectNames control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvProjectNames;
+        
+        /// <summary>
+        /// dvNewAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewAddress;
+        
+        /// <summary>
+        /// cbAddAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddAddress;
         
         /// <summary>
         /// dvAddress control.
@@ -229,13 +328,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddress;
         
         /// <summary>
-        /// Panel1 control.
+        /// Panel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
+        protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
         /// txtStreetNo control.
@@ -283,6 +382,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtTown;
         
         /// <summary>
+        /// ddlVillage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlVillage;
+        
+        /// <summary>
         /// txtCounty control.
         /// </summary>
         /// <remarks>
@@ -301,67 +409,49 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtState;
         
         /// <summary>
-        /// ddlAddressType control.
+        /// cbDefaultAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAddressType;
+        protected global::System.Web.UI.WebControls.CheckBox cbDefaultAddress;
         
         /// <summary>
-        /// cbIsActive control.
+        /// cdActive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbIsActive;
+        protected global::System.Web.UI.WebControls.CheckBox cdActive;
         
         /// <summary>
-        /// cbIsDefault control.
+        /// txtLattitude control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbIsDefault;
+        protected global::System.Web.UI.WebControls.TextBox txtLattitude;
         
         /// <summary>
-        /// dvAddressButton control.
+        /// txtLongitude control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddressButton;
+        protected global::System.Web.UI.WebControls.TextBox txtLongitude;
         
         /// <summary>
-        /// btnAddress control.
+        /// btnAddAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddress;
-        
-        /// <summary>
-        /// btnAddressCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddressCancel;
-        
-        /// <summary>
-        /// hfAddressId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfAddressId;
+        protected global::System.Web.UI.WebControls.Button btnAddAddress;
         
         /// <summary>
         /// dvAddressGrid control.
@@ -373,13 +463,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddressGrid;
         
         /// <summary>
-        /// pnlGrid control.
+        /// Panel3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlGrid;
+        protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
         /// gvAddress control.
@@ -400,21 +490,30 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSubmit;
         
         /// <summary>
-        /// btnAddAddress control.
+        /// btnProjectSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddAddress;
+        protected global::System.Web.UI.WebControls.Button btnProjectSubmit;
         
         /// <summary>
-        /// btnEntitySubmit control.
+        /// btnProjectUpdate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEntitySubmit;
+        protected global::System.Web.UI.WebControls.Button btnProjectUpdate;
+        
+        /// <summary>
+        /// hfProjectId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
     }
 }
