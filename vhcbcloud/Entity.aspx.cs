@@ -171,7 +171,11 @@ namespace vhcbcloud
                 hfApplicatId.Value = dr["ApplicantID"].ToString();
 
                 cbInd.Checked = DataUtils.GetBool(dr["Individual"].ToString());
-                cbInd.Enabled = false;
+
+                if (!cbInd.Checked)
+                    cbInd.Enabled = false;
+                else
+                    cbInd.Enabled = true;
 
                 if (DataUtils.GetBool(dr["Individual"].ToString()))
                 {

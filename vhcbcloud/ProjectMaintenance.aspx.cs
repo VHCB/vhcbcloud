@@ -45,7 +45,7 @@ namespace vhcbcloud
             {
                 ddlProject.Items.Clear();
                 ddlProject.DataSource = ProjectCheckRequestData.GetData("getprojectslist"); ;
-                ddlProject.DataValueField = "project_id_name";
+                ddlProject.DataValueField = "projectid";
                 ddlProject.DataTextField = "Proj_num";
                 ddlProject.DataBind();
                 ddlProject.Items.Insert(0, new ListItem("Select", "NA"));
@@ -166,11 +166,12 @@ namespace vhcbcloud
                 hfProjectId.Value = "";
                 if (ddlProject.SelectedIndex != 0)
                 {
-                    string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
-                    txtProjectName.Text = tokens[1];
-                    hfProjectId.Value = tokens[0];
+                    dvUpdate.Visible = true;
+                    //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
+                    //txtProjectName.Text = tokens[1];
+                    hfProjectId.Value = ddlProject.SelectedValue.ToString();
 
-                    BindProjectInfoForm(int.Parse(hfProjectId.Value));
+                    BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
 
                     //ProjectNames
                     dvNewProjectName.Visible = true;
@@ -183,6 +184,20 @@ namespace vhcbcloud
                     dvAddress.Visible = false;
                     dvAddressGrid.Visible = true;
                     BindAddressGrid();
+                }
+                else
+                {
+                    dvUpdate.Visible = false;
+
+                    //ProjectNames
+                    dvNewProjectName.Visible = false;
+                    dvProjectName.Visible = false;
+                    dvProjectNamesGrid.Visible = false;
+
+                    //ProjectNames
+                    dvNewAddress.Visible = false;
+                    dvAddress.Visible = false;
+                    dvAddressGrid.Visible = false;
                 }
 
             }
@@ -244,6 +259,7 @@ namespace vhcbcloud
             PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
 
+            txtProjectName.Text = drProjectDetails["projectName"].ToString();
             txtApplicationReceived.Text = drProjectDetails["AppRec"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["AppRec"].ToString()).ToShortDateString();
             txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             txtGrantExpirationDate.Text = drProjectDetails["ExpireDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ExpireDate"].ToString()).ToShortDateString();
@@ -333,10 +349,10 @@ namespace vhcbcloud
         {
             try
             {
-                string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
-                txtProjectName.Text = tokens[1];
+                //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
+                //txtProjectName.Text = tokens[1];
 
-                ProjectMaintenanceData.UpdateProject(DataUtils.GetInt(tokens[0]), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
+                ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
                      txtApplicationReceived.Text, DataUtils.GetInt(ddlAppStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), txtClosingDate.Text, txtGrantExpirationDate.Text, cbVerified.Checked,
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), txtProjectName.Text);
@@ -366,15 +382,14 @@ namespace vhcbcloud
         {
             try
             {
-                string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
-
-                ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(tokens[0]), txtProject_Name.Text, cbDefName.Checked);
+                ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(hfProjectId.Value), txtProject_Name.Text, cbDefName.Checked);
 
                 ClearProjectNameForm();
                 dvProjectName.Visible = false;
                 dvProjectNamesGrid.Visible = true;
                 cbAddProjectName.Checked = false;
                 BindProjectNamesGrid();
+                BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
                 LogMessage("Project name added successfully");
             }
             catch (Exception ex)
@@ -411,11 +426,11 @@ namespace vhcbcloud
             int typeid = Convert.ToInt32(((Label)gvProjectNames.Rows[rowIndex].FindControl("lblTypeId")).Text);
             bool isDefName = Convert.ToBoolean(((CheckBox)gvProjectNames.Rows[rowIndex].FindControl("chkDefName")).Checked);
 
-            ProjectMaintenanceData.UpdateProjectname(typeid, projectName, isDefName);
+            ProjectMaintenanceData.UpdateProjectname(DataUtils.GetInt(hfProjectId.Value), typeid, projectName, isDefName);
             gvProjectNames.EditIndex = -1;
 
             BindProjectNamesGrid();
-
+            BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
             LogMessage("Project Name updated successfully");
         }
 
@@ -424,6 +439,32 @@ namespace vhcbcloud
             gvProjectNames.EditIndex = -1;
             BindProjectNamesGrid();
         }
+
+        protected void gvProjectNames_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        CheckBox chkDefName = e.Row.FindControl("chkDefName") as CheckBox;
+
+                        if (chkDefName.Checked)
+                            chkDefName.Enabled = false;
+                        else
+                            chkDefName.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvAddress_RowDataBound", "", ex.Message);
+            }
+        }
+
         #endregion
 
         protected void cbAddAddress_CheckedChanged(object sender, EventArgs e)
@@ -436,7 +477,7 @@ namespace vhcbcloud
 
         private void ClearAddressForm()
         {
-            
+
         }
 
         protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)

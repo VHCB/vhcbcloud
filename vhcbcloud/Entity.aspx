@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvCommonForm">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default" ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Entity (Organization / Individual) </h3>
                         </div>
@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvIndividual">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Individual</h3>
                         </div>
@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvAddress">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Address</h3>
                         </div>

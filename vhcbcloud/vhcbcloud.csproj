@@ -275,6 +275,8 @@
     <Content Include="SQL\PCRInfo.sql" />
     <Content Include="SQL\PCRScripts.sql" />
     <Content Include="SQL\PCRScripts2.sql" />
+    <Content Include="SQL\ProjectManagement.sql" />
+    <Content Include="SQL\ProjectManagementInfo.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

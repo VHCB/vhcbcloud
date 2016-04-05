@@ -211,6 +211,24 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
         
         /// <summary>
+        /// dvUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvUpdate;
+        
+        /// <summary>
+        /// btnProjectUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnProjectUpdate;
+        
+        /// <summary>
         /// dvNewProjectName control.
         /// </summary>
         /// <remarks>
@@ -499,15 +517,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnProjectSubmit;
         
         /// <summary>
-        /// btnProjectUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnProjectUpdate;
-        
-        /// <summary>
         /// hfProjectId control.
         /// </summary>
         /// <remarks>
@@ -515,5 +524,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfTown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTown;
     }
 }

@@ -163,7 +163,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProjectname(int TypeID, string ProjectName, bool DefName)
+        public static void UpdateProjectname(int ProjectId, int TypeID, string ProjectName, bool DefName)
         {
             try
             {
@@ -177,7 +177,8 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateProjectName";
 
-                        //3 Parameters
+                        //4 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("TypeId", TypeID));
                         command.Parameters.Add(new SqlParameter("ProjectName", ProjectName));
                         command.Parameters.Add(new SqlParameter("DefName", DefName));
