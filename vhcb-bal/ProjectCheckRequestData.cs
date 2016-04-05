@@ -296,7 +296,7 @@ namespace DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", Convert.ToInt32( ProjectCheckReqId)));
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", Convert.ToInt32(ProjectCheckReqId)));
                 command.CommandText = "GetPCRDataById";
                 using (connection)
                 {
@@ -429,10 +429,10 @@ namespace DataAccessLayer
                 using (connection)
                 {
                     connection.Open();
-                    command.Connection = connection;                 
+                    command.Connection = connection;
 
-                    PCRDetails pcr = new PCRDetails();            
-                  
+                    PCRDetails pcr = new PCRDetails();
+
                     var ds = new DataSet();
                     var da = new SqlDataAdapter(command);
                     da.Fill(ds);
@@ -506,6 +506,33 @@ namespace DataAccessLayer
                 connection.Close();
             }
         }
+        public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
+                command.Parameters.Add(new SqlParameter("staffId", staffid));
+                command.CommandText = "AddDefaultPCRQuestions";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
         public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
         {
@@ -537,7 +564,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void SubmitPCRForm(int ProjectCheckReqID, int LkPCRQuestionsID)
+        public static void SubmitPCRForm(int ProjectCheckReqID, int LkPCRQuestionsID, int staffid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -549,6 +576,7 @@ namespace DataAccessLayer
 
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
                 command.Parameters.Add(new SqlParameter("LkPCRQuestionsID", LkPCRQuestionsID));
+                command.Parameters.Add(new SqlParameter("staffId", staffid));
 
                 using (connection)
                 {
