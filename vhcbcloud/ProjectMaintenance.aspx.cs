@@ -509,7 +509,6 @@ namespace vhcbcloud
 
         protected void btnAddAddress_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

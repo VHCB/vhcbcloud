@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvCommonForm">
-                    <div class="panel panel-default" ">
+                    <div class="panel panel-default">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Entity (Organization / Individual) </h3>
                         </div>
@@ -114,6 +114,9 @@
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtPhone" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:MaskedEditExtender runat="server" ID="amePhoneNumber" Mask="(999)999-9999" ClearMaskOnLostFocus="false"
+                                                MaskType="Number" TargetControlID="txtPhone">
+                                            </ajaxToolkit:MaskedEditExtender>
                                         </td>
                                         <td style="width: 170px"></td>
                                         <td></td>
@@ -426,15 +429,15 @@
 
         $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
-         });
+        });
 
-         if (!$('#<%= cbInd.ClientID %>').is(":checked")) {
+        if (!$('#<%= cbInd.ClientID %>').is(":checked")) {
             $('#<%= dvIndividual.ClientID %>').hide();
         }
 
         $('#<%= cbInd.ClientID %>').click(function () {
             if ($('#<%= cbInd.ClientID %>').is(":checked")) {
-                $('#<%= txtApplicantName.ClientID %>')
+                 $('#<%= txtApplicantName.ClientID %>')
                 .attr("disabled", "disabled")
                 //.css("background-color", "#DDDDDD");
 
@@ -450,7 +453,7 @@
                 $('#<%= txtFirstName.ClientID %>').val("");
                 $('#<%= txtLastName.ClientID %>').val("");
             }
-        });
+         });
     </script>
 </asp:Content>
 

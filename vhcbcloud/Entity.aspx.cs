@@ -220,7 +220,13 @@ namespace vhcbcloud
                         break;
                     }
                 }
-                txtPhone.Text = dr["Phone"].ToString();
+
+                if(dr["Phone"].ToString() == "")
+                    txtPhone.Text = "";
+                else
+                    txtPhone.Text = String.Format("{0:(###)###-####}", double.Parse(dr["Phone"].ToString()));
+
+                
                 txtApplicantName.Text = dr["applicantname"].ToString();
 
                 //txtStreetNo.Text = "";
@@ -486,9 +492,11 @@ namespace vhcbcloud
                 {
                     if (IsEntiryFormValid(true))
                     {
+                        string PhoneNumber = new string(txtPhone.Text.Where(c => char.IsDigit(c)).ToArray());
+
                         if (cbInd.Checked)
                             EntityData.AddEntity(cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, 
+                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), PhoneNumber, txtApplicantName.Text, 
                                txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text,
                                txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, 
                                txtState.Text, txtZip.Text, txtCounty.Text,
@@ -496,7 +504,7 @@ namespace vhcbcloud
                                cbIsActive.Checked, cbIsDefault.Checked);
                         else
                             EntityData.AddEntity(cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, null,
+                               DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), PhoneNumber, txtApplicantName.Text, null,
                                null, 0, null, null,
                                txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, 
                                txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetInt(ddlAddressType.SelectedValue.ToString()),
@@ -515,8 +523,10 @@ namespace vhcbcloud
                         {
                             int ApplicantId = DataUtils.GetInt(hfApplicatId.Value);
 
+                            string PhoneNumber = new string(txtPhone.Text.Where(c => char.IsDigit(c)).ToArray());
+
                             EntityData.UpdateApplicantDetails(ApplicantId, cbInd.Checked, int.Parse(ddlEntityType.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text, txtStateVendorId.Text,
-                              DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), txtPhone.Text, txtApplicantName.Text, 
+                              DataUtils.GetInt(ddlPhoneType.SelectedValue.ToString()), PhoneNumber, txtApplicantName.Text, 
                               txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()), txtTitle.Text, txtEmail.Text);
 
                             LogMessage("Applicant updated successfully");

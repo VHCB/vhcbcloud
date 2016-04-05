@@ -5,7 +5,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getpr
 drop procedure [dbo].getprojectslist
 go
 
-create procedure getprojectslist
+create procedure getprojectslist 
 as
 begin
 

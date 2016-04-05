@@ -26,7 +26,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "add_new_project";
 
-                        //12 Parameters
+                        //12 Parameters 
                         command.Parameters.Add(new SqlParameter("projNum", ProjNum));
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));

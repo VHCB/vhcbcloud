@@ -425,7 +425,10 @@
                 var addr = {};
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode({ 'address': zip }, function (results, status) {
+                  
                     if (status == google.maps.GeocoderStatus.OK) {
+                        //console.log(JSON.stringify(results[0]));
+                        console.log(JSON.stringify(results[0].geometry.location.lat));
                         if (results.length >= 1) {
                             for (var ii = 0; ii < results[0].address_components.length; ii++) {
                                 var street_number = route = street = city = state = zipcode = country = formatted_address = '';
