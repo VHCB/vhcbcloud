@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvProjectInfo">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Info</h3>
                         </div>
@@ -125,6 +125,19 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
+                                 <div id="dvUpdate" runat="server" visible="false">
+                                    <table>
+                                        <tr>
+                                            <td style="height: 1px">&nbsp;&nbsp;</td>
+                                            <td style="height: 1px">
+                                                <asp:Button ID="btnProjectUpdate" runat="server" Text="Update" class="btn btn-info" OnClick="btnProjectUpdate_Click" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 1px" colspan="2"></td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </asp:Panel>
                         </div>
                     </div>
@@ -142,7 +155,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvProjectName">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Name</h3>
                         </div>
@@ -177,7 +190,8 @@
                     <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="150px" ScrollBars="Vertical">
                         <asp:GridView ID="gvProjectNames" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit" OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit" OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating" 
+                            OnRowDataBound="gvProjectNames_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -224,7 +238,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvAddress">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Address</h3>
                         </div>
@@ -283,7 +297,7 @@
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Defailt Address</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Default Address</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbDefaultAddress" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
@@ -333,7 +347,7 @@
                     <asp:Panel runat="server" ID="Panel3" Width="100%" Height="150px" ScrollBars="Vertical">
                         <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit" OnRowEditing="gvAddress_RowEditing" OnRowUpdating="gvAddress_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -375,7 +389,6 @@
                             <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
                             <td style="height: 5px">
                                 <asp:Button ID="btnProjectSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnProjectSubmit_Click" />
-                                <asp:Button ID="btnProjectUpdate" runat="server" Text="Update" class="btn btn-info" OnClick="btnProjectUpdate_Click" />
                             </td>
                         </tr>
                         <tr>
@@ -385,17 +398,81 @@
                 </div>
 
                 <asp:HiddenField ID="hfProjectId" runat="server" />
+                <asp:HiddenField ID="hfTown" runat="server" />
             </div>
         </div>
     </div>
-    <%--        <script type="text/javascript">
-        $('#<%= cbProjectName.ClientID %>').click(function () {
-            if ($('#<%= cbProjectName.ClientID %>').is(":checked")) {
-                $('#<%= dvProjectName.ClientID %>').show();
-            }
-            else {
-                $('#<%= dvProjectName.ClientID %>').hide();
-            }
+    <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            $('#<%= txtZip.ClientID%>').blur(function () {
+                getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
+            });
         });
-    </script>--%>
+
+        function getLocation() {
+            getAddressInfoByZip(document.forms[0].zip.value);
+        }
+
+        function response(obj) {
+            console.log(obj);
+        }
+        function getAddressInfoByZip(zip) {
+            $('#<%= txtTown.ClientID%>').val('');
+            $('#<%= txtState.ClientID%>').val('');
+            $('#<%= txtCounty.ClientID%>').val('');
+            if (zip.length >= 5 && typeof google != 'undefined') {
+                var addr = {};
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': zip }, function (results, status) {
+                  
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        //console.log(JSON.stringify(results[0]));
+                        console.log(JSON.stringify(results[0].geometry.location.lat));
+                        if (results.length >= 1) {
+                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                var types = results[0].address_components[ii].types.join(",");
+                                if (types == "street_number") {
+                                    addr.street_number = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "route" || types == "point_of_interest,establishment") {
+                                    addr.route = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                                }
+                                if (types == "administrative_area_level_1,political") {
+                                    addr.state = results[0].address_components[ii].short_name;
+                                    $('#<%= txtState.ClientID%>').val(addr.state);
+                                }
+                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                    addr.zipcode = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "country,political") {
+                                    addr.country = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "administrative_area_level_2,political") {
+                                    addr.county = results[0].address_components[ii].short_name;
+                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                                }
+                            }
+                            addr.success = true;
+                            for (name in addr) {
+                                console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                            }
+                            response(addr);
+                        } else {
+                            response({ success: false });
+                        }
+                    } else {
+                        response({ success: false });
+                    }
+                });
+            } else {
+                response({ success: false });
+            }
+        }
+    </script>
 </asp:Content>

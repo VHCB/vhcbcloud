@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-
     public class ProjectMaintenanceData
     {
         public static string AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int LkAppStatus, int Manager, int LkBoardDate, 
@@ -27,7 +26,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "add_new_project";
 
-                        //12 Parameters
+                        //12 Parameters 
                         command.Parameters.Add(new SqlParameter("projNum", ProjNum));
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
@@ -164,7 +163,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProjectname(int TypeID, string ProjectName, bool DefName)
+        public static void UpdateProjectname(int ProjectId, int TypeID, string ProjectName, bool DefName)
         {
             try
             {
@@ -178,7 +177,8 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateProjectName";
 
-                        //3 Parameters
+                        //4 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("TypeId", TypeID));
                         command.Parameters.Add(new SqlParameter("ProjectName", ProjectName));
                         command.Parameters.Add(new SqlParameter("DefName", DefName));
