@@ -427,7 +427,7 @@
                 geocoder.geocode({ 'address': zip }, function (results, status) {
                   
                     if (status == google.maps.GeocoderStatus.OK) {
-                        //console.log(JSON.stringify(results[0]));
+                        //console.log(JSON.stringify(results[0])); 
                         console.log(JSON.stringify(results[0].geometry.location.lat));
                         if (results.length >= 1) {
                             for (var ii = 0; ii < results[0].address_components.length; ii++) {

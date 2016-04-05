@@ -31,7 +31,7 @@
                                 <%-- <asp:TextBox ID="txtApplicantNameSearch" CssClass="clsTextBoxBlue1" runat="server" Width="200px"></asp:TextBox>
                               <ajaxToolkit:AutoCompleteExtender ID="aceApplicantName" runat="server" TargetControlID="txtApplicantNameSearch" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                             CompletionInterval="100" ServiceMethod="GetApplicantName">
-                        </ajaxToolkit:AutoCompleteExtender>--%>
+                        </ajaxToolkit:AutoCompleteExtender> --%>
                                 <asp:DropDownList ID="ddlApplicantNameSearch" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantNameSearch_SelectedIndexChanged" AutoPostBack="True">
                                 </asp:DropDownList>
                                 <asp:HiddenField ID="hfApplicatId" runat="server" />
