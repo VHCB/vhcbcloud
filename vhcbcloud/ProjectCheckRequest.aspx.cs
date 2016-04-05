@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -392,6 +393,20 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPCRData: " + ex.Message;
+            }
+        }
+
+        protected void AddDefaultPCRQuestions()
+        {
+            try
+            {
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), Convert.ToInt32( Context.User.Identity.GetUserId()));
+                BindPCRQuestionsForApproval();
+            }
+            catch (Exception ex)
+            {
+
+                lblErrorMsg.Text = "Exception arised while adding default PCR questions: "+ex.Message;
             }
         }
 
@@ -865,8 +880,8 @@ namespace vhcbcloud
                     ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()),
                     currentTranFudAmount);
 
-                    BindPCRTransDetails();
                     ClearTransactionDetailForm();
+                    AddDefaultPCRQuestions();
                 }
             }
             catch (Exception ex)
@@ -884,7 +899,7 @@ namespace vhcbcloud
                 return;
             }
 
-            ProjectCheckRequestData.SubmitPCRForm(int.Parse(this.hfPCRId.Value), int.Parse(ddlPCRQuestions.SelectedValue.ToString()));
+            ProjectCheckRequestData.SubmitPCRForm(int.Parse(this.hfPCRId.Value), int.Parse(ddlPCRQuestions.SelectedValue.ToString()), Convert.ToInt32(Context.User.Identity.GetUserId()));
 
             lblMessage.Text = "PCR Approvals Saved Successfully";
 
