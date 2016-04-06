@@ -40,19 +40,19 @@ begin
 end
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[get_boardDates]') and type in (N'P', N'PC'))
-drop procedure [dbo].get_boardDates
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetBoardDates]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetBoardDates
 go
 
-create procedure dbo.get_boardDates
+create procedure dbo.GetBoardDates
 as	
 begin
--- dbo.get_boardDates
+-- dbo.GetBoardDates
 	set nocount on   
 	  
-	select TypeID, convert(varchar(10), BoardDate) + ' ' + MeetingType as MeetingType
+	select TypeID, convert(varchar(10), BoardDate, 101) as BoardDate1
 	from [dbo].[LkBoardDate]
-	order by BoardDate
+	order by BoardDate desc
 
 	if (@@error <> 0)    
     begin  
@@ -82,7 +82,8 @@ create procedure dbo.add_new_project
 	@appNameId			int,
 	@projName			varchar(75),
 
-	@isDuplicate		bit output
+	@isDuplicate		bit output,
+	@ProjectId			int output
 ) as
 begin transaction
 
@@ -99,7 +100,7 @@ begin transaction
 		begin
 
 			Declare @nameId as int;
-			Declare @projectId as int;
+			--Declare @projectId as int;
 			declare @recordId int
 			declare @applicantId int
 
@@ -113,10 +114,10 @@ begin transaction
 			insert into Project (Proj_num, LkProjectType, LkProgram, AppRec, LkAppStatus, Manager, LkBoardDate, ClosingDate, ExpireDate, verified,  userid)
 			values (@projNum, @LkProjectType, @LkProgram, @AppRec, @LkAppStatus, @Manager, @LkBoardDate, @ClosingDate, @GrantClosingDate, @verified,  123)
 	
-			set @projectId = @@IDENTITY
+			set @ProjectId = @@IDENTITY
 
 			insert into ProjectName (ProjectID, LkProjectname, DefName)
-			values (@projectId, @nameId, 1)
+			values (@ProjectId, @nameId, 1)
 
 
 			Select @applicantId = a.ApplicantId 
@@ -126,7 +127,7 @@ begin transaction
 			where an.AppNameID = @appNameId
 
 			insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole)
-			values (@projectId, @applicantId, 358)
+			values (@ProjectId, @applicantId, 358)
 
 			set @isDuplicate = 0
 		end
@@ -136,7 +137,7 @@ begin transaction
 		rollback transaction;
 
 		DECLARE @msg nvarchar(4000) = error_message()
-      RAISERROR (@msg, 16, 1)
+        RAISERROR (@msg, 16, 1)
 		return 1  
 	end catch
 
@@ -309,7 +310,8 @@ begin transaction
 
 	begin try
 
-	select TypeID, Description, pn.DefName
+	select TypeID, Description, 
+	case isnull(pn.DefName, '') when '' then 'No' when 0 then 'No' else 'Yes' end DefName, pn.DefName as DefName1
 	from LookupValues lv(nolock)
 	join ProjectName pn(nolock) on lv.TypeID = pn.LkProjectname
 	where pn.ProjectID = @ProjectId
@@ -380,7 +382,7 @@ create procedure dbo.AddNewProjectAddress
 	@Address1 nvarchar(120),
 	@Address2 nvarchar(120),
 	@Town nvarchar(100),
-	--@Village nvarchar(50),
+	@Village nvarchar(35),
 	@State nchar(4),
 	@Zip nchar(20),
 	@County nvarchar(40),
@@ -395,8 +397,8 @@ begin transaction
 
 	declare @AddressId int;
 
-	insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, RowIsActive, UserID)
-	values(@StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @IsActive, 123)
+	insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, RowIsActive, UserID)
+	values(@StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @Village, @IsActive, 123)
 
 	set @AddressId = @@identity	
 
@@ -429,11 +431,10 @@ create procedure [dbo].UpdateProjectAddress
 	@Address1 nvarchar(120),
 	@Address2 nvarchar(120),
 	@Town nvarchar(100),
-	--@Village nvarchar(50),
+	@Village nvarchar(35),
 	@State nchar(4),
 	@Zip nchar(20),
 	@County nvarchar(40),
-	--@TownCountyID int,
 	@latitude float,
 	@longitude	float,
 	@IsActive bit,
@@ -448,7 +449,7 @@ begin transaction
 		set Street# = @StreetNo,
 		Address1 = @Address1,
 		Address2 = @Address2,
-		--TownCountyID = @TownCountyID,
+		Village = @Village,
 		Town = @Town,
 		State = @State,
 		Zip = @Zip,
@@ -491,8 +492,9 @@ as
 --exec GetProjectAddressDetailsById 20, 20
 Begin
 
-	select a.AddressId, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, a.TownCountyID, 
-	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, isnull(a.Zip, null) as Zip, isnull(a.County, '') as County, 
+	select a.AddressId, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, 
+	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, isnull(a.Zip, null) as Zip, 
+	isnull(a.County, '') as County, isnull(Village, '') as Village,
 	a.RowIsActive, pa.PrimaryAdd
 	from projectAddress pa(nolock) 
 	join Address a(nolock) on a.Addressid = pa.AddressId
@@ -512,13 +514,15 @@ as
 --exec GetProjectAddressList 20
 Begin
 
-	select a.AddressId, a.Street#, a.Address1, a.Address2, a.TownCountyID, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, pa.PrimaryAdd
+	select a.AddressId, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, 
+	case isnull(pa.PrimaryAdd, '') when '' then 'No' when 0 then 'No' else 'Yes' end PrimaryAdd
 	from ProjectAddress pa(nolock) 
 	join Address a(nolock) on a.Addressid = pa.AddressId
 	where pa.ProjectId = @ProjectId
 end
 go
 
+--@@@@@@@@@@@@@@@@@@ Project Applicant @@@@@@@@@@@@@@@@@@
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectApplicant]') and type in (N'P', N'PC'))
 drop procedure [dbo].AddProjectApplicant
@@ -558,6 +562,37 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectApplicant]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectApplicant
+go
+
+create procedure dbo.UpdateProjectApplicant
+(
+	@ProjectApplicantId	int,
+	@IsApplicant		bit, 
+	@IsFinLegal			bit	
+) as
+begin transaction
+
+	begin try
+
+	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal
+	where ProjectApplicantId = @ProjectApplicantId
+	
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectApplicantList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetProjectApplicantList
 go
@@ -570,7 +605,11 @@ begin transaction
 
 	begin try
 
-	select pa.ProjectApplicantID, isnull(pa.IsApplicant, '')  isApplicant, isnull(pa.FinLegal, '') as FinLegal,
+	select pa.ProjectApplicantID, 
+			case isnull(pa.IsApplicant, 0) when 0 then 'No' else 'Yes' end IsApplicant1,
+			case isnull(pa.FinLegal, 0) when 0 then 'No' else 'Yes' end FinLegal1,
+			isnull(pa.IsApplicant, 0) as IsApplicant, 
+			isnull(pa.FinLegal, 0) as FinLegal,
 			a.ApplicantId, a.Individual, a.LkEntityType, a.FYend, a.website, a.Stvendid, a.LkPhoneType, a.Phone, a.email, 
 			an.applicantname,
 			c.LkPrefix, c.Firstname, c.Lastname, c.LkSuffix, c.LkPosition, c.Title, 
@@ -598,6 +637,78 @@ begin transaction
 		commit transaction;
 go
 
---select * from ProjectApplicant
+--@@@@@@@@@@@@@@@@@@ Related Projects @@@@@@@@@@@@@@@@@
 
---exec GetProjectApplicantList 1
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddRelatedProject]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddRelatedProject
+go
+
+create procedure dbo.AddRelatedProject
+(
+	@ProjectId			int,
+	@RelProjectId			int
+
+) as
+begin transaction
+
+	begin try
+
+select * from projectrelated
+	insert into projectrelated(ProjectID, RelProjectID)
+	values(@ProjectId, @RelProjectId)
+
+	insert into projectrelated(ProjectID, RelProjectID)
+	values(@RelProjectId, @ProjectId)
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetRelatedProjectList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetRelatedProjectList
+go
+
+create procedure dbo.GetRelatedProjectList
+(
+	@ProjectId	int
+) as
+begin transaction
+--exec GetRelatedProjectList 6588
+	begin try
+
+	select  pr.RelProjectId, lv.Description as ProjectName
+	from projectrelated pr(nolock)
+	join projectname pn(nolock) on pr.RelProjectId = pn.ProjectID
+	join LookupValues lv(nolock) on pn.LkProjectName = lv.TypeId
+	where pn.DefName = 1 and pr.ProjectId = @ProjectId
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+
+
+
+
+
+

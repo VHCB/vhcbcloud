@@ -6,7 +6,7 @@ go
 declare @ProjectId int
 declare @TypeId int 
 
-set @ProjectId = 6583
+set @ProjectId = 6588
 
 select * from project where ProjectId = @ProjectId
 

@@ -101,7 +101,7 @@ namespace DataAccessLayer
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "get_boardDates";
+                        command.CommandText = "GetBoardDates";
 
                         command.CommandTimeout = 60 * 5;
 

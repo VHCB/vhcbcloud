@@ -53,5 +53,27 @@ namespace VHCBCommon.DataAccessLayer
 
             return result;
         }
+
+        public static bool IsDateTime(string txtDate)
+        {
+            DateTime tempDate;
+
+            return DateTime.TryParse(txtDate, out tempDate) ? true : false;
+        }
+
+        public static DateTime GetDate(string input)
+        {
+            DateTime tempDate = DateTime.MinValue;
+
+            if (string.IsNullOrWhiteSpace(input) == false)
+            {
+                if (DateTime.TryParse(input, out tempDate) == false)
+                {
+                    tempDate = DateTime.MinValue;
+                }
+            }
+
+            return tempDate;
+        }
     }
 }

@@ -149,7 +149,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddProjectName" CssClass="ChkBox" runat="server" Text="Add Project Name" AutoPostBack="True" OnCheckedChanged="cbProjectName_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddProjectName" CssClass="ChkBox" runat="server" Text="Add New Name" AutoPostBack="True" OnCheckedChanged="cbProjectName_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -216,7 +216,7 @@
                                         <asp:Label ID="lblDefName" runat="Server" Text='<%# Eval("DefName") %>' />
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:CheckBox ID="chkDefName" runat="server" Checked='<%# Eval("DefName") %>' />
+                                        <asp:CheckBox ID="chkDefName" runat="server" Checked='<%# Eval("DefName1") %>' />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
@@ -225,14 +225,13 @@
                     </asp:Panel>
                 </div>
 
-
                 <div id="dvNewAddress" runat="server">
                     <table>
                         <tr style="float: left">
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add Address" AutoPostBack="True" OnCheckedChanged="cbAddAddress_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add New Address" AutoPostBack="True" OnCheckedChanged="cbAddAddress_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -278,8 +277,7 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Village</span></td>
                                         <td>
-                                            <asp:DropDownList ID="ddlVillage" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -403,7 +401,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Attach New Project Entity" AutoPostBack="True" OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Add New Entity" AutoPostBack="True" OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -422,10 +420,9 @@
                                             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 70px"><asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
-                                        <td style="width: 100px">
-                                            
-                                        </td>
+                                        <td style="width: 70px">
+                                            <asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
+                                        <td style="width: 100px"></td>
                                         <td style="width: 370px"></td>
                                         <td></td>
                                     </tr>
@@ -438,11 +435,11 @@
                     </div>
                 </div>
 
-                 <div class="panel-body" id="dvEntityGrid" runat="server">
+                <div class="panel-body" id="dvEntityGrid" runat="server">
                     <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -469,20 +466,21 @@
                                         <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Title">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblTitle" runat="Server" Text='<%# Eval("Title") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Applicant">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblIsApplicant" runat="Server" Text='<%# Eval("isApplicant") %>' />
+                                        <asp:Label ID="lblIsApplicant" runat="Server" Text='<%# Eval("IsApplicant1") %>' />
                                     </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkIsApplicant" Text="Yes" runat="server" Checked='<%# Eval("IsApplicant") %>' />
+                                    </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Payee">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFinLegal" runat="Server" Text='<%# Eval("FinLegal") %>' />
+                                        <asp:Label ID="lblFinLegal" runat="Server" Text='<%# Eval("FinLegal1") %>' />
                                     </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkFinLegal" Text="Yes" runat="server" Checked='<%# Eval("FinLegal") %>' />
+                                    </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
                             </Columns>
@@ -490,6 +488,78 @@
                     </asp:Panel>
                 </div>
 
+                 <div id="dvNewRelatedProjects" runat="server">
+                    <table>
+                        <tr style="float: left">
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td></td>
+                            <td>
+                                <asp:CheckBox ID="cbRelatedProjects" CssClass="ChkBox" runat="server" Text="Add Related Projects" 
+                                    AutoPostBack="True" OnCheckedChanged="cbRelatedProjects_CheckedChanged" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                 <div class="panel-width" runat="server" id="dvRelatedProjects">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <h3 class="panel-title">Related Projects</h3>
+                        </div>
+                        <div class="panel-body">
+                            <asp:Panel runat="server" ID="Panel6">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 180px"><span class="labelClass">Related Project</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <span class="labelClass">
+                                            <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px"></asp:TextBox>    
+                                            </span>
+                                        </td>
+                                        <td style="width: 300px">
+                                            <asp:Button ID="btnAddRelatedProject" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddRelatedProject_Click" />
+                                        </td>
+                                        <td style="width: 270px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body" id="dvRelatedProjectsGrid" runat="server">
+                    <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
+                        <asp:GridView ID="gvRelatedProjects" runat="server" AutoGenerateColumns="False"
+                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                            <HeaderStyle CssClass="headerStyle" />
+                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                            <RowStyle CssClass="rowStyle" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Related Project Id" Visible="false">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblRelProjectId" runat="Server" Text='<%# Eval("RelProjectId") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Project Name">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:CommandField ShowEditButton="True" />
+                            </Columns>
+                        </asp:GridView>
+                    </asp:Panel>
+                </div>
 
                 <div id="dvSubmit" runat="server">
                     <br />
