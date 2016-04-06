@@ -397,7 +397,7 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), Convert.ToInt32(Context.User.Identity.GetUserId()));
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId());
                 BindPCRQuestionsForApproval();
             }
             catch (Exception ex)
@@ -733,16 +733,16 @@ namespace vhcbcloud
                     EligibleAmt = decimal.Parse(txtEligibleAmt.Text);
                 }
 
-                foreach (ListItem listItem in lbNOD.Items)
-                {
-                    if (listItem.Selected == true)
-                    {
-                        if (lbNODS.Length == 0)
-                            lbNODS = listItem.Value;
-                        else
-                            lbNODS = lbNODS + "|" + listItem.Value;
-                    }
-                }
+                //foreach (ListItem listItem in lbNOD.Items)
+                //{
+                //    if (listItem.Selected == true)
+                //    {
+                //        if (lbNODS.Length == 0)
+                //            lbNODS = listItem.Value;
+                //        else
+                //            lbNODS = lbNODS + "|" + listItem.Value;
+                //    }
+                //}
 
                 DataTable dtPCR = null;
                 PCRDetails pcr = new PCRDetails();
@@ -752,12 +752,20 @@ namespace vhcbcloud
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, 1234, lbNODS);
+                        txtNotes.Text, GetUserId(), lbNODS);
                     if (dtPCR.Rows.Count > 0)
                     {
                         pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
                         pcr.ProjectCheckReqID = Convert.ToInt32(dtPCR.Rows[0]["ProjectCheckReqId"].ToString());
                         pcr.pcrDetails = dtPCR.Rows[0]["pcq"].ToString();
+
+                        foreach (ListItem listItem in lbNOD.Items)
+                        {
+                            if (listItem.Selected == true)
+                            {
+                                ProjectCheckRequestData.PCR_Submit_NOD(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
+                            }
+                        }                        
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
@@ -772,7 +780,7 @@ namespace vhcbcloud
                         pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                             chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                             decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                            txtNotes.Text, 1234, lbNODS);
+                            txtNotes.Text,GetUserId(), lbNODS);
                         lblMessage.Text = "Successfully Updated Check Request";
                     }
                     else
@@ -896,7 +904,7 @@ namespace vhcbcloud
                 return;
             }
 
-            ProjectCheckRequestData.SubmitPCRForm(int.Parse(this.hfPCRId.Value), int.Parse(ddlPCRQuestions.SelectedValue.ToString()), Convert.ToInt32(Context.User.Identity.GetUserId()));
+            ProjectCheckRequestData.SubmitPCRForm(int.Parse(this.hfPCRId.Value), int.Parse(ddlPCRQuestions.SelectedValue.ToString()), GetUserId());
 
             lblMessage.Text = "PCR Approvals Saved Successfully";
 
@@ -905,6 +913,32 @@ namespace vhcbcloud
             BindPCRQuestionsForApproval();
         }
         #endregion
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        protected string GetFullName()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetData(Context.User.Identity.GetUserName());
+                return dtUser != null ? dtUser.Rows[0][1].ToString() : "";
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
 
         #region gvPCRData
         protected void gvPCRData_RowEditing(object sender, GridViewEditEventArgs e)
@@ -1203,7 +1237,7 @@ namespace vhcbcloud
                 bool isApproved = Convert.ToBoolean(((CheckBox)gvQuestionsForApproval.Rows[rowIndex].FindControl("cbApproved")).Checked);
                 int ProjectCheckReqQuestionid = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfProjectCheckReqQuestionID")).Value);
 
-                ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, 1234);
+                ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
 
                 gvQuestionsForApproval.EditIndex = -1;
                 BindPCRQuestionsForApproval();

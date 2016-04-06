@@ -415,7 +415,7 @@
                                                 <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("Approved") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Staff ID" SortExpression="StaffID">
+                                        <asp:TemplateField HeaderText="Staff Name" SortExpression="StaffID">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblStaffId" runat="Server" Text='<%# Eval("StaffID") %>' />
                                             </ItemTemplate>
@@ -423,7 +423,7 @@
 
                                         <asp:TemplateField HeaderText="Date" SortExpression="Date">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:M-dd-yyyy}") %>'  />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
