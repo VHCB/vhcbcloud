@@ -122,7 +122,7 @@ namespace vhcbcloud
                 ddlApplicantName.DataTextField = "Applicantname";
                 ddlApplicantName.DataBind();
                 //ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
-                              
+
 
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
                 CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
@@ -328,9 +328,6 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-
-                    BindPCRQuestionsForApproval();
-
                 }
             }
             catch (Exception ex)
@@ -400,13 +397,13 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), Convert.ToInt32( Context.User.Identity.GetUserId()));
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), Convert.ToInt32(Context.User.Identity.GetUserId()));
                 BindPCRQuestionsForApproval();
             }
             catch (Exception ex)
             {
 
-                lblErrorMsg.Text = "Exception arised while adding default PCR questions: "+ex.Message;
+                lblErrorMsg.Text = "Exception arised while adding default PCR questions: " + ex.Message;
             }
         }
 
@@ -474,7 +471,8 @@ namespace vhcbcloud
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 lblProjName.Text = tokens[1];
                 BindApplicantName(int.Parse(tokens[0]));
-                lbAwardSummary.Visible = true;                
+                lbAwardSummary.Visible = true;
+                rdBtnSelect.SelectedIndex = 0;
             }
             else
             {
@@ -877,11 +875,10 @@ namespace vhcbcloud
                         lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
                     }
 
-                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()),
-                    currentTranFudAmount);
-
-                    ClearTransactionDetailForm();
+                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
                     AddDefaultPCRQuestions();
+                    BindPCRTransDetails();
+                    ClearTransactionDetailForm();
                 }
             }
             catch (Exception ex)
@@ -1085,7 +1082,7 @@ namespace vhcbcloud
         }
 
         private void ClearPCRForm()
-        {            
+        {
             ddlApplicantName.Items.Clear();
             lblProjName.Text = "--";
             txtTransDate.Text = "";
@@ -1321,7 +1318,7 @@ namespace vhcbcloud
             ClearPCRForm();
             if (rdBtnSelect.SelectedIndex == 0)
             {
-               
+
                 EnablePCR();
                 ddlDate.Visible = false;
                 txtTransDate.Visible = true;
