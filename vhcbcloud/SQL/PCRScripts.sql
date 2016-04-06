@@ -315,3 +315,31 @@ begin
 	order by an.Applicantname
 end
 go
+
+alter procedure GetDefaultPCRQuestions
+(
+@IsLegal bit = 0,
+@ProjectCheckReqID	int
+)
+as
+begin
+--Always include LkPCRQuestions.def=1 If any disbursement from  ProjectCheckReq.Legalreview=1 (entered above), then include LkPCRQuestions.TypeID=7
+
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, ui.Lname+', '+ui.Lname as staffid 
+	from ProjectCheckReqQuestions pcrq(nolock) 
+	left join  LkPCRQuestions q(nolock) on pcrq.LkPCRQuestionsID = q.TypeID 
+	left join UserInfo ui on pcrq.StaffID = ui.UserId
+	where   q.RowIsActive=1 and ProjectCheckReqID = @ProjectCheckReqID
+	
+end
+
+
+alter procedure GetUserByUserName
+(
+	@username varchar(50)
+)
+as 
+Begin
+	select userid,  Lname + ', ' + Fname as fullname from UserInfo where Username=@username
+End
+go
