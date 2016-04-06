@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvProjectInfo">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Info</h3>
                         </div>
@@ -125,6 +125,19 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
+                                <div id="dvUpdate" runat="server" visible="false">
+                                    <table>
+                                        <tr>
+                                            <td style="height: 1px">&nbsp;&nbsp;</td>
+                                            <td style="height: 1px">
+                                                <asp:Button ID="btnProjectUpdate" runat="server" Text="Update" class="btn btn-info" OnClick="btnProjectUpdate_Click" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 1px" colspan="2"></td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </asp:Panel>
                         </div>
                     </div>
@@ -142,7 +155,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvProjectName">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Name</h3>
                         </div>
@@ -174,10 +187,11 @@
                 </div>
 
                 <div class="panel-body" id="dvProjectNamesGrid" runat="server">
-                    <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="150px" ScrollBars="Vertical">
+                    <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvProjectNames" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit" OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit" OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating"
+                            OnRowDataBound="gvProjectNames_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -211,7 +225,7 @@
                     </asp:Panel>
                 </div>
 
-                
+
                 <div id="dvNewAddress" runat="server">
                     <table>
                         <tr style="float: left">
@@ -224,7 +238,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvAddress">
-                    <div class="panel panel-primary ">
+                    <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Project Address</h3>
                         </div>
@@ -283,7 +297,7 @@
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Defailt Address</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Default Address</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbDefaultAddress" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
@@ -294,7 +308,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Active</span></td>
                                         <td style="width: 250px">
-                                            <asp:CheckBox ID="cdActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
+                                            <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
                                         <td style="width: 150px"><span class="labelClass">Lattitude</span></td>
                                         <td style="width: 250px">
@@ -308,17 +322,14 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
-                                        <td style="width: 150px"><asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
-                                        <td style="width: 250px">
-                                            
-                                        </td>
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
+                                        <td style="width: 250px"></td>
                                         <td style="width: 150px"></td>
-                                        <td style="width: 250px">
-                                        </td>
+                                        <td style="width: 250px"></td>
                                         <td></td>
-                                        <td>
-                                        </td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -330,36 +341,148 @@
                 </div>
 
                 <div class="panel-body" id="dvAddressGrid" runat="server">
-                    <asp:Panel runat="server" ID="Panel3" Width="100%" Height="150px" ScrollBars="Vertical">
+                    <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit" OnRowEditing="gvAddress_RowEditing" OnRowUpdating="gvAddress_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound" OnRowEditing="gvAddress_RowEditing1" OnRowUpdating="gvAddress_RowUpdating1">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                             <RowStyle CssClass="rowStyle" />
                             <Columns>
-                                <asp:TemplateField HeaderText="Type Id" Visible="false">
+                                <asp:TemplateField HeaderText="Address Id" Visible="false">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblTypeId" runat="Server" Text='<%# Eval("TypeID") %>' />
+                                        <asp:Label ID="lblAddressId" runat="Server" Text='<%# Eval("AddressId") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Description">
+                                <asp:TemplateField HeaderText="St.##">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblDescription" runat="Server" Text='<%# Eval("Description") %>' />
+                                        <asp:Label ID="lblStreetNum" runat="Server" Text='<%# Eval("Street#") %>' />
                                     </ItemTemplate>
-                                    <EditItemTemplate>
-                                        <asp:TextBox ID="txtDescription" runat="Server" CssClass="clsApplicantBlue" Text='<%# Eval("Description") %>'></asp:TextBox>
-                                    </EditItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="DefName">
+                                <asp:TemplateField HeaderText="Address1">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblDefName" runat="Server" Text='<%# Eval("DefName") %>' />
+                                        <asp:Label ID="lblAddress1" runat="Server" Text='<%# Eval("Address1") %>' />
                                     </ItemTemplate>
-                                    <EditItemTemplate>
-                                        <asp:CheckBox ID="chkDefName" runat="server" Checked='<%# Eval("DefName") %>' />
-                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Address2">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblAddress2" runat="Server" Text='<%# Eval("Address2") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Town/Village">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblTown" runat="Server" Text='<%# Eval("Town") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="County">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblCounty" runat="Server" Text='<%# Eval("County") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="State">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblState" runat="Server" Text='<%# Eval("State") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Default">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblDefault" runat="Server" Text='<%# Eval("PrimaryAdd") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:CommandField ShowEditButton="True" />
+                            </Columns>
+                        </asp:GridView>
+                    </asp:Panel>
+                </div>
+
+                <div id="dvNewEntity" runat="server">
+                    <table>
+                        <tr style="float: left">
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td></td>
+                            <td>
+                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Attach New Project Entity" AutoPostBack="True" OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvEntity">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <h3 class="panel-title">New Project Entity</h3>
+                        </div>
+                        <div class="panel-body">
+                            <asp:Panel runat="server" ID="Panel4">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 130px"><span class="labelClass">Applicant Name</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 70px"><asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
+                                        <td style="width: 100px">
+                                            
+                                        </td>
+                                        <td style="width: 370px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="panel-body" id="dvEntityGrid" runat="server">
+                    <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                        <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
+                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                            <HeaderStyle CssClass="headerStyle" />
+                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                            <RowStyle CssClass="rowStyle" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Project Applicant Id" Visible="false">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblProjectApplicantID" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Applicant Name">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblapplicantname" runat="Server" Text='<%# Eval("applicantname") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Email">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblemail" runat="Server" Text='<%# Eval("email") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Phone">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Title">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblTitle" runat="Server" Text='<%# Eval("Title") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Applicant">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblIsApplicant" runat="Server" Text='<%# Eval("isApplicant") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Payee">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblFinLegal" runat="Server" Text='<%# Eval("FinLegal") %>' />
+                                    </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
                             </Columns>
@@ -375,7 +498,6 @@
                             <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
                             <td style="height: 5px">
                                 <asp:Button ID="btnProjectSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnProjectSubmit_Click" />
-                                <asp:Button ID="btnProjectUpdate" runat="server" Text="Update" class="btn btn-info" OnClick="btnProjectUpdate_Click" />
                             </td>
                         </tr>
                         <tr>
@@ -385,17 +507,83 @@
                 </div>
 
                 <asp:HiddenField ID="hfProjectId" runat="server" />
+                <asp:HiddenField ID="hfAddressId" runat="server" />
+
+                <asp:HiddenField ID="hfTown" runat="server" />
             </div>
         </div>
     </div>
-    <%--        <script type="text/javascript">
-        $('#<%= cbProjectName.ClientID %>').click(function () {
-            if ($('#<%= cbProjectName.ClientID %>').is(":checked")) {
-                $('#<%= dvProjectName.ClientID %>').show();
-            }
-            else {
-                $('#<%= dvProjectName.ClientID %>').hide();
-            }
+    <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            $('#<%= txtZip.ClientID%>').blur(function () {
+                getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
+            });
         });
-    </script>--%>
+
+        function getLocation() {
+            getAddressInfoByZip(document.forms[0].zip.value);
+        }
+
+        function response(obj) {
+            console.log(obj);
+        }
+        function getAddressInfoByZip(zip) {
+            $('#<%= txtTown.ClientID%>').val('');
+            $('#<%= txtState.ClientID%>').val('');
+            $('#<%= txtCounty.ClientID%>').val('');
+            if (zip.length >= 5 && typeof google != 'undefined') {
+                var addr = {};
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': zip }, function (results, status) {
+
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        //console.log(JSON.stringify(results[0]));
+                        console.log(JSON.stringify(results[0].geometry.location.lat));
+                        if (results.length >= 1) {
+                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                var types = results[0].address_components[ii].types.join(",");
+                                if (types == "street_number") {
+                                    addr.street_number = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "route" || types == "point_of_interest,establishment") {
+                                    addr.route = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                                }
+                                if (types == "administrative_area_level_1,political") {
+                                    addr.state = results[0].address_components[ii].short_name;
+                                    $('#<%= txtState.ClientID%>').val(addr.state);
+                                }
+                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                    addr.zipcode = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "country,political") {
+                                    addr.country = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "administrative_area_level_2,political") {
+                                    addr.county = results[0].address_components[ii].short_name;
+                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                                }
+                            }
+                            addr.success = true;
+                            for (name in addr) {
+                                console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                            }
+                            response(addr);
+                        } else {
+                            response({ success: false });
+                        }
+                    } else {
+                        response({ success: false });
+                    }
+                });
+            } else {
+                response({ success: false });
+            }
+        }
+    </script>
 </asp:Content>
