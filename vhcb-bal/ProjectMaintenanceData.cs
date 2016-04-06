@@ -227,5 +227,217 @@ namespace DataAccessLayer
             }
             return dt;
         }
+
+        #region Project Address
+        public static DataTable GetProjectAddressList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectAddressList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataRow GetProjectAddressDetailsById(int ProjectId, int AddressId)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectAddressDetailsById";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("AddressId", AddressId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
+        public static void UpdateProjectAddress(int ProjectId, int AddressId, string StreetNo, string Address1, string Address2,
+            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectAddress";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("AddressId", AddressId));
+                        command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
+                        command.Parameters.Add(new SqlParameter("Address1", Address1));
+                        command.Parameters.Add(new SqlParameter("Address2", Address2));
+                        command.Parameters.Add(new SqlParameter("Town", Town));
+                        //command.Parameters.Add(new SqlParameter("Village", Village));
+                        command.Parameters.Add(new SqlParameter("State", State));
+                        command.Parameters.Add(new SqlParameter("Zip", Zip));
+                        command.Parameters.Add(new SqlParameter("County", County));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
+            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddNewProjectAddress";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
+                        command.Parameters.Add(new SqlParameter("Address1", Address1));
+                        command.Parameters.Add(new SqlParameter("Address2", Address2));
+                        command.Parameters.Add(new SqlParameter("Town", Town));
+                        //command.Parameters.Add(new SqlParameter("Village", Village));
+                        command.Parameters.Add(new SqlParameter("State", State));
+                        command.Parameters.Add(new SqlParameter("Zip", Zip));
+                        command.Parameters.Add(new SqlParameter("County", County));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Project Entity
+        public static void AddProjectApplicant(int ProjectId, int AppNameId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectApplicant";
+
+                        //2 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetProjectApplicantList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectApplicantList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+        #endregion
     }
 }
