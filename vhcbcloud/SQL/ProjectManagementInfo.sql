@@ -1,12 +1,12 @@
 use vhcbsandbox
 go
 
---select * from project order by DateModified desc
+--select * from project order by DateModified desc 
 
 declare @ProjectId int
 declare @TypeId int 
 
-set @ProjectId = 6583
+set @ProjectId = 6588
 
 select * from project where ProjectId = @ProjectId
 

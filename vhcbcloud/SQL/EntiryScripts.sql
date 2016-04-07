@@ -1,7 +1,6 @@
 use vhcbsandbox
 go
 
-
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[get_lookup_values]') and type in (N'P', N'PC'))
 drop procedure [dbo].get_lookup_values
 go
@@ -237,7 +236,7 @@ as
 --exec GetApplicantAddressDetails 1033
 Begin
 
-	select a.AddressId, a.LkAddressType, a.Street#, a.Address1, a.Address2, a.TownCountyID, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, ad.Defaddress
+	select a.AddressId, a.LkAddressType, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, ad.Defaddress
 	from ApplicantAddress ad(nolock) 
 	join applicantappname aan(nolock) on ad.ApplicantId = aan.ApplicantId
 	join Address a(nolock) on a.Addressid = ad.AddressId
@@ -258,7 +257,7 @@ as
 --exec GetApplicantAddressDetailsById 47
 Begin
 
-	select a.AddressId, isnull(a.LkAddressType, '') as LkAddressType, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, a.TownCountyID, 
+	select a.AddressId, isnull(a.LkAddressType, '') as LkAddressType, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, 
 	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, isnull(a.Zip, null) as Zip, isnull(a.County, '') as County, 
 	a.RowIsActive, ad.Defaddress
 	from ApplicantAddress ad(nolock) 
@@ -345,11 +344,11 @@ Begin
 end
 go
 
-select distinct typeid, description
-from lookupvalues lv(nolock)
-join TownCounty tc(nolock) on tc.LKTown = lv.typeid
-where rowisactive = 1 and lookuptype = 89
-order by typeid
+--select distinct typeid, description
+--from lookupvalues lv(nolock)
+--join TownCounty tc(nolock) on tc.LKTown = lv.typeid
+--where rowisactive = 1 and lookuptype = 89
+--order by typeid
 
 
 --create procedure PM_Get_Projects

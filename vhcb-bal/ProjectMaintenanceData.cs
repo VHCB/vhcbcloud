@@ -6,13 +6,14 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VHCBCommon.DataAccessLayer;
 
 namespace DataAccessLayer
 {
     public class ProjectMaintenanceData
     {
-        public static string AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int LkAppStatus, int Manager, int LkBoardDate, 
-            DateTime ClosingDate, DateTime ExpireDate, bool verified, int appNameId, string projName)
+        public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int LkAppStatus, int Manager, int LkBoardDate,
+            DateTime ClosingDate, DateTime GrantClosingDate, bool verified, int appNameId, string projName)
         {
             try
             {
@@ -31,11 +32,11 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                         command.Parameters.Add(new SqlParameter("AppRec", AppRec));
-                        command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus));
-                        command.Parameters.Add(new SqlParameter("Manager", Manager));
-                        command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate));
-                        command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate));
-                        command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate));
+                        command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkAppStatus));
+                        command.Parameters.Add(new SqlParameter("Manager", Manager == 0 ? System.Data.SqlTypes.SqlInt32.Null : Manager));
+                        command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkBoardDate));
+                        command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClosingDate));
+                        command.Parameters.Add(new SqlParameter("GrantClosingDate", GrantClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : GrantClosingDate));
                         command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
                         command.Parameters.Add(new SqlParameter("projName", projName));
@@ -44,11 +45,21 @@ namespace DataAccessLayer
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
 
+                        SqlParameter parmMessage1 = new SqlParameter("@ProjectId", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
 
-                        return command.Parameters["@isDuplicate"].Value.ToString();
+                        AddProject ap = new AddProject();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.ProjectId = DataUtils.GetInt(command.Parameters["@ProjectId"].Value.ToString());
+
+                        return ap;
                     }
                 }
             }
@@ -85,8 +96,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
                         command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
-                       // command.Parameters.Add(new SqlParameter("projName", projName));
-                        
+                        // command.Parameters.Add(new SqlParameter("projName", projName));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -150,7 +161,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("projName", ProjectName));
                         command.Parameters.Add(new SqlParameter("DefName", DefName));
-                       
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -182,7 +193,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("TypeId", TypeID));
                         command.Parameters.Add(new SqlParameter("ProjectName", ProjectName));
                         command.Parameters.Add(new SqlParameter("DefName", DefName));
-                       
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -217,6 +228,39 @@ namespace DataAccessLayer
                         if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
                         {
                             dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataRow GetProjectNameById(int ProjectId)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectNameById";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0].Rows[0];
                         }
                     }
                 }
@@ -297,7 +341,7 @@ namespace DataAccessLayer
         }
 
         public static void UpdateProjectAddress(int ProjectId, int AddressId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
         {
             try
             {
@@ -316,12 +360,12 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
-                        //command.Parameters.Add(new SqlParameter("Village", Village));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
-                        command.Parameters.Add(new SqlParameter("latitude", latitude));
-                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
@@ -336,7 +380,7 @@ namespace DataAccessLayer
         }
 
         public static void AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
         {
             try
             {
@@ -355,12 +399,12 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
-                        //command.Parameters.Add(new SqlParameter("Village", Village));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
-                        command.Parameters.Add(new SqlParameter("latitude", latitude));
-                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
@@ -393,7 +437,7 @@ namespace DataAccessLayer
                         //2 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
-                        
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -438,6 +482,107 @@ namespace DataAccessLayer
             }
             return dt;
         }
+
+        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectApplicant";
+
+                        //3 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectApplicantId", ProjectApplicantId));
+                        command.Parameters.Add(new SqlParameter("IsApplicant", IsApplicant));
+                        command.Parameters.Add(new SqlParameter("IsFinLegal", IsFinLegal));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
+
+
+        public static void AddRelatedProject(int ProjectId, int RelProjectId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddRelatedProject";
+
+                        //2 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("RelProjectId", RelProjectId));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetRelatedProjectList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetRelatedProjectList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+    }
+
+    public class AddProject
+    {
+        public bool IsDuplicate { set; get; }
+        public int ProjectId { set; get; }
     }
 }
