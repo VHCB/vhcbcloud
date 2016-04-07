@@ -1,7 +1,6 @@
 use vhcbsandbox
 go
 
-
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[get_lookup_values]') and type in (N'P', N'PC'))
 drop procedure [dbo].get_lookup_values
 go

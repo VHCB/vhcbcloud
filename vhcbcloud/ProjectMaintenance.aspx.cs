@@ -200,18 +200,21 @@ namespace vhcbcloud
                     dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = true;
                     BindProjectNamesGrid();
-
+                    cbAddProjectName.Checked = false;
+                    
                     //Address
                     dvNewAddress.Visible = true;
                     dvAddress.Visible = false;
                     dvAddressGrid.Visible = true;
                     BindAddressGrid();
+                    cbAddAddress.Checked = false;
 
                     //Entity
                     dvNewEntity.Visible = true;
                     dvEntity.Visible = false;
                     dvEntityGrid.Visible = true;
                     BindProjectEntityGrid();
+                    cbAttachNewEntity.Checked = false;
 
                     //RelatedProjects
                     dvNewRelatedProjects.Visible = true;
@@ -219,6 +222,7 @@ namespace vhcbcloud
                     dvRelatedProjectsGrid.Visible = true;
                     BindProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
+                    cbRelatedProjects.Checked = false;
                 }
                 else
                 {
@@ -601,7 +605,7 @@ namespace vhcbcloud
                 int addressId = Convert.ToInt32(hfAddressId.Value);
 
                 ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, 0, 0, cbActive.Checked, cbDefaultAddress.Checked);
+                    txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
 
                 hfAddressId.Value = "";
                 btnAddAddress.Text = "Add";
@@ -610,7 +614,7 @@ namespace vhcbcloud
             else //add
             {
                 ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, 0, 0, cbActive.Checked, cbDefaultAddress.Checked);
+                    txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
 
                 btnAddAddress.Text = "Add";
                 LogMessage("New Address added successfully");
@@ -753,7 +757,7 @@ namespace vhcbcloud
             else
             {
                 string ProjectNumber = new string(txtProjNum.Text.Where(c => char.IsDigit(c)).ToArray());
-                if(ProjectNumber.Length != 10)
+                if (ProjectNumber.Length != 10)
                 {
                     LogMessage("Enter Valid Project Number");
                     txtProjNum.Focus();
@@ -788,7 +792,7 @@ namespace vhcbcloud
                 ddlProjectType.Focus();
                 return false;
             }
-            
+
             if (txtApplicationReceived.Text.Trim() == "")
             {
                 LogMessage("Enter Application Rec'd Date");
@@ -797,7 +801,7 @@ namespace vhcbcloud
             }
             else
             {
-               if( !DataUtils.IsDateTime(txtApplicationReceived.Text.Trim()))
+                if (!DataUtils.IsDateTime(txtApplicationReceived.Text.Trim()))
                 {
                     LogMessage("Enter valid Application Rec'd Date");
                     txtApplicationReceived.Focus();
@@ -843,7 +847,7 @@ namespace vhcbcloud
         protected void gvEntity_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            
+
             int ProjectApplicantId = Convert.ToInt32(((Label)gvEntity.Rows[rowIndex].FindControl("lblProjectApplicantID")).Text);
             bool isApplicant = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkIsApplicant")).Checked);
             bool isFinLegal = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkFinLegal")).Checked);
@@ -852,7 +856,7 @@ namespace vhcbcloud
             gvEntity.EditIndex = -1;
 
             BindProjectEntityGrid();
-           
+
             LogMessage("Entity updated successfully");
         }
 
@@ -902,6 +906,13 @@ namespace vhcbcloud
                 dvRelatedProjects.Visible = true;
             else
                 dvRelatedProjects.Visible = false;
+        }
+
+        protected void ddlRelatedProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtRelatedProjectName.Text = "";
+            DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
+            txtRelatedProjectName.Text = dr["ProjectName"].ToString();
         }
     }
 }

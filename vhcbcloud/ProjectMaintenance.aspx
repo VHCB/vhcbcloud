@@ -511,7 +511,7 @@
                                     <tr>
                                         <td style="width: 180px"><span class="labelClass">Related Project</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server"  AutoPostBack="true" OnSelectedIndexChanged="ddlRelatedProjects_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px">
@@ -550,12 +550,17 @@
                                         <asp:Label ID="lblRelProjectId" runat="Server" Text='<%# Eval("RelProjectId") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Project#">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblProjectNumber" runat="Server" Text='<%# Eval("Proj_num") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Project Name">
                                     <ItemTemplate>
                                         <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:CommandField ShowEditButton="True" />
+                                <%--<asp:CommandField ShowEditButton="True" />--%>
                             </Columns>
                         </asp:GridView>
                     </asp:Panel>
@@ -640,6 +645,9 @@
                                 }
                             }
                             addr.success = true;
+                            $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
+                            $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
+
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }

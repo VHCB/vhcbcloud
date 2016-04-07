@@ -1,8 +1,28 @@
 use vhcbsandbox
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNameById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectNameById 
+go
+
+create procedure GetProjectNameById
+(
+	@ProjectId int
+)  
+as
+--exec GetProjectNameById 6588
+begin
+
+	select rtrim(ltrim(lpn.description)) as ProjectName
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	where p.ProjectId = @ProjectId and pn.DefName = 1
+end
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getprojectslist]') and type in (N'P', N'PC'))
-drop procedure [dbo].getprojectslist
+drop procedure [dbo].getprojectslist 
 go
 
 create procedure getprojectslist  
@@ -686,8 +706,9 @@ begin transaction
 --exec GetRelatedProjectList 6588
 	begin try
 
-	select  pr.RelProjectId, lv.Description as ProjectName
+	select  pr.RelProjectId, p.Proj_num, Description as ProjectName
 	from projectrelated pr(nolock)
+	join project p(nolock) on pr.RelProjectId = p.ProjectId
 	join projectname pn(nolock) on pr.RelProjectId = pn.ProjectID
 	join LookupValues lv(nolock) on pn.LkProjectName = lv.TypeId
 	where pn.DefName = 1 and pr.ProjectId = @ProjectId
@@ -705,9 +726,6 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
-
-
-
 
 
 

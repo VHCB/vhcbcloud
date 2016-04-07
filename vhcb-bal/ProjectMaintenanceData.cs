@@ -239,6 +239,39 @@ namespace DataAccessLayer
             return dt;
         }
 
+        public static DataRow GetProjectNameById(int ProjectId)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectNameById";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
         #region Project Address
         public static DataTable GetProjectAddressList(int ProjectId)
         {
@@ -308,7 +341,7 @@ namespace DataAccessLayer
         }
 
         public static void UpdateProjectAddress(int ProjectId, int AddressId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
         {
             try
             {
@@ -331,8 +364,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
-                        command.Parameters.Add(new SqlParameter("latitude", latitude));
-                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
@@ -347,7 +380,7 @@ namespace DataAccessLayer
         }
 
         public static void AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, float latitude, float longitude, bool IsActive, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
         {
             try
             {
@@ -370,8 +403,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
-                        command.Parameters.Add(new SqlParameter("latitude", latitude));
-                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 

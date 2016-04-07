@@ -1,7 +1,7 @@
 use vhcbsandbox
 go
 
---select * from project order by DateModified desc
+--select * from project order by DateModified desc 
 
 declare @ProjectId int
 declare @TypeId int 
