@@ -21,6 +21,12 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
+                if (Request.QueryString["Type"] == "new")
+                {
+                    rdBtnSelection.SelectedIndex = 0;
+                    RadioButtonSelectionChanged();
+                }
+
                 BindControls();
                 DisplayControlsbasedOnSelection();
             }
@@ -201,7 +207,7 @@ namespace vhcbcloud
                     dvProjectNamesGrid.Visible = true;
                     BindProjectNamesGrid();
                     cbAddProjectName.Checked = false;
-                    
+
                     //Address
                     dvNewAddress.Visible = true;
                     dvAddress.Visible = false;
@@ -223,6 +229,14 @@ namespace vhcbcloud
                     BindProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
                     cbRelatedProjects.Checked = false;
+
+                    //ProjectStatus
+                    dvNewProjectStatus.Visible = true;
+                    dvProjectStatus.Visible = false;
+                    dvProjectStatusGrid.Visible = true;
+                    BindLookUP(ddlProjectStatus, 4);
+                    BindProjectStatusGrid();
+                    cbAddProjectStatus.Checked = false;
                 }
                 else
                 {
@@ -247,6 +261,11 @@ namespace vhcbcloud
                     dvNewRelatedProjects.Visible = false;
                     dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = false;
+
+                    //ProjectStatus
+                    dvNewProjectStatus.Visible = false;
+                    dvProjectStatus.Visible = false;
+                    dvProjectStatusGrid.Visible = false;
                 }
 
             }
@@ -358,6 +377,11 @@ namespace vhcbcloud
             dvNewRelatedProjects.Visible = false;
             dvRelatedProjects.Visible = false;
             dvRelatedProjectsGrid.Visible = false;
+
+            //ProjectStatus
+            dvNewProjectStatus.Visible = false;
+            dvProjectStatus.Visible = false;
+            dvProjectStatusGrid.Visible = false;
         }
 
         private void DisplayControlsbasedOnSelection()
@@ -396,6 +420,11 @@ namespace vhcbcloud
                 dvNewRelatedProjects.Visible = false;
                 dvRelatedProjects.Visible = false;
                 dvRelatedProjectsGrid.Visible = false;
+
+                //ProjectStatus
+                dvNewProjectStatus.Visible = false;
+                dvProjectStatus.Visible = false;
+                dvProjectStatusGrid.Visible = false;
             }
         }
 
@@ -468,6 +497,11 @@ namespace vhcbcloud
                 dvNewRelatedProjects.Visible = false;
                 dvRelatedProjects.Visible = false;
                 dvRelatedProjectsGrid.Visible = false;
+
+                //ProjectStatus
+                dvNewProjectStatus.Visible = false;
+                dvProjectStatus.Visible = false;
+                dvProjectStatusGrid.Visible = false;
             }
             catch (Exception ex)
             {
@@ -479,20 +513,35 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(hfProjectId.Value), txtProject_Name.Text, cbDefName.Checked);
+                if (IsProjectNameFormValid())
+                {
+                    ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(hfProjectId.Value), txtProject_Name.Text, cbDefName.Checked);
 
-                ClearProjectNameForm();
-                dvProjectName.Visible = false;
-                dvProjectNamesGrid.Visible = true;
-                cbAddProjectName.Checked = false;
-                BindProjectNamesGrid();
-                BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
-                LogMessage("Project name added successfully");
+                    ClearProjectNameForm();
+                    dvProjectName.Visible = false;
+                    dvProjectNamesGrid.Visible = true;
+                    cbAddProjectName.Checked = false;
+                    BindProjectNamesGrid();
+                    BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
+                    LogMessage("Project name added successfully");
+                }
             }
             catch (Exception ex)
             {
                 LogError(Pagename, "btnAddProjectName_Click", "", ex.Message);
             }
+        }
+
+        private bool IsProjectNameFormValid()
+        {
+            if (txtProject_Name.Text.Trim() == "")
+            {
+                LogMessage("Enter Project Name");
+                txtProject_Name.Focus();
+                return false;
+            }
+
+            return true;
         }
 
         private void ClearProjectNameForm()
@@ -572,60 +621,70 @@ namespace vhcbcloud
                 dvAddress.Visible = false;
         }
 
-        protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvAddress.EditIndex = -1;
-            BindAddressGrid();
-        }
+        //protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        //{
+        //    gvAddress.EditIndex = -1;
+        //    BindAddressGrid();
+        //}
 
-        protected void gvAddress_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvAddress.EditIndex = e.NewEditIndex;
-            BindAddressGrid();
-        }
+        //protected void gvAddress_RowEditing(object sender, GridViewEditEventArgs e)
+        //{
+        //    gvAddress.EditIndex = e.NewEditIndex;
+        //    BindAddressGrid();
+        //}
 
-        protected void gvAddress_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            string projectName = ((TextBox)gvProjectNames.Rows[rowIndex].FindControl("txtDescription")).Text;
-            int typeid = Convert.ToInt32(((Label)gvProjectNames.Rows[rowIndex].FindControl("lblTypeId")).Text);
-            bool isDefName = Convert.ToBoolean(((CheckBox)gvProjectNames.Rows[rowIndex].FindControl("chkDefName")).Checked);
+        //protected void gvAddress_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
+        //    string projectName = ((TextBox)gvProjectNames.Rows[rowIndex].FindControl("txtDescription")).Text;
+        //    int typeid = Convert.ToInt32(((Label)gvProjectNames.Rows[rowIndex].FindControl("lblTypeId")).Text);
+        //    bool isDefName = Convert.ToBoolean(((CheckBox)gvProjectNames.Rows[rowIndex].FindControl("chkDefName")).Checked);
 
-            gvAddress.EditIndex = -1;
-            BindAddressGrid();
-            LogMessage("Address updated successfully");
-        }
+        //    gvAddress.EditIndex = -1;
+        //    BindAddressGrid();
+        //    LogMessage("Address updated successfully");
+        //}
 
         protected void btnAddAddress_Click(object sender, EventArgs e)
         {
-            int ProjectId = DataUtils.GetInt(hfProjectId.Value);
-
-            if (btnAddAddress.Text.ToLower() == "update")
+            try
             {
-                int addressId = Convert.ToInt32(hfAddressId.Value);
+                if (IsAddressValid())
+                {
+                    int ProjectId = DataUtils.GetInt(hfProjectId.Value);
 
-                ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
+                    if (btnAddAddress.Text.ToLower() == "update")
+                    {
+                        int addressId = Convert.ToInt32(hfAddressId.Value);
 
-                hfAddressId.Value = "";
-                btnAddAddress.Text = "Add";
-                LogMessage("Address updated successfully");
+                        ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
+
+                        hfAddressId.Value = "";
+                        btnAddAddress.Text = "Add";
+                        LogMessage("Address updated successfully");
+                    }
+                    else //add
+                    {
+                        ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
+
+                        btnAddAddress.Text = "Add";
+                        LogMessage("New Address added successfully");
+                    }
+
+                    gvAddress.EditIndex = -1;
+                    BindAddressGrid();
+                    ClearAddressForm();
+                    dvAddress.Visible = false;
+                    dvAddressGrid.Visible = true;
+                    cbAddAddress.Checked = false;
+                }
             }
-            else //add
+            catch (Exception ex)
             {
-                ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbActive.Checked, cbDefaultAddress.Checked);
-
-                btnAddAddress.Text = "Add";
-                LogMessage("New Address added successfully");
+                LogError(Pagename, "btnAddAddress_Click", "", ex.Message);
             }
-
-            gvAddress.EditIndex = -1;
-            BindAddressGrid();
-            ClearAddressForm();
-            dvAddress.Visible = false;
-            dvAddressGrid.Visible = true;
-            cbAddAddress.Checked = false;
         }
 
         private void ClearAddressForm()
@@ -637,6 +696,8 @@ namespace vhcbcloud
             txtState.Text = "";
             txtZip.Text = "";
             txtCounty.Text = "";
+            txtLattitude.Text = "";
+            txtLongitude.Text = "";
             cbActive.Checked = false;
             cbDefaultAddress.Checked = false;
         }
@@ -645,6 +706,7 @@ namespace vhcbcloud
         {
             //gvAddress.EditIndex = -1;
             //BindAddressGrid();
+            cbAddAddress.Checked = false;
 
             ClearAddressForm();
             btnAddAddress.Text = "Add";
@@ -693,6 +755,17 @@ namespace vhcbcloud
                         txtLongitude.Text = dr["longitude"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["PrimaryAdd"].ToString());
+
+                        if (cbDefaultAddress.Checked)
+                        {
+                            cbDefaultAddress.Enabled = false;
+                            cbActive.Enabled = false;
+                        }
+                        else
+                        {
+                            cbDefaultAddress.Enabled = true;
+                            cbActive.Enabled = true;
+                        }
                     }
                 }
             }
@@ -704,17 +777,33 @@ namespace vhcbcloud
 
         protected void btnAddEntity_Click(object sender, EventArgs e)
         {
-            ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()));
+            if (IsProjectEntityFormValid())
+            {
+                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()));
 
-            ddlApplicantName.SelectedIndex = -1;
+                ddlApplicantName.SelectedIndex = -1;
 
-            LogMessage("Entity Attached Successfully");
+                LogMessage("Entity Attached Successfully");
 
-            gvEntity.EditIndex = -1;
-            BindProjectEntityGrid();
-            dvEntity.Visible = false;
-            dvEntityGrid.Visible = true;
-            cbAttachNewEntity.Checked = false;
+                gvEntity.EditIndex = -1;
+                BindProjectEntityGrid();
+                dvEntity.Visible = false;
+                dvEntityGrid.Visible = true;
+                cbAttachNewEntity.Checked = false;
+            }
+        }
+
+        private bool IsProjectEntityFormValid()
+        {
+
+            if (ddlApplicantName.Items.Count > 1 && ddlApplicantName.SelectedIndex == 0)
+            {
+                LogMessage("Select Entity Applicant Name");
+                ddlApplicantName.Focus();
+                return false;
+            }
+
+            return true;
         }
 
         private void BindProjectEntityGrid()
@@ -862,15 +951,37 @@ namespace vhcbcloud
 
         protected void btnAddRelatedProject_Click(object sender, EventArgs e)
         {
-            ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
-            LogMessage("New Related Project added successfully");
+            if (IsRelatedProjectFormValid())
+            {
+                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
 
-            gvRelatedProjects.EditIndex = -1;
-            BindRelatedProjectsGrid();
-            ClearRelatedProjectsForm();
-            dvRelatedProjects.Visible = false;
-            dvRelatedProjectsGrid.Visible = true;
-            cbRelatedProjects.Checked = false;
+                if (!isDuplicate)
+                {
+                    LogMessage("New Related Project added successfully");
+
+                    gvRelatedProjects.EditIndex = -1;
+                    BindRelatedProjectsGrid();
+                    ClearRelatedProjectsForm();
+                    dvRelatedProjects.Visible = false;
+                    dvRelatedProjectsGrid.Visible = true;
+                    cbRelatedProjects.Checked = false;
+                }
+                else
+                {
+                    LogMessage("Related Project already exist");
+                }
+            }
+        }
+
+        private bool IsRelatedProjectFormValid()
+        {
+            if (ddlRelatedProjects.Items.Count > 1 && ddlRelatedProjects.SelectedIndex == 0)
+            {
+                LogMessage("Select Related Project");
+                ddlRelatedProjects.Focus();
+                return false;
+            }
+            return true;
         }
 
         private void BindRelatedProjectsGrid()
@@ -913,6 +1024,119 @@ namespace vhcbcloud
             txtRelatedProjectName.Text = "";
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
             txtRelatedProjectName.Text = dr["ProjectName"].ToString();
+        }
+
+        protected void cbAddProjectStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAddProjectStatus.Checked)
+                dvProjectStatus.Visible = true;
+            else
+                dvProjectStatus.Visible = false;
+        }
+
+        protected void btnAddProjectStatus_Click(object sender, EventArgs e)
+        {
+            if (IsProjectStatusFormValid())
+            {
+                ProjectMaintenanceData.AddProjectStatus(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlProjectStatus.SelectedValue.ToString()), DataUtils.GetDate(txtStatusDate.Text));
+                LogMessage("New Project Status added successfully");
+
+                gvProjectStatus.EditIndex = -1;
+                BindProjectStatusGrid();
+                ClearProjectStatusForm();
+                dvProjectStatus.Visible = false;
+                dvProjectStatusGrid.Visible = true;
+                cbAddProjectStatus.Checked = false;
+            }
+        }
+
+        private bool IsProjectStatusFormValid()
+        {
+            if (ddlProjectStatus.Items.Count > 1 && ddlProjectStatus.SelectedIndex == 0)
+            {
+                LogMessage("Select Project Status");
+                ddlProjectStatus.Focus();
+                return false;
+            }
+
+            if (txtStatusDate.Text.Trim() == "")
+            {
+                LogMessage("Enter Project Status Date");
+                txtStatusDate.Focus();
+                return false;
+            }
+            else
+            {
+                if (!DataUtils.IsDateTime(txtStatusDate.Text.Trim()))
+                {
+                    LogMessage("Enter valid Project Status Date");
+                    txtStatusDate.Focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void ClearProjectStatusForm()
+        {
+            ddlProjectStatus.SelectedIndex = -1;
+            txtStatusDate.Text = "";
+        }
+
+        private void BindProjectStatusGrid()
+        {
+            try
+            {
+                DataTable dtProjectStatus = ProjectMaintenanceData.GetProjectStatusList(DataUtils.GetInt(hfProjectId.Value));
+
+                if (dtProjectStatus.Rows.Count > 0)
+                {
+                    dvProjectStatusGrid.Visible = true;
+                    gvProjectStatus.DataSource = dtProjectStatus;
+                    gvProjectStatus.DataBind();
+                }
+                else
+                    dvProjectStatusGrid.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProjectStatusGrid", "", ex.Message);
+            }
+        }
+
+        protected bool IsAddressValid()
+        {
+            if (txtStreetNo.Text.Trim() == "")
+            {
+                LogMessage("Enter Street#");
+                txtStreetNo.Focus();
+                return false;
+            }
+            if (txtAddress1.Text.Trim() == "")
+            {
+                LogMessage("Enter Address1");
+                txtAddress1.Focus();
+                return false;
+            }
+            if (txtZip.Text.Trim() == "")
+            {
+                LogMessage("Enter Zip");
+                txtZip.Focus();
+                return false;
+            }
+            if (txtTown.Text.Trim() == "")
+            {
+                LogMessage("Enter Town");
+                txtTown.Focus();
+                return false;
+            }
+            if (txtState.Text.Trim() == "")
+            {
+                LogMessage("Enter State");
+                txtState.Focus();
+                return false;
+            }
+            return true;
         }
     }
 }
