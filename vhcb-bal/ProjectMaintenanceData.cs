@@ -483,7 +483,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal)
+        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal, int LkApplicantRole)
         {
             try
             {
@@ -501,7 +501,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectApplicantId", ProjectApplicantId));
                         command.Parameters.Add(new SqlParameter("IsApplicant", IsApplicant));
                         command.Parameters.Add(new SqlParameter("IsFinLegal", IsFinLegal));
-
+                        command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

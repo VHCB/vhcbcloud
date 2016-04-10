@@ -233,14 +233,15 @@ create procedure [dbo].[GetApplicantAddressDetails]
 	@appnameid int	
 )
 as 
---exec GetApplicantAddressDetails 1033
+--exec GetApplicantAddressDetails 1034
 Begin
 
 	select a.AddressId, a.LkAddressType, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, ad.Defaddress
 	from ApplicantAddress ad(nolock) 
 	join applicantappname aan(nolock) on ad.ApplicantId = aan.ApplicantId
 	join Address a(nolock) on a.Addressid = ad.AddressId
-	where aan.appnameid = @appnameid
+	where a.RowIsActive = 1 and  aan.appnameid = @appnameid
+	order by ad.Defaddress desc, ad.DateModified desc
 end
 go
 
@@ -273,18 +274,18 @@ go
 
 create procedure [dbo].UpdateApplicantAddress
 (
-	@AddressId int,
-	@StreetNo nvarchar(24),
-	@Address1 nvarchar(120),
-	@Address2 nvarchar(120),
-	@Town nvarchar(100),
-	@State nchar(4),
-	@Zip nchar(20),
-	@County nvarchar(40),
-	--@TownCountyID int,
-	@AddressType int,
-	@IsActive bit,
-	@DefAddress bit	
+	@ApplicantId	int,
+	@AddressId		int,
+	@StreetNo		nvarchar(24),
+	@Address1		nvarchar(120),
+	@Address2		nvarchar(120),
+	@Town			nvarchar(100),
+	@State			nchar(4),
+	@Zip			nchar(20),
+	@County			nvarchar(40),
+	@AddressType	int,
+	@IsActive		bit,
+	@DefAddress		bit	
 )
 as 
 Begin
@@ -294,7 +295,6 @@ Begin
 		Street# = @StreetNo,
 		Address1 = @Address1,
 		Address2 = @Address2,
-		--TownCountyID = @TownCountyID,
 		Town = @Town,
 		State = @State,
 		Zip = @Zip,
@@ -302,6 +302,13 @@ Begin
 		RowIsActive = @IsActive
 	from Address
 	where AddressId= @AddressId
+
+	if(@Defaddress = 1 and @IsActive = 1)
+	begin
+	 update ApplicantAddress set Defaddress = 0 where ApplicantId = @ApplicantId
+	end
+	
+	--select * from ApplicantAddress
 
 	update ApplicantAddress
 	set Defaddress = @Defaddress
@@ -325,7 +332,6 @@ create procedure [dbo].AddApplicantAddress
 	@State nchar(4),
 	@Zip nchar(20),
 	@County nvarchar(40),
-	--@TownCountyID int,
 	@AddressType int,
 	@IsActive bit,
 	@DefAddress bit	
@@ -338,6 +344,11 @@ Begin
 	values(@AddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @IsActive, 123)
 
 	set @AddressId = @@identity	
+
+	if(@Defaddress = 1 and @IsActive = 1)
+	begin
+	 update ApplicantAddress set Defaddress = 0 where ApplicantId = @ApplicantId
+	end
 
 	insert into ApplicantAddress(AddressId, ApplicantId, DefAddress, RowIsActive, [DateModified])
 	values(@AddressId, @ApplicantId, @DefAddress, @IsActive, getdate())

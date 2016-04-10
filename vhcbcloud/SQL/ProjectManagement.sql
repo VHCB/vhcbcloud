@@ -606,13 +606,14 @@ create procedure dbo.UpdateProjectApplicant
 (
 	@ProjectApplicantId	int,
 	@IsApplicant		bit, 
-	@IsFinLegal			bit	
+	@IsFinLegal			bit,
+	@LkApplicantRole	int
 ) as
 begin transaction
 
 	begin try
 
-	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal
+	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal, LkApplicantRole = @LkApplicantRole
 	where ProjectApplicantId = @ProjectApplicantId
 	
 	end try
@@ -638,7 +639,7 @@ create procedure dbo.GetProjectApplicantList
 	@ProjectId	int
 ) as
 begin transaction
-
+-- GetProjectApplicantList 6588
 	begin try
 
 	select pa.ProjectApplicantID, 
@@ -646,6 +647,7 @@ begin transaction
 			case isnull(pa.FinLegal, 0) when 0 then 'No' else 'Yes' end FinLegal1,
 			isnull(pa.IsApplicant, 0) as IsApplicant, 
 			isnull(pa.FinLegal, 0) as FinLegal,
+			pa.LkApplicantRole, lv.Description as 'ApplicantRoleDescription',
 			a.ApplicantId, a.Individual, a.LkEntityType, a.FYend, a.website, a.Stvendid, a.LkPhoneType, a.Phone, a.email, 
 			an.applicantname,
 			c.LkPrefix, c.Firstname, c.Lastname, c.LkSuffix, c.LkPosition, c.Title, 
@@ -656,7 +658,8 @@ begin transaction
 		join appname an(nolock) on aan.appnameid = an.appnameid
 		join applicant a(nolock) on a.applicantid = aan.applicantid
 		left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
-		left join contact c(nolock) on c.ContactID = ac.ContactID 
+		left join contact c(nolock) on c.ContactID = ac.ContactID
+		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
 		where pa.ProjectId = @ProjectId
 		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc
 

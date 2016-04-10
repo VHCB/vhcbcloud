@@ -937,16 +937,53 @@ namespace vhcbcloud
         {
             int rowIndex = e.RowIndex;
 
-            int ProjectApplicantId = Convert.ToInt32(((Label)gvEntity.Rows[rowIndex].FindControl("lblProjectApplicantID")).Text);
+            int ProjectApplicantId = DataUtils.GetInt(((Label)gvEntity.Rows[rowIndex].FindControl("lblProjectApplicantID")).Text);
             bool isApplicant = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkIsApplicant")).Checked);
             bool isFinLegal = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkFinLegal")).Checked);
+            int LkApplicantRole = DataUtils.GetInt(((DropDownList)gvEntity.Rows[rowIndex].FindControl("ddlLkApplicantRole")).SelectedValue.ToString());
 
-            ProjectMaintenanceData.UpdateProjectApplicant(ProjectApplicantId, isApplicant, isFinLegal);
+            ProjectMaintenanceData.UpdateProjectApplicant(ProjectApplicantId, isApplicant, isFinLegal, LkApplicantRole);
             gvEntity.EditIndex = -1;
 
             BindProjectEntityGrid();
 
             LogMessage("Entity updated successfully");
+        }
+
+        protected void gvEntity_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlLkApplicantRole = (e.Row.FindControl("ddlLkApplicantRole") as DropDownList);
+                    TextBox txtLkApplicantRole = (e.Row.FindControl("txtLkApplicantRole") as TextBox);
+                    if (txtLkApplicantRole != null)
+                    {
+                        BindLookUP(ddlLkApplicantRole, 56);
+
+                        //DataTable dtable = new DataTable();
+                        //dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
+                        //ddlLkApplicantRole.DataSource = dtable;
+                        //ddlLkApplicantRole.DataValueField = "typeid";
+                        //ddlLkApplicantRole.DataTextField = "Description";
+                        //ddlLkApplicantRole.DataBind();
+
+                        string itemToCompare = string.Empty;
+                        foreach (ListItem item in ddlLkApplicantRole.Items)
+                        {
+                            itemToCompare = item.Value.ToString();
+                            if (txtLkApplicantRole.Text.ToLower() == itemToCompare.ToLower())
+                            {
+                                ddlLkApplicantRole.ClearSelection();
+                                item.Selected = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         protected void btnAddRelatedProject_Click(object sender, EventArgs e)

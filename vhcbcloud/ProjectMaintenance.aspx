@@ -494,7 +494,7 @@
                             <asp:Panel runat="server" ID="Panel4">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 130px"><span class="labelClass">Applicant Name</span></td>
+                                        <td style="width: 130px"><span class="labelClass">Entity Name</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -518,7 +518,8 @@
                     <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" 
+                            OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating" OnRowDataBound="gvEntity_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -530,7 +531,7 @@
                                         <asp:Label ID="lblProjectApplicantID" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Applicant Name">
+                                <asp:TemplateField HeaderText="Entity Name">
                                     <ItemTemplate>
                                         <asp:Label ID="lblapplicantname" runat="Server" Text='<%# Eval("applicantname") %>' />
                                     </ItemTemplate>
@@ -544,6 +545,15 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
                                     </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="Type">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:DropDownList ID="ddlLkApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:TextBox ID="txtLkApplicantRole" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
+                                        </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Applicant">
                                     <ItemTemplate>

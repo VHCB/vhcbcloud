@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td style="width: 10px"></td>
-                            <td style="width: 100px"><span class="labelClass">Applicant Name</span></td>
+                            <td style="width: 100px"><span class="labelClass">Entity Name</span></td>
                             <td style="width: 170px">
                                 <%-- <asp:TextBox ID="txtApplicantNameSearch" CssClass="clsTextBoxBlue1" runat="server" Width="200px"></asp:TextBox>
                               <ajaxToolkit:AutoCompleteExtender ID="aceApplicantName" runat="server" TargetControlID="txtApplicantNameSearch" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
