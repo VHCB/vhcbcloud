@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td style="width: 10px"></td>
-                            <td style="width: 100px"><span class="labelClass">Applicant Name</span></td>
+                            <td style="width: 100px"><span class="labelClass">Entity Name</span></td>
                             <td style="width: 170px">
                                 <%-- <asp:TextBox ID="txtApplicantNameSearch" CssClass="clsTextBoxBlue1" runat="server" Width="200px"></asp:TextBox>
                               <ajaxToolkit:AutoCompleteExtender ID="aceApplicantName" runat="server" TargetControlID="txtApplicantNameSearch" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
@@ -192,17 +192,17 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Address1:</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -211,7 +211,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
 
                                         </td>
                                         <td style="width: 100px">
@@ -220,11 +220,11 @@
                                         <td style="width: 270px">
                                             <%--<asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
-                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">County</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                             <%-- <asp:DropDownList ID="ddlCounty" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
                                             
@@ -236,7 +236,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">State</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
                                         </td>
                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
                                         <td style="width: 250px">

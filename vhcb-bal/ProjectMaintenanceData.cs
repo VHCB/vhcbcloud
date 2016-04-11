@@ -483,7 +483,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal)
+        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal, int LkApplicantRole)
         {
             try
             {
@@ -501,7 +501,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectApplicantId", ProjectApplicantId));
                         command.Parameters.Add(new SqlParameter("IsApplicant", IsApplicant));
                         command.Parameters.Add(new SqlParameter("IsFinLegal", IsFinLegal));
-
+                        command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -516,7 +517,7 @@ namespace DataAccessLayer
         #endregion
 
 
-        public static void AddRelatedProject(int ProjectId, int RelProjectId)
+        public static bool AddRelatedProject(int ProjectId, int RelProjectId)
         {
             try
             {
@@ -534,9 +535,15 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("RelProjectId", RelProjectId));
 
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
+
+                        return DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
                     }
                 }
             }
@@ -577,6 +584,70 @@ namespace DataAccessLayer
                 throw ex;
             }
             return dt;
+        }
+
+        public static DataTable GetProjectStatusList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectStatusList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void AddProjectStatus(int ProjectId, int LKProjStatus, DateTime StatusDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectStatus";
+
+                        //3 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("LKProjStatus", LKProjStatus));
+                        command.Parameters.Add(new SqlParameter("StatusDate", StatusDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StatusDate));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 

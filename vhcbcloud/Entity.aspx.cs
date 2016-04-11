@@ -287,6 +287,17 @@ namespace vhcbcloud
 
                         cbIsActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbIsDefault.Checked = DataUtils.GetBool(dr["Defaddress"].ToString());
+
+                        if (cbIsDefault.Checked)
+                        {
+                            cbIsDefault.Enabled = false;
+                            cbIsActive.Enabled = false;
+                        }
+                        else
+                        {
+                            cbIsDefault.Enabled = true;
+                            cbIsActive.Enabled = true;
+                        }
                     }
                 }
             }
@@ -324,7 +335,10 @@ namespace vhcbcloud
             //ddlCounty.SelectedIndex = -1;
             ddlAddressType.SelectedIndex = -1;
             cbIsActive.Checked = true;
-            cbIsDefault.Checked = false;
+            cbIsDefault.Checked = true;
+
+            cbIsActive.Enabled = true;
+            cbIsDefault.Enabled = true;
         }
 
         protected bool IsAddressValid()
@@ -448,13 +462,14 @@ namespace vhcbcloud
             {
                 if (!IsAddressValid()) return;
 
+                int applicantId = Convert.ToInt32(hfApplicatId.Value);
+
                 if (btnAddress.Text.ToLower() == "update")
                 {
                     int addressId = Convert.ToInt32(hfAddressId.Value);
 
-                    EntityData.UpdateApplicantAddress(addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, //ddlTown.SelectedItem.Text, 
+                    EntityData.UpdateApplicantAddress(applicantId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, //ddlTown.SelectedItem.Text, 
                         txtState.Text, txtZip.Text, txtCounty.Text,
-                        //ddlCounty.SelectedValue.ToString(), 
                         int.Parse(ddlAddressType.SelectedValue.ToString()), cbIsActive.Checked, cbIsDefault.Checked);
 
                     hfAddressId.Value = "";
@@ -464,8 +479,6 @@ namespace vhcbcloud
 
                 else //Add
                 {
-                    int applicantId = Convert.ToInt32(hfApplicatId.Value);
-
                     EntityData.AddApplicantAddress(applicantId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, //ddlTown.SelectedItem.Text, 
                         txtState.Text, txtZip.Text,
                         txtCounty.Text, //ddlCounty.SelectedValue.ToString(), 

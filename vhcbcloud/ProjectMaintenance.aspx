@@ -143,6 +143,85 @@
                     </div>
                 </div>
 
+                <div id="dvNewProjectStatus" runat="server">
+                    <table>
+                        <tr style="float: left">
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td></td>
+                            <td>
+                                <asp:CheckBox ID="cbAddProjectStatus" CssClass="ChkBox" runat="server" Text="Add New Status" AutoPostBack="True" OnCheckedChanged="cbAddProjectStatus_CheckedChanged" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvProjectStatus">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <h3 class="panel-title">Project Status</h3>
+                        </div>
+                        <div class="panel-body">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Project Status</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlProjectStatus" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Status Date
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtStatusDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtStatusDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddProjectStatus" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProjectStatus_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body" id="dvProjectStatusGrid" runat="server">
+                    <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
+                        <asp:GridView ID="gvProjectStatus" runat="server" AutoGenerateColumns="False"
+                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                            <HeaderStyle CssClass="headerStyle" />
+                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                            <RowStyle CssClass="rowStyle" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Project Status ID" Visible="false">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblProjectStatusID" runat="Server" Text='<%# Eval("ProjectStatusID") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Status">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblProjectStatus" runat="Server" Text='<%# Eval("ProjectStatus") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Status Date">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblStatusDate" runat="Server" Text='<%# Eval("StatusDate") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <%--<asp:CommandField ShowEditButton="True" />--%>
+                            </Columns>
+                        </asp:GridView>
+                    </asp:Panel>
+                </div>
+
                 <div id="dvNewProjectName" runat="server">
                     <table>
                         <tr style="float: left">
@@ -247,17 +326,17 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Address1:</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -266,18 +345,18 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
 
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Town</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Village</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="35"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -287,13 +366,13 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">County</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">State</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Default Address</span></td>
                                         <td>
@@ -415,7 +494,7 @@
                             <asp:Panel runat="server" ID="Panel4">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 130px"><span class="labelClass">Applicant Name</span></td>
+                                        <td style="width: 130px"><span class="labelClass">Entity Name</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -439,7 +518,8 @@
                     <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" 
+                            OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating" OnRowDataBound="gvEntity_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -451,7 +531,7 @@
                                         <asp:Label ID="lblProjectApplicantID" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Applicant Name">
+                                <asp:TemplateField HeaderText="Entity Name">
                                     <ItemTemplate>
                                         <asp:Label ID="lblapplicantname" runat="Server" Text='<%# Eval("applicantname") %>' />
                                     </ItemTemplate>
@@ -465,6 +545,15 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
                                     </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="Type">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:DropDownList ID="ddlLkApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:TextBox ID="txtLkApplicantRole" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
+                                        </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Applicant">
                                     <ItemTemplate>
@@ -488,19 +577,19 @@
                     </asp:Panel>
                 </div>
 
-                 <div id="dvNewRelatedProjects" runat="server">
+                <div id="dvNewRelatedProjects" runat="server">
                     <table>
                         <tr style="float: left">
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbRelatedProjects" CssClass="ChkBox" runat="server" Text="Add Related Projects" 
+                                <asp:CheckBox ID="cbRelatedProjects" CssClass="ChkBox" runat="server" Text="Add Related Projects"
                                     AutoPostBack="True" OnCheckedChanged="cbRelatedProjects_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
 
-                 <div class="panel-width" runat="server" id="dvRelatedProjects">
+                <div class="panel-width" runat="server" id="dvRelatedProjects">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <h3 class="panel-title">Related Projects</h3>
@@ -511,12 +600,12 @@
                                     <tr>
                                         <td style="width: 180px"><span class="labelClass">Related Project</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server"  AutoPostBack="true" OnSelectedIndexChanged="ddlRelatedProjects_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRelatedProjects_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">
-                                            <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px"></asp:TextBox>    
+                                                <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px"></asp:TextBox>
                                             </span>
                                         </td>
                                         <td style="width: 300px">

@@ -239,7 +239,7 @@ namespace DataAccessLayer
             return dr;
         }
 
-        public static void UpdateApplicantAddress(int AddressId, string StreetNo, string Address1, string Address2,
+        public static void UpdateApplicantAddress(int ApplicantId, int AddressId, string StreetNo, string Address1, string Address2,
             string Town, string State, string Zip, string County, int AddressType, bool IsActive, bool DefAddress)
         {
             try
@@ -253,6 +253,7 @@ namespace DataAccessLayer
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateApplicantAddress";
+                        command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
                         command.Parameters.Add(new SqlParameter("AddressId", AddressId));
                         command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
