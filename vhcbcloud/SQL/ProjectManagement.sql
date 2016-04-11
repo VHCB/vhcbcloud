@@ -92,7 +92,6 @@ create procedure dbo.add_new_project
 	@LkProjectType		int,
 	@LkProgram			int,
 	@AppRec				Datetime,
-	@LkAppStatus		int,
 	@Manager			int,
 	@LkBoardDate		int,
 	@ClosingDate		datetime,
@@ -131,8 +130,8 @@ begin transaction
 
 			set @nameId = @@IDENTITY
 
-			insert into Project (Proj_num, LkProjectType, LkProgram, AppRec, LkAppStatus, Manager, LkBoardDate, ClosingDate, ExpireDate, verified,  userid)
-			values (@projNum, @LkProjectType, @LkProgram, @AppRec, @LkAppStatus, @Manager, @LkBoardDate, @ClosingDate, @GrantClosingDate, @verified,  123)
+			insert into Project (Proj_num, LkProjectType, LkProgram, AppRec, Manager, LkBoardDate, ClosingDate, ExpireDate, verified,  userid)
+			values (@projNum, @LkProjectType, @LkProgram, @AppRec, @Manager, @LkBoardDate, @ClosingDate, @GrantClosingDate, @verified,  123)
 	
 			set @ProjectId = @@IDENTITY
 
@@ -175,7 +174,6 @@ create procedure dbo.UpdateProjectInfo
 	@LkProjectType		int,
 	@LkProgram			int,
 	@AppRec				Datetime,
-	@LkAppStatus		int,
 	@Manager			int,
 	@LkBoardDate		int,
 	@ClosingDate		datetime,
@@ -191,7 +189,7 @@ begin transaction
 
 	declare @applicantId int
 
-	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram, AppRec = @AppRec, LkAppStatus = @LkAppStatus,
+	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram, AppRec = @AppRec,
 		Manager = @Manager, LkBoardDate = @LkBoardDate, ClosingDate = @ClosingDate, ExpireDate = @GrantClosingDate, verified = @verified
 	from Project
 	where ProjectId = @ProjectId

@@ -12,7 +12,7 @@ namespace DataAccessLayer
 {
     public class ProjectMaintenanceData
     {
-        public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int LkAppStatus, int Manager, int LkBoardDate,
+        public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int Manager, int LkBoardDate,
             DateTime ClosingDate, DateTime GrantClosingDate, bool verified, int appNameId, string projName)
         {
             try
@@ -27,12 +27,12 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "add_new_project";
 
-                        //12 Parameters 
+                        //11 Parameters 
                         command.Parameters.Add(new SqlParameter("projNum", ProjNum));
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                         command.Parameters.Add(new SqlParameter("AppRec", AppRec));
-                        command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkAppStatus));
+                        //command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkAppStatus));
                         command.Parameters.Add(new SqlParameter("Manager", Manager == 0 ? System.Data.SqlTypes.SqlInt32.Null : Manager));
                         command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkBoardDate));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClosingDate));
@@ -69,7 +69,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, string AppRec, int LkAppStatus, int Manager, int LkBoardDate,
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, string AppRec, int Manager, int LkBoardDate,
            string ClosingDate, string ExpireDate, bool verified, int appNameId, string projName)
         {
             try
@@ -89,7 +89,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                         command.Parameters.Add(new SqlParameter("AppRec", AppRec == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(AppRec)));
-                        command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus));
+                        //command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus));
                         command.Parameters.Add(new SqlParameter("Manager", Manager));
                         command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ClosingDate)));

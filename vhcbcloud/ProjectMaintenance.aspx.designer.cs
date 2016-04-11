@@ -121,13 +121,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProjectType;
         
         /// <summary>
-        /// ddlAppStatus control.
+        /// txtGrantExpirationDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAppStatus;
+        protected global::System.Web.UI.WebControls.TextBox txtGrantExpirationDate;
+        
+        /// <summary>
+        /// ce_txtGrantExpirationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
         
         /// <summary>
         /// txtApplicationReceived control.
@@ -191,24 +200,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtClosingDate;
-        
-        /// <summary>
-        /// txtGrantExpirationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrantExpirationDate;
-        
-        /// <summary>
-        /// ce_txtGrantExpirationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
         
         /// <summary>
         /// dvUpdate control.

@@ -26,16 +26,20 @@ namespace vhcbcloud
                     rdBtnSelection.SelectedIndex = 0;
                     RadioButtonSelectionChanged();
                 }
+                
 
                 BindControls();
                 DisplayControlsbasedOnSelection();
+                if (Request.QueryString["ProjectId"] != null)
+                {
+                    PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                }
             }
         }
 
         #region Bind Controls
         private void BindControls()
         {
-            BindLookUP(ddlAppStatus, 83);
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlProjectType, 119);
             BindBoardDate();
@@ -170,7 +174,7 @@ namespace vhcbcloud
             ddlProjectType.SelectedIndex = -1;
             ddlProgram.SelectedIndex = -1;
             txtApplicationReceived.Text = "";
-            ddlAppStatus.SelectedIndex = -1;
+            //ddlAppStatus.SelectedIndex = -1;
             ddlManager.SelectedIndex = -1;
             ddlBoardDate.SelectedIndex = -1;
             txtClosingDate.Text = "";
@@ -321,7 +325,7 @@ namespace vhcbcloud
         {
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
             PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
-            PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
+            //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
             PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
             PopulateDropDown(ddlBoardDate, drProjectDetails["LkBoardDate"].ToString());
             PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
@@ -432,10 +436,10 @@ namespace vhcbcloud
         {
             try
             {
-                if (IsProjectInfoFormValid())
+                if (IsProjectInfoFormValid(false))
                 {
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
-                         DataUtils.GetDate(txtApplicationReceived.Text), DataUtils.GetInt(ddlAppStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
+                         DataUtils.GetDate(txtApplicationReceived.Text), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
                        DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), DataUtils.GetDate(txtClosingDate.Text), DataUtils.GetDate(txtGrantExpirationDate.Text), cbVerified.Checked,
                         DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), txtProjectName.Text);
 
@@ -444,12 +448,7 @@ namespace vhcbcloud
                     else
                     {
                         LogMessage("Project added successfully");
-                        ClearForm();
-                        BindProjects(ddlProject);
-                        rdBtnSelection.SelectedIndex = 1;
-                        RadioButtonSelectionChanged();
-                        ddlProject.SelectedValue = ap.ProjectId.ToString();
-                        ProjectSelectionChanged();
+                        PopulateForm(ap.ProjectId);
                     }
                 }
             }
@@ -459,49 +458,59 @@ namespace vhcbcloud
             }
         }
 
+        private void PopulateForm(int ProjectId)
+        {
+            ClearForm();
+            BindProjects(ddlProject);
+            rdBtnSelection.SelectedIndex = 1;
+            RadioButtonSelectionChanged();
+            ddlProject.SelectedValue = ProjectId.ToString();
+            ProjectSelectionChanged();
+        }
+
         protected void btnProjectUpdate_Click(object sender, EventArgs e)
         {
             try
             {
-                //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
-                //txtProjectName.Text = tokens[1];
-
-                ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
-                     txtApplicationReceived.Text, DataUtils.GetInt(ddlAppStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
+                if (IsProjectInfoFormValid(true))
+                {
+                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
+                     txtApplicationReceived.Text, DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), txtClosingDate.Text, txtGrantExpirationDate.Text, cbVerified.Checked,
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), txtProjectName.Text);
 
-                LogMessage("Project updated successfully");
+                    LogMessage("Project updated successfully");
 
-                ClearForm();
-                ddlProject.SelectedIndex = -1;
+                    ClearForm();
+                    ddlProject.SelectedIndex = -1;
 
-                dvUpdate.Visible = false;
+                    dvUpdate.Visible = false;
 
-                //ProjectNames
-                dvNewProjectName.Visible = false;
-                dvProjectName.Visible = false;
-                dvProjectNamesGrid.Visible = false;
+                    //ProjectNames
+                    dvNewProjectName.Visible = false;
+                    dvProjectName.Visible = false;
+                    dvProjectNamesGrid.Visible = false;
 
-                //Address
-                dvNewAddress.Visible = false;
-                dvAddress.Visible = false;
-                dvAddressGrid.Visible = false;
+                    //Address
+                    dvNewAddress.Visible = false;
+                    dvAddress.Visible = false;
+                    dvAddressGrid.Visible = false;
 
-                //Entity
-                dvNewEntity.Visible = false;
-                dvEntity.Visible = false;
-                dvEntityGrid.Visible = false;
+                    //Entity
+                    dvNewEntity.Visible = false;
+                    dvEntity.Visible = false;
+                    dvEntityGrid.Visible = false;
 
-                //RelatedProjects
-                dvNewRelatedProjects.Visible = false;
-                dvRelatedProjects.Visible = false;
-                dvRelatedProjectsGrid.Visible = false;
+                    //RelatedProjects
+                    dvNewRelatedProjects.Visible = false;
+                    dvRelatedProjects.Visible = false;
+                    dvRelatedProjectsGrid.Visible = false;
 
-                //ProjectStatus
-                dvNewProjectStatus.Visible = false;
-                dvProjectStatus.Visible = false;
-                dvProjectStatusGrid.Visible = false;
+                    //ProjectStatus
+                    dvNewProjectStatus.Visible = false;
+                    dvProjectStatus.Visible = false;
+                    dvProjectStatusGrid.Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -835,25 +844,36 @@ namespace vhcbcloud
                 dvEntity.Visible = false;
         }
 
-        protected bool IsProjectInfoFormValid()
+        protected bool IsProjectInfoFormValid(bool isUpdate)
         {
-            if (txtProjNum.Text.Trim() == "____-___-___")
+            if (isUpdate)
             {
-                LogMessage("Enter Project Number");
-                txtProjNum.Focus();
-                return false;
-            }
-            else
-            {
-                string ProjectNumber = new string(txtProjNum.Text.Where(c => char.IsDigit(c)).ToArray());
-                if (ProjectNumber.Length != 10)
+                if (ddlProject.SelectedIndex == 0)
                 {
-                    LogMessage("Enter Valid Project Number");
-                    txtProjNum.Focus();
+                    LogMessage("Select Project Number");
+                    ddlProject.Focus();
                     return false;
                 }
             }
-
+            else
+            {
+                if (txtProjNum.Text.Trim() == "____-___-___")
+                {
+                    LogMessage("Enter Project Number");
+                    txtProjNum.Focus();
+                    return false;
+                }
+                else
+                {
+                    string ProjectNumber = new string(txtProjNum.Text.Where(c => char.IsDigit(c)).ToArray());
+                    if (ProjectNumber.Length != 10)
+                    {
+                        LogMessage("Enter Valid Project Number");
+                        txtProjNum.Focus();
+                        return false;
+                    }
+                }
+            }
             if (txtProjectName.Text.Trim() == "")
             {
                 LogMessage("Enter Project Name");
