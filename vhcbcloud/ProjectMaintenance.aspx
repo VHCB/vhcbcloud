@@ -69,10 +69,11 @@
                                             <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">App Status</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Grant Expiration Date</span></td>
                                         <td>
-                                            <asp:DropDownList ID="ddlAppStatus" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtGrantExpirationDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtGrantExpirationDate">
+                                            </ajaxToolkit:CalendarExtender>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,12 +115,8 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClosingDate" TargetControlID="txtClosingDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Grant Expiration Date</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtGrantExpirationDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtGrantExpirationDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -518,7 +515,7 @@
                     <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit" 
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"
                             OnRowEditing="gvEntity_RowEditing" OnRowUpdating="gvEntity_RowUpdating" OnRowDataBound="gvEntity_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -546,14 +543,14 @@
                                         <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField HeaderText="Type">
-                                     <ItemTemplate>
-                                            <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
-                                        </ItemTemplate>
-                                        <EditItemTemplate>
-                                            <asp:DropDownList ID="ddlLkApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                            <asp:TextBox ID="txtLkApplicantRole" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
-                                        </EditItemTemplate>
+                                <asp:TemplateField HeaderText="Type">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:DropDownList ID="ddlLkApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <asp:TextBox ID="txtLkApplicantRole" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
+                                    </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Applicant">
                                     <ItemTemplate>
