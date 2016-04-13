@@ -343,6 +343,10 @@ namespace vhcbcloud
 
         protected bool IsAddressValid()
         {
+            if (txtStreetNo.Text.Trim() == "" && txtAddress1.Text.Trim() == "" && txtZip.Text.Trim() == "" 
+                && txtTown.Text.Trim() == "" && txtState.Text.Trim() == "" && ddlAddressType.SelectedIndex == 0)
+                return true;
+
             if (txtStreetNo.Text.Trim() == "")
             {
                 LogMessage("Enter Street#");

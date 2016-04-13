@@ -18,7 +18,7 @@
 <body>
     <form runat="server">
         <div class="page">
-            <ajaxToolkit:ToolkitScriptManager runat="server">
+            <ajaxToolkit:ToolkitScriptManager runat="server" EnablePageMethods="true">
                 <Scripts>
                     <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
                     <%--Framework Scripts--%>

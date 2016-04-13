@@ -22,6 +22,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
         
         /// <summary>
+        /// cbActiveOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
+        
+        /// <summary>
         /// dvMessage control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtProjectName;
+        
+        /// <summary>
+        /// aaceProjName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender aaceProjName;
         
         /// <summary>
         /// ddlPrimaryApplicant control.
@@ -490,13 +508,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtTown;
         
         /// <summary>
-        /// txtVillage control.
+        /// ddlVillages control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVillage;
+        protected global::System.Web.UI.WebControls.DropDownList ddlVillages;
         
         /// <summary>
         /// txtCounty control.
@@ -632,6 +650,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlApplicantName;
+        
+        /// <summary>
+        /// ddlApplicantRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlApplicantRole;
         
         /// <summary>
         /// btnAddEntity control.
@@ -796,12 +823,12 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.HiddenField hfAddressId;
         
         /// <summary>
-        /// hfTown control.
+        /// hfVillage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfTown;
+        protected global::System.Web.UI.WebControls.HiddenField hfVillage;
     }
 }

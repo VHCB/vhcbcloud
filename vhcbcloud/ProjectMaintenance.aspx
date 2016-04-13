@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ProjectMaintenance.aspx.cs" Inherits="vhcbcloud.ProjectMaintenance" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ProjectMaintenance.aspx.cs" Inherits="vhcbcloud.ProjectMaintenance"
+    MaintainScrollPositionOnPostback="true"  EnableEventValidation="false" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -7,14 +8,23 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <table>
+                    <table style="width: 100%;">
                         <tr style="float: left">
-                            <td></td>
                             <td>
                                 <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                     <asp:ListItem>New    </asp:ListItem>
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" />
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -46,6 +56,9 @@
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjectName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectName">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Primary Applicant</span></td>
                                         <td>
@@ -146,7 +159,8 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddProjectStatus" CssClass="ChkBox" runat="server" Text="Add New Status" AutoPostBack="True" OnCheckedChanged="cbAddProjectStatus_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddProjectStatus" CssClass="ChkBox" runat="server" Text="Add New Status" AutoPostBack="True"
+                                    OnCheckedChanged="cbAddProjectStatus_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -190,30 +204,50 @@
                 <div class="panel-body" id="dvProjectStatusGrid" runat="server">
                     <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvProjectStatus" runat="server" AutoGenerateColumns="False"
-                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            Width="100%" CssClass="gvProjectStatus" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                            OnRowCancelingEdit="gvProjectStatus_RowCancelingEdit" OnRowEditing="gvProjectStatus_RowEditing"
+                            OnRowDataBound="gvProjectStatus_RowDataBound" OnRowUpdating="gvProjectStatus_RowUpdating">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                             <RowStyle CssClass="rowStyle" />
+                            <EmptyDataTemplate>No Data Found. </EmptyDataTemplate>
                             <Columns>
                                 <asp:TemplateField HeaderText="Project Status ID" Visible="false">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblProjectStatusID" runat="Server" Text='<%# Eval("ProjectStatusID") %>' />
+                                        <asp:Label ID="lblProjectStatusIDPS" runat="Server" Text='<%# Eval("ProjectStatusID") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status">
                                     <ItemTemplate>
                                         <asp:Label ID="lblProjectStatus" runat="Server" Text='<%# Eval("ProjectStatus") %>' />
                                     </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:DropDownList ID="ddlProjectStatusPS" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <asp:TextBox ID="txtLKProjStatusPS" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LKProjStatus") %>' Visible="false"></asp:TextBox>
+                                    </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status Date">
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatusDate" runat="Server" Text='<%# Eval("StatusDate") %>' />
                                     </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:TextBox ID="txtStatusDatePS" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("StatusDate") %>'></asp:TextBox>
+                                        <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtStatusDate">
+                                        </ajaxToolkit:CalendarExtender>
+                                    </EditItemTemplate>
                                 </asp:TemplateField>
-                                <%--<asp:CommandField ShowEditButton="True" />--%>
+                                <asp:TemplateField HeaderText="Active">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkActiveEditPS" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:CommandField ShowEditButton="True" />
                             </Columns>
                         </asp:GridView>
                     </asp:Panel>
@@ -266,7 +300,8 @@
                     <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvProjectNames" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit" OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating"
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit"
+                            OnRowEditing="gvProjectNames_RowEditing" OnRowUpdating="gvProjectNames_RowUpdating"
                             OnRowDataBound="gvProjectNames_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -292,7 +327,15 @@
                                         <asp:Label ID="lblDefName" runat="Server" Text='<%# Eval("DefName") %>' />
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:CheckBox ID="chkDefName" runat="server" Checked='<%# Eval("DefName1") %>' />
+                                        <asp:CheckBox ID="chkDefNamePN" runat="server" Checked='<%# Eval("DefName1") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Active">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkActivePN" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkActiveEditPN" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
@@ -307,7 +350,8 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add New Address" AutoPostBack="True" OnCheckedChanged="cbAddAddress_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add New Address" AutoPostBack="True" 
+                                    OnCheckedChanged="cbAddAddress_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -353,7 +397,9 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Village</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="35"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="35"></asp:TextBox>--%>
+                                              <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" AutoPostBack="True">
+                                            </asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -418,7 +464,8 @@
                     <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound" OnRowEditing="gvAddress_RowEditing1" OnRowUpdating="gvAddress_RowUpdating1">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
+                            OnRowEditing="gvAddress_RowEditing1" OnRowUpdating="gvAddress_RowUpdating1">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -465,6 +512,11 @@
                                         <asp:Label ID="lblDefault" runat="Server" Text='<%# Eval("PrimaryAdd") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Active">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
                             </Columns>
                         </asp:GridView>
@@ -477,7 +529,8 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Add New Entity" AutoPostBack="True" OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Add New Entity" AutoPostBack="True"
+                                    OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
                         </tr>
                     </table>
                 </div>
@@ -496,10 +549,11 @@
                                             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
+                                        <td style="width: 100px"><span class="labelClass">Type</span></td>
+                                        <td style="width: 370px">
+                                            <asp:DropDownList ID="ddlApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                         <td style="width: 70px">
                                             <asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
-                                        <td style="width: 100px"></td>
-                                        <td style="width: 370px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -548,8 +602,8 @@
                                         <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:DropDownList ID="ddlLkApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                        <asp:TextBox ID="txtLkApplicantRole" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
+                                        <asp:DropDownList ID="ddlLkApplicantRoleEntity" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <asp:TextBox ID="txtLkApplicantRoleEntity" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkApplicantRole") %>' Visible="false"></asp:TextBox>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Applicant">
@@ -566,6 +620,14 @@
                                     </ItemTemplate>
                                     <EditItemTemplate>
                                         <asp:CheckBox ID="chkFinLegal" Text="Yes" runat="server" Checked='<%# Eval("FinLegal") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Active">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkActiveEditEntity" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:CommandField ShowEditButton="True" />
@@ -624,7 +686,7 @@
                     <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvRelatedProjects" runat="server" AutoGenerateColumns="False"
                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvRelatedProjects_RowCancelingEdit" OnRowEditing="gvRelatedProjects_RowEditing" OnRowUpdating="gvRelatedProjects_RowUpdating">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -646,7 +708,15 @@
                                         <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <%--<asp:CommandField ShowEditButton="True" />--%>
+                                 <asp:TemplateField HeaderText="Active">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkActiveEditPR" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:CommandField ShowEditButton="True" />
                             </Columns>
                         </asp:GridView>
                     </asp:Panel>
@@ -670,7 +740,7 @@
                 <asp:HiddenField ID="hfProjectId" runat="server" />
                 <asp:HiddenField ID="hfAddressId" runat="server" />
 
-                <asp:HiddenField ID="hfTown" runat="server" />
+                <asp:HiddenField ID="hfVillage" runat="server" />
             </div>
         </div>
     </div>
@@ -679,18 +749,55 @@
         $(document).ready(function () {
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
+                $('#<%=hfVillage.ClientID%>').val('');
+                LoadVillages();
             });
         });
 
-        function getLocation() {
-            getAddressInfoByZip(document.forms[0].zip.value);
-        }
+        function LoadVillages() {
+            $.ajax({
+                type: "POST",
+                url: "ProjectMaintenance.aspx/BindDropdownlist",
+                data: '{zip: "' + $("#<%=txtZip.ClientID%>").val() + '" }',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var jsdata = JSON.parse(data.d);
+                    console.log('jsdata :' + jsdata);
 
-        function response(obj) {
-            console.log(obj);
-        }
-        function getAddressInfoByZip(zip) {
-            $('#<%= txtTown.ClientID%>').val('');
+                    $('#<%=ddlVillages.ClientID%>').empty();
+
+                    $.each(jsdata, function (key, value) {
+                        $('#<%=ddlVillages.ClientID%>')
+                            .append($("<option></option>").val(value.ID).html(value.Name).attr("selected", "selected"));
+                        $('#<%=hfVillage.ClientID%>').val(value.Name);
+                    });
+                },
+                            error: function (data) {
+                                alert("error found");
+                            }
+                        });
+            }
+            function OnSuccess(result) {
+                if (result) {
+                    console.log('OnSuccess');
+                }
+            }
+
+            function OnFailure(error) {
+                console.log('OnFailure');
+            }
+
+            function getLocation() {
+                getAddressInfoByZip(document.forms[0].zip.value);
+            }
+
+            function response(obj) {
+                console.log(obj);
+            }
+
+            function getAddressInfoByZip(zip) {
+                $('#<%= txtTown.ClientID%>').val('');
             $('#<%= txtState.ClientID%>').val('');
             $('#<%= txtCounty.ClientID%>').val('');
             if (zip.length >= 5 && typeof google != 'undefined') {
@@ -749,5 +856,9 @@
                 response({ success: false });
             }
         }
+
+        $(document).ready(function () {
+
+        });
     </script>
 </asp:Content>

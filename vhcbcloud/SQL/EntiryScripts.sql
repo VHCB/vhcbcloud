@@ -107,13 +107,16 @@ begin transaction
 		values (@applicantid, @appnameid, 1)
 	end
 
-	insert into [Address] (LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, RowIsActive, UserID)
-	values(@AddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @IsActive, 123)
+	if(@StreetNo != '')
+	begin
+		insert into [Address] (LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, RowIsActive, UserID)
+		values(@AddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @IsActive, 123)
 
-	set @AddressId = @@identity	
+		set @AddressId = @@identity	
 
-	insert into ApplicantAddress(AddressId, ApplicantId, DefAddress, RowIsActive, [DateModified])
-	values(@AddressId, @applicantid, @DefAddress, @IsActive, getdate())
+		insert into ApplicantAddress(AddressId, ApplicantId, DefAddress, RowIsActive, [DateModified])
+		values(@AddressId, @applicantid, @DefAddress, @IsActive, getdate())
+	end
 
 	end try
 	begin catch
