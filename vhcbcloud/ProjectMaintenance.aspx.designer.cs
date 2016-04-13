@@ -139,24 +139,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProjectType;
         
         /// <summary>
-        /// txtGrantExpirationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrantExpirationDate;
-        
-        /// <summary>
-        /// ce_txtGrantExpirationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
-        
-        /// <summary>
         /// txtApplicationReceived control.
         /// </summary>
         /// <remarks>
@@ -173,6 +155,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtApplicationReceived;
+        
+        /// <summary>
+        /// txtGrantExpirationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGrantExpirationDate;
+        
+        /// <summary>
+        /// ce_txtGrantExpirationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
         
         /// <summary>
         /// ddlManager control.
