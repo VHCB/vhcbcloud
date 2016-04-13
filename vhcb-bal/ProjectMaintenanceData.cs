@@ -174,7 +174,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProjectname(int ProjectId, int TypeID, string ProjectName, bool DefName)
+        public static void UpdateProjectname(int ProjectId, int TypeID, string ProjectName, bool DefName, bool RowIsActive)
         {
             try
             {
@@ -193,6 +193,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("TypeId", TypeID));
                         command.Parameters.Add(new SqlParameter("ProjectName", ProjectName));
                         command.Parameters.Add(new SqlParameter("DefName", DefName));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -206,7 +207,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetProjectNames(int ProjectId)
+        public static DataTable GetProjectNames(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -221,6 +222,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetProjectNames";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -273,7 +275,7 @@ namespace DataAccessLayer
         }
 
         #region Project Address
-        public static DataTable GetProjectAddressList(int ProjectId)
+        public static DataTable GetProjectAddressList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -288,6 +290,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetProjectAddressList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -420,7 +423,7 @@ namespace DataAccessLayer
         #endregion
 
         #region Project Entity
-        public static void AddProjectApplicant(int ProjectId, int AppNameId)
+        public static void AddProjectApplicant(int ProjectId, int AppNameId, int LkApplicantRole)
         {
             try
             {
@@ -437,6 +440,7 @@ namespace DataAccessLayer
                         //2 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                        command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -450,7 +454,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetProjectApplicantList(int ProjectId)
+        public static DataTable GetProjectApplicantList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -465,6 +469,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetProjectApplicantList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -483,7 +488,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal, int LkApplicantRole)
+        public static void UpdateProjectApplicant(int ProjectApplicantId, bool IsApplicant, bool IsFinLegal, int LkApplicantRole, bool IsRowIsActive)
         {
             try
             {
@@ -502,7 +507,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("IsApplicant", IsApplicant));
                         command.Parameters.Add(new SqlParameter("IsFinLegal", IsFinLegal));
                         command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
-                        
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -553,7 +559,38 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetRelatedProjectList(int ProjectId)
+        public static void UpdateRelatedProject(int ProjectId, int RelProjectId, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateRelatedProject";
+
+                        //3 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("RelProjectId", RelProjectId));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetRelatedProjectList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -568,6 +605,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetRelatedProjectList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -586,7 +624,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static DataTable GetProjectStatusList(int ProjectId)
+        public static DataTable GetProjectStatusList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -601,6 +639,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetProjectStatusList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -648,6 +687,71 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static void UpdateProjectStatus(int ProjectStatusId, int LKProjStatus, DateTime StatusDate, bool isActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectStatus";
+
+                        //4 Parameters
+                        command.Parameters.Add(new SqlParameter("ProjectStatusId", ProjectStatusId));
+                        command.Parameters.Add(new SqlParameter("LKProjStatus", LKProjStatus));
+                        command.Parameters.Add(new SqlParameter("StatusDate", StatusDate));
+                        command.Parameters.Add(new SqlParameter("isActive", isActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetVillages(int zip)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetVillages";
+                        command.Parameters.Add(new SqlParameter("zip", zip));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
     }
 

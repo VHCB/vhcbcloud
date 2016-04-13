@@ -321,20 +321,23 @@ go
 
 create procedure dbo.GetProjectNames
 (
-	@ProjectId	int
+	@ProjectId		int,
+	@IsActiveOnly	bit
 ) as
---GetProjectNames 6583
+--GetProjectNames 6588
 begin transaction
 
 	begin try
 
 	select TypeID, Description, 
-		case isnull(pn.DefName, '') when '' then 'No' when 0 then 'No' else 'Yes' end DefName, pn.DefName as DefName1
+		case isnull(pn.DefName, '') when '' then 'No' when 0 then 'No' else 'Yes' end DefName, pn.DefName as DefName1,
+		lv.RowIsActive
 	from LookupValues lv(nolock)
 	join ProjectName pn(nolock) on lv.TypeID = pn.LkProjectname
-	where lv.rowisactive =  1 and  pn.ProjectID = @ProjectId
+	where pn.ProjectID = @ProjectId 
+		and (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)
 	order by pn.DefName desc, pn.DateModified desc
-	
+
 	end try
 	begin catch
 		if @@trancount > 0
@@ -358,22 +361,26 @@ create procedure dbo.UpdateProjectName
 	@ProjectId		int,
 	@TypeId			int,
 	@ProjectName	varchar(70),
-	@DefName		bit
+	@DefName		bit,
+	@RowIsActive	bit
 ) as
 begin transaction
 
 	begin try
-
-	update lookupvalues set description = @projectName
+	
+	update lookupvalues set description = @projectName, RowIsActive = @RowIsActive
 	where TypeId = @TypeId
 
-	if(@DefName = 1)
+	if(@DefName = 1 and @RowIsActive = 1)
 	begin
 	 update ProjectName set DefName = 0 where ProjectId = @ProjectId
 	end
 
-	update ProjectName set DefName = @DefName, DateModified = getdate()
-	where LKProjectName = @TypeId and ProjectId = @ProjectId
+	if(@RowIsActive = 1)
+	begin
+		update ProjectName set DefName = @DefName, DateModified = getdate()
+		where LKProjectName = @TypeId and ProjectId = @ProjectId
+	end
 		
 	end try
 	begin catch
@@ -541,17 +548,19 @@ go
 
 create procedure dbo.GetProjectAddressList
 (
-	@ProjectId int	
+	@ProjectId		int,
+	@IsActiveOnly	bit
 )
 as 
---exec GetProjectAddressList 20
+--exec GetProjectAddressList 6588, 0
 Begin
 
 	select a.AddressId, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, 
-	case isnull(pa.PrimaryAdd, '') when '' then 'No' when 0 then 'No' else 'Yes' end PrimaryAdd
+	case isnull(pa.PrimaryAdd, '') when '' then 'No' when 0 then 'No' else 'Yes' end PrimaryAdd, a.RowIsActive
 	from ProjectAddress pa(nolock) 
 	join Address a(nolock) on a.Addressid = pa.AddressId
-	where a.RowIsActive = 1 and pa.ProjectId = @ProjectId
+	where pa.ProjectId = @ProjectId
+		and (@IsActiveOnly = 0 or a.RowIsActive = @IsActiveOnly)
 	order by pa.PrimaryAdd desc, pa.DateModified desc
 end
 go
@@ -565,8 +574,8 @@ go
 create procedure dbo.AddProjectApplicant
 (
 	@ProjectId			int,
-	@AppNameId			int
-	--@LkApplicantRole	int, 
+	@AppNameId			int,
+	@LkApplicantRole	int 
 	--@Defapp				bit, 
 	--@IsApplicant		bit, 
 	--@FinLegal			bit	
@@ -580,7 +589,7 @@ begin transaction
 	select @ApplicantId = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameId
 
 	insert into ProjectApplicant(ProjectId, ApplicantId,  LkApplicantRole, UserID)--, Defapp, IsApplicant, FinLegal,
-	values(@ProjectId, @ApplicantId,  358, 123)--@LkApplicantRole, @Defapp, @IsApplicant, @FinLegal,
+	values(@ProjectId, @ApplicantId,  @LkApplicantRole, 123)-- 358 @LkApplicantRole, @Defapp, @IsApplicant, @FinLegal,
 
 	end try
 	begin catch
@@ -605,13 +614,15 @@ create procedure dbo.UpdateProjectApplicant
 	@ProjectApplicantId	int,
 	@IsApplicant		bit, 
 	@IsFinLegal			bit,
-	@LkApplicantRole	int
+	@LkApplicantRole	int,
+	@IsRowIsActive		bit
 ) as
 begin transaction
 
 	begin try
-
-	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal, LkApplicantRole = @LkApplicantRole
+	select * from ProjectApplicant
+	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal, 
+		LkApplicantRole = @LkApplicantRole, RowIsActive = @IsRowIsActive
 	where ProjectApplicantId = @ProjectApplicantId
 	
 	end try
@@ -634,10 +645,11 @@ go
 
 create procedure dbo.GetProjectApplicantList
 (
-	@ProjectId	int
+	@ProjectId		int,
+	@IsActiveOnly	bit
 ) as
 begin transaction
--- GetProjectApplicantList 6588
+-- GetProjectApplicantList 6588, 1
 	begin try
 
 	select pa.ProjectApplicantID, 
@@ -646,6 +658,7 @@ begin transaction
 			isnull(pa.IsApplicant, 0) as IsApplicant, 
 			isnull(pa.FinLegal, 0) as FinLegal,
 			pa.LkApplicantRole, lv.Description as 'ApplicantRoleDescription',
+			pa.RowIsActive,
 			a.ApplicantId, a.Individual, a.LkEntityType, a.FYend, a.website, a.Stvendid, a.LkPhoneType, a.Phone, a.email, 
 			an.applicantname,
 			c.LkPrefix, c.Firstname, c.Lastname, c.LkSuffix, c.LkPosition, c.Title, 
@@ -659,8 +672,8 @@ begin transaction
 		left join contact c(nolock) on c.ContactID = ac.ContactID
 		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
 		where pa.ProjectId = @ProjectId
+			and (@IsActiveOnly = 0 or pa.RowIsActive = @IsActiveOnly)
 		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc
-
 	end try
 	begin catch
 		if @@trancount > 0
@@ -698,7 +711,7 @@ begin transaction
         (
 			select 1
 			from projectrelated(nolock)
-			where ProjectID = @ProjectId
+			where ProjectID = @ProjectId and RelProjectID = @RelProjectId
         )
 		begin
 			insert into projectrelated(ProjectID, RelProjectID)
@@ -723,24 +736,62 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateRelatedProject]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateRelatedProject
+go
+
+create procedure dbo.UpdateRelatedProject
+(
+	@ProjectId			int,
+	@RelProjectId		int,
+	@RowIsActive		bit
+
+) as
+begin transaction
+
+	begin try
+
+	update projectrelated set RowIsActive = @RowIsActive
+	where  ProjectID = @ProjectID and RelProjectId = @RelProjectId
+
+	update projectrelated set RowIsActive = @RowIsActive
+	where  ProjectID = @RelProjectId and RelProjectId = @ProjectID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetRelatedProjectList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetRelatedProjectList
 go
 
 create procedure dbo.GetRelatedProjectList
 (
-	@ProjectId	int
+	@ProjectId		int,
+	@IsActiveOnly	bit
 ) as
 begin transaction
 --exec GetRelatedProjectList 6588
 	begin try
 
-	select  pr.RelProjectId, p.Proj_num, Description as ProjectName
+	select  pr.RelProjectId, p.Proj_num, Description as ProjectName, pr.RowIsActive
 	from projectrelated pr(nolock)
 	join project p(nolock) on pr.RelProjectId = p.ProjectId
 	join projectname pn(nolock) on pr.RelProjectId = pn.ProjectID
 	join LookupValues lv(nolock) on pn.LkProjectName = lv.TypeId
 	where pn.DefName = 1 and pr.ProjectId = @ProjectId
+		and (@IsActiveOnly = 0 or pr.RowIsActive = @IsActiveOnly)
+	order by pr.DateModified desc
 
 	end try
 	begin catch
@@ -764,16 +815,20 @@ go
 
 create procedure dbo.GetProjectStatusList
 (
-	@ProjectId	int
+	@ProjectId		int,
+	@IsActiveOnly	bit
 ) as
 begin transaction
---exec GetProjectStatusList 6588
+--exec GetProjectStatusList 6588, 0
 	begin try
-
-	select ProjectStatusID, lv.Description as ProjectStatus, LKProjStatus, convert(varchar(10), StatusDate, 101) as StatusDate
+	
+	select ProjectStatusID, lv.Description as ProjectStatus, LKProjStatus,
+		convert(varchar(10), StatusDate, 101) as StatusDate,
+		ps.RowIsActive
 	from ProjectStatus ps(nolock)
 	join lookupvalues lv(nolock) on ps.LKProjStatus = lv.TypeID
 	where ps.ProjectId = @ProjectId
+		and (@IsActiveOnly = 0 or ps.RowIsActive = @IsActiveOnly)
 	order by ps.DateModified desc
 
 	end try
@@ -821,5 +876,62 @@ begin transaction
 		commit transaction;
 go
 
---select * from projectstatus
---Select * from lookupvalues where lookuptype = 4 order by datemodified desc
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectStatus]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectStatus
+go
+
+create procedure dbo.UpdateProjectStatus
+(
+	@ProjectStatusId	int,
+	@LKProjStatus		int,
+	@StatusDate			DateTime, 
+	@isActive			bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectStatus set LKProjStatus = @LKProjStatus,  StatusDate = @StatusDate, RowIsActive = @isActive
+	where ProjectStatusId = @ProjectStatusId
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+---@@@@@@@@@@@@@@ Villages @@@@@@@@@@@@@@@@@@@@@@
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetVillages]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetVillages
+go
+
+create procedure dbo.GetVillages
+(
+	@zip	int
+) as
+begin transaction
+--exec GetVillages 05041
+	begin try
+
+	select village from village_v where zip = @zip
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
