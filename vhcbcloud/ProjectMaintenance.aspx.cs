@@ -28,7 +28,7 @@ namespace vhcbcloud
                     rdBtnSelection.SelectedIndex = 0;
                     RadioButtonSelectionChanged();
                 }
-                
+
 
                 BindControls();
                 DisplayControlsbasedOnSelection();
@@ -49,6 +49,7 @@ namespace vhcbcloud
             BindPrimaryApplicants();
             BindProjects(ddlProject);
             BindApplicants();
+            BindLookUP(ddlApplicantRole, 56);
         }
 
         protected void BindProjects(DropDownList ddList)
@@ -67,6 +68,24 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
+
+        protected void BindRelatedProjects(DropDownList ddList)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = ProjectCheckRequestData.GetData("getprojectslist"); ;
+                ddList.DataValueField = "project_id_name";
+                ddList.DataTextField = "Proj_num";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
         private void BindBoardDate()
         {
             try
@@ -209,36 +228,36 @@ namespace vhcbcloud
 
                     //ProjectNames
                     dvNewProjectName.Visible = true;
-                    dvProjectName.Visible = false;
+                    //dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = true;
                     BindProjectNamesGrid();
                     cbAddProjectName.Checked = false;
 
                     //Address
                     dvNewAddress.Visible = true;
-                    dvAddress.Visible = false;
+                    //dvAddress.Visible = false;
                     dvAddressGrid.Visible = true;
                     BindAddressGrid();
                     cbAddAddress.Checked = false;
 
                     //Entity
                     dvNewEntity.Visible = true;
-                    dvEntity.Visible = false;
+                    //dvEntity.Visible = false;
                     dvEntityGrid.Visible = true;
                     BindProjectEntityGrid();
                     cbAttachNewEntity.Checked = false;
 
                     //RelatedProjects
                     dvNewRelatedProjects.Visible = true;
-                    dvRelatedProjects.Visible = false;
+                    //dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = true;
-                    BindProjects(ddlRelatedProjects);
+                    BindRelatedProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
                     cbRelatedProjects.Checked = false;
 
                     //ProjectStatus
                     dvNewProjectStatus.Visible = true;
-                    dvProjectStatus.Visible = false;
+                    //dvProjectStatus.Visible = false;
                     dvProjectStatusGrid.Visible = true;
                     BindLookUP(ddlProjectStatus, 4);
                     BindProjectStatusGrid();
@@ -250,27 +269,27 @@ namespace vhcbcloud
 
                     //ProjectNames
                     dvNewProjectName.Visible = false;
-                    dvProjectName.Visible = false;
+                    //dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = false;
 
                     //Address
                     dvNewAddress.Visible = false;
-                    dvAddress.Visible = false;
+                    //dvAddress.Visible = false;
                     dvAddressGrid.Visible = false;
 
                     //Entity
                     dvNewEntity.Visible = false;
-                    dvEntity.Visible = false;
+                   // dvEntity.Visible = false;
                     dvEntityGrid.Visible = false;
 
                     //RelatedProjects
                     dvNewRelatedProjects.Visible = false;
-                    dvRelatedProjects.Visible = false;
+                    //dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = false;
 
                     //ProjectStatus
                     dvNewProjectStatus.Visible = false;
-                    dvProjectStatus.Visible = false;
+                    //dvProjectStatus.Visible = false;
                     dvProjectStatusGrid.Visible = false;
                 }
 
@@ -374,27 +393,27 @@ namespace vhcbcloud
 
             //ProjectNames
             dvNewProjectName.Visible = false;
-            dvProjectName.Visible = false;
+            //dvProjectName.Visible = false;
             dvProjectNamesGrid.Visible = false;
 
             //Address
             dvNewAddress.Visible = false;
-            dvAddress.Visible = false;
+            //dvAddress.Visible = false;
             dvAddressGrid.Visible = false;
 
             //Entity
             dvNewEntity.Visible = false;
-            dvEntity.Visible = false;
+            //dvEntity.Visible = false;
             dvEntityGrid.Visible = false;
 
             //RelatedProjects
             dvNewRelatedProjects.Visible = false;
-            dvRelatedProjects.Visible = false;
+            //dvRelatedProjects.Visible = false;
             dvRelatedProjectsGrid.Visible = false;
 
             //ProjectStatus
             dvNewProjectStatus.Visible = false;
-            dvProjectStatus.Visible = false;
+            //dvProjectStatus.Visible = false;
             dvProjectStatusGrid.Visible = false;
         }
 
@@ -406,38 +425,41 @@ namespace vhcbcloud
                 txtProjNum.Visible = true;
                 ddlProject.Visible = false;
                 btnProjectUpdate.Visible = false;
-                btnProjectSubmit.Visible = true;
+                dvSubmit.Visible = true;
+                cbActiveOnly.Visible = false;
             }
             else
             {
                 txtProjNum.Visible = false;
                 ddlProject.Visible = true;
                 btnProjectUpdate.Visible = true;
-                btnProjectSubmit.Visible = false;
+                dvSubmit.Visible = false;
+                cbActiveOnly.Visible = true;
+                cbActiveOnly.Checked = true;
 
                 //ProjectNames
                 dvNewProjectName.Visible = false;
-                dvProjectName.Visible = false;
+               // dvProjectName.Visible = false;
                 dvProjectNamesGrid.Visible = false;
 
                 //Address
                 dvNewAddress.Visible = false;
-                dvAddress.Visible = false;
+                //dvAddress.Visible = false;
                 dvAddressGrid.Visible = false;
 
                 //Entity
                 dvNewEntity.Visible = false;
-                dvEntity.Visible = false;
+                //dvEntity.Visible = false;
                 dvEntityGrid.Visible = false;
 
                 //RelatedProjects
                 dvNewRelatedProjects.Visible = false;
-                dvRelatedProjects.Visible = false;
+                //dvRelatedProjects.Visible = false;
                 dvRelatedProjectsGrid.Visible = false;
 
                 //ProjectStatus
                 dvNewProjectStatus.Visible = false;
-                dvProjectStatus.Visible = false;
+                //dvProjectStatus.Visible = false;
                 dvProjectStatusGrid.Visible = false;
             }
         }
@@ -498,27 +520,27 @@ namespace vhcbcloud
 
                     //ProjectNames
                     dvNewProjectName.Visible = false;
-                    dvProjectName.Visible = false;
+                    //dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = false;
 
                     //Address
                     dvNewAddress.Visible = false;
-                    dvAddress.Visible = false;
+                    //dvAddress.Visible = false;
                     dvAddressGrid.Visible = false;
 
                     //Entity
                     dvNewEntity.Visible = false;
-                    dvEntity.Visible = false;
+                   // dvEntity.Visible = false;
                     dvEntityGrid.Visible = false;
 
                     //RelatedProjects
                     dvNewRelatedProjects.Visible = false;
-                    dvRelatedProjects.Visible = false;
+                    //dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = false;
 
                     //ProjectStatus
                     dvNewProjectStatus.Visible = false;
-                    dvProjectStatus.Visible = false;
+                    //dvProjectStatus.Visible = false;
                     dvProjectStatusGrid.Visible = false;
                 }
             }
@@ -537,7 +559,7 @@ namespace vhcbcloud
                     ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(hfProjectId.Value), txtProject_Name.Text, cbDefName.Checked);
 
                     ClearProjectNameForm();
-                    dvProjectName.Visible = false;
+                   // dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = true;
                     cbAddProjectName.Checked = false;
                     BindProjectNamesGrid();
@@ -569,13 +591,13 @@ namespace vhcbcloud
             cbDefName.Checked = true;
         }
 
-        protected void cbProjectName_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbAddProjectName.Checked)
-                dvProjectName.Visible = true;
-            else
-                dvProjectName.Visible = false;
-        }
+        //protected void cbProjectName_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbAddProjectName.Checked)
+        //        dvProjectName.Visible = true;
+        //    else
+        //        dvProjectName.Visible = false;
+        //}
 
         #region gvProjectNames
         protected void gvProjectNames_RowEditing(object sender, GridViewEditEventArgs e)
@@ -618,7 +640,7 @@ namespace vhcbcloud
                     {
                         CheckBox chkDefNamePN = e.Row.FindControl("chkDefNamePN") as CheckBox;
                         CheckBox chkActiveEditPN = e.Row.FindControl("chkActiveEditPN") as CheckBox;
-                        
+
                         if (chkDefNamePN.Checked)
                         {
                             chkDefNamePN.Enabled = false;
@@ -640,13 +662,13 @@ namespace vhcbcloud
 
         #endregion
 
-        protected void cbAddAddress_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbAddAddress.Checked)
-                dvAddress.Visible = true;
-            else
-                dvAddress.Visible = false;
-        }
+        //protected void cbAddAddress_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbAddAddress.Checked)
+        //        dvAddress.Visible = true;
+        //    else
+        //        dvAddress.Visible = false;
+        //}
 
         //protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         //{
@@ -680,13 +702,14 @@ namespace vhcbcloud
                 {
                     int ProjectId = DataUtils.GetInt(hfProjectId.Value);
                     string Village = this.hfVillage.Value;
+                    var value = HttpContext.Current.Request.Form["ctl00$MainContent$ddlVillages"];
 
                     if (btnAddAddress.Text.ToLower() == "update")
                     {
                         int addressId = Convert.ToInt32(hfAddressId.Value);
 
                         ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
-                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), 
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
                             cbActive.Checked, cbDefaultAddress.Checked);
 
                         hfAddressId.Value = "";
@@ -696,7 +719,7 @@ namespace vhcbcloud
                     else //add
                     {
                         ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
-                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), 
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
                             cbActive.Checked, cbDefaultAddress.Checked);
 
                         btnAddAddress.Text = "Add";
@@ -706,7 +729,7 @@ namespace vhcbcloud
                     gvAddress.EditIndex = -1;
                     BindAddressGrid();
                     ClearAddressForm();
-                    dvAddress.Visible = false;
+                    //dvAddress.Visible = false;
                     dvAddressGrid.Visible = true;
                     cbAddAddress.Checked = false;
                 }
@@ -729,7 +752,10 @@ namespace vhcbcloud
             txtLattitude.Text = "";
             txtLongitude.Text = "";
             cbActive.Checked = true;
-            cbDefaultAddress.Checked = false;
+            cbActive.Enabled = true;
+            cbDefaultAddress.Checked = true;
+            cbDefaultAddress.Enabled = true;
+            ddlVillages.Items.Clear();
         }
 
         protected void gvAddress_RowCancelingEdit1(object sender, GridViewCancelEditEventArgs e)
@@ -740,7 +766,7 @@ namespace vhcbcloud
 
             ClearAddressForm();
             btnAddAddress.Text = "Add";
-            dvAddress.Visible = false;
+            //dvAddress.Visible = false;
             gvAddress.EditIndex = -1;
             BindAddressGrid();
         }
@@ -764,12 +790,12 @@ namespace vhcbcloud
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddAddress.Text = "Update";
-                    dvAddress.Visible = true;
-
+                    //dvAddress.Visible = true;
+                    cbAddAddress.Checked = true;
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[8].Controls[0].Visible = false;
+                        e.Row.Cells[9].Controls[0].Visible = false;
                         Label lblAddressId = e.Row.FindControl("lblAddressId") as Label;
                         DataRow dr = ProjectMaintenanceData.GetProjectAddressDetailsById(DataUtils.GetInt(hfProjectId.Value), Convert.ToInt32(lblAddressId.Text));
 
@@ -788,8 +814,15 @@ namespace vhcbcloud
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["PrimaryAdd"].ToString());
 
                         ddlVillages.Items.Clear();
-                        ddlVillages.Items.Insert(0, dr["village"].ToString());
-                        this.hfVillage.Value = dr["village"].ToString();
+                        ddlVillages.DataSource = ProjectMaintenanceData.GetVillages(DataUtils.GetInt(dr["Zip"].ToString()));
+                        ddlVillages.DataValueField = "village";
+                        ddlVillages.DataTextField = "village";
+                        ddlVillages.DataBind();
+                        ddlVillages.Items.Insert(0, new ListItem("Select", ""));
+                        PopulateDropDown(ddlVillages, dr["village"].ToString());
+
+                        //ddlVillages.Items.Insert(0, dr["village"].ToString());
+                        //this.hfVillage.Value = dr["village"].ToString();
 
                         if (cbDefaultAddress.Checked)
                         {
@@ -814,7 +847,7 @@ namespace vhcbcloud
         {
             if (IsProjectEntityFormValid())
             {
-                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()), 
+                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()));
 
                 ddlApplicantName.SelectedIndex = -1;
@@ -823,7 +856,7 @@ namespace vhcbcloud
 
                 gvEntity.EditIndex = -1;
                 BindProjectEntityGrid();
-                dvEntity.Visible = false;
+               // dvEntity.Visible = false;
                 dvEntityGrid.Visible = true;
                 cbAttachNewEntity.Checked = false;
             }
@@ -873,14 +906,14 @@ namespace vhcbcloud
             }
         }
 
-        protected void cbAttachNewEntity_CheckedChanged(object sender, EventArgs e)
-        {
-            BindLookUP(ddlApplicantRole, 56);
-            if (cbAttachNewEntity.Checked)
-                dvEntity.Visible = true;
-            else
-                dvEntity.Visible = false;
-        }
+        //protected void cbAttachNewEntity_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    BindLookUP(ddlApplicantRole, 56);
+        //    if (cbAttachNewEntity.Checked)
+        //        dvEntity.Visible = true;
+        //    else
+        //        dvEntity.Visible = false;
+        //}
 
         protected bool IsProjectInfoFormValid(bool isUpdate)
         {
@@ -1049,7 +1082,16 @@ namespace vhcbcloud
         {
             if (IsRelatedProjectFormValid())
             {
-                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
+                string[] tokens = ddlRelatedProjects.SelectedValue.ToString().Split('|');
+                //txtProjectName.Text = tokens[1];
+
+                if (hfProjectId.Value == tokens[0])
+                {
+                    LogMessage("Related Project can't be same Project");
+                    return;
+                }
+
+                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(tokens[0]));
 
                 if (!isDuplicate)
                 {
@@ -1058,7 +1100,7 @@ namespace vhcbcloud
                     gvRelatedProjects.EditIndex = -1;
                     BindRelatedProjectsGrid();
                     ClearRelatedProjectsForm();
-                    dvRelatedProjects.Visible = false;
+                    // dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = true;
                     cbRelatedProjects.Checked = false;
                 }
@@ -1111,28 +1153,28 @@ namespace vhcbcloud
             txtRelatedProjectName.Text = "";
         }
 
-        protected void cbRelatedProjects_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbRelatedProjects.Checked)
-                dvRelatedProjects.Visible = true;
-            else
-                dvRelatedProjects.Visible = false;
-        }
+        //protected void cbRelatedProjects_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbRelatedProjects.Checked)
+        //        dvRelatedProjects.Visible = true;
+        //    else
+        //        dvRelatedProjects.Visible = false;
+        //}
 
-        protected void ddlRelatedProjects_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txtRelatedProjectName.Text = "";
-            DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
-            txtRelatedProjectName.Text = dr["ProjectName"].ToString();
-        }
+        //protected void ddlRelatedProjects_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    txtRelatedProjectName.Text = "";
+        //    DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ddlRelatedProjects.SelectedValue.ToString()));
+        //    txtRelatedProjectName.Text = dr["ProjectName"].ToString();
+        //}
 
-        protected void cbAddProjectStatus_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbAddProjectStatus.Checked)
-                dvProjectStatus.Visible = true;
-            else
-                dvProjectStatus.Visible = false;
-        }
+        //protected void cbAddProjectStatus_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (cbAddProjectStatus.Checked)
+        //        dvProjectStatus.Visible = true;
+        //    else
+        //        dvProjectStatus.Visible = false;
+        //}
 
         protected void btnAddProjectStatus_Click(object sender, EventArgs e)
         {
@@ -1144,7 +1186,7 @@ namespace vhcbcloud
                 gvProjectStatus.EditIndex = -1;
                 BindProjectStatusGrid();
                 ClearProjectStatusForm();
-                dvProjectStatus.Visible = false;
+               // dvProjectStatus.Visible = false;
                 dvProjectStatusGrid.Visible = true;
                 cbAddProjectStatus.Checked = false;
             }
@@ -1266,7 +1308,7 @@ namespace vhcbcloud
                 {
                     DropDownList ddlProjectStatusPS = (e.Row.FindControl("ddlProjectStatusPS") as DropDownList);
                     TextBox txtLKProjStatusPS = (e.Row.FindControl("txtLKProjStatusPS") as TextBox);
-                    
+
                     if (txtLKProjStatusPS != null)
                     {
                         BindLookUP(ddlProjectStatusPS, 4);
@@ -1296,7 +1338,7 @@ namespace vhcbcloud
                 int LKProjStatus = DataUtils.GetInt(((DropDownList)gvProjectStatus.Rows[rowIndex].FindControl("ddlProjectStatusPS")).SelectedValue.ToString());
                 DateTime StatusDate = DataUtils.GetDate(((TextBox)gvProjectStatus.Rows[rowIndex].FindControl("txtStatusDatePS")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvProjectStatus.Rows[rowIndex].FindControl("chkActiveEditPS")).Checked);
-                
+
                 ProjectMaintenanceData.UpdateProjectStatus(ProjectStatusId, LKProjStatus, StatusDate, isActive);
                 gvProjectStatus.EditIndex = -1;
 
@@ -1338,6 +1380,11 @@ namespace vhcbcloud
 
             List<KeyVal> listVillages = new List<KeyVal>();
 
+            KeyVal objKeyVal0 = new KeyVal();
+            objKeyVal0.ID = "";
+            objKeyVal0.Name = "Select";
+            listVillages.Insert(0, objKeyVal0);
+
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -1345,7 +1392,7 @@ namespace vhcbcloud
                     KeyVal objKeyVal = new KeyVal();
                     objKeyVal.ID = dt.Rows[i]["village"].ToString();
                     objKeyVal.Name = dt.Rows[i]["village"].ToString();
-                    listVillages.Insert(i, objKeyVal);
+                    listVillages.Insert(i + 1, objKeyVal);
 
                     //liststudent.Add(dt.Rows[i]["village"].ToString());
                     //liststudent.Add("Ramakrishna");
@@ -1390,6 +1437,17 @@ namespace vhcbcloud
         {
             gvRelatedProjects.EditIndex = e.NewEditIndex;
             BindRelatedProjectsGrid();
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (hfProjectId.Value == "") return;
+
+            this.BindProjectNamesGrid();
+            this.BindAddressGrid();
+            this.BindProjectEntityGrid();
+            this.BindProjectStatusGrid();
+            this.BindRelatedProjectsGrid();
         }
     }
 

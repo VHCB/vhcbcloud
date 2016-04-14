@@ -145,8 +145,8 @@ begin transaction
 			join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
 			where an.AppNameID = @appNameId
 
-			insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole)
-			values (@ProjectId, @applicantId, 358)
+			insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
+			values (@ProjectId, @applicantId, 358, 1)
 
 			set @isDuplicate = 0
 		end

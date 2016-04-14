@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ProjectMaintenance.aspx.cs" Inherits="vhcbcloud.ProjectMaintenance"
-    MaintainScrollPositionOnPostback="true"  EnableEventValidation="false" %>
+    MaintainScrollPositionOnPostback="true" EnableEventValidation="false" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -11,12 +11,13 @@
                     <table style="width: 100%;">
                         <tr>
                             <td>
-                                <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
+                                <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" 
+                                    OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                     <asp:ListItem>New    </asp:ListItem>
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
-                            <td style="text-align:right">
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" />
+                            <td style="text-align: right">
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                     </table>
@@ -48,7 +49,7 @@
                                             <span class="labelClass">Name</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjectName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                                                 CompletionInterval="100" ServiceMethod="GetProjectName">
                                             </ajaxToolkit:AutoCompleteExtender>
@@ -75,10 +76,10 @@
                                             <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Grant Expiration Date</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Application Rec'd</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtGrantExpirationDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtGrantExpirationDate">
+                                            <asp:TextBox ID="txtApplicationReceived" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtApplicationReceived" TargetControlID="txtApplicationReceived">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
                                     </tr>
@@ -86,10 +87,10 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Application Rec'd</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Grant Expiration Date</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtApplicationReceived" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtApplicationReceived" TargetControlID="txtApplicationReceived">
+                                            <asp:TextBox ID="txtGrantExpirationDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtGrantExpirationDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
                                         <td style="width: 100px">
@@ -152,8 +153,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddProjectStatus" CssClass="ChkBox" runat="server" Text="Add New Status" AutoPostBack="True"
-                                    OnCheckedChanged="cbAddProjectStatus_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddProjectStatus" CssClass="ChkBox" runat="server" Text="Add New Status" /></td>
                         </tr>
                     </table>
                 </div>
@@ -197,7 +197,7 @@
                 <div class="panel-body" id="dvProjectStatusGrid" runat="server">
                     <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
                         <asp:GridView ID="gvProjectStatus" runat="server" AutoGenerateColumns="False"
-                            Width="100%" CssClass="gvProjectStatus" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                             GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                             OnRowCancelingEdit="gvProjectStatus_RowCancelingEdit" OnRowEditing="gvProjectStatus_RowEditing"
                             OnRowDataBound="gvProjectStatus_RowDataBound" OnRowUpdating="gvProjectStatus_RowUpdating">
@@ -206,7 +206,6 @@
                             <HeaderStyle CssClass="headerStyle" />
                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                             <RowStyle CssClass="rowStyle" />
-                            <EmptyDataTemplate>No Data Found. </EmptyDataTemplate>
                             <Columns>
                                 <asp:TemplateField HeaderText="Project Status ID" Visible="false">
                                     <ItemTemplate>
@@ -252,7 +251,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddProjectName" CssClass="ChkBox" runat="server" Text="Add New Name" AutoPostBack="True" OnCheckedChanged="cbProjectName_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddProjectName" CssClass="ChkBox" runat="server" Text="Add New Name"/></td>
                         </tr>
                     </table>
                 </div>
@@ -343,8 +342,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add New Address" AutoPostBack="True" 
-                                    OnCheckedChanged="cbAddAddress_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAddAddress" CssClass="ChkBox" runat="server" Text="Add New Address"/></td>
                         </tr>
                     </table>
                 </div>
@@ -380,7 +378,6 @@
                                         <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
-
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Town</span>
@@ -390,8 +387,7 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Village</span></td>
                                         <td>
-                                            <%--<asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="35"></asp:TextBox>--%>
-                                              <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" AutoPostBack="True">
+                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -522,8 +518,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Add New Entity" AutoPostBack="True"
-                                    OnCheckedChanged="cbAttachNewEntity_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbAttachNewEntity" CssClass="ChkBox" runat="server" Text="Add New Entity"/></td>
                         </tr>
                     </table>
                 </div>
@@ -635,8 +630,7 @@
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td></td>
                             <td>
-                                <asp:CheckBox ID="cbRelatedProjects" CssClass="ChkBox" runat="server" Text="Add Related Projects"
-                                    AutoPostBack="True" OnCheckedChanged="cbRelatedProjects_CheckedChanged" /></td>
+                                <asp:CheckBox ID="cbRelatedProjects" CssClass="ChkBox" runat="server" Text="Add Related Projects"/></td>
                         </tr>
                     </table>
                 </div>
@@ -652,7 +646,7 @@
                                     <tr>
                                         <td style="width: 180px"><span class="labelClass">Related Project</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRelatedProjects_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px">
@@ -701,7 +695,7 @@
                                         <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                 <asp:TemplateField HeaderText="Active">
+                                <asp:TemplateField HeaderText="Active">
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                     </ItemTemplate>
@@ -740,11 +734,53 @@
     <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
     <script language="javascript">
         $(document).ready(function () {
+            $('#<%= dvProjectStatus.ClientID%>').toggle($('#<%= cbAddProjectStatus.ClientID%>').is(':checked'));
+            $('#<%= dvProjectName.ClientID%>').toggle($('#<%= cbAddProjectName.ClientID%>').is(':checked'));
+            $('#<%= dvAddress.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
+            $('#<%= dvEntity.ClientID%>').toggle($('#<%= cbAttachNewEntity.ClientID%>').is(':checked'));
+            $('#<%= dvRelatedProjects.ClientID%>').toggle($('#<%= cbRelatedProjects.ClientID%>').is(':checked'));
+
+             $('#<%= cbAddProjectStatus.ClientID%>').click(function () {
+                $('#<%= dvProjectStatus.ClientID%>').toggle(this.checked);
+             }).change();
+
+             $('#<%= cbAddProjectName.ClientID%>').click(function () {
+                $('#<%= dvProjectName.ClientID%>').toggle(this.checked);
+             }).change();
+
+             $('#<%= cbAddAddress.ClientID%>').click(function () {
+                $('#<%= dvAddress.ClientID%>').toggle(this.checked);
+             }).change();
+
+             $('#<%= cbAttachNewEntity.ClientID%>').click(function () {
+                $('#<%= dvEntity.ClientID%>').toggle(this.checked);
+             }).change();
+
+            $('#<%= cbRelatedProjects.ClientID%>').click(function () {
+                $('#<%= dvRelatedProjects.ClientID%>').toggle(this.checked);
+            }).change(); //ensure visible state matches initially
+
+
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
                 $('#<%=hfVillage.ClientID%>').val('');
                 LoadVillages();
             });
+            
+            $('#<%= btnAddAddress.ClientID%>').click(function () {
+                //console.log($('#<%= ddlVillages.ClientID%>').val());
+                $('#<%=hfVillage.ClientID%>').val($('#<%= ddlVillages.ClientID%>').val());
+             });
+            
+            $('#<%= ddlRelatedProjects.ClientID%>').change(function () {
+                var arr = $('#<%= ddlRelatedProjects.ClientID%>').val().split('|');
+                $('#<%=txtRelatedProjectName.ClientID%>').val(arr[1]);
+             });
+            
+           <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
+                alert('Rama');
+                RefreshGrids();
+            });--%>
         });
 
         function LoadVillages() {
@@ -761,59 +797,66 @@
                     $('#<%=ddlVillages.ClientID%>').empty();
 
                     $.each(jsdata, function (key, value) {
+
+                       <%-- if(key = 0)
                         $('#<%=ddlVillages.ClientID%>')
-                            .append($("<option></option>").val(value.ID).html(value.Name).attr("selected", "selected"));
-                        $('#<%=hfVillage.ClientID%>').val(value.Name);
+                            .append($("<option></option>").val(value.ID).html(value.Name).attr("selected", "selected"));--%>
+
+                        $('#<%=ddlVillages.ClientID%>')
+                            .append($("<option></option>").val(value.ID).html(value.Name));
+
+                        //$('#<%=hfVillage.ClientID%>').val(value.Name);
                     });
                 },
-                            error: function (data) {
-                                alert("error found");
-                            }
-                        });
-            }
-            function OnSuccess(result) {
-                if (result) {
-                    console.log('OnSuccess');
+                error: function (data) {
+                    alert("error found");
                 }
+            });
+        }
+
+        function OnSuccess(result) {
+            if (result) {
+                console.log('OnSuccess');
             }
+        }
 
-            function OnFailure(error) {
-                console.log('OnFailure');
-            }
+        function OnFailure(error) {
+            console.log('OnFailure');
+        }
 
-            function getLocation() {
-                getAddressInfoByZip(document.forms[0].zip.value);
-            }
+        function getLocation() {
+            getAddressInfoByZip(document.forms[0].zip.value);
+        }
 
-            function response(obj) {
-                console.log(obj);
-            }
+        function response(obj) {
+            console.log(obj);
+        }
 
-            function getAddressInfoByZip(zip) {
-                $('#<%= txtTown.ClientID%>').val('');
-            $('#<%= txtState.ClientID%>').val('');
-            $('#<%= txtCounty.ClientID%>').val('');
-            if (zip.length >= 5 && typeof google != 'undefined') {
-                var addr = {};
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ 'address': zip }, function (results, status) {
+        function getAddressInfoByZip(zip) {
+            $('#<%= txtTown.ClientID%>').val('');
+                $('#<%= txtState.ClientID%>').val('');
+                $('#<%= txtCounty.ClientID%>').val('');
+                if (zip.length >= 5 && typeof google != 'undefined') {
+                    var addr = {};
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'address': zip }, function (results, status) {
 
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        //console.log(JSON.stringify(results[0]));
-                        console.log(JSON.stringify(results[0].geometry.location.lat));
-                        if (results.length >= 1) {
-                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
-                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
-                                var types = results[0].address_components[ii].types.join(",");
-                                if (types == "street_number") {
-                                    addr.street_number = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "route" || types == "point_of_interest,establishment") {
-                                    addr.route = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
-                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            //console.log(JSON.stringify(results[0]));
+                            console.log(JSON.stringify(results[0].geometry.location.lat));
+                            if (results.length >= 1) {
+                                for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                    var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                    var types = results[0].address_components[ii].types.join(",");
+                                    if (types == "street_number") {
+                                        addr.street_number = results[0].address_components[ii].long_name;
+                                    }
+                                    if (types == "route" || types == "point_of_interest,establishment") {
+                                        addr.route = results[0].address_components[ii].long_name;
+                                    }
+                                    if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                        addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                        $('#<%= txtTown.ClientID%>').val(addr.city);
                                 }
                                 if (types == "administrative_area_level_1,political") {
                                     addr.state = results[0].address_components[ii].short_name;
@@ -849,9 +892,5 @@
                 response({ success: false });
             }
         }
-
-        $(document).ready(function () {
-
-        });
     </script>
 </asp:Content>
