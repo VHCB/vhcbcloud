@@ -79,3 +79,47 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[ProjectSearch]') and type in (N'P', N'PC'))
+drop procedure [dbo].ProjectSearch
+go
+
+create procedure dbo.ProjectSearch
+(
+	@ProjNum		nvarchar(24) = null,
+	@ProjectName	nvarchar(200) = null,
+	@AppNameID		int = null,
+	@LKProgram		int = null,
+	@Town			nvarchar(100) = null,
+	@County			nvarchar(40) = null,
+	@LKProjectType	int = null
+)
+as
+begin transaction
+-- exec ProjectSearch  null, 'po up', null, 145, 'Fremont', null
+-- exec ProjectSearch  null, null, null, 145, null, 'Windsor ', null
+-- exec ProjectSearch  null, null, null, 145, null, null, 133
+-- exec ProjectSearch  null, null, 1015, 145, null, null, 133
+	begin try
+	
+		select * 
+		from projects_v
+		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
+		and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
+		and (@AppNameID is null or AppNameID = @AppNameID)
+		and (@LKProgram is null or LKProgram = @LKProgram)
+		and (@Town is null or Town = @Town)
+		and (@County is null or County = @County)
+		and (@LKProjectType is null or LKProjectType = @LKProjectType)
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

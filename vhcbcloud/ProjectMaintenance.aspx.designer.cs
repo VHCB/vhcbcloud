@@ -256,13 +256,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbAddProjectStatus;
         
         /// <summary>
-        /// dvProjectStatus control.
+        /// dvProjectStatusForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectStatusForm;
         
         /// <summary>
         /// Panel8 control.
@@ -355,13 +355,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbAddProjectName;
         
         /// <summary>
-        /// dvProjectName control.
+        /// dvProjectNameForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectNameForm;
         
         /// <summary>
         /// Panel1 control.
@@ -445,13 +445,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbAddAddress;
         
         /// <summary>
-        /// dvAddress control.
+        /// dvProjectAddressForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddress;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectAddressForm;
         
         /// <summary>
         /// Panel2 control.
@@ -625,13 +625,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbAttachNewEntity;
         
         /// <summary>
-        /// dvEntity control.
+        /// dvProjectEntityForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntity;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectEntityForm;
         
         /// <summary>
         /// Panel4 control.
@@ -715,13 +715,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbRelatedProjects;
         
         /// <summary>
-        /// dvRelatedProjects control.
+        /// dvRelatedProjectsForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvRelatedProjects;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvRelatedProjectsForm;
         
         /// <summary>
         /// Panel6 control.

@@ -847,8 +847,13 @@ namespace vhcbcloud
         {
             if (IsProjectEntityFormValid())
             {
+                bool isApplicant = false;
+
+                if (ddlApplicantRole.SelectedItem.ToString() == "Primary Applicant" || ddlApplicantRole.SelectedItem.ToString() == "Secondary Applicant")
+                    isApplicant = true;
+
                 ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()));
+                    DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()), isApplicant);
 
                 ddlApplicantName.SelectedIndex = -1;
 
@@ -1032,7 +1037,11 @@ namespace vhcbcloud
             bool isApplicant = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkIsApplicant")).Checked);
             bool isFinLegal = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkFinLegal")).Checked);
             int LkApplicantRole = DataUtils.GetInt(((DropDownList)gvEntity.Rows[rowIndex].FindControl("ddlLkApplicantRoleEntity")).SelectedValue.ToString());
+            string LkApplicantRoleText = ((DropDownList)gvEntity.Rows[rowIndex].FindControl("ddlLkApplicantRoleEntity")).SelectedItem.ToString();
             bool isRowIsActive = Convert.ToBoolean(((CheckBox)gvEntity.Rows[rowIndex].FindControl("chkActiveEditEntity")).Checked);
+
+            if (LkApplicantRoleText == "Primary Applicant" || LkApplicantRoleText == "Secondary Applicant")
+                isApplicant = true;
 
             ProjectMaintenanceData.UpdateProjectApplicant(ProjectApplicantId, isApplicant, isFinLegal, LkApplicantRole, isRowIsActive);
             gvEntity.EditIndex = -1;
