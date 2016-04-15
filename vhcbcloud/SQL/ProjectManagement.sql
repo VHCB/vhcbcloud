@@ -575,9 +575,9 @@ create procedure dbo.AddProjectApplicant
 (
 	@ProjectId			int,
 	@AppNameId			int,
-	@LkApplicantRole	int 
+	@LkApplicantRole	int,
+	@IsApplicant		bit
 	--@Defapp				bit, 
-	--@IsApplicant		bit, 
 	--@FinLegal			bit	
 ) as
 begin transaction
@@ -588,8 +588,8 @@ begin transaction
 
 	select @ApplicantId = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameId
 
-	insert into ProjectApplicant(ProjectId, ApplicantId,  LkApplicantRole, UserID)--, Defapp, IsApplicant, FinLegal,
-	values(@ProjectId, @ApplicantId,  @LkApplicantRole, 123)-- 358 @LkApplicantRole, @Defapp, @IsApplicant, @FinLegal,
+	insert into ProjectApplicant(ProjectId, ApplicantId,  LkApplicantRole, IsApplicant, UserID)--, Defapp, FinLegal,
+	values(@ProjectId, @ApplicantId,  @LkApplicantRole, @IsApplicant, 123)-- 358 @LkApplicantRole, @Defapp, @IsApplicant, @FinLegal,
 
 	end try
 	begin catch
@@ -620,7 +620,7 @@ create procedure dbo.UpdateProjectApplicant
 begin transaction
 
 	begin try
-	select * from ProjectApplicant
+
 	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal, 
 		LkApplicantRole = @LkApplicantRole, RowIsActive = @IsRowIsActive
 	where ProjectApplicantId = @ProjectApplicantId

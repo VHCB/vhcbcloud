@@ -423,7 +423,7 @@ namespace DataAccessLayer
         #endregion
 
         #region Project Entity
-        public static void AddProjectApplicant(int ProjectId, int AppNameId, int LkApplicantRole)
+        public static void AddProjectApplicant(int ProjectId, int AppNameId, int LkApplicantRole, bool isApplicant)
         {
             try
             {
@@ -441,6 +441,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
                         command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
+                        command.Parameters.Add(new SqlParameter("isApplicant", isApplicant));
 
                         command.CommandTimeout = 60 * 5;
 
