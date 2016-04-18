@@ -28,7 +28,7 @@ namespace vhcbcloud
                 BindProjects();
                 //BindTransDate();
                 // BindApplicantName();
-                BindPayee();
+                //BindPayee();
                 BindProgram();
                 BindStatus();
                 BindMatchingGrant();
@@ -123,34 +123,33 @@ namespace vhcbcloud
                 ddlApplicantName.DataBind();
                 //ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
 
+                BindPayee(ProjectId);
 
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
                 CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
-                CommonHelper.PopulateDropDown(ddlPayee, drProjectDetails["AppNameId"].ToString());
 
                 DisplayControls(ddlProgram.SelectedItem.ToString());
-
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
             }
-
         }
 
-        protected void BindPayee()
+        protected void BindPayee(int projId)
         {
             try
             {
                 DataTable dtPayee;
                 dtPayee = new DataTable();
-                dtPayee = ProjectCheckRequestData.GetData("PCR_Payee");
+                dtPayee = ProjectCheckRequestData.GetProjectApplicant(projId);
 
                 ddlPayee.DataSource = dtPayee;
                 ddlPayee.DataValueField = "ApplicantId";
                 ddlPayee.DataTextField = "Applicantname";
                 ddlPayee.DataBind();
-                ddlPayee.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlPayee.Items.Count > 0)
+                    ddlPayee.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
