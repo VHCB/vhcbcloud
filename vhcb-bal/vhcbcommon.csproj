@@ -58,6 +58,8 @@
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCheckRequestData.cs" />
     <Compile Include="ProjectMaintenanceData.cs" />
+    <Compile Include="ProjectNotesData.cs" />
+    <Compile Include="ProjectSearchData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
