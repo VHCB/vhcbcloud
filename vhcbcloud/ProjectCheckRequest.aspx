@@ -6,16 +6,21 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                   
-                     <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
-                        RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelect_SelectedIndexChanged">
-                        <asp:ListItem Selected="true"> New &nbsp;</asp:ListItem>
-                        <asp:ListItem> Existing &nbsp;</asp:ListItem>
-
-                    </asp:RadioButtonList>
-                    
-                        <asp:LinkButton ID="lbAwardSummary" style="float: right;margin:0" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
-                     <div style="clear: right;"></div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
+                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelect_SelectedIndexChanged">
+                                    <asp:ListItem Selected="true"> New &nbsp;</asp:ListItem>
+                                    <asp:ListItem> Existing &nbsp;</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
+                            <td style="text-align: right">
+                                <asp:LinkButton ID="lbAwardSummary" Style="float: right; margin: 0" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
+                                <div style="clear: right;"></div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="panel-body">
                     <p class="lblErrMsg">
@@ -23,7 +28,7 @@
                         <asp:Label runat="server" ID="lblMessage" Font-Size="Small"></asp:Label>
                     </p>
                     <table style="width: 100%">
-                        
+
                         <tr>
                             <td><span class="labelClass">Project # :</span></td>
                             <td>
@@ -84,7 +89,7 @@
                                 <span class="labelClass">Status :</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown"  runat="server" Enabled="false">
+                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server" Enabled="false">
                                 </asp:DropDownList>
 
                             </td>
@@ -115,9 +120,12 @@
 
 
                             <td><span class="labelClass">Disbursement $:</span></td>
-                            <td colspan="5">
-                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                            <td >
+                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>                               
                             </td>
+                            <td><span class="labelClass">Available Funds $:</span></td>
+                            <td colspan="5"> 
+                                <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server"></asp:Label></td>
 
                         </tr>
                         <tr>
@@ -423,7 +431,7 @@
 
                                         <asp:TemplateField HeaderText="Date" SortExpression="Date">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:M-dd-yyyy}") %>'  />
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:M-dd-yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />

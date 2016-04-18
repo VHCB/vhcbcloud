@@ -78,7 +78,7 @@ namespace vhcbcloud
             try
             {
                 dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("getprojectslist");
+                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
                 ddlProjFilter.Items.Clear();
                 ddlProjFilter.DataSource = dtProjects;
                 ddlProjFilter.DataValueField = "project_id_name";
@@ -259,25 +259,6 @@ namespace vhcbcloud
             }
         }
 
-        //protected void BindStateVHCBS()
-        //{
-        //    try
-        //    {
-        //        DataTable dtFundType;
-        //        dtFundType = new DataTable();
-        //        dtFundType = ProjectCheckRequestData.GetData("PCR_State_VHCBS");
-
-        //        ddlStateVHCBS.DataSource = dtFundType;
-        //        ddlStateVHCBS.DataValueField = "StateAcctnum";
-        //        ddlStateVHCBS.DataTextField = "StateAcctnum";
-        //        ddlStateVHCBS.DataBind();
-        //        ddlStateVHCBS.Items.Insert(0, new ListItem("Select", "NA"));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        lblErrorMsg.Text = ex.Message;
-        //    }
-        //}
 
         private void BindPCRTransDetails()
         {
@@ -432,30 +413,6 @@ namespace vhcbcloud
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
 
-                //DataTable dtNOD = new DataTable();
-                //dtNOD = ProjectCheckRequestData.GetPCRNODDetails(this.hfPCRId.Value);
-
-                //foreach (ListItem item in lbNOD.Items)
-                //{
-                //    foreach (DataRow dr in dtNOD.Rows)
-                //        if (dr["LKNOD"].ToString() == item.Value.ToString())
-                //            item.Selected = true;
-                //}
-
-                //DataTable dtQuestions = new DataTable();
-                //dtQuestions = ProjectCheckRequestData.GetPCRQuestions(this.hfPCRId.Value);
-
-                //if (dtQuestions.Rows.Count > 0)
-                //{
-                //    foreach (ListItem item in ddlPCRQuestions.Items)
-                //    {
-                //        if (dtQuestions.Rows[0]["LkPCRQuestionsID"].ToString() == item.Value.ToString())
-                //        {
-                //            ddlPCRQuestions.ClearSelection();
-                //            item.Selected = true;
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -468,11 +425,16 @@ namespace vhcbcloud
             if (ddlProjFilter.SelectedIndex != 0)
             {
                 ClearPCRForm();
+                EnablePCR();
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 lblProjName.Text = tokens[1];
+                DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
+                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
                 BindApplicantName(int.Parse(tokens[0]));
                 lbAwardSummary.Visible = true;
                 rdBtnSelect.SelectedIndex = 0;
+                pnlApprovals.Visible = false;
+                pnlDisbursement.Visible = false;
             }
             else
             {
@@ -662,12 +624,12 @@ namespace vhcbcloud
             //    ddlStatus.Focus();
             //    return;
             //}
-            else if (lbNOD.Items.Count > 1 && lbNOD.SelectedIndex == -1)
-            {
-                lblErrorMsg.Text = "Select NOD";
-                lbNOD.Focus();
-                return;
-            }
+            //else if (lbNOD.Items.Count > 1 && lbNOD.SelectedIndex == -1)
+            //{
+            //    lblErrorMsg.Text = "Select NOD";
+            //    lbNOD.Focus();
+            //    return;
+            //}
 
             if (txtEligibleAmt.Visible)
             {
@@ -712,6 +674,13 @@ namespace vhcbcloud
                 if (!isDecimal || Convert.ToDecimal(txtDisbursementAmt.Text) <= 0)
                 {
                     lblErrorMsg.Text = "Select a valid Disbursement amount";
+                    txtDisbursementAmt.Focus();
+                    return;
+                }
+                bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                {
+                    lblErrorMsg.Text = "Disbursement amount can't be more than available funds for the selected project";
                     txtDisbursementAmt.Focus();
                     return;
                 }
@@ -765,7 +734,7 @@ namespace vhcbcloud
                             {
                                 ProjectCheckRequestData.PCR_Submit_NOD(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
                             }
-                        }                        
+                        }
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
@@ -780,7 +749,7 @@ namespace vhcbcloud
                         pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                             chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                             decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                            txtNotes.Text,GetUserId(), lbNODS);
+                            txtNotes.Text, GetUserId(), lbNODS);
                         lblMessage.Text = "Successfully Updated Check Request";
                     }
                     else
@@ -1065,7 +1034,7 @@ namespace vhcbcloud
             ddlPayee.Enabled = false;
             ddlProgram.Enabled = false;
             ddlStatus.Enabled = false;
-
+            DisableButton(btnCRSubmit);
             chkLCB.Enabled = false;
             chkLegalReview.Enabled = false;
 
@@ -1123,7 +1092,7 @@ namespace vhcbcloud
             ddlPayee.SelectedIndex = 0;
             ddlProgram.SelectedIndex = 0;
             ddlStatus.SelectedIndex = 0;
-
+            EnableButton(btnCRSubmit);
             chkLCB.Checked = false;
             chkLegalReview.Checked = false;
 

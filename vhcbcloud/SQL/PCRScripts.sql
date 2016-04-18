@@ -76,10 +76,11 @@ as
 begin
 	select distinct name, f.FundId from fund f(nolock)
 	join Detail d(nolock) on d.FundId = f.FundId
+	join trans tr (nolock) on tr.TransId = d.TransId
+	where tr.LkTransaction = 238
 	order by f.FundId
 end
 go
-
 
 alter procedure PCR_TransType
 as
@@ -98,6 +99,7 @@ begin
 	--where LkTransType = 241
 end
 go
+
 
 alter procedure PCR_Submit
 (
@@ -118,7 +120,10 @@ alter procedure PCR_Submit
 	@TransID	int output
 )
 as
-begin
+Begin
+begin transaction
+
+	begin try
 
 	insert into ProjectCheckReq(ProjectID, InitDate, LkProgram, LegalReview, 
 		LCB, MatchAmt, LkFVGrantMatch, Notes, UserID)
@@ -134,7 +139,7 @@ begin
 
 	exec PCR_Submit_NOD @ProjectCheckReqID, @LKNODs
 
-	select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as TransId
+	select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as transid
 	from ProjectCheckReq pcr(nolock)
 		join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
 		join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
@@ -145,9 +150,25 @@ begin
 	where pcr.ProjectCheckReqID = @ProjectCheckReqID
 	order by pcr.ProjectCheckReqId desc
 
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
 
 end
 go
+
+
+
 
 
 alter procedure PCR_Trans_Detail_Submit
@@ -316,7 +337,11 @@ begin
 end
 go
 
-alter procedure GetDefaultPCRQuestions
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetDefaultPCRQuestions]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetDefaultPCRQuestions 
+go
+
+CREATE procedure GetDefaultPCRQuestions
 (
 @IsLegal bit = 0,
 @ProjectCheckReqID	int
@@ -325,14 +350,16 @@ as
 begin
 --Always include LkPCRQuestions.def=1 If any disbursement from  ProjectCheckReq.Legalreview=1 (entered above), then include LkPCRQuestions.TypeID=7
 
-	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, ui.Lname+', '+ui.Lname as staffid 
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
+	case when pcrq.Approved != 1 then ''
+		else ui.fname+', '+ui.Lname  end as staffid 
 	from ProjectCheckReqQuestions pcrq(nolock) 
 	left join  LkPCRQuestions q(nolock) on pcrq.LkPCRQuestionsID = q.TypeID 
 	left join UserInfo ui on pcrq.StaffID = ui.UserId
 	where   q.RowIsActive=1 and ProjectCheckReqID = @ProjectCheckReqID
 	
 end
-
+go
 
 alter procedure GetUserByUserName
 (
@@ -342,4 +369,63 @@ as
 Begin
 	select userid,  Lname + ', ' + Fname as fullname from UserInfo where Username=@username
 End
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getCommittedProjectslist]') and type in (N'P', N'PC'))
+drop procedure [dbo].getCommittedProjectslist 
+go
+
+Create procedure getCommittedProjectslist  
+as
+begin
+
+	select distinct p.projectid, proj_num, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+	,round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.LkTransaction = 238
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getAvailableFundsForProject]') and type in (N'P', N'PC'))
+drop procedure [dbo].getAvailableFundsForProject 
+go
+
+Create procedure getAvailableFundsForProject  
+as
+begin
+
+	select distinct p.projectid, proj_num, round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.LkTransaction = 238
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getAvailableFundsByProject]') and type in (N'P', N'PC'))
+drop procedure [dbo].getAvailableFundsByProject 
+go
+
+Create procedure getAvailableFundsByProject  
+	@projId int
+as
+begin
+
+	select distinct p.projectid, proj_num, round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.LkTransaction = 238 and p.ProjectId = @projId
+	group by p.projectid, proj_num
+	order by proj_num 
+end
 go
