@@ -3,10 +3,10 @@ go
 
 alter view projects_v as
 	select p.ProjectId, Proj_num, lv.Description as ProjectName, LKProjectType, LKProgram, lv1.Description as programname,  a.Street# + ' ' + a.Address1 
-	+ ' ' + a.Address2  as Address, a.Town + ', ' + a.state + ' ' + a.Zip as AddressTownStateZip, a.County, a.Town, 
+	+ ' ' + a.Address2  as Address, a.Town + ' ' + a.village + ' ' +a.county + ' ' + a.Zip as FullAddress, a.County, a.Town, 
 	an.AppNameID, an.Applicantname--, * 
 	from Project p(nolock)
-	join projectName pn(nolock) on p.projectid = pn.projectid
+	left join projectName pn(nolock) on p.projectid = pn.projectid
 	left join lookupvalues lv(nolock) on lv.Typeid = pn.LKProjectname
 	left join ProjectAddress pa(nolock) on pa.projectId = p.projectId and pa.PrimaryAdd = 1
 	left join Address a(nolock) on a.addressid = pa.addressid
@@ -14,10 +14,9 @@ alter view projects_v as
 	left join applicantappname aan(nolock) on aan.ApplicantID = pap.applicantid
 	left join appname an(nolock) on an.AppNameID = aan.AppNameID
 	left join lookupvalues lv1(nolock) on lv1.TypeID = p.LkProgram
-	where pn.Defname = 1 and pa.RowIsActive = 1 --and pap.Defapp = 1
-	--and Proj_num = '0000-000-000' 
+	--where pn.Defname = 1 and pa.RowIsActive = 1 --and pap.Defapp = 1
 go
---select * from projectaddress
+--select * from projects_v
 --select * from lookupvalues where typeid = 133
 --select DefApp, * from ProjectApplicant
 --select * from ApplicantAppName
@@ -99,6 +98,7 @@ begin transaction
 -- exec ProjectSearch  null, null, null, 145, null, 'Windsor ', null
 -- exec ProjectSearch  null, null, null, 145, null, null, 133
 -- exec ProjectSearch  null, null, 1015, 145, null, null, 133
+--select * from projects_v
 	begin try
 	
 		select * 
@@ -110,6 +110,37 @@ begin transaction
 		and (@Town is null or Town = @Town)
 		and (@County is null or County = @County)
 		and (@LKProjectType is null or LKProjectType = @LKProjectType)
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetPrimaryApplicants]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetPrimaryApplicants
+go
+
+create procedure dbo.GetPrimaryApplicants
+as
+begin transaction
+	begin try
+	
+		select distinct an.appnameid, an.ApplicantName
+		from Appname an
+		join ApplicantAppName aan on aan.appnameid = an.appnameid
+		join ProjectApplicant pa(nolock) on aan.ApplicantID = pa.ApplicantId
+		join LookupValues lv(nolock) on pa.LkApplicantRole = lv.TypeID
+		where lv.Description = 'Primary Applicant' 
+			and pa.RowIsActive = 1
+			and aan.DefName = 1
 	end try
 	begin catch
 		if @@trancount > 0

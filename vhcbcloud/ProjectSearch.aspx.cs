@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,15 +13,17 @@ namespace vhcbcloud
     public partial class ProjectSearch : System.Web.UI.Page
     {
         string Pagename = "ProjectSearch";
+        public string ProjectId = "9999";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
             if (!IsPostBack)
             {
+                dvSearchResults.Visible = false;
                 BindControls();
             }
-
         }
 
         private void BindControls()
@@ -54,7 +57,12 @@ namespace vhcbcloud
             try
             {
                 ddlPrimaryApplicant.Items.Clear();
-                ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
+                
+                if (cbPrimaryApplicant.Checked)
+                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetApplicant");
+                else
+                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetPrimaryApplicants");
+
                 ddlPrimaryApplicant.DataValueField = "appnameid";
                 ddlPrimaryApplicant.DataTextField = "Applicantname";
                 ddlPrimaryApplicant.DataBind();
@@ -116,6 +124,31 @@ namespace vhcbcloud
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
+        
+        protected void gvSearchresults_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "SelectProject")
+            {
+                int index = Convert.ToInt32(e.CommandArgument.ToString());
+                string ProjectId = ((Label)gvSearchresults.Rows[index].FindControl("lblProjectId")).Text;
+                Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectId);
+            }
+        }
 
+        protected void cbPrimaryApplicant_CheckedChanged(object sender, EventArgs e)
+        {
+            BindPrimaryApplicants();
+        }
+
+        protected void btnProjectSearch_Click(object sender, EventArgs e)
+        {
+            dvSearchResults.Visible = true;
+            DataTable dt = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, ddlPrimaryApplicant.SelectedValue.ToString(),
+                ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
+                ddlCounty.SelectedValue.ToString());
+
+            gvSearchresults.DataSource = dt;
+            gvSearchresults.DataBind();
+        }
     }
 }
