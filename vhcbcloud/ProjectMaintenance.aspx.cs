@@ -34,6 +34,8 @@ namespace vhcbcloud
                 DisplayControlsbasedOnSelection();
                 if (Request.QueryString["ProjectId"] != null)
                 {
+                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
+
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
             }
@@ -223,6 +225,7 @@ namespace vhcbcloud
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
                     //txtProjectName.Text = tokens[1];
                     hfProjectId.Value = ddlProject.SelectedValue.ToString();
+                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
 
                     BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
 

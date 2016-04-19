@@ -23,6 +23,7 @@ namespace vhcbcloud
             {
                 dvSearchResults.Visible = false;
                 BindControls();
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
             }
         }
 
@@ -145,7 +146,7 @@ namespace vhcbcloud
             dvSearchResults.Visible = true;
             DataTable dt = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, ddlPrimaryApplicant.SelectedValue.ToString(),
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
-                ddlCounty.SelectedValue.ToString());
+                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
 
             gvSearchresults.DataSource = dt;
             gvSearchresults.DataBind();

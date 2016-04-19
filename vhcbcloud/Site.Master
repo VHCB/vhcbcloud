@@ -87,6 +87,7 @@
                                             <li class="menu-item "><a runat="server" href="~/LookupMaintenance">Lookup Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/FundType.aspx">Fund Type</a></li>
                                             <li class="menu-item "><a runat="server" href="~/ProjectMaintenance.aspx">Project Maintenance</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>
                                             <li class="menu-item "><a runat="server" href="~/Entity.aspx">Entity Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance">Fund/Grant Maintenance</a></li>
                                             <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>

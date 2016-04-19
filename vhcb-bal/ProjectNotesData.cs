@@ -45,7 +45,7 @@ namespace DataAccessLayer
         }
 
 
-        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, int UserId, string Notes, string Date)
+        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, string Notes)
         {
             try
             {
@@ -62,8 +62,7 @@ namespace DataAccessLayer
                         //12 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectNotesID", ProjectNotesID));
                         command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
-                        command.Parameters.Add(new SqlParameter("UserId", UserId));
-                        command.Parameters.Add(new SqlParameter("Date", Date == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(Date)));
+                        //command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                       
                         command.CommandTimeout = 60 * 5;
@@ -109,6 +108,39 @@ namespace DataAccessLayer
                 throw ex;
             }
             return dt;
+        }
+
+        public static DataRow GetProjectNotesById(int ProjectNotesId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectNotesById";
+                        command.Parameters.Add(new SqlParameter("ProjectNotesId", ProjectNotesId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt.Rows[0];
         }
 
     }

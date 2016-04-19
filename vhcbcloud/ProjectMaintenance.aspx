@@ -17,11 +17,21 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right">
+                                <asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" /> &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                     </table>
                 </div>
+
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx"  runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info"/>
+                </asp:Panel>
 
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
@@ -737,23 +747,23 @@
 
             $('#<%= cbAddProjectStatus.ClientID%>').click(function () {
                 $('#<%= dvProjectStatusForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
-             $('#<%= cbAddProjectName.ClientID%>').click(function () {
+            $('#<%= cbAddProjectName.ClientID%>').click(function () {
                 $('#<%= dvProjectNameForm.ClientID%>').toggle(this.checked);
              }).change();
 
-             $('#<%= cbAddAddress.ClientID%>').click(function () {
+            $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
              }).change();
 
-             $('#<%= cbAttachNewEntity.ClientID%>').click(function () {
+            $('#<%= cbAttachNewEntity.ClientID%>').click(function () {
                 $('#<%= dvProjectEntityForm.ClientID%>').toggle(this.checked);
              }).change();
 
             $('#<%= cbRelatedProjects.ClientID%>').click(function () {
                 $('#<%= dvRelatedProjectsForm.ClientID%>').toggle(this.checked);
-            }).change(); 
+            }).change();
 
 
             $('#<%= txtZip.ClientID%>').blur(function () {
@@ -761,17 +771,17 @@
                 $('#<%=hfVillage.ClientID%>').val('');
                 LoadVillages();
             });
-            
+
             $('#<%= btnAddAddress.ClientID%>').click(function () {
                 //console.log($('#<%= ddlVillages.ClientID%>').val());
                 $('#<%=hfVillage.ClientID%>').val($('#<%= ddlVillages.ClientID%>').val());
-             });
-            
+            });
+
             $('#<%= ddlRelatedProjects.ClientID%>').change(function () {
                 var arr = $('#<%= ddlRelatedProjects.ClientID%>').val().split('|');
                 $('#<%=txtRelatedProjectName.ClientID%>').val(arr[1]);
-             });
-            
+            });
+
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');
                 RefreshGrids();
@@ -829,33 +839,33 @@
 
         function getAddressInfoByZip(zip) {
             $('#<%= txtTown.ClientID%>').val('');
-                $('#<%= txtState.ClientID%>').val('');
-                $('#<%= txtCounty.ClientID%>').val('');
-                if (zip.length >= 5 && typeof google != 'undefined') {
-                    var addr = {};
-                    var geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ 'address': zip }, function (results, status) {
+            $('#<%= txtState.ClientID%>').val('');
+            $('#<%= txtCounty.ClientID%>').val('');
+            if (zip.length >= 5 && typeof google != 'undefined') {
+                var addr = {};
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': zip }, function (results, status) {
 
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            //console.log(JSON.stringify(results[0]));
-                            console.log(JSON.stringify(results[0].geometry.location.lat));
-                            if (results.length >= 1) {
-                                for (var ii = 0; ii < results[0].address_components.length; ii++) {
-                                    var street_number = route = street = city = state = zipcode = country = formatted_address = '';
-                                    var types = results[0].address_components[ii].types.join(",");
-                                    if (types == "street_number") {
-                                        addr.street_number = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "route" || types == "point_of_interest,establishment") {
-                                        addr.route = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
-                                        addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                        $('#<%= txtTown.ClientID%>').val(addr.city);
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        //console.log(JSON.stringify(results[0]));
+                        console.log(JSON.stringify(results[0].geometry.location.lat));
+                        if (results.length >= 1) {
+                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                var types = results[0].address_components[ii].types.join(",");
+                                if (types == "street_number") {
+                                    addr.street_number = results[0].address_components[ii].long_name;
                                 }
-                                if (types == "administrative_area_level_1,political") {
-                                    addr.state = results[0].address_components[ii].short_name;
-                                    $('#<%= txtState.ClientID%>').val(addr.state);
+                                if (types == "route" || types == "point_of_interest,establishment") {
+                                    addr.route = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                                    }
+                                    if (types == "administrative_area_level_1,political") {
+                                        addr.state = results[0].address_components[ii].short_name;
+                                        $('#<%= txtState.ClientID%>').val(addr.state);
                                 }
                                 if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
                                     addr.zipcode = results[0].address_components[ii].long_name;
@@ -872,20 +882,20 @@
                             $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
                             $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
 
-                            for (name in addr) {
-                                console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                                for (name in addr) {
+                                    console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                                }
+                                response(addr);
+                            } else {
+                                response({ success: false });
                             }
-                            response(addr);
                         } else {
                             response({ success: false });
                         }
-                    } else {
-                        response({ success: false });
-                    }
-                });
-            } else {
-                response({ success: false });
+                    });
+                } else {
+                    response({ success: false });
+                }
             }
-        }
     </script>
 </asp:Content>

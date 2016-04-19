@@ -226,11 +226,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
     <None Include="Properties\PublishProfiles\VHCBPublish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="ProjectCheckRequest.aspx" />
     <Content Include="ProjectMaintenance.aspx" />
+    <Content Include="ProjectNotes.aspx" />
     <Content Include="ProjectSearch.aspx" />
     <Content Include="PTConvertScripts\PostCopyScripts.sql" />
     <Content Include="Reallocations.aspx" />
@@ -287,6 +289,7 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Site.Mobile.Master" />
+    <Content Include="SiteWithoutHeader.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -598,6 +601,13 @@
     <Compile Include="ProjectMaintenance.aspx.designer.cs">
       <DependentUpon>ProjectMaintenance.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ProjectNotes.aspx.cs">
+      <DependentUpon>ProjectNotes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectNotes.aspx.designer.cs">
+      <DependentUpon>ProjectNotes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSearch.aspx.cs">
       <DependentUpon>ProjectSearch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -626,6 +636,13 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SiteWithoutHeader.Master.cs">
+      <DependentUpon>SiteWithoutHeader.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteWithoutHeader.Master.designer.cs">
+      <DependentUpon>SiteWithoutHeader.Master</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="VHCBBasePage.cs">
