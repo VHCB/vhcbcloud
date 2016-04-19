@@ -1,7 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ProjectSearch.aspx.cs" Inherits="vhcbcloud.ProjectSearch" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ProjectSearch.aspx.cs"
+    Inherits="vhcbcloud.ProjectSearch" EnableEventValidation="false" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
-    <style type="text/css">
+<%--    <style type="text/css">
         .Background {
             background-color: Black;
             filter: alpha(opacity=90);
@@ -24,10 +25,32 @@
             font-style: italic;
             font-weight: bold;
         }
-    </style>
+    </style>--%>
 
     <div class="jumbotron">
-        <p class="lead">Project Search</p>
+
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <p class="lead">Project Search</p>
+                </td>
+                <td style="text-align: right; padding-right: 14px">
+                    <asp:Button ID="btnNewProject" runat="server" Text="New Project" class="btn btn-info"
+                        OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
+                    &nbsp;<asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" />
+                </td>
+            </tr>
+        </table>
+
+        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose" 
+            BackgroundCssClass="MEBackground">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+            <iframe style="width: 750px; height: 550px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
+            <br />
+            <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+        </asp:Panel>
+
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -37,17 +60,6 @@
                 <div id="dvMessage" runat="server" visible="false">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
-
-                <asp:Button ID="Button1" runat="server" Text="Project Notes" />
-                <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panl1" TargetControlID="Button1" CancelControlID="Button2" BackgroundCssClass="Background">
-                </ajaxToolkit:ModalPopupExtender>
-                <asp:Panel ID="Panl1" runat="server" CssClass="Popup" align="center" Style="display: none">
-                    <iframe style="width: 700px; height: 550px;" id="irm1" src="ProjectNotes.aspx?ProjectId=<%=ProjectId%>" runat="server"></iframe>
-                    <br />
-                    <asp:Button ID="Button2" runat="server" Text="Close" />
-                </asp:Panel>
-
-
                 <div class="panel-body">
                     <asp:Panel runat="server" ID="pnlProjectInfo">
                         <table style="width: 100%">
@@ -119,66 +131,67 @@
                         </table>
 
                     </asp:Panel>
-
-                    <br />
-
-                    <div class="panel panel-default" runat="server" id="dvSearchResults">
-                        <div class="panel-heading ">
-                            <h3 class="panel-title">Search Results</h3>
+                    <div runat="server" id="dvSearchResults">
+                        <br />
+                        <div class="panel panel-default">
+                            <div class="panel-heading ">
+                                <h3 class="panel-title">Search Results</h3>
+                            </div>
+                            <div class="panel-body" id="dvSearchResultsGrid" runat="server">
+                                <asp:Panel runat="server" ID="Panel9" Width="100%" Height="500px" ScrollBars="Vertical">
+                                    <asp:GridView ID="gvSearchresults" runat="server" AutoGenerateColumns="False"
+                                        Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Project ID" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProjectId" runat="Server" Text='<%# Eval("ProjectId") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Project#">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProjectNum" runat="Server" Text='<%# Eval("Proj_num") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Project Name">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Program">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProgramName" runat="Server" Text='<%# Eval("programname") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Applicant Name">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblApplicantname" runat="Server" Text='<%# Eval("Applicantname") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Address">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAdress" runat="Server" ToolTip='<%# Eval("FullAddress") %>' Text='<%# Eval("Address") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="AddButton" runat="server"
+                                                        CommandName="SelectProject"
+                                                        CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                                                        Text="Select" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
+                            </div>
                         </div>
-                        <div class="panel-body" id="dvSearchResultsGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="500px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvSearchresults" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Project ID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectId" runat="Server" Text='<%# Eval("ProjectId") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project#">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectNum" runat="Server" Text='<%# Eval("Proj_num") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project Name">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Program">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProgramName" runat="Server" Text='<%# Eval("programname") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Applicant Name">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblApplicantname" runat="Server" Text='<%# Eval("Applicantname") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Address">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAdress" runat="Server" ToolTip='<%# Eval("FullAddress") %>' Text='<%# Eval("Address") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField>
-                                            <ItemTemplate>
-                                                <asp:LinkButton ID="AddButton" runat="server"
-                                                    CommandName="SelectProject"
-                                                    CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
-                                                    Text="Select" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
+
                     </div>
                 </div>
             </div>

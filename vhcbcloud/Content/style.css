@@ -11,6 +11,23 @@ blue: #3589a4;
  .panel-width { 
   padding: 5px;
 }
+
+.MEBackground {
+    background-color: Black;
+    filter: alpha(opacity=90);
+    opacity: 0.8;
+}
+
+.MEPopup {
+    background-color: #FFFFFF;
+    border-width: 0px;
+    border-style: solid;
+    border-color: black;
+    padding-top: 0px;
+    padding-left: 0px;
+    width: 750px;
+    height: 600px;
+}
  /*.legend {
     display: block;
     -webkit-padding-start: 2px;

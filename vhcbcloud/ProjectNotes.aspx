@@ -58,53 +58,69 @@
 
                         </tr>
                         <tr>
-                            <td colspan="4" style="height: 5px"><br />
+                            <td colspan="4" style="height: 5px">
+                                <br />
                                 <asp:Button ID="btnSubmitNotes" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmitNotes_Click" />
                             </td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td colspan="4" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td colspan="4">
+                                <div class="panel-body" id="dvProjectNotesGrid" runat="server">
                                 <br />
-                                <asp:GridView ID="gvProjectNotes" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Project Notes ID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectNotesID" runat="Server" Text='<%# Eval("ProjectNotesID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Category">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblCategory" runat="Server" Text='<%# Eval("description") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="User Name">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lbluserName" runat="Server" Text='<%# Eval("username") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Notes">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
+                                <asp:Panel runat="server" ID="Panel9" Width="100%" Height="200px" ScrollBars="Vertical">
+                                    <asp:GridView ID="gvProjectNotes" runat="server" AutoGenerateColumns="False"
+                                        Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                        OnRowCancelingEdit="gvProjectNotes_RowCancelingEdit" OnRowEditing="gvProjectNotes_RowEditing"
+                                        OnRowDataBound="gvProjectNotes_RowDataBound" OnRowUpdating="gvProjectNotes_RowUpdating">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Project Notes ID" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProjectNotesID" runat="Server" Text='<%# Eval("ProjectNotesID") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Category">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblCategory" runat="Server" Text='<%# Eval("description") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="User Name">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lbluserName" runat="Server" Text='<%# Eval("username") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Notes">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="lnkEdit" runat="server" CommandName="Edit" Text="Edit" />
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                   <%-- <asp:LinkButton ID="lnkEdit" runat="server" CommandName="Update" Text="Update" />--%>
+                                                    <asp:LinkButton ID="LinkButton1" runat="server" CommandName="Cancel" Text="Cancel" />
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
+                                    <asp:HiddenField ID="hfProjectNotesId" runat="server" />
+                                    </div>
                             </td>
                         </tr>
                     </table>
@@ -112,12 +128,4 @@
             </div>
         </div>
     </div>
-    <script language="javascript">
-        $(document).ready(function () {
-            $('#<%= ddlProject.ClientID%>').change(function () {
-                var arr = $('#<%= ddlProject.ClientID%>').val().split('|');
-         $('#<%=txtProjectName.ClientID%>').val(arr[1]);
-     });
-        });
-    </script>
 </asp:Content>
