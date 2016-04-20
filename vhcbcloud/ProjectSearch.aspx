@@ -2,7 +2,7 @@
     Inherits="vhcbcloud.ProjectSearch" EnableEventValidation="false" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
-<%--    <style type="text/css">
+    <%--    <style type="text/css">
         .Background {
             background-color: Black;
             filter: alpha(opacity=90);
@@ -42,7 +42,7 @@
             </tr>
         </table>
 
-        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose" 
+        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
             BackgroundCssClass="MEBackground">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
@@ -61,7 +61,7 @@
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
                 <div class="panel-body">
-                    <asp:Panel runat="server" ID="pnlProjectInfo">
+                    <asp:Panel runat="server" ID="pnlProjectInfo" DefaultButton="btnProjectSearch">
                         <table style="width: 100%">
                             <tr>
                                 <td><span class="labelClass">Number</span></td>
@@ -129,19 +129,28 @@
                                 </td>
                             </tr>
                         </table>
-
                     </asp:Panel>
                     <div runat="server" id="dvSearchResults">
                         <br />
                         <div class="panel panel-default">
-                            <div class="panel-heading ">
-                                <h3 class="panel-title">Search Results</h3>
+                            <div class="panel-heading">
+
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <h3 class="panel-title">Search Results: <asp:Label runat="server" ID="lblSearcresultsCount"></asp:Label></h3>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                             <div class="panel-body" id="dvSearchResultsGrid" runat="server">
                                 <asp:Panel runat="server" ID="Panel9" Width="100%" Height="500px" ScrollBars="Vertical">
                                     <asp:GridView ID="gvSearchresults" runat="server" AutoGenerateColumns="False"
                                         Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand">
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand"
+                                        OnSorting="gvSearchresults_Sorting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />
@@ -153,27 +162,27 @@
                                                     <asp:Label ID="lblProjectId" runat="Server" Text='<%# Eval("ProjectId") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Project#">
+                                            <asp:TemplateField HeaderText="Project#" SortExpression="Proj_num" ItemStyle-Width="100px">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblProjectNum" runat="Server" Text='<%# Eval("Proj_num") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Project Name">
+                                            <asp:TemplateField HeaderText="Project Name" SortExpression="ProjectName">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Program">
+                                            <asp:TemplateField HeaderText="Program" SortExpression="programname" ItemStyle-Width="80px">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblProgramName" runat="Server" Text='<%# Eval("programname") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Applicant Name">
+                                            <asp:TemplateField HeaderText="Applicant Name" SortExpression="Applicantname">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblApplicantname" runat="Server" Text='<%# Eval("Applicantname") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Address">
+                                            <asp:TemplateField HeaderText="Address" SortExpression="Address">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblAdress" runat="Server" ToolTip='<%# Eval("FullAddress") %>' Text='<%# Eval("Address") %>' />
                                                 </ItemTemplate>

@@ -54,6 +54,9 @@
                                             </ajaxToolkit:MaskedEditExtender>
                                             <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                             </asp:DropDownList>
+                                            <div id="divErrorProjectNumber" style="display:none">
+                                            <span style="color:red">Project Number already exist</span>
+                                          </div>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Name</span>
@@ -781,12 +784,39 @@
                 var arr = $('#<%= ddlRelatedProjects.ClientID%>').val().split('|');
                 $('#<%=txtRelatedProjectName.ClientID%>').val(arr[1]);
             });
+            
+            $('#<%= txtProjNum.ClientID%>').blur(function () {
+                IsProjectNumberExist();
+             });
 
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');
                 RefreshGrids();
             });--%>
         });
+
+        function IsProjectNumberExist() {
+            $.ajax({
+                type: "POST",
+                url: "ProjectMaintenance.aspx/IsProjectNumberExist",
+                data: '{ProjectNumber: "' + $("#<%= txtProjNum.ClientID%>").val() + '" }',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var isExist = JSON.parse(data.d);
+                    console.log('is Project Number Exist :' + isExist);
+
+                    if (isExist)
+                        $("#divErrorProjectNumber").css("display", "block");
+                    else
+                        $("#divErrorProjectNumber").css("display", "none");
+
+                },
+                error: function (data) {
+                    alert("error found");
+                }
+            });
+        }
 
         function LoadVillages() {
             $.ajax({

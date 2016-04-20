@@ -40,9 +40,9 @@ namespace DataAccessLayer
                         if (LKProjectType != "NA")
                             command.Parameters.Add(new SqlParameter("LKProjectType", DataUtils.GetInt(LKProjectType)));
                         if (Town != "NA")
-                            command.Parameters.Add(new SqlParameter("Town", DataUtils.GetInt(Town)));
+                            command.Parameters.Add(new SqlParameter("Town", Town));
                         if (County != "NA")
-                            command.Parameters.Add(new SqlParameter("County", DataUtils.GetInt(County)));
+                            command.Parameters.Add(new SqlParameter("County", County));
 
                         command.Parameters.Add(new SqlParameter("IsPrimaryApplicant", IsPrimaryApplicant));
                         
