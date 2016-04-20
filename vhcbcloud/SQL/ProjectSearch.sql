@@ -4,7 +4,7 @@ go
 alter view projects_v as
 	select p.ProjectId, Proj_num, lv.Description as ProjectName, LKProjectType, LKProgram, lv1.Description as programname,  a.Street# + ' ' + a.Address1 
 	+ ' ' + a.Address2  as Address, a.Town + ' ' + a.village + ' ' +a.county + ' ' + a.Zip as FullAddress, a.County, a.Town, 
-	an.AppNameID, an.Applicantname, pap.LkApplicantRole--, * 
+	an.AppNameID, an.Applicantname, pap.LkApplicantRole, pa.PrimaryAdd--,  * 
 	from Project p(nolock)
 	inner join projectName pn(nolock) on p.projectid = pn.projectid and pn.Defname = 1
 	left join lookupvalues lv(nolock) on lv.Typeid = pn.LKProjectname
@@ -15,7 +15,7 @@ alter view projects_v as
 	left join appname an(nolock) on an.AppNameID = aan.AppNameID
 	left join lookupvalues lv1(nolock) on lv1.TypeID = p.LkProgram
 	--where pn.Defname = 1 and pa.RowIsActive = 1 --and pap.Defapp = 1
-	--where Proj_num = '1234-567-890'
+	--where Proj_num = '1111-111-111'
 go
 select * from ProjectApplicant
 --select * from projects_v
@@ -101,12 +101,12 @@ begin transaction
 -- exec ProjectSearch  null, null, null, 145, null, 'Windsor ', null, null
 -- exec ProjectSearch  null, null, null, 145, null, null, 133, null
 -- exec ProjectSearch  null, null, 1015, 145, null, null, 133, null
---exec ProjectSearch  '1111-111', null, null, null, null, null, null, 1
+-- exec ProjectSearch  '1111-111', null, null, null, null, null, null, null
 --select * from projects_v
 	begin try
 	
-		select ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
-			AppNameID, Applicantname, LkApplicantRole 
+		select distinct ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
+			AppNameID, Applicantname--, LkApplicantRole 
 		from projects_v
 		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
 			and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
@@ -161,3 +161,8 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+Hi again and sorry for these emails but….
+If you search on 1111-111 you will receive 4 results in the search.  However, there is only 1 primary applicant and 1 default address.  
+It appear that if there is more than 1 address it shows ALL the addresses in a separate line.  It should only show a single line with the default address only.
+Thanks.

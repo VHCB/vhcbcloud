@@ -1461,6 +1461,14 @@ namespace vhcbcloud
             this.BindProjectStatusGrid();
             this.BindRelatedProjectsGrid();
         }
+
+        [WebMethod]
+        public static bool IsProjectNumberExist(string ProjectNumber)
+        {
+            bool isExist = ProjectMaintenanceData.IsProjectNumberExist(ProjectNumber);
+
+            return isExist;
+        }
     }
 
     public class KeyVal

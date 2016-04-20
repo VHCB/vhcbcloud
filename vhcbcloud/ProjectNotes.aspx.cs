@@ -25,6 +25,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindControls();
+                txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
                 dvProjectNotesGrid.Visible = false;
                 if (!string.IsNullOrWhiteSpace(ProjectId))
                 {
@@ -114,7 +115,7 @@ namespace vhcbcloud
             }
 
             ddlCategory.SelectedIndex = -1;
-            txtProjectNotesDate.Text = "";
+            txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
             BindProjectNotesGrid();
         }
@@ -141,7 +142,7 @@ namespace vhcbcloud
         protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
         {
             ddlCategory.SelectedIndex = -1;
-            txtProjectNotesDate.Text = "";
+            txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
             txtProjectName.Text = "";
 
@@ -159,7 +160,7 @@ namespace vhcbcloud
             ddlProject.SelectedIndex = -1;
             txtProjectName.Text = "";
             ddlCategory.SelectedIndex = -1;
-            txtProjectNotesDate.Text = "";
+            txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
         }
 
@@ -171,7 +172,7 @@ namespace vhcbcloud
             btnSubmitNotes.Text = "Submit";
 
             ddlCategory.SelectedIndex = -1;
-            txtProjectNotesDate.Text = "";
+            txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
             hfProjectNotesId.Value = "";
 

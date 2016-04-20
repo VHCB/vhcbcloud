@@ -13,7 +13,6 @@ namespace vhcbcloud
     public partial class ProjectSearch : System.Web.UI.Page
     {
         string Pagename = "ProjectSearch";
-        public string ProjectId = "9999";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,6 +20,7 @@ namespace vhcbcloud
             lblErrorMsg.Text = "";
             if (!IsPostBack)
             {
+                Session["dtSearchResults"] = null;
                 dvSearchResults.Visible = false;
                 BindControls();
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
@@ -136,6 +136,15 @@ namespace vhcbcloud
             }
         }
 
+        protected void gvSearchresults_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvSearchresults.DataSource = SortDataTable((DataTable)Session["dtSearchResults"], false);
+            gvSearchresults.DataBind();
+            gvSearchresults.PageIndex = pageIndex;
+        }
+
         protected void cbPrimaryApplicant_CheckedChanged(object sender, EventArgs e)
         {
             BindPrimaryApplicants();
@@ -144,12 +153,77 @@ namespace vhcbcloud
         protected void btnProjectSearch_Click(object sender, EventArgs e)
         {
             dvSearchResults.Visible = true;
-            DataTable dt = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, ddlPrimaryApplicant.SelectedValue.ToString(),
+            DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, ddlPrimaryApplicant.SelectedValue.ToString(),
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
                 ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
 
-            gvSearchresults.DataSource = dt;
+            Session["dtSearchResults"] = dtSearchResults;
+            lblSearcresultsCount.Text = dtSearchResults.Rows.Count.ToString();
+            gvSearchresults.DataSource = dtSearchResults;
             gvSearchresults.DataBind();
         }
+
+        #region GridView Sorting Functions
+
+        //======================================== GRIDVIEW EventHandlers END
+
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        //===========================SORTING PROPERTIES START
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        //===========================SORTING PROPERTIES END
+        #endregion
     }
 }

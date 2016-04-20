@@ -87,7 +87,7 @@ begin transaction
 		join lookupvalues lv(nolock) on lv.Typeid = LkProjNotes
 		left join userinfo ui(nolock) on ui.userid = pn.UserId
 		where ProjectId = @ProjectId
-		order by ProjectNotesID
+		order by ProjectNotesID desc
 	end try
 	begin catch
 		if @@trancount > 0
