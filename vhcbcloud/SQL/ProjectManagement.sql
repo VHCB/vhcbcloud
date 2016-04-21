@@ -188,6 +188,7 @@ begin transaction
 	begin try
 
 	declare @applicantId int
+	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram, AppRec = @AppRec,
 		Manager = @Manager, LkBoardDate = @LkBoardDate, ClosingDate = @ClosingDate, ExpireDate = @GrantClosingDate, verified = @verified
@@ -200,9 +201,21 @@ begin transaction
 	join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
 	where an.AppNameID = @appNameId
 
-	update pa set ApplicantId = @applicantId
+	select @CurrentApplicantId = pa.ApplicantId
 	from ProjectApplicant pa
-	where projectId = @projectId
+	where projectId = @projectId and pa.LkApplicantRole = 358
+
+	if(@CurrentApplicantId != @applicantId)
+	begin
+		--Update Current Primary Applicant
+		update pa set LkApplicantRole = '', IsApplicant = 0, DateModified = getdate()
+		from ProjectApplicant pa
+		where projectId = @projectId and pa.LkApplicantRole = 358
+
+		--Insert New Primary Applicant
+		insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
+		values (@ProjectId, @applicantId, 358, 1)
+	end
 
 	end try
 	begin catch
@@ -238,7 +251,7 @@ begin transaction
 	join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
 	join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
 	join ProjectApplicant pa(nolock) on pa.ApplicantId = a.ApplicantId
-	where pa.ProjectId = @ProjectId
+	where pa.ProjectId = @ProjectId and pa.LkApplicantRole = 358 --Primary Applicant
 
 	select @projectName = rtrim(ltrim(lpn.description))
 	from project p(nolock)
@@ -622,7 +635,7 @@ begin transaction
 	begin try
 
 	update ProjectApplicant set IsApplicant = @IsApplicant, FinLegal = @IsFinLegal, 
-		LkApplicantRole = @LkApplicantRole, RowIsActive = @IsRowIsActive
+		LkApplicantRole = @LkApplicantRole, RowIsActive = @IsRowIsActive, DateModified = getdate()
 	where ProjectApplicantId = @ProjectApplicantId
 	
 	end try
@@ -649,7 +662,7 @@ create procedure dbo.GetProjectApplicantList
 	@IsActiveOnly	bit
 ) as
 begin transaction
--- GetProjectApplicantList 6588, 1
+-- GetProjectApplicantList 6586, 1
 	begin try
 
 	select pa.ProjectApplicantID, 
@@ -661,19 +674,19 @@ begin transaction
 			pa.RowIsActive,
 			a.ApplicantId, a.Individual, a.LkEntityType, a.FYend, a.website, a.Stvendid, a.LkPhoneType, a.Phone, a.email, 
 			an.applicantname,
-			c.LkPrefix, c.Firstname, c.Lastname, c.LkSuffix, c.LkPosition, c.Title, 
-			ac.ApplicantID, ac.ContactID, ac.DfltCont, 
+			--c.LkPrefix, c.Firstname, c.Lastname, c.LkSuffix, c.LkPosition, c.Title, 
+			--ac.ApplicantID, ac.ContactID, ac.DfltCont, 
 			aan.appnameid, aan.defname
 		from ProjectApplicant pa(nolock)
 		join applicantappname aan(nolock) on pa.ApplicantId = aan.ApplicantID
 		join appname an(nolock) on aan.appnameid = an.appnameid
 		join applicant a(nolock) on a.applicantid = aan.applicantid
-		left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
-		left join contact c(nolock) on c.ContactID = ac.ContactID
+		--left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
+		--left join contact c(nolock) on c.ContactID = ac.ContactID
 		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
 		where pa.ProjectId = @ProjectId
 			and (@IsActiveOnly = 0 or pa.RowIsActive = @IsActiveOnly)
-		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc
+		order by pa.DateModified desc
 	end try
 	begin catch
 		if @@trancount > 0

@@ -60,9 +60,9 @@ namespace vhcbcloud
                 ddlPrimaryApplicant.Items.Clear();
                 
                 if (cbPrimaryApplicant.Checked)
-                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetApplicant");
-                else
                     ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetPrimaryApplicants");
+                else
+                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetApplicant");
 
                 ddlPrimaryApplicant.DataValueField = "appnameid";
                 ddlPrimaryApplicant.DataTextField = "Applicantname";
