@@ -52,6 +52,7 @@ namespace vhcbcloud
             BindProjects(ddlProject);
             BindApplicants();
             BindLookUP(ddlApplicantRole, 56);
+            ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
         }
 
         protected void BindProjects(DropDownList ddList)
@@ -1064,16 +1065,12 @@ namespace vhcbcloud
                 {
                     DropDownList ddlLkApplicantRoleEntity = (e.Row.FindControl("ddlLkApplicantRoleEntity") as DropDownList);
                     TextBox txtLkApplicantRoleEntity = (e.Row.FindControl("txtLkApplicantRoleEntity") as TextBox);
+                    CheckBox chkIsApplicantEntity = e.Row.FindControl("chkIsApplicant") as CheckBox;
+                    CheckBox chkActiveEditEntity = e.Row.FindControl("chkActiveEditEntity") as CheckBox;
+                    
                     if (txtLkApplicantRoleEntity != null)
                     {
                         BindLookUP(ddlLkApplicantRoleEntity, 56);
-
-                        //DataTable dtable = new DataTable();
-                        //dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
-                        //ddlLkApplicantRole.DataSource = dtable;
-                        //ddlLkApplicantRole.DataValueField = "typeid";
-                        //ddlLkApplicantRole.DataTextField = "Description";
-                        //ddlLkApplicantRole.DataBind();
 
                         string itemToCompare = string.Empty;
                         foreach (ListItem item in ddlLkApplicantRoleEntity.Items)
@@ -1084,6 +1081,20 @@ namespace vhcbcloud
                                 ddlLkApplicantRoleEntity.ClearSelection();
                                 item.Selected = true;
                             }
+                        }
+
+                        if (txtLkApplicantRoleEntity.Text.ToLower() == "358")
+                        {
+                            ddlLkApplicantRoleEntity.Enabled = false;
+                            chkIsApplicantEntity.Enabled = false;
+                            chkActiveEditEntity.Enabled = false;
+                        }
+                        else
+                        {
+                            ddlLkApplicantRoleEntity.Enabled = true;
+                            chkIsApplicantEntity.Enabled = true;
+                            chkActiveEditEntity.Enabled = true;
+                            ddlLkApplicantRoleEntity.Items.Remove(ddlLkApplicantRoleEntity.Items.FindByValue("358"));
                         }
                     }
                 }
