@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -102,7 +103,7 @@ namespace vhcbcloud
         {
             if (btnSubmitNotes.Text.ToLower() == "submit")
             {
-                ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 3,
+                ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), Context.User.Identity.GetUserName().Trim(),
                     txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
             }
             else
@@ -194,7 +195,7 @@ namespace vhcbcloud
                 {
                     Label lblUserName = (Label)e.Row.FindControl("lbluserName");
 
-                    if (lblUserName.Text.ToLower().Trim() != "aduffy")
+                    if (lblUserName.Text.ToLower().Trim() != Context.User.Identity.GetUserName().Trim())
                     {
                         LinkButton lnkEdit = (LinkButton)e.Row.FindControl("lnkEdit");
                         lnkEdit.Visible = false;

@@ -15,9 +15,9 @@ alter view projects_v as
 	left join appname an(nolock) on an.AppNameID = aan.AppNameID
 	left join lookupvalues lv1(nolock) on lv1.TypeID = p.LkProgram
 	--where pn.Defname = 1 and pa.RowIsActive = 1 --and pap.Defapp = 1
-	where Proj_num = '9999-999-991'
+	--where Proj_num = '9999-999-991'
 go
-select * from ProjectApplicant
+--select * from ProjectApplicant
 --select * from projects_v
 --select * from lookupvalues where typeid = 133
 --select DefApp, * from ProjectApplicant
