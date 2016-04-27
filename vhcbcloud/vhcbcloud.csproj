@@ -172,6 +172,7 @@
     <Content Include="Applicant.aspx" />
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
+    <Content Include="ConservationSourcesUses.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -226,6 +227,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
     <None Include="Properties\PublishProfiles\VHCBPublish.pubxml" />
@@ -341,6 +343,13 @@
     </Compile>
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConservationSourcesUses.aspx.cs">
+      <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConservationSourcesUses.aspx.designer.cs">
+      <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
     </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
