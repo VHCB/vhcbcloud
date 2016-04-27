@@ -47,6 +47,7 @@
     <Compile Include="BoarddatesData.cs" />
     <Compile Include="CheckRequestData.cs" />
     <Compile Include="CommonHelper.cs" />
+    <Compile Include="ConservationSourcesUsesData.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="EntityData.cs" />

@@ -8,7 +8,7 @@ go
 create procedure dbo.AddProjectNotes
 (
 	@ProjectId	int,
-	@UserId		int,
+	@UserName	nvarchar(100),
 	@Lkcategory int, 
 	@Date		DateTime,
 	@Notes		nvarchar(max)
@@ -17,8 +17,14 @@ as
 begin transaction
 
 	begin try
-	
-		insert into ProjectNotes(ProjectId,  LkProjNotes, UserId, Date, Notes)
+
+		declare @UserId int
+		
+		select @UserId = UserId 
+		from UserInfo(nolock) 
+		where  rtrim(ltrim(Username)) = @UserName 
+
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes)
 		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes)
 
 	end try
@@ -50,7 +56,7 @@ begin transaction
 
 	begin try
 	
-		update ProjectNotes set LkProjNotes = @LkCategory, Notes = @Notes, DateModified = getdate()
+		update ProjectNotes set LkCategory = @LkCategory, Notes = @Notes, DateModified = getdate()
 		from ProjectNotes 
 		where ProjectNotesID = @ProjectNotesID
 
@@ -81,10 +87,10 @@ begin transaction
 
 	begin try
 	
-		select ProjectNotesID, LkProjNotes, lv.description, pn.UserId, ui.username, convert(varchar(10), Date, 101) as Date, 
+		select ProjectNotesID, LkCategory, lv.description, pn.UserId, ui.username, convert(varchar(10), Date, 101) as Date, 
 			substring(Notes, 0, 25) Notes, Notes as FullNotes
 		from ProjectNotes pn(nolock)
-		join lookupvalues lv(nolock) on lv.Typeid = LkProjNotes
+		join lookupvalues lv(nolock) on lv.Typeid = LkCategory
 		left join userinfo ui(nolock) on ui.userid = pn.UserId
 		where ProjectId = @ProjectId
 		order by ProjectNotesID desc
@@ -115,7 +121,7 @@ begin transaction
 --exec GetProjectNotesById 4
 	begin try
 	
-		select ProjectId, LkProjNotes as LKProjCategory, UserId, Date, Notes
+		select ProjectId, LkCategory as LKProjCategory, UserId, Date, Notes
 		from ProjectNotes pn(nolock)
 		where ProjectNotesID = @ProjectNotesId
 
