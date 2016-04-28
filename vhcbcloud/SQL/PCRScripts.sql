@@ -385,7 +385,7 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.LkTransaction = 238
+	where defname = 1 --and tr.LkTransaction = 238
 	group by p.projectid, proj_num
 	order by proj_num 
 end
@@ -424,7 +424,8 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.LkTransaction = 238 and p.ProjectId = @projId
+	where defname = 1 --and tr.LkTransaction = 238 
+	and p.ProjectId = @projId
 	group by p.projectid, proj_num
 	order by proj_num 
 end

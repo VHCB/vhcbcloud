@@ -37,7 +37,9 @@ namespace vhcbcloud
             try
             {
                 DataTable dtProjects = new DataTable();
-                dtProjects = Project.GetProjects("GetProjectsByFinalizedStatus");
+                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
+                ddlRFromProj.Items.Clear();
+                ddlRToFund.Items.Clear();
 
                 ddlRFromProj.DataSource = dtProjects;
                 ddlRFromProj.DataValueField = "projectId";

@@ -123,9 +123,9 @@
                             <td >
                                 <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>                               
                             </td>
-                            <td><span class="labelClass">Available Funds $:</span></td>
+                            <td><span class="labelClass" style="visibility:hidden">Available Funds $:</span></td>
                             <td colspan="5"> 
-                                <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server"></asp:Label></td>
+                                <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server" Visible="false"></asp:Label></td>
 
                         </tr>
                         <tr>
@@ -216,7 +216,7 @@
                         <tr>
                             <td><span class="labelClass">Source (Based on Commitments)</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlFundTypeCommitments" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlFundTypeCommitments" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlFundTypeCommitments_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList></td>
                             <td>
                                 <span class="labelClass">Grant/Loan/Contract :</span>
@@ -237,11 +237,13 @@
                             </td>
                             <td>
                                 <%-- <span class="labelClass">State/VHCB #s:</span>--%>
-
+                                <span class="labelClass" >Available Funds $:</span>
                             </td>
                             <td>
                                 <%-- <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>--%>
+
+                                <asp:Label ID="lblCommittedAvailFunds" class="labelClass" Text="" runat="server" ></asp:Label>
 
                             </td>
                             <td></td>
