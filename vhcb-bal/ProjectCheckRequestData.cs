@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer
+namespace VHCBCommon.DataAccessLayer
 {
     public static class ProjectCheckRequestData
     {

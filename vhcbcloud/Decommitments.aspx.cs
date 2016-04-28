@@ -31,7 +31,7 @@ namespace vhcbcloud
             try
             {
                 dtProjects = new DataTable();
-                dtProjects = Project.GetProjects("GetProjectsByFinalizedStatus");
+                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
                 ddlProjFilter.DataSource = dtProjects;
                 ddlProjFilter.DataValueField = "projectId";
                 ddlProjFilter.DataTextField = "Proj_num";
@@ -123,10 +123,11 @@ namespace vhcbcloud
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
+                dtable = FinancialTransactions.GetDataTableByProcName("GetCommittedFundAccounts");
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
-                ddlAcctNum.DataTextField = "account";
+                ddlAcctNum.DataTextField = "name";
+                
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
             }
@@ -141,26 +142,29 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlAcctNum.SelectedIndex != 0)
             {
-                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
+                dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
-                if (lblFundName.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
-                ddlTransType.DataValueField = "typeid";
-                ddlTransType.DataTextField = "Description";
+                //if (lblFundName.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
+                ddlTransType.DataSource = dtable;
+                ddlTransType.DataValueField = "lktranstype";
+                ddlTransType.DataTextField = "account";
                 ddlTransType.DataBind();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+
+                //ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
             }
             else
             {
                 ddlTransType.Items.Clear();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                //ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
                 lblFundName.Text = "";
                 txtAmt.Text = "";
                 //ClearDetailSelection();

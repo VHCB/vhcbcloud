@@ -160,7 +160,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetCommittedFundByProject";
                 command.Parameters.Add(new SqlParameter("projId", projectId));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -216,19 +216,19 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate,  int Fromfundid, int Fromfundtranstype,
+        public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
                                 decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
             try
-            {               
+            {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddBoardReallocationTransaction";
                 command.Parameters.Add(new SqlParameter("FromProjectId", FromProjectId));
                 command.Parameters.Add(new SqlParameter("ToProjectId", ToProjectId));
-                command.Parameters.Add(new SqlParameter("transDate", transDate));                
+                command.Parameters.Add(new SqlParameter("transDate", transDate));
                 command.Parameters.Add(new SqlParameter("Fromfundid", Fromfundid));
                 command.Parameters.Add(new SqlParameter("Fromfundtranstype", Fromfundtranstype));
                 command.Parameters.Add(new SqlParameter("Fromfundamount", Fromfundamount));
@@ -467,13 +467,13 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetFinancialFundDetailsByProjectId";
                 command.Parameters.Add(new SqlParameter("projectId", projectId));
-                
+
                 using (connection)
                 {
                     connection.Open();
                     command.Connection = connection;
                     SqlDataAdapter da = new SqlDataAdapter(command);
-                    da.Fill(ds);                    
+                    da.Fill(ds);
                 }
             }
             catch (Exception ex)
@@ -640,9 +640,9 @@ namespace VHCBCommon.DataAccessLayer
                 using (connection)
                 {
                     connection.Open();
-                    command.Connection = connection;                    
+                    command.Connection = connection;
                     var da = new SqlDataAdapter(command);
-                    da.Fill(ds);                   
+                    da.Fill(ds);
                 }
             }
             catch (Exception ex)
@@ -699,7 +699,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("transId", transId));
-                command.Parameters.Add(new SqlParameter("commitmentType", commitmentType));   
+                command.Parameters.Add(new SqlParameter("commitmentType", commitmentType));
                 command.CommandText = "GetCommitmentFundDetailsByProjectId";
                 using (connection)
                 {
@@ -726,6 +726,42 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
+
+
+        public static DataTable GetCommittedFundDetailsByFundId(int fundId)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.CommandText = "GetCommittedFundDetailsByFundId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
         public static DataTable GetFundDetailsByFundId(int fundId)
         {
             DataTable dtStatus = null;

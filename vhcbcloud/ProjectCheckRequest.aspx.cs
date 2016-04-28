@@ -27,7 +27,7 @@ namespace vhcbcloud
                 DisableButton(btnSubmit);
                 BindProjects();
                 //BindTransDate();
-                // BindApplicantName();
+                //BindApplicantName();
                 //BindPayee();
                 BindProgram();
                 BindStatus();
@@ -224,7 +224,7 @@ namespace vhcbcloud
             {
                 DataTable dtFundType;
                 dtFundType = new DataTable();
-                dtFundType = ProjectCheckRequestData.GetData("PCR_FundName_Commitments");
+                dtFundType = ProjectCheckRequestData.GetData("GetCommittedFundAccounts");
 
                 ddlFundTypeCommitments.DataSource = dtFundType;
                 ddlFundTypeCommitments.DataValueField = "FundId";
@@ -676,13 +676,13 @@ namespace vhcbcloud
                     txtDisbursementAmt.Focus();
                     return;
                 }
-                bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
-                if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
-                {
-                    lblErrorMsg.Text = "Disbursement amount can't be more than available funds for the selected project";
-                    txtDisbursementAmt.Focus();
-                    return;
-                }
+                //bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                //if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                //{
+                //    lblErrorMsg.Text = "Disbursement amount can't be more than available funds for the selected project";
+                //    txtDisbursementAmt.Focus();
+                //    return;
+                //}
             }
             #endregion
 
@@ -1453,6 +1453,23 @@ namespace vhcbcloud
                 sb.Append("</script>");
                 ClientScript.RegisterStartupScript(this.GetType(),
                         "script", sb.ToString());
+            }
+        }
+
+        protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlFundTypeCommitments.SelectedIndex != 0)
+            {
+                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                lblCommittedAvailFunds.Text = dtable.Rows[0]["pendingamount"].ToString();
+                ddlTransType.DataSource = dtable;
+                ddlTransType.DataValueField = "lktranstype";
+                ddlTransType.DataTextField = "fundtype";
+                ddlTransType.DataBind();
+            }
+            else
+            {
+                ddlTransType.Items.Clear();
             }
         }
     }
