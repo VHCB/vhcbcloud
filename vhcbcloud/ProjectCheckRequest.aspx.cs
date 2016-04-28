@@ -1461,7 +1461,7 @@ namespace vhcbcloud
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
                 DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-                lblCommittedAvailFunds.Text = dtable.Rows[0]["pendingamount"].ToString();
+                lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
                 ddlTransType.DataSource = dtable;
                 ddlTransType.DataValueField = "lktranstype";
                 ddlTransType.DataTextField = "fundtype";
