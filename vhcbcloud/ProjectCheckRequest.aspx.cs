@@ -33,7 +33,7 @@ namespace vhcbcloud
                 BindStatus();
                 BindMatchingGrant();
                 BindFundTypeCommitments();
-                BindTransType();
+                //BindTransType();
                 //BindStateVHCBS();
                 BindNODData();
                 BindPCRQuestions(false);

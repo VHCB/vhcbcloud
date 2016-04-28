@@ -126,7 +126,7 @@ namespace vhcbcloud
                 dtable = FinancialTransactions.GetDataTableByProcName("GetCommittedFundAccounts");
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
-                ddlAcctNum.DataTextField = "name";
+                ddlAcctNum.DataTextField = "account";
                 
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
@@ -155,7 +155,7 @@ namespace vhcbcloud
                 //}
                 ddlTransType.DataSource = dtable;
                 ddlTransType.DataValueField = "lktranstype";
-                ddlTransType.DataTextField = "account";
+                ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
 
 
