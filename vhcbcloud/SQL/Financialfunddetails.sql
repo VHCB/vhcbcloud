@@ -1,8 +1,4 @@
-Text
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-CREATE procedure [dbo].[GetFinancialFundDetailsByProjectId]
+alter procedure [dbo].[GetFinancialFundDetailsByProjectId]
 (
 	@projectid int,
 	@isReallocation bit
@@ -199,9 +195,7 @@ End
 
 go
 
-Text
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CREATE procedure GetReallocationFinancialFundDetailsByProjectId
+alter procedure GetReallocationFinancialFundDetailsByProjectId
 (
 	@projectid int,
 	@isReallocation bit
@@ -387,7 +381,7 @@ end
 
 go
 
-CREATE procedure [dbo].[GetCommittedFundAccounts]
+alter procedure [dbo].[GetCommittedFundAccounts]
 as
 Begin
 	select p.projectid, 
@@ -396,6 +390,7 @@ Begin
 
 				ttv.description as FundType,
 				f.name,
+				f.account,
 				p.proj_num, 
 				lv.Description as projectname, 
 				
@@ -420,9 +415,11 @@ Begin
 		where tr.LkTransaction in (236,237,238,239,240)
 		
 		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description
+		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
 End
+go
+
 go
 
 
@@ -470,6 +467,3 @@ End
 go
 
 
-exec GetCommittedFundDetailsByFundId 150
-
-select * from Fund
