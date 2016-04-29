@@ -26,19 +26,21 @@ namespace vhcbcloud
             {
                 DisableButton(btnSubmit);
                 BindProjects();
+                
+                BindProgram();
+                BindStatus();
+                BindMatchingGrant();                
+                BindNODData();
+                BindPCRQuestions(false);
+                BindPCRData();
+
+                //BindFundTypeCommitments();
                 //BindTransDate();
                 //BindApplicantName();
                 //BindPayee();
-                BindProgram();
-                BindStatus();
-                BindMatchingGrant();
-                BindFundTypeCommitments();
                 //BindTransType();
                 //BindStateVHCBS();
-                BindNODData();
-                BindPCRQuestions(false);
 
-                BindPCRData();
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
                 if (rdBtnSelect.SelectedIndex == 1)
@@ -224,7 +226,7 @@ namespace vhcbcloud
             {
                 DataTable dtFundType;
                 dtFundType = new DataTable();
-                dtFundType = ProjectCheckRequestData.GetData("GetCommittedFundAccounts");
+                dtFundType = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
 
                 ddlFundTypeCommitments.DataSource = dtFundType;
                 ddlFundTypeCommitments.DataValueField = "FundId";
@@ -434,6 +436,8 @@ namespace vhcbcloud
                 rdBtnSelect.SelectedIndex = 0;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
+                BindFundTypeCommitments();
+
             }
             else
             {
@@ -1460,7 +1464,7 @@ namespace vhcbcloud
         {
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
-                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()),Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                 lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
                 ddlTransType.DataSource = dtable;
                 ddlTransType.DataValueField = "lktranstype";
