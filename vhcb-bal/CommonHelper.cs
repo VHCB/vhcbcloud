@@ -102,5 +102,16 @@ namespace VHCBCommon.DataAccessLayer
                 }
             }
         }
+        public static void DisableButton(Button btn)
+        {
+            btn.Enabled = false;
+            btn.CssClass = "btn btn-info";
+        }
+
+        public static void EnableButton(Button btn)
+        {
+            btn.Enabled = true;
+            btn.CssClass = "btn btn-info";
+        }
     }
 }

@@ -20,8 +20,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                BindProjects();
-                BindFundAccounts();
+                BindProjects();                
             }
         }
 
@@ -89,6 +88,7 @@ namespace vhcbcloud
                 lbAwardSummary.Visible = true;
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
+                BindFundAccounts();
             }
             else
             {
@@ -122,7 +122,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
+                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
@@ -176,7 +176,7 @@ namespace vhcbcloud
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
-            catch (Exception e)
+            catch (Exception )
             { }
         }
 
@@ -221,8 +221,15 @@ namespace vhcbcloud
                     lblTransDetHeader.Text = "Transaction Detail";
 
                     if (totBalAmt == 0)
-                        DisableButton(btnDecommitmentSubmit);
-
+                    {
+                        CommonHelper.DisableButton(btnDecommitmentSubmit);
+                        CommonHelper.EnableButton(btnTransactionSubmit);
+                    }
+                    else
+                    {
+                        CommonHelper.DisableButton(btnTransactionSubmit );
+                        CommonHelper.EnableButton(btnDecommitmentSubmit);
+                    }
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                 }
@@ -317,7 +324,7 @@ namespace vhcbcloud
                     {
                         lblErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
                         ClearTransactionDetailForm();
-                        DisableButton(btnDecommitmentSubmit);
+                        CommonHelper.DisableButton(btnDecommitmentSubmit);
                         return;
                     }
                     else if (currentTranFudAmount > currentBalAmount)
@@ -339,18 +346,7 @@ namespace vhcbcloud
             }
         }
 
-        public static void DisableButton(Button btn)
-        {
-            btn.Enabled = false;
-            btn.CssClass = "btn btn-info";
-        }
-
-        public static void EnableButton(Button btn)
-        {
-            btn.Enabled = true;
-            btn.CssClass = "btn btn-info";
-        }
-
+       
         protected void btnTransactionSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -387,9 +383,7 @@ namespace vhcbcloud
                 gvBCommit.DataBind();
 
                 pnlTranDetails.Visible = true;
-                ClearTransactionDetailForm();
-
-                EnableButton(btnDecommitmentSubmit);
+                ClearTransactionDetailForm();              
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment",
@@ -400,6 +394,9 @@ namespace vhcbcloud
 
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
+
+                CommonHelper.EnableButton(btnDecommitmentSubmit);
+                CommonHelper.DisableButton(btnTransactionSubmit);
             }
             catch (Exception ex)
             {
@@ -460,7 +457,7 @@ namespace vhcbcloud
                 else if (amount < allowed_amount)
                 {
                     if (!btnDecommitmentSubmit.Enabled)
-                        EnableButton(btnDecommitmentSubmit);
+                        CommonHelper.EnableButton(btnDecommitmentSubmit);
                 }
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
                 //lblErrorMsg.Text = "";

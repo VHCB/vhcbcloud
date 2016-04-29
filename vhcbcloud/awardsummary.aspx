@@ -40,6 +40,11 @@
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Fund Acct" SortExpression="account">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblFundAcct" runat="Server" Text='<%# Eval("account") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Fund" SortExpression="FundName">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
@@ -110,6 +115,11 @@
                                         <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("fundid")%>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Fund Acct" SortExpression="account">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblFundAcct" runat="Server" Text='<%# Eval("account") %>' />
+                                    </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Date" SortExpression="TransDate">
                                     <ItemTemplate>
