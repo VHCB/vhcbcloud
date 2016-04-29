@@ -220,13 +220,13 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindFundTypeCommitments()
+        protected void BindFundTypeCommitments( int projId)
         {
             try
             {
                 DataTable dtFundType;
                 dtFundType = new DataTable();
-                dtFundType = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                dtFundType = FinancialTransactions.GetCommittedFundAccounts(projId);
 
                 ddlFundTypeCommitments.DataSource = dtFundType;
                 ddlFundTypeCommitments.DataValueField = "FundId";
@@ -436,7 +436,7 @@ namespace vhcbcloud
                 rdBtnSelect.SelectedIndex = 0;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
-                BindFundTypeCommitments();
+                BindFundTypeCommitments(int.Parse(tokens[0]));
 
             }
             else
@@ -768,7 +768,7 @@ namespace vhcbcloud
                 this.hfTransAmt.Value = txtDisbursementAmt.Text;
 
                 BindPCRData();
-                DisablePCR();
+                DisablePCR();                
                 //ClearPCRForm();
                 //ClearPCRDetails();
                 this.hfEditPCRId.Value = "";
@@ -1464,12 +1464,15 @@ namespace vhcbcloud
         {
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
-                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()),Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+                
+                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                 lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
                 ddlTransType.DataSource = dtable;
                 ddlTransType.DataValueField = "lktranstype";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
             }
             else
             {
