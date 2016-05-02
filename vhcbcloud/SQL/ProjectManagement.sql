@@ -205,7 +205,7 @@ begin transaction
 	from ProjectApplicant pa
 	where projectId = @projectId and pa.LkApplicantRole = 358
 
-	if(@CurrentApplicantId != @applicantId)
+	if(isnull(@CurrentApplicantId, '') != @applicantId)
 	begin
 		--Update Current Primary Applicant
 		update pa set LkApplicantRole = '', IsApplicant = 0, DateModified = getdate()

@@ -3,19 +3,29 @@
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <p class="lead">Conservation Sources and Uses</p>
+        <!-- Tabs -->
+        <div id="dvTabs" runat="server">
+            <div id="page-inner">
+                <div id="VehicleDetail">
+                    <ul class="vdp-tabs" runat="server" id="Tabs"></ul>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs -->
+
+        <%--<p class="lead">Conservation Sources and Uses</p>--%>
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td>Project #</td>
+                            <td><span class="labelClass">Project #</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                 </asp:DropDownList>
 
                             </td>
-                            <td>Name</td>
+                            <td><span class="labelClass">Name&nbsp;&nbsp;</span></td>
                             <td>
                                 <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox></td>
                             <td style="text-align: right">
@@ -28,14 +38,26 @@
                         </tr>
 
                         <tr>
-                            <td>Budget Period</td>
+                            <td><span class="labelClass">Budget Period</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlBudgetPeriod" CssClass="clsDropDown" runat="server" AutoPostBack="true"
                                     OnSelectedIndexChanged="ddlBudgetPeriod_SelectedIndexChanged">
                                 </asp:DropDownList>
-
                             </td>
-                            <td colspan="3" style="height: 5px"></td>
+                            <td colspan="2">
+                                <div  runat="server" id="dvImport">
+                                    <table>
+                                        <tr>
+                                            <td style="height: 5px"><span class="labelClass">Import From &nbsp;</span></td>
+                                            <td style="height: 5px">
+                                                <asp:DropDownList ID="ddlImportFrom" CssClass="clsDropDown" runat="server" AutoPostBack="true">
+                                                </asp:DropDownList></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+
+                            <td style="height: 5px"></td>
                         </tr>
                     </table>
                 </div>
@@ -90,8 +112,8 @@
                             <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConsevationSources" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" 
-                                    OnRowEditing="gvConsevationSources_RowEditing" OnRowCancelingEdit="gvConsevationSources_RowCancelingEdit" 
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvConsevationSources_RowEditing" OnRowCancelingEdit="gvConsevationSources_RowCancelingEdit"
                                     OnRowUpdating="gvConsevationSources_RowUpdating" OnRowDataBound="gvConsevationSources_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -108,10 +130,10 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblSourceName" runat="Server" Text='<%# Eval("SourceName") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                            <%-- <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtLkConSource" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConSource") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
@@ -121,14 +143,14 @@
                                                 <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <%--<asp:TemplateField HeaderText="Active">
+                                        <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActiveEditPS" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                        </asp:TemplateField>--%>
+                                        </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
                                 </asp:GridView>
@@ -180,19 +202,20 @@
                                         <td style="width: 180px">
                                             <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
                                         </td>
-                                         <td style="width: 100px">
+                                        <%--<td style="width: 100px">
                                             <span class="labelClass">Total $
                                             </span>
                                         </td>
                                         <td style="width: 180px">
                                             <asp:TextBox ID="txtUsesTotal" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
-                                        </td>
+                                        </td>--%>
                                         <td style="width: 170px">
-                                            <asp:Button ID="btnAddOtherUses" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddOtherUses_Click" /></td>
-                                        <td></td>
+                                            <asp:Button ID="btnAddOtherUses" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddOtherUses_Click" />
+                                        </td>
+                                        <%--<td></td>--%>
                                     </tr>
                                     <tr>
-                                        <td colspan="9" style="height: 5px"></td>
+                                        <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -202,7 +225,9 @@
                             <asp:Panel runat="server" ID="Panel2" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConservationUsesGrid" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvConservationUsesGrid_RowEditing" OnRowCancelingEdit="gvConservationUsesGrid_RowCancelingEdit"
+                                    OnRowUpdating="gvConservationUsesGrid_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -223,6 +248,9 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal") %>'></asp:TextBox>
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Other Use">
                                             <ItemTemplate>
@@ -233,20 +261,26 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblOtherTotal" runat="Server" Text='<%# Eval("OtherTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("OtherTotal") %>'></asp:TextBox>
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
+                                            <%--<EditItemTemplate>
+                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total") %>'></asp:TextBox>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
-                                        <%--<asp:TemplateField HeaderText="Active">
+                                        <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActiveEditPS" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                        </asp:TemplateField>--%>
+                                        </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
                                 </asp:GridView>
@@ -258,6 +292,7 @@
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfNavigatedProjectId" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -268,9 +303,9 @@
                 $('#<%= dvSourceForm.ClientID%>').toggle(this.checked);
             }).change();
 
-             $('#<%= cbAddUse.ClientID%>').click(function () {
+            $('#<%= cbAddUse.ClientID%>').click(function () {
                 $('#<%= dvUseForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
            <%-- $('#<%= txtVHCBUseAmount.ClientID%>').blur(function () {
                 console.log($('#<%=txtVHCBUseAmount.ClientID%>').val());

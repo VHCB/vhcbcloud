@@ -13,6 +13,24 @@ namespace vhcbcloud {
     public partial class ConservationSourcesUses {
         
         /// <summary>
+        /// dvTabs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTabs;
+        
+        /// <summary>
+        /// Tabs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tabs;
+        
+        /// <summary>
         /// ddlProject control.
         /// </summary>
         /// <remarks>
@@ -47,6 +65,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlBudgetPeriod;
+        
+        /// <summary>
+        /// dvImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvImport;
+        
+        /// <summary>
+        /// ddlImportFrom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlImportFrom;
         
         /// <summary>
         /// dvMessage control.
@@ -229,15 +265,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtOtherUseAmount;
         
         /// <summary>
-        /// txtUsesTotal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUsesTotal;
-        
-        /// <summary>
         /// btnAddOtherUses control.
         /// </summary>
         /// <remarks>
@@ -281,5 +308,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfNavigatedProjectId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfNavigatedProjectId;
     }
 }
