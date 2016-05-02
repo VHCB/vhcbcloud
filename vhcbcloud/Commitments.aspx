@@ -92,7 +92,7 @@
 
                         <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
                             Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" AllowPaging="false">
+                            GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing" OnRowUpdating="gvPTrans_RowUpdating">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -104,7 +104,8 @@
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:TextBox ID="txtTransDate" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>'></asp:TextBox>
+                                        <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>'></asp:Label>
+                                        <asp:TextBox ID="txtTransDate" Visible="false" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>'></asp:TextBox>
                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
@@ -114,8 +115,8 @@
                                         <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
-
+                                        <%--<asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt") %>'></asp:TextBox>--%>
+                                        <asp:Label ID="lblTrAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Trans Status" SortExpression="Description">
@@ -133,6 +134,12 @@
                                         <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="TransId" Visible="false">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("transid") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:CommandField ShowEditButton="True" UpdateText="Inactivate" ShowDeleteButton="false"/>
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
                         </asp:GridView>
@@ -181,14 +188,14 @@
                                 <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>
                                 <br />
-                                <asp:Button ID="btnDecommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnDecommitmentSubmit_Click" />
+                                <asp:Button ID="btnCommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCommitmentSubmit_Click" />
                             </div>
                             <br />
                             <asp:GridView ID="gvBCommit" runat="server" AutoGenerateColumns="False"
                                 Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                 GridLines="None" EnableTheming="True" AllowPaging="false"
                                 AllowSorting="true" ShowFooter="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
-                                OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound">
+                                OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound" OnRowDeleting="gvBCommit_RowDeleting">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                 <HeaderStyle CssClass="headerStyle" />
@@ -256,7 +263,7 @@
                                             <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:CommandField ShowEditButton="True" />
+                                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="true" DeleteText="Inactivate"/>
                                 </Columns>
                                 <FooterStyle CssClass="footerStyle" />
                             </asp:GridView>
