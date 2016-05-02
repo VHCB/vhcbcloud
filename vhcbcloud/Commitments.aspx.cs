@@ -20,7 +20,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                BindProjects();                
+                BindProjects();
             }
         }
 
@@ -177,7 +177,7 @@ namespace vhcbcloud
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
-            catch (Exception )
+            catch (Exception)
             { }
         }
 
@@ -223,13 +223,13 @@ namespace vhcbcloud
 
                     if (totBalAmt == 0)
                     {
-                        CommonHelper.DisableButton(btnDecommitmentSubmit);
+                        CommonHelper.DisableButton(btnCommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
                     }
                     else
                     {
-                        CommonHelper.DisableButton(btnTransactionSubmit );
-                        CommonHelper.EnableButton(btnDecommitmentSubmit);
+                        CommonHelper.DisableButton(btnTransactionSubmit);
+                        CommonHelper.EnableButton(btnCommitmentSubmit);
                     }
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
@@ -243,12 +243,18 @@ namespace vhcbcloud
 
         private int GetTransId()
         {
-            DataTable dtable = new DataTable();
-            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
-            if (dtable.Rows.Count > 0)
-                return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
+            if (hfTransId.Value.ToString() == "")
+            {
+
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
+                if (dtable.Rows.Count > 0)
+                    return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
+                else
+                    return 0;
+            }
             else
-                return 0;
+                return Convert.ToInt32(hfTransId.Value);
         }
 
         protected void rdBtnSelectTransDetail_CheckedChanged(object sender, EventArgs e)
@@ -271,7 +277,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnDecommitmentSubmit_Click(object sender, EventArgs e)
+        protected void btnCommitmentSubmit_Click(object sender, EventArgs e)
         {
             try
             {
@@ -325,7 +331,7 @@ namespace vhcbcloud
                     {
                         lblErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
                         ClearTransactionDetailForm();
-                        CommonHelper.DisableButton(btnDecommitmentSubmit);
+                        CommonHelper.DisableButton(btnCommitmentSubmit);
                         return;
                     }
                     else if (currentTranFudAmount > currentBalAmount)
@@ -347,7 +353,7 @@ namespace vhcbcloud
             }
         }
 
-       
+
         protected void btnTransactionSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -384,20 +390,34 @@ namespace vhcbcloud
                 gvBCommit.DataBind();
 
                 pnlTranDetails.Visible = true;
-                ClearTransactionDetailForm();              
+                ClearTransactionDetailForm();
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment",
                     TRANS_PENDING_STATUS);
-
-                gvPTrans.DataSource = dtTrans;
-                gvPTrans.DataBind();
-
+                
+                hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
+                BindTransGrid(GetTransId());
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
 
-                CommonHelper.EnableButton(btnDecommitmentSubmit);
+                CommonHelper.EnableButton(btnCommitmentSubmit);
                 CommonHelper.DisableButton(btnTransactionSubmit);
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        private void BindTransGrid(int TransId)
+        {
+            try
+            {
+
+                DataTable dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId);
+                gvPTrans.DataSource = dtTrans;
+                gvPTrans.DataBind();
             }
             catch (Exception ex)
             {
@@ -425,8 +445,8 @@ namespace vhcbcloud
 
                 if (((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")
                 {
-                    int n;
-                    bool isNumeric = int.TryParse(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim(), out n);
+                    decimal n;
+                    bool isNumeric = decimal.TryParse(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim(), out n);
 
                     if (!isNumeric || Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text.Trim()) <= 0)
                     {
@@ -457,8 +477,8 @@ namespace vhcbcloud
                 }
                 else if (amount < allowed_amount)
                 {
-                    if (!btnDecommitmentSubmit.Enabled)
-                        CommonHelper.EnableButton(btnDecommitmentSubmit);
+                    if (!btnCommitmentSubmit.Enabled)
+                        CommonHelper.EnableButton(btnCommitmentSubmit);
                 }
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
                 //lblErrorMsg.Text = "";
@@ -512,5 +532,60 @@ namespace vhcbcloud
 
         }
 
+        protected void gvPTrans_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvPTrans.EditIndex = e.NewEditIndex;
+            BindTransGrid(GetTransId());
+        }
+
+        protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string TransId = ((Label)gvPTrans.Rows[rowIndex].FindControl("lblTransId")).Text.Trim();
+                if (TransId.ToString() != "")
+                {
+                    FinancialTransactions.InactivateFinancialTransByTransId(Convert.ToInt32(TransId));
+                    BindTransGrid(GetTransId());
+                    BindFundDetails(GetTransId());
+
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+                    lblErrorMsg.Text = "Transaction was successfully inactavited. All details related to this transaction will automatically inactivated.";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvPTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvPTrans.EditIndex = -1;
+            BindTransGrid(GetTransId());
+        }
+
+        protected void gvBCommit_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
+                if (lblDetId.ToString() != "")
+                {
+                    FinancialTransactions.InactivateFinancialDetailByDetailId(Convert.ToInt32(lblDetId));
+                    
+                    BindFundDetails(GetTransId());
+                                        
+                    lblErrorMsg.Text = "Transaction detail was successfully inactavited";
+                    CommonHelper.EnableButton(btnCommitmentSubmit);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
     }
 }

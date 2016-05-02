@@ -211,13 +211,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtAmt;
         
         /// <summary>
-        /// btnDecommitmentSubmit control.
+        /// btnCommitmentSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDecommitmentSubmit;
+        protected global::System.Web.UI.WebControls.Button btnCommitmentSubmit;
         
         /// <summary>
         /// gvBCommit control.
