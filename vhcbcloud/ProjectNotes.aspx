@@ -6,11 +6,20 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>Project Notes</b>
+                
+                 <table style="width: 100%;">
+                        <tr>
+                            <td><b>Project Notes</b></td>
+                            <td style="text-align: right">
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" 
+                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                            </td>
+                        </tr>
+                    </table>
             </div>
 
             <div id="dvMessage" runat="server">
-                <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
+                <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg1"></asp:Label></p>
             </div>
             <div class="panel-body">
                 <asp:Panel runat="server" ID="pnlProjectInfo">
@@ -45,6 +54,7 @@
                                 <asp:TextBox ID="txtProjectNotesDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtProjectNotesDate" TargetControlID="txtProjectNotesDate">
                                 </ajaxToolkit:CalendarExtender>
+                                &nbsp;<span class="labelClass">Active</span> <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                             </td>
                         </tr>
                         <tr>
@@ -107,6 +117,11 @@
                                                     <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <asp:LinkButton ID="lnkEdit" runat="server" CommandName="Edit" Text="Edit" />

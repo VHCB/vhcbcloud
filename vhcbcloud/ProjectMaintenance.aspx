@@ -4,7 +4,22 @@
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <p class="lead">Project Maintenance</p>
+             <!-- Tabs -->
+            <div id="dvTabs" runat="server">
+                <div id="page-inner">
+                    <div id="VehicleDetail">
+                        <ul class="vdp-tabs" runat="server" id="Tabs">
+                           <%-- <li class="active"><a href="#" class="active">Project Maintenance</a></li>--%>
+<%--                            <li><a href="http://192.168.100.12:8080/ConservationSourcesUses.aspx">Housing Tab1</a></li>
+                            <li><a href="/project/project_distribution">Housing Tab2</a></li>
+                            <li><a href="/project/project_module">Housing Tab3</a></li>
+                            <li><a href="/project/project_theme">Housing Tab4</a></li>--%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Tabs -->
+       <%-- <p class="lead">Project Maintenance</p>--%>
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -17,7 +32,8 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right">
-                                <asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" /> &nbsp;
+                                <asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" />
+                                &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -28,9 +44,9 @@
                     BackgroundCssClass="MEBackground">
                 </ajaxToolkit:ModalPopupExtender>
                 <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
-                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx"  runat="server"></iframe>
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
                     <br />
-                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info"/>
+                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
 
                 <div id="dvMessage" runat="server">
@@ -54,9 +70,9 @@
                                             </ajaxToolkit:MaskedEditExtender>
                                             <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                             </asp:DropDownList>
-                                            <div id="divErrorProjectNumber" style="display:none">
-                                            <span style="color:red">Project Number already exist</span>
-                                          </div>
+                                            <div id="divErrorProjectNumber" style="display: none">
+                                                <span style="color: red">Project Number already exist</span>
+                                            </div>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Name</span>
@@ -754,15 +770,15 @@
 
             $('#<%= cbAddProjectName.ClientID%>').click(function () {
                 $('#<%= dvProjectNameForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
             $('#<%= cbAttachNewEntity.ClientID%>').click(function () {
                 $('#<%= dvProjectEntityForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
             $('#<%= cbRelatedProjects.ClientID%>').click(function () {
                 $('#<%= dvRelatedProjectsForm.ClientID%>').toggle(this.checked);
@@ -784,10 +800,10 @@
                 var arr = $('#<%= ddlRelatedProjects.ClientID%>').val().split('|');
                 $('#<%=txtRelatedProjectName.ClientID%>').val(arr[1]);
             });
-            
+
             $('#<%= txtProjNum.ClientID%>').blur(function () {
                 IsProjectNumberExist();
-             });
+            });
 
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');
@@ -892,40 +908,40 @@
                                 if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
                                     addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
                                     $('#<%= txtTown.ClientID%>').val(addr.city);
+                                }
+                                if (types == "administrative_area_level_1,political") {
+                                    addr.state = results[0].address_components[ii].short_name;
+                                    $('#<%= txtState.ClientID%>').val(addr.state);
                                     }
-                                    if (types == "administrative_area_level_1,political") {
-                                        addr.state = results[0].address_components[ii].short_name;
-                                        $('#<%= txtState.ClientID%>').val(addr.state);
-                                }
-                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
-                                    addr.zipcode = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "country,political") {
-                                    addr.country = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "administrative_area_level_2,political") {
-                                    addr.county = results[0].address_components[ii].short_name;
-                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                                    if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                        addr.zipcode = results[0].address_components[ii].long_name;
+                                    }
+                                    if (types == "country,political") {
+                                        addr.country = results[0].address_components[ii].long_name;
+                                    }
+                                    if (types == "administrative_area_level_2,political") {
+                                        addr.county = results[0].address_components[ii].short_name;
+                                        $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
                                 }
                             }
                             addr.success = true;
                             $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
                             $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
 
-                                for (name in addr) {
-                                    console.log('### google maps api ### ' + name + ': ' + addr[name]);
-                                }
-                                response(addr);
-                            } else {
-                                response({ success: false });
+                            for (name in addr) {
+                                console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }
+                            response(addr);
                         } else {
                             response({ success: false });
                         }
-                    });
-                } else {
-                    response({ success: false });
-                }
+                    } else {
+                        response({ success: false });
+                    }
+                });
+            } else {
+                response({ success: false });
             }
+        }
     </script>
 </asp:Content>

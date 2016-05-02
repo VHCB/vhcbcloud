@@ -173,6 +173,7 @@
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
+    <Content Include="Content\Tabs.css" />
     <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -284,6 +285,7 @@
     <Content Include="SQL\ProjectManagementInfo.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <Content Include="SQL\ProjectSearch.sql" />
+    <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
