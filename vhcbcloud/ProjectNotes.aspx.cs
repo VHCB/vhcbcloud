@@ -17,6 +17,9 @@ namespace vhcbcloud
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            dvMessage.Visible = false;
+            lblErrorMsg1.Text = "";
+
             String ProjectId = Request.QueryString["ProjectId"];
 
             ddlProject.Enabled = true;
@@ -78,7 +81,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                lblErrorMsg1.Text = ex.Message;
             }
         }
 
@@ -87,48 +90,102 @@ namespace vhcbcloud
             dvMessage.Visible = true;
             if (message == "")
             {
-                lblErrorMsg.Text = Pagename + ": " + method + ": Error Message: " + error;
+                lblErrorMsg1.Text = Pagename + ": " + method + ": Error Message: " + error;
             }
             else
-                lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+                lblErrorMsg1.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
         }
 
         private void LogMessage(string message)
         {
             dvMessage.Visible = true;
-            lblErrorMsg.Text = message;
+            lblErrorMsg1.Text = message;
         }
 
         protected void btnSubmitNotes_Click(object sender, EventArgs e)
         {
-            if (btnSubmitNotes.Text.ToLower() == "submit")
+            if (IsProjectNotesValid(btnSubmitNotes.Text.ToLower()))
             {
-                ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), Context.User.Identity.GetUserName().Trim(),
-                    txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
+                if (btnSubmitNotes.Text.ToLower() == "submit")
+                {
+                    ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
+                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
+                }
+                else
+                {
+                    ProjectNotesData.UpdateProjectNotes(DataUtils.GetInt(hfProjectNotesId.Value), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
+                        txtNotes.Text, cbActive.Checked);
+                    hfProjectNotesId.Value = "";
+                    gvProjectNotes.EditIndex = -1;
+
+                    btnSubmitNotes.Text = "Submit";
+                }
+
+                ddlCategory.SelectedIndex = -1;
+                txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
+                txtNotes.Text = "";
+                BindProjectNotesGrid();
             }
-            else
+        }
+
+        private bool IsProjectNotesValid(string Action)
+        { 
+            if (ddlProject.SelectedIndex == 0)
             {
-                ProjectNotesData.UpdateProjectNotes(DataUtils.GetInt(hfProjectNotesId.Value), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), txtNotes.Text);
-                hfProjectNotesId.Value = "";
-                gvProjectNotes.EditIndex = -1;
-
-                btnSubmitNotes.Text = "Submit";
+                LogMessage("Select Project Number");
+                ddlProject.Focus();
+                return false;
             }
 
-            ddlCategory.SelectedIndex = -1;
-            txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
-            txtNotes.Text = "";
-            BindProjectNotesGrid();
+            if (ddlCategory.SelectedIndex == 0)
+            {
+                LogMessage("Select Category");
+                ddlCategory.Focus();
+                return false;
+            }
+
+            if (Action == "submit")
+            {
+                if (txtProjectNotesDate.Text.Trim() == "")
+                {
+                    LogMessage("Enter Date");
+                    txtProjectNotesDate.Focus();
+                    return false;
+                }
+                else
+                {
+                    if (!DataUtils.IsDateTime(txtProjectNotesDate.Text.Trim()))
+                    {
+                        LogMessage("Enter valid Date");
+                        txtProjectNotesDate.Focus();
+                        return false;
+                    }
+                    if (DataUtils.GetDate(txtProjectNotesDate.Text.Trim()) < DataUtils.GetDate(DateTime.Now.ToShortDateString()))
+                    {
+                        LogMessage("Date shouldn't be less than current date");
+                        txtProjectNotesDate.Focus();
+                        return false;
+                    }
+                }
+            }
+            if (txtNotes.Text.Trim() == "")
+            {
+                LogMessage("Enter Notes");
+                txtNotes.Focus();
+                return false;
+            }
+
+            return true;
         }
 
         private void BindProjectNotesGrid()
         {
-            DataTable dt = ProjectNotesData.GetProjectNotesList(DataUtils.GetInt(ddlProject.SelectedValue.ToString()));
+            DataTable dt = ProjectNotesData.GetProjectNotesList(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), cbActiveOnly.Checked);
 
             if (dt.Rows.Count > 0)
             {
                 dvProjectNotesGrid.Visible = true;
-                gvProjectNotes.DataSource = ProjectNotesData.GetProjectNotesList(DataUtils.GetInt(ddlProject.SelectedValue.ToString()));
+                gvProjectNotes.DataSource = dt;
                 gvProjectNotes.DataBind();
             }
             else
@@ -147,12 +204,11 @@ namespace vhcbcloud
             txtNotes.Text = "";
             txtProjectName.Text = "";
 
-            if (ddlProject.SelectedIndex != -1)
+            if (ddlProject.SelectedIndex != 0)
             {
                 DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ddlProject.SelectedValue.ToString()));
                 txtProjectName.Text = dr["ProjectName"].ToString();
             }
-
             BindProjectNotesGrid();
         }
 
@@ -222,8 +278,9 @@ namespace vhcbcloud
                         hfProjectNotesId.Value = lblProjectNotesID.Text;
 
                         txtProjectNotesDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
-                        txtNotes.Text= dr["Notes"].ToString();
+                        txtNotes.Text = dr["Notes"].ToString();
                         ddlCategory.SelectedValue = dr["LKProjCategory"].ToString();
+                        cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
                 }
             }
@@ -236,6 +293,11 @@ namespace vhcbcloud
         protected void gvProjectNotes_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
 
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindProjectNotesGrid();
         }
     }
 }

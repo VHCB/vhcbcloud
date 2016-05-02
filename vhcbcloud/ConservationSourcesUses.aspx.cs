@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
@@ -18,9 +19,11 @@ namespace vhcbcloud
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
+            GenerateTabs();
 
             if (!IsPostBack)
             {
+                dvImport.Visible = false;
                 BindControls();
 
                 dvNewSource.Visible = false;
@@ -93,7 +96,8 @@ namespace vhcbcloud
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            BindSourcegrid();
+            BindUsesgrid();
         }
 
         private void LogError(string pagename, string method, string message, string error)
@@ -143,13 +147,19 @@ namespace vhcbcloud
                     return;
                 }
 
-                ConservationSourcesUsesData.AddConservationSource(DataUtils.GetInt(hfProjectId.Value),
+                ConservationSourcesUsesData.AddConSource objAddConSource = ConservationSourcesUsesData.AddConservationSource(DataUtils.GetInt(hfProjectId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlSource.SelectedValue.ToString()), DataUtils.GetDecimal(txtSourceTotal.Text));
 
                 ClearAddSourceForm();
                 BindSourcegrid();
-                LogMessage("New Conservation Source added successfully");
+
+                if (objAddConSource.IsDuplicate && !objAddConSource.IsActive)
+                    LogMessage("New Conservation Source already exist as in-active");
+                else if (objAddConSource.IsDuplicate)
+                    LogMessage("New Conservation Source already exist");
+                else
+                    LogMessage("New Conservation Source added successfully");
             }
             catch (Exception ex)
             {
@@ -178,6 +188,26 @@ namespace vhcbcloud
                 dvNewUse.Visible = true;
                 BindUsesgrid();
                 cbAddUse.Checked = false;
+
+                dvImport.Visible = false;
+
+                if (ddlBudgetPeriod.SelectedIndex == 1 
+                    || (gvConsevationSources.Rows.Count > 0 || gvConservationUsesGrid.Rows.Count > 0))
+                    dvImport.Visible = false;
+                else if (ddlBudgetPeriod.SelectedIndex == 2)
+                {
+                    dvImport.Visible = true;
+                    ddlImportFrom.Items.Clear();
+                    ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
+                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
+                }
+                else if (ddlBudgetPeriod.SelectedIndex == 3)
+                {
+                    dvImport.Visible = true;
+                    ddlImportFrom.Items.Clear();
+                    ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
+                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 2", "26084"));
+                }
             }
             else
             {
@@ -188,15 +218,18 @@ namespace vhcbcloud
                 //Uses
                 dvNewUse.Visible = false;
                 dvConsevationUsesGrid.Visible = false;
+
+                //Import From
+                dvImport.Visible = false;
             }
-            }
+        }
 
         private void BindSourcegrid()
         {
             try
             {
-                DataTable dtSources = ConservationSourcesUsesData.GetConserveSourcesList(DataUtils.GetInt(hfProjectId.Value), 
-                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()));
+                DataTable dtSources = ConservationSourcesUsesData.GetConserveSourcesList(DataUtils.GetInt(hfProjectId.Value),
+                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()), cbActiveOnly.Checked);
 
                 if (dtSources.Rows.Count > 0)
                 {
@@ -222,7 +255,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtSources = ConservationSourcesUsesData.GetConserveUsesList(DataUtils.GetInt(hfProjectId.Value),
-                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()));
+                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()), cbActiveOnly.Checked);
 
                 if (dtSources.Rows.Count > 0)
                 {
@@ -242,11 +275,11 @@ namespace vhcbcloud
                 LogError(Pagename, "BindSourcegrid", "", ex.Message);
             }
         }
+
         protected void btnAddOtherUses_Click(object sender, EventArgs e)
         {
             try
             {
-
                 if (ddlProject.SelectedIndex == 0)
                 {
                     LogMessage("Select Project");
@@ -289,14 +322,22 @@ namespace vhcbcloud
                     return;
                 }
 
-                ConservationSourcesUsesData.AddConservationUse(DataUtils.GetInt(hfProjectId.Value),
+                ConservationSourcesUsesData.AddConUse objAddConUse = ConservationSourcesUsesData.AddConservationUse(DataUtils.GetInt(hfProjectId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlVHCBUses.SelectedValue.ToString()), DataUtils.GetDecimal(txtVHCBUseAmount.Text),
                     DataUtils.GetInt(ddlOtherUses.SelectedValue.ToString()), DataUtils.GetDecimal(txtOtherUseAmount.Text));
 
                 ClearAddUsesForm();
                 BindUsesgrid();
-                LogMessage("New Conservation Uses added successfully");
+
+                if (objAddConUse.IsDuplicate && !objAddConUse.IsActive)
+                    LogMessage("Selected VHCB Conservation Uses already exist as in-active");
+                else if (objAddConUse.IsDuplicate)
+                    LogMessage("Selected VHCB Conservation Uses already exist");
+                else
+                    LogMessage("New Conservation Uses added successfully");
+
+
             }
             catch (Exception ex)
             {
@@ -310,7 +351,7 @@ namespace vhcbcloud
             txtVHCBUseAmount.Text = "";
             ddlOtherUses.SelectedIndex = -1;
             txtOtherUseAmount.Text = "";
-            txtUsesTotal.Text = "";
+            //txtUsesTotal.Text = "";
         }
 
         protected void gvConsevationSources_RowEditing(object sender, GridViewEditEventArgs e)
@@ -332,12 +373,12 @@ namespace vhcbcloud
                 int rowIndex = e.RowIndex;
 
                 int ConserveSourcesID = DataUtils.GetInt(((Label)gvConsevationSources.Rows[rowIndex].FindControl("lblConserveSourcesID")).Text);
-                int LkConSource = DataUtils.GetInt(((DropDownList)gvConsevationSources.Rows[rowIndex].FindControl("ddlSource")).SelectedValue.ToString());
-                decimal  Total = DataUtils.GetDecimal(((TextBox)gvConsevationSources.Rows[rowIndex].FindControl("txtTotal")).Text);
-                //bool isActive = Convert.ToBoolean(((CheckBox)gvConsevationSources.Rows[rowIndex].FindControl("chkActiveEditPS")).Checked);
+                //int LkConSource = DataUtils.GetInt(((DropDownList)gvConsevationSources.Rows[rowIndex].FindControl("ddlSource")).SelectedValue.ToString());
+                decimal Total = DataUtils.GetDecimal(((TextBox)gvConsevationSources.Rows[rowIndex].FindControl("txtTotal")).Text);
+                bool isActive = Convert.ToBoolean(((CheckBox)gvConsevationSources.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
-                ConservationSourcesUsesData.UpdateConservationSource(ConserveSourcesID, LkConSource, Total);
-                
+                ConservationSourcesUsesData.UpdateConservationSource(ConserveSourcesID, Total, isActive);
+
                 gvConsevationSources.EditIndex = -1;
                 BindSourcegrid();
 
@@ -345,7 +386,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                LogError(Pagename, "gvProjectStatus_RowUpdating", "", ex.Message);
+                LogError(Pagename, "gvConsevationSources_RowUpdating", "", ex.Message);
             }
         }
 
@@ -357,25 +398,157 @@ namespace vhcbcloud
                 //Checking whether the Row is Data Row
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
-                    DropDownList ddlSource = (e.Row.FindControl("ddlSource") as DropDownList);
-                    TextBox txtLkConSource = (e.Row.FindControl("txtLkConSource") as TextBox);
+                    //DropDownList ddlSource = (e.Row.FindControl("ddlSource") as DropDownList);
+                    //TextBox txtLkConSource = (e.Row.FindControl("txtLkConSource") as TextBox);
 
-                    if (txtLkConSource != null)
-                    {
-                        BindLookUP(ddlSource, 110);
+                    //if (txtLkConSource != null)
+                    //{
+                    //    BindLookUP(ddlSource, 110);
 
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlSource.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtLkConSource.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlSource.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-                    }
+                    //    string itemToCompare = string.Empty;
+                    //    foreach (ListItem item in ddlSource.Items)
+                    //    {
+                    //        itemToCompare = item.Value.ToString();
+                    //        if (txtLkConSource.Text.ToLower() == itemToCompare.ToLower())
+                    //        {
+                    //            ddlSource.ClearSelection();
+                    //            item.Selected = true;
+                    //        }
+                    //    }
+                    //}
                 }
+            }
+        }
+
+        private void GenerateTabs()
+        {
+            string NavigatedProjectId = null;
+            string ProgramId = null;
+
+            if (Request.QueryString["ProjectId"] != null)
+                NavigatedProjectId = Request.QueryString["ProjectId"];
+
+            if (Request.QueryString["ProgramId"] != null)
+                ProgramId = Request.QueryString["ProgramId"];
+
+
+            //Active Tab
+            HtmlGenericControl li = new HtmlGenericControl("li");
+            li.Attributes.Add("class", "RoundedCornerTop");
+            Tabs.Controls.Add(li);
+
+            HtmlGenericControl anchor = new HtmlGenericControl("a");
+            anchor.Attributes.Add("href", "ProjectMaintenance.aspx?ProjectId=" + NavigatedProjectId);
+            anchor.InnerText = "Project Maintenance";
+            anchor.Attributes.Add("class", "RoundedCornerTop");
+
+            li.Controls.Add(anchor);
+
+            DataTable dtTabs = TabsData.GetProgramTabs(DataUtils.GetInt(ProgramId));
+
+            foreach (DataRow dr in dtTabs.Rows)
+            {
+                HtmlGenericControl li1 = new HtmlGenericControl("li");
+                if (dr["URL"].ToString() == "ConservationSourcesUses.aspx")
+                    li1.Attributes.Add("class", "RoundedCornerTop selected");
+                else
+                    li1.Attributes.Add("class", "RoundedCornerTop");
+
+                Tabs.Controls.Add(li1);
+                HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+                anchor1.Attributes.Add("href", dr["URL"].ToString() + "?ProjectId=" + NavigatedProjectId + "&ProgramId=" + ProgramId);
+                anchor1.InnerText = dr["TabName"].ToString();
+                anchor1.Attributes.Add("class", "RoundedCornerTop");
+                li1.Controls.Add(anchor1);
+            }
+
+            //if (ProgramId == "144")
+            //{
+            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li1);
+            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+            //    anchor1.Attributes.Add("href", "www.google.com");
+            //    anchor1.InnerText = "Housing Tab1";
+            //    li1.Controls.Add(anchor1);
+
+            //    HtmlGenericControl li2 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li2);
+            //    HtmlGenericControl anchor2 = new HtmlGenericControl("a");
+            //    anchor2.Attributes.Add("href", "www.google.com");
+            //    anchor2.InnerText = "Housing Tab2";
+            //    li2.Controls.Add(anchor2);
+
+            //    HtmlGenericControl li3 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li3);
+            //    HtmlGenericControl anchor3 = new HtmlGenericControl("a");
+            //    anchor3.Attributes.Add("href", "www.google.com");
+            //    anchor3.InnerText = "Housing Tab3";
+            //    li3.Controls.Add(anchor3);
+            //}
+            //else if (ProgramId == "145")
+            //{
+            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
+            //    li1.Attributes.Add("class", "active");
+            //    Tabs.Controls.Add(li1);
+            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+            //    anchor1.Attributes.Add("href", "#");
+            //    anchor1.InnerText = "Conservation Sources Uses";
+            //    anchor1.Attributes.Add("class", "active");
+            //    li1.Controls.Add(anchor1);
+            //}
+        }
+
+        protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlBudgetPeriod.SelectedIndex = -1;
+            //gvConsevationSources.DataSource = null;
+            //gvConsevationSources.SelectedIndex = -1;
+            //gvConservationUsesGrid.DataSource = null;
+            //gvConservationUsesGrid.SelectedIndex = -1;
+
+            dvNewSource.Visible = false;
+            dvConsevationSourcesGrid.Visible = false;
+            cbAddSource.Checked = false;
+
+            dvNewUse.Visible = false;
+            dvConsevationUsesGrid.Visible = false;
+            cbAddUse.Checked = false;
+        }
+
+        protected void gvConservationUsesGrid_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvConservationUsesGrid.EditIndex = e.NewEditIndex;
+            BindUsesgrid();
+        }
+
+        protected void gvConservationUsesGrid_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvConservationUsesGrid.EditIndex = -1;
+            BindUsesgrid();
+        }
+
+        protected void gvConservationUsesGrid_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+
+                int ConserveUsesID = DataUtils.GetInt(((Label)gvConservationUsesGrid.Rows[rowIndex].FindControl("lblConserveUsesID")).Text);
+                //int LkConSource = DataUtils.GetInt(((DropDownList)gvConservationUsesGrid.Rows[rowIndex].FindControl("ddlSource")).SelectedValue.ToString());
+                decimal VHCBTotal = DataUtils.GetDecimal(((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text);
+                decimal OtherTotal = DataUtils.GetDecimal(((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text);
+                bool isActive = Convert.ToBoolean(((CheckBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
+
+                ConservationSourcesUsesData.UpdateConservationUse(ConserveUsesID, VHCBTotal, OtherTotal, isActive);
+
+                gvConservationUsesGrid.EditIndex = -1;
+                BindUsesgrid();
+
+                LogMessage("Conservation Uses updated successfully");
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvConservationUsesGrid_RowUpdating", "", ex.Message);
             }
         }
     }

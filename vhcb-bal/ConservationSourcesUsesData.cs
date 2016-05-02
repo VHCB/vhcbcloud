@@ -6,12 +6,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VHCBCommon.DataAccessLayer;
 
 namespace DataAccessLayer
 {
     public class ConservationSourcesUsesData
     {
-        public static void AddConservationSource(int ProjectId, int LKBudgetPeriod, int LkConSource, decimal Total)
+        public static AddConSource AddConservationSource(int ProjectId, int LKBudgetPeriod, int LkConSource, decimal Total)
         {
             try
             {
@@ -29,10 +30,26 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LKBudgetPeriod", LKBudgetPeriod));
                         command.Parameters.Add(new SqlParameter("LkConSource", LkConSource));
                         command.Parameters.Add(new SqlParameter("Total", Total));
-                       
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
+
+                        AddConSource acs = new AddConSource();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+
                     }
                 }
             }
@@ -42,7 +59,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateConservationSource(int ConserveSourcesID, int LkConSource, decimal Total)
+        public static void UpdateConservationSource(int ConserveSourcesID, decimal Total, bool RowIsActive)
         {
             try
             {
@@ -57,8 +74,9 @@ namespace DataAccessLayer
                         command.CommandText = "UpdateConservationSource";
 
                         command.Parameters.Add(new SqlParameter("ConserveSourcesID", ConserveSourcesID));
-                        command.Parameters.Add(new SqlParameter("LkConSource", LkConSource));
+                        //command.Parameters.Add(new SqlParameter("LkConSource", LkConSource));
                         command.Parameters.Add(new SqlParameter("Total", Total));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -72,7 +90,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void AddConservationUse(int ProjectId, int LKBudgetPeriod, int LkConUseVHCB, decimal VHCBTotal, 
+        public static AddConUse AddConservationUse(int ProjectId, int LKBudgetPeriod, int LkConUseVHCB, decimal VHCBTotal,
             int LkConUseOther, decimal OtherTotal)
         {
             try
@@ -94,6 +112,52 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkConUseOther", LkConUseOther));
                         command.Parameters.Add(new SqlParameter("OtherTotal", OtherTotal));
 
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        AddConUse acs = new AddConUse();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateConservationUse(int ConserveUsesID, decimal VHCBTotal, decimal OtherTotal, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateConservationUse";
+
+                        command.Parameters.Add(new SqlParameter("ConserveUsesID", ConserveUsesID));
+                        command.Parameters.Add(new SqlParameter("VHCBTotal", VHCBTotal));
+                        command.Parameters.Add(new SqlParameter("OtherTotal", OtherTotal));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -106,7 +170,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetConserveSourcesList(int ProjectId, int BudgetPeriod)
+        public static DataTable GetConserveSourcesList(int ProjectId, int BudgetPeriod, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -122,6 +186,7 @@ namespace DataAccessLayer
                         command.CommandText = "GetConserveSourcesList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("LKBudgetPeriod", BudgetPeriod));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -140,7 +205,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static DataTable GetConserveUsesList(int ProjectId, int BudgetPeriod)
+        public static DataTable GetConserveUsesList(int ProjectId, int BudgetPeriod, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -156,6 +221,7 @@ namespace DataAccessLayer
                         command.CommandText = "GetConserveUsesList";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("LKBudgetPeriod", BudgetPeriod));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -205,6 +271,18 @@ namespace DataAccessLayer
                 throw ex;
             }
             return dt;
+        }
+
+        public class AddConSource
+        {
+            public bool IsDuplicate { set; get; }
+            public bool IsActive { set; get; }
+        }
+
+        public class AddConUse
+        {
+            public bool IsDuplicate { set; get; }
+            public bool IsActive { set; get; }
         }
     }
 }

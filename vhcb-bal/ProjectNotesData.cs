@@ -45,7 +45,7 @@ namespace DataAccessLayer
         }
 
 
-        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, string Notes)
+        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, string Notes, bool RowIsActive)
         {
             try
             {
@@ -64,7 +64,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
                         //command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
-                      
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -77,7 +78,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static DataTable GetProjectNotesList(int ProjectId)
+        public static DataTable GetProjectNotesList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -91,8 +92,9 @@ namespace DataAccessLayer
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetProjectNotesList";
-                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
-                        
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId)); 
+                            command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
                         da.Fill(ds);

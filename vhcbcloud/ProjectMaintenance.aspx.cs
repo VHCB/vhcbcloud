@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
@@ -222,6 +223,7 @@ namespace vhcbcloud
                 hfProjectId.Value = "";
                 if (ddlProject.SelectedIndex != 0)
                 {
+                    dvTabs.Visible = true;
                     dvUpdate.Visible = true;
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
                     //txtProjectName.Text = tokens[1];
@@ -269,6 +271,7 @@ namespace vhcbcloud
                 }
                 else
                 {
+                    dvTabs.Visible = false;
                     dvUpdate.Visible = false;
 
                     //ProjectNames
@@ -358,6 +361,7 @@ namespace vhcbcloud
         {
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
             PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
+            GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
             //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
             PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
             PopulateDropDown(ddlBoardDate, drProjectDetails["LkBoardDate"].ToString());
@@ -369,6 +373,71 @@ namespace vhcbcloud
             txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             txtGrantExpirationDate.Text = drProjectDetails["ExpireDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ExpireDate"].ToString()).ToShortDateString();
             cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
+        }
+
+        private void GenerateTabs(int ProjectId, int ProgramId)
+        {
+            HtmlGenericControl li = new HtmlGenericControl("li");
+            li.Attributes.Add("class", "RoundedCornerTop selected");
+            Tabs.Controls.Add(li);
+
+            HtmlGenericControl anchor = new HtmlGenericControl("a");
+            anchor.Attributes.Add("href", "ProjectMaintenance.aspx");
+            anchor.InnerText = "Project Maintenance";
+            anchor.Attributes.Add("class", "RoundedCornerTop");
+
+            li.Controls.Add(anchor);
+
+            DataTable dtTabs = TabsData.GetProgramTabs(ProgramId);
+
+            foreach (DataRow dr in dtTabs.Rows)
+            {
+                HtmlGenericControl li1 = new HtmlGenericControl("li");
+                li1.Attributes.Add("class", "RoundedCornerTop");
+                Tabs.Controls.Add(li1);
+                HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+                anchor1.Attributes.Add("href", dr["URL"].ToString() + "?ProjectId=" + ProjectId + "&ProgramId=" + ProgramId);
+                anchor1.Attributes.Add("class", "RoundedCornerTop");
+                anchor1.InnerText = dr["TabName"].ToString();
+                li1.Controls.Add(anchor1);
+            }
+
+            
+
+            //if (ProgramId == 144)
+            //{
+            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li1);
+            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+            //    anchor1.Attributes.Add("href", "www.google.com");
+            //    anchor1.InnerText = "Housing Tab1";
+            //    li1.Controls.Add(anchor1);
+
+            //    HtmlGenericControl li2 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li2);
+            //    HtmlGenericControl anchor2 = new HtmlGenericControl("a");
+            //    anchor2.Attributes.Add("href", "www.google.com");
+            //    anchor2.InnerText = "Housing Tab2";
+            //    li2.Controls.Add(anchor2);
+
+            //    HtmlGenericControl li3 = new HtmlGenericControl("li");
+            //    Tabs.Controls.Add(li3);
+            //    HtmlGenericControl anchor3 = new HtmlGenericControl("a");
+            //    anchor3.Attributes.Add("href", "www.google.com");
+            //    anchor3.InnerText = "Housing Tab3";
+            //    li3.Controls.Add(anchor3);
+            //}
+            //else if (ProgramId == 145)
+            //{
+            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
+            //    li1.Attributes.Add("class", "RoundedCornerTop");
+            //    Tabs.Controls.Add(li1);
+            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+            //    anchor1.Attributes.Add("href", "ConservationSourcesUses.aspx?ProjectId=" + ProjectId + "&ProgramId=" + ProgramId);
+            //    anchor1.InnerText = "Conservation Sources Uses";
+            //    anchor1.Attributes.Add("class", "RoundedCornerTop");
+            //    li1.Controls.Add(anchor1);
+            //}
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)

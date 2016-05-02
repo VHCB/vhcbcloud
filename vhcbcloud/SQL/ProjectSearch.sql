@@ -101,7 +101,7 @@ begin transaction
 -- exec ProjectSearch  null, null, null, 145, null, 'Windsor ', null, null
 -- exec ProjectSearch  null, null, null, 145, null, null, 133, null
 -- exec ProjectSearch  null, null, 1015, 145, null, null, 133, null
--- exec ProjectSearch  '9999-999', null, null, null, null, null, null, null
+-- exec ProjectSearch  '0000-000', null, null, null, null, null, null, null
 --select * from projects_v
 	begin try
 	

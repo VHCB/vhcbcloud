@@ -48,15 +48,16 @@ go
 create procedure dbo.UpdateProjectNotes
 (
 	@ProjectNotesID int,
-	@LkCategory int, 
-	@Notes		nvarchar(max)
+	@LkCategory		int, 
+	@Notes			nvarchar(max),
+	@RowIsActive	bit
 )
 as
 begin transaction
 
 	begin try
 	
-		update ProjectNotes set LkCategory = @LkCategory, Notes = @Notes, DateModified = getdate()
+		update ProjectNotes set LkCategory = @LkCategory, Notes = @Notes, RowIsActive = @RowIsActive, DateModified = getdate()
 		from ProjectNotes 
 		where ProjectNotesID = @ProjectNotesID
 
@@ -80,19 +81,20 @@ go
 
 create procedure dbo.GetProjectNotesList
 (
-	@ProjectId int
+	@ProjectId		int,
+	@IsActiveOnly	bit
 )
 as
 begin transaction
-
+--exec GetProjectNotesList 1, 1
 	begin try
 	
 		select ProjectNotesID, LkCategory, lv.description, pn.UserId, ui.username, convert(varchar(10), Date, 101) as Date, 
-			substring(Notes, 0, 25) Notes, Notes as FullNotes
+			substring(Notes, 0, 25) Notes, Notes as FullNotes, pn.RowIsActive
 		from ProjectNotes pn(nolock)
 		join lookupvalues lv(nolock) on lv.Typeid = LkCategory
 		left join userinfo ui(nolock) on ui.userid = pn.UserId
-		where ProjectId = @ProjectId
+		where ProjectId = @ProjectId and (@IsActiveOnly = 0 or pn.RowIsActive = @IsActiveOnly)
 		order by ProjectNotesID desc
 	end try
 	begin catch
@@ -121,7 +123,7 @@ begin transaction
 --exec GetProjectNotesById 4
 	begin try
 	
-		select ProjectId, LkCategory as LKProjCategory, UserId, Date, Notes
+		select ProjectId, LkCategory as LKProjCategory, UserId, Date, Notes, RowIsActive
 		from ProjectNotes pn(nolock)
 		where ProjectNotesID = @ProjectNotesId
 

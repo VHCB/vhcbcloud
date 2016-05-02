@@ -13,6 +13,15 @@ namespace vhcbcloud {
     public partial class ProjectNotes {
         
         /// <summary>
+        /// cbActiveOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
+        
+        /// <summary>
         /// dvMessage control.
         /// </summary>
         /// <remarks>
@@ -22,13 +31,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
         
         /// <summary>
-        /// lblErrorMsg control.
+        /// lblErrorMsg1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg1;
         
         /// <summary>
         /// pnlProjectInfo control.
@@ -83,6 +92,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtProjectNotesDate;
+        
+        /// <summary>
+        /// cbActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbActive;
         
         /// <summary>
         /// txtNotes control.
