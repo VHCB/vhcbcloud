@@ -540,24 +540,7 @@ namespace vhcbcloud
 
         protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            try
-            {
-                int rowIndex = e.RowIndex;
-                string TransId = ((Label)gvPTrans.Rows[rowIndex].FindControl("lblTransId")).Text.Trim();
-                if (TransId.ToString() != "")
-                {
-                    FinancialTransactions.InactivateFinancialTransByTransId(Convert.ToInt32(TransId));
-                    BindTransGrid(GetTransId());
-                    BindFundDetails(GetTransId());
-
-                    CommonHelper.EnableButton(btnTransactionSubmit);
-                    lblErrorMsg.Text = "Transaction was successfully inactavited. All details related to this transaction will automatically inactivated.";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
+           
         }
 
         protected void gvPTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -580,6 +563,28 @@ namespace vhcbcloud
                                         
                     lblErrorMsg.Text = "Transaction detail was successfully inactavited";
                     CommonHelper.EnableButton(btnCommitmentSubmit);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string TransId = ((Label)gvPTrans.Rows[rowIndex].FindControl("lblTransId")).Text.Trim();
+                if (TransId.ToString() != "")
+                {
+                    FinancialTransactions.InactivateFinancialTransByTransId(Convert.ToInt32(TransId));
+                    BindTransGrid(GetTransId());
+                    BindFundDetails(GetTransId());
+
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+                    lblErrorMsg.Text = "Transaction was successfully inactavited. All details related to this transaction will automatically inactivated.";
                 }
             }
             catch (Exception ex)
