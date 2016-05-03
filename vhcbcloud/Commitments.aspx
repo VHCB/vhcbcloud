@@ -92,7 +92,7 @@
 
                         <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
                             Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing" OnRowUpdating="gvPTrans_RowUpdating">
+                            GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing" OnRowUpdating="gvPTrans_RowUpdating" OnRowDeleting="gvPTrans_RowDeleting">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -139,7 +139,11 @@
                                         <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("transid") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:CommandField ShowEditButton="True" UpdateText="Inactivate" ShowDeleteButton="false"/>
+                                <asp:TemplateField ShowHeader="False">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Inactivate" OnClientClick="return confirm('Are you sure you want to delete this transaction?');"></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
                         </asp:GridView>
@@ -193,8 +197,8 @@
                             <br />
                             <asp:GridView ID="gvBCommit" runat="server" AutoGenerateColumns="False"
                                 Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                GridLines="None" EnableTheming="True" AllowPaging="false"
-                                AllowSorting="true" ShowFooter="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
+                                GridLines="None" EnableTheming="True"
+                                AllowSorting="True" ShowFooter="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
                                 OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound" OnRowDeleting="gvBCommit_RowDeleting">
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -263,7 +267,16 @@
                                             <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:CommandField ShowEditButton="True" ShowDeleteButton="true" DeleteText="Inactivate"/>
+                                    <asp:TemplateField ShowHeader="False">
+                                        <EditItemTemplate>
+                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                            &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                        </EditItemTemplate>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                            &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Delete" Text="Inactivate" OnClientClick="return confirm('Are you sure you want to delete the detail?');"></asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                 </Columns>
                                 <FooterStyle CssClass="footerStyle" />
                             </asp:GridView>
