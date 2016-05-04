@@ -18,7 +18,7 @@ begin transaction
 		select TabName, URL
 		from programtab(nolock)
 		where LKVHCBProgram = @LKProgramID
-
+        order by taborder
 	end try
 	begin catch
 		if @@trancount > 0

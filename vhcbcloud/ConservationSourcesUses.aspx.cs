@@ -19,10 +19,17 @@ namespace vhcbcloud
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
+
+            hfProjectId.Value = "0";
+            if (Request.QueryString["ProjectId"] != null)
+                hfProjectId.Value = Request.QueryString["ProjectId"];
+
             GenerateTabs();
 
             if (!IsPostBack)
             {
+                PopulateProjectDetails();
+
                 dvImport.Visible = false;
                 BindControls();
 
@@ -31,12 +38,22 @@ namespace vhcbcloud
 
                 dvNewUse.Visible = false;
                 dvConsevationUsesGrid.Visible = false;
+
+                ddlBudgetPeriod.SelectedIndex = 2;
+                BudgetPeriodSelectionChanged();
             }
+        }
+
+        private void PopulateProjectDetails()
+        {
+            DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
+            ProjectNum.InnerText = dr["ProjNumber"].ToString();
+            ProjName.InnerText = dr["ProjectName"].ToString();
         }
 
         private void BindControls()
         {
-            BindProjects(ddlProject);
+           // BindProjects(ddlProject);
             BindLookUP(ddlBudgetPeriod, 141);
             BindLookUP(ddlSource, 110);
             BindUsesLookUP(ddlVHCBUses, "VHCB");
@@ -121,12 +138,12 @@ namespace vhcbcloud
         {
             try
             {
-                if (ddlProject.SelectedIndex == 0)
-                {
-                    LogMessage("Select Project");
-                    ddlProject.Focus();
-                    return;
-                }
+                //if (ddlProject.SelectedIndex == 0)
+                //{
+                //    LogMessage("Select Project");
+                //    ddlProject.Focus();
+                //    return;
+                //}
                 if (ddlSource.SelectedIndex == 0)
                 {
                     LogMessage("Select Source");
@@ -176,6 +193,11 @@ namespace vhcbcloud
 
         protected void ddlBudgetPeriod_SelectedIndexChanged(object sender, EventArgs e)
         {
+            BudgetPeriodSelectionChanged();
+        }
+
+        private void BudgetPeriodSelectionChanged()
+        {
             if (ddlBudgetPeriod.SelectedIndex != 0)
             {
                 //Sources
@@ -191,7 +213,7 @@ namespace vhcbcloud
 
                 dvImport.Visible = false;
 
-                if (ddlBudgetPeriod.SelectedIndex == 1 
+                if (ddlBudgetPeriod.SelectedIndex == 1
                     || (gvConsevationSources.Rows.Count > 0 || gvConservationUsesGrid.Rows.Count > 0))
                     dvImport.Visible = false;
                 else if (ddlBudgetPeriod.SelectedIndex == 2)
@@ -206,7 +228,8 @@ namespace vhcbcloud
                     dvImport.Visible = true;
                     ddlImportFrom.Items.Clear();
                     ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
-                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 2", "26084"));
+                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
+                    ddlImportFrom.Items.Insert(2, new ListItem("Budget Period 2", "26084"));
                 }
             }
             else
@@ -280,12 +303,12 @@ namespace vhcbcloud
         {
             try
             {
-                if (ddlProject.SelectedIndex == 0)
-                {
-                    LogMessage("Select Project");
-                    ddlProject.Focus();
-                    return;
-                }
+                //if (ddlProject.SelectedIndex == 0)
+                //{
+                //    LogMessage("Select Project");
+                //    ddlProject.Focus();
+                //    return;
+                //}
 
                 if (ddlVHCBUses.SelectedIndex == 0)
                 {
@@ -422,15 +445,13 @@ namespace vhcbcloud
 
         private void GenerateTabs()
         {
-            string NavigatedProjectId = null;
             string ProgramId = null;
 
-            if (Request.QueryString["ProjectId"] != null)
-                NavigatedProjectId = Request.QueryString["ProjectId"];
+            //if (Request.QueryString["ProjectId"] != null)
+            //    NavigatedProjectId = Request.QueryString["ProjectId"];
 
             if (Request.QueryString["ProgramId"] != null)
                 ProgramId = Request.QueryString["ProgramId"];
-
 
             //Active Tab
             HtmlGenericControl li = new HtmlGenericControl("li");
@@ -438,7 +459,7 @@ namespace vhcbcloud
             Tabs.Controls.Add(li);
 
             HtmlGenericControl anchor = new HtmlGenericControl("a");
-            anchor.Attributes.Add("href", "ProjectMaintenance.aspx?ProjectId=" + NavigatedProjectId);
+            anchor.Attributes.Add("href", "ProjectMaintenance.aspx?ProjectId=" + hfProjectId.Value);
             anchor.InnerText = "Project Maintenance";
             anchor.Attributes.Add("class", "RoundedCornerTop");
 
@@ -456,46 +477,11 @@ namespace vhcbcloud
 
                 Tabs.Controls.Add(li1);
                 HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-                anchor1.Attributes.Add("href", dr["URL"].ToString() + "?ProjectId=" + NavigatedProjectId + "&ProgramId=" + ProgramId);
+                anchor1.Attributes.Add("href", dr["URL"].ToString() + "?ProjectId=" + hfProjectId.Value + "&ProgramId=" + ProgramId);
                 anchor1.InnerText = dr["TabName"].ToString();
                 anchor1.Attributes.Add("class", "RoundedCornerTop");
                 li1.Controls.Add(anchor1);
             }
-
-            //if (ProgramId == "144")
-            //{
-            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li1);
-            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-            //    anchor1.Attributes.Add("href", "www.google.com");
-            //    anchor1.InnerText = "Housing Tab1";
-            //    li1.Controls.Add(anchor1);
-
-            //    HtmlGenericControl li2 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li2);
-            //    HtmlGenericControl anchor2 = new HtmlGenericControl("a");
-            //    anchor2.Attributes.Add("href", "www.google.com");
-            //    anchor2.InnerText = "Housing Tab2";
-            //    li2.Controls.Add(anchor2);
-
-            //    HtmlGenericControl li3 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li3);
-            //    HtmlGenericControl anchor3 = new HtmlGenericControl("a");
-            //    anchor3.Attributes.Add("href", "www.google.com");
-            //    anchor3.InnerText = "Housing Tab3";
-            //    li3.Controls.Add(anchor3);
-            //}
-            //else if (ProgramId == "145")
-            //{
-            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
-            //    li1.Attributes.Add("class", "active");
-            //    Tabs.Controls.Add(li1);
-            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-            //    anchor1.Attributes.Add("href", "#");
-            //    anchor1.InnerText = "Conservation Sources Uses";
-            //    anchor1.Attributes.Add("class", "active");
-            //    li1.Controls.Add(anchor1);
-            //}
         }
 
         protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
@@ -549,6 +535,37 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 LogError(Pagename, "gvConservationUsesGrid_RowUpdating", "", ex.Message);
+            }
+        }
+
+        protected void ddlImportFrom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ConservationSourcesUsesData.ImportBudgetPeriodData(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlImportFrom.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()));
+
+                //Sources
+                ClearAddSourceForm();
+                dvNewSource.Visible = true;
+                BindSourcegrid();
+                cbAddSource.Checked = false;
+
+                //Uses
+                dvNewUse.Visible = true;
+                BindUsesgrid();
+                cbAddUse.Checked = false;
+
+                dvImport.Visible = false;
+
+                LogMessage("Successfully Imported Budget Period");
+            }
+            catch (Exception ex)
+            {
+                if(ex.Message.Contains("Invalid Import"))
+                    LogMessage("Invalid Import, No Data Exist for this Budget Period");
+                else
+                LogError(Pagename, "ddlImportFrom_SelectedIndexChanged", "", ex.Message);
             }
         }
     }

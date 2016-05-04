@@ -31,22 +31,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tabs;
         
         /// <summary>
-        /// ddlProject control.
+        /// ProjectNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProject;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjectNum;
         
         /// <summary>
-        /// txtProjectName control.
+        /// ProjName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProjectName;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjName;
         
         /// <summary>
         /// cbActiveOnly control.
