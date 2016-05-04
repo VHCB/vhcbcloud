@@ -12,7 +12,7 @@ create procedure GetConserveSourcesList
 	@IsActiveOnly	bit
 )  
 as
---exec GetConserveSourcesList 6588,26083
+--exec GetConserveSourcesList 6622,26084, 0
 begin
 	select  cs.ConserveSourcesID, c.ConserveID, cs.LkConSource, cs.Total, lv.description SourceName, cs.RowIsActive
 	from Conserve c(nolock)
@@ -368,4 +368,85 @@ begin transaction
 		commit transaction;
 go
 
+/* Import */
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[ImportBudgetPeriodData]') and type in (N'P', N'PC'))
+drop procedure [dbo].ImportBudgetPeriodData
+go
+
+create procedure ImportBudgetPeriodData
+(
+	@ProjectID			int,
+	@LKBudgetPeriodFrom int,
+	@LKBudgetPeriodTo	int
+)  
+as
+/*
+exec ImportBudgetPeriodData 6586,26084, 26085
+
+
+select * from conserve
+select * from ConserveSU where conserveid = 3
+select * from ConserveSources where ConserveSUId = 7
+select * from ConserveUses where ConserveSUId = 7
+*/
+begin
+	declare @ConserveID	int
+	declare @ConserveSUIDFrom int
+	
+	if not exists
+    (
+		select 1 
+		from Conserve(nolock) 
+		where ProjectID = @ProjectID
+	)
+	begin
+		RAISERROR ('Invalid Import, No Data Exist for this Budget Period', 16, 1)
+		return 1
+	end
+	else
+	begin
+		select @ConserveID = ConserveID 
+		from Conserve(nolock) 
+		where ProjectID = @ProjectID
+	end 
+
+	if exists
+    (
+		select 1
+		from ConserveSU(nolock)
+		where ConserveID = @ConserveID 
+			and LKBudgetPeriod = @LKBudgetPeriodTo
+    )
+	begin
+		 RAISERROR ('Invalid Import, Alreay have Conservation Sources and Use for this Budget Period', 16, 1)
+		 return 1
+	end
+	else
+	begin
+		declare @NewConserveSUID int
+		declare @FromConserveSUID int
+
+		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
+		values(@ConserveID, @LKBudgetPeriodTo, getdate())
+
+		set @NewConserveSUID = @@IDENTITY
+
+		select @FromConserveSUID = ConserveSUID 
+		from ConserveSU(nolock) 
+		where ConserveID = @ConserveID 
+			and LKBudgetPeriod = @LKBudgetPeriodFrom
+
+		insert into ConserveSources(ConserveSUID, LkConSource, Total, DateModified)
+		select @NewConserveSUID, LkConSource, Total, getdate()
+		from ConserveSources (nolock)
+		where RowIsActive = 1 and ConserveSUID = @FromConserveSUID
+
+		insert into ConserveUses(ConserveSUID, LkConUseVHCB, VHCBTotal, LkConUseOther, OtherTotal, DateModified)
+		select @NewConserveSUID, LkConUseVHCB, VHCBTotal, LkConUseOther, OtherTotal, getdate()
+		from ConserveUses (nolock)
+		where RowIsActive = 1 and ConserveSUID = @FromConserveSUID
+
+	end
+end
+go

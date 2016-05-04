@@ -13,7 +13,7 @@ as
 --exec GetProjectNameById 6588
 begin
 
-	select rtrim(ltrim(lpn.description)) as ProjectName
+	select rtrim(ltrim(lpn.description)) as ProjectName, p.proj_num as ProjNumber
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
@@ -337,7 +337,7 @@ create procedure dbo.GetProjectNames
 	@ProjectId		int,
 	@IsActiveOnly	bit
 ) as
---GetProjectNames 6588
+--GetProjectNames 6588, 1
 begin transaction
 
 	begin try

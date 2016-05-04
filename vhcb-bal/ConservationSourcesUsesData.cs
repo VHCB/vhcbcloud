@@ -273,6 +273,36 @@ namespace DataAccessLayer
             return dt;
         }
 
+        public static void ImportBudgetPeriodData(int ProjectId, int @LKBudgetPeriodFrom, int @LKBudgetPeriodTo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "ImportBudgetPeriodData";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("LKBudgetPeriodFrom", @LKBudgetPeriodFrom));
+                        command.Parameters.Add(new SqlParameter("LKBudgetPeriodTo", @LKBudgetPeriodTo));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public class AddConSource
         {
             public bool IsDuplicate { set; get; }

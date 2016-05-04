@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ConservationSourcesUses.aspx.cs" Inherits="vhcbcloud.ConservationSourcesUses" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ConservationSourcesUses.aspx.cs" Inherits="vhcbcloud.ConservationSourcesUses" 
+    MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -21,13 +22,15 @@
                         <tr>
                             <td><span class="labelClass">Project #</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
-                                </asp:DropDownList>
-
+                               <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
+                                </asp:DropDownList>--%>
+                                <span class="labelClass" id="ProjectNum" runat="server"></span>
                             </td>
-                            <td><span class="labelClass">Name&nbsp;&nbsp;</span></td>
-                            <td>
-                                <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox></td>
+                            <td><span class="labelClass">Name</span></td>
+                            <td style="text-align:left">
+                               <%-- <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>--%>
+                                <span class="labelClass" id="ProjName" runat="server"></span>
+                            </td>
                             <td style="text-align: right">
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
@@ -50,7 +53,7 @@
                                         <tr>
                                             <td style="height: 5px"><span class="labelClass">Import From &nbsp;</span></td>
                                             <td style="height: 5px">
-                                                <asp:DropDownList ID="ddlImportFrom" CssClass="clsDropDown" runat="server" AutoPostBack="true">
+                                                <asp:DropDownList ID="ddlImportFrom" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlImportFrom_SelectedIndexChanged">
                                                 </asp:DropDownList></td>
                                         </tr>
                                     </table>
@@ -109,7 +112,7 @@
                         </div>
 
                         <div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConsevationSources" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
@@ -222,7 +225,7 @@
                         </div>
 
                         <div class="panel-body" id="dvConsevationUsesGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel2" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel2" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConservationUsesGrid" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
@@ -317,7 +320,7 @@
                  $('#<%=txtUsesTotal.ClientID%>').val(parseFloat($('#<%=txtVHCBUseAmount.ClientID%>').val()) + parseFloat($('#<%=txtOtherUseAmount.ClientID%>').val()));
              });--%>
 
-            $('#<%= ddlProject.ClientID%>').change(function () {
+            <%--$('#<%= ddlProject.ClientID%>').change(function () {
                 var arr = $('#<%= ddlProject.ClientID%>').val().split('|');
                 $('#<%=txtProjectName.ClientID%>').val(arr[1]);
                 $('#<%=hfProjectId.ClientID%>').val(arr[0]);
@@ -326,7 +329,7 @@
 
                 console.log(arr[0]);
                 console.log(arr[1]);
-            });
+            });--%>
         });
     </script>
 
