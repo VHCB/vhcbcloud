@@ -273,7 +273,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static void ImportBudgetPeriodData(int ProjectId, int @LKBudgetPeriodFrom, int @LKBudgetPeriodTo)
+        public static void ImportBudgetPeriodData(int ProjectId, int ImportLKBudgetPeriod, int LKBudgetPeriod)
         {
             try
             {
@@ -288,8 +288,8 @@ namespace DataAccessLayer
                         command.CommandText = "ImportBudgetPeriodData";
 
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
-                        command.Parameters.Add(new SqlParameter("LKBudgetPeriodFrom", @LKBudgetPeriodFrom));
-                        command.Parameters.Add(new SqlParameter("LKBudgetPeriodTo", @LKBudgetPeriodTo));
+                        command.Parameters.Add(new SqlParameter("ImportLKBudgetPeriod", ImportLKBudgetPeriod));
+                        command.Parameters.Add(new SqlParameter("LKBudgetPeriod", LKBudgetPeriod));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -301,6 +301,74 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static int GetLatestBudgetPeriod(int ProjectId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetLatestBudgetPeriod";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        SqlParameter parmMessage = new SqlParameter("@LKBudgetPeriod", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return DataUtils.GetInt(command.Parameters["@LKBudgetPeriod"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable PopulateImportBudgetPeriodDropDown(int ProjectID, int LKBudgetPeriod)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "PopulateImportBudgetPeriodDropDown";
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("LKBudgetPeriod", LKBudgetPeriod));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
 
         public class AddConSource

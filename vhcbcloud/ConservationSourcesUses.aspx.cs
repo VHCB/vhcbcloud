@@ -39,7 +39,7 @@ namespace vhcbcloud
                 dvNewUse.Visible = false;
                 dvConsevationUsesGrid.Visible = false;
 
-                ddlBudgetPeriod.SelectedIndex = 2;
+                ddlBudgetPeriod.SelectedValue = ConservationSourcesUsesData.GetLatestBudgetPeriod(DataUtils.GetInt(hfProjectId.Value)).ToString();
                 BudgetPeriodSelectionChanged();
             }
         }
@@ -213,24 +213,39 @@ namespace vhcbcloud
 
                 dvImport.Visible = false;
 
-                if (ddlBudgetPeriod.SelectedIndex == 1
-                    || (gvConsevationSources.Rows.Count > 0 || gvConservationUsesGrid.Rows.Count > 0))
-                    dvImport.Visible = false;
-                else if (ddlBudgetPeriod.SelectedIndex == 2)
+                DataTable dtImportBudgetPeriods = ConservationSourcesUsesData.PopulateImportBudgetPeriodDropDown(DataUtils.GetInt(hfProjectId.Value), 
+                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()));
+
+                if(dtImportBudgetPeriods.Rows.Count > 0)
                 {
                     dvImport.Visible = true;
                     ddlImportFrom.Items.Clear();
+                    ddlImportFrom.DataSource = dtImportBudgetPeriods;
+                    ddlImportFrom.DataValueField = "typeid";
+                    ddlImportFrom.DataTextField = "description";
+                    ddlImportFrom.DataBind();
                     ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
-                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
+
                 }
-                else if (ddlBudgetPeriod.SelectedIndex == 3)
-                {
-                    dvImport.Visible = true;
-                    ddlImportFrom.Items.Clear();
-                    ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
-                    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
-                    ddlImportFrom.Items.Insert(2, new ListItem("Budget Period 2", "26084"));
-                }
+
+                //if (ddlBudgetPeriod.SelectedIndex == 1
+                //    || (gvConsevationSources.Rows.Count > 0 || gvConservationUsesGrid.Rows.Count > 0))
+                //    dvImport.Visible = false;
+                //else if (ddlBudgetPeriod.SelectedIndex == 2)
+                //{
+                //    dvImport.Visible = true;
+                //    ddlImportFrom.Items.Clear();
+                //    ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
+                //    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
+                //}
+                //else if (ddlBudgetPeriod.SelectedIndex == 3)
+                //{
+                //    dvImport.Visible = true;
+                //    ddlImportFrom.Items.Clear();
+                //    ddlImportFrom.Items.Insert(0, new ListItem("Select", "NA"));
+                //    ddlImportFrom.Items.Insert(1, new ListItem("Budget Period 1", "26083"));
+                //    ddlImportFrom.Items.Insert(2, new ListItem("Budget Period 2", "26084"));
+                //}
             }
             else
             {
@@ -259,6 +274,17 @@ namespace vhcbcloud
                     dvConsevationSourcesGrid.Visible = true;
                     gvConsevationSources.DataSource = dtSources;
                     gvConsevationSources.DataBind();
+
+                    Label lblFooterTotalAmt = (Label)gvConsevationSources.FooterRow.FindControl("lblFooterTotalAmount");
+                    decimal totAmt = 0;
+
+                    for (int i = 0; i < dtSources.Rows.Count; i++)
+                    {
+                        if(DataUtils.GetBool(dtSources.Rows[i]["RowIsActive"].ToString()))
+                        totAmt += Convert.ToDecimal(dtSources.Rows[i]["Total"].ToString());
+                    }
+
+                    lblFooterTotalAmt.Text = CommonHelper.myDollarFormat(totAmt);
                 }
                 else
                 {
@@ -285,6 +311,28 @@ namespace vhcbcloud
                     dvConsevationUsesGrid.Visible = true;
                     gvConservationUsesGrid.DataSource = dtSources;
                     gvConservationUsesGrid.DataBind();
+
+                    Label lblFooterVHCBTotalAmt = (Label)gvConservationUsesGrid.FooterRow.FindControl("lblFooterVHCBTotalAmount");
+                    Label lblFooterOtherTotalAmt = (Label)gvConservationUsesGrid.FooterRow.FindControl("lblFooterOtherTotalAmount");
+                    Label lblFooterGrandTotalAmt = (Label)gvConservationUsesGrid.FooterRow.FindControl("lblFooterGrandTotalAmount");
+
+                    decimal totVHCBAmt = 0;
+                    decimal totOtherAmt = 0;
+                    decimal totGrantAmt = 0;
+
+                    for (int i = 0; i < dtSources.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dtSources.Rows[i]["RowIsActive"].ToString()))
+                        {
+                            totVHCBAmt += Convert.ToDecimal(dtSources.Rows[i]["VHCBTotal"].ToString());
+                            totOtherAmt += Convert.ToDecimal(dtSources.Rows[i]["OtherTotal"].ToString());
+                            totGrantAmt += Convert.ToDecimal(dtSources.Rows[i]["Total"].ToString());
+                        }
+                    }
+
+                    lblFooterVHCBTotalAmt.Text = CommonHelper.myDollarFormat(totVHCBAmt);
+                    lblFooterOtherTotalAmt.Text = CommonHelper.myDollarFormat(totOtherAmt);
+                    lblFooterGrandTotalAmt.Text = CommonHelper.myDollarFormat(totGrantAmt);
                 }
                 else
                 {
@@ -319,28 +367,35 @@ namespace vhcbcloud
 
                 if (string.IsNullOrWhiteSpace(txtVHCBUseAmount.Text.ToString()) == true)
                 {
-                    LogMessage("Enter vhcb use total");
+                    LogMessage("Enter VHCb use Total");
                     txtVHCBUseAmount.Focus();
                     return;
                 }
 
                 if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) <= 0)
                 {
-                    LogMessage("Enter valid vhcb use total");
+                    LogMessage("Enter Valid VHCB Use Total");
                     txtVHCBUseAmount.Focus();
+                    return;
+                }
+
+                if (ddlOtherUses.SelectedIndex == 0)
+                {
+                    LogMessage("Select Other Use");
+                    ddlOtherUses.Focus();
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(txtOtherUseAmount.Text.ToString()) == true)
                 {
-                    LogMessage("Enter other use total");
+                    LogMessage("Enter Other Use total");
                     txtOtherUseAmount.Focus();
                     return;
                 }
 
                 if (DataUtils.GetDecimal(txtOtherUseAmount.Text) <= 0)
                 {
-                    LogMessage("Enter valid other use total");
+                    LogMessage("Enter Valid Other Use total");
                     txtOtherUseAmount.Focus();
                     return;
                 }

@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ConservationSourcesUses.aspx.cs" Inherits="vhcbcloud.ConservationSourcesUses" 
-    MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ConservationSourcesUses.aspx.cs" Inherits="vhcbcloud.ConservationSourcesUses"
+    MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -22,13 +22,13 @@
                         <tr>
                             <td><span class="labelClass">Project #</span></td>
                             <td>
-                               <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
+                                <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                 </asp:DropDownList>--%>
                                 <span class="labelClass" id="ProjectNum" runat="server"></span>
                             </td>
                             <td><span class="labelClass">Name</span></td>
-                            <td style="text-align:left">
-                               <%-- <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>--%>
+                            <td style="text-align: left">
+                                <%-- <asp:TextBox ID="txtProjectName" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>--%>
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                             <td style="text-align: right">
@@ -48,7 +48,7 @@
                                 </asp:DropDownList>
                             </td>
                             <td colspan="2">
-                                <div  runat="server" id="dvImport">
+                                <div runat="server" id="dvImport">
                                     <table>
                                         <tr>
                                             <td style="height: 5px"><span class="labelClass">Import From &nbsp;</span></td>
@@ -115,7 +115,7 @@
                             <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConsevationSources" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
                                     OnRowEditing="gvConsevationSources_RowEditing" OnRowCancelingEdit="gvConsevationSources_RowCancelingEdit"
                                     OnRowUpdating="gvConsevationSources_RowUpdating" OnRowDataBound="gvConsevationSources_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -123,6 +123,7 @@
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="Conserve Sources ID" Visible="false">
                                             <ItemTemplate>
@@ -133,10 +134,9 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblSourceName" runat="Server" Text='<%# Eval("SourceName") %>' />
                                             </ItemTemplate>
-                                            <%-- <EditItemTemplate>
-                                                <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server"></asp:DropDownList>
-                                                <asp:TextBox ID="txtLkConSource" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConSource") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
@@ -145,6 +145,9 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total") %>'></asp:TextBox>
                                             </EditItemTemplate>
+                                             <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
+                                        </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -228,7 +231,7 @@
                             <asp:Panel runat="server" ID="Panel2" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConservationUsesGrid" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="true"
                                     OnRowEditing="gvConservationUsesGrid_RowEditing" OnRowCancelingEdit="gvConservationUsesGrid_RowCancelingEdit"
                                     OnRowUpdating="gvConservationUsesGrid_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -236,6 +239,7 @@
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="Conserve Uses ID" Visible="false">
                                             <ItemTemplate>
@@ -246,6 +250,9 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblVHCBUseName" runat="Server" Text='<%# Eval("VHCBUseName") %>' />
                                             </ItemTemplate>
+                                             <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="VHCB Total">
                                             <ItemTemplate>
@@ -254,6 +261,9 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal") %>'></asp:TextBox>
                                             </EditItemTemplate>
+                                            <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
+                                        </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Other Use">
                                             <ItemTemplate>
@@ -267,14 +277,17 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("OtherTotal") %>'></asp:TextBox>
                                             </EditItemTemplate>
+                                            <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterOtherTotalAmount" Text=""></asp:Label>
+                                        </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
-                                            <%--<EditItemTemplate>
-                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total") %>'></asp:TextBox>
-                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                            <asp:Label runat="server" ID="lblFooterGrandTotalAmount" Text=""></asp:Label>
+                                        </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -310,7 +323,7 @@
                 $('#<%= dvUseForm.ClientID%>').toggle(this.checked);
             }).change();
 
-           <%-- $('#<%= txtVHCBUseAmount.ClientID%>').blur(function () {
+            <%-- $('#<%= txtVHCBUseAmount.ClientID%>').blur(function () {
                 console.log($('#<%=txtVHCBUseAmount.ClientID%>').val());
                 console.log($('#<%=txtOtherUseAmount.ClientID%>').val());
                 $('#<%=txtUsesTotal.ClientID%>').val(parseFloat($('#<%=txtVHCBUseAmount.ClientID%>').val()) + parseFloat($('#<%=txtOtherUseAmount.ClientID%>').val()));
