@@ -378,12 +378,12 @@ namespace vhcbcloud
                     ddlProjFilter.Focus();
                     return;
                 }
-                else if (ddlGrantee.Items.Count > 1 && ddlGrantee.SelectedIndex == 0)
-                {
-                    lblErrorMsg.Text = "Select Grantee to add new transaction";
-                    ddlGrantee.Focus();
-                    return;
-                }
+                //else if (ddlGrantee.Items.Count > 1 && ddlGrantee.SelectedIndex == 0)
+                //{
+                //    lblErrorMsg.Text = "Select Grantee to add new transaction";
+                //    ddlGrantee.Focus();
+                //    return;
+                //}
                 else if (txtTotAmt.Text.Trim() == "" || Convert.ToDecimal(txtTotAmt.Text) <= 0)
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
@@ -406,9 +406,15 @@ namespace vhcbcloud
                 pnlTranDetails.Visible = true;
                 ClearTransactionDetailForm();
 
-                DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
-                    TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment",
-                    TRANS_PENDING_STATUS);
+                int granteeId = 0;
+                if (ddlGrantee.SelectedIndex != 0)
+                    granteeId = Convert.ToInt32(ddlGrantee.SelectedValue.ToString());
+                else
+                    granteeId = 0;
+
+                  DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
+                        TransAmount, granteeId, "Board Commitment",
+                        TRANS_PENDING_STATUS);
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
