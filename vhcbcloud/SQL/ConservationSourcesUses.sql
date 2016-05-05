@@ -1,6 +1,25 @@
 use VHCBSandbox
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetLatestBudgetPeriod]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetLatestBudgetPeriod 
+go
+
+create procedure GetLatestBudgetPeriod
+(
+	@ProjectID		int,
+	@LKBudgetPeriod	int output
+)  
+as
+--exec GetLatestBudgetPeriod 66251, null
+begin
+	select  @LKBudgetPeriod = isnull(max(csu.LKBudgetPeriod), 0)
+	from Conserve c(nolock)
+	join ConserveSU csu(nolock) on c.ConserveID = csu.ConserveID 
+	where c.ProjectID = @ProjectID 
+end
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConserveSourcesList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetConserveSourcesList 
 go
@@ -118,7 +137,7 @@ begin transaction
 		rollback transaction;
 
 		DECLARE @msg nvarchar(4000) = error_message()
-      RAISERROR (@msg, 16, 1)
+        RAISERROR (@msg, 16, 1)
 		return 1  
 	end catch
 
@@ -370,15 +389,68 @@ go
 
 /* Import */
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[conservationSourcesUsesCount_v]') and type in (N'V'))
+drop view conservationSourcesUsesCount_v
+go
+
+Create view conservationSourcesUsesCount_v as
+	select c.ProjectID, c.ConserveID, csu.ConserveSUID, csu.LKBudgetPeriod, cs.SourceCount, cu.UsesCount
+	from Conserve c(nolock)
+	join conserveSU csu(nolock) on c.ConserveID = csu.ConserveID
+	left join (select ConserveSUID, count(*) SourceCount from conserveSources(nolock) where RowIsActive = 1 group by  ConserveSUID )as cs on csu.ConserveSUID = cs.ConserveSUID
+	left join (select ConserveSUID, count(*) UsesCount from conserveUses(nolock) where RowIsActive = 1 group by  ConserveSUID )as cu on csu.ConserveSUID = cu.ConserveSUID
+	--where c.ProjectID = 6622
+go
+
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[PopulateImportBudgetPeriodDropDown]') and type in (N'P', N'PC'))
+drop procedure [dbo].PopulateImportBudgetPeriodDropDown
+go
+
+create procedure PopulateImportBudgetPeriodDropDown
+(
+	@ProjectID		int,
+	@LKBudgetPeriod int
+)  
+as
+begin
+	--exec PopulateImportBudgetPeriodDropDown 6622, 26084
+	if exists
+    (
+		select 1 
+		from conservationSourcesUsesCount_v v(nolock)
+		where ProjectID = @ProjectID 
+			and LKBudgetPeriod = @LKBudgetPeriod
+			and (isnull(v.SourceCount, 0) >0 or isnull(v.UsesCount, 0) > 0) 
+	)
+	begin
+		select lv.TypeID, lv.Description 
+		from  LookupValues lv(nolock)
+		where 1 != 1
+	end
+	else
+	begin
+		select lv.TypeID, lv.Description 
+		from conservationSourcesUsesCount_v v(nolock)
+		join LookupValues lv(nolock) on lv.TypeId = v.LKBudgetPeriod
+		where ProjectID = @ProjectID 
+			and LKBudgetPeriod != @LKBudgetPeriod
+			and (isnull(v.SourceCount, 0) >0 or isnull(v.UsesCount, 0) > 0) 
+		order by LKBudgetPeriod
+	end
+end
+go
+
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[ImportBudgetPeriodData]') and type in (N'P', N'PC'))
 drop procedure [dbo].ImportBudgetPeriodData
 go
 
 create procedure ImportBudgetPeriodData
 (
-	@ProjectID			int,
-	@LKBudgetPeriodFrom int,
-	@LKBudgetPeriodTo	int
+	@ProjectID				int,
+	@ImportLKBudgetPeriod	int,
+	@LKBudgetPeriod			int
 )  
 as
 /*
@@ -391,62 +463,61 @@ select * from ConserveSources where ConserveSUId = 7
 select * from ConserveUses where ConserveSUId = 7
 */
 begin
-	declare @ConserveID	int
-	declare @ConserveSUIDFrom int
-	
-	if not exists
-    (
-		select 1 
-		from Conserve(nolock) 
-		where ProjectID = @ProjectID
-	)
-	begin
-		RAISERROR ('Invalid Import, No Data Exist for this Budget Period', 16, 1)
-		return 1
-	end
-	else
-	begin
-		select @ConserveID = ConserveID 
-		from Conserve(nolock) 
-		where ProjectID = @ProjectID
-	end 
+		declare @ConserveID	int
+		declare @ConserveSUID int
+		declare @ImportFromConserveSUID int
 
-	if exists
-    (
-		select 1
-		from ConserveSU(nolock)
-		where ConserveID = @ConserveID 
-			and LKBudgetPeriod = @LKBudgetPeriodTo
-    )
-	begin
-		 RAISERROR ('Invalid Import, Alreay have Conservation Sources and Use for this Budget Period', 16, 1)
-		 return 1
-	end
-	else
-	begin
-		declare @NewConserveSUID int
-		declare @FromConserveSUID int
+		if not exists
+		(
+			select 1 
+			from Conserve(nolock) 
+			where ProjectID = @ProjectID
+		)
+		begin
+			RAISERROR ('Invalid Import1, No Project exist', 16, 1)
+			return 1
+		end
+		else
+		begin
+			select @ConserveID = ConserveID 
+			from Conserve(nolock) 
+			where ProjectID = @ProjectID
+		end 
 
-		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
-		values(@ConserveID, @LKBudgetPeriodTo, getdate())
+		if not exists
+		(
+			select 1
+			from ConserveSU(nolock)
+			where ConserveID = @ConserveID 
+				and LKBudgetPeriod = @LKBudgetPeriod
+		)
+		begin
+			insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
+			values(@ConserveID, @LKBudgetPeriod, getdate())
 
-		set @NewConserveSUID = @@IDENTITY
+			set @ConserveSUID = @@IDENTITY
+		end
+		else
+		begin
+			select @ConserveSUID = ConserveSUID
+			from ConserveSU(nolock)
+			where ConserveID = @ConserveID 
+				and LKBudgetPeriod = @LKBudgetPeriod
+		end
 
-		select @FromConserveSUID = ConserveSUID 
+		select @ImportFromConserveSUID = ConserveSUID 
 		from ConserveSU(nolock) 
 		where ConserveID = @ConserveID 
-			and LKBudgetPeriod = @LKBudgetPeriodFrom
+			and LKBudgetPeriod = @ImportLKBudgetPeriod
 
 		insert into ConserveSources(ConserveSUID, LkConSource, Total, DateModified)
-		select @NewConserveSUID, LkConSource, Total, getdate()
+		select @ConserveSUID, LkConSource, Total, getdate()
 		from ConserveSources (nolock)
-		where RowIsActive = 1 and ConserveSUID = @FromConserveSUID
+		where RowIsActive = 1 and ConserveSUID = @ImportFromConserveSUID
 
 		insert into ConserveUses(ConserveSUID, LkConUseVHCB, VHCBTotal, LkConUseOther, OtherTotal, DateModified)
-		select @NewConserveSUID, LkConUseVHCB, VHCBTotal, LkConUseOther, OtherTotal, getdate()
+		select @ConserveSUID, LkConUseVHCB, VHCBTotal, LkConUseOther, OtherTotal, getdate()
 		from ConserveUses (nolock)
-		where RowIsActive = 1 and ConserveSUID = @FromConserveSUID
-
-	end
+		where RowIsActive = 1 and ConserveSUID = @ImportFromConserveSUID
 end
 go
