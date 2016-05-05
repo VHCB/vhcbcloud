@@ -17,6 +17,7 @@ namespace vhcbcloud
         private int TRANS_PENDING_STATUS = 261;
         private int BOARD_COMMITMENT = 238;
         private int BOARD_DECOMMITMENT = 239;
+        private int ActiveOnly = 1;
         protected void Page_Load(object sender, EventArgs e)
         {
             Response.Redirect("Commitments.aspx");
@@ -170,11 +171,11 @@ namespace vhcbcloud
                 DataTable dtFundDet = new DataTable();
                 if (rdBtnFinancial.SelectedIndex == 0 || rdBtnFinancial.SelectedIndex == 2)
                 {
-                    dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_COMMITMENT);
+                    dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_COMMITMENT, ActiveOnly);
                 }
                 else
                 {
-                    dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT);
+                    dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT, ActiveOnly);
                 }
 
 
