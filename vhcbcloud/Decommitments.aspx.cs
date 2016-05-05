@@ -16,6 +16,7 @@ namespace vhcbcloud
         private int TRANS_PENDING_STATUS = 261;
         private int BOARD_COMMITMENT = 238;
         private int BOARD_DECOMMITMENT = 239;
+        private int ActiveOnly = 1;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -190,7 +191,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT);
+                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT, ActiveOnly);
 
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();

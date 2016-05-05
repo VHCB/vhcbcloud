@@ -690,7 +690,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtStatus;
         }
-        public static DataTable GetCommitmentFundDetailsByProjectId(int transId, int commitmentType)
+        public static DataTable GetCommitmentFundDetailsByProjectId(int transId, int commitmentType, int activeOnly)
         {
             DataTable dtStatus = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -700,6 +700,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("transId", transId));
                 command.Parameters.Add(new SqlParameter("commitmentType", commitmentType));
+                command.Parameters.Add(new SqlParameter("activeOnly", activeOnly));
                 command.CommandText = "GetCommitmentFundDetailsByProjectId";
                 using (connection)
                 {
@@ -955,7 +956,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetFinancialTransByTransId(int TransId)
+        public static DataTable GetFinancialTransByTransId(int TransId, int activeOnly)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtTrans = new DataTable();
@@ -965,7 +966,44 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetFinancialTransByTransId";
                 command.Parameters.Add(new SqlParameter("transId", TransId));
-               
+                command.Parameters.Add(new SqlParameter("activeOnly", activeOnly));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTrans = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTrans;
+        }
+
+        public static DataTable GetFinancialTransByProjId(int projId, int activeOnly)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtTrans = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFinancialTransByProjId";
+                command.Parameters.Add(new SqlParameter("projId", projId));
+                command.Parameters.Add(new SqlParameter("activeOnly", activeOnly));
+
                 using (connection)
                 {
                     connection.Open();
@@ -1138,6 +1176,33 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "InactivateFinancialTransByTransId";
+                command.Parameters.Add(new SqlParameter("transId", transId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void ActivateFinancialTransByTransId(int transId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ActivateFinancialTransByTransId";
                 command.Parameters.Add(new SqlParameter("transId", transId));
 
                 using (connection)

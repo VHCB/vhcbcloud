@@ -17,7 +17,7 @@ namespace vhcbcloud
         private int TRANS_PENDING_STATUS = 261;
         private int BOARD_CASHREFUND = 237;
         private string COMMITMENT_TYPE = "Cash Refund";
-
+        private int ActiveOnly = 1;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -187,7 +187,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_CASHREFUND);
+                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_CASHREFUND, ActiveOnly);
 
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();

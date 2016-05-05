@@ -1,8 +1,3 @@
-C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.dll
-C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.pdb
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.dll
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.pdb
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\vhcbcommon.csprojResolveAssemblyReference.cache
 C:\Sandbox\_vhcbGitHub\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.dll
 C:\Sandbox\_vhcbGitHub\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.pdb
 C:\Sandbox\_vhcbGitHub\vhcbcloud\vhcb-bal\obj\Debug\vhcbcommon.csprojResolveAssemblyReference.cache
@@ -13,3 +8,8 @@ C:\Sandbox\VHCBGitHub\vhcb-bal\bin\Debug\VHCBCommon.pdb
 C:\Sandbox\VHCBGitHub\vhcb-bal\obj\Debug\vhcbcommon.csprojResolveAssemblyReference.cache
 C:\Sandbox\VHCBGitHub\vhcb-bal\obj\Debug\VHCBCommon.dll
 C:\Sandbox\VHCBGitHub\vhcb-bal\obj\Debug\VHCBCommon.pdb
+C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.dll
+C:\Sandbox\vhcbcloud\vhcb-bal\bin\Debug\VHCBCommon.pdb
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.dll
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\VHCBCommon.pdb
+C:\Sandbox\vhcbcloud\vhcb-bal\obj\Debug\vhcbcommon.csprojResolveAssemblyReference.cache

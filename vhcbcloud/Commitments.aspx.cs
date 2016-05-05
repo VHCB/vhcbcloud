@@ -15,7 +15,7 @@ namespace vhcbcloud
         DataTable dtProjects;
         private int BOARD_COMMITMENT = 238;
         private int TRANS_PENDING_STATUS = 261;
-
+        private int ActiveOnly = 1;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -89,6 +89,15 @@ namespace vhcbcloud
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
                 BindFundAccounts();
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProjFilter.SelectedValue.ToString();
+
+                if (rdBtnSelection.SelectedIndex == 1)
+                {
+                    DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(ddlProjFilter.SelectedValue), ActiveOnly);
+                    gvPTrans.DataSource = dtTrans;
+                    gvPTrans.DataBind();
+                    CommonHelper.DisableButton(btnTransactionSubmit);
+                }
             }
             else
             {
@@ -185,8 +194,13 @@ namespace vhcbcloud
         {
             try
             {
+                if (cbActiveOnly.Checked)
+                    ActiveOnly = 1;
+                else
+                    ActiveOnly = 0;
+
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_COMMITMENT);
+                dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_COMMITMENT, ActiveOnly);
 
                 gvBCommit.DataSource = dtFundDet;
                 gvBCommit.DataBind();
@@ -246,11 +260,11 @@ namespace vhcbcloud
             if (hfTransId.Value.ToString() == "")
             {
 
-                DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
-                if (dtable.Rows.Count > 0)
-                    return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
-                else
+                //DataTable dtable = new DataTable();
+                //dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board Commitment");
+                //if (dtable.Rows.Count > 0)
+                //    return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
+                //else
                     return 0;
             }
             else
@@ -395,7 +409,7 @@ namespace vhcbcloud
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), "Board Commitment",
                     TRANS_PENDING_STATUS);
-                
+
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
@@ -414,10 +428,29 @@ namespace vhcbcloud
         {
             try
             {
+                if (cbActiveOnly.Checked)
+                    ActiveOnly = 1;
+                else
+                    ActiveOnly = 0;
 
-                DataTable dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId);
-                gvPTrans.DataSource = dtTrans;
-                gvPTrans.DataBind();
+                DataTable dtTrans = null;
+                if (rdBtnSelection.SelectedIndex == 0)
+                {
+                    dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId, ActiveOnly);
+                    gvPTrans.DataSource = dtTrans;
+                    gvPTrans.DataBind();
+                }
+                else
+                {
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(ddlProjFilter.SelectedValue), ActiveOnly);
+                    gvPTrans.DataSource = dtTrans;
+                    gvPTrans.DataBind();
+                }
+                if (dtTrans.Rows.Count > 0)
+                    CommonHelper.DisableButton(btnTransactionSubmit);
+                else
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+
             }
             catch (Exception ex)
             {
@@ -540,7 +573,24 @@ namespace vhcbcloud
 
         protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-           
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
+                if (lblDetId.ToString() != "")
+                {
+                    FinancialTransactions.ActivateFinancialTransByTransId(Convert.ToInt32(lblDetId));
+
+                    BindFundDetails(GetTransId());
+
+                    lblErrorMsg.Text = "Transaction detail was successfully activated";
+                    CommonHelper.EnableButton(btnCommitmentSubmit);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         protected void gvPTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -558,9 +608,9 @@ namespace vhcbcloud
                 if (lblDetId.ToString() != "")
                 {
                     FinancialTransactions.InactivateFinancialDetailByDetailId(Convert.ToInt32(lblDetId));
-                    
+
                     BindFundDetails(GetTransId());
-                                        
+
                     lblErrorMsg.Text = "Transaction detail was successfully inactavited";
                     CommonHelper.EnableButton(btnCommitmentSubmit);
                 }
@@ -591,6 +641,54 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlProjFilter.SelectedIndex != 0)
+                BindTransGrid(GetTransId());
+
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbActiveOnly.Checked)
+                ActiveOnly = 1;
+            else
+                ActiveOnly = 0;
+            BindTransGrid(GetTransId());
+            BindFundDetails(GetTransId());
+        }
+
+        protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
+        {
+            GetSelectedTransId(gvPTrans);
+            BindFundDetails(Convert.ToInt32(ViewState["SelectedTransId"]));
+        }
+
+        private void GetSelectedTransId(GridView gvFGM)
+        {
+            for (int i = 0; i < gvFGM.Rows.Count; i++)
+            {
+                RadioButton rbGInfo = (RadioButton)gvFGM.Rows[i].Cells[0].FindControl("rdBtnSelect");
+                if (rbGInfo != null)
+                {
+                    if (rbGInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("HiddenField1");
+                        if (hf != null)
+                        {
+                            ViewState["SelectedTransId"] = hf.Value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetSelectedTransId(gvPTrans);
         }
     }
 }

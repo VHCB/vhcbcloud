@@ -441,21 +441,86 @@ go
 
 alter procedure GetFinancialTransByTransId
 (
-	@transId int
+	@transId int,
+	@activeOnly int
 )
 as
 Begin
 
-select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
-		join Trans tr on tr.ProjectID = p.ProjectId	
-		join Applicant a on a.applicantid = tr.payeeapplicant
-		join LookupValues lv on lv.TypeID = tr.LkStatus
-	Where  tr.RowIsActive=1 	and tr.TransId = @transId; 
-
+	if  (@activeOnly=1)
+	Begin
+		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+			join Trans tr on tr.ProjectID = p.ProjectId	
+			join Applicant a on a.applicantid = tr.payeeapplicant
+			join LookupValues lv on lv.TypeID = tr.LkStatus
+		Where  tr.RowIsActive= @activeOnly 	and tr.TransId = @transId; 
+	end
+	else
+	Begin
+		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+			join Trans tr on tr.ProjectID = p.ProjectId	
+			join Applicant a on a.applicantid = tr.payeeapplicant
+			join LookupValues lv on lv.TypeID = tr.LkStatus
+		Where  tr.TransId = @transId; 
+	End
 end
 
 go
 
+alter procedure GetFinancialTransByProjId
+(
+	@projId int,
+	@activeOnly int
+)
+as
+Begin
+select * from trans
+	if  (@activeOnly=1)
+	Begin
+		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+			join Trans tr on tr.ProjectID = p.ProjectId	
+			join Applicant a on a.applicantid = tr.payeeapplicant
+			join LookupValues lv on lv.TypeID = tr.LkStatus
+		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId; 
+	end
+	else
+	Begin
+		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+			join Trans tr on tr.ProjectID = p.ProjectId	
+			join Applicant a on a.applicantid = tr.payeeapplicant
+			join LookupValues lv on lv.TypeID = tr.LkStatus
+		Where  tr.ProjectID = @projId;
+	End
+end
+
+go
+
+
+alter procedure ActivateFinancialTransByTransId
+(
+	@transId int
+)
+as
+begin transaction
+
+	begin try
+
+	update Trans set RowIsActive=1 Where TransId = @transId; 
+	update detail set RowIsActive=1 Where TransId = @transId; 
+
+end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
 				
 alter procedure InactivateFinancialTransByTransId
 (
@@ -486,35 +551,63 @@ go
 alter procedure [dbo].[GetCommitmentFundDetailsByProjectId]
 (	
 	@transId int,
-	@commitmentType int
+	@commitmentType int,
+	@activeOnly int
 )
 as
 Begin
 -- exec dbo.GetCommitmentFundDetailsByProjectId 409, 239
-if @commitmentType = 238
+if @activeOnly = 1
 	Begin
-		Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
-			d.LkTransType, t.LkTransaction  
-		from Fund f 
-			join Detail d on d.FundId = f.FundId
-			join Trans t on t.TransId = d.TransId
-			join LookupValues lv on lv.TypeID = d.LkTransType
-		Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
-		and t.TransId = @transId and t.RowIsActive=1 
-	end
-Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
+	if @commitmentType = 238
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId and t.RowIsActive=1 
+		end
+	Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId and t.RowIsActive=1 
+		End
+	End
+else
 	Begin
-		Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
-			d.LkTransType, t.LkTransaction  
-		from Fund f 
-			join Detail d on d.FundId = f.FundId
-			join Trans t on t.TransId = d.TransId
-			join LookupValues lv on lv.TypeID = d.LkTransType
-		Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
-		and t.TransId = @transId and t.RowIsActive=1 
+	if @commitmentType = 238
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId 
+		end
+	Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId 
+		End
 	End
 End
-
 go
 
 alter procedure InactivateFinancialDetailByDetailId
