@@ -229,6 +229,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
+    <Content Include="SQL\Financialfunddetails.sql" />
+    <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
     <None Include="Properties\PublishProfiles\VHCBPublish.pubxml" />

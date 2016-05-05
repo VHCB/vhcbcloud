@@ -9,7 +9,7 @@ begin
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
 	where defname = 1 and tr.lkstatus = 262--and tr.LkTransaction = 238
-	and tr.RowIsActive=1 
+	and tr.RowIsActive=1 and pn.defname=1
 	group by p.projectid, proj_num
 	order by proj_num 
 end
@@ -99,7 +99,7 @@ begin
 	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 	where tr.LkTransaction in (238,239,240) --and  tr.TransId in(select distinct transid from @temp)
-	and tr.RowIsActive=1 
+	and tr.RowIsActive=1 and pn.DefName =1 
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 	f.abbrv, tr.lkstatus, ttv.description, f.account
 	order by p.Proj_num
@@ -127,7 +127,7 @@ begin
 	join fund f on f.FundId = det.FundId
 	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 	where tr.LkTransaction in (236, 237)  and  tr.TransId in(select distinct transid from @temp)
-	and tr.RowIsActive=1
+	and tr.RowIsActive=1 and pn.DefName =1 
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
 	f.abbrv,f.account, tr.lkstatus, ttv.description
 	order by p.Proj_num
@@ -179,8 +179,8 @@ begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240, 236, 237) and p.projectid = @projectid
-		and tr.RowIsActive=1 and det.RowIsActive=1
+		where tr.LkTransaction in (238,239,240, 236, 237) and pn.DefName =1 
+		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
 
 end
@@ -267,8 +267,8 @@ Begin
 		join fund f on f.FundId = det.FundId
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240) and
-		tr.RowIsActive=1
+		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+		tr.RowIsActive=1 and pn.DefName =1 
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
@@ -302,8 +302,8 @@ Begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (236, 237)
-		and tr.RowIsActive=1
+		where tr.LkTransaction in (236, 237) 
+		and tr.RowIsActive=1 and pn.DefName =1 
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
@@ -354,8 +354,8 @@ Begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240, 236, 237) and p.projectid = @projectid
-		and tr.RowIsActive=1 and det.RowIsActive=1
+		where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
 	end
 	else
@@ -393,8 +393,8 @@ Begin
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (236,237,238,239,240)
-		and f.fundid = 209 and  f.RowIsActive=1 and p.ProjectId = @projectid
-		and tr.RowIsActive=1 
+		and  f.RowIsActive=1 and p.ProjectId = @projectid
+		and tr.RowIsActive=1 and pn.DefName =1 
 		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by f.name
@@ -430,7 +430,7 @@ Begin
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (236,237,238,239,240)
 			and p.projectid = @projectid and f.RowIsActive = 1
-			and tr.RowIsActive=1 
+			and tr.RowIsActive=1 and pn.DefName =1 
 		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
@@ -474,14 +474,15 @@ alter procedure GetFinancialTransByProjId
 )
 as
 Begin
-select * from trans
+-- exec GetFinancialTransByProjId 6622, 1
 	if  (@activeOnly=1)
 	Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
 			join Trans tr on tr.ProjectID = p.ProjectId	
 			join Applicant a on a.applicantid = tr.payeeapplicant
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId; 
+		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId 
+		order by tr.date desc
 	end
 	else
 	Begin
@@ -489,7 +490,8 @@ select * from trans
 			join Trans tr on tr.ProjectID = p.ProjectId	
 			join Applicant a on a.applicantid = tr.payeeapplicant
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.ProjectID = @projId;
+		Where  tr.ProjectID = @projId
+		order by tr.date desc
 	End
 end
 
@@ -634,3 +636,21 @@ end try
 	if @@trancount > 0
 		commit transaction;
 go
+
+alter procedure GetGranteeByProject
+(
+	@projectId int
+)
+as
+Begin
+	select p.projectid, 
+		p.Proj_num, lv.Description, a.applicantid, an.Applicantname from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId
+		join ProjectApplicant pa on pa.ProjectId = p.ProjectID	
+		join Applicant a on a.ApplicantId = pa.ApplicantId	
+		join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
+		join AppName an on an.AppNameID = aan.AppNameID 
+		join LookupValues lv on lv.TypeID = pn.LkProjectname		
+	Where  pa.finlegal=1 and p.ProjectId = @projectId
+	and pn.defname = 1
+End
