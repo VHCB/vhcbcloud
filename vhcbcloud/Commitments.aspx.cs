@@ -195,8 +195,6 @@ namespace vhcbcloud
             txtAmt.Text = "";
             try
             {
-                gvBCommit.DataSource = null;
-                gvBCommit.DataBind();
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
@@ -686,6 +684,8 @@ namespace vhcbcloud
             BindProjects();
             gvPTrans.DataSource = null;
             gvPTrans.DataBind();
+            gvBCommit.DataSource = null;
+            gvBCommit.DataBind();
             lblProjName.Text = "";
             lbAwardSummary.Visible = false;
             ClearTransactionDetailForm();
