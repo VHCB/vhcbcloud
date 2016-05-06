@@ -195,6 +195,8 @@ namespace vhcbcloud
             txtAmt.Text = "";
             try
             {
+                gvBCommit.DataSource = null;
+                gvBCommit.DataBind();
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
@@ -466,21 +468,21 @@ namespace vhcbcloud
                     ActiveOnly = 1;
                 else
                     ActiveOnly = 0;
+                gvPTrans.DataSource = null;
+                gvPTrans.DataBind();
 
                 DataTable dtTrans = null;
                 if (rdBtnSelection.SelectedIndex == 0)
                 {
                     dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId, ActiveOnly);
                     gvPTrans.DataSource = dtTrans;
-                    gvPTrans.DataBind();
-                    gvPTrans.Columns[0].Visible = false;
+                    gvPTrans.DataBind();                    
                 }
                 else
-                {
+                {                    
                     dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(ddlProjFilter.SelectedValue), ActiveOnly);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
-                    gvPTrans.Columns[0].Visible = true;
                 }
                 if (dtTrans.Rows.Count > 0)
                     CommonHelper.DisableButton(btnTransactionSubmit);
@@ -686,16 +688,12 @@ namespace vhcbcloud
             gvPTrans.DataBind();
             lblProjName.Text = "";
             lbAwardSummary.Visible = false;
-            if (rdBtnSelection.SelectedIndex == 0)
-            {
-                lblErrorMsg.Text = "";
-                ddlGrantee.Items.Clear();
-                ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
-
-                ClearTransactionDetailForm();
-                pnlTranDetails.Visible = false;
-            }
-            else
+            ClearTransactionDetailForm();
+            pnlTranDetails.Visible = false;
+            lblErrorMsg.Text = "";
+            ddlGrantee.Items.Clear();
+            ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
+            if (rdBtnSelection.SelectedIndex > 0)
             {
                 if (ddlProjFilter.SelectedIndex > 0)
                     BindTransGrid(GetTransId());
@@ -749,6 +747,14 @@ namespace vhcbcloud
         protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetSelectedTransId(gvPTrans);
+        }
+
+        protected void gvPTrans_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            if (rdBtnSelection.SelectedIndex == 0)
+                e.Row.Cells[0].Visible = false;
+            else
+                e.Row.Cells[0].Visible = true;
         }
     }
 }
