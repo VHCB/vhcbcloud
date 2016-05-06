@@ -15,6 +15,24 @@ begin
 end
 go
 
+alter procedure getCommittedPendingProjectslist  
+as
+begin
+
+	select distinct p.projectid, proj_num, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+	,round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.lkstatus = 261
+	and tr.RowIsActive=1 and pn.defname=1
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
+
+
 alter procedure GetReallocationFinancialFundDetailsByProjectId
 (
 	@projectid int,
@@ -450,18 +468,16 @@ Begin
 	if  (@activeOnly=1)
 	Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
-			join Trans tr on tr.ProjectID = p.ProjectId	
-			join Applicant a on a.applicantid = tr.payeeapplicant
+			join Trans tr on tr.ProjectID = p.ProjectId				
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.RowIsActive= @activeOnly 	and tr.TransId = @transId; 
+		Where  tr.RowIsActive= @activeOnly 	and tr.TransId = @transId and lv.TypeID= 261
 	end
 	else
 	Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
-			join Trans tr on tr.ProjectID = p.ProjectId	
-			join Applicant a on a.applicantid = tr.payeeapplicant
+			join Trans tr on tr.ProjectID = p.ProjectId			
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.TransId = @transId; 
+		Where  tr.TransId = @transId and lv.TypeID= 261
 	End
 end
 
@@ -478,19 +494,17 @@ Begin
 	if  (@activeOnly=1)
 	Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
-			join Trans tr on tr.ProjectID = p.ProjectId	
-			join Applicant a on a.applicantid = tr.payeeapplicant
+			join Trans tr on tr.ProjectID = p.ProjectId				
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId 
+		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId and lv.TypeID= 261
 		order by tr.date desc
 	end
 	else
 	Begin
-		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
-			join Trans tr on tr.ProjectID = p.ProjectId	
-			join Applicant a on a.applicantid = tr.payeeapplicant
+		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.TypeID ,lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+			join Trans tr on tr.ProjectID = p.ProjectId			
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.ProjectID = @projId
+		Where  tr.ProjectID = @projId and lv.TypeID= 261
 		order by tr.date desc
 	End
 end
@@ -654,3 +668,33 @@ Begin
 	Where  pa.finlegal=1 and p.ProjectId = @projectId
 	and pn.defname = 1
 End
+
+go
+
+alter procedure [dbo].[AddBoardFinancialTransaction]
+(
+	@projectId int,
+	@transDate datetime,
+	@transAmt money,
+	@payeeApplicant int = null,
+	@commitmentType varchar(50),
+	@lkStatus int
+)
+as
+Begin
+	declare @recordId int
+	declare @transTypeId int
+
+	select @recordId = RecordID from LkLookups where Tablename = 'LkTransAction'
+	select @transTypeId = TypeID from LookupValues where LookupType = @recordId and Description = @commitmentType
+	
+	insert into Trans (ProjectID, date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
+		values (@projectId, @transDate, @transAmt, @payeeApplicant, @transTypeId, @lkStatus)
+
+	select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+		join Trans tr on tr.ProjectID = p.ProjectId	
+		join LookupValues lv on lv.TypeID = tr.LkStatus
+	Where  tr.RowIsActive=1 	and tr.TransId = @@IDENTITY; 
+
+end
+go
