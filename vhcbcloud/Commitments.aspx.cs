@@ -684,6 +684,8 @@ namespace vhcbcloud
             BindProjects();
             gvPTrans.DataSource = null;
             gvPTrans.DataBind();
+            lblProjName.Text = "";
+            lbAwardSummary.Visible = false;
             if (rdBtnSelection.SelectedIndex == 0)
             {
                 lblErrorMsg.Text = "";
