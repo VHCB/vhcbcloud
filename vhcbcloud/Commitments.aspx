@@ -128,7 +128,9 @@
                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                             <ItemTemplate>
                                                 <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />    
-                                                 <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />                                            
+                                                 <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
+                                                
+                                                                                            
                                             </ItemTemplate>
 
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -205,15 +207,15 @@
                                                 <td style="width: 20%; float: left">
                                                     <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True">
                                                     </asp:DropDownList>
+                                                </td>                                                
+                                                <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
+                                                <td style="width: 20%; float: left">
+                                                    <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
                                                 </td>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
-                                                <td style="width: 20%; float: left">
+                                                <td style="width: 30%; float: left">
                                                     <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
                                                     </asp:DropDownList>
-                                                </td>
-                                                <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
-                                                <td style="width: 30%; float: left">
-                                                    <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -224,8 +226,7 @@
                                                 <td style="width: 90%; float: left" colspan="5">
                                                     <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                             </tr>
-                                        </table>
-                                        <br />
+                                        </table>                                        
                                         <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>
                                         <br />

@@ -165,6 +165,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />

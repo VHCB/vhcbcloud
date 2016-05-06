@@ -1028,7 +1028,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
-        public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, int payeeAppl, string CommitmentType, int lkStatus)
+        public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType, int lkStatus)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtStatus = new DataTable();
