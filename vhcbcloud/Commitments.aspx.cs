@@ -110,6 +110,10 @@ namespace vhcbcloud
                     gvPTrans.DataBind();
                     CommonHelper.DisableButton(btnTransactionSubmit);
                 }
+                else if (rdBtnSelection.SelectedIndex == 0)
+                {
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+                }
             }
             else
             {
@@ -366,8 +370,11 @@ namespace vhcbcloud
                     }
                     else if (currentTranFudAmount > currentBalAmount)
                     {
-                        currentTranFudAmount = currentBalAmount;
-                        lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                        //currentTranFudAmount = currentBalAmount;
+                        //lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+
+                        lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
+                        return;
                     }
 
                     FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
