@@ -7,7 +7,7 @@
     <ProjectGuid>{FB0D9857-EB88-406D-9D58-07FE74675955}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataAccessLayer</RootNamespace>
+    <RootNamespace>VHCBCommon.DataAccessLayer</RootNamespace>
     <AssemblyName>VHCBCommon</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
