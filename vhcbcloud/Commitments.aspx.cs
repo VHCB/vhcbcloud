@@ -579,10 +579,20 @@ namespace vhcbcloud
                 {
                     DropDownList ddlTrans = (e.Row.FindControl("ddlTransType") as DropDownList);
                     TextBox txtTransType = (e.Row.FindControl("txtTransType") as TextBox);
+                    Label lblFName = (e.Row.FindControl("lblFundName") as Label);
                     if (txtTransType != null)
                     {
                         DataTable dtable = new DataTable();
-                        dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
+                        if (lblFName.Text.ToLower().Contains("hopwa"))
+                        {
+                            dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                        }
+                        else
+                        {
+                            dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                        }
+
+                       // dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
                         ddlTrans.DataSource = dtable;
                         ddlTrans.DataValueField = "typeid";
                         ddlTrans.DataTextField = "Description";
@@ -738,12 +748,14 @@ namespace vhcbcloud
                         if (hf != null)
                         {
                             ViewState["SelectedTransId"] = hf.Value;
+                            hfTransId.Value = hf.Value;
                         }
                         HiddenField hfAmt = (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
                         if (hfAmt != null)
                         {
                             ViewState["TransAmt"] = hfAmt.Value;
                             hfTransAmt.Value = hfAmt.Value;
+                            hfBalAmt.Value = hfAmt.Value;
                         }
                         break;
                     }
@@ -763,5 +775,7 @@ namespace vhcbcloud
             else
                 e.Row.Cells[0].Visible = true;
         }
+
+       
     }
 }
