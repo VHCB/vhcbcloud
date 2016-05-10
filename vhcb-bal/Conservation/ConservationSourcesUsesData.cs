@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using VHCBCommon.DataAccessLayer;
 
-namespace DataAccessLayer.Conservation
+namespace VHCBCommon.DataAccessLayer.Conservation
 {
     public class ConservationSourcesUsesData
     {
