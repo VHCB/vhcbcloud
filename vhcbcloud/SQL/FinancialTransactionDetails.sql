@@ -698,3 +698,78 @@ Begin
 
 end
 go
+
+alter procedure [dbo].[updateLookups]
+(
+	@typeId int,
+	@description varchar(50),
+	@lookupTypeid int,	
+	@isActive bit
+)
+as
+--exec updatelookups 97, 'Prime soils', 272, 1
+begin transaction
+
+	begin try
+		update LookupValues set Description = @description, RowIsActive=@isActive where TypeID = @typeId;
+		--update LkLookups set  RowIsActive=@isActive where RecordID = @lookupTypeid;
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+alter procedure [dbo].[GetLkLookupDetails]
+ @recordId int
+as
+begin
+	if (@recordId = 0)
+	begin
+		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive
+		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
+		order by lk.Viewname asc, lv.Description asc
+	end
+	else
+	Begin
+		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive
+		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
+		where lk.RecordID = @recordId
+		order by   lv.Description asc
+	end
+end
+
+go
+
+alter procedure IsDuplicateFundDetailPerTransaction 
+(
+	@transid int,
+	@fundid int,	
+	@fundtranstype int
+
+)
+as
+Begin
+	select * from Detail where TransId = @transid and FundId = @fundid and LkTransType = @fundtranstype
+End
+go
+
+alter procedure IsDuplicateFundDetail 
+(
+	@detailId int,
+	@fundid int,	
+	@fundtranstype int
+
+)
+as
+Begin
+	select * from Detail where FundId = @fundid and LkTransType = @fundtranstype and DetailID = @detailId
+End
+go

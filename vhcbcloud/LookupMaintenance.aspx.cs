@@ -23,21 +23,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnSubmit_Click(object sender, ImageClickEventArgs e)
-        {
-            try
-            {
-                LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()), txtDescription.Text);
-                lblErrorMsg.Text = "View name details saved successfully";
-                gvLookup.PageIndex = 0;
-                BindLookupMaintenance();
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
-
         protected void BindLookupMaintenance()
         {
             try
@@ -230,6 +215,21 @@ namespace vhcbcloud
             lblErrorMsg.Text = "";
             BindLookupMaintenance();
             BindLKDescription();
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()), txtDescription.Text);
+                lblErrorMsg.Text = "View name details saved successfully";
+                gvLookup.PageIndex = 0;
+                BindLookupMaintenance();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
     }
 }
