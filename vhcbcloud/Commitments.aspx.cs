@@ -377,6 +377,13 @@ namespace vhcbcloud
                         return;
                     }
 
+                    if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
+                    {
+                        lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                        return;
+                    }
+
                     FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                         Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
 
@@ -535,6 +542,7 @@ namespace vhcbcloud
                 decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
                 int transType = Convert.ToInt32(((DropDownList)gvBCommit.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
+                int fundId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblFundId")).Text);
 
                 decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
@@ -548,13 +556,22 @@ namespace vhcbcloud
                 }
                 else if (amount > allowed_amount)
                 {
-                    amount = allowed_amount;
-                    lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                    //amount = allowed_amount;
+                    //lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+
+                    lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
+                    return;
                 }
                 else if (amount < allowed_amount)
                 {
                     if (!btnCommitmentSubmit.Enabled)
                         CommonHelper.EnableButton(btnCommitmentSubmit);
+                }
+
+                if (FinancialTransactions.IsDuplicateFundDetail(detailId, fundId, transType))
+                {
+                    lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please change selection";
+                    return;
                 }
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
                 //lblErrorMsg.Text = "";

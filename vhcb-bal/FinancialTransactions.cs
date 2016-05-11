@@ -186,6 +186,91 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
+        public static bool IsDuplicateFundDetailPerTransaction(int transid, int fundid, int fundtranstype)
+        {
+            bool isDuplicate = false;
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "IsDuplicateFundDetailPerTransaction";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                        if (dtable.Rows.Count > 0)
+                            isDuplicate = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return isDuplicate;
+        }
+
+        public static bool IsDuplicateFundDetail(int detailId, int fundid, int fundtranstype)
+        {
+            bool isDuplicate = false;
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "IsDuplicateFundDetailPerTransaction";
+                command.Parameters.Add(new SqlParameter("detailId", detailId));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                        if (dtable.Rows.Count > 0)
+                            isDuplicate = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return isDuplicate;
+        }
+
+
         public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
