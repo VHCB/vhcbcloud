@@ -255,6 +255,14 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnCommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
+                        if (rdBtnSelection.SelectedIndex == 0)
+                        {
+                            ddlProjFilter.SelectedIndex = 0;
+                            if (ddlGrantee.Items.Count > 0)
+                                ddlGrantee.SelectedIndex = 0;
+                            lblProjName.Text = "";
+                        }
+                        
                     }
                     else
                     {
@@ -544,6 +552,8 @@ namespace vhcbcloud
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
                 int fundId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblFundId")).Text);
 
+                int transId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblTransId")).Text);
+
                 decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
@@ -568,7 +578,7 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnCommitmentSubmit);
                 }
 
-                if (FinancialTransactions.IsDuplicateFundDetail(detailId, fundId, transType))
+                if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, fundId, transType))
                 {
                     lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please change selection";
                     return;

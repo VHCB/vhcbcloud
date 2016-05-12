@@ -306,6 +306,11 @@
                                                     <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                             <asp:TemplateField Visible="false" HeaderText="Trans Id" SortExpression="transid">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("transid") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField ShowHeader="False">
                                                 <EditItemTemplate>
                                                     <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>

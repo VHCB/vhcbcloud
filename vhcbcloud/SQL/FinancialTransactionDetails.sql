@@ -117,7 +117,7 @@ begin
 	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 	where tr.LkTransaction in (238,239,240) --and  tr.TransId in(select distinct transid from @temp)
-	and tr.RowIsActive=1 and pn.DefName =1 
+	and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 	f.abbrv, tr.lkstatus, ttv.description, f.account
 	order by p.Proj_num
@@ -145,7 +145,7 @@ begin
 	join fund f on f.FundId = det.FundId
 	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 	where tr.LkTransaction in (236, 237)  and  tr.TransId in(select distinct transid from @temp)
-	and tr.RowIsActive=1 and pn.DefName =1 
+	and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
 	f.abbrv,f.account, tr.lkstatus, ttv.description
 	order by p.Proj_num
@@ -195,7 +195,7 @@ begin
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId
+		join fund f on f.FundId = det.FundId and det.rowisactive = 1
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (238,239,240, 236, 237) and pn.DefName =1 
 		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
@@ -211,7 +211,7 @@ alter procedure [dbo].[GetFinancialFundDetailsByProjectId]
 )
 as
 Begin
-	--exec GetFinancialFundDetailsByProjectId 6622, 0
+	--exec GetFinancialFundDetailsByProjectId 6624, 0
 
 	if(@isReallocation = 0)
 	begin
@@ -286,7 +286,7 @@ Begin
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
-		tr.RowIsActive=1 and pn.DefName =1 
+		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
@@ -321,7 +321,7 @@ Begin
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (236, 237) 
-		and tr.RowIsActive=1 and pn.DefName =1 
+		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by p.Proj_num
@@ -412,7 +412,7 @@ Begin
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (236,237,238,239,240)
 		and  f.RowIsActive=1 and p.ProjectId = @projectid
-		and tr.RowIsActive=1 and pn.DefName =1 
+		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
 		order by f.name
@@ -578,7 +578,7 @@ if @activeOnly = 1
 	if @commitmentType = 238
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction, t.TransId
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
@@ -589,7 +589,7 @@ if @activeOnly = 1
 	Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction, t.TransId 
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
@@ -773,3 +773,5 @@ Begin
 	select * from Detail where FundId = @fundid and LkTransType = @fundtranstype and DetailID = @detailId
 End
 go
+
+
