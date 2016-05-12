@@ -237,7 +237,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "IsDuplicateFundDetailPerTransaction";
+                command.CommandText = "IsDuplicateFundDetail";
                 command.Parameters.Add(new SqlParameter("detailId", detailId));
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
