@@ -174,8 +174,10 @@
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
+    <Content Include="Conservation\ConservationAttributes.aspx" />
     <Content Include="Conservation\ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationStewardship.aspx" />
+    <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
     <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
@@ -219,6 +221,8 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Housing\HousingSourcesUses.aspx" />
+    <Content Include="Housing\HousingUnitsServices.aspx" />
     <Content Include="Images\image004.png" />
     <Content Include="FundType.aspx" />
     <Content Include="LookupMaintenance.aspx" />
@@ -231,10 +235,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
+    <Content Include="SQL\ConservationSummary.sql" />
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
+    <Content Include="SQL\HousingUnitsServices.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
     <None Include="Properties\PublishProfiles\VHCBPublish.pubxml" />
@@ -359,6 +366,13 @@
     <Compile Include="ConservationSourcesUses.aspx.designer.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Conservation\ConservationAttributes.aspx.cs">
+      <DependentUpon>ConservationAttributes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Conservation\ConservationAttributes.aspx.designer.cs">
+      <DependentUpon>ConservationAttributes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Conservation\ConservationSourcesUses.aspx.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -372,6 +386,13 @@
     </Compile>
     <Compile Include="Conservation\ConservationStewardship.aspx.designer.cs">
       <DependentUpon>ConservationStewardship.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Conservation\ConservationSummary.aspx.cs">
+      <DependentUpon>ConservationSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Conservation\ConservationSummary.aspx.designer.cs">
+      <DependentUpon>ConservationSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
@@ -600,6 +621,20 @@
     </Compile>
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\HousingSourcesUses.aspx.cs">
+      <DependentUpon>HousingSourcesUses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\HousingSourcesUses.aspx.designer.cs">
+      <DependentUpon>HousingSourcesUses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\HousingUnitsServices.aspx.cs">
+      <DependentUpon>HousingUnitsServices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\HousingUnitsServices.aspx.designer.cs">
+      <DependentUpon>HousingUnitsServices.aspx</DependentUpon>
     </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>
