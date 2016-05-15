@@ -30,9 +30,9 @@
                                     <asp:ListItem>Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right">
-                                <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" Height="30px" Width="30px" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
+                                <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Height="30px" Width="30px" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
                                  &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png"  runat="server" Text="Project Notes" Height="30px" Width="30px"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Height="30px" Width="30px"></asp:ImageButton>
                                 <asp:Button ID="btnProjectNotes_old" runat="server" Visible="false" Text="Project Notes" class="btn btn-info" />
                                 &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
