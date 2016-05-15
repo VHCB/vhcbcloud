@@ -223,8 +223,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
     <Content Include="Housing\HousingUnitsServices.aspx" />
+    <Content Include="Images\%24%24.jpg" />
+    <Content Include="Images\%24%24.png" />
     <Content Include="Images\image004.png" />
     <Content Include="FundType.aspx" />
+    <Content Include="Images\notebook.png" />
+    <Content Include="Images\notes.png" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />

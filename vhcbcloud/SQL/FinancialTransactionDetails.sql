@@ -108,8 +108,7 @@ begin
 			 end as PendingAmount,
 			 max(tr.date) as TransDate
 			from Project p 
-	join ProjectName pn on pn.ProjectID = p.ProjectId
-	join ProjectApplicant pa on pa.ProjectId = p.ProjectID			
+	join ProjectName pn on pn.ProjectID = p.ProjectId	
 	join LookupValues lv on lv.TypeID = pn.LkProjectname	
 	join Trans tr on tr.ProjectID = p.ProjectId
 	join Detail det on det.TransId = tr.TransId	
@@ -137,8 +136,7 @@ begin
 			 end as PendingAmount,
 			 max(tr.date) as TransDate
 			from Project p 
-	join ProjectName pn on pn.ProjectID = p.ProjectId
-	join ProjectApplicant pa on pa.ProjectId = p.ProjectID		
+	join ProjectName pn on pn.ProjectID = p.ProjectId	
 	join LookupValues lv on lv.TypeID = pn.LkProjectname	
 	join Trans tr on tr.ProjectID = p.ProjectId
 	join Detail det on det.TransId = tr.TransId	
@@ -190,8 +188,7 @@ begin
 				 end as lkStatus, 			 
 				tr.date as TransDate
 				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId
-		join ProjectApplicant pa on pa.ProjectId = p.ProjectID		
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
@@ -277,8 +274,7 @@ Begin
 				 end as PendingAmount,
 				 max(tr.date) as TransDate
 				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId
-		join ProjectApplicant pa on pa.ProjectId = p.ProjectID		
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
@@ -313,8 +309,7 @@ Begin
 				 end as PendingAmount,
 				 max(tr.date) as TransDate
 				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId
-		join ProjectApplicant pa on pa.ProjectId = p.ProjectID		
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
@@ -365,8 +360,7 @@ Begin
 				 end as lkStatus, 			 
 				tr.date as TransDate
 				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId
-		join ProjectApplicant pa on pa.ProjectId = p.ProjectID		
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
