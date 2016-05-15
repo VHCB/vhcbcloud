@@ -24,13 +24,16 @@
                     <table style="width: 100%;">
                         <tr>
                             <td>
-                                <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
+                                <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
                                     OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                     <asp:ListItem Selected="True">New    </asp:ListItem>
                                     <asp:ListItem>Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right">
-                                <asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" />
+                                <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" Height="30px" Width="30px" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
+                                 &nbsp;
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png"  runat="server" Text="Project Notes" Height="30px" Width="30px"></asp:ImageButton>
+                                <asp:Button ID="btnProjectNotes_old" runat="server" Visible="false" Text="Project Notes" class="btn btn-info" />
                                 &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -45,6 +48,7 @@
                     <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
                     <br />
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+                    
                 </asp:Panel>
                 <asp:Panel ID="pnlHide" runat="server" Visible="true">
                     <div class="panel-width">
@@ -118,7 +122,7 @@
 
                                 <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing" 
+                                    GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing"
                                     OnRowUpdating="gvPTrans_RowUpdating" OnRowDeleting="gvPTrans_RowDeleting" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged" OnRowCreated="gvPTrans_RowCreated">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -128,10 +132,10 @@
                                     <Columns>
                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />    
-                                                 <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
-                                                
-                                                                                            
+                                                <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
+
+
                                             </ItemTemplate>
 
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -183,7 +187,7 @@
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Inactivate" OnClientClick="return confirm('Are you sure you want to delete this transaction?');"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" UpdateText="Activate" Visible="false"/>
+                                        <asp:CommandField ShowEditButton="True" UpdateText="Activate" Visible="false" />
                                     </Columns>
                                     <FooterStyle CssClass="footerStyle" />
                                 </asp:GridView>
@@ -208,7 +212,7 @@
                                                 <td style="width: 20%; float: left">
                                                     <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True">
                                                     </asp:DropDownList>
-                                                </td>                                                
+                                                </td>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
                                                 <td style="width: 20%; float: left">
                                                     <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
@@ -227,7 +231,7 @@
                                                 <td style="width: 90%; float: left" colspan="5">
                                                     <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                             </tr>
-                                        </table>                                        
+                                        </table>
                                         <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>
                                         <br />
@@ -278,7 +282,8 @@
                                                     <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
                                                 </ItemTemplate>
                                                 <EditItemTemplate>
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" Visible="false"></asp:DropDownList>
+                                                    <asp:Label ID="lbEditlTransType" runat="Server" Text='<%# Eval("Description") %>' />
                                                     <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
                                                 </EditItemTemplate>
                                                 <FooterTemplate>
@@ -306,7 +311,7 @@
                                                     <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                             <asp:TemplateField Visible="false" HeaderText="Trans Id" SortExpression="transid">
+                                            <asp:TemplateField Visible="false" HeaderText="Trans Id" SortExpression="transid">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("transid") %>' />
                                                 </ItemTemplate>
@@ -345,19 +350,19 @@
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
 
-         function RadioCheck(rb) {            
+        function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
-            var rbs = gv.getElementsByTagName("input");
+             var rbs = gv.getElementsByTagName("input");
 
-            var row = rb.parentNode.parentNode;
-            for (var i = 0; i < rbs.length; i++) {
-                if (rbs[i].type == "radio") {
-                    if (rbs[i].checked && rbs[i] != rb) {
-                        rbs[i].checked = false;
-                        break;
-                    }
-                }
-            }
-        }
+             var row = rb.parentNode.parentNode;
+             for (var i = 0; i < rbs.length; i++) {
+                 if (rbs[i].type == "radio") {
+                     if (rbs[i].checked && rbs[i] != rb) {
+                         rbs[i].checked = false;
+                         break;
+                     }
+                 }
+             }
+         }
     </script>
 </asp:Content>

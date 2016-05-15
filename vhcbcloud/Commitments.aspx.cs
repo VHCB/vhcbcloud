@@ -578,15 +578,16 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnCommitmentSubmit);
                 }
 
-                if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, fundId, transType))
-                {
-                    lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please change selection";
-                    return;
-                }
+                //if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, fundId, transType))
+                //{
+                //    lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please change selection";
+                //    return;
+                //}
+
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
-                //lblErrorMsg.Text = "";
-                gvBCommit.EditIndex = -1;
-                //BindFundDetails(Convert.ToInt32(ViewState["SelectedTransId"]));
+                
+                
+                gvBCommit.EditIndex = -1;                
                 BindFundDetails(GetTransId());
             }
             catch (Exception ex)
@@ -757,8 +758,9 @@ namespace vhcbcloud
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
+            ClearTransactionDetailForm();
             GetSelectedTransId(gvPTrans);
-            BindFundDetails(Convert.ToInt32(ViewState["SelectedTransId"]));
+            BindFundDetails(GetTransId());
             pnlTranDetails.Visible = true;
         }
 
@@ -803,6 +805,22 @@ namespace vhcbcloud
                 e.Row.Cells[0].Visible = true;
         }
 
-       
+        protected void lbAwardSummary_Click(object sender, ImageClickEventArgs e)
+        {
+            if (ddlProjFilter.SelectedIndex > 0)
+            {
+                string url = "/awardsummary.aspx?projectid=" + ddlProjFilter.SelectedValue.ToString();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("<script type = 'text/javascript'>");
+                sb.Append("window.open('");
+                sb.Append(url);
+                sb.Append("');");
+                sb.Append("</script>");
+                ClientScript.RegisterStartupScript(this.GetType(),
+                        "script", sb.ToString());
+            }
+            else
+                lblErrorMsg.Text = "Select a project to see the award summary";
+        }
     }
 }
