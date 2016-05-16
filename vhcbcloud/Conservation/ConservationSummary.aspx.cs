@@ -57,9 +57,10 @@ namespace vhcbcloud.Conservation
 
                 if (DataUtils.GetInt(txtTotProjAcres.Text) != 0)
                 {
-                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
-                    pctPrime.InnerText = (Math.Round(DataUtils.GetDecimal(txtPrime.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
-                    pctState.InnerText = (Math.Round(DataUtils.GetDecimal(txtStateWide.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
+                    //                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
+                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
+                    pctPrime.InnerText = (Math.Round(DataUtils.GetDecimal(txtPrime.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
+                    pctState.InnerText = (Math.Round(DataUtils.GetDecimal(txtStateWide.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
                     otherAcres.InnerText = (DataUtils.GetInt(txtTotProjAcres.Text) - (DataUtils.GetDecimal(txtWooded.Text) + DataUtils.GetDecimal(txtPrime.Text)
                     + DataUtils.GetDecimal(txtStateWide.Text))).ToString();
                 }

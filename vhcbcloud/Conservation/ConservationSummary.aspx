@@ -2,7 +2,7 @@
     Inherits="vhcbcloud.Conservation.ConservationSummary" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="jumbotron">
+    <div class="jumbotron" id="vhcb">
         <!-- Tabs -->
         <div id="dvTabs" runat="server">
             <div id="page-inner">
@@ -454,13 +454,15 @@
 
                 var Other = txttot - (txtwooded + txtprime + txtstate);
                 $('#<%=otherAcres.ClientID%>').text(Other);
-                var pctWooded = parseFloat(parseInt($('#<%=txtWooded.ClientID%>').val(), 10) * 100) / parseInt($('#<%=txtTotProjAcres.ClientID%>').val(), 10);
-                var pctPrime = parseFloat(parseInt($('#<%=txtPrime.ClientID%>').val(), 10) * 100) / parseInt($('#<%=txtTotProjAcres.ClientID%>').val(), 10);
-                var pctState = parseFloat(parseInt($('#<%=txtStateWide.ClientID%>').val(), 10) * 100) / parseInt($('#<%=txtTotProjAcres.ClientID%>').val(), 10);
+                //var pctWooded = parseFloat(parseInt($('#<%=txtWooded.ClientID%>').val(), 10) * 100) / parseInt($('#<%=txtTotProjAcres.ClientID%>').val(), 10);
+                var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
+                var pctPrime = Math.round($('#<%=txtPrime.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
+                var pctState = Math.round($('#<%=txtStateWide.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
 
-                $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(4));
-                $('#<%=pctPrime.ClientID%>').text(pctPrime.toPrecision(4));
-                $('#<%=pctState.ClientID%>').text(pctState.toPrecision(4));
+                //$('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(4));
+                $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2));
+                $('#<%=pctPrime.ClientID%>').text(pctPrime.toPrecision(2));
+                $('#<%=pctState.ClientID%>').text(pctState.toPrecision(2));
             };
         });
     </script>
