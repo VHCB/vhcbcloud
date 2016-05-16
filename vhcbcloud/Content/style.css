@@ -9,8 +9,11 @@ blue: #3589a4;
 
 */
  .panel-width { 
-  padding: 5px;
+  padding: 2px 2px 2px 2px;
 }
+ #vhcb .panel { margin-bottom:2px; }
+ #vhcb .panel-heading{ padding: 5px 5px 1px 5px }
+ #vhcb .panel-body{ padding: 10px 15px 0px 15px }
 
 .MEBackground {
     background-color: Black;
