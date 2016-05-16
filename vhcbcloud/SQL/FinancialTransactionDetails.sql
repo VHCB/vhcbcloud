@@ -751,7 +751,7 @@ alter procedure IsDuplicateFundDetailPerTransaction
 )
 as
 Begin
-	select * from Detail where TransId = @transid and FundId = @fundid and LkTransType = @fundtranstype
+	select * from Detail where TransId = @transid and FundId = @fundid and LkTransType = @fundtranstype and RowIsActive = 1
 End
 go
 
