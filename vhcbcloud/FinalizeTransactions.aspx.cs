@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -18,6 +19,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindProjects();
+                txtTransDateTo.Text = DateTime.Now.ToString("M/dd/yyyy", CultureInfo.InvariantCulture);
             }
         }
 
@@ -122,21 +124,21 @@ namespace vhcbcloud
                     txtTransDateTo.Focus();
                     return;
                 }
-                if (tranFromDate >= DateTime.Today)
+                if (tranFromDate > DateTime.Today)
                 {
-                    lblErrorMsg.Text = "Transaction From date should be less than today";
+                    lblErrorMsg.Text = "From Transaction date should be less than or equal to today";
                     txtTransDateFrom.Focus();
                     return;
                 }
                 if (tranToDate > DateTime.Today)
                 {
-                    lblErrorMsg.Text = "Transaction End date should be less than today";
+                    lblErrorMsg.Text = "Transaction End date should be less than or equal to today";
                     txtTransDateTo.Focus();
                     return;
                 }
-                if (tranFromDate >= tranToDate)
+                if (tranFromDate > tranToDate)
                 {
-                    lblErrorMsg.Text = "Transaction From date should be less than End date";
+                    lblErrorMsg.Text = "From Transaction date should be less than End date";
                     txtTransDateFrom.Focus();
                     return;
                 }
