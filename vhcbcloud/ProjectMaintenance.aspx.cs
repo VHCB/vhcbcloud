@@ -40,6 +40,8 @@ namespace vhcbcloud
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
             }
+            if (DataUtils.GetInt(hfProjectId.Value) != 0)
+                BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
         }
 
         #region Bind Controls
@@ -286,7 +288,7 @@ namespace vhcbcloud
 
                     //Entity
                     dvNewEntity.Visible = false;
-                   // dvEntity.Visible = false;
+                    // dvEntity.Visible = false;
                     dvEntityGrid.Visible = false;
 
                     //RelatedProjects
@@ -377,6 +379,7 @@ namespace vhcbcloud
 
         private void GenerateTabs(int ProjectId, int ProgramId)
         {
+            Tabs.Controls.Clear();
             HtmlGenericControl li = new HtmlGenericControl("li");
             li.Attributes.Add("class", "RoundedCornerTop selected");
             Tabs.Controls.Add(li);
@@ -401,43 +404,6 @@ namespace vhcbcloud
                 anchor1.InnerText = dr["TabName"].ToString();
                 li1.Controls.Add(anchor1);
             }
-
-            
-
-            //if (ProgramId == 144)
-            //{
-            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li1);
-            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-            //    anchor1.Attributes.Add("href", "www.google.com");
-            //    anchor1.InnerText = "Housing Tab1";
-            //    li1.Controls.Add(anchor1);
-
-            //    HtmlGenericControl li2 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li2);
-            //    HtmlGenericControl anchor2 = new HtmlGenericControl("a");
-            //    anchor2.Attributes.Add("href", "www.google.com");
-            //    anchor2.InnerText = "Housing Tab2";
-            //    li2.Controls.Add(anchor2);
-
-            //    HtmlGenericControl li3 = new HtmlGenericControl("li");
-            //    Tabs.Controls.Add(li3);
-            //    HtmlGenericControl anchor3 = new HtmlGenericControl("a");
-            //    anchor3.Attributes.Add("href", "www.google.com");
-            //    anchor3.InnerText = "Housing Tab3";
-            //    li3.Controls.Add(anchor3);
-            //}
-            //else if (ProgramId == 145)
-            //{
-            //    HtmlGenericControl li1 = new HtmlGenericControl("li");
-            //    li1.Attributes.Add("class", "RoundedCornerTop");
-            //    Tabs.Controls.Add(li1);
-            //    HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-            //    anchor1.Attributes.Add("href", "ConservationSourcesUses.aspx?ProjectId=" + ProjectId + "&ProgramId=" + ProgramId);
-            //    anchor1.InnerText = "Conservation Sources Uses";
-            //    anchor1.Attributes.Add("class", "RoundedCornerTop");
-            //    li1.Controls.Add(anchor1);
-            //}
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -512,7 +478,7 @@ namespace vhcbcloud
 
                 //ProjectNames
                 dvNewProjectName.Visible = false;
-               // dvProjectName.Visible = false;
+                // dvProjectName.Visible = false;
                 dvProjectNamesGrid.Visible = false;
 
                 //Address
@@ -603,7 +569,7 @@ namespace vhcbcloud
 
                     //Entity
                     dvNewEntity.Visible = false;
-                   // dvEntity.Visible = false;
+                    // dvEntity.Visible = false;
                     dvEntityGrid.Visible = false;
 
                     //RelatedProjects
@@ -632,7 +598,7 @@ namespace vhcbcloud
                     ProjectMaintenanceData.AddProjectName(DataUtils.GetInt(hfProjectId.Value), txtProject_Name.Text, cbDefName.Checked);
 
                     ClearProjectNameForm();
-                   // dvProjectName.Visible = false;
+                    // dvProjectName.Visible = false;
                     dvProjectNamesGrid.Visible = true;
                     cbAddProjectName.Checked = false;
                     BindProjectNamesGrid();
@@ -934,7 +900,7 @@ namespace vhcbcloud
 
                 gvEntity.EditIndex = -1;
                 BindProjectEntityGrid();
-               // dvEntity.Visible = false;
+                // dvEntity.Visible = false;
                 dvEntityGrid.Visible = true;
                 cbAttachNewEntity.Checked = false;
             }
@@ -1136,7 +1102,7 @@ namespace vhcbcloud
                     TextBox txtLkApplicantRoleEntity = (e.Row.FindControl("txtLkApplicantRoleEntity") as TextBox);
                     CheckBox chkIsApplicantEntity = e.Row.FindControl("chkIsApplicant") as CheckBox;
                     CheckBox chkActiveEditEntity = e.Row.FindControl("chkActiveEditEntity") as CheckBox;
-                    
+
                     if (txtLkApplicantRoleEntity != null)
                     {
                         BindLookUP(ddlLkApplicantRoleEntity, 56);
@@ -1278,7 +1244,7 @@ namespace vhcbcloud
                 gvProjectStatus.EditIndex = -1;
                 BindProjectStatusGrid();
                 ClearProjectStatusForm();
-               // dvProjectStatus.Visible = false;
+                // dvProjectStatus.Visible = false;
                 dvProjectStatusGrid.Visible = true;
                 cbAddProjectStatus.Checked = false;
             }

@@ -245,6 +245,7 @@
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
+    <Content Include="SQL\HousingSourcesUses.sql" />
     <Content Include="SQL\HousingUnitsServices.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />

@@ -50,17 +50,17 @@
                                     <td>
                                         <span class="labelClass" id="ProjName" runat="server"></span>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><span class="labelClass">Conservation Track:</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlConservationTrack" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                    </td>
+
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="labelClass">Conservation Track:</span></td>
-                                    <td>
-                                        <asp:DropDownList ID="ddlConservationTrack" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                    </td>
+
                                     <td><span class="labelClass"># of Easements:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtEasements" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -69,35 +69,23 @@
                                     <td>
                                         <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
                                     <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Wooded:</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtWooded" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">% Wooded:</span></td>
-                                    <td>
-                                        <span id="pctWooded" runat="server"></span>
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
+
+                                    <td><span class="labelClass">Wooded:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtWooded" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                    </td>
                                     <td><span class="labelClass">Prime:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtPrime" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">% Prime:</span></td>
-                                    <td>
-                                        <span id="pctPrime" runat="server"></span>
                                     </td>
                                     <td><span class="labelClass">StateWide</span></td>
                                     <td>
@@ -108,12 +96,28 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
+                                    <td><span class="labelClass">% Wooded:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="pctWooded" runat="server"></span>
+                                    </td>
+                                    <td><span class="labelClass">% Prime:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="pctPrime" runat="server"></span>
+                                    </td>
                                     <td><span class="labelClass">% StateWide:</span></td>
                                     <td>
-                                        <span id="pctState" runat="server"></span>
+                                        <span class="labelClass" id="pctState" runat="server"></span>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+
                                     <td><span class="labelClass">Other Acres:</span></td>
-                                    <td><span id="otherAcres" runat="server"></span></td>
+                                    <td><span class="labelClass" id="otherAcres" runat="server"></span></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
@@ -253,7 +257,7 @@
                             <asp:Panel runat="server" ID="Panel2" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAcreage" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
                                     OnRowEditing="gvAcreage_RowEditing" OnRowCancelingEdit="gvAcreage_RowCancelingEdit"
                                     OnRowUpdating="gvAcreage_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -261,6 +265,7 @@
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="Conserve Acres ID" Visible="false">
                                             <ItemTemplate>
@@ -276,6 +281,9 @@
                                                 <asp:TextBox ID="txtApplicantId" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("ApplicantId") %>' Visible="false">
                                                 </asp:TextBox>
                                             </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Acres">
                                             <ItemTemplate>
@@ -285,6 +293,9 @@
                                                 <asp:TextBox ID="txtAcres" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Acres") %>'>
                                                 </asp:TextBox>
                                             </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTotal" Text=""></asp:Label>
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -323,18 +334,18 @@
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Watershed</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlWatershed" CssClass="clsDropDownLong" runat="server">
+                                            <asp:DropDownList ID="ddlWatershed" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 166px">
                                             <span class="labelClass">Subwatershed</span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtSubwatershed" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtSubwatershed" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Water Body</span></td>
                                         <td>
-                                            <asp:DropDownList ID="ddlWaterBody" CssClass="clsDropDownLong" runat="server">
+                                            <asp:DropDownList ID="ddlWaterBody" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -343,12 +354,14 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Frontage (ft):</span></td>
-                                        <td style="width: 215px"><asp:TextBox ID="txtFrontageFeet" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                        <td style="width: 215px">
+                                            <asp:TextBox ID="txtFrontageFeet" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                         <td style="width: 166px"><span class="labelClass">Other Stream/Pond Name</span></td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtOtherStream" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtOtherStream" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" /></td>
+                                        <td style="width: 170px">
+                                            <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" /></td>
                                         <td>
                                             <asp:Button ID="btnAddSurfaceWaters" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSurfaceWaters_Click" />
                                         </td>
@@ -364,7 +377,7 @@
                             <asp:Panel runat="server" ID="Panel4" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvSurfaceWaters" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowEditing="gvSurfaceWaters_RowEditing" OnRowCancelingEdit="gvSurfaceWaters_RowCancelingEdit" 
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowEditing="gvSurfaceWaters_RowEditing" OnRowCancelingEdit="gvSurfaceWaters_RowCancelingEdit"
                                     OnRowDataBound="gvSurfaceWaters_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -410,7 +423,7 @@
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfConserveId" runat="server" />
     <asp:HiddenField ID="hfSurfaceWatersId" runat="server" />
-    
+
     <script language="javascript">
         $(document).ready(function () {
 
@@ -431,7 +444,7 @@
             $('#<%= cbAddSurfaceWaters.ClientID%>').click(function () {
                 $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle(this.checked);
             }).change();
-            
+
 
             $('#<%= txtTotProjAcres.ClientID%>').blur(function () {
                 CalculatePercentages();
@@ -452,17 +465,31 @@
                 var txtprime = parseInt($('#<%=txtPrime.ClientID%>').val(), 10);
                 var txtstate = parseInt($('#<%=txtStateWide.ClientID%>').val(), 10);
 
-                var Other = txttot - (txtwooded + txtprime + txtstate);
-                $('#<%=otherAcres.ClientID%>').text(Other);
+
                 //var pctWooded = parseFloat(parseInt($('#<%=txtWooded.ClientID%>').val(), 10) * 100) / parseInt($('#<%=txtTotProjAcres.ClientID%>').val(), 10);
                 var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
                 var pctPrime = Math.round($('#<%=txtPrime.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
                 var pctState = Math.round($('#<%=txtStateWide.ClientID%>').val() * 100 / $('#<%=txtTotProjAcres.ClientID%>').val());
 
-                //$('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(4));
-                $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2));
-                $('#<%=pctPrime.ClientID%>').text(pctPrime.toPrecision(2));
-                $('#<%=pctState.ClientID%>').text(pctState.toPrecision(2));
+                if ($('#<%=txtTotProjAcres.ClientID%>').val() != 0) {
+                    //$('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(4));
+                    $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2));
+                    $('#<%=pctPrime.ClientID%>').text(pctPrime.toPrecision(2));
+                    $('#<%=pctState.ClientID%>').text(pctState.toPrecision(2));
+
+                    var Other = txttot - (txtwooded + txtprime + txtstate);
+                    $('#<%=otherAcres.ClientID%>').text(Other);
+                }
+                else {
+                    $('#<%=txtWooded.ClientID%>').val(0)
+                    $('#<%=txtPrime.ClientID%>').val(0)
+                    $('#<%=txtStateWide.ClientID%>').val(0)
+
+                    $('#<%=pctWooded.ClientID%>').text("-");
+                    $('#<%=pctPrime.ClientID%>').text("-");
+                    $('#<%=pctState.ClientID%>').text("-");
+                    $('#<%=otherAcres.ClientID%>').text("-");
+                }
             };
         });
     </script>
