@@ -3,7 +3,7 @@
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="jumbotron">
+    <div class="jumbotron" id="vhcb">
              <!-- Tabs -->
             <div id="dvTabs" runat="server">
                 <div id="page-inner">

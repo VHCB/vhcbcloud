@@ -121,15 +121,6 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.TextBox txtWooded;
         
         /// <summary>
-        /// pctWooded control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctWooded;
-        
-        /// <summary>
         /// txtPrime control.
         /// </summary>
         /// <remarks>
@@ -139,15 +130,6 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.TextBox txtPrime;
         
         /// <summary>
-        /// pctPrime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrime;
-        
-        /// <summary>
         /// txtStateWide control.
         /// </summary>
         /// <remarks>
@@ -155,6 +137,24 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStateWide;
+        
+        /// <summary>
+        /// pctWooded control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctWooded;
+        
+        /// <summary>
+        /// pctPrime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrime;
         
         /// <summary>
         /// pctState control.

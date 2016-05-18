@@ -461,7 +461,7 @@
                             <asp:Panel runat="server" ID="Panel11">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Buffer Type:</span></td>
+                                        <td style="width: 140px"><span class="labelClass">Owner Type:</span></td>
                                         <td style="width: 215px">
                                             <asp:DropDownList ID="ddlOT" CssClass="clsDropDownLong" runat="server">
                                             </asp:DropDownList>
