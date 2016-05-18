@@ -55,6 +55,11 @@ namespace vhcbcloud.Conservation
                 txtPrime.Text = drConserve["Prime"].ToString();
                 txtStateWide.Text = drConserve["Statewide"].ToString();
 
+                pctWooded.InnerText = "0";
+                pctPrime.InnerText = "0";
+                pctState.InnerText = "0";
+                otherAcres.InnerText = "0";
+
                 if (DataUtils.GetInt(txtTotProjAcres.Text) != 0)
                 {
                     //                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
@@ -153,7 +158,7 @@ namespace vhcbcloud.Conservation
             BindPrimaryStewardOrganization();
             BindEasementHolder(ddlEasementHolder);
             BindLookUP(ddlAcreageDescription, 97);
-            BindLookUP(ddlWatershed, 140);//143
+            BindLookUP(ddlWatershed, 143);
             BindLookUP(ddlWaterBody, 140);
         }
 
@@ -353,6 +358,17 @@ namespace vhcbcloud.Conservation
                     dvAcreageGrid.Visible = true;
                     gvAcreage.DataSource = dtAcreage;
                     gvAcreage.DataBind();
+
+                    Label lblFooterTotal = (Label)gvAcreage.FooterRow.FindControl("lblFooterTotal");
+                    int totAcres = 0;
+
+                    for (int i = 0; i < dtAcreage.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dtAcreage.Rows[i]["RowIsActive"].ToString()))
+                            totAcres += DataUtils.GetInt(dtAcreage.Rows[i]["Acres"].ToString());
+                    }
+
+                    lblFooterTotal.Text = totAcres.ToString();
                 }
                 else
                 {
