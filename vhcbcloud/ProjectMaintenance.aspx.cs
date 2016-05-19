@@ -40,8 +40,9 @@ namespace vhcbcloud
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
             }
+
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
-                BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
+                GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
         }
 
         #region Bind Controls
@@ -197,6 +198,8 @@ namespace vhcbcloud
 
         private void ClearForm()
         {
+            Tabs.Controls.Clear();
+
             txtProjNum.Text = "";
             ddlProjectType.SelectedIndex = -1;
             ddlProgram.SelectedIndex = -1;
@@ -368,6 +371,8 @@ namespace vhcbcloud
         {
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
             PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
+            ddlProgram.Enabled = false;
+            hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
             GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
             //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
             PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
@@ -471,6 +476,7 @@ namespace vhcbcloud
 
                 txtProjNum.Visible = true;
                 ddlProject.Visible = false;
+                ddlProgram.Enabled = true;
                 btnProjectUpdate.Visible = false;
                 dvSubmit.Visible = true;
                 cbActiveOnly.Visible = false;

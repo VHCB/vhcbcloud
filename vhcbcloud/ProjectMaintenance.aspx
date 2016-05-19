@@ -719,6 +719,11 @@
                                                 <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Program">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgram" runat="Server" Text='<%# Eval("Program") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
@@ -752,7 +757,7 @@
 
                 <asp:HiddenField ID="hfProjectId" runat="server" />
                 <asp:HiddenField ID="hfAddressId" runat="server" />
-
+                 <asp:HiddenField ID="hfProgramId" runat="server" />
                 <asp:HiddenField ID="hfVillage" runat="server" />
             </div>
         </div>

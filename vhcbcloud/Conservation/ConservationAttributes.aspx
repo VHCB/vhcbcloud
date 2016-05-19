@@ -27,6 +27,9 @@
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                             <td style="text-align: right">
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="width: 25px; height: 25px; border: none; vertical-align: middle;"
+                                    OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="width: 25px; height: 25px; border: none; vertical-align: middle;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -36,6 +39,16 @@
                         </tr>
                     </table>
                 </div>
+
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="../ProjectNotes.aspx" runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+                </asp:Panel>
+
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
@@ -100,7 +113,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Attribute") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                             <%--<EditItemTemplate>
                                                 <asp:DropDownList ID="ddlAttributeE" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtLkConsAttrib" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConsAttrib") %>' Visible="false">
@@ -114,7 +127,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -184,7 +197,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAffordabilityMechanism" runat="Server" Text='<%# Eval("AffordabilityMechanism") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                             <%--<EditItemTemplate>
                                                 <asp:DropDownList ID="ddlAttributeE" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtLkConsAttrib" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConsAttrib") %>' Visible="false">
@@ -198,7 +211,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -267,7 +280,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPublicAccess" runat="Server" Text='<%# Eval("PublicAccess") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -276,7 +289,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -345,7 +358,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAlternativeEnergy" runat="Server" Text='<%# Eval("AlternativeEnergy") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -354,7 +367,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -423,7 +436,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblBufferType" runat="Server" Text='<%# Eval("BufferType") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -432,7 +445,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -501,7 +514,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblOwnerType" runat="Server" Text='<%# Eval("OwnerType") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -510,7 +523,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -579,7 +592,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblLegalInterest" runat="Server" Text='<%# Eval("LegalInterest") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -588,7 +601,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -657,7 +670,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblLegalMechanism" runat="Server" Text='<%# Eval("LegalMechanism") %>' />
                                             </ItemTemplate>
-                                             <ItemStyle Width="500px" />
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -666,7 +679,7 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
-                                             <ItemStyle Width="350px" />
+                                            <ItemStyle Width="350px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -725,5 +738,10 @@
             }).change();
 
         });
+
+
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+        };
     </script>
 </asp:Content>
