@@ -221,10 +221,12 @@ namespace vhcbcloud
             try
             {
                 ClearForm();
-
                 hfProjectId.Value = "";
                 if (ddlProject.SelectedIndex != 0)
                 {
+                    ibAwardSummary.Visible = true;
+                    btnProjectNotes1.Visible = true;
+
                     dvTabs.Visible = true;
                     dvUpdate.Visible = true;
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
@@ -273,6 +275,9 @@ namespace vhcbcloud
                 }
                 else
                 {
+                    ibAwardSummary.Visible = false;
+                    btnProjectNotes1.Visible = false;
+
                     dvTabs.Visible = false;
                     dvUpdate.Visible = false;
 
@@ -461,6 +466,9 @@ namespace vhcbcloud
             ClearForm();
             if (rdBtnSelection.SelectedValue.ToLower().Trim() == "new")
             {
+                ibAwardSummary.Visible = false;
+                btnProjectNotes1.Visible = false;
+
                 txtProjNum.Visible = true;
                 ddlProject.Visible = false;
                 btnProjectUpdate.Visible = false;

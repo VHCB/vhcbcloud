@@ -254,6 +254,13 @@ namespace vhcbcloud.Conservation
 
         protected void AddEasementHolder_Click(object sender, EventArgs e)
         {
+            if (ddlEasementHolder.SelectedIndex == 0)
+            {
+                LogMessage("Select Easement Holder");
+                ddlEasementHolder.Focus();
+                return;
+            }
+
             Result objResult = ConservationSummaryData.AddConserveEholder(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlEasementHolder.SelectedValue.ToString()));
             CleaEasementHolderForm();
 
@@ -327,6 +334,26 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddAcreage_Click(object sender, EventArgs e)
         {
+            if (ddlAcreageDescription.SelectedIndex == 0)
+            {
+                LogMessage("Select Description");
+                ddlAcreageDescription.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAcres.Text.ToString()) == true)
+            {
+                LogMessage("Enter Acres");
+                txtAcres.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtAcres.Text) <= 0)
+            {
+                LogMessage("Enter valid Acres");
+                txtAcres.Focus();
+                return;
+            }
+
             Result objResult = ConservationSummaryData.AddConserveAcres(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlAcreageDescription.SelectedValue.ToString()), DataUtils.GetInt(txtAcres.Text));
             CleaAcreageForm();
@@ -399,8 +426,21 @@ namespace vhcbcloud.Conservation
         {
             int rowIndex = e.RowIndex;
 
+            string strAcres = ((TextBox)gvAcreage.Rows[rowIndex].FindControl("txtAcres")).Text;
+
+            if (string.IsNullOrWhiteSpace(strAcres) == true)
+            {
+                LogMessage("Enter Acres");
+                return;
+            }
+            if (DataUtils.GetDecimal(strAcres) <= 0)
+            {
+                LogMessage("Enter valid Acres");
+                return;
+            }
+
             int ConserveAcresID = DataUtils.GetInt(((Label)gvAcreage.Rows[rowIndex].FindControl("lblConserveAcresID")).Text);
-            int Acres = DataUtils.GetInt(((TextBox)gvAcreage.Rows[rowIndex].FindControl("txtAcres")).Text);
+            int Acres = DataUtils.GetInt(strAcres);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAcreage.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             ConservationSummaryData.UpdateConserveAcres(ConserveAcresID, Acres, RowIsActive);
@@ -438,6 +478,33 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddSurfaceWaters_Click(object sender, EventArgs e)
         {
+            if (ddlWaterBody.SelectedIndex == 0)
+            {
+                LogMessage("Select Watershed");
+                ddlWaterBody.Focus();
+                return;
+            }
+
+            if (ddlWaterBody.SelectedIndex == 0)
+            {
+                LogMessage("Select Water Body");
+                ddlWaterBody.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtFrontageFeet.Text.ToString()) == true)
+            {
+                LogMessage("Enter Frontage");
+                txtFrontageFeet.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtFrontageFeet.Text) <= 0)
+            {
+                LogMessage("Enter valid Frontage");
+                txtFrontageFeet.Focus();
+                return;
+            }
+
             if (btnAddSurfaceWaters.Text.ToLower() == "update")
             {
                 int SurfaceWatersId = Convert.ToInt32(hfSurfaceWatersId.Value);
