@@ -31,16 +31,18 @@
                                     <asp:ListItem>New    </asp:ListItem>
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
-                            <td style="text-align: right">
-                                <asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" />
-                                &nbsp;
+                            <td style="text-align: right;">
+                              <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" style="width:30px; height:30px; border:none; vertical-align: middle;" Visible="false" 
+                                    OnClientClick="PopupAwardSummary(); return false;" >
+                                </asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png"  Text="Project Notes" style="width:30px; height:30px; border:none; vertical-align: middle;" Visible="false"/>
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                     </table>
                 </div>
 
-                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes1" CancelControlID="btnClose"
                     BackgroundCssClass="MEBackground">
                 </ajaxToolkit:ModalPopupExtender>
                 <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
@@ -810,6 +812,10 @@
                 RefreshGrids();
             });--%>
         });
+
+        function PopupAwardSummary() {
+            window.open('./awardsummary.aspx?projectid='+$("#<%= ddlProject.ClientID%>  option:selected").val())
+        };
 
         function IsProjectNumberExist() {
             $.ajax({

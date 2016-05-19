@@ -171,6 +171,13 @@ namespace vhcbcloud.Conservation
 
         protected void AddAttribute_Click(object sender, EventArgs e)
         {
+            if (ddlAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Attribute");
+                ddlAttribute.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddConserveAttribute(DataUtils.GetInt(hfConserveId.Value),
                 DataUtils.GetInt(ddlAttribute.SelectedValue.ToString()));
             ddlAttribute.SelectedIndex = -1;
@@ -215,6 +222,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddAffordability_Click(object sender, EventArgs e)
         {
+            if (ddlAffordability.SelectedIndex == 0)
+            {
+                LogMessage("Select Affordability Mechanism");
+                ddlAffordability.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddAffordabilityMechanism(DataUtils.GetInt(hfConserveId.Value),
                 DataUtils.GetInt(ddlAffordability.SelectedValue.ToString()));
             ddlAffordability.SelectedIndex = -1;
@@ -284,6 +298,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddPA_Click(object sender, EventArgs e)
         {
+            if (ddlPA.SelectedIndex == 0)
+            {
+                LogMessage("Select Public Access");
+                ddlPA.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddPublicAccess(DataUtils.GetInt(hfConserveId.Value),
                 DataUtils.GetInt(ddlPA.SelectedValue.ToString()));
             ddlPA.SelectedIndex = -1;
@@ -353,6 +374,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddAltEnergy_Click(object sender, EventArgs e)
         {
+            if (ddlAltEnergy.SelectedIndex == 0)
+            {
+                LogMessage("Select Alternative Energy");
+                ddlAltEnergy.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddAltEnergy(DataUtils.GetInt(hfConserveId.Value),
                DataUtils.GetInt(ddlAltEnergy.SelectedValue.ToString()));
             ddlAltEnergy.SelectedIndex = -1;
@@ -422,6 +450,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddBuffer_Click(object sender, EventArgs e)
         {
+            if (ddlBufferType.SelectedIndex == 0)
+            {
+                LogMessage("Select Buffer Type");
+                ddlBufferType.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddBuffers(DataUtils.GetInt(hfConserveId.Value),
                           DataUtils.GetInt(ddlBufferType.SelectedValue.ToString()));
             ddlBufferType.SelectedIndex = -1;
@@ -491,6 +526,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddOT_Click(object sender, EventArgs e)
         {
+            if (ddlOT.SelectedIndex == 0)
+            {
+                LogMessage("Select Owner Type");
+                ddlOT.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddOwnerType(DataUtils.GetInt(hfConserveId.Value),
                          DataUtils.GetInt(ddlOT.SelectedValue.ToString()));
             ddlOT.SelectedIndex = -1;
@@ -560,6 +602,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddLegalInterest_Click(object sender, EventArgs e)
         {
+            if (ddlLegalInterest.SelectedIndex == 0)
+            {
+                LogMessage("Select Legal Interest");
+                ddlLegalInterest.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddLegalInterest(DataUtils.GetInt(hfConserveId.Value),
                                      DataUtils.GetInt(ddlLegalInterest.SelectedValue.ToString()));
             ddlLegalInterest.SelectedIndex = -1;
@@ -629,6 +678,13 @@ namespace vhcbcloud.Conservation
 
         protected void btnAddLegalMechanism_Click(object sender, EventArgs e)
         {
+            if (ddlLegalMechanism.SelectedIndex == 0)
+            {
+                LogMessage("Select Legal Mechanism");
+                ddlLegalMechanism.Focus();
+                return;
+            }
+
             AttributeResult obAttributeResult = ConservationAttributeData.AddLegalMechanism(DataUtils.GetInt(hfConserveId.Value),
                                      DataUtils.GetInt(ddlLegalMechanism.SelectedValue.ToString()));
             ddlLegalMechanism.SelectedIndex = -1;
