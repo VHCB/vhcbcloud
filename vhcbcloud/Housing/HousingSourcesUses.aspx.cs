@@ -469,9 +469,36 @@ namespace vhcbcloud.Housing
             {
                 int rowIndex = e.RowIndex;
 
+                string strVHCBTotal = ((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text;
+                string strOtherTotal = ((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text;
+
+                if (string.IsNullOrWhiteSpace(strVHCBTotal) == true)
+                {
+                    LogMessage("Enter VHCB Total");
+                    return;
+                }
+
+                if (DataUtils.GetDecimal(strVHCBTotal) <= 0)
+                {
+                    LogMessage("Enter valid VHCB Total");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(strOtherTotal) == true)
+                {
+                    LogMessage("Enter Other Total");
+                    return;
+                }
+
+                if (DataUtils.GetDecimal(strOtherTotal) <= 0)
+                {
+                    LogMessage("Enter valid Other Total");
+                    return;
+                }
+
                 int HouseUseID = DataUtils.GetInt(((Label)gvHousingUsesGrid.Rows[rowIndex].FindControl("lblHouseUseID")).Text);
-                decimal VHCBTotal = DataUtils.GetDecimal(((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text);
-                decimal OtherTotal = DataUtils.GetDecimal(((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text);
+                decimal VHCBTotal = DataUtils.GetDecimal(strVHCBTotal);
+                decimal OtherTotal = DataUtils.GetDecimal(strOtherTotal);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
                 HousingSourcesUsesData.UpdateHouseUse(HouseUseID, VHCBTotal, OtherTotal, isActive);
@@ -505,8 +532,22 @@ namespace vhcbcloud.Housing
             {
                 int rowIndex = e.RowIndex;
 
+                string strTotal = ((TextBox)gvHousingSources.Rows[rowIndex].FindControl("txtTotal")).Text;
+
+                if (string.IsNullOrWhiteSpace(strTotal) == true)
+                {
+                    LogMessage("Enter Total");
+                    return;
+                }
+
+                if (DataUtils.GetDecimal(strTotal) <= 0)
+                {
+                    LogMessage("Enter valid Total");
+                    return;
+                }
+
                 int HouseSourceID = DataUtils.GetInt(((Label)gvHousingSources.Rows[rowIndex].FindControl("lblHouseSourceID")).Text);
-                decimal Total = DataUtils.GetDecimal(((TextBox)gvHousingSources.Rows[rowIndex].FindControl("txtTotal")).Text);
+                decimal Total = DataUtils.GetDecimal(strTotal);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvHousingSources.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
                 HousingSourcesUsesData.UpdateHouseSource(HouseSourceID, Total, isActive);

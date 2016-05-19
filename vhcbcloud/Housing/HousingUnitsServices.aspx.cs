@@ -247,6 +247,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddHousingSubType_Click(object sender, EventArgs e)
         {
+            if (ddlHousingSubType.SelectedIndex == 0)
+            {
+                LogMessage("Select Housing SubType");
+                ddlHousingSubType.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtHousingSubTypeUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtHousingSubTypeUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtHousingSubTypeUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtHousingSubTypeUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingSubType(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlHousingSubType.SelectedValue.ToString()), DataUtils.GetInt(txtHousingSubTypeUnits.Text));
             ddlHousingSubType.SelectedIndex = -1;
@@ -270,6 +290,19 @@ namespace vhcbcloud.Housing
             {
                 LogMessage("Select Housing Type");
                 ddlHousingType.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtTotalUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Total Units");
+                txtTotalUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtTotalUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Total Units");
+                txtTotalUnits.Focus();
                 return;
             }
 
@@ -352,9 +385,21 @@ namespace vhcbcloud.Housing
         protected void gvHousingSubType_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
+            string strUnits = ((TextBox)gvHousingSubType.Rows[rowIndex].FindControl("txtUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
 
             int HousingTypeID = DataUtils.GetInt(((Label)gvHousingSubType.Rows[rowIndex].FindControl("lblHousingTypeID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvHousingSubType.Rows[rowIndex].FindControl("txtUnits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvHousingSubType.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHousingSubType(HousingTypeID, Units, RowIsActive);
@@ -417,6 +462,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddSingleUnitCharacteristic_Click(object sender, EventArgs e)
         {
+            if (ddlSingleUnitCharacteristic.SelectedIndex == 0)
+            {
+                LogMessage("Select Characteristic");
+                ddlSingleUnitCharacteristic.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSingleUnitNumUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtSingleUnitNumUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtSingleUnitNumUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtSingleUnitNumUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHouseSingleCount(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlSingleUnitCharacteristic.SelectedValue.ToString()), DataUtils.GetInt(txtSingleUnitNumUnits.Text));
             ddlSingleUnitCharacteristic.SelectedIndex = -1;
@@ -449,9 +514,21 @@ namespace vhcbcloud.Housing
         protected void gvSingle_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
+            string strUnits = ((TextBox)gvSingle.Rows[rowIndex].FindControl("txtNumunits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
 
             int ProjectSingleCountID = DataUtils.GetInt(((Label)gvSingle.Rows[rowIndex].FindControl("lblProjectSingleCountID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvSingle.Rows[rowIndex].FindControl("txtNumunits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvSingle.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHouseSingleCount(ProjectSingleCountID, Units, RowIsActive);
@@ -464,6 +541,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddMultiUnitCharacteristic_Click(object sender, EventArgs e)
         {
+            if (ddlMultipleUnitCharacteristic.SelectedIndex == 0)
+            {
+                LogMessage("Select Characteristic");
+                ddlMultipleUnitCharacteristic.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMultiUnitNumUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtMultiUnitNumUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtMultiUnitNumUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtMultiUnitNumUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHouseMultiCount(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlMultipleUnitCharacteristic.SelectedValue.ToString()), DataUtils.GetInt(txtMultiUnitNumUnits.Text));
             ddlMultipleUnitCharacteristic.SelectedIndex = -1;
@@ -538,8 +635,21 @@ namespace vhcbcloud.Housing
         {
             int rowIndex = e.RowIndex;
 
+            string strUnits = ((TextBox)gvMultiple.Rows[rowIndex].FindControl("txtNumunits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
+
             int ProjectMultiCountID = DataUtils.GetInt(((Label)gvMultiple.Rows[rowIndex].FindControl("lblProjectMultiCountID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvMultiple.Rows[rowIndex].FindControl("txtNumunits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMultiple.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHouseMultiCount(ProjectMultiCountID, Units, RowIsActive);
@@ -552,6 +662,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddSuppServices_Click(object sender, EventArgs e)
         {
+            if (ddlSuppService.SelectedIndex == 0)
+            {
+                LogMessage("Select Service");
+                ddlSuppService.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSuppServiceUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtSuppServiceUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtSuppServiceUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtSuppServiceUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingSuppServ(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlSuppService.SelectedValue.ToString()), DataUtils.GetInt(txtSuppServiceUnits.Text));
             ddlSuppService.SelectedIndex = -1;
@@ -619,9 +749,20 @@ namespace vhcbcloud.Housing
         protected void gvSuppService_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
-
+            string strUnits = ((TextBox)gvSuppService.Rows[rowIndex].FindControl("txtSuppServiceNumunits")).Text;
+            
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
             int ProjectSuppServID = DataUtils.GetInt(((Label)gvSuppService.Rows[rowIndex].FindControl("lblProjectSuppServID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvSuppService.Rows[rowIndex].FindControl("txtSuppServiceNumunits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvSuppService.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHousingSuppServ(ProjectSuppServID, Units, RowIsActive);
@@ -634,6 +775,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddVHCBAff_Click(object sender, EventArgs e)
         {
+            if (ddlVHCBAff.SelectedIndex == 0)
+            {
+                LogMessage("Select VHCB");
+                ddlVHCBAff.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtVHCBUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtVHCBUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtVHCBUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtVHCBUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingVHCBAffordUnits(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlVHCBAff.SelectedValue.ToString()), DataUtils.GetInt(txtVHCBUnits.Text));
             ddlVHCBAff.SelectedIndex = -1;
@@ -716,8 +877,21 @@ namespace vhcbcloud.Housing
         {
             int rowIndex = e.RowIndex;
 
+            string strUnits = ((TextBox)gvVHCBAff.Rows[rowIndex].FindControl("txtVHCBNumunits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
+
             int ProjectVHCBAffordUnitsID = DataUtils.GetInt(((Label)gvVHCBAff.Rows[rowIndex].FindControl("lblProjectVHCBAffordUnitsID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvVHCBAff.Rows[rowIndex].FindControl("txtVHCBNumunits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvVHCBAff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHousingVHCBAffordUnits(ProjectVHCBAffordUnitsID, Units, RowIsActive);
@@ -730,6 +904,26 @@ namespace vhcbcloud.Housing
 
         protected void btnAddHomeAff_Click(object sender, EventArgs e)
         {
+            if (ddlHomeAff.SelectedIndex == 0)
+            {
+                LogMessage("Select Home");
+                ddlHomeAff.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtHomeUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtHomeUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtHomeUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtHomeUnits.Focus();
+                return;
+            }
+
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingHomeAffordUnits(DataUtils.GetInt(hfHousingID.Value),
                 DataUtils.GetInt(ddlHomeAff.SelectedValue.ToString()), DataUtils.GetInt(txtHomeUnits.Text));
             ddlHomeAff.SelectedIndex = -1;
@@ -762,8 +956,21 @@ namespace vhcbcloud.Housing
         {
             int rowIndex = e.RowIndex;
 
+            string strUnits = ((TextBox)gvNewHomeAff.Rows[rowIndex].FindControl("txtHomeNumunits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
+
             int ProjectHomeAffordUnitsID = DataUtils.GetInt(((Label)gvNewHomeAff.Rows[rowIndex].FindControl("lblProjectHomeAffordUnitsID")).Text);
-            int Units = DataUtils.GetInt(((TextBox)gvNewHomeAff.Rows[rowIndex].FindControl("txtHomeNumunits")).Text);
+            int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvNewHomeAff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             HousingUnitsServicesData.UpdateHousingHomeAffordUnits(ProjectHomeAffordUnitsID, Units, RowIsActive);
