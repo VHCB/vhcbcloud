@@ -23,7 +23,10 @@ namespace vhcbcloud.Housing
 
             hfProjectId.Value = "0";
             if (Request.QueryString["ProjectId"] != null)
+            {
                 hfProjectId.Value = Request.QueryString["ProjectId"];
+                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
+            }
 
             GenerateTabs();
             if (!IsPostBack)
