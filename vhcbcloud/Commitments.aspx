@@ -61,7 +61,7 @@
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
                                         <td style="width: 20%; float: left">
                                             <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
-                                                OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" Visible="False">
+                                                OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" >
                                             </asp:DropDownList>
                                             <asp:TextBox ID="txtProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm"></asp:TextBox>
                                              <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server"  ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
