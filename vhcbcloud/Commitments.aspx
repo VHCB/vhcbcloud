@@ -30,9 +30,9 @@
                                     <asp:ListItem>Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right">
-                                <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Height="30px" Width="30px" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
-                                 &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Height="30px" Width="30px"></asp:ImageButton>
+                                <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
+                                &nbsp;
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
                                 <asp:Button ID="btnProjectNotes_old" runat="server" Visible="false" Text="Project Notes" class="btn btn-info" />
                                 &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
@@ -48,7 +48,7 @@
                     <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
                     <br />
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
-                    
+
                 </asp:Panel>
                 <asp:Panel ID="pnlHide" runat="server" Visible="true">
                     <div class="panel-width">
@@ -61,8 +61,22 @@
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
                                         <td style="width: 20%; float: left">
                                             <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
-                                                OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
-                                            </asp:DropDownList></td>
+                                                OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" Visible="False">
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm"></asp:TextBox>
+                                             <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server"  ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+
+                                            <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm"></asp:TextBox>
+                                            <ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Grantee :</span></td>
                                         <td style="width: 20%; float: left">
                                             <asp:DropDownList ID="ddlGrantee" CssClass="clsDropDown" runat="server"></asp:DropDownList>
@@ -352,17 +366,17 @@
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
-             var rbs = gv.getElementsByTagName("input");
+            var rbs = gv.getElementsByTagName("input");
 
-             var row = rb.parentNode.parentNode;
-             for (var i = 0; i < rbs.length; i++) {
-                 if (rbs[i].type == "radio") {
-                     if (rbs[i].checked && rbs[i] != rb) {
-                         rbs[i].checked = false;
-                         break;
-                     }
-                 }
-             }
-         }
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
     </script>
 </asp:Content>
