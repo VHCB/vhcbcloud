@@ -38,6 +38,7 @@ namespace vhcbcloud
                     ddlProjFilter.DataTextField = "Proj_num";
                     ddlProjFilter.DataBind();
                     ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+
                 }
                 else
                 {
@@ -48,22 +49,42 @@ namespace vhcbcloud
                     ddlProjFilter.DataBind();
                     ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
                 }
-                //ddlRFromProj.DataSource = dtProjects;
-                //ddlRFromProj.DataValueField = "projectId";
-                //ddlRFromProj.DataTextField = "Proj_num";
-                //ddlRFromProj.DataBind();
-                //ddlRFromProj.Items.Insert(0, new ListItem("Select", "NA"));
 
-                //ddlRToProj.DataSource = dtProjects;
-                //ddlRToProj.DataValueField = "projectId";
-                //ddlRToProj.DataTextField = "Proj_num";
-                //ddlRToProj.DataBind();
-                //ddlRToProj.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add(dt.Rows[i][0].ToString());
+            }
+            return ProjNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("getCommittedPendingProjectslistByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add(dt.Rows[i][0].ToString());
+            }
+            return ProjNames.ToArray();
         }
 
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,7 +118,7 @@ namespace vhcbcloud
                 lblProjNameText.Visible = true;
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
                 BindGranteeByProject(); //Bind Grantee Drop Down
-                lbAwardSummary.Visible = true;
+
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
                 BindFundAccounts();
@@ -117,7 +138,7 @@ namespace vhcbcloud
             }
             else
             {
-                lbAwardSummary.Visible = false;
+
                 lblProjNameText.Visible = false;
                 lblProjName.Text = "";
             }
@@ -262,7 +283,7 @@ namespace vhcbcloud
                                 ddlGrantee.SelectedIndex = 0;
                             lblProjName.Text = "";
                         }
-                        
+
                     }
                     else
                     {
@@ -496,10 +517,10 @@ namespace vhcbcloud
                 {
                     dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId, ActiveOnly);
                     gvPTrans.DataSource = dtTrans;
-                    gvPTrans.DataBind();                    
+                    gvPTrans.DataBind();
                 }
                 else
-                {                    
+                {
                     dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(ddlProjFilter.SelectedValue), ActiveOnly);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
@@ -585,9 +606,9 @@ namespace vhcbcloud
                 //}
 
                 FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
-                
-                
-                gvBCommit.EditIndex = -1;                
+
+
+                gvBCommit.EditIndex = -1;
                 BindFundDetails(GetTransId());
             }
             catch (Exception ex)
@@ -620,7 +641,7 @@ namespace vhcbcloud
                             dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
                         }
 
-                       // dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
+                        // dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
                         ddlTrans.DataSource = dtable;
                         ddlTrans.DataValueField = "typeid";
                         ddlTrans.DataTextField = "Description";
@@ -732,7 +753,7 @@ namespace vhcbcloud
             gvBCommit.DataSource = null;
             gvBCommit.DataBind();
             lblProjName.Text = "";
-            lbAwardSummary.Visible = false;
+
             ClearTransactionDetailForm();
             pnlTranDetails.Visible = false;
             lblErrorMsg.Text = "";
@@ -742,6 +763,13 @@ namespace vhcbcloud
             {
                 if (ddlProjFilter.SelectedIndex > 0)
                     BindTransGrid(GetTransId());
+                //txtProjNum.Visible = false;
+                //txtCommitedProjNum.Visible = true;
+            }
+            else
+            {
+                //txtProjNum.Visible = true;
+                //txtCommitedProjNum.Visible = false;
             }
         }
 

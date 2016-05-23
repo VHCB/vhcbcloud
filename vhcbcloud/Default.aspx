@@ -17,7 +17,7 @@
                         <span class="labelClass">New Project # :</span>
                         <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                         <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
-                            MaskType="Number" TargetControlID="txtProjNum">
+                            MaskType="Number" TargetControlID="txtProjNum" InputDirection="LeftToRight">
                         </ajaxToolkit:MaskedEditExtender>
 
                         &nbsp;<span class="labelClass">Name :</span>

@@ -768,4 +768,119 @@ Begin
 End
 go
 
+alter procedure GetFinancialTransactionDetailDetails
+(
+	@transId							int
+	
+)
+as
+--exec GetFinancialTransactionDetailDetails 1574
 
+begin
+
+	select   
+		det.DetailID, det.FundId,fund.name, det.LkTransType, transtype.description, det.Amount
+	from Trans trans(nolock)
+		join detail det(nolock) on trans.TransId = det.TransId
+		join fund fund(nolock) on det.fundid = fund.fundid
+		join project_v p(nolock) on trans.Projectid = p.project_id
+		join transtype_v transtype(nolock) on det.LKTransType = transtype.typeid
+	where trans.TransId = @transId and  p.defname = 1 and trans.RowIsActive=1 and det.RowIsActive = 1
+end
+go
+
+alter procedure GetFinancialTransactionDetails
+(
+	@project_id							int,
+	@financial_transaction_action_id	int,
+	@tran_start_date					datetime,
+	@tran_end_date						datetime
+	
+)
+as
+--exec GetFinancialTransactionDetails 6622, 238, '05/01/2016', '05/16/2016' 
+--exec GetFinancialTransactionDetails 5615, 239, '01/01/2016', '02/01/2016'--DeCommit
+--exec GetFinancialTransactionDetails 5615, -1, '01/01/2016', '02/01/2016'--All
+--exec GetFinancialTransactionDetails -1, -1, '01/01/2016', '02/07/2016'--All
+begin
+
+	select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, v.description as LkTransactionDesc--, trans.LkTransaction, v.*
+	from Trans trans(nolock)
+	left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
+	left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
+	where trans.TransId in (
+		select t.TransId from (
+		select trans.TransId as TransId, trans.TransAmt,
+				sum(det.Amount) amount, trans.TransAmt - sum(det.Amount) bal
+			from Trans trans(nolock)
+				join detail det(nolock) on trans.TransId = det.TransId
+			where trans.Date >= @tran_start_date 
+				and trans. Date <= @tran_end_date 
+				and trans.LKStatus = 261
+				and (trans.projectid = @project_id or (@project_id = -1 and trans.projectid is not null))
+				and (trans.LkTransaction = @financial_transaction_action_id or (@financial_transaction_action_id = -1 and trans.LkTransaction is not null))
+		group by trans.TransId, trans.TransAmt)t
+		where t.bal = 0 and pv.defname = 1
+	) order by pv.proj_num
+
+	--select t.TransId from (
+	--select trans.TransId as TransId, trans.TransAmt,
+	--			sum(det.Amount) amount, trans.TransAmt - sum(det.Amount) bal
+	--		from Trans trans(nolock)
+	--			join detail det(nolock) on trans.TransId = det.TransId
+	--		where trans.Date >= '01/01/2016' 
+	--			and trans. Date <= '02/07/2016'  
+	--			and trans.LKStatus = 261
+	--			and trans.projectid is not null
+	--			and trans.LkTransaction is not null
+	--	group by trans.TransId, trans.TransAmt)t
+	--	where t.bal = 0
+
+
+end
+go
+
+
+alter procedure [dbo].[GetProjectsByFilter]
+(
+	@filter varchar(10)
+)
+as
+Begin
+	declare @recordId int
+	select @recordId = RecordID from LkLookups where Tablename = 'LkProjectName' 
+	
+	select	distinct			
+			top 20 p.Proj_num
+	from Project p 
+			join ProjectName pn on p.ProjectId = pn.ProjectID
+			join ProjectApplicant pa on pa.ProjectId = p.ProjectId
+			join LookupValues lpn on lpn.TypeID = pn.LkProjectname
+			join ApplicantAppName aan on aan.ApplicantId = pa.ApplicantId
+			join AppName an on aan.AppNameID = an.appnameid
+	where pn.DefName = 1 and lpn.LookupType = @recordId and p.Proj_num like @filter +'%'
+	order by  p.Proj_num asc
+
+end
+go
+
+
+alter procedure getCommittedPendingProjectslistByFilter 
+(
+	@filter varchar(10)
+)
+as
+begin
+
+	select distinct top 20 proj_num
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.lkstatus = 261
+		and tr.RowIsActive=1 and pn.defname=1
+		and p.Proj_num like @filter +'%'
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
