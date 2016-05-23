@@ -27,6 +27,9 @@
                             </td>
                             <td></td>
                             <td style="text-align: right">
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="width: 25px; height: 25px; border: none; vertical-align: middle;"
+                                    OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="width: 25px; height: 25px; border: none; vertical-align: middle;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -87,6 +90,14 @@
                         </tr>
                     </table>
                 </div>
+                 <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="../ProjectNotes.aspx" runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+                </asp:Panel>
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
@@ -775,6 +786,11 @@
 
             var NewUnits = TotalUnits - UnitsFromPreProject;
             $('#<%= txtNetNewUnits.ClientID%>').val(NewUnits);
+        };
+
+        
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
     </script>
 </asp:Content>
