@@ -409,6 +409,24 @@ begin transaction
 		commit transaction;
 go
 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAddress1]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetAddress1
+go
+
+create procedure GetAddress1
+(
+	@StreetNo	nvarchar(24),
+	@Address1	nvarchar(120)	
+)
+as 
+Begin
+
+	select distinct top 10 Address1 from address(nolock)
+	where Street# = @StreetNo and Address1 like @Address1 +'%'
+end
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddNewProjectAddress]') and type in (N'P', N'PC'))
 drop procedure [dbo].AddNewProjectAddress
 go
@@ -426,31 +444,53 @@ create procedure dbo.AddNewProjectAddress
 	@County nvarchar(40),
 	@latitude float,
 	@longitude	float,
-	@IsActive bit,
-	@DefAddress bit	
+	--@IsActive bit,
+	@DefAddress bit,
+	@isDuplicate	bit output,
+	@isActive		bit Output
 ) as
 begin transaction
 
 	begin try
-
 	declare @AddressId int;
 	declare @ProjectAddressId int;
 
-	insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, RowIsActive, UserID)
-	values(@StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @Village, @IsActive, 123)
+	set @isDuplicate = 1
+	set @isActive = 1
 
-	set @AddressId = @@identity	
-
-	insert into ProjectAddress(ProjectId, AddressId, PrimaryAdd, RowIsActive, DateModified)
-	values(@ProjectId, @AddressId, @DefAddress, @IsActive, getdate())
-
-	set @ProjectAddressId = @@identity
-
-	if(@DefAddress = 1)
+	if not exists
+    (
+		select 1 
+		from Address a(nolock) 
+		join ProjectAddress pa(nolock) on a.AddressId = pa.AddressId
+		where a.Street# = @StreetNo and a.Address1 = @Address1 and pa.ProjectId = @ProjectId
+	)
 	begin
-	 update ProjectAddress set PrimaryAdd = 0 where ProjectId = @ProjectId and ProjectAddressID != @ProjectAddressId
+		insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, UserID)
+		values(@StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @Village, 123)
+
+		set @AddressId = @@identity	
+
+		insert into ProjectAddress(ProjectId, AddressId, PrimaryAdd, DateModified)
+		values(@ProjectId, @AddressId, @DefAddress, getdate())
+
+		set @ProjectAddressId = @@identity
+
+		if(@DefAddress = 1)
+		begin
+		 update ProjectAddress set PrimaryAdd = 0 where ProjectId = @ProjectId and ProjectAddressID != @ProjectAddressId
+		end
+
+		set @isDuplicate = 0
 	end
 
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  a.RowIsActive 
+		from Address a(nolock) 
+		join ProjectAddress pa(nolock) on a.AddressId = pa.AddressId
+		where a.Street# = @StreetNo and a.Address1 = @Address1 and pa.ProjectId = @ProjectId
+	end
 
 	end try
 	begin catch

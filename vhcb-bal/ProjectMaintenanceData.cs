@@ -275,6 +275,44 @@ namespace DataAccessLayer
         }
 
         #region Project Address
+
+        public static DataTable GetAddress1(string StreetNo, string Address1)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAddress1";
+                command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
+                command.Parameters.Add(new SqlParameter("Address1", Address1));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
         public static DataTable GetProjectAddressList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -382,8 +420,8 @@ namespace DataAccessLayer
             }
         }
 
-        public static void AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
+        public static ProjectMaintResult AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -408,10 +446,25 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("County", County));
                         command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
                         command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
-                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        //command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
                         command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
                     }
                 }
             }
@@ -793,5 +846,10 @@ namespace DataAccessLayer
     {
         public bool IsDuplicate { set; get; }
         public int ProjectId { set; get; }
+    }
+    public class ProjectMaintResult
+    {
+        public bool IsDuplicate { set; get; }
+        public bool IsActive { set; get; }
     }
 }
