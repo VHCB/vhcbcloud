@@ -173,6 +173,7 @@
     <Content Include="Applicant.aspx" />
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
+    <Content Include="Commitments_new.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationAttributes.aspx" />
     <Content Include="Conservation\ConservationSourcesUses.aspx" />
@@ -370,6 +371,13 @@
     </Compile>
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Commitments_new.aspx.cs">
+      <DependentUpon>Commitments_new.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Commitments_new.aspx.designer.cs">
+      <DependentUpon>Commitments_new.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConservationSourcesUses.aspx.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
