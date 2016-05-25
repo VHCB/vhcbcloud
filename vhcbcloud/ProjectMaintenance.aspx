@@ -4,22 +4,22 @@
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron" id="vhcb">
-             <!-- Tabs -->
-            <div id="dvTabs" runat="server">
-                <div id="page-inner">
-                    <div id="VehicleDetail">
-                        <ul class="vdp-tabs" runat="server" id="Tabs">
-                           <%-- <li class="active"><a href="#" class="active">Project Maintenance</a></li>--%>
-<%--                            <li><a href="http://192.168.100.12:8080/ConservationSourcesUses.aspx">Housing Tab1</a></li>
+        <!-- Tabs -->
+        <div id="dvTabs" runat="server">
+            <div id="page-inner">
+                <div id="VehicleDetail">
+                    <ul class="vdp-tabs" runat="server" id="Tabs">
+                        <%-- <li class="active"><a href="#" class="active">Project Maintenance</a></li>--%>
+                        <%--                            <li><a href="http://192.168.100.12:8080/ConservationSourcesUses.aspx">Housing Tab1</a></li>
                             <li><a href="/project/project_distribution">Housing Tab2</a></li>
                             <li><a href="/project/project_module">Housing Tab3</a></li>
                             <li><a href="/project/project_theme">Housing Tab4</a></li>--%>
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
-            <!-- Tabs -->
-       <%-- <p class="lead">Project Maintenance</p>--%>
+        </div>
+        <!-- Tabs -->
+        <%-- <p class="lead">Project Maintenance</p>--%>
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -32,10 +32,9 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                              <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" style="width:30px; height:30px; border:none; vertical-align: middle;" Visible="false" 
-                                    OnClientClick="PopupAwardSummary(); return false;" >
-                                </asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png"  Text="Project Notes" style="width:30px; height:30px; border:none; vertical-align: middle;" Visible="false"/>
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false"
+                                    OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -386,13 +385,17 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox>
+                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12" onkeyup="SetContextKey()"></asp:TextBox>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Address1:</span>
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtAddress1" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetAddress1">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
@@ -719,7 +722,7 @@
                                                 <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Program">
+                                        <asp:TemplateField HeaderText="Program">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgram" runat="Server" Text='<%# Eval("Program") %>' />
                                             </ItemTemplate>
@@ -757,13 +760,17 @@
 
                 <asp:HiddenField ID="hfProjectId" runat="server" />
                 <asp:HiddenField ID="hfAddressId" runat="server" />
-                 <asp:HiddenField ID="hfProgramId" runat="server" />
+                <asp:HiddenField ID="hfProgramId" runat="server" />
                 <asp:HiddenField ID="hfVillage" runat="server" />
             </div>
         </div>
     </div>
     <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
     <script language="javascript">
+        function SetContextKey() {
+            $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
+        }
+
         $(document).ready(function () {
             $('#<%= dvProjectStatusForm.ClientID%>').toggle($('#<%= cbAddProjectStatus.ClientID%>').is(':checked'));
             $('#<%= dvProjectNameForm.ClientID%>').toggle($('#<%= cbAddProjectName.ClientID%>').is(':checked'));
@@ -819,7 +826,7 @@
         });
 
         function PopupAwardSummary() {
-            window.open('./awardsummary.aspx?projectid='+$("#<%= ddlProject.ClientID%>  option:selected").val())
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= ddlProject.ClientID%>  option:selected").val())
         };
 
         function IsProjectNumberExist() {
@@ -923,20 +930,20 @@
                                 if (types == "administrative_area_level_1,political") {
                                     addr.state = results[0].address_components[ii].short_name;
                                     $('#<%= txtState.ClientID%>').val(addr.state);
-                                    }
-                                    if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
-                                        addr.zipcode = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "country,political") {
-                                        addr.country = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "administrative_area_level_2,political") {
-                                        addr.county = results[0].address_components[ii].short_name;
-                                        $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
                                 }
-                            }
-                            addr.success = true;
-                            $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
+                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                    addr.zipcode = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "country,political") {
+                                    addr.country = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "administrative_area_level_2,political") {
+                                    addr.county = results[0].address_components[ii].short_name;
+                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                                    }
+                                }
+                                addr.success = true;
+                                $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
                             $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
 
                             for (name in addr) {

@@ -42,16 +42,39 @@ create procedure dbo.AddProjectLeadBldg
 	@VerifiedBy		int, 
 	@InsuredBy		varchar(150), 
 	@HistStatus		int, 
-	@AppendA		int
+	@AppendA		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
 ) as
 begin transaction
 
 	begin try
 
-	insert into ProjectLeadBldg(ProjectID, Building, AddressID, Age, Type, LHCUnits, FloodHazard, FloodIns, VerifiedBy, InsuredBy, 
-		HistStatus, AppendA)
-	values(@ProjectID, @Building, @AddressID, @Age, @Type, @LHCUnits, @FloodHazard, @FloodIns, @VerifiedBy, @InsuredBy, 
-		@HistStatus, @AppendA)
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1 
+		from ProjectLeadBldg plb(nolock)
+		where plb.ProjectId = @ProjectID and Building = @Building
+	)
+	begin
+
+		insert into ProjectLeadBldg(ProjectID, Building, AddressID, Age, Type, LHCUnits, FloodHazard, FloodIns, VerifiedBy, InsuredBy, 
+			HistStatus, AppendA)
+		values(@ProjectID, @Building, @AddressID, @Age, @Type, @LHCUnits, @FloodHazard, @FloodIns, @VerifiedBy, @InsuredBy, 
+			@HistStatus, @AppendA)
+
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  plb.RowIsActive 
+		from ProjectLeadBldg plb(nolock)
+		where plb.ProjectId = @ProjectID and Building = @Building
+	end
 
 	end try
 	begin catch
@@ -192,16 +215,37 @@ create procedure dbo.AddProjectLeadUnit
 	@MatchFunds		decimal, 
 	@ClearDate		Datetime, 
 	@CertDate		Datetime, 
-	@ReCertDate		Datetime
+	@ReCertDate		Datetime,
+	@isDuplicate	bit output,
+	@isActive		bit Output
 ) as
 begin transaction
 
 	begin try
 
-	insert into ProjectLeadUnit(LeadBldgID, Unit, EBLStatus, HHCount, Rooms, HHIncome, PartyVerified, IncomeStatus, MatchFunds, 
-		ClearDate, CertDate, ReCertDate)
-	values(@LeadBldgID, @Unit, @EBLStatus, @HHCount, @Rooms, @HHIncome, @PartyVerified, @IncomeStatus, @MatchFunds, 
-		@ClearDate, @CertDate, @ReCertDate)
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1 
+		from ProjectLeadUnit plu(nolock)
+		where plu.LeadBldgID = @LeadBldgID and Unit = @Unit
+	)
+	begin
+		insert into ProjectLeadUnit(LeadBldgID, Unit, EBLStatus, HHCount, Rooms, HHIncome, PartyVerified, IncomeStatus, MatchFunds, 
+			ClearDate, CertDate, ReCertDate)
+		values(@LeadBldgID, @Unit, @EBLStatus, @HHCount, @Rooms, @HHIncome, @PartyVerified, @IncomeStatus, @MatchFunds, 
+			@ClearDate, @CertDate, @ReCertDate)
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  plu.RowIsActive 
+		from ProjectLeadUnit plu(nolock)
+		where plu.LeadBldgID = @LeadBldgID and Unit = @Unit
+	end
 
 	end try
 	begin catch
@@ -258,4 +302,23 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectLeadUnitById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectLeadUnitById 
+go
+
+create procedure GetProjectLeadUnitById
+(
+	@LeadUnitID int
+)  
+as
+--exec GetProjectLeadUnitById 6
+begin
+
+	select LeadUnitID, Unit, EBLStatus, HHCount, Rooms, HHIncome, PartyVerified, IncomeStatus, MatchFunds, convert(varchar(10), ClearDate, 101) as ClearDate, 
+		CertDate, ReCertDate, plu.RowIsActive
+	from ProjectLeadUnit plu(nolock)
+	where plu.LeadUnitID = @LeadUnitID
+end
 go

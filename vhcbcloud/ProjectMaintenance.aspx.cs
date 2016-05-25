@@ -771,12 +771,18 @@ namespace vhcbcloud
                     }
                     else //add
                     {
-                        ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
-                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
-                            cbActive.Checked, cbDefaultAddress.Checked);
+                        ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
 
                         btnAddAddress.Text = "Add";
-                        LogMessage("New Address added successfully");
+
+                        if (objProjectMaintResult.IsDuplicate && !objProjectMaintResult.IsActive)
+                            LogMessage("Address already exist as in-active");
+                        else if (objProjectMaintResult.IsDuplicate)
+                            LogMessage("Address already exist");
+                        else
+                            LogMessage("New Address added successfully");
+
                     }
 
                     gvAddress.EditIndex = -1;
@@ -1430,6 +1436,21 @@ namespace vhcbcloud
         {
             DataTable dt = new DataTable();
             dt = Project.GetProjectName(prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add(dt.Rows[i][0].ToString());
+            }
+            return ProjNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetAddress1(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectMaintenanceData.GetAddress1(contextKey, prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)

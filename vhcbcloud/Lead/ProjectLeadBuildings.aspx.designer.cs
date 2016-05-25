@@ -265,6 +265,15 @@ namespace vhcbcloud.Lead {
         protected global::System.Web.UI.WebControls.DropDownList ddlAppendixA;
         
         /// <summary>
+        /// chkBldgActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkBldgActive;
+        
+        /// <summary>
         /// btnAddBldgInfoSubmit control.
         /// </summary>
         /// <remarks>
@@ -436,22 +445,13 @@ namespace vhcbcloud.Lead {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtCertifiedBy;
         
         /// <summary>
-        /// txtRectDate control.
+        /// labelRectDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRectDate;
-        
-        /// <summary>
-        /// ce_txtRectDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtRectDate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelRectDate;
         
         /// <summary>
         /// txtClearanceDate control.
@@ -470,6 +470,15 @@ namespace vhcbcloud.Lead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtClearanceDate;
+        
+        /// <summary>
+        /// chkUnitActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkUnitActive;
         
         /// <summary>
         /// btnAddUnitInfo control.

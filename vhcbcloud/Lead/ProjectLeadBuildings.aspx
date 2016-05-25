@@ -134,8 +134,9 @@
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlAppendixA" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><span class="labelClass">Active:</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkBldgActive" Enabled="false" runat="server" Checked="true" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -290,9 +291,10 @@
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
                                         <td style="width: 185px"><span class="labelClass">6 Month Recertify:</span></td>
-                                        <td style="width: 270px"><asp:TextBox ID="txtRectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <td style="width: 270px"><span class="labelClass" id="labelRectDate" runat="server"></span>
+                                            <%-- <asp:TextBox ID="txtRectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRectDate" TargetControlID="txtRectDate">
-                                            </ajaxToolkit:CalendarExtender>
+                                            </ajaxToolkit:CalendarExtender>--%>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Clearance Date:</span></td>
                                         <td>
@@ -300,6 +302,16 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClearanceDate" TargetControlID="txtClearanceDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="chkUnitActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                        <td colspan="4" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -325,7 +337,8 @@
                             <asp:Panel runat="server" ID="Panel4" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvUnitInfo" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowEditing="gvUnitInfo_RowEditing" OnRowCancelingEdit="gvUnitInfo_RowCancelingEdit" OnRowDataBound="gvUnitInfo_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -376,7 +389,7 @@
     <asp:HiddenField ID="hfLeadBldgID" runat="server" />
     <asp:HiddenField ID="hfLeadUnitID" runat="server" />
     <asp:HiddenField ID="hfSelectedBuilding" runat="server" />
-    
+
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= dvBldgInfoForm.ClientID%>').toggle($('#<%= cbAddBldgInfo.ClientID%>').is(':checked'));
@@ -388,6 +401,40 @@
             $('#<%= cbAddUnitInfo.ClientID%>').click(function () {
                 $('#<%= dvUnitInfoForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= txtCertifiedBy.ClientID%>').blur(function () {
+                GetRecertifyDate();
+               <%-- var dt = new Date($('#<%= txtCertifiedBy.ClientID%>').val());
+                console.log(dt);
+                dt.setMonth(dt.getMonth() + 6);
+                console.log(dt.getMonth());
+                var month;
+                if (dt.getMonth() == 0)
+                    month = 12;
+                else
+                    month = dt.getMonth();
+
+                $('#<%=labelRectDate.ClientID%>').html(month + '/' + dt.getDate() + '/' + dt.getFullYear());--%>
+            });
+
+            function GetRecertifyDate() {
+                $.ajax({
+                    type: "POST",
+                    url: "ProjectLeadBuildings.aspx/GetRecertifyDate",
+                    data: '{CertifiedDate: "' + $("#<%= txtCertifiedBy.ClientID%>").val() + '" }',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var RecertifyDate = JSON.stringify(data.d);
+                    console.log('RecertifyDate :' + RecertifyDate);
+                    $('#<%=labelRectDate.ClientID%>').html(RecertifyDate.replace('"', '').replace('"', ''));
+
+                },
+                error: function (data) {
+                    alert("error found");
+                }
+            });
+        }
 
         });
 
@@ -408,6 +455,6 @@
                     }
                 }
             }
-        }
+    }
     </script>
 </asp:Content>

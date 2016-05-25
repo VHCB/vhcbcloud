@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -182,27 +184,53 @@ namespace vhcbcloud.Lead
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            BindGrids();
         }
 
         protected void btnAddBldgInfoSubmit_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtBldgnumber.Text.ToString()) == true)
+            {
+                LogMessage("Enter Bldg #");
+                txtBldgnumber.Focus();
+                return;
+            }
+            if (ddlAddress.SelectedIndex == 0)
+            {
+                LogMessage("Select Address");
+                ddlAddress.Focus();
+                return;
+            }
+            if (ddlType.SelectedIndex == 0)
+            {
+                LogMessage("Select Type");
+                ddlType.Focus();
+                return;
+            }
+
             if (btnAddBldgInfoSubmit.Text == "Submit")
             {
-                ProjectLeadBuildingsData.AddProjectLeadBldg((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(txtBldgnumber.Text), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
-                   DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
-                   DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()));
+                LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddProjectLeadBldg((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(txtBldgnumber.Text), 
+                    DataUtils.GetInt(ddlAddress.SelectedValue.ToString()), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), 
+                    DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked, DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), 
+                    txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()));
 
                 ClearBldgInfoForm();
                 BindGrids();
 
-                LogMessage("Building Info Added Successfully");
+                if (objLeadBuildResult.IsDuplicate && !objLeadBuildResult.IsActive)
+                    LogMessage("Building Info already exist as in-active");
+                else if (objLeadBuildResult.IsDuplicate)
+                    LogMessage("Building Info already exist");
+                else
+                    LogMessage("Building Info Added Successfully");
             }
             else
             {
                 ProjectLeadBuildingsData.UpdateProjectLeadBldg((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtBldgnumber.Text), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
                   DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
-                  DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()), true);
+                  DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), 
+                  DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()), chkBldgActive.Checked);
 
                 gvBldgInfo.EditIndex = -1;
                 BindGrids();
@@ -229,6 +257,9 @@ namespace vhcbcloud.Lead
             txtInsuredby.Text = "";
             ddlHistoricStatus.SelectedIndex = -1;
             ddlAppendixA.SelectedIndex = -1;
+
+            txtBldgnumber.Enabled = true;
+            chkBldgActive.Enabled = false;
         }
 
         protected void gvBldgInfo_RowEditing(object sender, GridViewEditEventArgs e)
@@ -291,6 +322,7 @@ namespace vhcbcloud.Lead
                         PopulateDropDown(ddlAppendixA, dr["AppendA"].ToString());
 
                         txtBldgnumber.Enabled = false;
+                        chkBldgActive.Enabled = true;
                     }
                 }
             }
@@ -368,25 +400,45 @@ namespace vhcbcloud.Lead
 
         protected void btnAddUnitInfo_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtUnitNumber.Text.ToString()) == true)
+            {
+                LogMessage("Enter Unit #");
+                txtUnitNumber.Focus();
+                return;
+            }
+
             if (btnAddUnitInfo.Text == "Submit")
             {
-                ProjectLeadBuildingsData.AddProjectLeadUnit((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtUnitNumber.Text), DataUtils.GetInt(ddlEBlStatus.SelectedValue.ToString()),
-                   DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()),
-                   DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtRectDate.Text));
+                LeadBuildResult objLeadBuildResult =  ProjectLeadBuildingsData.AddProjectLeadUnit((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtUnitNumber.Text),
+                    DataUtils.GetInt(ddlEBlStatus.SelectedValue.ToString()), DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), 
+                    DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()), 
+                    DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtCertifiedBy.Text));
 
                 ClearUnitInfoForm();
                 BindUnitsGrid();
 
-                LogMessage("Unit Info Added Successfully");
+                if (objLeadBuildResult.IsDuplicate && !objLeadBuildResult.IsActive)
+                    LogMessage("Unit Info already exist as in-active");
+                else if (objLeadBuildResult.IsDuplicate)
+                    LogMessage("Unit Info already exist");
+                else
+                    LogMessage("Unit Info Added Successfully");
             }
             else
             {
                 ProjectLeadBuildingsData.UpdateProjectLeadUnit((DataUtils.GetInt(hfLeadUnitID.Value)), DataUtils.GetInt(ddlEBlStatus.SelectedValue.ToString()),
-                  DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()),
-                  DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtRectDate.Text));
+                  DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, 
+                  DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()), DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), 
+                  DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtCertifiedBy.Text), chkUnitActive.Checked);
 
                 ClearUnitInfoForm();
                 BindUnitsGrid();
+
+                gvUnitInfo.EditIndex = -1;
+                BindUnitsGrid();
+                hfLeadUnitID.Value = "";
+                ClearUnitInfoForm();
+                btnAddUnitInfo.Text = "Submit";
 
                 LogMessage("Unit Info Updated Successfully");
             }
@@ -406,8 +458,93 @@ namespace vhcbcloud.Lead
             txtMatchingFund.Text = "";
             txtClearanceDate.Text = "";
             txtCertifiedBy.Text = "";
-            txtRectDate.Text = "";
+            //txtRectDate.Text = "";
 
+            txtUnitNumber.Enabled = true;
+            chkUnitActive.Enabled = false;
+
+        }
+
+        protected void gvUnitInfo_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvUnitInfo.EditIndex = e.NewEditIndex;
+            BindUnitsGrid();
+        }
+
+        protected void gvUnitInfo_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvUnitInfo.EditIndex = -1;
+            BindUnitsGrid();
+            ClearUnitInfoForm();
+            hfLeadUnitID.Value = "";
+            btnAddUnitInfo.Text = "Submit";
+        }
+
+        protected void gvUnitInfo_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddUnitInfo.Text = "Update";
+                    cbAddUnitInfo.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[6].Controls[0].Visible = false;
+
+                        Label lblLeadUnitID = e.Row.FindControl("lblLeadUnitID") as Label;
+                        DataRow dr = ProjectLeadBuildingsData.GetProjectLeadUnitById(DataUtils.GetInt(lblLeadUnitID.Text));
+
+                        hfLeadUnitID.Value = lblLeadUnitID.Text;
+
+
+                        txtUnitNumber.Text = dr["Unit"].ToString();
+                        PopulateDropDown(ddlEBlStatus, dr["EBLStatus"].ToString());
+;
+                        txtHouseholdCount.Text = dr["HHCount"].ToString();
+                        txtRooms.Text = dr["Rooms"].ToString();
+                        txtHouseholdIncome.Text = dr["HHIncome"].ToString();
+                        cbThirdPartyVerified.Checked = DataUtils.GetBool(dr["PartyVerified"].ToString());
+                        PopulateDropDown(ddlIncomeStatus, dr["IncomeStatus"].ToString());
+
+                        txtMatchingFund.Text = dr["MatchFunds"].ToString();
+                        txtClearanceDate.Text = dr["ClearDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ClearDate"].ToString()).ToShortDateString();
+                        txtCertifiedBy.Text = dr["CertDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["CertDate"].ToString()).ToShortDateString();
+
+                        if (dr["CertDate"].ToString() != "")
+                            labelRectDate.InnerText = Get6MonthsPlusDate(dr["CertDate"].ToString());
+                        else
+                            labelRectDate.InnerText = "";
+
+                        txtUnitNumber.Enabled = false;
+                        chkUnitActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvBldgInfo_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private static string Get6MonthsPlusDate(string date1)
+        {
+            if (date1 != "")
+            {
+                DateTime dt = Convert.ToDateTime(date1);
+                dt = dt.AddMonths(6);
+                return dt.ToShortDateString();
+            }
+            return "";
+        }
+
+        [WebMethod]
+        public static string GetRecertifyDate(string CertifiedDate)
+        {
+            return Get6MonthsPlusDate(CertifiedDate);
         }
     }
 
