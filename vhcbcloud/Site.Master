@@ -100,9 +100,9 @@
                                     </li>
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Financial Transactions</a>
                                         <ul class="dropdown-menu">
-                                            <li class="menu-item "><a runat="server" href="~/Commitments">Board Financial Transactions</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/FinalizeTransactions">Finalize Transactions</a></li>
-                                           <li class="menu-item "><a runat="server" href="~/ProjectCheckRequest">Financial Check Request</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/Commitments.aspx">Board Financial Transactions</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/FinalizeTransactions.aspx">Finalize Transactions</a></li>
+                                           <li class="menu-item "><a runat="server" href="~/ProjectCheckRequest.aspx">Financial Check Request</a></li>
                                         </ul>
                                     </li>
                                      <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Users</a>

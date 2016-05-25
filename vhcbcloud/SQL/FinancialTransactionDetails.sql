@@ -660,7 +660,7 @@ Begin
 		join AppName an on an.AppNameID = aan.AppNameID 
 		join LookupValues lv on lv.TypeID = pn.LkProjectname		
 	Where  pa.finlegal=1 and p.ProjectId = @projectId
-	and pn.defname = 1
+	and pn.defname = 1 and lv.typeid = 358
 End
 
 go
@@ -843,15 +843,14 @@ go
 
 alter procedure [dbo].[GetProjectsByFilter]
 (
-	@filter varchar(10)
+	@filter varchar(20)
 )
 as
 Begin
 	declare @recordId int
-	select @recordId = RecordID from LkLookups where Tablename = 'LkProjectName' 
-	
+	select @recordId = RecordID from LkLookups where Tablename = 'LkProjectName' 	
 	select	distinct			
-			top 20 p.Proj_num
+			top 20 CONVERT(varchar(20), p.Proj_num) as proj_num
 	from Project p 
 			join ProjectName pn on p.ProjectId = pn.ProjectID
 			join ProjectApplicant pa on pa.ProjectId = p.ProjectId
@@ -859,7 +858,8 @@ Begin
 			join ApplicantAppName aan on aan.ApplicantId = pa.ApplicantId
 			join AppName an on aan.AppNameID = an.appnameid
 	where pn.DefName = 1 and lpn.LookupType = @recordId and p.Proj_num like @filter +'%'
-	order by  p.Proj_num asc
+	order by Proj_num asc
+	--select top 20 proj_num from project p where p.Proj_num like @filter +'%'
 
 end
 go
@@ -867,20 +867,29 @@ go
 
 alter procedure getCommittedPendingProjectslistByFilter 
 (
-	@filter varchar(10)
+	@filter varchar(20)
 )
 as
 begin
 
-	select distinct top 20 proj_num
+	select distinct  top 20 p.Proj_num
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.lkstatus = 261
-		and tr.RowIsActive=1 and pn.defname=1
-		and p.Proj_num like @filter +'%'
-	group by p.projectid, proj_num
-	order by proj_num 
+	where pn.defname = 1 and tr.lkstatus = 261
+		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
+	order by p.proj_num 
 end
 go
+
+alter procedure GetProjectIdByProjNum
+(
+	@filter varchar(20)
+)
+as
+Begin
+	select projectId from project where proj_num = @filter
+End
+go
+

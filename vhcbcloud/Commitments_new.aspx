@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Commitments.aspx.cs" Inherits="vhcbcloud.Commitments" %>
+    CodeBehind="Commitments_new.aspx.cs" Inherits="vhcbcloud.Commitments_new" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
@@ -33,6 +33,7 @@
                                 <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
                                 &nbsp;
                                 <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
+                                <asp:Button ID="btnProjectNotes_old" runat="server" Visible="false" Text="Project Notes" class="btn btn-info" />
                                 &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -58,34 +59,45 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
-                                        <td style="width: 30%; float: left">
-                                            <asp:TextBox ID="txtProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1" ></asp:TextBox>
-                                             <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server"  ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
-                                            </ajaxToolkit:MaskedEditExtender>
-                                            <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
+                                                OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" >
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID ="txtFilterProj" runat="server" Visible="false" CssClass="clsTextBoxBlueSm"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aaceFilterProjName" runat="server" TargetControlID="txtFilterProj" MinimumPrefixLength="2" ServiceMethod="GetProjectsByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
 
-                                            <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                                            <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm"></asp:TextBox>
                                             <ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
                                             <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
                                                 CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
-                                            &nbsp;<asp:Button ID="btnfind" runat="server" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
+                                        </td>
+                                        <td style="width: 10%; float: left"><span class="labelClass">Grantee :</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlGrantee" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 10%; float: left"></td>
+                                        <td style="width: 30%; float: right">
+                                            <asp:LinkButton ID="lbAwardSummary" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 8px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left">
+                                            <asp:Label ID="lblProjNameText" class="labelClass" Visible="false" Text="Project Name :" runat="server"></asp:Label>
+                                            <%-- <span class="labelClass">Project Name :</span>--%>
+
                                         </td>
                                         <td style="width: 20%; float: left">
-                                            <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                        <td style="float: left">
-                                             <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                    </tr>
-
-                                    <tr>
+                                            <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
-                                        <td style="width: 20%; float: left">
-                                            &nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
-                                        <td style="float: left">&nbsp;</td>
+                                        <td style="width: 30%; float: left"></td>
                                     </tr>
 
                                 </table>
@@ -98,15 +110,15 @@
                                         <tr>
                                             <td style="width: 10%; float: left"><span class="labelClass">Trans Date :</span></td>
                                             <td style="width: 20%; float: left">
-                                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="3"></asp:TextBox>
+                                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                                 <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                             </td>
                                             <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
                                             <td style="width: 20%; float: left">
-                                                <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox></td>
+                                                <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                                             <td style="width: 10%; float: left"></td>
                                             <td style="width: 30%; float: left">
-                                                <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
+                                                <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
@@ -114,7 +126,7 @@
                                     <br />
                                     <%--   <asp:LinkButton ID="btnTransSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnTransSubmit_Click" 
                                 OnClientClick="needToConfirm = false;" />--%>
-                                    <asp:Button ID="btnTransactionSubmit" runat="server" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnTransactionSubmit_Click" TabIndex="6" />
+                                    <asp:Button ID="btnTransactionSubmit" runat="server" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnTransactionSubmit_Click" />
                                     <br />
                                 </div>
                                 <br />
@@ -122,7 +134,7 @@
                                 <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowEditing="gvPTrans_RowEditing"
-                                    OnRowUpdating="gvPTrans_RowUpdating" OnRowDeleting="gvPTrans_RowDeleting" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged" OnRowCreated="gvPTrans_RowCreated" TabIndex="7">
+                                    OnRowUpdating="gvPTrans_RowUpdating" OnRowDeleting="gvPTrans_RowDeleting" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged" OnRowCreated="gvPTrans_RowCreated">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -209,7 +221,7 @@
                                                 <td style="width: 10%; float: left">
                                                     <span class="labelClass">Fund # :</span></td>
                                                 <td style="width: 20%; float: left">
-                                                    <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
+                                                    <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
@@ -218,7 +230,7 @@
                                                 </td>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
                                                 <td style="width: 30%; float: left">
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9">
+                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
@@ -228,20 +240,20 @@
                                             <tr>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                                 <td style="width: 90%; float: left" colspan="5">
-                                                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                             </tr>
                                         </table>
                                         <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>
                                         <br />
-                                        <asp:Button ID="btnCommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCommitmentSubmit_Click" TabIndex="11" />
+                                        <asp:Button ID="btnCommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCommitmentSubmit_Click" />
                                     </div>
                                     <br />
                                     <asp:GridView ID="gvBCommit" runat="server" AutoGenerateColumns="False"
                                         Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                         GridLines="None" EnableTheming="True"
                                         AllowSorting="True" ShowFooter="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
-                                        OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound" OnRowDeleting="gvBCommit_RowDeleting" TabIndex="12">
+                                        OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound" OnRowDeleting="gvBCommit_RowDeleting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />
@@ -333,8 +345,6 @@
                         </div>
                     </asp:Panel>
                 </asp:Panel>
-                <asp:HiddenField ID="hfGrantee" runat ="server" />
-                <asp:HiddenField ID="hfProjId" runat="server" />
                 <asp:HiddenField ID="hfTransId" runat="server" />
                 <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                 <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
