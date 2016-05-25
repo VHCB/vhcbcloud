@@ -80,8 +80,8 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
-        public static void AddProjectLeadBldg(int ProjectID, int Building, int AddressID, int Age, int Type, int LHCUnits, bool FloodHazard, bool FloodIns, int VerifiedBy, string InsuredBy,
-        int HistStatus, int AppendA)
+        public static LeadBuildResult AddProjectLeadBldg(int ProjectID, int Building, int AddressID, int Age, int Type, int LHCUnits, bool FloodHazard, bool FloodIns, 
+            int VerifiedBy, string InsuredBy, int HistStatus, int AppendA)
         {
             try
             {
@@ -109,25 +109,26 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("InsuredBy", InsuredBy));
                         command.Parameters.Add(new SqlParameter("HistStatus", HistStatus));
                         command.Parameters.Add(new SqlParameter("AppendA", AppendA));
-                        //SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
-                        //parmMessage.Direction = ParameterDirection.Output;
-                        //command.Parameters.Add(parmMessage);
 
-                        //SqlParameter parmMessage1 = new SqlParameter("@ProjectId", SqlDbType.Int);
-                        //parmMessage1.Direction = ParameterDirection.Output;
-                        //command.Parameters.Add(parmMessage1);
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
 
 
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
 
-                        //AddProject ap = new AddProject();
+                        LeadBuildResult ap = new LeadBuildResult();
 
-                        //ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
-                        //ap.ProjectId = DataUtils.GetInt(command.Parameters["@ProjectId"].Value.ToString());
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
 
-                        //return ap;
+                        return ap;
                     }
                 }
             }
@@ -248,7 +249,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
-        public static void AddProjectLeadUnit(int LeadBldgID, int Unit, int EBLStatus, int HHCount, int Rooms, decimal HHIncome, bool PartyVerified, int IncomeStatus, decimal MatchFunds,
+        public static LeadBuildResult AddProjectLeadUnit(int LeadBldgID, int Unit, int EBLStatus, int HHCount, int Rooms, decimal HHIncome, bool PartyVerified, int IncomeStatus, decimal MatchFunds,
         DateTime ClearDate, DateTime CertDate, DateTime ReCertDate)
         {
             try
@@ -276,9 +277,24 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("CertDate", CertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : CertDate));
                         command.Parameters.Add(new SqlParameter("ReCertDate", ReCertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReCertDate));
 
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
+
+                        LeadBuildResult ap = new LeadBuildResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return ap;
                     }
                 }
             }
@@ -289,7 +305,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
         }
 
         public static void UpdateProjectLeadUnit(int LeadUnitID, int EBLStatus, int HHCount, int Rooms, decimal HHIncome, bool PartyVerified, int IncomeStatus, decimal MatchFunds,
-        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate)
+        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate, bool IsRowIsActive)
         {
             try
             {
@@ -314,7 +330,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("ClearDate", ClearDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClearDate));
                         command.Parameters.Add(new SqlParameter("CertDate", CertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : CertDate));
                         command.Parameters.Add(new SqlParameter("ReCertDate", ReCertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReCertDate));
-
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive)); 
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -326,5 +342,44 @@ namespace VHCBCommon.DataAccessLayer.Lead
                 throw ex;
             }
         }
+
+        public static DataRow GetProjectLeadUnitById(int LeadUnitID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectLeadUnitById";
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+    }
+
+    public class LeadBuildResult
+    {
+        public bool IsDuplicate { set; get; }
+        public bool IsActive { set; get; }
     }
 }

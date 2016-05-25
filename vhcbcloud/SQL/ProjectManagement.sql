@@ -412,7 +412,7 @@ go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAddress1]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetAddress1
-go
+go 
 
 create procedure GetAddress1
 (
