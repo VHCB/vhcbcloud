@@ -737,6 +737,34 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "Select a project to see the award summary";
         }
 
+        protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
