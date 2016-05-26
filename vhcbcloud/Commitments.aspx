@@ -70,7 +70,7 @@
                                             <ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
                                             <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
-                                               OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
+                                               OnClientItemSelected="OnCommittedProjectSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
                                             &nbsp;<asp:Button ID="btnfind" runat="server" Visible="false" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
                                         </td>
@@ -338,6 +338,7 @@
                 <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                 <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
                 <asp:hiddenfield id="hdnValue" onvaluechanged="hdnValue_ValueChanged" runat="server"/>
+                <asp:hiddenfield id="hdnCommitedProjValue" onvaluechanged="hdnCommitedProjValue_ValueChanged" runat="server"/>
             </div>
         </div>
     </div>
@@ -366,6 +367,14 @@
             }
         }
 
+        function OnCommittedProjectSelected(source, eventArgs) {
+
+            var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
+
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+        }
+        
         function OnContactSelected(source, eventArgs) {
 
             var hdnValueID = "<%= hdnValue.ClientID %>";
