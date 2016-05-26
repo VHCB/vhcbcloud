@@ -2,7 +2,7 @@
     CodeBehind="Commitments.aspx.cs" Inherits="vhcbcloud.Commitments" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="jumbotron clearfix">
+    <div class="jumbotron clearfix" id="vhcb">
         <p class="lead">Board Financial Transactions</p>
         <div class="container">
             <div class="panel panel-default">
@@ -59,31 +59,30 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
                                         <td style="width: 30%; float: left">
-                                            <asp:TextBox ID="txtProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1" ></asp:TextBox>
-                                             <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server"  ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
+                                            <asp:TextBox ID="txtProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
                                             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
 
                                             <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
                                             <ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
                                             <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
+                                               OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
-                                            &nbsp;<asp:Button ID="btnfind" runat="server" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
+                                            &nbsp;<asp:Button ID="btnfind" runat="server" Visible="false" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
                                         </td>
                                         <td style="width: 20%; float: left">
                                             <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                         <td style="float: left">
-                                             <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                            <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                     </tr>
 
                                     <tr>
                                         <td style="width: 10%; float: left">&nbsp;</td>
-                                        <td style="width: 20%; float: left">
-                                            &nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
                                         <td style="float: left">&nbsp;</td>
                                     </tr>
@@ -333,11 +332,12 @@
                         </div>
                     </asp:Panel>
                 </asp:Panel>
-                <asp:HiddenField ID="hfGrantee" runat ="server" />
+                <asp:HiddenField ID="hfGrantee" runat="server" />
                 <asp:HiddenField ID="hfProjId" runat="server" />
                 <asp:HiddenField ID="hfTransId" runat="server" />
                 <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                 <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
+                <asp:hiddenfield id="hdnValue" onvaluechanged="hdnValue_ValueChanged" runat="server"/>
             </div>
         </div>
     </div>
@@ -364,6 +364,14 @@
                     }
                 }
             }
+        }
+
+        function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
         }
     </script>
 </asp:Content>

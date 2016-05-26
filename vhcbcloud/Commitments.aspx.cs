@@ -737,31 +737,63 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "Select a project to see the award summary";
         }
 
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+             getDetails(dt);
+        }
+
         protected void btnfind_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", txtCommitedProjNum.Text);
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", txtProjNum.Text);
+            }
+            getDetails(dt);
+        }
+
+        private void getDetails(DataTable dt)
         {
             try
             {
 
-
-                DataTable dt = new DataTable();
-                if (rdBtnSelection.SelectedIndex > 0)
-                {
-                    if (txtCommitedProjNum.Text == "")
-                    {
-                        lblErrorMsg.Text = "Please select project number";
-                        return;
-                    }
-                    dt = Project.GetProjects("GetProjectIdByProjNum", txtCommitedProjNum.Text);
-                }
-                else
-                {
-                    if (txtProjNum.Text == "")
-                    {
-                        lblErrorMsg.Text = "Please select project number";
-                        return;
-                    }
-                    dt = Project.GetProjects("GetProjectIdByProjNum", txtProjNum.Text);
-                }
                 if (dt.Rows.Count != 0)
                 {
                     hfProjId.Value = dt.Rows[0][0].ToString();
