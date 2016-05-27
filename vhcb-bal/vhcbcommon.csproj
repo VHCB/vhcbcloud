@@ -57,10 +57,13 @@
     <Compile Include="FinancialTransactions.cs" />
     <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
+    <Compile Include="Housing\HousingAttributesData.cs" />
     <Compile Include="Housing\HousingSourcesUsesData.cs" />
     <Compile Include="Housing\HousingUnitsServicesData.cs" />
     <Compile Include="Lead\ProjectLeadBuildingsData.cs" />
     <Compile Include="Lead\ProjectLeadDataData.cs" />
+    <Compile Include="Lead\ProjectLeadMilestonesData.cs" />
+    <Compile Include="Lead\ProjectLeadOccupantsData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="LookupValuesData.cs" />
     <Compile Include="Project.cs" />

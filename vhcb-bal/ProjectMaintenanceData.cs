@@ -276,7 +276,7 @@ namespace DataAccessLayer
 
         #region Project Address
 
-        public static DataTable GetAddress1(string StreetNo, string Address1)
+        public static DataTable GetAddressDetails(string StreetNo)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -284,9 +284,8 @@ namespace DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "GetAddress1";
+                command.CommandText = "GetAddressDetails";
                 command.Parameters.Add(new SqlParameter("StreetNo", StreetNo));
-                command.Parameters.Add(new SqlParameter("Address1", Address1));
 
                 using (connection)
                 {
