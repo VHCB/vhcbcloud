@@ -79,17 +79,17 @@
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File Maintenance</a>
                                         <ul class="dropdown-menu">
                                             <li class="menu-item "><a runat="server" href="~/Applicant.aspx">Applicant</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/">Project</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/Americorps">Americorps</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/BoardDates">Board Dates</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/default.aspx">Project</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/Americorps.aspx">Americorps</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/BoardDates.aspx">Board Dates</a></li>
                                             <%--<li class="menu-item "><a runat="server" href="~/FundingSource">Funding Source</a></li>--%>
-                                            <li class="menu-item "><a runat="server" href="~/CheckRequestdates">Check Request</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/LookupMaintenance">Lookup Maintenance</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/CheckRequestdates.aspx">Check Request</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/LookupMaintenance.aspx">Lookup Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/FundType.aspx">Fund Type</a></li>
                                             <li class="menu-item "><a runat="server" href="~/ProjectMaintenance.aspx">Project Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>
                                             <li class="menu-item "><a runat="server" href="~/Entity.aspx">Entity Maintenance</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance">Fund/Grant Maintenance</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance.aspx">Fund/Grant Maintenance</a></li>
                                             <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#">3rd level link more options</a></li>
