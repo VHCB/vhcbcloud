@@ -20,7 +20,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-
+                //txtProjNum.Focus();
             }
         }
 
