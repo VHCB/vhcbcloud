@@ -31,7 +31,7 @@ namespace vhcbcloud.Lead
                 PopulateProjectDetails();
 
                 BindControls();
-                BindForm();
+                BindGrids();
             }
         }
 
@@ -82,7 +82,8 @@ namespace vhcbcloud.Lead
 
         private void BindControls()
         {
-            //BindLookUP(ddlConservationTrack, 7);
+            BindLookUP(ddlMilestone, 154);
+            BindBuildingNumbers();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -102,19 +103,113 @@ namespace vhcbcloud.Lead
             }
         }
 
-        private void BindForm()
+        private void BindBuildingNumbers()
         {
-            DataRow dr = ProjectLeadDataData.GetProjectLeadDataById(DataUtils.GetInt(hfProjectId.Value));
-
-            if (dr != null)
+            try
             {
-                btnSubmit.Text = "Update";
+                ddlBldgNumber.Items.Clear();
+                ddlBldgNumber.DataSource = ProjectLeadOccupantsData.GetBuildingNumbers(DataUtils.GetInt(hfProjectId.Value));
+                ddlBldgNumber.DataValueField = "LeadBldgID";
+                ddlBldgNumber.DataTextField = "Building";
+                ddlBldgNumber.DataBind();
+                ddlBldgNumber.Items.Insert(0, new ListItem("Select", "NA"));
+
+                //Unit Number Drop Down
+                ddlUnitNumber.Items.Clear();
+                ddlUnitNumber.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindBuildingNumbers", "", ex.Message);
             }
         }
 
+        private void BindBuildingUnitNumbers(int BuildingNo)
+        {
+            try
+            {
+                DataTable dt = ProjectLeadOccupantsData.GetBuildingUnitNumbers(BuildingNo);
+                if (dt.Rows.Count > 0)
+                {
+                    ddlUnitNumber.Items.Clear();
+                    ddlUnitNumber.DataSource = dt;
+                    ddlUnitNumber.DataValueField = "LeadUnitID";
+                    ddlUnitNumber.DataTextField = "Unit";
+                    ddlUnitNumber.DataBind();
+                    ddlUnitNumber.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+                else
+                {
+                    ddlUnitNumber.Items.Clear();
+                    ddlUnitNumber.Items.Insert(0, new ListItem("No Units Found", "NA"));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindBuildingNumbers", "", ex.Message);
+            }
+        }
+        
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (ddlMilestone.SelectedIndex == 0)
+            {
+                LogMessage("Select Milestone");
+                ddlMilestone.Focus();
+                return;
+            }
+            if (ddlBldgNumber.SelectedIndex == 0)
+            {
+                LogMessage("Select Building #");
+                ddlBldgNumber.Focus();
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtDate.Text.ToString()) == true)
+            {
+                LogMessage("Enter Date");
+                txtDate.Focus();
+                return;
+            }
+            else
+            {
+                if (!DataUtils.IsDateTime(txtDate.Text.Trim()))
+                {
+                    LogMessage("Enter Valid Date");
+                    txtDate.Focus();
+                    return;
+                }
+            }
 
+            if (btnSubmit.Text == "Submit")
+            {
+                LeadMilestoneResult objLeadMilestoneResult = ProjectLeadMilestonesData.AddProjectLeadMilestone((DataUtils.GetInt(hfProjectId.Value)),
+                    DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text));
+
+                ClearMilestonesForm();
+                BindGrids();
+
+                if (objLeadMilestoneResult.IsDuplicate && !objLeadMilestoneResult.IsActive)
+                    LogMessage("Milestone already exist for tihs XXXXX and XXXXX as in-active");
+                else if (objLeadMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist for tihs Bldg# and Unit#");
+                else
+                    LogMessage("Milestone Added Successfully");
+            }
+            else
+            {
+                ProjectLeadMilestonesData.UpdateProjectLeadMilestone(DataUtils.GetInt(hfLeadMilestoneID.Value), DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()), DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text),
+                    chkMilestoneActive.Checked);
+
+                gvMilestone.EditIndex = -1;
+                BindGrids();
+                hfLeadMilestoneID.Value = "";
+                ClearMilestonesForm();
+                btnSubmit.Text = "Submit";
+
+                LogMessage("Milestone Updated Successfully");
+            }
         }
 
         #region Logs
@@ -136,5 +231,122 @@ namespace vhcbcloud.Lead
         }
         #endregion Logs
 
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindGrids();
+        }
+
+        private void BindGrids()
+        {
+            BindMilestonesGrid();
+        }
+
+        protected void ddlBldgNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindBuildingUnitNumbers(DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()));
+        }
+
+        protected void gvMilestone_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvMilestone.EditIndex = e.NewEditIndex;
+            BindMilestonesGrid();
+        }
+
+        protected void gvMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvMilestone.EditIndex = -1;
+            BindMilestonesGrid();
+            ClearMilestonesForm();
+            hfLeadMilestoneID.Value = "";
+            btnSubmit.Text = "Submit";
+        }
+
+        protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnSubmit.Text = "Update";
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[6].Controls[0].Visible = false;
+
+                        Label lblLeadMilestoneID = e.Row.FindControl("lblLeadMilestoneID") as Label;
+                        DataRow dr = ProjectLeadMilestonesData.GetProjectLeadMilestoneById(DataUtils.GetInt(lblLeadMilestoneID.Text));
+
+                        hfLeadMilestoneID.Value = lblLeadMilestoneID.Text;
+                        PopulateDropDown(ddlMilestone, dr["LKMilestone"].ToString());
+                        PopulateDropDown(ddlBldgNumber, dr["LeadBldgID"].ToString());
+                        BindBuildingUnitNumbers(DataUtils.GetInt(dr["LeadBldgID"].ToString()));
+                        PopulateDropDown(ddlUnitNumber, dr["LeadUnitID"].ToString());
+                        txtDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
+                        chkMilestoneActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        chkMilestoneActive.Enabled = true;
+                        //ddlBldgNumber.Enabled = false;
+                        //ddlUnitNumber.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvMilestone_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+        private void BindMilestonesGrid()
+        {
+            try
+            {
+                DataTable dt = ProjectLeadMilestonesData.GetProjectLeadMilestoneList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvMilestoneGrid.Visible = true;
+                    gvMilestone.DataSource = dt;
+                    gvMilestone.DataBind();
+                    Session["dtMilestonesList"] = dt;
+                }
+                else
+                {
+                    dvMilestoneGrid.Visible = false;
+                    gvMilestone.DataSource = null;
+                    gvMilestone.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindMilestonesGrid", "", ex.Message);
+            }
+        }
+
+        private void ClearMilestonesForm()
+        {
+            ddlBldgNumber.SelectedIndex = -1;
+            ddlUnitNumber.Items.Clear();
+            //ddlUnitNumber.SelectedIndex = -1;
+            ddlMilestone.SelectedIndex = -1;
+            txtDate.Text = "";
+
+            //ddlBldgNumber.Enabled = true;
+            //ddlUnitNumber.Enabled = true;
+
+            chkMilestoneActive.Checked = true;
+            chkMilestoneActive.Enabled = false;
+        }
     }
 }

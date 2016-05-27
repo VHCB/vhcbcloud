@@ -410,20 +410,20 @@ begin transaction
 go
 
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAddress1]') and type in (N'P', N'PC'))
-drop procedure [dbo].GetAddress1
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAddressDetails]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetAddressDetails
 go 
 
-create procedure GetAddress1
+create procedure GetAddressDetails
 (
-	@StreetNo	nvarchar(24),
-	@Address1	nvarchar(120)	
+	@StreetNo	nvarchar(24)
+	--@Address1	nvarchar(120)	
 )
 as 
 Begin
 
-	select distinct top 10 Address1 from address(nolock)
-	where Street# = @StreetNo and Address1 like @Address1 +'%'
+	select distinct top 10 Street#, Address1, Address2, latitude, longitude, Town, State, Zip, County, Village from address(nolock)
+	where Street# like @StreetNo +'%'
 end
 go
 

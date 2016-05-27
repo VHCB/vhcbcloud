@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ProjectLeadOccupants.aspx.cs"  MasterPageFile="~/Site.Master" 
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ProjectLeadOccupants.aspx.cs" MasterPageFile="~/Site.Master"
     Inherits="vhcbcloud.Lead.ProjectLeadOccupants" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -26,8 +26,8 @@
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="width: 25px; height: 25px; border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="width: 25px; height: 25px; border: none; vertical-align: middle;" />
-                                <%-- <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
-                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />--%>
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
+                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                         <tr>
@@ -62,9 +62,11 @@
                                     <td>
                                         <span class="labelClass" id="ProjName" runat="server"></span>
                                     </td>
-                                    <td><span class="labelClass">Conservation Track:</span></td>
+                                    <td><span class="labelClass">Bldg #:</span></td>
                                     <td>
-                                        <asp:DropDownList ID="ddlConservationTrack" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <asp:DropDownList ID="ddlBldgNumber" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                            OnSelectedIndexChanged="ddlBldgNumber_SelectedIndexChanged">
+                                        </asp:DropDownList>
                                     </td>
 
                                 </tr>
@@ -73,52 +75,17 @@
                                 </tr>
                                 <tr>
 
-                                    <td><span class="labelClass"># of Easements:</span></td>
+                                    <td><span class="labelClass">Unit #:</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtEasements" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <asp:DropDownList ID="ddlUnitNumber" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>
-                                    <td><span class="labelClass">Primary Steward Organization:</span></td>
+                                    <td><span class="labelClass">Name:</span></td>
                                     <td>
-                                        <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <asp:TextBox ID="txtOccupantName" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Total Project Acres:</span></td>
+                                    <td><span class="labelClass">Age:</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-
-                                    <td><span class="labelClass">Wooded:</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtWooded" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">Prime:</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtPrime" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">StateWide</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtStateWide" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="labelClass">% Wooded:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="pctWooded" runat="server"></span>
-                                    </td>
-                                    <td><span class="labelClass">% Prime:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="pctPrime" runat="server"></span>
-                                    </td>
-                                    <td><span class="labelClass">% StateWide:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="pctState" runat="server"></span>
+                                        <asp:DropDownList ID="ddlAge" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>
                                 </tr>
                                 <tr>
@@ -126,25 +93,91 @@
                                 </tr>
                                 <tr>
 
-                                    <td><span class="labelClass">Other Acres:</span></td>
-                                    <td><span class="labelClass" id="otherAcres" runat="server"></span></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><span class="labelClass">Ethnicity:</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlEthnicity" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                    </td>
+                                    <td><span class="labelClass">Race:</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlRace" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                    </td>
+                                    <td><span class="labelClass">Active:</span></td>
+                                    <td>
+                                        <asp:CheckBox ID="chkOccupantActive" Enabled="false" runat="server" Checked="true" /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                             </table>
                         </div>
+
+                        <div class="panel-body" id="dvOccupantGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="200px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvOccupant" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvOccupant_RowEditing" OnRowCancelingEdit="gvOccupant_RowCancelingEdit" OnSorting="gvOccupant_Sorting" 
+                                    OnRowDataBound="gvOccupant_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="LeadOccupantID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLeadOccupantID" runat="Server" Text='<%# Eval("LeadOccupantID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="Building" HeaderText="Building #">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblBuilding" runat="Server" Text='<%# Eval("Building") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="Unit" HeaderText="Unit #">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnit" runat="Server" Text='<%# Eval("Unit") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblName" runat="Server" Text='<%# Eval("Name") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Age">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAge" runat="Server" Text='<%# Eval("Age") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-     <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfLeadOccupantID" runat="server" />
 
     <script language="javascript">
         function PopupAwardSummary() {

@@ -292,9 +292,6 @@
                                         </td>
                                         <td style="width: 185px"><span class="labelClass">6 Month Recertify:</span></td>
                                         <td style="width: 270px"><span class="labelClass" id="labelRectDate" runat="server"></span>
-                                            <%-- <asp:TextBox ID="txtRectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRectDate" TargetControlID="txtRectDate">
-                                            </ajaxToolkit:CalendarExtender>--%>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Clearance Date:</span></td>
                                         <td>

@@ -385,17 +385,17 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12" onkeyup="SetContextKey()"></asp:TextBox>
+                                            <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox><%-- onkeyup="SetContextKey()"--%>
+                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtStreetNo" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetAddress1" OnClientItemSelected="GetAddressDetails">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Address1:</span>
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
-                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtAddress1" MinimumPrefixLength="1"
-                                                EnableCaching="true" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetAddress1">
-                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
@@ -769,6 +769,22 @@
     <script language="javascript">
         function SetContextKey() {
             $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
+        }
+        function GetAddressDetails(source, eventArgs)
+        {
+            //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
+            var addressArray = eventArgs.get_value().split('~');
+            $('#<%=txtStreetNo.ClientID%>').val(addressArray[0]);
+            $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
+            $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
+            $('#<%=txtState.ClientID%>').val(addressArray[3]);
+            $('#<%=txtZip.ClientID%>').val(addressArray[4]);
+            $('#<%=txtTown.ClientID%>').val(addressArray[5]);
+            $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
+            $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
+            $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+            $('#<%=ddlVillages.ClientID%>').empty();
+            $('#<%=ddlVillages.ClientID%>').append($("<option></option>").val(addressArray[9]).html(addressArray[9]));
         }
 
         $(document).ready(function () {

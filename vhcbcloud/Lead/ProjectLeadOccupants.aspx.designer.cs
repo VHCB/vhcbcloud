@@ -49,6 +49,15 @@ namespace vhcbcloud.Lead {
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
         
         /// <summary>
+        /// cbActiveOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
+        
+        /// <summary>
         /// mpExtender control.
         /// </summary>
         /// <remarks>
@@ -121,103 +130,67 @@ namespace vhcbcloud.Lead {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjName;
         
         /// <summary>
-        /// ddlConservationTrack control.
+        /// ddlBldgNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlConservationTrack;
+        protected global::System.Web.UI.WebControls.DropDownList ddlBldgNumber;
         
         /// <summary>
-        /// txtEasements control.
+        /// ddlUnitNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEasements;
+        protected global::System.Web.UI.WebControls.DropDownList ddlUnitNumber;
         
         /// <summary>
-        /// ddlPSO control.
+        /// txtOccupantName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPSO;
+        protected global::System.Web.UI.WebControls.TextBox txtOccupantName;
         
         /// <summary>
-        /// txtTotProjAcres control.
+        /// ddlAge control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTotProjAcres;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAge;
         
         /// <summary>
-        /// txtWooded control.
+        /// ddlEthnicity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWooded;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEthnicity;
         
         /// <summary>
-        /// txtPrime control.
+        /// ddlRace control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrime;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRace;
         
         /// <summary>
-        /// txtStateWide control.
+        /// chkOccupantActive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStateWide;
-        
-        /// <summary>
-        /// pctWooded control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctWooded;
-        
-        /// <summary>
-        /// pctPrime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrime;
-        
-        /// <summary>
-        /// pctState control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctState;
-        
-        /// <summary>
-        /// otherAcres control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl otherAcres;
+        protected global::System.Web.UI.WebControls.CheckBox chkOccupantActive;
         
         /// <summary>
         /// btnSubmit control.
@@ -229,6 +202,33 @@ namespace vhcbcloud.Lead {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
+        /// dvOccupantGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvOccupantGrid;
+        
+        /// <summary>
+        /// Panel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel3;
+        
+        /// <summary>
+        /// gvOccupant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvOccupant;
+        
+        /// <summary>
         /// hfProjectId control.
         /// </summary>
         /// <remarks>
@@ -236,5 +236,14 @@ namespace vhcbcloud.Lead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfLeadOccupantID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfLeadOccupantID;
     }
 }
