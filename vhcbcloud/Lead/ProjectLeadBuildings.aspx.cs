@@ -257,7 +257,7 @@ namespace vhcbcloud.Lead
             txtInsuredby.Text = "";
             ddlHistoricStatus.SelectedIndex = -1;
             ddlAppendixA.SelectedIndex = -1;
-
+           
             txtBldgnumber.Enabled = true;
             chkBldgActive.Enabled = false;
         }
@@ -459,6 +459,7 @@ namespace vhcbcloud.Lead
             txtClearanceDate.Text = "";
             txtCertifiedBy.Text = "";
             //txtRectDate.Text = "";
+            labelRectDate.InnerText = "";
 
             txtUnitNumber.Enabled = true;
             chkUnitActive.Enabled = false;
@@ -506,11 +507,11 @@ namespace vhcbcloud.Lead
 ;
                         txtHouseholdCount.Text = dr["HHCount"].ToString();
                         txtRooms.Text = dr["Rooms"].ToString();
-                        txtHouseholdIncome.Text = dr["HHIncome"].ToString();
+                        txtHouseholdIncome.Text = Decimal.Parse(dr["HHIncome"].ToString()).ToString("#.00");
                         cbThirdPartyVerified.Checked = DataUtils.GetBool(dr["PartyVerified"].ToString());
                         PopulateDropDown(ddlIncomeStatus, dr["IncomeStatus"].ToString());
 
-                        txtMatchingFund.Text = dr["MatchFunds"].ToString();
+                        txtMatchingFund.Text = Decimal.Parse(dr["MatchFunds"].ToString()).ToString("#.00");
                         txtClearanceDate.Text = dr["ClearDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ClearDate"].ToString()).ToShortDateString();
                         txtCertifiedBy.Text = dr["CertDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["CertDate"].ToString()).ToShortDateString();
 

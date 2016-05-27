@@ -29,10 +29,10 @@ namespace vhcbcloud.Lead
 
             if (!IsPostBack)
             {
+                Session["dtOccupantsList"] = null;
                 PopulateProjectDetails();
-
                 BindControls();
-                BindForm();
+                BindGrids();
             }
         }
 
@@ -83,7 +83,62 @@ namespace vhcbcloud.Lead
 
         private void BindControls()
         {
-            //BindLookUP(ddlConservationTrack, 7);
+            BindBuildingNumbers();
+            BindLookUP(ddlRace, 10);
+            BindLookUP(ddlEthnicity, 149);
+            BindLookUP(ddlAge, 156);
+        }
+
+        private void BindBuildingNumbers()
+        {
+            try
+            {
+                ddlBldgNumber.Items.Clear();
+                ddlBldgNumber.DataSource = ProjectLeadOccupantsData.GetBuildingNumbers(DataUtils.GetInt(hfProjectId.Value));
+                ddlBldgNumber.DataValueField = "LeadBldgID";
+                ddlBldgNumber.DataTextField = "Building";
+                ddlBldgNumber.DataBind();
+                ddlBldgNumber.Items.Insert(0, new ListItem("Select", "NA"));
+                
+                //Unit Number Drop Down
+                ddlUnitNumber.Items.Clear();
+                ddlUnitNumber.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindBuildingNumbers", "", ex.Message);
+            }
+        }
+
+        protected void ddlBldgNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindBuildingUnitNumbers(DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()));
+        }
+
+        private void BindBuildingUnitNumbers(int BuildingNo)
+        {
+            try
+            {
+                DataTable dt = ProjectLeadOccupantsData.GetBuildingUnitNumbers(BuildingNo);
+                if (dt.Rows.Count > 0)
+                {
+                    ddlUnitNumber.Items.Clear();
+                    ddlUnitNumber.DataSource = dt;
+                    ddlUnitNumber.DataValueField = "LeadUnitID";
+                    ddlUnitNumber.DataTextField = "Unit";
+                    ddlUnitNumber.DataBind();
+                    ddlUnitNumber.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+                else
+                {
+                    ddlUnitNumber.Items.Clear();
+                    ddlUnitNumber.Items.Insert(0, new ListItem("No Units Found", "NA"));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindBuildingNumbers", "", ex.Message);
+            }
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -103,19 +158,71 @@ namespace vhcbcloud.Lead
             }
         }
 
-        private void BindForm()
+        protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            DataRow dr = ProjectLeadDataData.GetProjectLeadDataById(DataUtils.GetInt(hfProjectId.Value));
-
-            if (dr != null)
+            if (ddlBldgNumber.SelectedIndex == 0)
             {
-                btnSubmit.Text = "Update";
+                LogMessage("Select Building #");
+                ddlBldgNumber.Focus();
+                return;
+            }
+            if (ddlUnitNumber.SelectedIndex == 0)
+            {
+                LogMessage("Select Unit #");
+                ddlUnitNumber.Focus();
+                return;
+            }
+
+            if (btnSubmit.Text == "Submit")
+            {
+                OccupantsResult objOccupantsResult = ProjectLeadOccupantsData.AddProjectLeadOccupants((DataUtils.GetInt(hfProjectId.Value)),
+                    DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()), DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()),
+                    txtOccupantName.Text, DataUtils.GetInt(ddlAge.SelectedValue.ToString()), DataUtils.GetInt(ddlEthnicity.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlRace.SelectedValue.ToString()));
+
+                ClearOccupantForm();
+                BindGrids();
+
+                if (objOccupantsResult.IsDuplicate && !objOccupantsResult.IsActive)
+                    LogMessage("Occupant Info already exist for tihs Bldg# and Unit# as in-active");
+                else if (objOccupantsResult.IsDuplicate)
+                    LogMessage("Occupant Info already exist for tihs Bldg# and Unit#");
+                else
+                    LogMessage("Occupant Info Added Successfully");
+            }
+            else
+            {
+                ProjectLeadOccupantsData.UpdateProjectLeadOccupants(DataUtils.GetInt(hfLeadOccupantID.Value), txtOccupantName.Text, DataUtils.GetInt(ddlAge.SelectedValue.ToString()), DataUtils.GetInt(ddlEthnicity.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlRace.SelectedValue.ToString()), chkOccupantActive.Checked);
+                //ProjectLeadBuildingsData.UpdateProjectLeadBldg((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtBldgnumber.Text), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
+                // DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
+                // DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()),
+                // DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()), chkBldgActive.Checked);
+
+                gvOccupant.EditIndex = -1;
+                BindGrids();
+                hfLeadOccupantID.Value = "";
+                ClearOccupantForm();
+                btnSubmit.Text = "Submit";
+
+                LogMessage("Occupant Info Updated Successfully");
             }
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        private void ClearOccupantForm()
         {
+            ddlBldgNumber.SelectedIndex = -1;
+            ddlUnitNumber.SelectedIndex = -1;
+            txtOccupantName.Text = "";
+            ddlAge.SelectedIndex = -1;
+            ddlEthnicity.SelectedIndex = -1;
+            ddlRace.SelectedIndex = -1;
 
+            ddlBldgNumber.Enabled = true;
+            ddlUnitNumber.Enabled = true;
+
+            chkOccupantActive.Checked = true;
+            chkOccupantActive.Enabled = false;
         }
 
         #region Logs
@@ -137,5 +244,180 @@ namespace vhcbcloud.Lead
         }
         #endregion Logs
 
+        private void BindGrids()
+        {
+            BindOccupantsGrid();
+        }
+
+        private void BindOccupantsGrid()
+        {
+            try
+            {
+                DataTable dt = ProjectLeadOccupantsData.GetProjectLeadOccupantList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvOccupantGrid.Visible = true;
+                    gvOccupant.DataSource = dt;
+                    gvOccupant.DataBind();
+                    Session["dtOccupantsList"] = dt;
+                }
+                else
+                {
+                    dvOccupantGrid.Visible = false;
+                    gvOccupant.DataSource = null;
+                    gvOccupant.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindOccupantsGrid", "", ex.Message);
+            }
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindGrids();
+        }
+
+        protected void gvOccupant_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvOccupant.EditIndex = e.NewEditIndex;
+            BindOccupantsGrid();
+        }
+
+        protected void gvOccupant_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvOccupant.EditIndex = -1;
+            BindOccupantsGrid();
+            ClearOccupantForm();
+            hfLeadOccupantID.Value = "";
+            btnSubmit.Text = "Submit";
+        }
+
+        protected void gvOccupant_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnSubmit.Text = "Update";
+                    
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[6].Controls[0].Visible = false;
+
+                        Label lblLeadOccupantID = e.Row.FindControl("lblLeadOccupantID") as Label;
+                        DataRow dr = ProjectLeadOccupantsData.GetProjectLeadOccupantById(DataUtils.GetInt(lblLeadOccupantID.Text));
+
+                        hfLeadOccupantID.Value = lblLeadOccupantID.Text;
+
+                        PopulateDropDown(ddlBldgNumber, dr["LeadBldgID"].ToString());
+                        BindBuildingUnitNumbers(DataUtils.GetInt(dr["LeadBldgID"].ToString()));
+                        PopulateDropDown(ddlUnitNumber, dr["LeadUnitID"].ToString());
+                        PopulateDropDown(ddlAge, dr["LKAge"].ToString());
+                        PopulateDropDown(ddlEthnicity, dr["LKEthnicity"].ToString());
+                        PopulateDropDown(ddlRace, dr["LKRace"].ToString());
+                        txtOccupantName.Text = dr["Name"].ToString();
+                        chkOccupantActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+
+                        ddlBldgNumber.Enabled = false;
+                        ddlUnitNumber.Enabled = false;
+                        chkOccupantActive.Enabled = true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvOccupant_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
+        protected void gvOccupant_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvOccupant.DataSource = SortDataTable((DataTable)Session["dtOccupantsList"], false);
+            gvOccupant.DataBind();
+            gvOccupant.PageIndex = pageIndex;
+        }
+
+        #region GridView Sorting Functions
+
+        //======================================== GRIDVIEW EventHandlers END
+
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        //===========================SORTING PROPERTIES START
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        //===========================SORTING PROPERTIES END
+        #endregion
     }
 }

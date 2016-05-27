@@ -1445,19 +1445,55 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        //[System.Web.Services.WebMethod()]
+        //[System.Web.Script.Services.ScriptMethod()]
+        //public static string[] GetAddress1(string prefixText, int count, string contextKey)
+        //{
+        //    DataTable dt = new DataTable();
+        //    dt = ProjectMaintenanceData.GetAddress1(contextKey, prefixText);
+
+        //    List<string> ProjNames = new List<string>();
+        //    List<string> items = new List<string>(count);
+        //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    {
+        //        string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i][0].ToString(), dt.Rows[i]["Address2"].ToString() 
+        //            + '~' + dt.Rows[i]["State"].ToString() 
+        //            + '~' + dt.Rows[i]["Zip"].ToString());
+        //        items.Add(str);
+        //        //ProjNames.Add(dt.Rows[i][0].ToString());
+        //    }
+        //    //return ProjNames.ToArray();
+        //    return items.ToArray();
+        //}
+
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
-        public static string[] GetAddress1(string prefixText, int count, string contextKey)
+        public static string[] GetAddress1(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = ProjectMaintenanceData.GetAddress1(contextKey, prefixText);
+            dt = ProjectMaintenanceData.GetAddressDetails(prefixText);
 
-            List<string> ProjNames = new List<string>();
+            //List<string> ProjNames = new List<string>();
+            List<string> items = new List<string>(count);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                ProjNames.Add(dt.Rows[i][0].ToString());
+                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["Street#"].ToString() + ' ' + dt.Rows[i]["Address1"].ToString(),
+                    dt.Rows[i]["Street#"].ToString()
+                    + '~' + dt.Rows[i]["Address1"].ToString()
+                    + '~' + dt.Rows[i]["Address2"].ToString()
+                    + '~' + dt.Rows[i]["State"].ToString()
+                    + '~' + dt.Rows[i]["Zip"].ToString()
+                    + '~' + dt.Rows[i]["Town"].ToString()
+                    + '~' + dt.Rows[i]["County"].ToString()
+                    + '~' + dt.Rows[i]["latitude"].ToString()
+                    + '~' + dt.Rows[i]["longitude"].ToString()
+                    + '~' + dt.Rows[i]["Village"].ToString()
+                    );
+            items.Add(str);
+                //ProjNames.Add(dt.Rows[i][0].ToString());
             }
-            return ProjNames.ToArray();
+            //return ProjNames.ToArray();
+            return items.ToArray();
         }
 
         [WebMethod]
