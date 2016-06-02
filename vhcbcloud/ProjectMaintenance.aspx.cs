@@ -100,13 +100,13 @@ namespace vhcbcloud
                 ddlBoardDate.Items.Clear();
                 ddlBoardDate.DataSource = LookupValuesData.GetBoardDates();
                 ddlBoardDate.DataValueField = "TypeID";
-                ddlBoardDate.DataTextField = "BoardDate1";
+                ddlBoardDate.DataTextField = "BoardDate";
                 ddlBoardDate.DataBind();
                 ddlBoardDate.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
-                LogError(Pagename, "BindApplicants", "", ex.Message);
+                LogError(Pagename, "BindBoardDate", "", ex.Message);
             }
         }
 
@@ -1477,7 +1477,8 @@ namespace vhcbcloud
             List<string> items = new List<string>(count);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["Street#"].ToString() + ' ' + dt.Rows[i]["Address1"].ToString(),
+                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["Street#"].ToString() 
+                    + ' ' + dt.Rows[i]["Address1"].ToString() + ' ' + dt.Rows[i]["Town"].ToString(),
                     dt.Rows[i]["Street#"].ToString()
                     + '~' + dt.Rows[i]["Address1"].ToString()
                     + '~' + dt.Rows[i]["Address2"].ToString()

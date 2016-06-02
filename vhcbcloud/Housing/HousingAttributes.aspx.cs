@@ -1,4 +1,4 @@
-﻿using DataAccessLayer;
+using DataAccessLayer;
 using System;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
@@ -88,7 +88,7 @@ namespace vhcbcloud.Housing
         private void BindControls()
         {
             BindLookUP(ddlPriorities, 60);
-            BindLookUP(ddlInterAgencyPriorities, 79); 
+            BindLookUP(ddlInterAgencyPriorities, 79);
             BindLookUP(ddlVHCBPriorities, 90);
             BindLookUP(ddlOutcomes, 81);
         }

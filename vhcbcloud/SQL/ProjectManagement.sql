@@ -463,7 +463,7 @@ begin transaction
 		select 1 
 		from Address a(nolock) 
 		join ProjectAddress pa(nolock) on a.AddressId = pa.AddressId
-		where a.Street# = @StreetNo and a.Address1 = @Address1 and pa.ProjectId = @ProjectId
+		where a.Street# = @StreetNo and a.Address1 = @Address1 and Town = @Town and pa.ProjectId = @ProjectId
 	)
 	begin
 		insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, UserID)
@@ -489,7 +489,7 @@ begin transaction
 		select @isActive =  a.RowIsActive 
 		from Address a(nolock) 
 		join ProjectAddress pa(nolock) on a.AddressId = pa.AddressId
-		where a.Street# = @StreetNo and a.Address1 = @Address1 and pa.ProjectId = @ProjectId
+		where a.Street# = @StreetNo and a.Address1 = @Address1 and Town = @Town and pa.ProjectId = @ProjectId
 	end
 
 	end try
