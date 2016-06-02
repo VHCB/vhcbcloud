@@ -66,8 +66,7 @@ begin transaction
     ( 
 		select 1 
 		from ProjectLeadMilestone (nolock)
-		where ProjectID = @ProjectID and LKMilestone = @LKMilestone and LeadBldgID = @LeadBldgID
-		and MSDate = @MSDate
+		where ProjectID = @ProjectID and LKMilestone = @LKMilestone
 	)
 	begin
 		insert into ProjectLeadMilestone(ProjectID, LKMilestone, LeadBldgID, LeadUnitID, MSDate)
@@ -80,8 +79,7 @@ begin transaction
 	begin
 		select @isActive =  RowIsActive 
 		from ProjectLeadMilestone (nolock)
-		where ProjectID = @ProjectID and LKMilestone = @LKMilestone and LeadBldgID = @LeadBldgID
-		and MSDate = @MSDate
+		where ProjectID = @ProjectID and LKMilestone = @LKMilestone
 	end
 
 	end try
