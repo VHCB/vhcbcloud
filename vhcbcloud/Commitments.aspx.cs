@@ -330,13 +330,7 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Select Project to add new transaction";
                     txtProjNum.Focus();
                     return;
-                }
-                //else if (ddlGrantee.Items.Count > 1 && ddlGrantee.SelectedIndex == 0)
-                //{
-                //    lblErrorMsg.Text = "Select Grantee to add new transaction";
-                //    ddlGrantee.Focus();
-                //    return;
-                //}
+                }                
                 else if (txtTotAmt.Text.Trim() == "")
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
@@ -647,6 +641,7 @@ namespace vhcbcloud
             lblErrorMsg.Text = "";
             txtCommitedProjNum.Text = "";
             txtProjNum.Text = "";
+            lblGrantee.Text = "";
             if (rdBtnSelection.SelectedIndex > 0)
             {
                 txtProjNum.Visible = false;

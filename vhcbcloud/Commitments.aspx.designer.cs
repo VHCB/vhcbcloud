@@ -13,6 +13,15 @@ namespace vhcbcloud {
     public partial class Commitments {
         
         /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
         /// rdBtnFinancial control.
         /// </summary>
         /// <remarks>
@@ -148,15 +157,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnfind;
         
         /// <summary>
-        /// lblGrantee control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrantee;
-        
-        /// <summary>
         /// lblProjName control.
         /// </summary>
         /// <remarks>
@@ -164,6 +164,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProjName;
+        
+        /// <summary>
+        /// lblGrantee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrantee;
         
         /// <summary>
         /// divPtransEntry control.

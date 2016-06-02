@@ -180,6 +180,7 @@
     <Content Include="Conservation\ConservationStewardship.aspx" />
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
+    <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -417,6 +418,13 @@
     </Compile>
     <Compile Include="Conservation\ConservationSummary.aspx.designer.cs">
       <DependentUpon>ConservationSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Decommitments_old.aspx.cs">
+      <DependentUpon>Decommitments_old.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Decommitments_old.aspx.designer.cs">
+      <DependentUpon>Decommitments_old.aspx</DependentUpon>
     </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
