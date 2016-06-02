@@ -10,7 +10,7 @@ using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
-    public partial class Decommitments: System.Web.UI.Page
+    public partial class Decommitments : System.Web.UI.Page
     {
         DataTable dtProjects;
         private int TRANS_PENDING_STATUS = 261;
@@ -22,38 +22,40 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                BindProjects();                
+               
             }
         }
+     
 
-        protected void BindProjects()
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetCommittedProjectsByFilter(string prefixText, int count)
         {
-            try
-            {
-                dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
-                ddlProjFilter.DataSource = dtProjects;
-                ddlProjFilter.DataValueField = "projectId";
-                ddlProjFilter.DataTextField = "Proj_num";
-                ddlProjFilter.DataBind();
-                ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("getCommittedProjectslistByFilter", prefixText);
 
-                //ddlRFromProj.DataSource = dtProjects;
-                //ddlRFromProj.DataValueField = "projectId";
-                //ddlRFromProj.DataTextField = "Proj_num";
-                //ddlRFromProj.DataBind();
-                //ddlRFromProj.Items.Insert(0, new ListItem("Select", "NA"));
-
-                //ddlRToProj.DataSource = dtProjects;
-                //ddlRToProj.DataValueField = "projectId";
-                //ddlRToProj.DataTextField = "Proj_num";
-                //ddlRToProj.DataBind();
-                //ddlRToProj.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
-                lblErrorMsg.Text = ex.Message;
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
+            return ProjNames.ToArray();
+        }
+
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("getCommittedPendingProjectslistByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
         }
 
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
@@ -68,68 +70,20 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
-        protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            pnlTranDetails.Visible = false;
-            lblErrorMsg.Text = "";
+       
 
-            gvPTrans.DataSource = null;
-            gvPTrans.DataBind();
-
-            ddlGrantee.Items.Clear();
-            ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
-
-            ClearTransactionDetailForm();
-
-            if (ddlProjFilter.SelectedIndex != 0)
-            {
-                DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
-                lblProjNameText.Visible = true;
-                lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
-                BindGranteeByProject(); //Bind Grantee Drop Down
-                lbAwardSummary.Visible = true;
-                txtTransDate.Text = DateTime.Now.ToShortDateString();
-                txtTotAmt.Text = "";
-                BindFundAccounts();
-            }
-            else
-            {
-                lbAwardSummary.Visible = false;
-                lblProjNameText.Visible = false;
-                lblProjName.Text = "";
-            }
-        }
-
-        protected void BindGranteeByProject()
-        {
-            try
-            {
-                DataTable dtGrantee = FinancialTransactions.GetGranteeByProject(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
-                ddlGrantee.DataSource = dtGrantee;
-                ddlGrantee.DataValueField = "applicantid";
-                ddlGrantee.DataTextField = "Applicantname";
-                ddlGrantee.DataBind();
-                if (dtGrantee.Rows.Count > 1)
-                    ddlGrantee.Items.Insert(0, new ListItem("Select", "NA"));
-
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = ex.Message;
-            }
-        }
 
         protected void BindFundAccounts()
         {
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()));
+                dtable = FinancialTransactions.GetCommittedFundAccounts(GetTransId());
                 ddlAcctNum.Items.Clear();
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
-                
+
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
             }
@@ -144,7 +98,7 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlAcctNum.SelectedIndex != 0)
             {
-                dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
+                dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(GetTransId(), Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
                 //if (lblFundName.Text.ToLower().Contains("hopwa"))
@@ -178,11 +132,12 @@ namespace vhcbcloud
 
             lblFundName.Text = "";
             txtAmt.Text = "";
-            try {
+            try
+            {
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             { }
         }
 
@@ -230,6 +185,11 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnDecommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
+                        if (rdBtnSelection.SelectedIndex == 0)
+                        {
+                            lblProjName.Text = "";
+                            lblGrantee.Text = "";
+                        }
                     }
                     else
                     {
@@ -249,34 +209,19 @@ namespace vhcbcloud
 
         private int GetTransId()
         {
-            DataTable dtable = new DataTable();
-            dtable = FinancialTransactions.GetLastFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), "Board DeCommitment");
-            if (dtable.Rows.Count > 0)
-                return Convert.ToInt32(dtable.Rows[0]["transid"].ToString());
-            else
+            if (hfTransId.Value.ToString() == "")
+            {
                 return 0;
+            }
+            else
+                return Convert.ToInt32(hfTransId.Value);
         }
 
         protected void rdBtnSelectTransDetail_CheckedChanged(object sender, EventArgs e)
         {
         }
 
-        protected void lbAwardSummary_Click(object sender, EventArgs e)
-        {
-            if (ddlProjFilter.SelectedIndex > 0)
-            {
-                string url = "/awardsummary.aspx?projectid=" + ddlProjFilter.SelectedValue.ToString();
-                StringBuilder sb = new StringBuilder();
-                sb.Append("<script type = 'text/javascript'>");
-                sb.Append("window.open('");
-                sb.Append(url);
-                sb.Append("');");
-                sb.Append("</script>");
-                ClientScript.RegisterStartupScript(this.GetType(),
-                        "script", sb.ToString());
-            }
-        }
-
+      
         protected void btnDecommitmentSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -339,7 +284,7 @@ namespace vhcbcloud
                     {
                         currentTranFudAmount = currentBalAmount;
                         lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
-                        CommonHelper.DisableButton(btnTransactionSubmit );
+                        CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnDecommitmentSubmit);
                     }
                     else
@@ -360,28 +305,35 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-               
+
 
         protected void btnTransactionSubmit_Click(object sender, EventArgs e)
         {
             try
             {
-                if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+                if (txtProjNum.Text == "")
                 {
                     lblErrorMsg.Text = "Select Project to add new transaction";
-                    ddlProjFilter.Focus();
+                    txtProjNum.Focus();
                     return;
                 }
-                else if (ddlGrantee.Items.Count > 1 && ddlGrantee.SelectedIndex == 0)
-                {
-                    lblErrorMsg.Text = "Select Grantee to add new transaction";
-                    ddlGrantee.Focus();
-                    return;
-                }
-                else if (txtTotAmt.Text.Trim() == "" || Convert.ToDecimal(txtTotAmt.Text) <= 0)
+                
+                else if (txtTotAmt.Text.Trim() == "" )
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
                     txtTotAmt.Focus();
+                    return;
+                }
+                decimal n;
+                bool isNumeric = decimal.TryParse(txtTotAmt.Text.Trim(), out n);
+                if (!isNumeric)
+                {
+                    lblErrorMsg.Text = "Must enter numbers in Total Amount";
+                    return;
+                }
+                if (Convert.ToDecimal(txtTotAmt.Text.Trim()) <= 0)
+                {
+                    lblErrorMsg.Text = "Select a valid transaction amount";
                     return;
                 }
 
@@ -403,15 +355,99 @@ namespace vhcbcloud
                 CommonHelper.EnableButton(btnDecommitmentSubmit);
                 CommonHelper.DisableButton(btnTransactionSubmit);
 
-                DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), Convert.ToDateTime(txtTransDate.Text),
-                    -TransAmount, Convert.ToInt32(ddlGrantee.SelectedValue.ToString()), rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
+                int? granteeId = null;
+                if (hfGrantee.Value != "")
+                {
+                    granteeId = Convert.ToInt32(hfGrantee.Value);
+                }
+
+                DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
+                    -TransAmount, granteeId, rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
                     TRANS_PENDING_STATUS);
 
                 gvPTrans.DataSource = dtTrans;
                 gvPTrans.DataBind();
 
+                hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
+                BindTransGrid(GetTransId());
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
+
+                CommonHelper.EnableButton(btnDecommitmentSubmit);
+                CommonHelper.DisableButton(btnTransactionSubmit);
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
+        {
+            lblErrorMsg.Text = "";
+            ClearTransactionDetailForm();
+            GetSelectedTransId(gvPTrans);
+            BindFundDetails(GetTransId());
+            pnlTranDetails.Visible = true;
+        }
+
+        private void GetSelectedTransId(GridView gvFGM)
+        {
+            for (int i = 0; i < gvFGM.Rows.Count; i++)
+            {
+                RadioButton rbGInfo = (RadioButton)gvFGM.Rows[i].Cells[0].FindControl("rdBtnSelect");
+                if (rbGInfo != null)
+                {
+                    if (rbGInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("HiddenField1");
+                        if (hf != null)
+                        {
+                            ViewState["SelectedTransId"] = hf.Value;
+                            hfTransId.Value = hf.Value;
+                        }
+                        HiddenField hfAmt = (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
+                        if (hfAmt != null)
+                        {
+                            ViewState["TransAmt"] = hfAmt.Value;
+                            hfTransAmt.Value = hfAmt.Value;
+                            hfBalAmt.Value = hfAmt.Value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void BindTransGrid(int TransId)
+        {
+            try
+            {
+                if (cbActiveOnly.Checked)
+                    ActiveOnly = 1;
+                else
+                    ActiveOnly = 0;
+                gvPTrans.DataSource = null;
+                gvPTrans.DataBind();
+
+                DataTable dtTrans = null;
+                if (rdBtnSelection.SelectedIndex == 0)
+                {
+                    dtTrans = FinancialTransactions.GetFinancialTransByTransId(TransId, ActiveOnly);
+                    gvPTrans.DataSource = dtTrans;
+                    gvPTrans.DataBind();
+                }
+                else
+                {
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                    gvPTrans.DataSource = dtTrans;
+                    gvPTrans.DataBind();
+                }
+                if (dtTrans.Rows.Count > 0)
+                    CommonHelper.DisableButton(btnTransactionSubmit);
+                else
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+
             }
             catch (Exception ex)
             {
@@ -457,7 +493,7 @@ namespace vhcbcloud
                 decimal old_amount = -Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
-                
+
                 if (amount == allowed_amount)
                 {
                     lblErrorMsg.Text = "Transaction is complete, more funds not allowed";
@@ -481,8 +517,8 @@ namespace vhcbcloud
                 }
 
                 FinancialTransactions.UpdateTransDetails(detailId, transType, -amount);
-                
-                gvBCommit.EditIndex = -1;                
+
+                gvBCommit.EditIndex = -1;
                 BindFundDetails(GetTransId());
             }
             catch (Exception ex)
@@ -531,5 +567,158 @@ namespace vhcbcloud
 
         }
 
+
+        protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        private void getDetails(DataTable dt)
+        {
+            try
+            {
+
+                if (dt.Rows.Count != 0)
+                {
+                    hfProjId.Value = dt.Rows[0][0].ToString();
+                    pnlTranDetails.Visible = false;
+                    lblErrorMsg.Text = "";
+
+                    gvPTrans.DataSource = null;
+                    gvPTrans.DataBind();
+
+                    ClearTransactionDetailForm();
+                    DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
+
+                    lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+                    dt = new DataTable();
+                    dt = FinancialTransactions.GetGranteeByProject(Convert.ToInt32(hfProjId.Value));
+                    if (dt.Rows.Count > 0)
+                    {
+                        lblGrantee.Text = dt.Rows[0]["Applicantname"].ToString();
+                        hfGrantee.Value = dt.Rows[0]["applicantid"].ToString();
+                    }
+                    else
+                    {
+                        lblGrantee.Text = "";
+                        hfGrantee.Value = "";
+                    }
+
+                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    txtTotAmt.Text = "";
+                    BindFundAccounts();
+                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+
+                    if (rdBtnSelection.SelectedIndex == 1)
+                    {
+                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                        gvPTrans.DataSource = dtTrans;
+                        gvPTrans.DataBind();
+                        CommonHelper.DisableButton(btnTransactionSubmit);
+                    }
+                    else if (rdBtnSelection.SelectedIndex == 0)
+                    {
+                        CommonHelper.EnableButton(btnTransactionSubmit);
+                    }
+                }
+                else
+                {
+                    lblProjName.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            gvPTrans.DataSource = null;
+            gvPTrans.DataBind();
+            gvBCommit.DataSource = null;
+            gvBCommit.DataBind();
+            lblProjName.Text = "";
+            hfProjId.Value = "";
+            ClearTransactionDetailForm();
+            pnlTranDetails.Visible = false;
+            lblErrorMsg.Text = "";
+            txtCommitedProjNum.Text = "";
+            txtProjNum.Text = "";
+            lblGrantee.Text = "";
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                txtProjNum.Visible = false;
+                txtCommitedProjNum.Visible = true;
+            }
+            else
+            {
+                txtProjNum.Visible = true;
+                txtCommitedProjNum.Visible = false;
+            }
+
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbActiveOnly.Checked)
+                ActiveOnly = 1;
+            else
+                ActiveOnly = 0;
+            BindTransGrid(GetTransId());
+            BindFundDetails(GetTransId());
+        }
     }
 }

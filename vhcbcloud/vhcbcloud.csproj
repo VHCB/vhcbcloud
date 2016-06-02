@@ -173,12 +173,14 @@
     <Content Include="Applicant.aspx" />
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
+    <Content Include="Commitments_new.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationAttributes.aspx" />
     <Content Include="Conservation\ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationStewardship.aspx" />
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
+    <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -375,6 +377,13 @@
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Commitments_new.aspx.cs">
+      <DependentUpon>Commitments_new.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Commitments_new.aspx.designer.cs">
+      <DependentUpon>Commitments_new.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConservationSourcesUses.aspx.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -409,6 +418,13 @@
     </Compile>
     <Compile Include="Conservation\ConservationSummary.aspx.designer.cs">
       <DependentUpon>ConservationSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Decommitments_old.aspx.cs">
+      <DependentUpon>Decommitments_old.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Decommitments_old.aspx.designer.cs">
+      <DependentUpon>Decommitments_old.aspx</DependentUpon>
     </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
