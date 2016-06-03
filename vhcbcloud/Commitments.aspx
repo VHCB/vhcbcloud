@@ -32,7 +32,11 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:ImageButton>
+                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="true"
+                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
+                                        &nbsp;
+                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary"  Visible="false"
+                                            OnClientClick="PopupExistingAwardSummary(); return false;" ></asp:ImageButton>
                                         &nbsp;
                                 <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
                                         &nbsp;
@@ -64,14 +68,14 @@
                                                     <asp:TextBox ID="txtProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
                                                     <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
-                                                    <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
+                                                    <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                                                         OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                                                     </ajaxToolkit:AutoCompleteExtender>
 
                                                     <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
                                                     <%--<ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
-                                                    <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="2" EnableCaching="false" CompletionSetCount="1"
+                                                    <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                                                         OnClientItemSelected="OnCommittedProjectSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                                     </ajaxToolkit:AutoCompleteExtender>
                                                     &nbsp;<asp:Button ID="btnfind" runat="server" Visible="false" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
@@ -215,7 +219,8 @@
                                                         </td>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
                                                         <td style="width: 20%; float: left">
-                                                            <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
+                                                            <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
+                                                            <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server" Visible="false"></asp:Label>
                                                         </td>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
                                                         <td style="width: 30%; float: left">
@@ -347,16 +352,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-
-            $('#<%=txtProjNum.ClientID%>').blur(function () {
-                //alert("This input field has lost its focus.");
-                //OnContactSelected();
-            });
-        });
-    </script>
+    
 
     <script type="text/javascript">
         window.onbeforeunload = confirmExit;
@@ -383,6 +379,15 @@
             }
         }
 
+        function PopupNewAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+        function PopupExistingAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+
         function OnCommittedProjectSelected(source, eventArgs) {
 
             var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
@@ -398,5 +403,12 @@
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
         }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#<%=txtProjNum.ClientID%>').blur(function () {
+            });
+        });
     </script>
 </asp:Content>

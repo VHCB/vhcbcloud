@@ -78,10 +78,49 @@ namespace vhcbcloud
                 ddlAcctNum.DataTextField = "account";
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
+
+                ddlFundName.DataSource = dtable;
+                ddlFundName.DataValueField = "fundid";
+                ddlFundName.DataTextField = "name";
+                ddlFundName.DataBind();
+                ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtable = new DataTable();
+            if (ddlFundName.SelectedIndex != 0)
+            {
+                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+                lblFundName.Text = dtable.Rows[0]["name"].ToString();
+
+                ddlAcctNum.SelectedValue = ddlFundName.SelectedValue;
+
+                if (lblFundName.Text.ToLower().Contains("hopwa"))
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                }
+                else
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                }
+                ddlTransType.DataValueField = "typeid";
+                ddlTransType.DataTextField = "Description";
+                ddlTransType.DataBind();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            else
+            {
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                lblFundName.Text = "";
+                txtAmt.Text = "";
+                //ClearDetailSelection();
             }
         }
 
@@ -92,6 +131,8 @@ namespace vhcbcloud
             {
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
+
+                ddlFundName.SelectedValue = ddlAcctNum.SelectedValue;
 
                 if (lblFundName.Text.ToLower().Contains("hopwa"))
                 {
@@ -124,6 +165,7 @@ namespace vhcbcloud
             {
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
+                ddlFundName.SelectedIndex = 0;
             }
             catch (Exception)
             { }
@@ -259,8 +301,8 @@ namespace vhcbcloud
                 }
                 else if (txtAmt.Text.Trim() != "")
                 {
-                    int n;
-                    bool isNumeric = int.TryParse(txtAmt.Text.Trim(), out n);
+                    decimal n;
+                    bool isNumeric = decimal.TryParse(txtAmt.Text.Trim(), out n);
 
                     if (!isNumeric || Convert.ToDecimal(txtAmt.Text) <= 0)
                     {
@@ -330,7 +372,7 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Select Project to add new transaction";
                     txtProjNum.Focus();
                     return;
-                }                
+                }
                 else if (txtTotAmt.Text.Trim() == "")
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
@@ -646,11 +688,16 @@ namespace vhcbcloud
             {
                 txtProjNum.Visible = false;
                 txtCommitedProjNum.Visible = true;
+                imgNewAwardSummary.Visible = true;
+                imgExistingAwardSummary.Visible = false;
             }
             else
             {
                 txtProjNum.Visible = true;
                 txtCommitedProjNum.Visible = false;
+                imgNewAwardSummary.Visible = false;
+                imgExistingAwardSummary.Visible = true;
+
             }
         }
 
@@ -785,7 +832,7 @@ namespace vhcbcloud
             }
 
             ///populate the form based on retrieved data
-             getDetails(dt);
+            getDetails(dt);
         }
 
         protected void btnfind_Click(object sender, EventArgs e)

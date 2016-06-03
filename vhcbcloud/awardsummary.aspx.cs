@@ -25,7 +25,7 @@ namespace vhcbcloud
                 DataTable dtProjects = GetProjects();
                 BindProjects(dtProjects);
 
-                if (projId != null)
+                if (projId != "")
                 {
                     lblProjId.Text = GetProjectName(dtProjects, projId);
                     ddlProj.Items.FindByValue(projId).Selected = true;
