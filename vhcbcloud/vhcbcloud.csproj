@@ -175,6 +175,7 @@
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="Commitments_new.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
+    <Content Include="Conservation\ConservationAppraisals.aspx" />
     <Content Include="Conservation\ConservationAttributes.aspx" />
     <Content Include="Conservation\ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationStewardship.aspx" />
@@ -246,6 +247,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ConservationSummary.sql" />
@@ -390,6 +392,13 @@
     </Compile>
     <Compile Include="ConservationSourcesUses.aspx.designer.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Conservation\ConservationAppraisals.aspx.cs">
+      <DependentUpon>ConservationAppraisals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Conservation\ConservationAppraisals.aspx.designer.cs">
+      <DependentUpon>ConservationAppraisals.aspx</DependentUpon>
     </Compile>
     <Compile Include="Conservation\ConservationAttributes.aspx.cs">
       <DependentUpon>ConservationAttributes.aspx</DependentUpon>
