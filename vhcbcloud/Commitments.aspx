@@ -364,6 +364,8 @@
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
 
+        
+
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
             var rbs = gv.getElementsByTagName("input");
