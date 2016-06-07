@@ -108,19 +108,19 @@ namespace vhcbcloud.Conservation
         private void BindControls()
         {
             BindLookUP(ddlAppraiser, 57);
-            BindApplicants();
+            BindApplicants(ddlPayParty);
         }
 
-        protected void BindApplicants()
+        protected void BindApplicants(DropDownList ddList)
         {
             try
             {
-                ddlPayParty.Items.Clear();
-                ddlPayParty.DataSource = ApplicantData.GetSortedApplicants();
-                ddlPayParty.DataValueField = "appnameid";
-                ddlPayParty.DataTextField = "Applicantname";
-                ddlPayParty.DataBind();
-                ddlPayParty.Items.Insert(0, new ListItem("Select", "NA"));
+                ddList.Items.Clear();
+                ddList.DataSource = ApplicantData.GetSortedApplicants();
+                ddList.DataValueField = "appnameid";
+                ddList.DataTextField = "Applicantname";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -320,6 +320,7 @@ namespace vhcbcloud.Conservation
         private int GetAppraisalInfoSelectedRecordID(GridView gvAppraisalInfo)
         {
             int AppraisalInfoID = 0;
+            hfSelectedAppraisalTotalCost.Value = "";
 
             for (int i = 0; i < gvAppraisalInfo.Rows.Count; i++)
             {
@@ -329,10 +330,12 @@ namespace vhcbcloud.Conservation
                     if (rbAppraisalInfo.Checked)
                     {
                         HiddenField hf = (HiddenField)gvAppraisalInfo.Rows[i].Cells[0].FindControl("HiddenAppraisalInfoID");
-
+                        HiddenField hf1 = (HiddenField)gvAppraisalInfo.Rows[i].Cells[0].FindControl("HiddenAppraisalTotalCost");
+                        
                         if (hf != null)
                         {
                             AppraisalInfoID = DataUtils.GetInt(hf.Value);
+                            hfSelectedAppraisalTotalCost.Value = hf1.Value;
                         }
                         break;
                     }
@@ -464,6 +467,31 @@ namespace vhcbcloud.Conservation
                     dvAppraisalPayGrid.Visible = true;
                     gvAppraisalPay.DataSource = dt;
                     gvAppraisalPay.DataBind();
+
+                    Label lblFooterTotalPayAmount = (Label)gvAppraisalPay.FooterRow.FindControl("lblFooterTotalPayAmount");
+                    decimal totPayAmountFromDB = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                            totPayAmountFromDB += DataUtils.GetDecimal(dt.Rows[i]["PayAmt"].ToString());
+                    }
+
+                    lblFooterTotalPayAmount.Text = CommonHelper.myDollarFormat(totPayAmountFromDB);
+
+                    decimal TotalCost = DataUtils.GetDecimal(hfSelectedAppraisalTotalCost.Value);
+
+                    hfPayWarning.Value = "0";
+                    if (TotalCost - totPayAmountFromDB != 0)
+                    {
+                        hfPayWarning.Value = "1";
+                        WarningMessage(dvPayWarning, lblPayWarning, "The Amount must be equal to Total Cost of Appraisal " + CommonHelper.myDollarFormat(TotalCost));
+                    }
+                    else
+                    {
+                        dvPayWarning.Visible = false;
+                        lblPayWarning.Text = "";
+                    }
                 }
                 else
                 {
@@ -478,6 +506,11 @@ namespace vhcbcloud.Conservation
             }
         }
 
+        private void WarningMessage(HtmlGenericControl div, Label label, string message)
+        {
+            div.Visible = true;
+            label.Text = message;
+        }
         protected void gvAppraisalPay_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvAppraisalPay.EditIndex = e.NewEditIndex;
@@ -521,7 +554,7 @@ namespace vhcbcloud.Conservation
 
                     if (txtWhoPaid != null)
                     {
-                        //BindLookUP(ddlPayParty, 149);
+                        BindApplicants(ddlPayParty);
 
                         string itemToCompare = string.Empty;
                         foreach (ListItem item in ddlPayParty.Items)

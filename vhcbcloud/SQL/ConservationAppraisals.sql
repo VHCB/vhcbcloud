@@ -257,7 +257,7 @@ create procedure GetConservationAppraisalPayList
 as
 begin
 --exec GetConservationAppraisalPayList 6625, 1
-	select pay.AppraisalPayID, pay.PayAmt, an.applicantname WhoPaid, --pay.WhoPaid, 
+	select pay.AppraisalPayID, pay.PayAmt, an.applicantname WhoPaid, a.applicantid, --pay.WhoPaid, 
 	pay.RowIsActive
 	from AppraisalPay pay(nolock)
 	join applicantappname aan(nolock) on pay.WhoPaid = aan.ApplicantID

@@ -481,6 +481,24 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAppraisalPayGrid;
         
         /// <summary>
+        /// dvPayWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvPayWarning;
+        
+        /// <summary>
+        /// lblPayWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPayWarning;
+        
+        /// <summary>
         /// Panel4 control.
         /// </summary>
         /// <remarks>
@@ -533,5 +551,23 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAppraisalPayID;
+        
+        /// <summary>
+        /// hfSelectedAppraisalTotalCost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSelectedAppraisalTotalCost;
+        
+        /// <summary>
+        /// hfPayWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPayWarning;
     }
 }

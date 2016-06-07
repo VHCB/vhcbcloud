@@ -275,6 +275,7 @@
                                         <asp:TemplateField HeaderText="Total Cost">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAppCost" runat="Server" Text='<%# Eval("AppCost", "{0:c2}") %>' />
+                                                <asp:HiddenField ID="HiddenAppraisalTotalCost" runat="server" Value='<%#Eval("AppCost")%>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -313,24 +314,14 @@
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlPayParty" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
-                                        <td style="width: 185px">
+                                        <td style="width: 63px">
                                             <span class="labelClass">Amount</span>
                                         </td>
-                                        <td style="width: 270px">
+                                        <td style="width: 167px">
                                             <asp:TextBox ID="txtPayAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 150px">
-                                            <asp:Button ID="btnAddPay" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddPay_Click" />
-                                        </td>
-                                        <td style="width: 250px"></td>
-                                        <td style="width: 185px"></td>
-                                        <td style="width: 250px"></td>
-                                        <td></td>
+                                        <td style="width: 170px"><asp:Button ID="btnAddPay" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddPay_Click" style="margin-left: 0" /></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -341,10 +332,16 @@
                         </div>
 
                         <div class="panel-body" id="dvAppraisalPayGrid" runat="server">
+                             <div id="dvPayWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblPayWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
                             <asp:Panel runat="server" ID="Panel4" Width="100%" Height="200px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAppraisalPay" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="True"
                                     OnRowEditing="gvAppraisalPay_RowEditing" OnRowCancelingEdit="gvAppraisalPay_RowCancelingEdit"
                                     OnRowUpdating="gvAppraisalPay_RowUpdating" OnRowDataBound="gvAppraisalPay_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -352,6 +349,7 @@
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="AppraisalPayID" Visible="false">
                                             <ItemTemplate>
@@ -364,8 +362,11 @@
                                             </ItemTemplate>
                                              <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlPayParty" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                                <asp:TextBox ID="txtWhoPaid" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("WhoPaid") %>' Visible="false"></asp:TextBox>
+                                                <asp:TextBox ID="txtWhoPaid" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("applicantid") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Amount">
                                             <ItemTemplate>
@@ -374,6 +375,9 @@
                                              <EditItemTemplate>
                                                 <asp:TextBox ID="txtPayAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PayAmt") %>'></asp:TextBox>
                                             </EditItemTemplate>
+                                             <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTotalPayAmount" Text=""></asp:Label>
+                                            </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -395,6 +399,9 @@
             <asp:HiddenField ID="hfAppraisalID" runat="server" />
             <asp:HiddenField ID="hfAppraisalInfoID" runat="server" />
             <asp:HiddenField ID="hfAppraisalPayID" runat="server" />
+            <asp:HiddenField ID="hfSelectedAppraisalTotalCost" runat="server" />
+            <asp:HiddenField ID="hfPayWarning" runat="server" />
+            
 
             <script language="javascript">
                 $(document).ready(function () {
@@ -456,4 +463,6 @@
             }
         }
             </script>
+    </div>
+    </div>
 </asp:Content>
