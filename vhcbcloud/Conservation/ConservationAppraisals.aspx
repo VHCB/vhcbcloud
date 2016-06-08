@@ -272,11 +272,17 @@
                                                 <asp:Label ID="lblAppRecd" runat="Server" Text='<%# Eval("AppRecd", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total Cost">
+                                        <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAppCost" runat="Server" Text='<%# Eval("AppCost", "{0:c2}") %>' />
                                                 <asp:HiddenField ID="HiddenAppraisalTotalCost" runat="server" Value='<%#Eval("AppCost")%>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="70px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -320,8 +326,9 @@
                                         <td style="width: 167px">
                                             <asp:TextBox ID="txtPayAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><asp:Button ID="btnAddPay" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddPay_Click" style="margin-left: 0" /></td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddPay" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddPay_Click" Style="margin-left: 0" /></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -332,7 +339,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAppraisalPayGrid" runat="server">
-                             <div id="dvPayWarning" runat="server">
+                            <div id="dvPayWarning" runat="server">
                                 <p class="bg-info">
                                     &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     <asp:Label runat="server" ID="lblPayWarning" class="labelClass"></asp:Label>
@@ -360,32 +367,46 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblWhoPaid" runat="Server" Text='<%# Eval("WhoPaid") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlPayParty" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtWhoPaid" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("applicantid") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 Grand Total :
                                             </FooterTemplate>
+                                            <ItemStyle Width="400px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Amount">
+                                        <asp:TemplateField HeaderText="Amount" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPayAmt" runat="Server" Text='<%# Eval("PayAmt", "{0:c2}") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtPayAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PayAmt") %>'></asp:TextBox>
+                                            <ItemStyle Width="50px" />
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtPayAmount" runat="Server" CssClass="clsTextBoxBlueSm"
+                                                    Text='<%# Eval("PayAmt", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterTotalPayAmount" Text=""></asp:Label>
                                             </FooterTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <ItemStyle Width="50px" />
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -401,7 +422,7 @@
             <asp:HiddenField ID="hfAppraisalPayID" runat="server" />
             <asp:HiddenField ID="hfSelectedAppraisalTotalCost" runat="server" />
             <asp:HiddenField ID="hfPayWarning" runat="server" />
-            
+
 
             <script language="javascript">
                 $(document).ready(function () {
@@ -429,15 +450,15 @@
 
                 function CalEasementVal() {
                     var Before = parseInt($('#<%=txtValueBefore.ClientID%>').val(), 10);
-             var After = parseInt($('#<%=txtValueafter.ClientID%>').val(), 10);
+                    var After = parseInt($('#<%=txtValueafter.ClientID%>').val(), 10);
 
-             var EasementVal = Before - After;
-             $('#<%= spEasementValue.ClientID%>').html(EasementVal);
-            CalEasementValPerAcre();
-        };
+                    var EasementVal = Before - After;
+                    $('#<%= spEasementValue.ClientID%>').html(EasementVal);
+             CalEasementValPerAcre();
+         };
 
-        function CalEasementValPerAcre() {
-            var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
+         function CalEasementValPerAcre() {
+             var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
             var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
             var EasementValPerAcre = Eval / Total;
 
@@ -463,6 +484,6 @@
             }
         }
             </script>
-    </div>
+        </div>
     </div>
 </asp:Content>

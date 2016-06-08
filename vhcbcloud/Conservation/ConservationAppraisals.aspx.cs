@@ -271,7 +271,7 @@ namespace vhcbcloud.Conservation
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[7].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[0].Visible = false;
 
                         Label lblAppraisalInfoID = e.Row.FindControl("lblAppraisalInfoID") as Label;
                         DataRow dr = ConservationAppraisalsData.GetConservationAppraisalInfoById(DataUtils.GetInt(lblAppraisalInfoID.Text));
@@ -511,6 +511,7 @@ namespace vhcbcloud.Conservation
             div.Visible = true;
             label.Text = message;
         }
+
         protected void gvAppraisalPay_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvAppraisalPay.EditIndex = e.NewEditIndex;
