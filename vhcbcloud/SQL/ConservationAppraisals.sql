@@ -24,6 +24,9 @@ begin transaction
 		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre)
 		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre)
 
+		update conserve set TotalAcres = @TotAcres
+		from conserve
+		where ProjectID = @ProjectID
 	end try
 	begin catch
 		if @@trancount > 0
@@ -63,6 +66,10 @@ begin transaction
 	from AppraisalValue
 	where ProjectID = @ProjectID
 	
+	update conserve set TotalAcres = @TotAcres
+	from conserve
+	where ProjectID = @ProjectID
+
 	end try
 	begin catch
 		if @@trancount > 0

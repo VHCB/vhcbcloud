@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -49,12 +50,16 @@ namespace vhcbcloud
         private void BindControls()
         {
             BindLookUP(ddlProgram, 34);
+            BindLookUP(ddlEventProgram, 34);
             BindLookUP(ddlProjectType, 119);
             BindBoardDate();
             BindManagers();
             BindPrimaryApplicants();
             BindProjects(ddlProject);
-            BindApplicants();
+            BindProjects(ddlEventProject);
+            BindApplicants(ddlApplicantName);
+            BindApplicants(ddlEventEntity);
+            BindLookUP(ddlEventSubCategory, 163);
             BindLookUP(ddlApplicantRole, 56);
             ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
         }
@@ -161,16 +166,16 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindApplicants()
+        protected void BindApplicants(DropDownList ddList)
         {
             try
             {
-                ddlApplicantName.Items.Clear();
-                ddlApplicantName.DataSource = ApplicantData.GetSortedApplicants();
-                ddlApplicantName.DataValueField = "appnameid";
-                ddlApplicantName.DataTextField = "Applicantname";
-                ddlApplicantName.DataBind();
-                ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
+                ddList.Items.Clear();
+                ddList.DataSource = ApplicantData.GetSortedApplicants();
+                ddList.DataValueField = "appnameid";
+                ddList.DataTextField = "Applicantname";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -275,6 +280,12 @@ namespace vhcbcloud
                     BindLookUP(ddlProjectStatus, 4);
                     BindProjectStatusGrid();
                     cbAddProjectStatus.Checked = false;
+
+                    //ProjectEvent
+                    dvNewProjectEvent.Visible = true;
+                    dvProjectEventGrid.Visible = true;
+                    BindPrjectEventGrid();
+                    cbAddProjectEvent.Checked = false;
                 }
                 else
                 {
@@ -308,6 +319,10 @@ namespace vhcbcloud
                     dvNewProjectStatus.Visible = false;
                     //dvProjectStatus.Visible = false;
                     dvProjectStatusGrid.Visible = false;
+
+                    //ProjectEvent
+                    dvNewProjectEvent.Visible = false;
+                    dvProjectEventGrid.Visible = false;
                 }
 
             }
@@ -385,6 +400,9 @@ namespace vhcbcloud
             txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             txtGrantExpirationDate.Text = drProjectDetails["ExpireDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ExpireDate"].ToString()).ToShortDateString();
             cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
+
+            //Event Form
+            SetEventProjectandProgram();
         }
 
         private void GenerateTabs(int ProjectId, int ProgramId)
@@ -464,6 +482,10 @@ namespace vhcbcloud
             dvNewProjectStatus.Visible = false;
             //dvProjectStatus.Visible = false;
             dvProjectStatusGrid.Visible = false;
+
+            //ProjectEvent
+            dvNewProjectEvent.Visible = false;
+            dvProjectEventGrid.Visible = false;
         }
 
         private void DisplayControlsbasedOnSelection()
@@ -514,6 +536,10 @@ namespace vhcbcloud
                 dvNewProjectStatus.Visible = false;
                 //dvProjectStatus.Visible = false;
                 dvProjectStatusGrid.Visible = false;
+
+                //ProjectEvent
+                dvNewProjectEvent.Visible = false;
+                dvProjectEventGrid.Visible = false;
             }
         }
 
@@ -559,42 +585,43 @@ namespace vhcbcloud
             {
                 if (IsProjectInfoFormValid(true))
                 {
-                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
-                     txtApplicationReceived.Text, DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), txtClosingDate.Text, txtGrantExpirationDate.Text, cbVerified.Checked,
-                    DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), txtProjectName.Text);
+                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), 
+                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), txtApplicationReceived.Text, 
+                        DataUtils.GetInt(ddlManager.SelectedValue.ToString()), DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), 
+                        txtClosingDate.Text, txtGrantExpirationDate.Text, cbVerified.Checked, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
+                        txtProjectName.Text);
 
                     LogMessage("Project updated successfully");
 
-                    ClearForm();
-                    ddlProject.SelectedIndex = -1;
+                    //ClearForm();
+                    //ddlProject.SelectedIndex = -1;
 
-                    dvUpdate.Visible = false;
+                    //dvUpdate.Visible = false;
 
-                    //ProjectNames
-                    dvNewProjectName.Visible = false;
-                    //dvProjectName.Visible = false;
-                    dvProjectNamesGrid.Visible = false;
+                    ////ProjectNames
+                    //dvNewProjectName.Visible = false;
+                    ////dvProjectName.Visible = false;
+                    //dvProjectNamesGrid.Visible = false;
 
-                    //Address
-                    dvNewAddress.Visible = false;
-                    //dvAddress.Visible = false;
-                    dvAddressGrid.Visible = false;
+                    ////Address
+                    //dvNewAddress.Visible = false;
+                    ////dvAddress.Visible = false;
+                    //dvAddressGrid.Visible = false;
 
-                    //Entity
-                    dvNewEntity.Visible = false;
-                    // dvEntity.Visible = false;
-                    dvEntityGrid.Visible = false;
+                    ////Entity
+                    //dvNewEntity.Visible = false;
+                    //// dvEntity.Visible = false;
+                    //dvEntityGrid.Visible = false;
 
-                    //RelatedProjects
-                    dvNewRelatedProjects.Visible = false;
-                    //dvRelatedProjects.Visible = false;
-                    dvRelatedProjectsGrid.Visible = false;
+                    ////RelatedProjects
+                    //dvNewRelatedProjects.Visible = false;
+                    ////dvRelatedProjects.Visible = false;
+                    //dvRelatedProjectsGrid.Visible = false;
 
-                    //ProjectStatus
-                    dvNewProjectStatus.Visible = false;
-                    //dvProjectStatus.Visible = false;
-                    dvProjectStatusGrid.Visible = false;
+                    ////ProjectStatus
+                    //dvNewProjectStatus.Visible = false;
+                    ////dvProjectStatus.Visible = false;
+                    //dvProjectStatusGrid.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -1258,7 +1285,8 @@ namespace vhcbcloud
         {
             if (IsProjectStatusFormValid())
             {
-                ProjectMaintenanceData.AddProjectStatus(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlProjectStatus.SelectedValue.ToString()), DataUtils.GetDate(txtStatusDate.Text));
+                ProjectMaintenanceData.AddProjectStatus(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlProjectStatus.SelectedValue.ToString()), 
+                    DataUtils.GetDate(txtStatusDate.Text));
                 LogMessage("New Project Status added successfully");
 
                 gvProjectStatus.EditIndex = -1;
@@ -1578,6 +1606,7 @@ namespace vhcbcloud
             this.BindProjectEntityGrid();
             this.BindProjectStatusGrid();
             this.BindRelatedProjectsGrid();
+            this.BindPrjectEventGrid();
         }
 
         [WebMethod]
@@ -1586,6 +1615,242 @@ namespace vhcbcloud
             bool isExist = ProjectMaintenanceData.IsProjectNumberExist(ProjectNumber);
 
             return isExist;
+        }
+
+        protected void gvProjectEvent_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProjectEvent.EditIndex = e.NewEditIndex;
+            BindPrjectEventGrid();
+        }
+
+        protected void gvProjectEvent_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvProjectEvent.EditIndex = -1;
+            BindPrjectEventGrid();
+            ClearProjectEventForm();
+            hfProjectEventID.Value = "";
+            btnAddEvent.Text = "Add";
+            cbAddProjectEvent.Checked = false;   
+        }
+
+        protected void gvProjectEvent_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddEvent.Text = "Update";
+                    cbAddProjectEvent.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[7].Controls[0].Visible = false;
+
+                        Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                        DataRow dr = ProjectMaintenanceData.GetProjectEventById(DataUtils.GetInt(lblProjectEventID.Text));
+
+                        hfProjectEventID.Value = lblProjectEventID.Text;
+
+                        PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
+                        PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
+                        PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
+                        PopulateDropDown(ddlEvent, dr["EventID"].ToString());
+                        PopulateDropDown(ddlEventSubCategory, dr["SubEventID"].ToString());
+                        txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                        txtNotes.Text = dr["Note"].ToString();
+                        chkProjectEventActive.Enabled = true;
+
+                        ddlEventProgram.Enabled = false;
+                        ddlEventProject.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvAppraisalInfo_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void btnAddEvent_Click(object sender, EventArgs e)
+        {
+            if (IsProjectEventFormValid())
+            {
+                if (btnAddEvent.Text == "Add")
+                {
+                  ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                      DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
+
+                    ClearProjectEventForm();
+                    cbAddProjectEvent.Checked = false;
+
+                    BindPrjectEventGrid();
+
+                    if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                        LogMessage("Project Event already exist as in-active");
+                    else if (obProjectMaintResult.IsDuplicate)
+                        LogMessage("Project Event already exist");
+                    else
+                        LogMessage("New Project Event added successfully");
+                }
+                else
+                {
+                    ProjectMaintenanceData.UpdateProjectEvent(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                      DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId(), chkProjectEventActive.Checked);
+
+                    gvProjectEvent.EditIndex = -1;
+                    BindPrjectEventGrid();
+                    ClearProjectEventForm();
+                    btnAddEvent.Text = "Add";
+                    LogMessage("Project Event Updated Successfully");
+                }
+            }
+        }
+
+        private void ClearProjectEventForm()
+        {
+            cbAddProjectEvent.Checked = false;
+
+            SetEventProjectandProgram();
+            ddlEventEntity.SelectedIndex = -1;
+            ddlEvent.SelectedIndex = -1;
+            ddlEventSubCategory.SelectedIndex = -1;
+            txtEventDate.Text = "";
+            txtNotes.Text = "";
+            ddlEventProgram.Enabled = true;
+            ddlEventProject.Enabled = true;
+            chkProjectEventActive.Enabled = false;
+        }
+
+        private void SetEventProjectandProgram()
+        {
+            ddlEventProject.SelectedIndex = -1;
+            ddlEventProgram.SelectedIndex = -1;
+            ddlEventProject.SelectedValue = hfProjectId.Value;
+            PopulateDropDown(ddlEventProgram, hfProgramId.Value);
+            EventProgramSelection();
+        }
+
+        private void BindPrjectEventGrid()
+        {
+            try
+            {
+                DataTable dtProjectEvents = ProjectMaintenanceData.GetProjectEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dtProjectEvents.Rows.Count > 0)
+                {
+                    dvProjectEventGrid.Visible = true;
+                    gvProjectEvent.DataSource = dtProjectEvents;
+                    gvProjectEvent.DataBind();
+                }
+                else
+                {
+                    dvProjectEventGrid.Visible = false;
+                    gvProjectEvent.DataSource = null;
+                    gvProjectEvent.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindPrjectEventGrid", "", ex.Message);
+            }
+        }
+
+        private bool IsProjectEventFormValid()
+        {
+            if (ddlEventProgram.Items.Count > 1 && ddlEventProgram.SelectedIndex == 0)
+            {
+                LogMessage("Select Event Program");
+                ddlEventProgram.Focus();
+                return false;
+            }
+
+            if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
+            {
+                LogMessage("Select Event Project");
+                ddlEventProject.Focus();
+                return false;
+            }
+
+            if (txtEventDate.Text.Trim() == "")
+            {
+                LogMessage("Enter Event Date");
+                txtEventDate.Focus();
+                return false;
+            }
+            else
+            {
+                if (!DataUtils.IsDateTime(txtEventDate.Text.Trim()))
+                {
+                    LogMessage("Enter valid Event Date");
+                    txtEventDate.Focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        protected void ddlEventProgram_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EventProgramSelection();
+        }
+
+        private void EventProgramSelection()
+        {
+            if (ddlEventProgram.SelectedItem.ToString() == "Admin")
+                BindLookUP(ddlEvent, 157);
+            else if (ddlEventProgram.SelectedItem.ToString() == "Housing")
+                BindLookUP(ddlEvent, 160);
+            else if (ddlEventProgram.SelectedItem.ToString() == "Conservation")
+                BindLookUP(ddlEvent, 159);
+            else if (ddlEventProgram.SelectedItem.ToString() == "Lead")
+                BindLookUP(ddlEvent, 158);
+            else if (ddlEventProgram.SelectedItem.ToString() == "Americorps")
+                BindLookUP(ddlEvent, 161);
+            else if (ddlEventProgram.SelectedItem.ToString() == "Farm/Forest Viability")
+                BindLookUP(ddlEvent, 162);
+            //else if (ddlEventProgram.SelectedItem.ToString() == "Healthy Homes")
+            //    BindLookUP(ddlEvent, 159);
+            else
+            {
+                ddlEvent.Items.Clear();
+                ddlEvent.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+        }
+
+        private void BindProjectEvent()
+        {
+            try
+            {
+                ddlEvent.Items.Clear();
+                ddlEvent.DataSource = ApplicantData.GetSortedApplicants();
+                ddlEvent.DataValueField = "appnameid";
+                ddlEvent.DataTextField = "Applicantname";
+                ddlEvent.DataBind();
+                ddlEvent.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProjectEvent", "", ex.Message);
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 
