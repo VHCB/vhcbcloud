@@ -26,9 +26,9 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false"
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false" />
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" ToolTip="Project Notes" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -282,103 +282,6 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel-width" runat="server" id="dvNewProjectStatus">
-                    <div class="panel panel-default ">
-                        <div class="panel-heading ">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Status</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddProjectStatus" runat="server" Text="Add New Status" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="panel-body" runat="server" id="dvProjectStatusForm">
-                            <asp:Panel runat="server" ID="Panel8">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass">Project Status</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlProjectStatus" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass">Status Date
-                                            </span>
-                                        </td>
-                                        <td style="width: 180px">
-                                            <asp:TextBox ID="txtStatusDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtStatusDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 170px">
-                                            <asp:Button ID="btnAddProjectStatus" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProjectStatus_Click" /></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" id="dvProjectStatusGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvProjectStatus" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowCancelingEdit="gvProjectStatus_RowCancelingEdit" OnRowEditing="gvProjectStatus_RowEditing"
-                                    OnRowDataBound="gvProjectStatus_RowDataBound" OnRowUpdating="gvProjectStatus_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Project Status ID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectStatusIDPS" runat="Server" Text='<%# Eval("ProjectStatusID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Status">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectStatus" runat="Server" Text='<%# Eval("ProjectStatus") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:DropDownList ID="ddlProjectStatusPS" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                                <asp:TextBox ID="txtLKProjStatusPS" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LKProjStatus") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Status Date">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblStatusDate" runat="Server" Text='<%# Eval("StatusDate") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtStatusDatePS" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("StatusDate") %>'></asp:TextBox>
-                                                <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtStatusDate">
-                                                </ajaxToolkit:CalendarExtender>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActiveEditPS" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -903,7 +806,6 @@
 
         $(document).ready(function () {
             $('#<%= dvProjectEventForm.ClientID%>').toggle($('#<%= cbAddProjectEvent.ClientID%>').is(':checked'));
-            $('#<%= dvProjectStatusForm.ClientID%>').toggle($('#<%= cbAddProjectStatus.ClientID%>').is(':checked'));
             $('#<%= dvProjectNameForm.ClientID%>').toggle($('#<%= cbAddProjectName.ClientID%>').is(':checked'));
             $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= dvProjectEntityForm.ClientID%>').toggle($('#<%= cbAttachNewEntity.ClientID%>').is(':checked'));
@@ -911,10 +813,6 @@
 
             $('#<%= cbAddProjectEvent.ClientID%>').click(function () {
                 $('#<%= dvProjectEventForm.ClientID%>').toggle(this.checked);
-            }).change();
-
-            $('#<%= cbAddProjectStatus.ClientID%>').click(function () {
-                $('#<%= dvProjectStatusForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= cbAddProjectName.ClientID%>').click(function () {

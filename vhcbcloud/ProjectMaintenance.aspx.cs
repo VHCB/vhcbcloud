@@ -251,15 +251,7 @@ namespace vhcbcloud
                     BindRelatedProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
                     cbRelatedProjects.Checked = false;
-
-                    //ProjectStatus
-                    dvNewProjectStatus.Visible = true;
-                    //dvProjectStatus.Visible = false;
-                    dvProjectStatusGrid.Visible = true;
-                    BindLookUP(ddlProjectStatus, 4);
-                    BindProjectStatusGrid();
-                    cbAddProjectStatus.Checked = false;
-
+                    
                     //ProjectEvent
                     dvNewProjectEvent.Visible = true;
                     dvProjectEventGrid.Visible = true;
@@ -293,11 +285,6 @@ namespace vhcbcloud
                     dvNewRelatedProjects.Visible = false;
                     //dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = false;
-
-                    //ProjectStatus
-                    dvNewProjectStatus.Visible = false;
-                    //dvProjectStatus.Visible = false;
-                    dvProjectStatusGrid.Visible = false;
 
                     //ProjectEvent
                     dvNewProjectEvent.Visible = false;
@@ -454,11 +441,6 @@ namespace vhcbcloud
             //dvRelatedProjects.Visible = false;
             dvRelatedProjectsGrid.Visible = false;
 
-            //ProjectStatus
-            dvNewProjectStatus.Visible = false;
-            //dvProjectStatus.Visible = false;
-            dvProjectStatusGrid.Visible = false;
-
             //ProjectEvent
             dvNewProjectEvent.Visible = false;
             dvProjectEventGrid.Visible = false;
@@ -507,11 +489,6 @@ namespace vhcbcloud
                 dvNewRelatedProjects.Visible = false;
                 //dvRelatedProjects.Visible = false;
                 dvRelatedProjectsGrid.Visible = false;
-
-                //ProjectStatus
-                dvNewProjectStatus.Visible = false;
-                //dvProjectStatus.Visible = false;
-                dvProjectStatusGrid.Visible = false;
 
                 //ProjectEvent
                 dvNewProjectEvent.Visible = false;
@@ -593,11 +570,6 @@ namespace vhcbcloud
                     //dvNewRelatedProjects.Visible = false;
                     ////dvRelatedProjects.Visible = false;
                     //dvRelatedProjectsGrid.Visible = false;
-
-                    ////ProjectStatus
-                    //dvNewProjectStatus.Visible = false;
-                    ////dvProjectStatus.Visible = false;
-                    //dvProjectStatusGrid.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -1231,81 +1203,6 @@ namespace vhcbcloud
         //        dvProjectStatus.Visible = false;
         //}
 
-        protected void btnAddProjectStatus_Click(object sender, EventArgs e)
-        {
-            if (IsProjectStatusFormValid())
-            {
-                ProjectMaintenanceData.AddProjectStatus(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlProjectStatus.SelectedValue.ToString()), 
-                    DataUtils.GetDate(txtStatusDate.Text));
-                LogMessage("New Project Status added successfully");
-
-                gvProjectStatus.EditIndex = -1;
-                BindProjectStatusGrid();
-                ClearProjectStatusForm();
-                // dvProjectStatus.Visible = false;
-                dvProjectStatusGrid.Visible = true;
-                cbAddProjectStatus.Checked = false;
-            }
-        }
-
-        private bool IsProjectStatusFormValid()
-        {
-            if (ddlProjectStatus.Items.Count > 1 && ddlProjectStatus.SelectedIndex == 0)
-            {
-                LogMessage("Select Project Status");
-                ddlProjectStatus.Focus();
-                return false;
-            }
-
-            if (txtStatusDate.Text.Trim() == "")
-            {
-                LogMessage("Enter Project Status Date");
-                txtStatusDate.Focus();
-                return false;
-            }
-            else
-            {
-                if (!DataUtils.IsDateTime(txtStatusDate.Text.Trim()))
-                {
-                    LogMessage("Enter valid Project Status Date");
-                    txtStatusDate.Focus();
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private void ClearProjectStatusForm()
-        {
-            ddlProjectStatus.SelectedIndex = -1;
-            txtStatusDate.Text = "";
-        }
-
-        private void BindProjectStatusGrid()
-        {
-            try
-            {
-                DataTable dtProjectStatus = ProjectMaintenanceData.GetProjectStatusList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
-
-                if (dtProjectStatus.Rows.Count > 0)
-                {
-                    dvProjectStatusGrid.Visible = true;
-                    gvProjectStatus.DataSource = dtProjectStatus;
-                    gvProjectStatus.DataBind();
-                }
-                else
-                {
-                    dvProjectStatusGrid.Visible = false;
-                    gvProjectStatus.DataSource = null;
-                    gvProjectStatus.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindProjectStatusGrid", "", ex.Message);
-            }
-        }
-
         protected bool IsAddressValid()
         {
             if (txtStreetNo.Text.Trim() == "")
@@ -1339,73 +1236,6 @@ namespace vhcbcloud
                 return false;
             }
             return true;
-        }
-
-        protected void gvProjectStatus_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvProjectStatus.EditIndex = -1;
-            BindProjectStatusGrid();
-
-        }
-
-        protected void gvProjectStatus_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvProjectStatus.EditIndex = e.NewEditIndex;
-            BindProjectStatusGrid();
-        }
-
-        protected void gvProjectStatus_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
-            {
-                //Checking whether the Row is Data Row
-                if (e.Row.RowType == DataControlRowType.DataRow)
-                {
-                    DropDownList ddlProjectStatusPS = (e.Row.FindControl("ddlProjectStatusPS") as DropDownList);
-                    TextBox txtLKProjStatusPS = (e.Row.FindControl("txtLKProjStatusPS") as TextBox);
-
-                    if (txtLKProjStatusPS != null)
-                    {
-                        BindLookUP(ddlProjectStatusPS, 4);
-
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlProjectStatusPS.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtLKProjStatusPS.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlProjectStatusPS.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        protected void gvProjectStatus_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            try
-            {
-                int rowIndex = e.RowIndex;
-
-                int ProjectStatusId = DataUtils.GetInt(((Label)gvProjectStatus.Rows[rowIndex].FindControl("lblProjectStatusIDPS")).Text);
-                int LKProjStatus = DataUtils.GetInt(((DropDownList)gvProjectStatus.Rows[rowIndex].FindControl("ddlProjectStatusPS")).SelectedValue.ToString());
-                DateTime StatusDate = DataUtils.GetDate(((TextBox)gvProjectStatus.Rows[rowIndex].FindControl("txtStatusDatePS")).Text);
-                bool isActive = Convert.ToBoolean(((CheckBox)gvProjectStatus.Rows[rowIndex].FindControl("chkActiveEditPS")).Checked);
-
-                ProjectMaintenanceData.UpdateProjectStatus(ProjectStatusId, LKProjStatus, StatusDate, isActive);
-                gvProjectStatus.EditIndex = -1;
-
-                BindProjectStatusGrid();
-
-                LogMessage("Status updated successfully");
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "gvProjectStatus_RowUpdating", "", ex.Message);
-            }
         }
 
         [System.Web.Services.WebMethod()]
@@ -1554,7 +1384,6 @@ namespace vhcbcloud
             this.BindProjectNamesGrid();
             this.BindAddressGrid();
             this.BindProjectEntityGrid();
-            this.BindProjectStatusGrid();
             this.BindRelatedProjectsGrid();
             this.BindPrjectEventGrid();
         }
