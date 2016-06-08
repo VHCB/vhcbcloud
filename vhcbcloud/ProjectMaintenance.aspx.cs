@@ -52,7 +52,6 @@ namespace vhcbcloud
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlEventProgram, 34);
             BindLookUP(ddlProjectType, 119);
-            BindBoardDate();
             BindManagers();
             BindPrimaryApplicants();
             BindProjects(ddlProject);
@@ -95,23 +94,6 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
-            }
-        }
-
-        private void BindBoardDate()
-        {
-            try
-            {
-                ddlBoardDate.Items.Clear();
-                ddlBoardDate.DataSource = LookupValuesData.GetBoardDates();
-                ddlBoardDate.DataValueField = "TypeID";
-                ddlBoardDate.DataTextField = "BoardDate";
-                ddlBoardDate.DataBind();
-                ddlBoardDate.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindBoardDate", "", ex.Message);
             }
         }
 
@@ -208,12 +190,9 @@ namespace vhcbcloud
             txtProjNum.Text = "";
             ddlProjectType.SelectedIndex = -1;
             ddlProgram.SelectedIndex = -1;
-            txtApplicationReceived.Text = "";
             //ddlAppStatus.SelectedIndex = -1;
             ddlManager.SelectedIndex = -1;
-            ddlBoardDate.SelectedIndex = -1;
             txtClosingDate.Text = "";
-            txtGrantExpirationDate.Text = "";
             cbVerified.Checked = false;
             ddlPrimaryApplicant.SelectedIndex = -1;
             txtProjectName.Text = "";
@@ -391,14 +370,11 @@ namespace vhcbcloud
             GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
             //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
             PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
-            PopulateDropDown(ddlBoardDate, drProjectDetails["LkBoardDate"].ToString());
             PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
 
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
-            txtApplicationReceived.Text = drProjectDetails["AppRec"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["AppRec"].ToString()).ToShortDateString();
             txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
-            txtGrantExpirationDate.Text = drProjectDetails["ExpireDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ExpireDate"].ToString()).ToShortDateString();
             cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
 
             //Event Form
@@ -549,10 +525,10 @@ namespace vhcbcloud
             {
                 if (IsProjectInfoFormValid(false))
                 {
-                    AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()),
-                         DataUtils.GetDate(txtApplicationReceived.Text), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                       DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), DataUtils.GetDate(txtClosingDate.Text), DataUtils.GetDate(txtGrantExpirationDate.Text), cbVerified.Checked,
-                        DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), txtProjectName.Text);
+                    AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), 
+                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtClosingDate.Text), cbVerified.Checked, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
+                        txtProjectName.Text);
 
                     if (ap.IsDuplicate)
                         LogMessage("Project already exist");
@@ -573,6 +549,7 @@ namespace vhcbcloud
         {
             ClearForm();
             BindProjects(ddlProject);
+            BindProjects(ddlEventProject);
             rdBtnSelection.SelectedIndex = 1;
             RadioButtonSelectionChanged();
             ddlProject.SelectedValue = ProjectId.ToString();
@@ -586,9 +563,8 @@ namespace vhcbcloud
                 if (IsProjectInfoFormValid(true))
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), 
-                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), txtApplicationReceived.Text, 
-                        DataUtils.GetInt(ddlManager.SelectedValue.ToString()), DataUtils.GetInt(ddlBoardDate.SelectedValue.ToString()), 
-                        txtClosingDate.Text, txtGrantExpirationDate.Text, cbVerified.Checked, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
+                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()), 
+                        txtClosingDate.Text, cbVerified.Checked, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
                         txtProjectName.Text);
 
                     LogMessage("Project updated successfully");
@@ -1063,39 +1039,13 @@ namespace vhcbcloud
                 ddlProjectType.Focus();
                 return false;
             }
-
-            if (txtApplicationReceived.Text.Trim() == "")
-            {
-                LogMessage("Enter Application Rec'd Date");
-                txtApplicationReceived.Focus();
-                return false;
-            }
-            else
-            {
-                if (!DataUtils.IsDateTime(txtApplicationReceived.Text.Trim()))
-                {
-                    LogMessage("Enter valid Application Rec'd Date");
-                    txtApplicationReceived.Focus();
-                    return false;
-                }
-            }
-
+            
             if (txtClosingDate.Text.Trim() != "")
             {
                 if (!DataUtils.IsDateTime(txtClosingDate.Text.Trim()))
                 {
                     LogMessage("Enter valid Closing Date");
                     txtClosingDate.Focus();
-                    return false;
-                }
-            }
-
-            if (txtGrantExpirationDate.Text.Trim() != "")
-            {
-                if (!DataUtils.IsDateTime(txtGrantExpirationDate.Text.Trim()))
-                {
-                    LogMessage("Enter valid Closing Date");
-                    txtGrantExpirationDate.Focus();
                     return false;
                 }
             }

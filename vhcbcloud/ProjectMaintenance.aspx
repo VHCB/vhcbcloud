@@ -100,33 +100,9 @@
                                             <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Application Rec'd</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Manager</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtApplicationReceived" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtApplicationReceived" TargetControlID="txtApplicationReceived">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 150px"><span class="labelClass">Grant Expiration Date</span></td>
-                                        <td style="width: 250px">
-                                            <asp:TextBox ID="txtGrantExpirationDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtGrantExpirationDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass">Manager</span>
-                                        </td>
-                                        <td style="width: 270px">
                                             <asp:DropDownList ID="ddlManager" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 170px"><span class="labelClass">Board Date</span></td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlBoardDate" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
