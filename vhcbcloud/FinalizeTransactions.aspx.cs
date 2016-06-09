@@ -149,7 +149,7 @@ namespace vhcbcloud
             ViewState["EndDate"] = tranToDate;
 
             PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
-
+            
         }
 
         private void PopulateTransactions(int Projectid, DateTime TranFromDate, DateTime TranToDate, int TransType)
@@ -226,6 +226,7 @@ namespace vhcbcloud
 
             PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
                 Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+            lblErrorMsg.Text = "Transaction finalized successfully";
         }
     }
 }
