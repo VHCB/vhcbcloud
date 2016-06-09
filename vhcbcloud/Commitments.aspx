@@ -32,13 +32,13 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="true"
+                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png"  ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="true"
                                             OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
                                         &nbsp;
-                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary"  Visible="false"
+                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary"  Visible="false"
                                             OnClientClick="PopupExistingAwardSummary(); return false;" ></asp:ImageButton>
                                         &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
                                         &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                     </td>
@@ -154,7 +154,7 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt">
+                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                         <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
@@ -295,7 +295,7 @@
                                                             Balance Amount :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
+                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>

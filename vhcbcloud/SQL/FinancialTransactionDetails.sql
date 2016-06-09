@@ -423,16 +423,8 @@ as
 Begin
 	select p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
 				f.name, f.account, p.proj_num, lv.Description as projectname, 
-				tr.ProjectCheckReqID, f.abbrv,
-				sum(det.Amount) as CommitmentAmount, 
-				case 
-					when tr.lkstatus = 261 then 'Pending'
-					when tr.lkstatus = 262 then 'Final'
-				 end as lkStatus, 
-				 case
-					when tr.lkstatus = 261 then sum(det.amount)
-				 end as PendingAmount,
-				 max(tr.date) as TransDate from Project p 
+				tr.ProjectCheckReqID, f.abbrv
+				from Project p 
 		join ProjectName pn on pn.ProjectID = p.ProjectId
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
@@ -440,16 +432,13 @@ Begin
 		join fund f on f.FundId = det.FundId
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (236,237,238,239,240)
-			and p.projectid = @projectid and f.RowIsActive = 1
+		where p.projectid = @projectid and f.RowIsActive = 1
 			and tr.RowIsActive=1 and pn.DefName =1 
-		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description, f.account
+		
 		order by p.Proj_num
 End
 
 go
-
 
 alter procedure GetFinancialTransByTransId
 (
@@ -894,11 +883,12 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where pn.defname = 1 and tr.lkstatus = 261
+	where pn.defname = 1 and tr.lkstatus = 261 and tr.LkTransaction = 238
 		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
 	order by p.proj_num 
 end
 go
+
 
 alter procedure GetProjectIdByProjNum
 (
@@ -910,3 +900,11 @@ Begin
 End
 go
 
+alter procedure [dbo].[GetFundAccounts]
+as
+Begin
+	select fundid, account, name from Fund 
+	where  RowIsActive = 1 
+	order by name, account asc
+End
+go
