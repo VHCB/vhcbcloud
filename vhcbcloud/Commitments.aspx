@@ -108,7 +108,7 @@
                                                     </td>
                                                     <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
                                                     <td style="width: 20%; float: left">
-                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox></td>
+                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney"  runat="server"  TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
                                                     <td style="width: 30%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
@@ -154,7 +154,7 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right">
+                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                         <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
@@ -234,7 +234,7 @@
                                                     <tr>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                                         <td style="width: 90%; float: left" colspan="5">
-                                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
                                                     </tr>
                                                 </table>
                                                 <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
@@ -295,12 +295,12 @@
                                                             Balance Amount :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right">
+                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount") %>'></asp:TextBox>
                                                         </EditItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
