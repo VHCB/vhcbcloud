@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
 
-        <p class="lead">Board Financial Transactions</p>       
+        <p class="lead">Cash Refund</p>       
          
         <asp:Panel ID="pnlHide" runat="server" Visible="true">
             <div class="container">

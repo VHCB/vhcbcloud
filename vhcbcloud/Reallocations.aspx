@@ -5,7 +5,7 @@
 
     <div class="jumbotron clearfix">
 
-        <p class="lead">Board Financial Transactions</p>
+        <p class="lead">Board Reallocations</p>
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">

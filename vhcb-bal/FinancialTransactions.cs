@@ -313,7 +313,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
-                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("LandUsePermit", usePermit));
 
                 using (connection)
                 {

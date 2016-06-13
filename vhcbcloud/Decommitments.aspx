@@ -6,7 +6,7 @@
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
 
-                <p class="lead">Board Financial Transactions</p>
+                <p class="lead">Board Decommitments</p>
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">

@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
-        <p class="lead">Project Check Request</p>
+        <p class="lead">Check Request</p>
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">

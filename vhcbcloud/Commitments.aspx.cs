@@ -136,7 +136,7 @@ namespace vhcbcloud
 
                 BindUsePermit();
 
-                if (ddlFundName.SelectedValue.ToString() == "420")
+                if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;

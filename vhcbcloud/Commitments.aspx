@@ -5,7 +5,7 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
-                <p class="lead">Board Financial Transactions</p>
+                <p class="lead">Board Commitments</p>
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
