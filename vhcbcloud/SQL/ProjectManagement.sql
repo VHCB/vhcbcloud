@@ -1,6 +1,6 @@
 use vhcbsandbox
 go
-
+ 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNameById]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetProjectNameById 
 go
@@ -91,16 +91,11 @@ create procedure dbo.add_new_project
 	@projNum			nvarchar(12),
 	@LkProjectType		int,
 	@LkProgram			int,
-	@AppRec				Datetime,
 	@Manager			int,
-	@LkBoardDate		int,
 	@ClosingDate		datetime,
-	@GrantClosingDate	datetime,
 	@verified			bit,
-
 	@appNameId			int,
 	@projName			varchar(75),
-
 	@isDuplicate		bit output,
 	@ProjectId			int output
 ) as
@@ -130,8 +125,8 @@ begin transaction
 
 			set @nameId = @@IDENTITY
 
-			insert into Project (Proj_num, LkProjectType, LkProgram, AppRec, Manager, LkBoardDate, ClosingDate, ExpireDate, verified,  userid)
-			values (@projNum, @LkProjectType, @LkProgram, @AppRec, @Manager, @LkBoardDate, @ClosingDate, @GrantClosingDate, @verified,  123)
+			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, ClosingDate, verified,  userid)
+			values (@projNum, @LkProjectType, @LkProgram, @Manager, @ClosingDate, @verified,  123)
 	
 			set @ProjectId = @@IDENTITY
 
@@ -173,13 +168,9 @@ create procedure dbo.UpdateProjectInfo
 	@ProjectId			int,
 	@LkProjectType		int,
 	@LkProgram			int,
-	@AppRec				Datetime,
 	@Manager			int,
-	@LkBoardDate		int,
 	@ClosingDate		datetime,
-	@GrantClosingDate	datetime,
 	@verified			bit,
-
 	@appNameId			int
 	--@projName			varchar(75)
 ) as
@@ -190,8 +181,8 @@ begin transaction
 	declare @applicantId int
 	declare @CurrentApplicantId int
 
-	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram, AppRec = @AppRec,
-		Manager = @Manager, LkBoardDate = @LkBoardDate, ClosingDate = @ClosingDate, ExpireDate = @GrantClosingDate, verified = @verified
+	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
+		Manager = @Manager, ClosingDate = @ClosingDate, verified = @verified
 	from Project
 	where ProjectId = @ProjectId
 

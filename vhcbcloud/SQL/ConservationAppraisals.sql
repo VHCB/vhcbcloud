@@ -24,6 +24,22 @@ begin transaction
 		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre)
 		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre)
 
+		if not exists
+		(
+			select 1
+			from Conserve(nolock)
+			where ProjectID = @ProjectId
+		)
+		begin
+			insert into Conserve(ProjectID, TotalAcres, DateModified)
+			values(@ProjectID, @TotAcres, getdate())
+		end
+		else
+		begin
+			update conserve set TotalAcres = @TotAcres
+			from conserve
+			where ProjectID = @ProjectID 
+		end
 	end try
 	begin catch
 		if @@trancount > 0
@@ -63,6 +79,10 @@ begin transaction
 	from AppraisalValue
 	where ProjectID = @ProjectID
 	
+	update conserve set TotalAcres = @TotAcres
+	from conserve
+	where ProjectID = @ProjectID
+
 	end try
 	begin catch
 		if @@trancount > 0
@@ -89,7 +109,13 @@ as
 --exec GetConservationAppraisalValueById 6588
 begin
 
-	select AppraisalID, ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive
+	declare @TotAcres int
+
+	select @TotAcres = TotalAcres
+	from Conserve(nolock)
+	where ProjectID = @ProjectID
+
+	select AppraisalID, ProjectID, @TotAcres as TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive
 	from AppraisalValue (nolock)
 	where ProjectID = @ProjectID
 end

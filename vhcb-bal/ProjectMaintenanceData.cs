@@ -12,8 +12,8 @@ namespace DataAccessLayer
 {
     public class ProjectMaintenanceData
     {
-        public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, DateTime AppRec, int Manager, int LkBoardDate,
-            DateTime ClosingDate, DateTime GrantClosingDate, bool verified, int appNameId, string projName)
+        public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, DateTime ClosingDate, 
+            bool verified, int appNameId, string projName)
         {
             try
             {
@@ -31,12 +31,11 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("projNum", ProjNum));
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
-                        command.Parameters.Add(new SqlParameter("AppRec", AppRec));
                         //command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkAppStatus));
                         command.Parameters.Add(new SqlParameter("Manager", Manager == 0 ? System.Data.SqlTypes.SqlInt32.Null : Manager));
-                        command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkBoardDate));
+                        //command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkBoardDate));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClosingDate));
-                        command.Parameters.Add(new SqlParameter("GrantClosingDate", GrantClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : GrantClosingDate));
+                        //command.Parameters.Add(new SqlParameter("GrantClosingDate", GrantClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : GrantClosingDate));
                         command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
                         command.Parameters.Add(new SqlParameter("projName", projName));
@@ -69,8 +68,8 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, string AppRec, int Manager, int LkBoardDate,
-           string ClosingDate, string ExpireDate, bool verified, int appNameId, string projName)
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string ClosingDate, bool verified, 
+            int appNameId, string projName)
         {
             try
             {
@@ -84,16 +83,13 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateProjectInfo";
 
-                        //12 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjId));
                         command.Parameters.Add(new SqlParameter("LkProjectType", LkProjectType));
                         command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
-                        command.Parameters.Add(new SqlParameter("AppRec", AppRec == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(AppRec)));
                         //command.Parameters.Add(new SqlParameter("LkAppStatus", LkAppStatus));
                         command.Parameters.Add(new SqlParameter("Manager", Manager));
-                        command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ClosingDate)));
-                        command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
+                        //command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
                         command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
                         // command.Parameters.Add(new SqlParameter("projName", projName));
@@ -838,6 +834,162 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+
+        /* Event */
+        public static DataTable GetProjectEventList(int ProjectId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectEventList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static ProjectMaintResult AddProjectEvent(int ProjectId, int Prog, int ApplicantID, int EventID, 
+            int SubEventID, DateTime Date, string Note, int UserID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectEvent";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("Prog", Prog));
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("EventID", EventID));
+                        command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
+                        
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateProjectEvent(int ProjectEventID, int ProjectId, int Prog, int ApplicantID, int EventID,
+            int SubEventID, DateTime Date, string Note, int UserID, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectEvent";
+                        
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("Prog", Prog));
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("EventID", EventID));
+                        command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataRow GetProjectEventById(int ProjectEventID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectEventById";
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
     }
 
