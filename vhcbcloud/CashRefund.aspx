@@ -4,21 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
 
-        <p class="lead">Board Financial Transactions</p>
-        <div class="container">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
-                        RepeatDirection="Horizontal"
-                        OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
-                        <asp:ListItem> Commitment &nbsp;</asp:ListItem>
-                        <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
-                        <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                        <asp:ListItem Selected="true"> Cash Refund &nbsp;</asp:ListItem>
-                    </asp:RadioButtonList>
-                </div>
-            </div>
-        </div>
+        <p class="lead">Board Financial Transactions</p>       
          
         <asp:Panel ID="pnlHide" runat="server" Visible="true">
             <div class="container">

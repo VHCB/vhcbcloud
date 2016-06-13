@@ -16,6 +16,7 @@ namespace vhcbcloud
         private int BOARD_COMMITMENT = 238;
         private int TRANS_PENDING_STATUS = 261;
         private int ActiveOnly = 1;
+        private string strLandUsePermit = "148";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -66,6 +67,25 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
+        protected void BindUsePermit()
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetDataTableByProcName("GetLandUsePermit");
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+                ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
+        }
+
         protected void BindFundAccounts()
         {
             try
@@ -113,6 +133,19 @@ namespace vhcbcloud
                 ddlTransType.DataTextField = "Description";
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                BindUsePermit();
+
+                if (ddlFundName.SelectedValue.ToString() == "420")
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                }
+                else
+                {
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
             }
             else
             {
@@ -146,6 +179,19 @@ namespace vhcbcloud
                 ddlTransType.DataTextField = "Description";
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                BindUsePermit();
+
+                if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                }
+                else
+                {
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
             }
             else
             {
@@ -161,6 +207,8 @@ namespace vhcbcloud
         {
             lblFundName.Text = "";
             txtAmt.Text = "";
+            lblUsePermit.Visible = false;
+            ddlUsePermit.Visible = false;
             try
             {
                 ddlTransType.SelectedIndex = 0;
@@ -349,8 +397,21 @@ namespace vhcbcloud
                         return;
                     }
 
-                    FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                    if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    {
+                        if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                        {
+                            lblErrorMsg.Text = "Select Use Permit";
+                            ddlUsePermit.Focus();
+                            return;
+                        }
+
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text);
+                    }
+                    else
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
 
                     BindFundDetails(transId);
                     ClearTransactionDetailForm();

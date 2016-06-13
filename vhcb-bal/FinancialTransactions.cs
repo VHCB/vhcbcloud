@@ -301,6 +301,36 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddProjectFundDetailsWithLandPermit";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
         public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
                                 decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId)
         {
