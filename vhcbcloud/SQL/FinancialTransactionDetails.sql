@@ -1028,3 +1028,26 @@ Begin
 		where tc.lkstatus='pending'
 end
 go
+
+alter procedure GetLandUsePermit
+as
+ Begin
+	select UsePermit, Act250FarmId from Act250Farm where RowIsActive=1
+ end
+go
+
+alter procedure [dbo].[AddProjectFundDetails]
+(	
+	@transid int,
+	@fundid int,	
+	@fundtranstype int,
+	@fundamount money,
+	@LandUsePermit nvarchar(15)
+)
+as
+
+BEGIN 
+	insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermit)	values
+		(@transid,@fundid , @fundtranstype, @fundamount, @LandUsePermit)
+END 
+go

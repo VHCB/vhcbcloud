@@ -57,17 +57,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (rdBtnFinancial.SelectedIndex == 0)
-                Response.Redirect("Commitments.aspx");
-            else if (rdBtnFinancial.SelectedIndex == 1)
-                Response.Redirect("Decommitments.aspx");
-            else if(rdBtnFinancial.SelectedIndex == 2)
-                Response.Redirect("Reallocations.aspx");
-            else
-                Response.Redirect("CashRefund.aspx");
-        }
+       
 
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {

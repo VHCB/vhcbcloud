@@ -15,7 +15,7 @@
                                 <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                                <asp:ListItem> Cash Refund &nbsp;</asp:ListItem>
+                                <%--<asp:ListItem> Cash Refund &nbsp;</asp:ListItem>--%>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -233,12 +233,18 @@
                                                     </tr>
                                                     <tr>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
-                                                        <td style="width: 90%; float: left" colspan="5">
+                                                        <td style="width: 20%; float: left">
                                                             <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                        <td style="width: 10%; float: left">
+                                                            <asp:Label ID="lblUsePermit"  class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                                                        </td>
+                                                        <td colspan="3" style="width: 60%; float: left">
+                                                            <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                            </asp:DropDownList>
+                                                        </td>
                                                     </tr>
                                                 </table>
-                                                <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
-                                OnClick="btnSubmit_Click" />--%>
+                                                <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnSubmit_Click" />--%>
                                                 <br />
                                                 <asp:Button ID="btnCommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCommitmentSubmit_Click" TabIndex="11" />
                                             </div>
