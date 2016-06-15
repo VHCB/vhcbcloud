@@ -91,12 +91,13 @@
                                             <li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>
                                             <li class="menu-item "><a runat="server" href="~/Entity.aspx">Entity Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance.aspx">Fund/Grant Maintenance</a></li>
-                                            <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>
+                                            <li class="menu-item "><a runat="server" href="~/FederalRentalAffordability.aspx">Federal Rental Affordability</a></li>
+                                            <li class="menu-item dropdown dropdown-submenu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Housing</a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="#">3rd level link more options</a></li>
-                                                    <li><a href="#">3rd level link</a></li>
+                                                    <li><a runat="server" href="~/FederalRentalAffordability.aspx">Rental Affordability</a></li>
                                                 </ul>
-                                            </li>--%>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Financial Transactions</a>
