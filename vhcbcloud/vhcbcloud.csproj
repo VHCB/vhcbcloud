@@ -183,6 +183,7 @@
     <Content Include="Content\Tabs.css" />
     <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
+    <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
@@ -262,6 +263,7 @@
     <Content Include="SQL\Lead\ProjectLeadBuildingsUnits.sql" />
     <Content Include="SQL\Lead\ProjectLeadMilestone.sql" />
     <Content Include="SQL\Lead\ProjectLeadOccupant.sql" />
+    <Content Include="SQL\ProjectEvent.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
     <None Include="Properties\PublishProfiles\VHCBPublish.pubxml" />
@@ -319,6 +321,7 @@
     <Content Include="SQL\ProjectNotes.sql" />
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
+    <Content Include="SQL\RentalAffordability.sql" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -441,6 +444,13 @@
     </Compile>
     <Compile Include="Entity.aspx.designer.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FederalRentalAffordability.aspx.cs">
+      <DependentUpon>FederalRentalAffordability.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FederalRentalAffordability.aspx.designer.cs">
+      <DependentUpon>FederalRentalAffordability.aspx</DependentUpon>
     </Compile>
     <Compile Include="FinalizeTransactions.aspx.cs">
       <DependentUpon>FinalizeTransactions.aspx</DependentUpon>
