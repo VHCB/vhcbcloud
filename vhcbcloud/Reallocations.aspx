@@ -32,13 +32,12 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png"  ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="true"
-                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
+                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
+                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>                                        
+                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="border: none;" runat="server" Text="Award Summary" Visible="false"
+                                            OnClientClick="PopupExistingAwardSummary(); return false;"></asp:ImageButton>
                                         &nbsp;
-                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary"  Visible="false"
-                                            OnClientClick="PopupExistingAwardSummary(); return false;" ></asp:ImageButton>
-                                        &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
                                         &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                     </td>
@@ -80,10 +79,10 @@
                                                     </ajaxToolkit:AutoCompleteExtender>
                                                     &nbsp;<asp:Button ID="btnfind" runat="server" Visible="false" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
                                                 </td>
-                                                <td style="width: 20%; float: left"> 
-                                                    <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>                                                  
+                                                <td style="width: 20%; float: left">
+                                                    <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                                 <td style="float: left">
-                                                     <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                                    <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                             </tr>
 
                                             <tr>
@@ -108,7 +107,7 @@
                                                     </td>
                                                     <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
                                                     <td style="width: 20%; float: left">
-                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney"  runat="server"  TabIndex="4"></asp:TextBox></td>
+                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
                                                     <td style="width: 30%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
@@ -236,7 +235,7 @@
                                                         <td style="width: 20%; float: left">
                                                             <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
                                                         <td style="width: 10%; float: left">
-                                                            <asp:Label ID="lblUsePermit"  class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                                                            <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                         </td>
                                                         <td colspan="3" style="width: 60%; float: left">
                                                             <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
@@ -358,7 +357,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    
+
 
     <script type="text/javascript">
         window.onbeforeunload = confirmExit;
@@ -370,7 +369,7 @@
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
 
-        
+
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
