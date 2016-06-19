@@ -2,7 +2,7 @@
     CodeBehind="CashRefund.aspx.cs" Inherits="vhcbcloud.CashRefund" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="jumbotron clearfix">
+    <div class="jumbotron clearfix" id="vhcb">
 
         <p class="lead">Cash Refund</p>       
          

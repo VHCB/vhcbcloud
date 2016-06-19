@@ -48,7 +48,7 @@
                             <span class="icon-bar"></span>
 
                         </button>
-                        <a class="navbar-brand" href="default.aspx">
+                        <a class="navbar-brand" href="projectsearch.aspx">
                             <img alt="" src="~/Images/vhcb_logo_1_rgb_sm.png" class="img-responsive img-rounded" runat="server" /></a>
                     </div>
                     <div class="navbar-collapse collapse">
@@ -91,6 +91,13 @@
                                             <li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>
                                             <li class="menu-item "><a runat="server" href="~/Entity.aspx">Entity Maintenance</a></li>
                                             <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance.aspx">Fund/Grant Maintenance</a></li>
+                                            <li class="menu-item "><a runat="server" href="~/FederalRentalAffordability.aspx">Federal Rental Affordability</a></li>
+                                            <li class="menu-item dropdown dropdown-submenu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Housing</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a runat="server" href="~/FederalRentalAffordability.aspx">Rental Affordability</a></li>
+                                                </ul>
+                                            </li>
                                             <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#">3rd level link more options</a></li>

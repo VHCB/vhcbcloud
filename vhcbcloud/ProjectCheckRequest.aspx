@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Project Check Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProjectCheckRequest.aspx.cs" Inherits="vhcbcloud.ProjectCheckRequest" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="jumbotron">
+    <div class="jumbotron clearfix" id="vhcb">
         <p class="lead">Check Request</p>
         <div class="container">
             <div class="panel panel-default">

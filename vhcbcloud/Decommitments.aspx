@@ -35,11 +35,15 @@
                                                 <asp:ListItem>Existing</asp:ListItem>
                                             </asp:RadioButtonList></td>
                                         <td style="text-align: right">
-                                            <asp:ImageButton ID="ibAwardSummary" ImageUrl="~/Images/$$.png" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
+                                            <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="true"
+                                                OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
                                             &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
-                                            &nbsp;
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                                            <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="width: 25px; height: 25px; border: none;" runat="server" Text="Award Summary" Visible="false"
+                                                OnClientClick="PopupExistingAwardSummary(); return false;"></asp:ImageButton>
+                                                &nbsp;
+                                            <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="width: 25px; height: 25px; border: none;"></asp:ImageButton>
+                                                        &nbsp;
+                                            <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                         </td>
                                     </tr>
                                 </table>
@@ -123,7 +127,7 @@
 
                                 <asp:GridView ID="gvPTrans" runat="server" AutoGenerateColumns="False"
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvPTrans_RowCancelingEdit" OnRowCreated="gvPTrans_RowCreated" OnRowDeleting="gvPTrans_RowDeleting" OnRowEditing="gvPTrans_RowEditing" OnRowUpdating="gvPTrans_RowUpdating" OnSelectedIndexChanged="gvPTrans_SelectedIndexChanged">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -324,23 +328,27 @@
             if (needToConfirm && balAmt != 0)
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
-         function RadioCheck(rb) {
+        function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
-            var rbs = gv.getElementsByTagName("input");
+             var rbs = gv.getElementsByTagName("input");
 
-            var row = rb.parentNode.parentNode;
-            for (var i = 0; i < rbs.length; i++) {
-                if (rbs[i].type == "radio") {
-                    if (rbs[i].checked && rbs[i] != rb) {
-                        rbs[i].checked = false;
-                        break;
-                    }
-                }
-            }
-        }
+             var row = rb.parentNode.parentNode;
+             for (var i = 0; i < rbs.length; i++) {
+                 if (rbs[i].type == "radio") {
+                     if (rbs[i].checked && rbs[i] != rb) {
+                         rbs[i].checked = false;
+                         break;
+                     }
+                 }
+             }
+         }
 
-        function PopupAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= txtProjNum.ClientID%>").val())
+         function PopupNewAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+        function PopupExistingAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
         function OnCommittedProjectSelected(source, eventArgs) {
@@ -355,9 +363,9 @@
 
             var hdnValueID = "<%= hdnValue.ClientID %>";
 
-             document.getElementById(hdnValueID).value = eventArgs.get_value();
-             __doPostBack(hdnValueID, "");
-         }
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
 
     </script>
 </asp:Content>

@@ -49,13 +49,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
         
         /// <summary>
-        /// ibAwardSummary control.
+        /// imgNewAwardSummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ibAwardSummary;
+        protected global::System.Web.UI.WebControls.ImageButton imgNewAwardSummary;
+        
+        /// <summary>
+        /// imgExistingAwardSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgExistingAwardSummary;
         
         /// <summary>
         /// btnProjectNotes control.

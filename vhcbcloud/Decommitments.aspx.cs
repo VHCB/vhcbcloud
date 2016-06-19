@@ -685,7 +685,6 @@ namespace vhcbcloud
 
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             gvPTrans.DataSource = null;
             gvPTrans.DataBind();
             gvBCommit.DataSource = null;
@@ -702,11 +701,16 @@ namespace vhcbcloud
             {
                 txtProjNum.Visible = false;
                 txtCommitedProjNum.Visible = true;
+                imgNewAwardSummary.Visible = true;
+                imgExistingAwardSummary.Visible = false;
             }
             else
             {
                 txtProjNum.Visible = true;
                 txtCommitedProjNum.Visible = false;
+                imgNewAwardSummary.Visible = false;
+                imgExistingAwardSummary.Visible = true;
+
             }
 
         }
@@ -719,6 +723,121 @@ namespace vhcbcloud
                 ActiveOnly = 0;
             BindTransGrid(GetTransId());
             BindFundDetails(GetTransId());
+        }
+
+        protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetSelectedTransId(gvPTrans);
+        }
+
+        protected void gvPTrans_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            if (rdBtnSelection.SelectedIndex == 0)
+                e.Row.Cells[0].Visible = false;
+            else
+                e.Row.Cells[0].Visible = true;
+        }
+
+        protected void lbAwardSummary_Click(object sender, ImageClickEventArgs e)
+        {
+            if (hfProjId.Value != "")
+            {
+                string url = "/awardsummary.aspx?projectid=" + hfProjId.Value;
+                StringBuilder sb = new StringBuilder();
+                sb.Append("<script type = 'text/javascript'>");
+                sb.Append("window.open('");
+                sb.Append(url);
+                sb.Append("');");
+                sb.Append("</script>");
+                ClientScript.RegisterStartupScript(this.GetType(),
+                        "script", sb.ToString());
+            }
+            else
+                lblErrorMsg.Text = "Select a project to see the award summary";
+        }
+
+
+      
+
+        protected void btnfind_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", txtCommitedProjNum.Text);
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", txtProjNum.Text);
+            }
+            getDetails(dt);
+        }
+
+
+        protected void gvPTrans_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvPTrans.EditIndex = e.NewEditIndex;
+            BindTransGrid(GetTransId());
+        }
+
+        protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
+                if (lblDetId.ToString() != "")
+                {
+                    FinancialTransactions.ActivateFinancialTransByTransId(Convert.ToInt32(lblDetId));
+
+                    BindFundDetails(GetTransId());
+
+                    lblErrorMsg.Text = "Transaction detail was successfully activated";
+                    CommonHelper.EnableButton(btnDecommitmentSubmit);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvPTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvPTrans.EditIndex = -1;
+            BindTransGrid(GetTransId());
+        }
+       
+        protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string TransId = ((Label)gvPTrans.Rows[rowIndex].FindControl("lblTransId")).Text.Trim();
+                if (TransId.ToString() != "")
+                {
+                    FinancialTransactions.InactivateFinancialTransByTransId(Convert.ToInt32(TransId));
+                    BindTransGrid(GetTransId());
+                    BindFundDetails(GetTransId());
+
+                    CommonHelper.EnableButton(btnTransactionSubmit);
+                    lblErrorMsg.Text = "Transaction was successfully inactivated. All details related to this transaction also have been inactivated.";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
     }
 }
