@@ -121,11 +121,12 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="6" style="height: 5px"></td>
+                                <td colspan="6" style="height: 10px"></td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="height: 5px">
                                     <asp:Button ID="btnProjectSearch" runat="server" Text="Search" class="btn btn-info" OnClick="btnProjectSearch_Click" />
+                                    &nbsp;&nbsp;<asp:Button ID="btnProjectClear" runat="server" Text="Clear" class="btn btn-info" OnClick="btnProjectClear_Click" />
                                 </td>
                             </tr>
                         </table>

@@ -4,11 +4,12 @@ go
 alter view projects_v as
 	select p.ProjectId, Proj_num, lv.Description as ProjectName, LKProjectType, LKProgram, lv1.Description as programname,  a.Street# + ' ' + a.Address1 
 	+ ' ' + a.Address2  as Address, a.Town + ' ' + a.village + ' ' +a.county + ' ' + a.Zip as FullAddress, a.County, a.Town, 
-	an.AppNameID, an.Applicantname, pap.LkApplicantRole, pa.PrimaryAdd--,  * 
+	an.AppNameID, an.Applicantname, pap.LkApplicantRole, isnull(pa.PrimaryAdd, 0) PrimaryAdd, 
+	isnull(pn.Defname, 0) IsProjectDefName--,  * 
 	from Project p(nolock)
-	inner join projectName pn(nolock) on p.projectid = pn.projectid and pn.Defname = 1
+	left join projectName pn(nolock) on p.projectid = pn.projectid --and pn.Defname = 1
 	left join lookupvalues lv(nolock) on lv.Typeid = pn.LKProjectname
-	left join ProjectAddress pa(nolock) on pa.projectId = p.projectId and pa.PrimaryAdd = 1
+	left join ProjectAddress pa(nolock) on pa.projectId = p.projectId --and pa.PrimaryAdd = 1
 	left join Address a(nolock) on a.addressid = pa.addressid
 	left join ProjectApplicant pap(nolock) on pap.projectid = p.projectid
 	left join applicantappname aan(nolock) on aan.ApplicantID = pap.applicantid
@@ -62,9 +63,15 @@ as
 begin transaction
 
 	begin try
-	
-		select distinct county from CountyTown
+
+		select distinct county 
+		from address a(nolock)
+		join ProjectAddress pa(nolock) on a.AddressId = pa.AddressId
+		where isnull(a.county, '') != '' 
 		order by county
+
+		--select distinct county from CountyTown
+		--order by county
 
 	end try
 	begin catch
@@ -105,8 +112,10 @@ begin transaction
 --select * from projects_v
 	begin try
 	
+	if(isnull(@IsPrimaryApplicant, 0) = 0)
+	begin
 		select distinct ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
-			AppNameID, Applicantname--, LkApplicantRole 
+			AppNameID, Applicantname 
 		from projects_v
 		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
 			and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
@@ -117,6 +126,24 @@ begin transaction
 			and (@LKProjectType is null or LKProjectType = @LKProjectType)
 			and (isnull(@IsPrimaryApplicant, 0) = 0 or LkApplicantRole = 358)
 		order by Proj_num
+	end
+	else
+	begin
+		select distinct ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
+			AppNameID, Applicantname
+		from projects_v
+		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
+			and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
+			and (@AppNameID is null or AppNameID = @AppNameID)
+			and (@LKProgram is null or LKProgram = @LKProgram)
+			and (@Town is null or Town = @Town)
+			and (@County is null or County = @County)
+			and (@LKProjectType is null or LKProjectType = @LKProjectType)
+			and (isnull(@IsPrimaryApplicant, 0) = 0 or LkApplicantRole = 358)
+			and IsProjectDefName = 1
+			and PrimaryAdd = 1
+		order by Proj_num
+	end
 	end try
 	begin catch
 		if @@trancount > 0

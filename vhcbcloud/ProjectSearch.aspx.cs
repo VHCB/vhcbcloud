@@ -225,5 +225,17 @@ namespace vhcbcloud
 
         //===========================SORTING PROPERTIES END
         #endregion
+
+        protected void btnProjectClear_Click(object sender, EventArgs e)
+        {
+            txtProjNum.Text = "";
+            txtProjectName.Text = "";
+            ddlPrimaryApplicant.SelectedIndex = -1;
+            cbPrimaryApplicant.Checked = true;
+            ddlProgram.SelectedIndex = -1;
+            ddlTown.SelectedIndex = -1;
+            ddlCounty.SelectedIndex = -1;
+            ddlProjectType.SelectedIndex = -1;
+        }
     }
 }
