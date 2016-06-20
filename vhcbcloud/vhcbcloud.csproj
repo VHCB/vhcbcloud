@@ -174,6 +174,7 @@
     <Content Include="CashRefund.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="Commitments_new.aspx" />
+    <Content Include="ConservationAct250.aspx" />
     <Content Include="ConservationSourcesUses.aspx" />
     <Content Include="Conservation\ConservationAppraisals.aspx" />
     <Content Include="Conservation\ConservationAttributes.aspx" />
@@ -248,6 +249,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SQL\ConservationAct250.sql" />
     <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
@@ -388,6 +390,13 @@
     </Compile>
     <Compile Include="Commitments_new.aspx.designer.cs">
       <DependentUpon>Commitments_new.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConservationAct250.aspx.cs">
+      <DependentUpon>ConservationAct250.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConservationAct250.aspx.designer.cs">
+      <DependentUpon>ConservationAct250.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConservationSourcesUses.aspx.cs">
       <DependentUpon>ConservationSourcesUses.aspx</DependentUpon>

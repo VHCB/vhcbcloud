@@ -184,6 +184,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnProjectSearch;
         
         /// <summary>
+        /// btnProjectClear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnProjectClear;
+        
+        /// <summary>
         /// dvSearchResults control.
         /// </summary>
         /// <remarks>

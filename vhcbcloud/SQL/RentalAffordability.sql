@@ -1,9 +1,6 @@
 use VHCBSandbox
 go
 
---select * from LookupValues where lookuptype = 100
---select * from CountyRents
-
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetCountyRentsList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetCountyRentsList
 go
