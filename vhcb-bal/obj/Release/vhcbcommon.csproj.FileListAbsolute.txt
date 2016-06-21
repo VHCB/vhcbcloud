@@ -1,5 +1,0 @@
-C:\Sandbox\vhcbcloud\vhcb-bal\bin\Release\VHCBCommon.dll
-C:\Sandbox\vhcbcloud\vhcb-bal\bin\Release\VHCBCommon.pdb
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Release\VHCBCommon.dll
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Release\VHCBCommon.pdb
-C:\Sandbox\vhcbcloud\vhcb-bal\obj\Release\vhcbcommon.csprojResolveAssemblyReference.cache
