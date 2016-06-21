@@ -48,7 +48,7 @@ namespace vhcbcloud
         public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("getCommittedPendingProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("getCommittedPendingDecommitmentProjectslistByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)

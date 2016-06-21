@@ -324,6 +324,8 @@ namespace vhcbcloud
         {
             try
             {
+                hfTotalDevPayments.Value = "0";
+
                 DataTable dt = ConservationAct250Data.GetAct250DevPayList(DataUtils.GetInt(hfAct250FarmID.Value), cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
@@ -345,12 +347,12 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    hfTotalDevPayments.Value = "0";
                     dvDeveloperPaymentsGrid.Visible = false;
                     gvDeveloperPayments.DataSource = null;
                     gvDeveloperPayments.DataBind();
                 }
                 BindLandUsePermitFinancialsGrid();
+                BindVHCBProjectsGrid();
             }
             catch (Exception ex)
             {
@@ -362,6 +364,7 @@ namespace vhcbcloud
         private void BindLandUsePermitFinancialsGrid()
         {
             DataTable dtLandUsePermitFinacials = ConservationAct250Data.GetLandUsePermitFinancialsList(hfUsePermit.Value);
+            hfLandUsePermitFinancialsBalance.Value = "0";
 
             if (dtLandUsePermitFinacials.Rows.Count > 0)
             {
@@ -467,7 +470,7 @@ namespace vhcbcloud
 
             int Act250PayID = DataUtils.GetInt(((Label)gvDeveloperPayments.Rows[rowIndex].FindControl("lblAct250PayID")).Text);
             decimal PaymentAmount = DataUtils.GetDecimal(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtpaymentAmount")).Text);
-            DateTime PayReceivedDate = Convert.ToDateTime(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtDevPayReceived")).Text);
+            DateTime PayReceivedDate = DataUtils.GetDate(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtDevPayReceived")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvDeveloperPayments.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             ConservationAct250Data.UpdateAct250DevPay(Act250PayID, PaymentAmount, PayReceivedDate, RowIsActive);
@@ -523,7 +526,7 @@ namespace vhcbcloud
 
                     hfProjectsWarning.Value = "0";
 
-                    if (DataUtils.GetDecimal(hfLandUsePermitFinancialsBalance.Value) < totAnticipatedFunds)
+                    if (totAnticipatedFunds > DataUtils.GetDecimal(hfLandUsePermitFinancialsBalance.Value))
                     {
                         hfProjectsWarning.Value = "1";
                         WarningMessage(dvVHCBProjectsWarning, lblVHCBProjectsWarning, "Total of Anticpated funds cannot be greater than "
@@ -589,7 +592,7 @@ namespace vhcbcloud
 
             int Act250ProjectID = DataUtils.GetInt(((Label)gvVHCBProjects.Rows[rowIndex].FindControl("lblAct250ProjectID")).Text);
             decimal AnticipatedFunds = DataUtils.GetDecimal(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtAnticipatedFunds")).Text);
-            DateTime ProjectDateClosed = Convert.ToDateTime(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtProjectDateClosed")).Text);
+            DateTime ProjectDateClosed = DataUtils.GetDate(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtProjectDateClosed")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvVHCBProjects.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             ConservationAct250Data.UpdateAct250Projects(Act250ProjectID, AnticipatedFunds, ProjectDateClosed, RowIsActive);

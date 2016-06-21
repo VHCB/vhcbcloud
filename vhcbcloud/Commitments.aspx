@@ -152,6 +152,13 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
+                                                 <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                    <ItemTemplate>
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="100px" />
+                                                    <FooterStyle Width="100px" />
+                                                     <HeaderStyle Width="100px" />
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
                                                     FooterStyle-HorizontalAlign="Right">
                                                     <ItemTemplate>
@@ -323,13 +330,8 @@
                                                         </ItemTemplate>
                                                         <ItemStyle Width="200px" />
                                                         <FooterStyle Width="200px" />
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
-                                                        <ItemTemplate>
-                                                        </ItemTemplate>
-                                                        <ItemStyle Width="200px" />
-                                                        <FooterStyle Width="200px" />
-                                                    </asp:TemplateField>
+                                                        <HeaderStyle Width="200px" />
+                                                    </asp:TemplateField>                                                   
                                                     <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
