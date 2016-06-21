@@ -32,12 +32,15 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
-                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>                                        
-                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="border: none;" runat="server" Text="Award Summary" Visible="false"
+                                        <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
+                                            OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
+                                        &nbsp;
+                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
+                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
+                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false"
                                             OnClientClick="PopupExistingAwardSummary(); return false;"></asp:ImageButton>
                                         &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
+                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
                                         &nbsp;
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                     </td>
@@ -394,6 +397,9 @@
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
+        function PopupProjectSearch() {
+            window.open('./projectsearch.aspx')
+        };
 
         function OnCommittedProjectSelected(source, eventArgs) {
 

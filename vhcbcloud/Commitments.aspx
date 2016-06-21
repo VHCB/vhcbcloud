@@ -32,11 +32,11 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" class="btn-info" Style="border: none;" runat="server" Text="Project Search" Visible="true"
+                                        <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"  Style="border: none;" runat="server" Text="Project Search" Visible="true"
                                             OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
-                                        &nbsp;<asp:ImageButton ID="imgNewAwardSummary" runat="server" class="btn-info" ImageUrl="~/Images/$$.png" OnClientClick="PopupNewAwardSummary(); return false;" Style="border: none;" Text="Award Summary" ToolTip="Award summary" Visible="true" />
-                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" class="btn-info" Style="border: none;" runat="server" Text="Award Summary" Visible="false" OnClientClick="PopupExistingAwardSummary(); return false;" />
-                                        &nbsp;<asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" class="btn-info" runat="server" Text="Project Notes" Style="border: none;" />
+                                        &nbsp;<asp:ImageButton ID="imgNewAwardSummary" runat="server" ImageUrl="~/Images/$$.png" OnClientClick="PopupNewAwardSummary(); return false;" Style="border: none;" Text="Award Summary" ToolTip="Award summary" Visible="true" />
+                                        <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false" OnClientClick="PopupExistingAwardSummary(); return false;" />
+                                        &nbsp;<asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;" />
 
                                         <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                     </td>
@@ -152,7 +152,8 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt">
+                                                <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
+                                                    FooterStyle-HorizontalAlign="Right">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                         <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
@@ -161,6 +162,12 @@
                                                         <%--<asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt") %>'></asp:TextBox>--%>
                                                         <asp:Label ID="lblTrAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                     </EditItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                    <ItemTemplate>
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="200px" />
+                                                    <FooterStyle Width="200px" />
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Trans Status" SortExpression="Description">
                                                     <ItemTemplate>
@@ -299,7 +306,8 @@
                                                             Balance Amount :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount">
+                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right"
+                                                        FooterStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
@@ -309,6 +317,18 @@
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
                                                         </FooterTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                        <ItemTemplate>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="200px" />
+                                                        <FooterStyle Width="200px" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                        <ItemTemplate>
+                                                        </ItemTemplate>
+                                                        <ItemStyle Width="200px" />
+                                                        <FooterStyle Width="200px" />
                                                     </asp:TemplateField>
                                                     <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                                         <ItemTemplate>
