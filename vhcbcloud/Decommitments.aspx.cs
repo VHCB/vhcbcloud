@@ -17,6 +17,7 @@ namespace vhcbcloud
         private int BOARD_COMMITMENT = 238;
         private int BOARD_DECOMMITMENT = 239;
         private int ActiveOnly = 1;
+        private string strLandUsePermit = "148";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -83,9 +84,16 @@ namespace vhcbcloud
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
-
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
+
+                dtable = new DataTable();
+                dtable = FinancialTransactions.GetDataTableByProcName("GetCommittedFundNames");
+                ddlFundName.DataSource = dtable;
+                ddlFundName.DataValueField = "fundid";
+                ddlFundName.DataTextField = "name";
+                ddlFundName.DataBind();
+                ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -98,24 +106,36 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlAcctNum.SelectedIndex != 0)
             {
-                dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(GetTransId(), Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
+                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
-                //if (lblFundName.Text.ToLower().Contains("hopwa"))
-                //{
-                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                //}
-                //else
-                //{
-                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                //}
-                ddlTransType.DataSource = dtable;
-                ddlTransType.DataValueField = "lktranstype";
-                ddlTransType.DataTextField = "fundtype";
+                ddlFundName.SelectedValue = ddlAcctNum.SelectedValue;
+
+                if (lblFundName.Text.ToLower().Contains("hopwa"))
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                }
+                else
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                }
+                ddlTransType.DataValueField = "typeid";
+                ddlTransType.DataTextField = "Description";
                 ddlTransType.DataBind();
-
-
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                BindUsePermit();
+
+                if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                }
+                else
+                {
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
             }
             else
             {
@@ -838,6 +858,70 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtable = new DataTable();
+            if (ddlFundName.SelectedIndex != 0)
+            {
+                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+                lblFundName.Text = dtable.Rows[0]["name"].ToString();
+
+                ddlAcctNum.SelectedValue = ddlFundName.SelectedValue;
+
+                if (lblFundName.Text.ToLower().Contains("hopwa"))
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                }
+                else
+                {
+                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                }
+                ddlTransType.DataValueField = "typeid";
+                ddlTransType.DataTextField = "Description";
+                ddlTransType.DataBind();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                BindUsePermit();
+
+                if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                }
+                else
+                {
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
+            }
+            else
+            {
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                lblFundName.Text = "";
+                txtAmt.Text = "";
+                //ClearDetailSelection();
+            }
+        }
+        protected void BindUsePermit()
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetDataTableByProcName("GetLandUsePermit");
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+                ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
         }
     }
 }

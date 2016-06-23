@@ -210,33 +210,41 @@
                                 </div>
                                 <div class="panel-body">
                                     <div id="divTransDetailEntry" runat="server">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td style="width: 10%; float: left">
-                                                    <span class="labelClass">Fund # :</span></td>
-                                                <td style="width: 20%; float: left">
-                                                    <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True">
-                                                    </asp:DropDownList>
-                                                </td>
-                                                <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
-                                                <td style="width: 20%; float: left">
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
-                                                    </asp:DropDownList>
-                                                </td>
-                                                <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
-                                                <td style="width: 30%; float: left">
-                                                    <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server"></asp:Label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="height: 4px" colspan="6" />
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
-                                                <td style="width: 90%; float: left" colspan="5">
-                                                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                                            </tr>
-                                        </table>
+                                         <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 10%; float: left">
+                                                            <span class="labelClass">Fund # :</span></td>
+                                                        <td style="width: 20%; float: left">
+                                                            <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                        <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
+                                                        <td style="width: 20%; float: left">
+                                                            <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
+                                                            <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server" Visible="false"></asp:Label>
+                                                        </td>
+                                                        <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
+                                                        <td style="width: 30%; float: left">
+                                                            <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 4px" colspan="6" />
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
+                                                        <td style="width: 20%; float: left">
+                                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                        <td style="width: 10%; float: left">
+                                                            <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                                                        </td>
+                                                        <td colspan="3" style="width: 60%; float: left">
+                                                            <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                         <br />
                                         <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>

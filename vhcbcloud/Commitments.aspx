@@ -173,8 +173,8 @@
                                                 <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                                     <ItemTemplate>
                                                     </ItemTemplate>
-                                                    <ItemStyle Width="200px" />
-                                                    <FooterStyle Width="200px" />
+                                                    <ItemStyle Width="250px" />
+                                                    <FooterStyle Width="250px" />
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Trans Status" SortExpression="Description">
                                                     <ItemTemplate>

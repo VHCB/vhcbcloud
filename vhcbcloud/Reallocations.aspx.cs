@@ -59,6 +59,21 @@ namespace vhcbcloud
             }
         }
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("getCommittedPendingProjectslistByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
         protected void ddlRFromProj_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRFromProj.SelectedIndex > 0)
