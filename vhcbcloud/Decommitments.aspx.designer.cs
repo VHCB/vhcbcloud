@@ -292,13 +292,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlAcctNum;
         
         /// <summary>
-        /// ddlTransType control.
+        /// ddlFundName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTransType;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundName;
         
         /// <summary>
         /// lblFundName control.
@@ -310,6 +310,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblFundName;
         
         /// <summary>
+        /// ddlTransType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransType;
+        
+        /// <summary>
         /// txtAmt control.
         /// </summary>
         /// <remarks>
@@ -317,6 +326,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAmt;
+        
+        /// <summary>
+        /// lblUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsePermit;
+        
+        /// <summary>
+        /// ddlUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsePermit;
         
         /// <summary>
         /// btnDecommitmentSubmit control.

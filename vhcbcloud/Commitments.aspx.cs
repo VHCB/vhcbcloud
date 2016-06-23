@@ -99,6 +99,8 @@ namespace vhcbcloud
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
+                dtable = new DataTable();
+                dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";

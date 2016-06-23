@@ -436,10 +436,36 @@ Begin
 		where p.projectid = @projectid and f.RowIsActive = 1
 			and tr.RowIsActive=1 and pn.DefName =1 
 		
-		order by p.Proj_num
+		order by f.account
 End
 
 go
+
+alter procedure [dbo].[GetCommittedFundNames]
+(
+	@projectid int
+)
+as
+Begin
+	select p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
+				f.name, f.account, p.proj_num, lv.Description as projectname, 
+				tr.ProjectCheckReqID, f.abbrv
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where p.projectid = @projectid and f.RowIsActive = 1
+			and tr.RowIsActive=1 and pn.DefName =1 
+		
+		order by f.name
+End
+
+go
+
 
 alter procedure GetFinancialTransByTransId
 (
@@ -890,6 +916,24 @@ begin
 end
 go
 
+alter procedure getCommittedPendingDecommitmentProjectslistByFilter 
+(
+	@filter varchar(20)
+)
+as
+begin
+
+	select distinct  top 20 p.Proj_num
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where pn.defname = 1 and tr.lkstatus = 261 and tr.LkTransaction = 239
+		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
+	order by p.proj_num 
+end
+go
+
 alter procedure getCommittedPendingReallocationProjectslistByFilter 
 (
 	@filter varchar(20)
@@ -902,12 +946,29 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where pn.defname = 1 and tr.lkstatus != 261 --and tr.LkTransaction = 240
+	where pn.defname = 1 and tr.lkstatus = 261 and tr.LkTransaction = 240
 		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
 	order by p.proj_num 
 end
 go
 
+alter procedure getCommittedPendingCashRefundProjectslistByFilter 
+(
+	@filter varchar(20)
+)
+as
+begin
+
+	select distinct  top 20 p.Proj_num
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where pn.defname = 1 and tr.lkstatus = 261 and tr.LkTransaction = 237
+		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
+	order by p.proj_num 
+end
+go
 
 alter procedure GetProjectIdByProjNum
 (
@@ -924,10 +985,19 @@ as
 Begin
 	select fundid, account, name from Fund 
 	where  RowIsActive = 1 
-	order by name, account asc
+	order by account asc
 End
 go
 
+
+alter procedure [dbo].[GetFundNames]
+as
+Begin
+	select fundid, account, name from Fund 
+	where  RowIsActive = 1 
+	order by name asc
+End
+go
 
 alter procedure [dbo].[GetFinancialPendingTransactionFundDetails]
 as
