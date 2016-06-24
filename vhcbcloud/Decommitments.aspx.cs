@@ -14,7 +14,6 @@ namespace vhcbcloud
     {
         DataTable dtProjects;
         private int TRANS_PENDING_STATUS = 261;
-        private int BOARD_COMMITMENT = 238;
         private int BOARD_DECOMMITMENT = 239;
         private int ActiveOnly = 1;
         private string strLandUsePermit = "148";
@@ -23,10 +22,10 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-               
+
             }
         }
-     
+
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
@@ -71,33 +70,37 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
-       
-
-
         protected void BindFundAccounts()
         {
+            DataTable dtable = new DataTable();
             try
             {
-                DataTable dtable = new DataTable();
                 dtable = FinancialTransactions.GetCommittedFundAccounts(GetTransId());
-                ddlAcctNum.Items.Clear();
+                //ddlAcctNum.Items.Clear();
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
 
+            }
+            try
+            {
                 dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetCommittedFundNames");
+                dtable = FinancialTransactions.GetCommittedFundNames(GetTransId());
+                //ddlFundName.Items.Clear();
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
                 ddlFundName.DataBind();
                 ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                lblErrorMsg.Text = ex.Message;
+
             }
         }
 
@@ -165,6 +168,8 @@ namespace vhcbcloud
         {
             try
             {
+                BindFundAccounts();
+
                 DataTable dtFundDet = new DataTable();
                 dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT, ActiveOnly);
 
@@ -241,7 +246,7 @@ namespace vhcbcloud
         {
         }
 
-      
+
         protected void btnDecommitmentSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -337,8 +342,8 @@ namespace vhcbcloud
                     txtProjNum.Focus();
                     return;
                 }
-                
-                else if (txtTotAmt.Text.Trim() == "" )
+
+                else if (txtTotAmt.Text.Trim() == "")
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
                     txtTotAmt.Focus();
@@ -459,7 +464,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_DECOMMITMENT);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
                 }
@@ -682,7 +687,7 @@ namespace vhcbcloud
 
                     if (rdBtnSelection.SelectedIndex == 1)
                     {
-                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_DECOMMITMENT);
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
                         CommonHelper.DisableButton(btnTransactionSubmit);
@@ -777,7 +782,7 @@ namespace vhcbcloud
         }
 
 
-      
+
 
         protected void btnfind_Click(object sender, EventArgs e)
         {
@@ -837,7 +842,7 @@ namespace vhcbcloud
             gvPTrans.EditIndex = -1;
             BindTransGrid(GetTransId());
         }
-       
+
         protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
