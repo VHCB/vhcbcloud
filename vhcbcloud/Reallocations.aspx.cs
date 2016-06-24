@@ -348,5 +348,15 @@ namespace vhcbcloud
                         "script", sb.ToString());
             }
         }
+
+        protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

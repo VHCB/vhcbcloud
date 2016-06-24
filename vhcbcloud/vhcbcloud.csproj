@@ -232,10 +232,15 @@
     <Content Include="Housing\HousingUnitsServices.aspx" />
     <Content Include="Images\%24%24.jpg" />
     <Content Include="Images\%24%24.png" />
+    <Content Include="Images\%24%24_0.png" />
+    <Content Include="Images\%24%24_1.png" />
     <Content Include="Images\image004.png" />
     <Content Include="FundType.aspx" />
+    <Content Include="Images\NewProject.png" />
     <Content Include="Images\notebook.png" />
     <Content Include="Images\notes.png" />
+    <Content Include="Images\notes_1.png" />
+    <Content Include="Images\Search.png" />
     <Content Include="Lead\ProjectLeadBuildings.aspx" />
     <Content Include="Lead\ProjectLeadData.aspx" />
     <Content Include="Lead\ProjectLeadMilestones.aspx" />

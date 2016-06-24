@@ -509,7 +509,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_COMMITMENT);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
                 }
@@ -960,7 +960,7 @@ namespace vhcbcloud
 
                     if (rdBtnSelection.SelectedIndex == 1)
                     {
-                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_COMMITMENT);
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
                         CommonHelper.DisableButton(btnTransactionSubmit);

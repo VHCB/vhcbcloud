@@ -582,7 +582,7 @@ alter procedure [dbo].[GetCommitmentFundDetailsByProjectId]
 )
 as
 Begin
--- exec dbo.GetCommitmentFundDetailsByProjectId 409, 239
+-- exec dbo.GetCommitmentFundDetailsByProjectId 409, 239,1
 if @activeOnly = 1
 	Begin
 	if @commitmentType = 238
@@ -866,7 +866,7 @@ Begin
 	declare @recordId int
 	select @recordId = RecordID from LkLookups where Tablename = 'LkProjectName' 	
 	select	distinct			
-			top 20 CONVERT(varchar(20), p.Proj_num) as proj_num
+			top 35 CONVERT(varchar(20), p.Proj_num) as proj_num
 	from Project p 
 			join ProjectName pn on p.ProjectId = pn.ProjectID
 			join ProjectApplicant pa on pa.ProjectId = p.ProjectId
@@ -905,7 +905,7 @@ alter procedure getCommittedPendingProjectslistByFilter
 as
 begin
 
-	select distinct  top 20 p.Proj_num
+	select distinct  top 35 p.Proj_num
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
@@ -923,7 +923,7 @@ alter procedure getCommittedPendingDecommitmentProjectslistByFilter
 as
 begin
 
-	select distinct  top 20 p.Proj_num
+	select distinct  top 35 p.Proj_num
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
@@ -941,7 +941,7 @@ alter procedure getCommittedPendingReallocationProjectslistByFilter
 as
 begin
 
-	select distinct  top 20 p.Proj_num
+	select distinct  top 35 p.Proj_num
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
@@ -959,7 +959,7 @@ alter procedure getCommittedPendingCashRefundProjectslistByFilter
 as
 begin
 
-	select distinct  top 20 p.Proj_num
+	select distinct  top 35 p.Proj_num
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
