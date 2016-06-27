@@ -422,7 +422,7 @@ alter procedure [dbo].[GetCommittedFundAccounts]
 )
 as
 Begin
-	select p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
+	select distinct p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
 				f.name, f.account, p.proj_num, lv.Description as projectname, 
 				tr.ProjectCheckReqID, f.abbrv
 				from Project p 
@@ -447,7 +447,7 @@ alter procedure [dbo].[GetCommittedFundNames]
 )
 as
 Begin
-	select p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
+	select distinct p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
 				f.name, f.account, p.proj_num, lv.Description as projectname, 
 				tr.ProjectCheckReqID, f.abbrv
 				from Project p 
@@ -496,7 +496,8 @@ go
 alter procedure GetFinancialTransByProjId
 (
 	@projId int,
-	@activeOnly int
+	@activeOnly int,
+	@transType int
 )
 as
 Begin
@@ -506,7 +507,7 @@ Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
 			join Trans tr on tr.ProjectID = p.ProjectId				
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId and lv.TypeID= 261
+		Where  tr.RowIsActive= @activeOnly 	and tr.ProjectID = @projId and lv.TypeID= 261 and tr.LkTransaction = @transType
 		order by tr.date desc
 	end
 	else
@@ -514,7 +515,7 @@ Begin
 		select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.TypeID ,lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
 			join Trans tr on tr.ProjectID = p.ProjectId			
 			join LookupValues lv on lv.TypeID = tr.LkStatus
-		Where  tr.ProjectID = @projId and lv.TypeID= 261
+		Where  tr.ProjectID = @projId and lv.TypeID= 261 and tr.LkTransaction = @transType
 		order by tr.date desc
 	End
 end

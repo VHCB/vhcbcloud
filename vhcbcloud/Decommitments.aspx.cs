@@ -72,11 +72,15 @@ namespace vhcbcloud
 
         protected void BindFundAccounts()
         {
+            ddlAcctNum.DataSource = null;
+            ddlAcctNum.DataBind();
+            ddlFundName.DataSource=null;
+            ddlFundName.DataBind();
+
             DataTable dtable = new DataTable();
             try
             {
-                dtable = FinancialTransactions.GetCommittedFundAccounts(GetTransId());
-                //ddlAcctNum.Items.Clear();
+                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));                
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
@@ -90,15 +94,14 @@ namespace vhcbcloud
             try
             {
                 dtable = new DataTable();
-                dtable = FinancialTransactions.GetCommittedFundNames(GetTransId());
-                //ddlFundName.Items.Clear();
+                dtable = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value));                
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
                 ddlFundName.DataBind();
                 ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

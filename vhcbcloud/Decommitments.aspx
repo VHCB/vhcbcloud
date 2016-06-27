@@ -190,7 +190,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="ProjectID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />
+                                                <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />                                                
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
