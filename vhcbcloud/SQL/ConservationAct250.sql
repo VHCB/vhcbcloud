@@ -299,11 +299,12 @@ create procedure GetAct250ProjectsList
 )
 as
 begin
---exec GetAct250ProjectsList 4, 1
-	select proj.Act250ProjectID, proj.ProjectID, proj.ProjectID as ProjectName, proj.LKTownConserve, lv.Description as ConservationTown,
+--exec GetAct250ProjectsList 5, 1
+	select proj.Act250ProjectID, proj.ProjectID, v.Project_name as ProjectName, proj.LKTownConserve, lv.Description as ConservationTown,
 	proj.AmtFunds, proj.DateClosed, proj.RowIsActive, proj.DateModified
 	from Act250Projects proj(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = proj.LKTownConserve
+	left join project_v v(nolock) on v.project_id = proj.ProjectID and v.defname = 1
 	where Act250FarmID = @Act250FarmID 
 	and (@IsActiveOnly = 0 or proj.RowIsActive = @IsActiveOnly)
 	order by 1 desc
@@ -382,14 +383,14 @@ create procedure dbo.UpdateAct250Projects
 	--@ProjectID		int, 
 	--@LKTownConserve	int, 
 	@AmtFunds		money, 
-	@DateClosed		datetime,
+	--@DateClosed		datetime,
 	@IsRowIsActive	bit
 ) as
 begin transaction
 
 	begin try
 
-	update Act250Projects set AmtFunds = @AmtFunds, DateClosed = @DateClosed,
+	update Act250Projects set AmtFunds = @AmtFunds, --DateClosed = @DateClosed,
 		RowIsActive = @IsRowIsActive, DateModified = getdate()
 	from Act250Projects
 	where Act250ProjectID = @Act250ProjectID
@@ -407,3 +408,29 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* Project Conservation Town List */
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConservationTownList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetConservationTownList
+go
+
+create procedure GetConservationTownList
+(
+	@ProjectId Int
+)
+as
+begin
+--exec GetConservationTownList 6050
+	select distinct town,  lv.TypeID
+	from projectaddress pa(nolock)
+	join address a(nolock) on pa.Addressid = a.addressid
+	join LookupValues lv(nolock) on lv.Description = a.town
+	where pa.projectid = @ProjectId and isnull(a.town, '') <> ''
+	order by town
+end
+go
+
+
+select * from Act250Projects
+
+select * from LookupValues where lookuptype = 89

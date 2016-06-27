@@ -35,17 +35,22 @@ namespace vhcbcloud
             BindLookUP(ddlTown, 89);
             BindApplicants(ddlDeveloper);
             BindProjects(ddlProjects);
-            BindLookUP(ddlConservationTown, 89);
+            //BindLookUP(ddlConservationTown, 89);
         }
 
         protected void BindProjects(DropDownList ddList)
         {
             try
             {
+                DataTable dt = ProjectCheckRequestData.GetData("getprojectslist");
+                //DataView dv = dt.DefaultView;
+                //dv.Sort = "description asc";
+                //DataTable sortedDT = dv.ToTable();
+
                 ddList.Items.Clear();
-                ddList.DataSource = ProjectCheckRequestData.GetData("getprojectslist"); ;
+                ddList.DataSource = dt; // sortedDT;
                 ddList.DataValueField = "projectid";
-                ddList.DataTextField = "Proj_num";
+                ddList.DataTextField = "project_num_name";
                 ddList.DataBind();
                 ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
@@ -592,16 +597,38 @@ namespace vhcbcloud
 
             int Act250ProjectID = DataUtils.GetInt(((Label)gvVHCBProjects.Rows[rowIndex].FindControl("lblAct250ProjectID")).Text);
             decimal AnticipatedFunds = DataUtils.GetDecimal(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtAnticipatedFunds")).Text);
-            DateTime ProjectDateClosed = DataUtils.GetDate(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtProjectDateClosed")).Text);
+            //DateTime ProjectDateClosed = DataUtils.GetDate(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtProjectDateClosed")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvVHCBProjects.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            ConservationAct250Data.UpdateAct250Projects(Act250ProjectID, AnticipatedFunds, ProjectDateClosed, RowIsActive);
+            ConservationAct250Data.UpdateAct250Projects(Act250ProjectID, AnticipatedFunds, RowIsActive);
 
             gvVHCBProjects.EditIndex = -1;
 
             BindVHCBProjectsGrid();
 
             LogMessage("Potential VHCB Project updated successfully");
+        }
+
+        protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadConservationTown(ddlProjects.SelectedValue.ToString());
+        }
+
+        private void LoadConservationTown(string ProjectId)
+        {
+            try
+            {
+                ddlConservationTown.Items.Clear();
+                ddlConservationTown.DataSource = ConservationAct250Data.GetConservationTownList(DataUtils.GetInt(ProjectId));
+                ddlConservationTown.DataValueField = "TypeID";
+                ddlConservationTown.DataTextField = "town";
+                ddlConservationTown.DataBind();
+                ddlConservationTown.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "LoadConservationTown", "", ex.Message);
+            }
         }
     }
 }

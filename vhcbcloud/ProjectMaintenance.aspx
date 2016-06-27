@@ -26,9 +26,11 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false"
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" 
+                                    Style="border: none; vertical-align: middle;" Visible="false"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" ToolTip="Project Notes" Style="width: 30px; height: 30px; border: none; vertical-align: middle;" Visible="false" />
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" 
+                                    ToolTip="Project Notes" Style="border: none; vertical-align: middle;" Visible="false" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>

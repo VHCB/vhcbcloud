@@ -404,7 +404,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateAct250Projects(int Act250ProjectID, decimal AmtFunds, DateTime DateClosed, bool IsRowIsActive)
+        public static void UpdateAct250Projects(int Act250ProjectID, decimal AmtFunds, bool IsRowIsActive)
         {
             try
             {
@@ -420,7 +420,7 @@ namespace VHCBCommon.DataAccessLayer
 
                         command.Parameters.Add(new SqlParameter("Act250ProjectID", Act250ProjectID));
                         command.Parameters.Add(new SqlParameter("AmtFunds", AmtFunds));
-                        command.Parameters.Add(new SqlParameter("DateClosed", DateClosed.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateClosed));
+                        //command.Parameters.Add(new SqlParameter("DateClosed", DateClosed.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateClosed));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -436,6 +436,39 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         #endregion Potential VHCB Projects
+
+        public static DataTable GetConservationTownList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConservationTownList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
     }
 
     public class ConservationAct250Result
