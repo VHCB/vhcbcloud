@@ -15,9 +15,9 @@
                             <td></td>
                             <td style="text-align: left"></td>
                             <td style="text-align: right">
-                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" Style="width: 25px; height: 25px; border: none; vertical-align: middle;"
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="width: 25px; height: 25px; border: none; vertical-align: middle;" />
+                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -437,35 +437,39 @@
                                     <tr>
                                         <td style="width: 70px"><span class="labelClass">Project #</span></td>
                                         <td style="width: 83px">
-                                            <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server" 
+                                                AutoPostBack="true" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged"></asp:DropDownList>
                                         </td>
-                                        <td style="width: 108px">
+                                        <td style="width: 78px">
                                             <span class="labelClass">Conservation Town</span>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 70px">
                                             <asp:DropDownList ID="ddlConservationTown" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
-                                        <td style="width: 99px"><span class="labelClass">Anticipated Funds</span></td>
-                                        <td style="width: 100px">
+                                        <td style="width: 40px"><span class="labelClass">Funds</span></td>
+                                        <td style="width: 60px">
                                             <asp:TextBox ID="txtAntFunds" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 70px"><span class="labelClass">Date Closed</span></td>
-                                        <td style="width: 100px">
+                                    </tr>
+                                    <tr>
+                                         <td style="width: 70px"><span class="labelClass">Date Closed</span></td>
+                                        <td style="width: 83px">
                                             <asp:TextBox ID="txtDateClosed" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDateClosed" TargetControlID="txtDateClosed">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 50px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 70px"><span class="labelClass">Active</span></td>
                                         <td class="modal-sm" style="width: 70px">
                                             <asp:CheckBox ID="cbActiveProjects" runat="server" Enabled="false" Checked="true" />
                                         </td>
-                                        <td style="width: 10px">
+                                        <td style="width: 40px">
                                             <asp:Button ID="btnAddVHCBProject" runat="server" Text="Submit" class="btn btn-info"
                                                 OnClick="btnAddVHCBProject_Click" />
                                         </td>
+                                        <td style="width: 60px"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="12" style="height: 5px"></td>
+                                        <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -511,7 +515,7 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Anticipated Funds" ItemStyle-HorizontalAlign="Right"
+                                        <asp:TemplateField HeaderText="Funds" ItemStyle-HorizontalAlign="Right"
                                             FooterStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAnticipatedFunds" runat="Server" Text='<%# Eval("AmtFunds", "{0:C2}") %>' />
@@ -523,15 +527,15 @@
                                             <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterAnticipatedFunds" Text=""></asp:Label>
                                             </FooterTemplate>
-                                            <ItemStyle Width="120px" />
-                                            <FooterStyle Width="120px" />
+                                            <ItemStyle Width="70px" />
+                                            <FooterStyle Width="70px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date Closed">
+                                        <%--<asp:TemplateField HeaderText="Date Closed">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDateClosed" runat="Server" Text='<%# Eval("DateClosed", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
@@ -543,7 +547,7 @@
                                                 </ajaxToolkit:CalendarExtender>
                                             </EditItemTemplate>
                                             <ItemStyle Width="100px" />
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>

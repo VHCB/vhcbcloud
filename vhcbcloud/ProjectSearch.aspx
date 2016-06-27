@@ -34,16 +34,16 @@
                 <td>
                     <p class="lead">Project Search</p>
                 </td>
-                <td style="text-align: right; padding-right: 14px">
+               <%-- <td style="text-align: right; padding-right: 14px">
                     <asp:Button ID="btnNewProject" runat="server" Text="New Project" class="btn btn-info"
                         OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
-                    &nbsp;<asp:Button ID="btnProjectNotes" runat="server" Text="Project Notes" class="btn btn-info" />
-                </td>
+                    &nbsp;
+                </td>--%>
             </tr>
         </table>
 
-        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
-            BackgroundCssClass="MEBackground">
+        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes1" 
+            CancelControlID="btnClose" BackgroundCssClass="MEBackground">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
             <iframe style="width: 750px; height: 550px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
@@ -54,7 +54,17 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Search Options
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left">Search Options</td>
+                            <td style="text-align: right">
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
+                                &nbsp;
+                                <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project" 
+                                    Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
+                            </td>
+                        </tr>
+                        </table>
                 </div>
 
                 <div id="dvMessage" runat="server" visible="false">
