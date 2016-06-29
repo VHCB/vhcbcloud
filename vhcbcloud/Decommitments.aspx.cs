@@ -74,13 +74,13 @@ namespace vhcbcloud
         {
             ddlAcctNum.DataSource = null;
             ddlAcctNum.DataBind();
-            ddlFundName.DataSource=null;
+            ddlFundName.DataSource = null;
             ddlFundName.DataBind();
 
             DataTable dtable = new DataTable();
             try
             {
-                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));                
+                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
@@ -94,7 +94,7 @@ namespace vhcbcloud
             try
             {
                 dtable = new DataTable();
-                dtable = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value));                
+                dtable = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value));
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
@@ -186,7 +186,7 @@ namespace vhcbcloud
                 if (dtFundDet.Rows.Count > 0)
                 {
                     //tranAmount = Convert.ToDecimal(dtFundDet.Rows[0]["TransAmt"].ToString());
-                    tranAmount = -Convert.ToDecimal(this.hfTransAmt.Value);
+                    tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
 
                     Label lblTotAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterAmount");
                     Label lblBalAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterBalance");
@@ -200,6 +200,7 @@ namespace vhcbcloud
                     }
 
                     totBalAmt = tranAmount + totFundAmt;
+
                     hfBalAmt.Value = (-totBalAmt).ToString();
 
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
@@ -291,9 +292,9 @@ namespace vhcbcloud
                 decimal currentTranFudAmount = 0;
                 decimal currentBalAmount = 0;
 
-                currentTranAmount = Convert.ToDecimal(hfTransAmt.Value);
+                currentTranAmount = -Convert.ToDecimal(hfTransAmt.Value);
                 currentTranFudAmount = Convert.ToDecimal(txtAmt.Text);
-                currentBalAmount = Convert.ToDecimal(hfBalAmt.Value);
+                currentBalAmount = -Convert.ToDecimal(hfBalAmt.Value);
 
                 hfTransId.Value = GetTransId().ToString();
                 if (hfTransId.Value != null)
@@ -310,10 +311,14 @@ namespace vhcbcloud
                     }
                     else if (currentTranFudAmount > currentBalAmount)
                     {
-                        currentTranFudAmount = currentBalAmount;
-                        lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
-                        CommonHelper.DisableButton(btnTransactionSubmit);
-                        CommonHelper.EnableButton(btnDecommitmentSubmit);
+                        lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
+                        return;
+                    }
+                    else if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                       Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
+                    {
+                        lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                        return;
                     }
                     else
                     {
@@ -321,8 +326,23 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnDecommitmentSubmit);
                     }
 
-                    FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
+                    if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    {
+                        if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                        {
+                            lblErrorMsg.Text = "Select Use Permit";
+                            ddlUsePermit.Focus();
+                            return;
+                        }
+
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount, ddlUsePermit.SelectedItem.Text);
+                    }
+                    else
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
+
+
 
                     BindFundDetails(transId);
                     ClearTransactionDetailForm();
@@ -368,8 +388,8 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
 
-                this.hfTransAmt.Value = TransAmount.ToString();
-                this.hfBalAmt.Value = TransAmount.ToString();
+                this.hfTransAmt.Value = (-TransAmount).ToString();
+                this.hfBalAmt.Value = (-TransAmount).ToString();
 
                 //if (pnlTranDetails.Visible)
                 //    ClearTransactionDetailForm();
@@ -530,10 +550,10 @@ namespace vhcbcloud
                 }
                 else if (amount > allowed_amount)
                 {
-                    amount = allowed_amount;
-                    lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                    lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
                     CommonHelper.DisableButton(btnTransactionSubmit);
                     CommonHelper.EnableButton(btnDecommitmentSubmit);
+                    return;                   
                 }
                 else if (amount < allowed_amount)
                 {
