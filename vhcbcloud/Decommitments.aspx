@@ -297,8 +297,9 @@
                                                     <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
                                                 </ItemTemplate>
                                                 <EditItemTemplate>
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                                    <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
+                                                     <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" Visible="false"></asp:DropDownList>
+                                                            <asp:Label ID="lbEditlTransType" runat="Server" Text='<%# Eval("Description") %>' />
+                                                            <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
                                                 </EditItemTemplate>
                                                 <FooterTemplate>
                                                     Balance Amount :

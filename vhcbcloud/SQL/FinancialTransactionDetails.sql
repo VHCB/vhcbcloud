@@ -422,9 +422,8 @@ alter procedure [dbo].[GetCommittedFundAccounts]
 )
 as
 Begin
-	select distinct p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
-				f.name, f.account, p.proj_num, lv.Description as projectname, 
-				tr.ProjectCheckReqID, f.abbrv
+		select distinct  det.FundId, f.name , f.account, --ttv.description as FundType, lv.Description as projectname,tr.ProjectCheckReqID,det.lktranstype, 
+				 p.proj_num, p.projectid,  f.abbrv
 				from Project p 
 		join ProjectName pn on pn.ProjectID = p.ProjectId
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
@@ -435,7 +434,6 @@ Begin
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where p.projectid = @projectid and f.RowIsActive = 1
 			and tr.RowIsActive=1 and pn.DefName =1 
-		
 		order by f.account
 End
 
@@ -447,9 +445,8 @@ alter procedure [dbo].[GetCommittedFundNames]
 )
 as
 Begin
-	select distinct p.projectid, det.FundId, det.lktranstype, ttv.description as FundType,
-				f.name, f.account, p.proj_num, lv.Description as projectname, 
-				tr.ProjectCheckReqID, f.abbrv
+	select distinct  det.FundId, f.name , f.account, --ttv.description as FundType, lv.Description as projectname,tr.ProjectCheckReqID,det.lktranstype, 
+				 p.proj_num, p.projectid,  f.abbrv
 				from Project p 
 		join ProjectName pn on pn.ProjectID = p.ProjectId
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
@@ -460,7 +457,6 @@ Begin
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where p.projectid = @projectid and f.RowIsActive = 1
 			and tr.RowIsActive=1 and pn.DefName =1 
-		
 		order by f.name
 End
 
@@ -675,7 +671,7 @@ Begin
 		join Applicant a on a.ApplicantId = pa.ApplicantId	
 		join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
 		join AppName an on an.AppNameID = aan.AppNameID 
-		join LookupValues lv on lv.TypeID = pa.		
+		join LookupValues lv on lv.TypeID = pa.LkApplicantRole		
 	Where  pa.finlegal=1 and p.ProjectId = @projectId
 	and pn.defname = 1 and lv.typeid = 358
 End
@@ -1131,14 +1127,13 @@ alter procedure [dbo].[AddProjectFundDetails]
 	@transid int,
 	@fundid int,	
 	@fundtranstype int,
-	@fundamount money,
-	@LandUsePermit nvarchar(15)
+	@fundamount money
 )
 as
 
 BEGIN 
-	insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermit)	values
-		(@transid,@fundid , @fundtranstype, @fundamount, @LandUsePermit)
+	insert into Detail (TransId, FundId, LkTransType, Amount)	values
+		(@transid,@fundid , @fundtranstype, @fundamount)
 END 
 go
 
