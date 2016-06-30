@@ -30,7 +30,7 @@ namespace vhcbcloud
         public static string[] GetProjectsByFilter(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("getCommittedProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -55,7 +55,7 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
-      
+
 
         protected void BindUsePermit()
         {
@@ -80,9 +80,14 @@ namespace vhcbcloud
         {
             try
             {
+                ddlAcctNum.DataSource = null;
+                ddlAcctNum.DataBind();
+                ddlFundName.DataSource = null;
+                ddlFundName.DataBind();
+
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
-                //dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
+
+                dtable = FinancialTransactions.GetCommittedCRFundAccounts(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
@@ -90,12 +95,13 @@ namespace vhcbcloud
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
                 dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
+                dtable = FinancialTransactions.GetCommittedCRFundNames(Convert.ToInt32(hfProjId.Value));
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
                 ddlFundName.DataBind();
                 ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
+
             }
             catch (Exception ex)
             {
