@@ -618,12 +618,15 @@ namespace vhcbcloud
         {
             try
             {
+                DataTable dt = ConservationAct250Data.GetConservationTownList(DataUtils.GetInt(ProjectId));
                 ddlConservationTown.Items.Clear();
-                ddlConservationTown.DataSource = ConservationAct250Data.GetConservationTownList(DataUtils.GetInt(ProjectId));
+                ddlConservationTown.DataSource = dt;
                 ddlConservationTown.DataValueField = "TypeID";
                 ddlConservationTown.DataTextField = "town";
                 ddlConservationTown.DataBind();
-                ddlConservationTown.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (dt.Rows.Count > 1)
+                    ddlConservationTown.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
