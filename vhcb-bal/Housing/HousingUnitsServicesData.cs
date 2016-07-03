@@ -752,6 +752,40 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
         #endregion Home Affordability
+
+        #region Total Federal Program Units
+        public static int GetTotalFederalProgramUnits(int ProjectId)
+        {
+            int TotalUnits = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetTotalFederalProgramUnits";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        var TotalUnitsColumn = command.ExecuteScalar();
+
+                        if (TotalUnitsColumn != null)
+                        {
+                            TotalUnits = DataUtils.GetInt(TotalUnitsColumn.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return TotalUnits;
+        }
+        #endregion Total Federal Program Units
     }
 
     public class HousingUnitseResult

@@ -14,7 +14,6 @@
         <!-- Tabs -->
         <div class="container">
             <div class="panel panel-default">
-
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
@@ -138,6 +137,7 @@
                                         <asp:TemplateField HeaderText="Number of units">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNumUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
+                                                <asp:HiddenField ID="HiddenFedProgramNumUnits" runat="server" Value='<%#Eval("NumUnits")%>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtNumUnits" CssClass="clsTextBoxBlueSm" runat="server"
@@ -174,21 +174,52 @@
                                     <asp:Panel runat="server" ID="Panel1">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 140px"><span class="labelClass">Recertification Month</span></td>
-                                                <td style="width: 215px">
+                                                <td style="width: 177px"><span class="labelClass">Recertification Month</span></td>
+                                                <td style="width: 194px">
                                                     <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                 </td>
-                                                <td style="width: 140px"><span class="labelClass">Number of Units</span></td>
-                                                <td style="width: 215px">
-                                                    <asp:TextBox ID="TextBox1" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <td style="width: 186px"><span class="labelClass">Copy owner on reminder letter</span></td>
+                                                <td style="width: 126px">
+                                                    <asp:CheckBox ID="chkCopyOwner" runat="server" />
                                                 </td>
-                                                <td style="width: 100px"></td>
+                                                <td style="width: 156px"><span class="labelClass">Affordability Period</span></td>
                                                 <td style="width: 180px">
-                                                    <asp:Button ID="Button1" runat="server" Text="Add" class="btn btn-info"
-                                                        OnClick="AddFederalProgram_Click" />
+                                                    <asp:DropDownList ID="ddlAffPeriod" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
+                                                    </asp:DropDownList>
                                                 </td>
-                                                <td style="width: 170px"></td>
-                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 177px"><span class="labelClass">Affordability Start Date</span></td>
+                                                <td style="width: 194px">
+                                                    <asp:TextBox ID="txtAffrdStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdStartDate" TargetControlID="txtAffrdStartDate">
+                                                    </ajaxToolkit:CalendarExtender>
+                                                </td>
+                                                <td style="width: 186px"><span class="labelClass">Affordability End Date</span></td>
+                                                <td style="width: 126px">
+                                                    <asp:TextBox ID="txtAffrdEndDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdEndDate" TargetControlID="txtAffrdEndDate">
+                                                    </ajaxToolkit:CalendarExtender>
+                                                </td>
+                                                <td style="width: 156px"><span class="labelClass">CHDO</span></td>
+                                                <td style="width: 180px">
+                                                    <asp:CheckBox ID="chkCHDO" runat="server" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 177px"><span class="labelClass">CHDO Recertification Month</span></td>
+                                                <td style="width: 194px">
+                                                    <asp:TextBox ID="txtCHDORecert" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td style="width: 186px"></td>
+                                                <td style="width: 126px"></td>
+                                                <td style="width: 156px"></td>
+                                                <td style="width: 180px"></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
@@ -196,8 +227,462 @@
                                         </table>
                                     </asp:Panel>
                                 </div>
+
+                                <div class="panel panel-default" style="margin-bottom: -1px;">
+                                    <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td>
+                                                    <h3 class="panel-title">Inspections</h3>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="Div1">
+                                        <asp:Panel runat="server" ID="Panel2">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="width: 177px"><span class="labelClass">Inspection Frequency</span></td>
+                                                    <td style="width: 194px">
+                                                        <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    </td>
+                                                    <td style="width: 192px"><span class="labelClass">Date of Last Inspection</span></td>
+                                                    <td style="width: 126px">
+                                                        <asp:TextBox ID="txtLastInspect" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtLastInspect" TargetControlID="txtLastInspect">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 156px"><span class="labelClass">Next Inspection year</span></td>
+                                                    <td style="width: 180px">
+                                                        <asp:TextBox ID="txtNextInspect" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 177px"><span class="labelClass">Staff responsible</span></td>
+                                                    <td style="width: 194px">
+                                                        <asp:DropDownList ID="ddlStaff" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 192px"><span class="labelClass">Inspection Date</span></td>
+                                                    <td style="width: 126px">
+                                                        <asp:TextBox ID="txtInspectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectDate" TargetControlID="txtInspectDate">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 156px"><span class="labelClass">Date Inspection letter sent</span></td>
+                                                    <td style="width: 180px">
+                                                        <asp:TextBox ID="txtInspectLetter" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectLetter" TargetControlID="txtInspectLetter">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 177px"><span class="labelClass">Date of Response</span></td>
+                                                    <td style="width: 194px">
+                                                        <asp:TextBox ID="txtRespDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRespDate" TargetControlID="txtRespDate">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 192px"></td>
+                                                    <td style="width: 126px"></td>
+                                                    <td style="width: 156px"></td>
+                                                    <td style="width: 180px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                            </table>
+                                        </asp:Panel>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default" style="margin-bottom: 0px;">
+                                    <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td>
+                                                    <h3 class="panel-title">IDIS Info</h3>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="Div2">
+                                        <asp:Panel runat="server" ID="Panel4">
+                                            <table class="nav-justified">
+                                                <tr>
+                                                    <td style="width: 182px"><span class="labelClass">IDIS #</span></td>
+                                                    <td style="width: 206px">
+                                                        <asp:TextBox ID="txtIDSNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    </td>
+                                                    <td style="width: 221px"><span class="labelClass">Setup Date</span></td>
+                                                    <td style="width: 126px">
+                                                        <asp:TextBox ID="txtSetupDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtSetupDate" TargetControlID="txtSetupDate">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 156px"><span class="labelClass">Completed By</span></td>
+                                                    <td style="width: 180px">
+                                                        <asp:DropDownList ID="ddlCompletedBy" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 182px"><span class="labelClass">Funded Date</span></td>
+                                                    <td style="width: 206px">
+                                                        <asp:TextBox ID="txtFundedDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtFundedDate" TargetControlID="txtFundedDate">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 221px"><span class="labelClass">Closeout Date</span></td>
+                                                    <td style="width: 126px">
+                                                        <asp:TextBox ID="txtCloseDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtCloseDate" TargetControlID="txtCloseDate">
+                                                        </ajaxToolkit:CalendarExtender>
+                                                    </td>
+                                                    <td style="width: 156px"></td>
+                                                    <td style="width: 180px">
+                                                        <asp:Button ID="btnSubmitHomeForm" runat="server" Text="Submit" class="btn btn-info"
+                                                            OnClick="btnSubmitHomeForm_Click" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                            </table>
+                                        </asp:Panel>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvRentalAffordability" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Rental Affordability</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddRentalAffordability" runat="server" Text="Add New Rental Affordability" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvRentalAffordabilityForm">
+                            <asp:Panel runat="server" ID="Panel5">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Unit Type</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlUnitType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Number of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtUnitTypeUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddRentalAffordability" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddRentalAffordability_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvRentalAffordabilityGrid" runat="server">
+                            <div id="dvRentalAffordabilityWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblSubTypeWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
+                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvRentalAffordability" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvRentalAffordability_RowEditing" OnRowCancelingEdit="gvRentalAffordability_RowCancelingEdit"
+                                    OnRowUpdating="gvRentalAffordability_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="FederalAffordID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFederalAffordID" runat="Server" Text='<%# Eval("FederalAffordID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Unit Type">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnitType" runat="Server" Text='<%# Eval("AffordTypeName") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtUnits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("NumUnits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvUnitOccupancy" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Unit Occupancy</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddUnitOccupancy" runat="server" Text="Add New Unit Occupancy" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvUnitOccupancyForm">
+                            <asp:Panel runat="server" ID="Panel7">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Unit Type</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlUnitOccupancyUnitType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Number of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtUnitOccupancyNumUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddUnitType" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddUnitType_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvUnitOccupanyGrid" runat="server">
+                            <div id="dvUnitOccupanyWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblUnitOccupanyWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvUnitOccupany" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvUnitOccupany_RowEditing" OnRowCancelingEdit="gvUnitOccupany_RowCancelingEdit"
+                                    OnRowUpdating="gvUnitOccupany_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="FederalUnitID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFederalUnitID" runat="Server" Text='<%# Eval("FederalUnitID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Unit Type">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnitType" runat="Server" Text='<%# Eval("UnitTypeName") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtUnits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("NumUnits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvMedianIncome" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Median Income</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddMedianIncome" runat="server" Text="Add New Median Income" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvMedianIncomeForm">
+                            <asp:Panel runat="server" ID="Panel10">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Median Income</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlMedianIncome" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Number of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtMedianIncomeUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddMedianIncome" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddMedianIncome_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvMedianIncomeGrid" runat="server">
+                            <div id="dvMedianIncomeWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblMedianIncomeWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
+                            <asp:Panel runat="server" ID="Panel11" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvMedianIncome" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvMedianIncome_RowEditing" OnRowCancelingEdit="gvMedianIncome_RowCancelingEdit"
+                                    OnRowUpdating="gvMedianIncome_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="FederalMedIncomeID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFederalMedIncomeID" runat="Server" Text='<%# Eval("FederalMedIncomeID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Median Income">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMedIncomeName" runat="Server" Text='<%# Eval("MedIncomeName") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtUnits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("NumUnits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -205,7 +690,12 @@
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfProjectFederalID" runat="server" />
+    <asp:HiddenField ID="hfProjectFederalDetailId" runat="server" />
     <asp:HiddenField ID="hfProjectFedProgram" runat="server" />
+    <asp:HiddenField ID="hfSubTypeWarning" runat="server" />
+    <asp:HiddenField ID="hfTotalProgramUnits" runat="server" />
+    <asp:HiddenField ID="hfUnitOccupancyWarning" runat="server" />
+    <asp:HiddenField ID="hfMedianIncomeWarning" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -213,23 +703,38 @@
             $('#<%= cbAddFedProgram.ClientID%>').click(function () {
                 $('#<%= dvProgramSetupForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= dvRentalAffordabilityForm.ClientID%>').toggle($('#<%= cbAddRentalAffordability.ClientID%>').is(':checked'));
+            $('#<%= cbAddRentalAffordability.ClientID%>').click(function () {
+                $('#<%= dvRentalAffordabilityForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvUnitOccupancyForm.ClientID%>').toggle($('#<%= cbAddUnitOccupancy.ClientID%>').is(':checked'));
+            $('#<%= cbAddUnitOccupancy.ClientID%>').click(function () {
+                $('#<%= dvUnitOccupancyForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvMedianIncomeForm.ClientID%>').toggle($('#<%= cbAddMedianIncome.ClientID%>').is(':checked'));
+            $('#<%= cbAddMedianIncome.ClientID%>').click(function () {
+                $('#<%= dvMedianIncomeForm.ClientID%>').toggle(this.checked);
+            }).change();
         });
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvFedProgram.ClientID%>");
-                var rbs = gv.getElementsByTagName("input");
+            var rbs = gv.getElementsByTagName("input");
 
-                var row = rb.parentNode.parentNode;
-                for (var i = 0; i < rbs.length; i++) {
-                    if (rbs[i].type == "radio") {
-                        if (rbs[i].checked && rbs[i] != rb) {
-                            rbs[i].checked = false;
-                            break;
-                        }
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
                     }
                 }
             }
+        }
     </script>
 </asp:Content>

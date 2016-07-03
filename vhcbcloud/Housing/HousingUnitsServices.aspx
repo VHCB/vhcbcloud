@@ -82,10 +82,12 @@
                                 <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtRestrictionsReleaseDate">
                                 </ajaxToolkit:CalendarExtender>
                             </td>
+                            <td><span class="labelClass">Federal Program Units</span></td>
+                            <td>
+                               <span class="labelClass" id="snFederalProgramUnits" runat="server"></span>
+                            </td>
                             <td>
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
-                            <td></td>
-                            <td></td>
                             <td style="height: 5px"></td>
                         </tr>
                     </table>
@@ -108,7 +110,7 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Housing SubType(s)</h3>
+                                        <h3 class="panel-title">SubType(s)</h3>
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddHousingSubType" runat="server" Text="Add New Housing SubType" />
@@ -121,7 +123,7 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Housing SubType</span></td>
+                                        <td style="width: 140px"><span class="labelClass">SubType</span></td>
                                         <td style="width: 215px">
                                             <asp:DropDownList ID="ddlHousingSubType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -213,10 +215,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Single Unit Types</h3>
+                                        <h3 class="panel-title">Single Count Characteristics</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddSingleUnit" runat="server" Text="Add New Single Unit Type" />
+                                        <asp:CheckBox ID="cbAddSingleUnit" runat="server" Text="Add New Single Count Characteristics" />
                                     </td>
                                 </tr>
                             </table>
@@ -319,10 +321,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Multi Unit Types</h3>
+                                        <h3 class="panel-title">Multi-Count Characteristics</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Multi Unit Type" />
+                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Multi-Count Characteristics" />
                                     </td>
                                 </tr>
                             </table>
@@ -425,10 +427,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Supplemental Services</h3>
+                                        <h3 class="panel-title">Service Supported</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddSuppService" runat="server" Text="Add New Supplemental Service" />
+                                        <asp:CheckBox ID="cbAddSuppService" runat="server" Text="Add New Service Supported" />
                                     </td>
                                 </tr>
                             </table>
