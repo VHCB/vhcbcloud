@@ -463,6 +463,52 @@ End
 go
 
 
+alter procedure [dbo].[GetCommittedCRFundAccounts]
+(
+	@projectid int
+)
+as
+Begin
+		select distinct  det.FundId, f.name , f.account, --ttv.description as FundType, lv.Description as projectname,tr.ProjectCheckReqID,det.lktranstype, 
+				 p.proj_num, p.projectid,  f.abbrv
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where p.projectid = @projectid and f.RowIsActive = 1
+			and tr.RowIsActive=1 and pn.DefName =1 and tr.LkTransaction = 236
+		order by f.account
+End
+
+go
+
+alter procedure [dbo].[GetCommittedCRFundNames]
+(
+	@projectid int
+)
+as
+Begin
+		select distinct  det.FundId, f.name , f.account, --ttv.description as FundType, lv.Description as projectname,tr.ProjectCheckReqID,det.lktranstype, 
+				 p.proj_num, p.projectid,  f.abbrv
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where p.projectid = @projectid and f.RowIsActive = 1
+			and tr.RowIsActive=1 and pn.DefName =1 and tr.LkTransaction = 236
+		order by f.name
+End
+
+go
+
 alter procedure GetFinancialTransByTransId
 (
 	@transId int,
@@ -895,6 +941,24 @@ begin
 end
 go
 
+alter procedure getCommittedCashRefundProjectslistByFilter 
+(
+	@filter varchar(20)
+) 
+as
+begin
+
+	select distinct proj_num
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.lkstatus != 261 and tr.LkTransaction = 236
+	and tr.RowIsActive=1 and pn.defname=1	and p.Proj_num like @filter +'%'	
+	order by proj_num 
+end
+go
+
 alter procedure getCommittedPendingProjectslistByFilter 
 (
 	@filter varchar(20)
@@ -1152,3 +1216,66 @@ BEGIN
 		(@transid,@fundid , @fundtranstype, @fundamount, @LandUsePermit)
 END 
 go
+
+alter procedure GetVHCBProgram
+as
+Begin
+	select typeid, description from LookupValues 
+	where lookuptype = 34 and RowIsActive = 1
+end
+go
+
+alter procedure UpdateUserInfo
+(
+	@userid		int,
+	@Fname		varchar(40), 
+	@Lname		varchar(50), 
+	@password	varchar(40), 
+	@email		varchar(150),
+	@DfltPrg	int
+)
+as
+begin
+
+	declare @Username	varchar(100)
+
+	set @Username = lower(left(@Fname, 1) + @Lname)
+
+	update UserInfo set Fname = @Fname, Lname = @Lname, Username = @Username, email = @email, password = @password, DfltPrg = @DfltPrg 
+	where userid = @userid
+	
+end 
+go
+
+alter procedure AddUserInfo
+(
+	@Fname		varchar(40), 
+	@Lname		varchar(50), 
+	@password	varchar(40), 
+	@email		varchar(150),
+	@DfltPrg	int
+)
+as
+begin
+
+	declare @Username	varchar(100)
+
+	set @Username = lower(left(@Fname, 1) + @Lname)
+
+	insert into UserInfo(usergroupid, Fname, Lname, Username, password, email, DfltPrg) values 
+			(0, @Fname, @Lname, @Username, @password, @email, @DfltPrg)
+end
+go
+
+alter procedure GetUserInfo
+as
+begin
+--exec GetUserInfo
+	select ui.userid, ui.Fname, ui.Lname, ui.Username, ui.password, ui.email, lv.typeid, ui.DfltPrg, lv.description
+		from UserInfo ui(nolock)
+		left outer join LookupValues lv on lv.typeid = ui.DfltPrg
+	 order by ui.DateModified desc 
+end
+go
+
+
