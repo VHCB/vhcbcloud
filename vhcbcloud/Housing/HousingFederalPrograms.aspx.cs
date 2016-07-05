@@ -92,6 +92,12 @@ namespace vhcbcloud.Housing
         private void BindControls()
         {
             BindLookUP(ddlFederalProgram, 105);
+            BindLookUP(ddlAffPeriod, 2);
+            BindStaff(ddlCompletedBy);
+            BindStaff(ddlStaff);
+            BindLookUP(ddlUnitType, 168);
+            BindLookUP(ddlUnitOccupancyUnitType, 166);
+            BindLookUP(ddlMedianIncome, 167);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -108,6 +114,23 @@ namespace vhcbcloud.Housing
             catch (Exception ex)
             {
                 LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        protected void BindStaff(DropDownList ddList)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.GetManagers();
+                ddList.DataValueField = "UserId";
+                ddList.DataTextField = "Name";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindStaff", "", ex.Message);
             }
         }
 
@@ -184,10 +207,88 @@ namespace vhcbcloud.Housing
 
             hfProjectFederalID.Value = GetFederalProgramSelectedRecordID(gvFedProgram);
 
-            if(hfProjectFedProgram.Value.ToLower() == "home")
+            if (hfProjectFedProgram.Value.ToLower() == "home")
             {
                 dvFedProgramHome.Visible = true;
+                ClearHomeForm();
+                PopulateHomeForm();
             }
+
+            dvRentalAffordability.Visible = true;
+            BindRentalAffordabilityGrid();
+
+            dvUnitOccupancy.Visible = true;
+            BindUnitOccupancyGrid();
+
+            dvMedianIncome.Visible = true;
+            BindMedianIncomeGrid();
+        }
+
+        private void PopulateHomeForm()
+        {
+            DataRow dr = HousingFederalProgramsData.GetProjectHOMEDetailById(DataUtils.GetInt(hfProjectFederalID.Value));
+            if (dr != null)
+            {
+                btnSubmitHomeForm.Text = "Update";
+                hfProjectFederalDetailId.Value = dr["ProjectFederalDetailId"].ToString();
+
+                txtRecreationMonth.Text = dr["Recert"].ToString();
+                chkCopyOwner.Checked = DataUtils.GetBool(dr["Copyowner"].ToString());
+                PopulateDropDown(ddlAffPeriod, dr["LKAffrdPer"].ToString());
+                txtAffrdStartDate.Text = dr["AffrdStart"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdStart"].ToString()).ToShortDateString();
+                chkCHDO.Checked = DataUtils.GetBool(dr["CHDO"].ToString());
+                txtCHDORecert.Text = dr["CHDORecert"].ToString();
+
+                txtFreq.Text = dr["freq"].ToString(); ;
+                txtLastInspect.Text = dr["LastInspect"].ToString() == "" ? "" : Convert.ToDateTime(dr["LastInspect"].ToString()).ToShortDateString();
+                txtNextInspect.Text = dr["NextInspect"].ToString();
+                PopulateDropDown(ddlStaff, dr["Staff"].ToString());
+                txtInspectDate.Text = dr["InspectDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDate"].ToString()).ToShortDateString();
+                txtInspectLetter.Text = dr["InspectLetter"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectLetter"].ToString()).ToShortDateString();
+                txtRespDate.Text = dr["RespDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["RespDate"].ToString()).ToShortDateString();
+
+                txtIDSNum.Text = dr["IDISNum"].ToString();
+                txtSetupDate.Text = dr["Setup"].ToString() == "" ? "" : Convert.ToDateTime(dr["Setup"].ToString()).ToShortDateString();
+                PopulateDropDown(ddlCompletedBy, dr["CompleteBy"].ToString());
+                txtFundedDate.Text = dr["FundedDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["FundedDate"].ToString()).ToShortDateString();
+                txtCloseDate.Text = dr["IDISClose"].ToString() == "" ? "" : Convert.ToDateTime(dr["IDISClose"].ToString()).ToShortDateString();
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void ClearHomeForm()
+        {
+            txtRecreationMonth.Text = "";
+            chkCopyOwner.Checked = false;
+            ddlAffPeriod.SelectedIndex = -1;
+            txtAffrdStartDate.Text = "";
+            chkCHDO.Checked = false;
+            txtCHDORecert.Text = "";
+
+            txtFreq.Text = "";
+            txtLastInspect.Text = "";
+            txtNextInspect.Text = "";
+            ddlStaff.SelectedIndex = -1;
+            txtInspectDate.Text = "";
+            txtInspectLetter.Text = "";
+            txtRespDate.Text = "";
+
+            txtIDSNum.Text = "";
+            txtSetupDate.Text = "";
+            ddlCompletedBy.SelectedIndex = -1;
+            txtFundedDate.Text = "";
+            txtCloseDate.Text = "";
         }
 
         private string GetFederalProgramSelectedRecordID(GridView gvFedProgram)
@@ -203,11 +304,13 @@ namespace vhcbcloud.Housing
                     {
                         HiddenField hf = (HiddenField)gvFedProgram.Rows[i].Cells[0].FindControl("HiddenProjectFederalID");
                         HiddenField hfFedProgram = (HiddenField)gvFedProgram.Rows[i].Cells[0].FindControl("HiddenFedProgram");
+                        HiddenField hfFedProgramNumUnits = (HiddenField)gvFedProgram.Rows[i].Cells[0].FindControl("HiddenFedProgramNumUnits");
 
                         if (hf != null)
                         {
                             ProjectFederalID = hf.Value;
                             hfProjectFedProgram.Value = hfFedProgram.Value;
+                            hfTotalProgramUnits.Value = hfFedProgramNumUnits.Value;
                         }
                         break;
                     }
@@ -236,9 +339,13 @@ namespace vhcbcloud.Housing
         private void BindFederalProgramsGrid()
         {
             dvFedProgramHome.Visible = false;
+            dvRentalAffordability.Visible = false;
+            dvUnitOccupancy.Visible = false;
+            dvMedianIncome.Visible = false;
+
             try
             {
-                DataTable dt = HousingFederalProgramsData.GetProjectFederalList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
+                DataTable dt = HousingFederalProgramsData.GetProjectFederalList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -257,6 +364,458 @@ namespace vhcbcloud.Housing
             {
                 LogError(Pagename, "BindFederalProgramsGrid", "", ex.Message);
             }
+        }
+
+        protected void btnSubmitHomeForm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (btnSubmitHomeForm.Text.ToLower() == "submit")
+                {
+                    HousingFederalProgramsData.AddProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalID.Value), chkCopyOwner.Checked, DataUtils.GetInt(txtRecreationMonth.Text),
+                        DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdStartDate.Text), chkCHDO.Checked,
+                        DataUtils.GetInt(txtCHDORecert.Text), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
+                        DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
+                        DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
+                    ClearHomeForm();
+                    PopulateHomeForm();
+                    LogMessage("Project home details added successfully");
+                    btnSubmitHomeForm.Text = "Update";
+                }
+                else
+                {
+                    HousingFederalProgramsData.UpdateProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalDetailId.Value), chkCopyOwner.Checked, DataUtils.GetInt(txtRecreationMonth.Text),
+                        DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdStartDate.Text), chkCHDO.Checked,
+                        DataUtils.GetInt(txtCHDORecert.Text), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
+                        DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
+                        DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
+
+                    ClearHomeForm();
+                    PopulateHomeForm();
+                    LogMessage("Project home details updated successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "", ex.Message);
+            }
+        }
+
+        protected void btnAddRentalAffordability_Click(object sender, EventArgs e)
+        {
+            if (ddlUnitType.SelectedIndex == 0)
+            {
+                LogMessage("Select Rental Affordability Unit Type");
+                ddlUnitType.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtUnitTypeUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Number of Units");
+                txtUnitTypeUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtUnitTypeUnits.Text) <= 0)
+            {
+                LogMessage("Enter Valid Number of Units");
+                txtUnitTypeUnits.Focus();
+                return;
+            }
+
+            HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddHousingFederalAfford(DataUtils.GetInt(hfProjectFederalID.Value),
+                DataUtils.GetInt(ddlUnitType.SelectedValue.ToString()), DataUtils.GetInt(txtUnitTypeUnits.Text));
+
+            ddlUnitType.SelectedIndex = -1;
+            txtUnitTypeUnits.Text = "";
+            cbAddRentalAffordability.Checked = false;
+
+            BindRentalAffordabilityGrid();
+
+            if (objHousingFederalProgramsResult.IsDuplicate && !objHousingFederalProgramsResult.IsActive)
+                LogMessage("Rental Affordability Unit Type already exist as in-active");
+            else if (objHousingFederalProgramsResult.IsDuplicate)
+                LogMessage("Rental Affordability Unit Type already exist");
+            else
+                LogMessage("New Rental Affordability Unit Type added successfully");
+        }
+
+        private void BindRentalAffordabilityGrid()
+        {
+            try
+            {
+                DataTable dt = HousingFederalProgramsData.GetHousingFederalAffordList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvRentalAffordabilityGrid.Visible = true;
+                    gvRentalAffordability.DataSource = dt;
+                    gvRentalAffordability.DataBind();
+
+                    Label lblFooterTotalUnits = (Label)gvRentalAffordability.FooterRow.FindControl("lblFooterTotalUnits");
+                    int totUnitTypeUnits = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                            totUnitTypeUnits += DataUtils.GetInt(dt.Rows[i]["NumUnits"].ToString());
+                    }
+
+                    lblFooterTotalUnits.Text = totUnitTypeUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
+
+                    hfSubTypeWarning.Value = "0";
+                    if (TotalUnits - totUnitTypeUnits != 0)
+                    {
+                        hfSubTypeWarning.Value = "1";
+                        WarningMessage(dvRentalAffordabilityWarning, lblSubTypeWarning, 
+                            "The Rental Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                    }
+                    else
+                    {
+                        dvRentalAffordabilityWarning.Visible = false;
+                        lblSubTypeWarning.Text = "";
+                    }
+                }
+                else
+                {
+                    dvRentalAffordabilityGrid.Visible = false;
+                    gvRentalAffordability.DataSource = null;
+                    gvRentalAffordability.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindRentalAffordabilityGrid", "", ex.Message);
+            }
+        }
+
+        private void WarningMessage(HtmlGenericControl div, Label label, string message)
+        {
+            div.Visible = true;
+            label.Text = message;
+        }
+
+        private void ShowWarnings()
+        {
+            if (hfSubTypeWarning.Value != "1")
+            {
+                dvRentalAffordabilityWarning.Visible = false;
+                lblErrorMsg.Text = "";
+            }
+            if (hfUnitOccupancyWarning.Value != "1")
+            {
+                dvUnitOccupanyWarning.Visible = false;
+                lblErrorMsg.Text = "";
+            }
+            if (hfMedianIncomeWarning.Value != "1")
+            {
+                dvMedianIncomeWarning.Visible = false;
+                lblErrorMsg.Text = "";
+            }
+        }
+
+        protected void gvRentalAffordability_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvRentalAffordability.EditIndex = e.NewEditIndex;
+            BindRentalAffordabilityGrid();
+        }
+
+        protected void gvRentalAffordability_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            string strUnits = ((TextBox)gvRentalAffordability.Rows[rowIndex].FindControl("txtUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Number of Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Number of Units");
+                return;
+            }
+
+            int FederalAffordID = DataUtils.GetInt(((Label)gvRentalAffordability.Rows[rowIndex].FindControl("lblFederalAffordID")).Text);
+            int Units = DataUtils.GetInt(strUnits);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvRentalAffordability.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingFederalProgramsData.UpdateHousingFederalAfford(FederalAffordID, Units, RowIsActive);
+            gvRentalAffordability.EditIndex = -1;
+
+            LogMessage("Rental Affordability Unit Type updated successfully");
+
+            BindRentalAffordabilityGrid();
+        }
+
+        protected void gvRentalAffordability_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvRentalAffordability.EditIndex = -1;
+            BindRentalAffordabilityGrid();
+        }
+
+        protected void btnAddUnitType_Click(object sender, EventArgs e)
+        {
+            if (ddlUnitOccupancyUnitType.SelectedIndex == 0)
+            {
+                LogMessage("Select Unit Occupany Unit Type");
+                ddlUnitOccupancyUnitType.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtUnitOccupancyNumUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Unit Occupany Number of Units");
+                txtUnitOccupancyNumUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtUnitOccupancyNumUnits.Text) <= 0)
+            {
+                LogMessage("Enter Valid Unit Occupany Number of Units");
+                txtUnitOccupancyNumUnits.Focus();
+                return;
+            }
+
+            HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddHousingFederalUnit(DataUtils.GetInt(hfProjectFederalID.Value),
+                DataUtils.GetInt(ddlUnitOccupancyUnitType.SelectedValue.ToString()), DataUtils.GetInt(txtUnitOccupancyNumUnits.Text));
+
+            ddlUnitOccupancyUnitType.SelectedIndex = -1;
+            txtUnitOccupancyNumUnits.Text = "";
+            cbAddUnitOccupancy.Checked = false;
+
+            BindUnitOccupancyGrid();
+
+            if (objHousingFederalProgramsResult.IsDuplicate && !objHousingFederalProgramsResult.IsActive)
+                LogMessage("Unit Occupancy Unit Type already exist as in-active");
+            else if (objHousingFederalProgramsResult.IsDuplicate)
+                LogMessage("Unit Occupancy Unit Type already exist");
+            else
+                LogMessage("New Unit Occupancy Unit Type added successfully");
+        }
+
+        private void BindUnitOccupancyGrid()
+        {
+            try
+            {
+                DataTable dt = HousingFederalProgramsData.GetFederalUnitList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvUnitOccupanyGrid.Visible = true;
+                    gvUnitOccupany.DataSource = dt;
+                    gvUnitOccupany.DataBind();
+
+                    Label lblFooterTotalUnits = (Label)gvUnitOccupany.FooterRow.FindControl("lblFooterTotalUnits");
+                    int totUnitTypeUnits = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                            totUnitTypeUnits += DataUtils.GetInt(dt.Rows[i]["NumUnits"].ToString());
+                    }
+
+                    lblFooterTotalUnits.Text = totUnitTypeUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
+
+                    hfUnitOccupancyWarning.Value = "0";
+                    if (TotalUnits - totUnitTypeUnits != 0)
+                    {
+                        hfUnitOccupancyWarning.Value = "1";
+                        WarningMessage(dvUnitOccupanyWarning, lblUnitOccupanyWarning,
+                            "The Unit Occupancy Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                    }
+                    else
+                    {
+                        dvUnitOccupanyWarning.Visible = false;
+                        lblUnitOccupanyWarning.Text = "";
+                    }
+                }
+                else
+                {
+                    dvUnitOccupanyGrid.Visible = false;
+                    gvUnitOccupany.DataSource = null;
+                    gvUnitOccupany.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindUnitOccupancyGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvUnitOccupany_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvUnitOccupany.EditIndex = e.NewEditIndex;
+            BindUnitOccupancyGrid();
+        }
+
+        protected void gvUnitOccupany_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvUnitOccupany.EditIndex = -1;
+            BindUnitOccupancyGrid();
+        }
+
+        protected void gvUnitOccupany_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            string strUnits = ((TextBox)gvUnitOccupany.Rows[rowIndex].FindControl("txtUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Number of Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Number of Units");
+                return;
+            }
+
+            int FederalUnitID = DataUtils.GetInt(((Label)gvUnitOccupany.Rows[rowIndex].FindControl("lblFederalUnitID")).Text);
+            int Units = DataUtils.GetInt(strUnits);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvUnitOccupany.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingFederalProgramsData.UpdateHousingFederalUnit(FederalUnitID, Units, RowIsActive);
+            gvUnitOccupany.EditIndex = -1;
+
+            LogMessage("Unit Occupancy Unit Type updated successfully");
+
+            BindUnitOccupancyGrid();
+        }
+
+        protected void btnAddMedianIncome_Click(object sender, EventArgs e)
+        {
+            if (ddlMedianIncome.SelectedIndex == 0)
+            {
+                LogMessage("Select Median Income");
+                ddlMedianIncome.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMedianIncomeUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Medain Income Number of Units");
+                txtMedianIncomeUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtMedianIncomeUnits.Text) <= 0)
+            {
+                LogMessage("Enter Valid median Income Number of Units");
+                txtMedianIncomeUnits.Focus();
+                return;
+            }
+
+            HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddFederalMedIncome(DataUtils.GetInt(hfProjectFederalID.Value),
+                DataUtils.GetInt(ddlMedianIncome.SelectedValue.ToString()), DataUtils.GetInt(txtMedianIncomeUnits.Text));
+
+            ddlMedianIncome.SelectedIndex = -1;
+            txtMedianIncomeUnits.Text = "";
+            cbAddMedianIncome.Checked = false;
+
+            BindMedianIncomeGrid();
+
+            if (objHousingFederalProgramsResult.IsDuplicate && !objHousingFederalProgramsResult.IsActive)
+                LogMessage("Medain Income already exist as in-active");
+            else if (objHousingFederalProgramsResult.IsDuplicate)
+                LogMessage("Medain Income already exist");
+            else
+                LogMessage("New Medain Income added successfully");
+        }
+
+        private void BindMedianIncomeGrid()
+        {
+            try
+            {
+                DataTable dt = HousingFederalProgramsData.GetFederalMedIncomeList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvMedianIncomeGrid.Visible = true;
+                    gvMedianIncome.DataSource = dt;
+                    gvMedianIncome.DataBind();
+
+                    Label lblFooterTotalUnits = (Label)gvMedianIncome.FooterRow.FindControl("lblFooterTotalUnits");
+                    int totUnitTypeUnits = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                            totUnitTypeUnits += DataUtils.GetInt(dt.Rows[i]["NumUnits"].ToString());
+                    }
+
+                    lblFooterTotalUnits.Text = totUnitTypeUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
+
+                    hfMedianIncomeWarning.Value = "0";
+                    if (TotalUnits - totUnitTypeUnits != 0)
+                    {
+                        hfMedianIncomeWarning.Value = "1";
+                        WarningMessage(dvMedianIncomeWarning, lblMedianIncomeWarning,
+                            "The Median Income Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                    }
+                    else
+                    {
+                        dvMedianIncomeWarning.Visible = false;
+                        lblMedianIncomeWarning.Text = "";
+                    }
+                }
+                else
+                {
+                    dvMedianIncomeGrid.Visible = false;
+                    gvMedianIncome.DataSource = null;
+                    gvMedianIncome.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindMedianIncomeGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvMedianIncome_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvMedianIncome.EditIndex = e.NewEditIndex;
+            BindMedianIncomeGrid();
+        }
+
+        protected void gvMedianIncome_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvMedianIncome.EditIndex = -1;
+            BindMedianIncomeGrid();
+        }
+
+        protected void gvMedianIncome_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            string strUnits = ((TextBox)gvMedianIncome.Rows[rowIndex].FindControl("txtUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Number of Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Number of Units");
+                return;
+            }
+
+            int FederalMedIncomeID = DataUtils.GetInt(((Label)gvMedianIncome.Rows[rowIndex].FindControl("lblFederalMedIncomeID")).Text);
+            int Units = DataUtils.GetInt(strUnits);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMedianIncome.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingFederalProgramsData.UpdateFederalMedIncome(FederalMedIncomeID, Units, RowIsActive);
+            gvMedianIncome.EditIndex = -1;
+
+            LogMessage("Median Income updated successfully");
+
+            BindMedianIncomeGrid();
         }
     }
 }

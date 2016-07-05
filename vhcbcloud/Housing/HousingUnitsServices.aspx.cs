@@ -133,6 +133,7 @@ namespace vhcbcloud.Housing
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
+            snFederalProgramUnits.InnerText = HousingUnitsServicesData.GetTotalFederalProgramUnits(DataUtils.GetInt(hfProjectId.Value)).ToString();
         }
 
         private void GenerateTabs()

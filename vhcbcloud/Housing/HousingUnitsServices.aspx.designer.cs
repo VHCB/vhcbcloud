@@ -148,6 +148,15 @@ namespace vhcbcloud.Housing {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
         
         /// <summary>
+        /// snFederalProgramUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl snFederalProgramUnits;
+        
+        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
