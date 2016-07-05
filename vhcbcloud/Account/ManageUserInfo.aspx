@@ -52,7 +52,7 @@
                         <tr>
                             <td style="width: 22%; float: left"><span class="labelClass">Password </span></td>
                             <td style="width: 45%; float: left">
-                                <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server" ></asp:TextBox>
+                                <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPassword"
                                     CssClass="text-danger" ErrorMessage="The password field is required." />
                                 <br />
@@ -64,13 +64,22 @@
                         <tr>
                             <td style="width: 22%; float: left"><span class="labelClass">Confirm Password </span></td>
                             <td style="width: 65%; float: left">
-                                <asp:TextBox ID="txtCPassword" CssClass="clsTextBoxBlue1" runat="server" ></asp:TextBox>
+                                <asp:TextBox ID="txtCPassword" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtCPassword"
                                     CssClass="text-danger" Display="Dynamic" ErrorMessage="The confirm password field is required." />
                                 <asp:CompareValidator runat="server" ControlToCompare="txtPassword" ControlToValidate="txtCPassword"
                                     CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />
                                 <br />
                             </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 4px" colspan="2" />
+                        </tr>
+                        <tr>
+                            <td style="width: 22%; float: left"><span class="labelClass">VHCB Program </span></td>
+                            <td style="width: 65%; float: left">
+                                <asp:DropDownList ID="ddlVHCBProgram" CssClass="clsDropDown" runat="server" TabIndex="9">
+                                </asp:DropDownList></td>
                         </tr>
                         <tr>
                             <td style="height: 4px" colspan="2" />
@@ -153,6 +162,18 @@
                                             CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />--%>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="VHCB Program" SortExpression="description">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblDfltPrg" runat="Server" Text='<%# Eval("description") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:DropDownList ID="ddlEditVhcbPrg" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                         <asp:TextBox ID="txtDfltPrg" runat="Server" Visible="false" Text='<%# Eval("description") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+
                                 <asp:CommandField ShowEditButton="True" ValidationGroup="EditValidationControls" />
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
