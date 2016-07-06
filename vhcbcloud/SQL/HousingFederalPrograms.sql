@@ -613,31 +613,9 @@ begin transaction
 --exec GetTotalFederalProgramUnits 6588
 	begin try
 
-	declare @AffordUnits int
-	declare @MedianUnits int
-	declare @UnitOccupancyUnits int
-	declare @ProjectFederalID int
-	
-	select @AffordUnits = sum(isnull(NumUnits, 0) )
-	from FederalAfford(nolock)
-	where RowIsActive = 1 and ProjectFederalID in (Select ProjectFederalID 
-	from ProjectFederal(nolock)
-	where ProjectId = @ProjectId and RowIsActive = 1)
-
-	select @MedianUnits = sum(isnull(NumUnits, 0)) 
-	from FederalMedIncome(nolock)
-	where RowIsActive = 1 and ProjectFederalID in (Select ProjectFederalID 
-	from ProjectFederal(nolock)
-	where ProjectId = @ProjectId and RowIsActive = 1)
-
-	select @UnitOccupancyUnits = sum(isnull(NumUnits, 0) )
-	from FederalMedIncome(nolock)
-	where RowIsActive = 1 and ProjectFederalID in (Select ProjectFederalID 
-	from ProjectFederal(nolock)
-	where ProjectId = @ProjectId and RowIsActive = 1)
-
-	select --@AffordUnits, @UnitOccupancyUnits,  @MedianUnits, 
-	isnull(@AffordUnits, 0) + isnull(@UnitOccupancyUnits, 0) + isnull(@MedianUnits, 0)
+	Select isnull(sum(NumUnits), 0)
+	from ProjectFederal(nolock) 
+	where ProjectId = @ProjectId
 
 	end try
 	begin catch
@@ -653,3 +631,112 @@ begin transaction
 		commit transaction;
 go
 
+/* ProjectHomeAffordUnits */
+
+ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingHomeAffordUnitsList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHousingHomeAffordUnitsList 
+go
+
+create procedure GetHousingHomeAffordUnitsList
+(
+	@HousingID		int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetHousingHomeAffordUnitsList 1, 0
+begin
+	select  hs.ProjectHomeAffordUnitsID, hs.LkAffordunits, lv.description as Home, hs.Numunits, hs.RowIsActive
+	from ProjectHomeAffordUnits hs(nolock)
+	join LookupValues lv(nolock) on lv.TypeId = hs.LkAffordunits
+	where hs.HousingID = @HousingID 
+		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
+		order by hs.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddHousingHomeAffordUnits]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddHousingHomeAffordUnits
+go
+
+create procedure dbo.AddHousingHomeAffordUnits
+(
+	@HousingID		int,
+	@LkAffordunits	int,
+	@Numunits		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1
+		from ProjectHomeAffordUnits(nolock)
+		where HousingID = @HousingID 
+			and LkAffordunits = @LkAffordunits
+    )
+	begin
+		insert into ProjectHomeAffordUnits(HousingID, LkAffordunits, Numunits, DateModified)
+		values(@HousingID, @LkAffordunits, @Numunits, getdate())
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ProjectHomeAffordUnits(nolock)
+		where HousingID = @HousingID 
+			and LkAffordunits = @LkAffordunits
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateHousingHomeAffordUnits]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateHousingHomeAffordUnits
+go
+
+create procedure dbo.UpdateHousingHomeAffordUnits
+(
+	@ProjectHomeAffordUnitsID	int,
+	@Numunits					int,
+	@RowIsActive				bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectHomeAffordUnits set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHomeAffordUnits
+	where ProjectHomeAffordUnitsID = @ProjectHomeAffordUnitsID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
