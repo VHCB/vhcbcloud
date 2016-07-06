@@ -365,6 +365,107 @@
                     </div>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvNewHomeAff" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Home Affordability</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddHomeAff" runat="server" Text="Add New Home Affordability" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvHomeAffForm">
+                            <asp:Panel runat="server" ID="Panel12">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Home</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlHomeAff" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"># of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtHomeUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddHomeAff" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddHomeAff_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvHomeAffGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel13" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvNewHomeAff" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvNewHomeAff_RowEditing" OnRowCancelingEdit="gvNewHomeAff_RowCancelingEdit"
+                                    OnRowUpdating="gvNewHomeAff_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ProjectHomeAffordUnitsID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectHomeAffordUnitsID" runat="Server" Text='<%# Eval("ProjectHomeAffordUnitsID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Home">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblVHCB" runat="Server" Text='<%# Eval("Home") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblHomeNumunits" runat="Server" Text='<%# Eval("Numunits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtHomeNumunits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterHomeTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="panel-width" runat="server" id="dvRentalAffordability" visible="false">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -696,12 +797,28 @@
     <asp:HiddenField ID="hfTotalProgramUnits" runat="server" />
     <asp:HiddenField ID="hfUnitOccupancyWarning" runat="server" />
     <asp:HiddenField ID="hfMedianIncomeWarning" runat="server" />
+    <asp:HiddenField ID="hfHousingID" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
+            $('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
+                if ($('#<%=txtAffrdStartDate.ClientID%>').val() == "") {
+                    $('#<%=txtAffrdStartDate.ClientID%>').val($('#<%=txtCloseDate.ClientID%>').val());
+                }
+                PopupAffrdEndDate();
+            });
+            $('#<%= ddlAffPeriod.ClientID%>').change(function () {
+               PopupAffrdEndDate();
+             });
+
             $('#<%= dvProgramSetupForm.ClientID%>').toggle($('#<%= cbAddFedProgram.ClientID%>').is(':checked'));
             $('#<%= cbAddFedProgram.ClientID%>').click(function () {
                 $('#<%= dvProgramSetupForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvHomeAffForm.ClientID%>').toggle($('#<%= cbAddHomeAff.ClientID%>').is(':checked'));
+            $('#<%= cbAddHomeAff.ClientID%>').click(function () {
+                $('#<%= dvHomeAffForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvRentalAffordabilityForm.ClientID%>').toggle($('#<%= cbAddRentalAffordability.ClientID%>').is(':checked'));
@@ -719,6 +836,34 @@
                 $('#<%= dvMedianIncomeForm.ClientID%>').toggle(this.checked);
             }).change();
         });
+
+        function PopupAffrdEndDate() {
+            if ($('#<%=txtAffrdStartDate.ClientID%>').val() != "") {
+                var noYears;
+                switch ($('#<%=ddlAffPeriod.ClientID %> option:selected').text()) {
+                        case "5 years":
+                            noYears = 5;
+                            break;
+                        case "10 years":
+                            noYears = 10;
+                            break;
+                        case "20 years":
+                            noYears = 20;
+                            break;
+                        default:
+                            noYears = 0;
+                    }
+
+                    var startDate = new Date($('#<%=txtAffrdStartDate.ClientID%>').val());
+                var endDate = new Date(startDate.getFullYear() + noYears, startDate.getMonth(), startDate.getDate())
+                console.log(startDate);
+                console.log(endDate);
+                $('#<%=txtAffrdEndDate.ClientID%>').val(endDate.getMonth() + 1 + "/" + endDate.getDate() + "/" + endDate.getFullYear());
+                }
+                else {
+                    $('#<%=txtAffrdEndDate.ClientID%>').val('');
+            }
+        };
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
