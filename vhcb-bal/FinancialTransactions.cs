@@ -877,6 +877,43 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetAvailableTransTypesPerProjAcct(int projectId, string account)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAvailableTransTypesPerProjAcct";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("account", account));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
+
+
         public static DataTable GetCommittedFundNames(int projectId)
         {
             DataTable dtBCommit = null;
@@ -1027,6 +1064,41 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.CommandText = "GetFundDetailsByFundId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
+        public static DataTable GetCommittedFundPerProject(string proj_num)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("proj_num", proj_num));
+                command.CommandText = "GetCommittedFundPerProject";
                 using (connection)
                 {
                     connection.Open();
