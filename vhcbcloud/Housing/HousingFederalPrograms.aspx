@@ -30,13 +30,13 @@
                                 <span class="labelClass" id="TotalUnits" runat="server"></span>
                             </td>
                             <td style="text-align: right">
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
+                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary"
                                     Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     Style="border: none; vertical-align: middle;" />
-                                <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project" 
-                                    Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='../ProjectMaintenance.aspx?type=new'; return false;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -180,7 +180,7 @@
                                                 <td style="width: 194px">
                                                     <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
-                                                        ControlToValidate="txtRecreationMonth" ErrorMessage="Recertification Month should only accept numbers 1-12" 
+                                                        ControlToValidate="txtRecreationMonth" ErrorMessage="Recertification Month should only accept numbers 1-12"
                                                         Style="top: 435px; left: 365px; position: absolute; height: 22px; width: 500px" />
                                                 </td>
                                                 <td style="width: 186px"><span class="labelClass">Copy owner on reminder letter</span></td>
@@ -253,8 +253,8 @@
                                                     <td style="width: 194px">
                                                         <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
-                                                            ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3" 
-                                                            Style="top: 550px; left: 395px; position: absolute; height: 22px; width: 355px"/>
+                                                            ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
+                                                            Style="top: 550px; left: 395px; position: absolute; height: 22px; width: 355px" />
                                                     </td>
                                                     <td style="width: 192px"><span class="labelClass">Date of Last Inspection</span></td>
                                                     <td style="width: 126px">
