@@ -244,15 +244,15 @@ namespace vhcbcloud.Housing
                 btnSubmitHomeForm.Text = "Update";
                 hfProjectFederalDetailId.Value = dr["ProjectFederalDetailId"].ToString();
 
-                txtRecreationMonth.Text = dr["Recert"].ToString();
+                txtRecreationMonth.Text = dr["Recert"].ToString() == "0" ? "" : dr["Recert"].ToString();
                 chkCopyOwner.Checked = DataUtils.GetBool(dr["Copyowner"].ToString());
                 PopulateDropDown(ddlAffPeriod, dr["LKAffrdPer"].ToString());
                 txtAffrdStartDate.Text = dr["AffrdStart"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdStart"].ToString()).ToShortDateString();
                 txtAffrdEndDate.Text= dr["AffrdEnd"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdEnd"].ToString()).ToShortDateString();
                 chkCHDO.Checked = DataUtils.GetBool(dr["CHDO"].ToString());
-                txtCHDORecert.Text = dr["CHDORecert"].ToString();
+                txtCHDORecert.Text = dr["CHDORecert"].ToString() == "0" ? "" : dr["CHDORecert"].ToString();
 
-                txtFreq.Text = dr["freq"].ToString(); ;
+                txtFreq.Text = dr["freq"].ToString() == "0" ? "" : dr["freq"].ToString();
                 txtLastInspect.Text = dr["LastInspect"].ToString() == "" ? "" : Convert.ToDateTime(dr["LastInspect"].ToString()).ToShortDateString();
                 txtNextInspect.Text = dr["NextInspect"].ToString();
                 PopulateDropDown(ddlStaff, dr["Staff"].ToString());
@@ -533,6 +533,11 @@ namespace vhcbcloud.Housing
             if (hfMedianIncomeWarning.Value != "1")
             {
                 dvMedianIncomeWarning.Visible = false;
+                lblErrorMsg.Text = "";
+            }
+            if (hfHomeAffWarning.Value != "1")
+            {
+                dvHomeAffWarning.Visible = false;
                 lblErrorMsg.Text = "";
             }
         }
@@ -897,6 +902,21 @@ namespace vhcbcloud.Housing
                     }
 
                     lblFooterHomeTotalUnits.Text = totHomeUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
+
+                    hfMedianIncomeWarning.Value = "0";
+                    if (TotalUnits - totHomeUnits != 0)
+                    {
+                        hfHomeAffWarning.Value = "1";
+                        WarningMessage(dvHomeAffWarning, lblHomeAffWarning,
+                            "The Home Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                    }
+                    else
+                    {
+                        dvHomeAffWarning.Visible = false;
+                        lblHomeAffWarning.Text = "";
+                    }
                 }
                 else
                 {
