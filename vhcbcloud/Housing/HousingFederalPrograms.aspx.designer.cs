@@ -76,6 +76,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
         
         /// <summary>
+        /// btnNewProject1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnNewProject1;
+        
+        /// <summary>
         /// cbActiveOnly control.
         /// </summary>
         /// <remarks>
@@ -625,6 +634,24 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHomeAffGrid;
         
         /// <summary>
+        /// dvHomeAffWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHomeAffWarning;
+        
+        /// <summary>
+        /// lblHomeAffWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHomeAffWarning;
+        
+        /// <summary>
         /// Panel13 control.
         /// </summary>
         /// <remarks>
@@ -1046,5 +1073,14 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfHousingID;
+        
+        /// <summary>
+        /// hfHomeAffWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfHomeAffWarning;
     }
 }

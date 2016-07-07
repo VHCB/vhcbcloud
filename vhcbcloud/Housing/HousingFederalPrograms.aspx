@@ -35,6 +35,8 @@
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     Style="border: none; vertical-align: middle;" />
+                                <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project" 
+                                    Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='../ProjectMaintenance.aspx?type=new'; return false;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -177,6 +179,9 @@
                                                 <td style="width: 177px"><span class="labelClass">Recertification Month</span></td>
                                                 <td style="width: 194px">
                                                     <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
+                                                        ControlToValidate="txtRecreationMonth" ErrorMessage="Recertification Month should only accept numbers 1-12" 
+                                                        Style="top: 435px; left: 365px; position: absolute; height: 22px; width: 500px" />
                                                 </td>
                                                 <td style="width: 186px"><span class="labelClass">Copy owner on reminder letter</span></td>
                                                 <td style="width: 126px">
@@ -213,13 +218,15 @@
                                             </tr>
                                             <tr>
                                                 <td style="width: 177px"><span class="labelClass">CHDO Recertification Month</span></td>
-                                                <td style="width: 194px">
+                                                <td style="width: 194px" colspan="4">
                                                     <asp:TextBox ID="txtCHDORecert" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
+                                                        ControlToValidate="txtCHDORecert" ErrorMessage="CHDO Recertification Month should only accept numbers 1-12" />
                                                 </td>
-                                                <td style="width: 186px"></td>
+                                                <%-- <td style="width: 186px"></td>
                                                 <td style="width: 126px"></td>
                                                 <td style="width: 156px"></td>
-                                                <td style="width: 180px"></td>
+                                                <td style="width: 180px"></td>--%>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
@@ -245,6 +252,9 @@
                                                     <td style="width: 177px"><span class="labelClass">Inspection Frequency</span></td>
                                                     <td style="width: 194px">
                                                         <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                        <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
+                                                            ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3" 
+                                                            Style="top: 550px; left: 395px; position: absolute; height: 22px; width: 355px"/>
                                                     </td>
                                                     <td style="width: 192px"><span class="labelClass">Date of Last Inspection</span></td>
                                                     <td style="width: 126px">
@@ -409,6 +419,12 @@
                         </div>
 
                         <div class="panel-body" id="dvHomeAffGrid" runat="server">
+                            <div id="dvHomeAffWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblHomeAffWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
                             <asp:Panel runat="server" ID="Panel13" Width="100%" Height="150px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvNewHomeAff" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -798,6 +814,7 @@
     <asp:HiddenField ID="hfUnitOccupancyWarning" runat="server" />
     <asp:HiddenField ID="hfMedianIncomeWarning" runat="server" />
     <asp:HiddenField ID="hfHousingID" runat="server" />
+    <asp:HiddenField ID="hfHomeAffWarning" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -808,8 +825,16 @@
                 PopupAffrdEndDate();
             });
             $('#<%= ddlAffPeriod.ClientID%>').change(function () {
-               PopupAffrdEndDate();
-             });
+                PopupAffrdEndDate();
+            });
+
+            $('#<%= txtFreq.ClientID%>').blur(function () {
+                PopupNextInspectionYear();
+            });
+
+            $('#<%= txtLastInspect.ClientID%>').blur(function () {
+                PopupNextInspectionYear();
+            });
 
             $('#<%= dvProgramSetupForm.ClientID%>').toggle($('#<%= cbAddFedProgram.ClientID%>').is(':checked'));
             $('#<%= cbAddFedProgram.ClientID%>').click(function () {
@@ -841,29 +866,42 @@
             if ($('#<%=txtAffrdStartDate.ClientID%>').val() != "") {
                 var noYears;
                 switch ($('#<%=ddlAffPeriod.ClientID %> option:selected').text()) {
-                        case "5 years":
-                            noYears = 5;
-                            break;
-                        case "10 years":
-                            noYears = 10;
-                            break;
-                        case "20 years":
-                            noYears = 20;
-                            break;
-                        default:
-                            noYears = 0;
-                    }
+                    case "5 years":
+                        noYears = 5;
+                        break;
+                    case "10 years":
+                        noYears = 10;
+                        break;
+                    case "20 years":
+                        noYears = 20;
+                        break;
+                    default:
+                        noYears = 0;
+                }
 
-                    var startDate = new Date($('#<%=txtAffrdStartDate.ClientID%>').val());
+                var startDate = new Date($('#<%=txtAffrdStartDate.ClientID%>').val());
                 var endDate = new Date(startDate.getFullYear() + noYears, startDate.getMonth(), startDate.getDate())
                 console.log(startDate);
                 console.log(endDate);
                 $('#<%=txtAffrdEndDate.ClientID%>').val(endDate.getMonth() + 1 + "/" + endDate.getDate() + "/" + endDate.getFullYear());
-                }
-                else {
-                    $('#<%=txtAffrdEndDate.ClientID%>').val('');
+            }
+            else {
+                $('#<%=txtAffrdEndDate.ClientID%>').val('');
             }
         };
+
+        function PopupNextInspectionYear() {
+            if (!isNaN($('#<%=txtFreq.ClientID%>').val()) && $('#<%=txtLastInspect.ClientID%>').val() != "") {
+
+                var startDate = new Date($('#<%=txtLastInspect.ClientID%>').val());
+                console.log(startDate);
+                $('#<%=txtNextInspect.ClientID%>').val(startDate.getFullYear() + parseFloat($('#<%=txtFreq.ClientID%>').val()));
+            }
+            else {
+                $('#<%=txtNextInspect.ClientID%>').val('');
+            }
+        };
+
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
