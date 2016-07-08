@@ -1323,19 +1323,19 @@ alter procedure GetAvailableTransTypesPerProjAcct
 )
 as
 Begin
-	select distinct projectid,fundid,account,typeid,fundtype,name, proj_num,projectname,transdate
+	select distinct projectid,fundid,account,typeid,fundtype,name, proj_num,projectname,sum(detail) as availFunds
 	from vw_FinancialDetailSummary where account = @account and projectid = @projectid
-
+	group by projectid,fundid,account,typeid,fundtype,name, proj_num,projectname
 end
 go
 
 alter procedure GetCommittedFundPerProject
 (
-	@projId int
+	@proj_num varchar(20)
 )
 as
 Begin
-	select distinct projectid, proj_num,projectname, sum(detail) as availFunds  from vw_FinancialDetailSummary where projectid = @projId
+	select distinct projectid, proj_num,projectname, sum(detail) as availFunds  from vw_FinancialDetailSummary where proj_num = @proj_num
 	group by projectid,proj_num,projectname
 end
 go
