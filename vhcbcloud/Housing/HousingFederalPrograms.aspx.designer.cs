@@ -58,6 +58,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl TotalUnits;
         
         /// <summary>
+        /// imgSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgSearch;
+        
+        /// <summary>
         /// ibAwardSummary control.
         /// </summary>
         /// <remarks>
@@ -74,15 +83,6 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
-        
-        /// <summary>
-        /// btnNewProject1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnNewProject1;
         
         /// <summary>
         /// cbActiveOnly control.

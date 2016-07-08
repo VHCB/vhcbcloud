@@ -40,6 +40,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
         
         /// <summary>
+        /// imgSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgSearch;
+        
+        /// <summary>
         /// ibAwardSummary control.
         /// </summary>
         /// <remarks>
