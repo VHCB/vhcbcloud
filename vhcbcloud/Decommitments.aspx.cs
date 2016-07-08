@@ -290,6 +290,14 @@ namespace vhcbcloud
                         return;
                     }
                 }
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+                if (dtAvailFunds != null)
+                    if (dtAvailFunds.Rows.Count > 0)
+                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
+                        {
+                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund";
+                            return;
+                        }
 
                 decimal currentTranAmount = 0;
                 decimal currentTranFudAmount = 0;
@@ -312,7 +320,7 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnTransactionSubmit);
                         return;
                     }
-                    else if (currentTranFudAmount > currentBalAmount)
+                    else if (currentTranFudAmount > (currentBalAmount < 0 ? -currentBalAmount : currentBalAmount))
                     {
                         lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
                         return;
@@ -392,7 +400,7 @@ namespace vhcbcloud
                     if (dtCommitFund.Rows.Count > 0)
                         if (Convert.ToDecimal(dtCommitFund.Rows[0]["availFunds"].ToString()) < Convert.ToDecimal(txtTotAmt.Text.Trim()))
                         {
-                            lblErrorMsg.Text = "Decommitted amount can not be more than available funds : " + dtCommitFund.Rows[0]["availFunds"].ToString() + " for the selected project";
+                            lblErrorMsg.Text = "Decommitted amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtCommitFund.Rows[0]["availFunds"].ToString()) + " for the selected project";
                             return;
                         }
 

@@ -913,6 +913,43 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetAvailableFundsPerProjAcctFundtype(int projectId, string account, int fundtypeId)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAvailableFundsPerProjAcctFundtype";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("account", account));
+                command.Parameters.Add(new SqlParameter("fundtypeId", fundtypeId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
+
 
         public static DataTable GetCommittedFundNames(int projectId)
         {
