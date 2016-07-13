@@ -22,7 +22,7 @@ namespace vhcbcloud
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
-
+            
             if (!IsPostBack)
             {
                 if (Request.QueryString["Type"] == "new")
@@ -40,6 +40,7 @@ namespace vhcbcloud
 
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
+                BindApplicantsForCurrentProject(ddlEventEntity);
             }
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
@@ -57,10 +58,26 @@ namespace vhcbcloud
             BindProjects(ddlProject);
             BindProjects(ddlEventProject);
             BindApplicants(ddlApplicantName);
-            BindApplicants(ddlEventEntity);
             BindLookUP(ddlEventSubCategory, 163);
             BindLookUP(ddlApplicantRole, 56);
             ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
+        }
+
+        private void BindApplicantsForCurrentProject(DropDownList ddlEventEntity)
+        {
+            try
+            {
+                ddlEventEntity.Items.Clear();
+                ddlEventEntity.DataSource = ProjectMaintenanceData.GetCurrentProjectApplicants(DataUtils.GetInt(hfProjectId.Value));
+                ddlEventEntity.DataValueField = "appnameid";
+                ddlEventEntity.DataTextField = "applicantname";
+                ddlEventEntity.DataBind();
+                ddlEventEntity.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindApplicantsForCurrentProject", "", ex.Message);
+            }
         }
 
         protected void BindProjects(DropDownList ddList)
@@ -924,6 +941,8 @@ namespace vhcbcloud
         {
             try
             {
+                BindApplicantsForCurrentProject(ddlEventEntity);
+
                 DataTable dtProjectEntity = ProjectMaintenanceData.GetProjectApplicantList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
 
                 if (dtProjectEntity.Rows.Count > 0)
@@ -1591,7 +1610,7 @@ namespace vhcbcloud
                 BindLookUP(ddlEvent, 158);
             else if (ddlEventProgram.SelectedItem.ToString() == "Americorps")
                 BindLookUP(ddlEvent, 161);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Farm/Forest Viability")
+            else if (ddlEventProgram.SelectedItem.ToString() == "Viability")
                 BindLookUP(ddlEvent, 162);
             //else if (ddlEventProgram.SelectedItem.ToString() == "Healthy Homes")
             //    BindLookUP(ddlEvent, 159);

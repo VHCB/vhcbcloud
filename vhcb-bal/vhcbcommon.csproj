@@ -56,6 +56,7 @@
     <Compile Include="DataHelper.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="EntityData.cs" />
+    <Compile Include="EntityMaintenanceData.cs" />
     <Compile Include="FederalRentalAffordabilityData.cs" />
     <Compile Include="FinancialTransactions.cs" />
     <Compile Include="FundTypeData.cs" />

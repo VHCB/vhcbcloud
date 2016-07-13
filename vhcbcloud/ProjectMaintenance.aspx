@@ -408,9 +408,9 @@
                                         <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox><%-- onkeyup="SetContextKey()"--%>
-                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtStreetNo" MinimumPrefixLength="1"
-                                                EnableCaching="true" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetAddress1" OnClientItemSelected="GetAddressDetails">
+                                            <ajaxToolkit:AutoCompleteExtender ID="ae_txtStreetNo" runat="server" TargetControlID="txtStreetNo" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1" CompletionListCssClass="clsAutoExtDropDown"
+                                                CompletionInterval="100" ServiceMethod="GetAddress1" OnClientItemSelected="GetAddressDetails" OnClientPopulated="onListPopulated">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 100px">
@@ -791,8 +791,15 @@
     <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
     <script language="javascript">
         function SetContextKey() {
-            $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
+            $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
         }
+
+        function onListPopulated() {
+            var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+
         function GetAddressDetails(source, eventArgs) {
             //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
             var addressArray = eventArgs.get_value().split('~');

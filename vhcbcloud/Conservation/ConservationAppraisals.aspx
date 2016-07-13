@@ -23,6 +23,9 @@
                             <td></td>
                             <td style="text-align: left"></td>
                             <td style="text-align: right">
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
+                                    Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
+                                    OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="border: none; vertical-align: middle;" />
@@ -454,15 +457,15 @@
 
                     var EasementVal = Before - After;
                     $('#<%= spEasementValue.ClientID%>').html(EasementVal);
-             CalEasementValPerAcre();
-         };
+                    CalEasementValPerAcre();
+                };
 
-         function CalEasementValPerAcre() {
-             var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
-            var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
-            var EasementValPerAcre = Eval / Total;
+                function CalEasementValPerAcre() {
+                    var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
+             var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
+             var EasementValPerAcre = Eval / Total;
 
-            $('#<%= spEasementValuePerAcre.ClientID%>').html(EasementValPerAcre.toPrecision(2));
+             $('#<%= spEasementValuePerAcre.ClientID%>').html(EasementValPerAcre.toPrecision(2));
         };
 
         function PopupAwardSummary() {

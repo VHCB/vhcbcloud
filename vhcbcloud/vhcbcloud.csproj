@@ -185,6 +185,7 @@
     <Content Include="Content\Tabs.css" />
     <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
+    <Content Include="EntityMaintenance.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -256,6 +257,7 @@
     <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ConservationSummary.sql" />
+    <Content Include="SQL\EntityMaintenance.sql" />
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
@@ -463,6 +465,13 @@
     </Compile>
     <Compile Include="Entity.aspx.designer.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityMaintenance.aspx.cs">
+      <DependentUpon>EntityMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EntityMaintenance.aspx.designer.cs">
+      <DependentUpon>EntityMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="FederalRentalAffordability.aspx.cs">
       <DependentUpon>FederalRentalAffordability.aspx</DependentUpon>
