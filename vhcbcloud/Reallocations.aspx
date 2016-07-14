@@ -110,7 +110,7 @@
                                         </td>
                                         <td style="width: 10%; float: left"></td>
                                         <td style="width: 30%; float: left">
-                                            <asp:LinkButton ID="lbtnFromAwdSummary" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
+                                            
                                         </td>
                                     </tr>
                                 </table>
@@ -284,7 +284,6 @@
         function PopupProjectSearch() {
             window.open('./projectsearch.aspx')
         };
-
 
     </script>
 </asp:Content>
