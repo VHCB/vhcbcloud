@@ -1339,3 +1339,17 @@ Begin
 	group by projectid,proj_num,projectname
 end
 go
+
+alter procedure GetAvailableFundsPerProjAcctFundtype
+(
+	@account varchar(20),
+	@projectid int,
+	@fundtypeId int
+)
+as
+Begin
+	select distinct projectid,fundid,account,typeid,fundtype,name, proj_num,projectname,sum(detail) as availFunds
+	from vw_FinancialDetailSummary where account = @account and projectid = @projectid and typeid = @fundtypeId
+	group by projectid,fundid,account,typeid,fundtype,name, proj_num,projectname
+end
+go

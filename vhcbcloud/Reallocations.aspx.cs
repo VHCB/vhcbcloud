@@ -86,8 +86,8 @@ namespace vhcbcloud
                 ddlRFromFund.Items.Insert(0, new ListItem("Select", "NA"));
 
                 ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
-                BindAllFunds();
-                lbtnFromAwdSummary.Visible = true;
+                BindAllFunds();                
+                hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
             }
         }
 
@@ -349,6 +349,7 @@ namespace vhcbcloud
             }
         }
 
+       
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
 
