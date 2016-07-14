@@ -31,20 +31,21 @@ namespace vhcbcloud
             {
                 if (ddlEntityRole.SelectedIndex != 0)
                 {
-                    string SelectedRole = ddlEntityRole.SelectedItem.ToString();
+                    string SelectedRole = ddlEntityRole.SelectedValue.ToString();
 
                     dvExistingEntities.Visible = true;
-                    BindApplicants(SelectedRole);
+                    BindApplicants(DataUtils.GetInt(SelectedRole));
                 }
                 else
                 {
-                    dvCommonForm.Visible = false;
-                    dvIndividual.Visible = false;
-                    dvFarm.Visible = false;
-                    dvNewAddress.Visible = false;
                     dvExistingEntities.Visible = false;
-                    dvNewEntirySubmit.Visible = false;
                 }
+
+                dvCommonForm.Visible = false;
+                dvIndividual.Visible = false;
+                dvFarm.Visible = false;
+                dvNewAddress.Visible = false;
+                dvNewEntirySubmit.Visible = false;
             }
             else
             {
@@ -59,56 +60,63 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    string SelectedRole = ddlEntityRole.SelectedItem.ToString();
-                    dvCommonForm.Visible = true;
-                    dvNewEntirySubmit.Visible = true;
-
-                    if (SelectedRole.ToLower() == "individual")
-                    {
-                        CommonFormHeader.InnerText = "Entity";
-                        dvIndividual.Visible = true;
-                        dvFarm.Visible = false;
-                        dvNewAddress.Visible = false;
-                    }
-                    else if (SelectedRole.ToLower() == "organization")
-                    {
-                        CommonFormHeader.InnerText = "Entity Organization";
-                        dvIndividual.Visible = false;
-                        dvFarm.Visible = false;
-                        dvNewAddress.Visible = false;
-                    }
-                    else if (SelectedRole.ToLower() == "farm")
-                    {
-                        CommonFormHeader.InnerText = "Entity";
-                        dvIndividual.Visible = false;
-                        dvFarm.Visible = true;
-                        dvNewAddress.Visible = false;
-                    }
-                    else
-                    {
-                        CommonFormHeader.InnerText = "Entity";
-                        dvCommonForm.Visible = false;
-                        dvIndividual.Visible = false;
-                        dvFarm.Visible = false;
-                        dvNewAddress.Visible = false;
-                    }
+                    DisplayPanelsBasedOnEntityRole();
                 }
+            }
+        }
+
+        private void DisplayPanelsBasedOnEntityRole()
+        {
+            string SelectedRole = ddlEntityRole.SelectedItem.ToString();
+            dvCommonForm.Visible = true;
+            dvNewEntirySubmit.Visible = true;
+
+            if (SelectedRole.ToLower() == "individual")
+            {
+                CommonFormHeader.InnerText = "Entity";
+                dvIndividual.Visible = true;
+                dvFarm.Visible = false;
+                dvNewAddress.Visible = false;
+            }
+            else if (SelectedRole.ToLower() == "organization")
+            {
+                CommonFormHeader.InnerText = "Entity Organization";
+                dvIndividual.Visible = false;
+                dvFarm.Visible = false;
+                dvNewAddress.Visible = false;
+            }
+            else if (SelectedRole.ToLower() == "farm")
+            {
+                CommonFormHeader.InnerText = "Entity";
+                dvIndividual.Visible = false;
+                dvFarm.Visible = true;
+                dvNewAddress.Visible = false;
+            }
+            else
+            {
+                CommonFormHeader.InnerText = "Entity";
+                dvCommonForm.Visible = false;
+                dvIndividual.Visible = false;
+                dvFarm.Visible = false;
+                dvNewAddress.Visible = false;
             }
         }
 
         private void BindControls()
         {
+            BindLookUP(ddlEntityRole, 170);
             BindLookUP(ddlEntityType, 103);
             BindLookUP(ddlPosition, 117);
+            BindLookUP(ddlFarmType, 106);
         }
 
-        protected void BindApplicants(string Role)
+        protected void BindApplicants(int RoleId)
         {
             try
             {
                 ddlEntityName.Items.Clear();
-                ddlEntityName.DataSource = ApplicantData.GetSortedApplicants();
-                ddlEntityName.DataValueField = "appnameid";
+                ddlEntityName.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId);
+                ddlEntityName.DataValueField = "ApplicantId";
                 ddlEntityName.DataTextField = "Applicantname";
                 ddlEntityName.DataBind();
                 ddlEntityName.Items.Insert(0, new ListItem("Select", "NA"));
@@ -150,6 +158,7 @@ namespace vhcbcloud
             dvNewAddress.Visible = false;
             dvExistingEntities.Visible = false;
             dvNewEntirySubmit.Visible = false;
+            ClearForm();
         }
 
         protected void ddlEntityRole_SelectedIndexChanged(object sender, EventArgs e)
@@ -220,41 +229,145 @@ namespace vhcbcloud
             {
                 EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
                     txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
-                    txtTitle.Text, 123, null, 0, 0, 0,
+                    txtTitle.Text, null, 0, 0, 0,
                     0, 0, 0, false, null, null,
                     0);
-                PopulateEntity(objEntityMaintResult.ApplicantId);
+                ClearForm();
+                PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
             }
             else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
             {
-                EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
+                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
                    null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
-                   null, 123, null, 0, 0, 0,
+                   null, null, 0, 0, 0,
                    0, 0, 0, false, null, null,
                    0);
+                ClearForm();
+                PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
             }
-            else if(ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
+            else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
             {
-                EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
+                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
                    null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
-                   null, 123, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
+                   null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                    DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
                    DataUtils.GetInt(txtYearsManagingForm.Text));
+                ClearForm();
+                PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
             }
+            
         }
 
-        private void PopulateEntity(int applicantId)
+        private void PopulateEntity(int ApplicantId, int EntityRole)
         {
+            hfApplicantId.Value = ApplicantId.ToString();
             rdBtnAction.SelectedIndex = 1;
             RadioButtonSelectionChanged();
             dvExistingEntities.Visible = true;
-            BindApplicants("1");
-            ddlEntityName.SelectedValue = applicantId.ToString();
+
+            PopulateDropDown(ddlEntityRole, EntityRole.ToString());
+
+            BindApplicants(EntityRole);
+            PopulateDropDown(ddlEntityName, ApplicantId.ToString());
+            EntityNameChanged();
         }
 
         protected void ddlEntityName_SelectedIndexChanged(object sender, EventArgs e)
         {
+            EntityNameChanged();
+        }
 
+        private void EntityNameChanged()
+        {
+            ClearForm();
+            DisplayPanelsBasedOnEntityRole();
+
+            DataRow drEntityData = EntityMaintenanceData.GetEntityData(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()));
+            if (drEntityData != null)
+            {
+                PopulateForm(drEntityData);
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
+        private void PopulateForm(DataRow drEntityData)
+        {
+            PopulateDropDown(ddlEntityType, drEntityData["LkEntityType"].ToString());
+            txtFiscalYearEnd.Text = drEntityData["FYend"].ToString(); 
+            txtWebsite.Text = drEntityData["website"].ToString();
+
+            if (drEntityData["WorkPhone"].ToString() == "")
+                txtWorkPhone.Text = "";
+            else
+                txtWorkPhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["WorkPhone"].ToString()));
+
+            if (drEntityData["CellPhone"].ToString() == "")
+                txtCellPhone.Text = "";
+            else
+                txtCellPhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["CellPhone"].ToString()));
+
+            if (drEntityData["HomePhone"].ToString() == "")
+                txtHomePhone.Text = "";
+            else
+                txtHomePhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["HomePhone"].ToString()));
+
+            txtStateVendorId.Text = drEntityData["Stvendid"].ToString();
+            txtApplicantName.Text = drEntityData["Applicantname"].ToString();
+            txtFirstName.Text = drEntityData["Firstname"].ToString();
+            txtLastName.Text = drEntityData["Lastname"].ToString();
+            PopulateDropDown(ddlPosition, drEntityData["LkPosition"].ToString());
+            txtTitle.Text = drEntityData["Title"].ToString();
+            txtEmail.Text = drEntityData["email"].ToString();
+            txtFarmName.Text = drEntityData["FarmName"].ToString();
+            PopulateDropDown(ddlFarmType, drEntityData["LkFVEnterpriseType"].ToString());
+            txtAcresInProduction.Text = drEntityData["AcresInProduction"].ToString(); ;
+            txtAcresOwned.Text = drEntityData["AcresOwned"].ToString(); ;
+            txtAcresLeased.Text = drEntityData["AcresLeased"].ToString(); ;
+            txtAcresLeasedOut.Text = drEntityData["AcresLeasedOut"].ToString(); ;
+            txtTotalAcres.Text = drEntityData["TotalAcres"].ToString(); ;
+            cbIsNoLongerBusiness.Checked = DataUtils.GetBool(drEntityData["OutOFBiz"].ToString());
+            txtNotes.Text = drEntityData["Notes"].ToString();
+            txtAgrEdu.Text = drEntityData["AgEd"].ToString();
+            txtYearsManagingForm.Text = drEntityData["YearsManagingFarm"].ToString();
+        }
+
+        private void ClearForm()
+        {
+            ddlEntityType.SelectedIndex = -1;
+            txtFiscalYearEnd.Text = "";
+            txtWebsite.Text = "";
+            txtHomePhone.Text = "";
+            txtWorkPhone.Text = "";
+            txtCellPhone.Text = "";
+            txtStateVendorId.Text = "";
+            txtApplicantName.Text = "";
+            txtFirstName.Text = "";
+            txtLastName.Text = "";
+            ddlPosition.SelectedIndex = -1;
+            txtTitle.Text = "";
+            txtEmail.Text = "";
+            txtFarmName.Text = "";
+            ddlFarmType.SelectedIndex = -1;
+            txtAcresInProduction.Text = "";
+            txtAcresOwned.Text = "";
+            txtAcresLeased.Text = "";
+            txtAcresLeasedOut.Text = "";
+            txtTotalAcres.Text = "";
+            cbIsNoLongerBusiness.Checked = false;
+            txtNotes.Text = "";
+            txtAgrEdu.Text = "";
+            txtYearsManagingForm.Text = "";
         }
     }
 }

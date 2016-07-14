@@ -35,10 +35,6 @@
                             <td style="width: 100px"><span class="labelClass">Entity Role</span></td>
                             <td style="width: 170px">
                                 <asp:DropDownList ID="ddlEntityRole" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlEntityRole_SelectedIndexChanged">
-                                    <asp:ListItem Value="NA">Select</asp:ListItem>
-                                    <asp:ListItem Value="1">Individual</asp:ListItem>
-                                    <asp:ListItem Value="2">Organization</asp:ListItem>
-                                    <asp:ListItem Value="3">Farm</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
                             <td style="width: 2px"></td>
@@ -494,6 +490,7 @@
                 </div>
 
                 <asp:HiddenField ID="hfVillage" runat="server" />
+                <asp:HiddenField ID="hfApplicantId" runat="server" />
             </div>
         </div>
     </div>
