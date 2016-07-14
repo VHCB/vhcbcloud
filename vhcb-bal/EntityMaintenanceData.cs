@@ -13,7 +13,7 @@ namespace VHCBCommon.DataAccessLayer
     {
 
         public static EntityMaintResult AddNewEntity(int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
-            string ApplicantName, string Fname, string Lname, int Position, string Title, int UserID, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
+            string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm)
         {
             try
@@ -41,7 +41,6 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Lname", Lname));
                         command.Parameters.Add(new SqlParameter("Position", Position));
                         command.Parameters.Add(new SqlParameter("Title", Title == "" ? System.Data.SqlTypes.SqlString.Null : Title));
-                        command.Parameters.Add(new SqlParameter("UserID", UserID));
 
                         command.Parameters.Add(new SqlParameter("FarmName", FarmName));
                         command.Parameters.Add(new SqlParameter("LkFVEnterpriseType", LkFVEnterpriseType));
@@ -80,6 +79,74 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static DataRow GetEntityData(int ApplicantId)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEntityData";
+                        command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataTable GetEntitiesByRole(int LKEntityType2)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetEntitiesByRole";
+                command.Parameters.Add(new SqlParameter("LKEntityType2", LKEntityType2));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
         }
     }
 

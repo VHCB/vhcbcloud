@@ -12,7 +12,7 @@ create procedure dbo.AddNewEntity
 	@LKEntityType2		int,
 	@FYend				nvarchar(5),
 	@Website			nvarchar(75),
-	@Email				nvarchar(75),
+	@Email				nvarchar(75) = null,
 	@HomePhone			nchar(10) = null,
 	@WorkPhone			nchar(10) = null,
 	@CellPhone			nchar(10) = null,
@@ -23,7 +23,6 @@ create procedure dbo.AddNewEntity
 	@Lname				varchar(35) = null,
 	@Position			int	= null,
 	@Title				nvarchar(50) = null,
-	@UserID				int = null,
  
 	@FarmName			nvarchar(50) = null,
 	@LkFVEnterpriseType int = null,
@@ -49,7 +48,7 @@ begin transaction
 
 	set @isDuplicate = 0
 
-	if (@LKEntityType2 = 1)--Individual
+	if (@LKEntityType2 = 26243)--Individual
 	begin
 
 		insert into contact (Firstname, Lastname, LkPosition, Title)
@@ -57,8 +56,8 @@ begin transaction
 
 		set @contactid = @@identity;
 
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, UserID)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @UserID)
+		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
+		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
 
 		set @applicantid = @@identity;
 
@@ -72,10 +71,10 @@ begin transaction
 		values (@applicantid, @appnameid, 1)
 
 	end
-	else if (@LKEntityType2 = 2)--Organization
+	else if (@LKEntityType2 = 26242)--Organization
 	begin
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, UserID)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @UserID)
+		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
+		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
 
 		set @applicantid = @@identity;
 
@@ -86,17 +85,17 @@ begin transaction
 		insert into applicantappname (applicantid, appnameid, defname)
 		values (@applicantid, @appnameid, 1)
 	end
-	else if (@LKEntityType2 = 3)--Farm
+	else if (@LKEntityType2 = 26244)--Farm
 	begin
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, UserID)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @UserID)
+		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
+		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
 
 		set @applicantid = @@identity;
 
 		insert into Farm(ApplicantID, FarmName, LkFVEnterpriseType, AcresInProduction, AcresOwned, AcresLeased, AcresLeasedOut, TotalAcres, OutOFBiz, 
-			Notes, AgEd, YearsManagingFarm)
+			Notes, AgEd, YearsManagingFarm, DateCreated)
 		values(@applicantid, @FarmName, @LkFVEnterpriseType, @AcresInProduction, @AcresOwned, @AcresLeased, @AcresLeasedOut, @TotalAcres, @OutOFBiz, 
-			@Notes, @AgEd, @YearsManagingFarm)
+			@Notes, @AgEd, @YearsManagingFarm, getdate())
 	end
 
 	end try
@@ -112,3 +111,66 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEntityData]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEntityData
+go
+
+create procedure dbo.GetEntityData
+(
+	@ApplicantId		int
+)
+as
+begin
+--exec GetEntityData 1070
+	declare @LKEntityType2 int
+
+	select @LKEntityType2 = LKEntityType2
+	from applicant a(nolock) 
+	where  a.ApplicantId = @ApplicantId
+
+	select a.LkEntityType, a.LKEntityType2, a.Individual, a.FYend, a.website, a.email, a.HomePhone, a.WorkPhone, a.CellPhone, a.Stvendid,
+		c.Firstname, c.Lastname, c.LkPosition, c.Title,
+		an.Applicantname,
+		f.ApplicantID, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, f.OutOFBiz, 
+			f.Notes, f.AgEd, f.YearsManagingFarm
+	from applicant a(nolock) 
+	left join applicantcontact ac(nolock) on ac.ApplicantID = a.ApplicantID
+	left join contact c(nolock) on c.ContactId = ac.ContactID
+	left join applicantappname aan(nolock) on aan.ApplicantID = a.ApplicantId
+	left join appname an(nolock) on an.AppNameID = aan.AppNameID
+	left join farm f(nolock) on f.ApplicantID = a.ApplicantId
+	where  a.ApplicantId = @ApplicantId
+
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEntitiesByRole]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEntitiesByRole
+go
+
+create procedure dbo.GetEntitiesByRole
+(
+	@LKEntityType2	int
+)
+as
+begin
+--exec GetEntitiesByRole 26242
+	if(@LKEntityType2 != 26244)
+	begin
+		select a.ApplicantId, an.ApplicantName 
+		from Appname an(nolock)
+		join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
+		join applicant a(nolock) on a.applicantid = aan.ApplicantID
+		where LKEntityType2 = @LKEntityType2
+		order by an.Applicantname asc 
+	end
+	else
+	begin
+		select a.ApplicantId, f.FarmName as ApplicantName
+		from Farm f(nolock)
+		join Applicant a(nolock) on a.ApplicantId = f.ApplicantID
+	end
+end
+go
