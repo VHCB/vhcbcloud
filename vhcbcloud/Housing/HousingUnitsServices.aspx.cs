@@ -87,7 +87,7 @@ namespace vhcbcloud.Housing
                     dvNewMultiple.Visible = false;
                     dvNewSuppServices.Visible = false;
                     dvNewVHCBAff.Visible = false;
-                    dvNewHomeAff.Visible = false;
+                    //dvNewHomeAff.Visible = false;
 
                 }
                 else
@@ -99,7 +99,7 @@ namespace vhcbcloud.Housing
                     dvNewMultiple.Visible = true;
                     dvNewSuppServices.Visible = true;
                     dvNewVHCBAff.Visible = true;
-                    dvNewHomeAff.Visible = true;
+                    //dvNewHomeAff.Visible = true;
                 }
 
                 BindGrids();
@@ -113,7 +113,7 @@ namespace vhcbcloud.Housing
             BindMultiUnitGrid();
             BindSuppServiceGrid();
             BindVHCBAffordGrid();
-            BindHomeAffordGrid();
+            //BindHomeAffordGrid();
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -179,7 +179,7 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlMultipleUnitCharacteristic, 96);
             BindLookUP(ddlSuppService, 87);
             BindLookUP(ddlVHCBAff, 109);
-            BindLookUP(ddlHomeAff, 109);
+            //BindLookUP(ddlHomeAff, 109);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -906,119 +906,119 @@ namespace vhcbcloud.Housing
             BindVHCBAffordGrid();
         }
 
-        protected void btnAddHomeAff_Click(object sender, EventArgs e)
-        {
-            if (ddlHomeAff.SelectedIndex == 0)
-            {
-                LogMessage("Select Home");
-                ddlHomeAff.Focus();
-                return;
-            }
+        //protected void btnAddHomeAff_Click(object sender, EventArgs e)
+        //{
+        //    if (ddlHomeAff.SelectedIndex == 0)
+        //    {
+        //        LogMessage("Select Home");
+        //        ddlHomeAff.Focus();
+        //        return;
+        //    }
 
-            if (string.IsNullOrWhiteSpace(txtHomeUnits.Text.ToString()) == true)
-            {
-                LogMessage("Enter Units");
-                txtHomeUnits.Focus();
-                return;
-            }
-            if (DataUtils.GetDecimal(txtHomeUnits.Text) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                txtHomeUnits.Focus();
-                return;
-            }
+        //    if (string.IsNullOrWhiteSpace(txtHomeUnits.Text.ToString()) == true)
+        //    {
+        //        LogMessage("Enter Units");
+        //        txtHomeUnits.Focus();
+        //        return;
+        //    }
+        //    if (DataUtils.GetDecimal(txtHomeUnits.Text) <= 0)
+        //    {
+        //        LogMessage("Enter valid Units");
+        //        txtHomeUnits.Focus();
+        //        return;
+        //    }
 
-            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingHomeAffordUnits(DataUtils.GetInt(hfHousingID.Value),
-                DataUtils.GetInt(ddlHomeAff.SelectedValue.ToString()), DataUtils.GetInt(txtHomeUnits.Text));
-            ddlHomeAff.SelectedIndex = -1;
-            txtHomeUnits.Text = "";
-            cbAddHomeAff.Checked = false;
+        //    HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingHomeAffordUnits(DataUtils.GetInt(hfHousingID.Value),
+        //        DataUtils.GetInt(ddlHomeAff.SelectedValue.ToString()), DataUtils.GetInt(txtHomeUnits.Text));
+        //    ddlHomeAff.SelectedIndex = -1;
+        //    txtHomeUnits.Text = "";
+        //    cbAddHomeAff.Checked = false;
 
-            BindHomeAffordGrid();
+        //    BindHomeAffordGrid();
 
-            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Home Affordability Units already exist as in-active");
-            else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Home Affordability Units already exist");
-            else
-                LogMessage("New Home Affordability Units added successfully");
-        }
+        //    if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
+        //        LogMessage("Home Affordability Units already exist as in-active");
+        //    else if (objHousingUnitseResult.IsDuplicate)
+        //        LogMessage("Home Affordability Units already exist");
+        //    else
+        //        LogMessage("New Home Affordability Units added successfully");
+        //}
 
-        protected void gvNewHomeAff_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvNewHomeAff.EditIndex = e.NewEditIndex;
-            BindHomeAffordGrid();
-        }
+        //protected void gvNewHomeAff_RowEditing(object sender, GridViewEditEventArgs e)
+        //{
+        //    gvNewHomeAff.EditIndex = e.NewEditIndex;
+        //    BindHomeAffordGrid();
+        //}
 
-        protected void gvNewHomeAff_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvNewHomeAff.EditIndex = -1;
-            BindHomeAffordGrid();
-        }
+        //protected void gvNewHomeAff_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        //{
+        //    gvNewHomeAff.EditIndex = -1;
+        //    BindHomeAffordGrid();
+        //}
 
-        protected void gvNewHomeAff_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
+        //protected void gvNewHomeAff_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
 
-            string strUnits = ((TextBox)gvNewHomeAff.Rows[rowIndex].FindControl("txtHomeNumunits")).Text;
+        //    string strUnits = ((TextBox)gvNewHomeAff.Rows[rowIndex].FindControl("txtHomeNumunits")).Text;
 
-            if (string.IsNullOrWhiteSpace(strUnits) == true)
-            {
-                LogMessage("Enter Units");
-                return;
-            }
-            if (DataUtils.GetDecimal(strUnits) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                return;
-            }
+        //    if (string.IsNullOrWhiteSpace(strUnits) == true)
+        //    {
+        //        LogMessage("Enter Units");
+        //        return;
+        //    }
+        //    if (DataUtils.GetDecimal(strUnits) <= 0)
+        //    {
+        //        LogMessage("Enter valid Units");
+        //        return;
+        //    }
 
-            int ProjectHomeAffordUnitsID = DataUtils.GetInt(((Label)gvNewHomeAff.Rows[rowIndex].FindControl("lblProjectHomeAffordUnitsID")).Text);
-            int Units = DataUtils.GetInt(strUnits);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvNewHomeAff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+        //    int ProjectHomeAffordUnitsID = DataUtils.GetInt(((Label)gvNewHomeAff.Rows[rowIndex].FindControl("lblProjectHomeAffordUnitsID")).Text);
+        //    int Units = DataUtils.GetInt(strUnits);
+        //    bool RowIsActive = Convert.ToBoolean(((CheckBox)gvNewHomeAff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            HousingUnitsServicesData.UpdateHousingHomeAffordUnits(ProjectHomeAffordUnitsID, Units, RowIsActive);
-            gvNewHomeAff.EditIndex = -1;
+        //    HousingUnitsServicesData.UpdateHousingHomeAffordUnits(ProjectHomeAffordUnitsID, Units, RowIsActive);
+        //    gvNewHomeAff.EditIndex = -1;
 
-            LogMessage("Home Affordability Units updated successfully");
+        //    LogMessage("Home Affordability Units updated successfully");
 
-            BindHomeAffordGrid();
-        }
+        //    BindHomeAffordGrid();
+        //}
 
-        private void BindHomeAffordGrid()
-        {
-            try
-            {
-                DataTable dt = HousingUnitsServicesData.GetHousingHomeAffordUnitsList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
+        //private void BindHomeAffordGrid()
+        //{
+        //    try
+        //    {
+        //        DataTable dt = HousingUnitsServicesData.GetHousingHomeAffordUnitsList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
 
-                if (dt.Rows.Count > 0)
-                {
-                    dvHomeAffGrid.Visible = true;
-                    gvNewHomeAff.DataSource = dt;
-                    gvNewHomeAff.DataBind();
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            dvHomeAffGrid.Visible = true;
+        //            gvNewHomeAff.DataSource = dt;
+        //            gvNewHomeAff.DataBind();
 
-                    Label lblFooterHomeTotalUnits = (Label)gvNewHomeAff.FooterRow.FindControl("lblFooterHomeTotalUnits");
-                    int totHomeUnits = 0;
+        //            Label lblFooterHomeTotalUnits = (Label)gvNewHomeAff.FooterRow.FindControl("lblFooterHomeTotalUnits");
+        //            int totHomeUnits = 0;
 
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
-                            totHomeUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
-                    }
+        //            for (int i = 0; i < dt.Rows.Count; i++)
+        //            {
+        //                if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+        //                    totHomeUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
+        //            }
 
-                    lblFooterHomeTotalUnits.Text = totHomeUnits.ToString();
-                }
-                else
-                {
-                    dvHomeAffGrid.Visible = false;
-                    gvNewHomeAff.DataSource = null;
-                    gvNewHomeAff.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindHomeAffordGrid", "", ex.Message);
-            }
-        }
+        //            lblFooterHomeTotalUnits.Text = totHomeUnits.ToString();
+        //        }
+        //        else
+        //        {
+        //            dvHomeAffGrid.Visible = false;
+        //            gvNewHomeAff.DataSource = null;
+        //            gvNewHomeAff.DataBind();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindHomeAffordGrid", "", ex.Message);
+        //    }
+        //}
     }
 }
