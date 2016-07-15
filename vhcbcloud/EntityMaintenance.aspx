@@ -7,15 +7,17 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <table>
+                     <table style="width: 100%;">
                         <tr style="float: left">
-                            <td></td>
                             <td>
                                 <asp:RadioButtonList ID="rdBtnAction" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
                                     OnSelectedIndexChanged="rdBtnAction_SelectedIndexChanged">
                                     <asp:ListItem>New</asp:ListItem>
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList>
+                            </td>
+                              <td style="text-align: right;">
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                     </table>
@@ -291,6 +293,25 @@
                     </div>
                 </div>
 
+                <div id="dvNewEntirySubmit" runat="server">
+                    <table>
+                        <tr>
+                            <td style="height: 10px" colspan="5">&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
+                            <td style="height: 5px"></td>
+                            <td style="height: 5px"></td>
+                            <td style="height: 5px">
+                                <asp:Button ID="btnEntitySubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnEntitySubmit_Click" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 10px"></td>
+                        </tr>
+                    </table>
+                </div>
+
                 <div class="panel-width" runat="server" id="dvNewAddress">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
                         <div class="panel-heading" style="padding: 5px 5px 1px 5px">
@@ -310,29 +331,35 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Street #</span></td>
+                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
                                         <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+
+                                        <td style="width: 100px"><span class="labelClass">Street #</span></td>
+                                        <td style="width: 270px">
                                             <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox><%-- onkeyup="SetContextKey()"--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="ae_txtStreetNo" runat="server" TargetControlID="txtStreetNo" MinimumPrefixLength="1"
                                                 EnableCaching="true" CompletionSetCount="1" CompletionListCssClass="clsAutoExtDropDown"
                                                 CompletionInterval="100" ServiceMethod="GetAddress1" OnClientItemSelected="GetAddressDetails" OnClientPopulated="onListPopulated">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 170px">
                                             <span class="labelClass">Address1:</span>
                                         </td>
-                                        <td style="width: 270px">
-                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddress1" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
+                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
+                                        </td>
                                         <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
@@ -342,11 +369,6 @@
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 170px"><span class="labelClass">Village</span></td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -377,13 +399,13 @@
                                         <td style="width: 250px">
                                             <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
-                                        <td style="width: 150px"><span class="labelClass">Lattitude</span></td>
+                                        <td style="width: 150px"><span class="labelClass"></span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtLattitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            
                                         </td>
-                                        <td><span class="labelClass">Longitude</span></td>
+                                        <td><span class="labelClass"></span></td>
                                         <td>
-                                            <asp:TextBox ID="txtLongitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            
                                         </td>
                                     </tr>
                                     <tr>
@@ -405,12 +427,12 @@
                             </asp:Panel>
                         </div>
 
-                        <%-- <div class="panel-body" id="dvAddressGrid" runat="server">
+                         <div class="panel-body" id="dvAddressGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
-                                    OnRowEditing="gvAddress_RowEditing1" OnRowUpdating="gvAddress_RowUpdating1">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit" OnRowDataBound="gvAddress_RowDataBound"
+                                    OnRowEditing="gvAddress_RowEditing">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -420,6 +442,11 @@
                                         <asp:TemplateField HeaderText="Address Id" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAddressId" runat="Server" Text='<%# Eval("AddressId") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Address Type">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAddressType" runat="Server" Text='<%# Eval("AddressType") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="St.##">
@@ -454,7 +481,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Default">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDefault" runat="Server" Text='<%# Eval("PrimaryAdd") %>' />
+                                                <asp:Label ID="lblDefault" runat="Server" Text='<%# Eval("Defaddress") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -466,36 +493,19 @@
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
-                        </div>--%>
+                        </div>
                     </div>
                 </div>
 
-                <div id="dvNewEntirySubmit" runat="server">
-                    <table>
-                        <tr>
-                            <td style="height: 10px" colspan="5">&nbsp;&nbsp;&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td style="height: 5px">&nbsp;&nbsp;&nbsp;</td>
-                            <td style="height: 5px"></td>
-                            <td style="height: 5px"></td>
-                            <td style="height: 5px">
-                                <asp:Button ID="btnEntitySubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnEntitySubmit_Click" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="height: 10px"></td>
-                        </tr>
-                    </table>
-                </div>
-
                 <asp:HiddenField ID="hfVillage" runat="server" />
-                <asp:HiddenField ID="hfApplicantId" runat="server" />
+                <asp:HiddenField ID="hfApplicatId" runat="server" />
+                <asp:HiddenField ID="hfAddressId" runat="server" />
+                <asp:HiddenField ID="hfFarmId" runat="server" />
             </div>
         </div>
     </div>
 
-    <script language="javascript" src="https://maps.google.com/maps/api/js"></script>
+    <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU"></script>
     <script language="javascript">
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
@@ -517,76 +527,19 @@
             $('#<%=txtZip.ClientID%>').val(addressArray[4]);
             $('#<%=txtTown.ClientID%>').val(addressArray[5]);
             $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
-            $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
-            $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
-            $('#<%=ddlVillages.ClientID%>').empty();
-            $('#<%=ddlVillages.ClientID%>').append($("<option></option>").val(addressArray[9]).html(addressArray[9]));
         }
 
         $(document).ready(function () {
-
             $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
             }).change();
 
+
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
-                $('#<%=hfVillage.ClientID%>').val('');
-                LoadVillages();
             });
-
-            $('#<%= btnAddAddress.ClientID%>').click(function () {
-                //console.log($('#<%= ddlVillages.ClientID%>').val());
-                $('#<%=hfVillage.ClientID%>').val($('#<%= ddlVillages.ClientID%>').val());
-            });
-
-           <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
-                alert('Rama');
-                RefreshGrids();
-            });--%>
         });
-
-        function LoadVillages() {
-            $.ajax({
-                type: "POST",
-                url: "ProjectMaintenance.aspx/BindDropdownlist",
-                data: '{zip: "' + $("#<%=txtZip.ClientID%>").val() + '" }',
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var jsdata = JSON.parse(data.d);
-                    console.log('jsdata :' + jsdata);
-
-                    $('#<%=ddlVillages.ClientID%>').empty();
-
-                    $.each(jsdata, function (key, value) {
-
-                       <%-- if(key = 0)
-                        $('#<%=ddlVillages.ClientID%>')
-                            .append($("<option></option>").val(value.ID).html(value.Name).attr("selected", "selected"));--%>
-
-                        $('#<%=ddlVillages.ClientID%>')
-                            .append($("<option></option>").val(value.ID).html(value.Name));
-
-                        //$('#<%=hfVillage.ClientID%>').val(value.Name);
-                    });
-                },
-                error: function (data) {
-                    alert("error found");
-                }
-            });
-        }
-
-        function OnSuccess(result) {
-            if (result) {
-                console.log('OnSuccess');
-            }
-        }
-
-        function OnFailure(error) {
-            console.log('OnFailure');
-        }
 
         function getLocation() {
             getAddressInfoByZip(document.forms[0].zip.value);
@@ -595,20 +548,15 @@
         function response(obj) {
             console.log(obj);
         }
-
         function getAddressInfoByZip(zip) {
             $('#<%= txtTown.ClientID%>').val('');
             $('#<%= txtState.ClientID%>').val('');
             $('#<%= txtCounty.ClientID%>').val('');
             if (zip.length >= 5 && typeof google != 'undefined') {
-                console.log('Zip : ' + zip);
                 var addr = {};
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode({ 'address': zip }, function (results, status) {
-                    console.log('here 1');
                     if (status == google.maps.GeocoderStatus.OK) {
-                        console.log('Hi: ' + JSON.stringify(results[0]));
-                        console.log(JSON.stringify(results[0].geometry.location.lat));
                         if (results.length >= 1) {
                             for (var ii = 0; ii < results[0].address_components.length; ii++) {
                                 var street_number = route = street = city = state = zipcode = country = formatted_address = '';
@@ -639,9 +587,6 @@
                                 }
                             }
                             addr.success = true;
-                            $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
-                            $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
-
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }
@@ -658,5 +603,4 @@
             }
         }
     </script>
-
 </asp:Content>
