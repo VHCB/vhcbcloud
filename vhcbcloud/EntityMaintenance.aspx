@@ -8,7 +8,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                      <table style="width: 100%;">
-                        <tr style="float: left">
+                        <tr>
                             <td>
                                 <asp:RadioButtonList ID="rdBtnAction" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
                                     OnSelectedIndexChanged="rdBtnAction_SelectedIndexChanged">
@@ -507,6 +507,26 @@
 
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU"></script>
     <script language="javascript">
+         $('#<%= txtFirstName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtLastName.ClientID %>').val());
+        });
+
+        $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
+        });
+
+        if($('#<%=ddlEntityRole.ClientID %> option:selected').text() == 'Individual')
+        {
+            $('#<%= txtApplicantName.ClientID %>')
+               .attr("disabled", "disabled")
+        }
+        else
+        {
+          $('#<%= txtApplicantName.ClientID %>')
+                   .removeAttr("disabled")
+        }
+
+
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
         }
