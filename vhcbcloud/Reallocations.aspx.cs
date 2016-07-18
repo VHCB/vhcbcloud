@@ -176,6 +176,8 @@ namespace vhcbcloud
         public void ClearReallocationFromPanel()
         {
             ddlRFromProj.SelectedIndex = 0;
+            ddlRFromFund.DataSource = null;
+            ddlRFromFund.DataBind();
             txtRfromDate.Text = "";
             txtRfromAmt.Text = "";
         }
