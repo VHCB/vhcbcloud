@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntityMaintenance.aspx.cs" Inherits="vhcbcloud.EntityMaintenance" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntityMaintenance.aspx.cs" Inherits="vhcbcloud.EntityMaintenance" 
+    MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -7,7 +8,7 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                     <table style="width: 100%;">
+                    <table style="width: 100%;">
                         <tr>
                             <td>
                                 <asp:RadioButtonList ID="rdBtnAction" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
@@ -16,7 +17,7 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
-                              <td style="text-align: right;">
+                            <td style="text-align: right;">
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -331,7 +332,7 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Address Type</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -356,7 +357,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 170px"><span class="labelClass">Address2</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Address2</span></td>
                                         <td>
                                             <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
@@ -400,13 +401,9 @@
                                             <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
                                         <td style="width: 150px"><span class="labelClass"></span></td>
-                                        <td style="width: 250px">
-                                            
-                                        </td>
+                                        <td style="width: 250px"></td>
                                         <td><span class="labelClass"></span></td>
-                                        <td>
-                                            
-                                        </td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -427,7 +424,7 @@
                             </asp:Panel>
                         </div>
 
-                         <div class="panel-body" id="dvAddressGrid" runat="server">
+                        <div class="panel-body" id="dvAddressGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -444,7 +441,7 @@
                                                 <asp:Label ID="lblAddressId" runat="Server" Text='<%# Eval("AddressId") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Address Type">
+                                        <asp:TemplateField HeaderText="Address Type">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAddressType" runat="Server" Text='<%# Eval("AddressType") %>' />
                                             </ItemTemplate>
@@ -497,6 +494,183 @@
                     </div>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvNewAttribute">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Attributes</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Attribute" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvAttributeForm">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Attribute</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlAttribute" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="AddAttribute" runat="server" Text="Add" class="btn btn-info" OnClick="AddAttribute_Click" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvAttributeGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAttribute" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvAttribute_RowEditing" OnRowCancelingEdit="gvAttribute_RowCancelingEdit"
+                                    OnRowUpdating="gvAttribute_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Farm Attribute ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFarmAttributeID" runat="Server" Text='<%# Eval("FarmAttributeID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Attribute">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Attribute") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                            <%--<EditItemTemplate>
+                                                <asp:DropDownList ID="ddlAttributeE" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtLkConsAttrib" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConsAttrib") %>' Visible="false">
+                                                </asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewProduct">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Products</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddProduct" runat="server" Text="Add New Product" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvProductForm">
+                            <asp:Panel runat="server" ID="Panel4">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Product</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlProduct" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 140px"><span class="labelClass">Start Date</span></td>
+                                        <td style="width: 215px">
+                                            <asp:TextBox ID="txtStartDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtStartDate" TargetControlID="txtStartDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="btnAddProduct" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProduct_Click" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvProductGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvProduct" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvProduct_RowEditing" OnRowCancelingEdit="gvProduct_RowCancelingEdit"
+                                    OnRowUpdating="gvProduct_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Farm Products ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFarmProductsID" runat="Server" Text='<%# Eval("FarmProductsID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Attribute">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Product") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Start Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblStartDate" runat="Server" Text='<%# Eval("StartDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtStartDate" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("StartDate", "{0:MM/dd/yyyy}") %>'></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender runat="server" ID="ce_StartDate" TargetControlID="txtStartDate">
+                                                </ajaxToolkit:CalendarExtender>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
                 <asp:HiddenField ID="hfVillage" runat="server" />
                 <asp:HiddenField ID="hfApplicatId" runat="server" />
                 <asp:HiddenField ID="hfAddressId" runat="server" />
@@ -507,32 +681,40 @@
 
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU"></script>
     <script language="javascript">
-         $('#<%= txtFirstName.ClientID %>').bind('keypress keyup blur', function () {
+        $('#<%= txtFirstName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtLastName.ClientID %>').val());
         });
 
         $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
-        });
+         });
 
-        if($('#<%=ddlEntityRole.ClientID %> option:selected').text() == 'Individual')
-        {
+         if ($('#<%=ddlEntityRole.ClientID %> option:selected').text() == 'Individual') {
             $('#<%= txtApplicantName.ClientID %>')
                .attr("disabled", "disabled")
         }
-        else
-        {
-          $('#<%= txtApplicantName.ClientID %>')
-                   .removeAttr("disabled")
+        else {
+            $('#<%= txtApplicantName.ClientID %>')
+                     .removeAttr("disabled")
         }
+
+        $('#<%= dvAttributeForm.ClientID%>').toggle($('#<%= cbAddAttribute.ClientID%>').is(':checked'));
+        $('#<%= cbAddAttribute.ClientID%>').click(function () {
+            $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
+        }).change();
+
+        $('#<%= dvProductForm.ClientID%>').toggle($('#<%= cbAddProduct.ClientID%>').is(':checked'));
+        $('#<%= cbAddProduct.ClientID%>').click(function () {
+            $('#<%= dvProductForm.ClientID%>').toggle(this.checked);
+        }).change();
 
 
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
-        }
+            }
 
-        function onListPopulated() {
-            var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
+            function onListPopulated() {
+                var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
             completionList.style.width = 'auto';
             //completionList.style.css = 'clsAutoExtDropDownListItem';
         }

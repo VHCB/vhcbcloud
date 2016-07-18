@@ -400,12 +400,239 @@ namespace VHCBCommon.DataAccessLayer
         //    }
         //}
         #endregion Address
+
+        #region Attribute
+        public static DataTable GetFarmAttributesList(int FarmId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetFarmAttributesList";
+                        command.Parameters.Add(new SqlParameter("FarmId", FarmId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static FormAttributeResult AddFarmAttribute(int FarmId, int LKFarmAttributeID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddFarmAttribute";
+
+                        command.Parameters.Add(new SqlParameter("FarmId", FarmId));
+                        command.Parameters.Add(new SqlParameter("LKFarmAttributeID", LKFarmAttributeID));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        FormAttributeResult acs = new FormAttributeResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateFarmAttribute(int FarmAttributeID, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateFarmAttribute";
+
+                        command.Parameters.Add(new SqlParameter("FarmAttributeID", FarmAttributeID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Attribute
+
+        #region Products
+        public static DataTable GetFarmProductsList(int FarmId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetFarmProductsList";
+                        command.Parameters.Add(new SqlParameter("FarmId", FarmId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static FormAttributeResult AddFarmProducts(int FarmId, int LkProductCrop, DateTime StartDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddFarmProducts";
+
+                        command.Parameters.Add(new SqlParameter("FarmId", FarmId));
+                        command.Parameters.Add(new SqlParameter("LkProductCrop", LkProductCrop));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        FormAttributeResult acs = new FormAttributeResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateFarmProducts(int FarmProductsID, bool RowIsActive, DateTime StartDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateFarmProducts";
+
+                        command.Parameters.Add(new SqlParameter("FarmProductsID", FarmProductsID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion Products
     }
 
     public class EntityMaintResult
     {
         public bool IsDuplicate { set; get; }
         public int ApplicantId { set; get; }
+        public bool IsActive { set; get; }
+    }
+
+    public class FormAttributeResult
+    {
+        public bool IsDuplicate { set; get; }
         public bool IsActive { set; get; }
     }
 }

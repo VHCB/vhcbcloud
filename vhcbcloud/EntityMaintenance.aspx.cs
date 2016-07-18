@@ -46,6 +46,8 @@ namespace vhcbcloud
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
                 dvNewEntirySubmit.Visible = false;
+                dvNewAttribute.Visible = false;
+                dvNewProduct.Visible = false;
             }
             else
             {
@@ -57,6 +59,8 @@ namespace vhcbcloud
                     dvNewAddress.Visible = false;
                     dvExistingEntities.Visible = false;
                     dvNewEntirySubmit.Visible = false;
+                    dvNewAttribute.Visible = false;
+                    dvNewProduct.Visible = false;
                 }
                 else
                 {
@@ -78,6 +82,7 @@ namespace vhcbcloud
                 dvIndividual.Visible = true;
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
+                dvNewAttribute.Visible = false;
             }
             else if (SelectedRole.ToLower() == "organization")
             {
@@ -85,6 +90,7 @@ namespace vhcbcloud
                 dvIndividual.Visible = false;
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
+                dvNewAttribute.Visible = false;
             }
             else if (SelectedRole.ToLower() == "farm")
             {
@@ -92,6 +98,7 @@ namespace vhcbcloud
                 dvIndividual.Visible = false;
                 dvFarm.Visible = true;
                 dvNewAddress.Visible = false;
+                dvNewAttribute.Visible = false;
             }
             else
             {
@@ -100,6 +107,7 @@ namespace vhcbcloud
                 dvIndividual.Visible = false;
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
+                dvNewAttribute.Visible = false;
             }
         }
 
@@ -110,6 +118,8 @@ namespace vhcbcloud
             BindLookUP(ddlPosition, 117);
             BindLookUP(ddlFarmType, 106);
             BindLookUP(ddlAddressType, 1);
+            BindLookUP(ddlAttribute, 169);
+            BindLookUP(ddlProduct, 12);
         }
 
         protected void BindApplicants(int RoleId)
@@ -158,6 +168,8 @@ namespace vhcbcloud
             dvIndividual.Visible = false;
             dvFarm.Visible = false;
             dvNewAddress.Visible = false;
+            dvNewAttribute.Visible = false;
+            dvNewProduct.Visible = false;
             dvExistingEntities.Visible = false;
             dvNewEntirySubmit.Visible = false;
             ClearForm();
@@ -237,6 +249,8 @@ namespace vhcbcloud
         private void BindGrids()
         {
             BindAddressGrid();
+            BindAttributeGrid();
+            BindProductGrid();
         }
 
         private void BindAddressGrid()
@@ -451,6 +465,17 @@ namespace vhcbcloud
                 {
                     PopulateForm(drEntityData);
                     dvNewAddress.Visible = true;
+
+                    if (ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
+                    {
+                        dvNewAttribute.Visible = true;
+                        dvNewProduct.Visible = true;
+                    }
+                    else
+                    {
+                        dvNewAttribute.Visible = false;
+                        dvNewProduct.Visible = false;
+                    }
                     BindGrids();
                     btnEntitySubmit.Text = "Update";
                 }
@@ -462,7 +487,8 @@ namespace vhcbcloud
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
                 dvNewEntirySubmit.Visible = false;
-                dvNewAddress.Visible = false;
+                dvNewAttribute.Visible = false;
+                dvNewProduct.Visible = false;
 
                 cbAddAddress.Checked = false;
             }
@@ -669,6 +695,179 @@ namespace vhcbcloud
             }
 
             return true;
+        }
+
+        protected void AddAttribute_Click(object sender, EventArgs e)
+        {
+            if (ddlAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Attribute");
+                ddlAttribute.Focus();
+                return;
+            }
+
+            FormAttributeResult obAttributeResult = EntityMaintenanceData.AddFarmAttribute(DataUtils.GetInt(hfFarmId.Value),
+                DataUtils.GetInt(ddlAttribute.SelectedValue.ToString()));
+            ddlAttribute.SelectedIndex = -1;
+            cbAddAttribute.Checked = false;
+
+            BindAttributeGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Attribute already exist as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("Attribute already exist");
+            else
+                LogMessage("New Attribute added successfully");
+        }
+
+        private void BindAttributeGrid()
+        {
+            try
+            {
+                DataTable dt = EntityMaintenanceData.GetFarmAttributesList(DataUtils.GetInt(hfFarmId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAttributeGrid.Visible = true;
+                    gvAttribute.DataSource = dt;
+                    gvAttribute.DataBind();
+                }
+                else
+                {
+                    dvAttributeGrid.Visible = false;
+                    gvAttribute.DataSource = null;
+                    gvAttribute.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAttributeGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvAttribute_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAttribute.EditIndex = e.NewEditIndex;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAttribute.EditIndex = -1;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int FarmAttributeID = DataUtils.GetInt(((Label)gvAttribute.Rows[rowIndex].FindControl("lblFarmAttributeID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAttribute.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EntityMaintenanceData.UpdateFarmAttribute(FarmAttributeID, RowIsActive);
+            gvAttribute.EditIndex = -1;
+
+            BindAttributeGrid();
+
+            LogMessage("Attribute updated successfully");
+        }
+
+        protected void btnAddProduct_Click(object sender, EventArgs e)
+        {
+            if (ddlProduct.SelectedIndex == 0)
+            {
+                LogMessage("Select Product");
+                ddlProduct.Focus();
+                return;
+            }
+
+            if (txtStartDate.Text.Trim() == "")
+            {
+                LogMessage("Enter Start Date");
+                txtStartDate.Focus();
+                return;
+            }
+            else
+            {
+                if (!DataUtils.IsDateTime(txtStartDate.Text.Trim()))
+                {
+                    LogMessage("Enter Valid Start Date");
+                    txtStartDate.Focus();
+                    return;
+                }
+            }
+
+            FormAttributeResult obAttributeResult = EntityMaintenanceData.AddFarmProducts(DataUtils.GetInt(hfFarmId.Value),
+                DataUtils.GetInt(ddlProduct.SelectedValue.ToString()), DataUtils.GetDate(txtStartDate.Text));
+            ddlProduct.SelectedIndex = -1;
+            txtStartDate.Text = "";
+            cbAddProduct.Checked = false;
+
+            BindProductGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Product already exist as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("Product already exist");
+            else
+                LogMessage("New Product added successfully");
+        }
+
+        protected void gvProduct_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProduct.EditIndex = e.NewEditIndex;
+            BindProductGrid();
+        }
+
+        protected void gvProduct_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvProduct.EditIndex = -1;
+            BindProductGrid();
+        }
+
+        protected void gvProduct_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int FarmProductsID = DataUtils.GetInt(((Label)gvProduct.Rows[rowIndex].FindControl("lblFarmProductsID")).Text);
+            DateTime StartDate = Convert.ToDateTime(((TextBox)gvProduct.Rows[rowIndex].FindControl("txtStartDate")).Text);
+            //int LkDisp = DataUtils.GetInt(((DropDownList)gvMajor.Rows[rowIndex].FindControl("ddlMjrDispositionE")).SelectedValue.ToString());
+            //DateTime DispDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtDispDate")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvProduct.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EntityMaintenanceData.UpdateFarmProducts(FarmProductsID, RowIsActive, StartDate);
+
+            gvProduct.EditIndex = -1;
+
+            BindProductGrid();
+
+            LogMessage("Product Updated successfully");
+        }
+
+        private void BindProductGrid()
+        {
+            try
+            {
+                DataTable dt = EntityMaintenanceData.GetFarmProductsList(DataUtils.GetInt(hfFarmId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvProductGrid.Visible = true;
+                    gvProduct.DataSource = dt;
+                    gvProduct.DataBind();
+                }
+                else
+                {
+                    dvProductGrid.Visible = false;
+                    gvProduct.DataSource = null;
+                    gvProduct.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProductGrid", "", ex.Message);
+            }
         }
     }
 }
