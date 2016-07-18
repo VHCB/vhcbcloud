@@ -1329,6 +1329,20 @@ Begin
 end
 go
 
+alter procedure GetAvailableTransTypesPerProjFundId
+(
+	@fundId int,
+	@projectid int
+)
+as
+Begin
+	select distinct projectid,fundid,account,typeid,fundtype,name, proj_num,projectname,sum(detail) as availFunds
+	from vw_FinancialDetailSummary where fundid = @fundId and projectid = @projectid
+	group by projectid,fundid,account,typeid,fundtype,name, proj_num,projectname
+end
+go
+
+
 alter procedure GetCommittedFundPerProject
 (
 	@proj_num varchar(20)
@@ -1351,5 +1365,34 @@ Begin
 	select distinct projectid,fundid,account,typeid,fundtype,name, proj_num,projectname,sum(detail) as availFunds
 	from vw_FinancialDetailSummary where account = @account and projectid = @projectid and typeid = @fundtypeId
 	group by projectid,fundid,account,typeid,fundtype,name, proj_num,projectname
+end
+go
+
+alter procedure [dbo].[GetFundByProject]
+(
+	@projId int
+)
+as
+Begin
+	select distinct f.FundId, f.name, p.projectid  from Fund f 
+			join detail det on det.FundId = f.FundId
+			join Trans tr on tr.TransId = det.TransId
+			join Project p on p.ProjectID  = tr.ProjectID
+	where p.projectid = @projId
+	order by f.name
+end
+
+alter procedure [dbo].[GetExistingCommittedFundByProject]
+(
+	@projId int
+)
+as
+Begin
+	select distinct f.FundId, f.name, p.projectid, sum(det.Amount) as amount from Fund f 
+			join detail det on det.FundId = f.FundId
+			join Trans tr on tr.TransId = det.TransId
+			join Project p on p.ProjectID  = tr.ProjectID
+	where p.projectid = @projId and tr.LkTransaction = 240
+	group by f.FundId, f.name, p.ProjectId
 end
 go
