@@ -238,13 +238,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
         
         /// <summary>
-        /// imgBtnReallocate control.
+        /// btnReallocateSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton imgBtnReallocate;
+        protected global::System.Web.UI.WebControls.Button btnReallocateSubmit;
         
         /// <summary>
         /// gvReallocate control.

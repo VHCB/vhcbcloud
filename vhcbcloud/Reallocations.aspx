@@ -155,7 +155,7 @@
 
                                 </table>
                                 <br />
-                                <asp:LinkButton ID="imgBtnReallocate" runat="server" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="imgBtnReallocate_Click" />
+                                <asp:Button ID="btnReallocateSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnReallocateSubmit_Click" />
                                 <br />
                                 <br />
 
