@@ -630,7 +630,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvNewHomeAff">
+                <%--<div class="panel-width" runat="server" id="dvNewHomeAff">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -728,7 +728,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -778,11 +778,11 @@
                 $('#<%= dvVHCBAffForm.ClientID%>').toggle(this.checked);
             }).change();
 
-             $('#<%= dvHomeAffForm.ClientID%>').toggle($('#<%= cbAddHomeAff.ClientID%>').is(':checked'));
+             <%--$('#<%= dvHomeAffForm.ClientID%>').toggle($('#<%= cbAddHomeAff.ClientID%>').is(':checked'));
 
             $('#<%= cbAddHomeAff.ClientID%>').click(function () {
                 $('#<%= dvHomeAffForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
         });
 
         function CalculateNewUnits() {
