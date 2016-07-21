@@ -61,6 +61,7 @@ namespace vhcbcloud
             BindLookUP(ddlEventSubCategory, 163);
             BindLookUP(ddlApplicantRole, 56);
             ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
+            BindLookUP(ddlAddressType, 1);
         }
 
         private void BindApplicantsForCurrentProject(DropDownList ddlEventEntity)
@@ -755,7 +756,7 @@ namespace vhcbcloud
 
                         ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
                             txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
-                            cbActive.Checked, cbDefaultAddress.Checked);
+                            cbActive.Checked, cbDefaultAddress.Checked, int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         hfAddressId.Value = "";
                         btnAddAddress.Text = "Add";
@@ -764,7 +765,8 @@ namespace vhcbcloud
                     else //add
                     {
                         ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
-                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked, 
+                            int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         btnAddAddress.Text = "Add";
 
@@ -793,6 +795,7 @@ namespace vhcbcloud
 
         private void ClearAddressForm()
         {
+            ddlAddressType.SelectedIndex = -1;
             txtStreetNo.Text = "";
             txtAddress1.Text = "";
             txtAddress2.Text = "";
@@ -846,12 +849,13 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[9].Controls[0].Visible = false;
+                        e.Row.Cells[10].Controls[0].Visible = false;
                         Label lblAddressId = e.Row.FindControl("lblAddressId") as Label;
                         DataRow dr = ProjectMaintenanceData.GetProjectAddressDetailsById(DataUtils.GetInt(hfProjectId.Value), Convert.ToInt32(lblAddressId.Text));
 
                         hfAddressId.Value = lblAddressId.Text;
 
+                        PopulateDropDown(ddlAddressType, dr["LkAddressType"].ToString());
                         txtStreetNo.Text = dr["Street#"].ToString();
                         txtAddress1.Text = dr["Address1"].ToString();
                         txtAddress2.Text = dr["Address2"].ToString();

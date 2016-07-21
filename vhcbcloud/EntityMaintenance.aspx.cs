@@ -34,7 +34,7 @@ namespace vhcbcloud
                     string SelectedRole = ddlEntityRole.SelectedValue.ToString();
 
                     dvExistingEntities.Visible = true;
-                    BindApplicants(DataUtils.GetInt(SelectedRole));
+                    BindApplicants(DataUtils.GetInt(SelectedRole), ddlEntityName);
                 }
                 else
                 {
@@ -48,6 +48,7 @@ namespace vhcbcloud
                 dvNewEntirySubmit.Visible = false;
                 dvNewAttribute.Visible = false;
                 dvNewProduct.Visible = false;
+                dvAttachEntities.Visible = false;
             }
             else
             {
@@ -61,6 +62,7 @@ namespace vhcbcloud
                     dvNewEntirySubmit.Visible = false;
                     dvNewAttribute.Visible = false;
                     dvNewProduct.Visible = false;
+                    dvAttachEntities.Visible = false;
                 }
                 else
                 {
@@ -83,6 +85,7 @@ namespace vhcbcloud
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
                 dvNewAttribute.Visible = false;
+                dvAttachEntities.Visible = false;
             }
             else if (SelectedRole.ToLower() == "organization")
             {
@@ -91,6 +94,7 @@ namespace vhcbcloud
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
                 dvNewAttribute.Visible = false;
+                dvAttachEntities.Visible = false;
             }
             else if (SelectedRole.ToLower() == "farm")
             {
@@ -99,6 +103,7 @@ namespace vhcbcloud
                 dvFarm.Visible = true;
                 dvNewAddress.Visible = false;
                 dvNewAttribute.Visible = false;
+                dvAttachEntities.Visible = false;
             }
             else
             {
@@ -108,6 +113,7 @@ namespace vhcbcloud
                 dvFarm.Visible = false;
                 dvNewAddress.Visible = false;
                 dvNewAttribute.Visible = false;
+                dvAttachEntities.Visible = false;
             }
         }
 
@@ -122,16 +128,16 @@ namespace vhcbcloud
             BindLookUP(ddlProduct, 12);
         }
 
-        protected void BindApplicants(int RoleId)
+        protected void BindApplicants(int RoleId, DropDownList ddList)
         {
             try
             {
-                ddlEntityName.Items.Clear();
-                ddlEntityName.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId);
-                ddlEntityName.DataValueField = "ApplicantId";
-                ddlEntityName.DataTextField = "Applicantname";
-                ddlEntityName.DataBind();
-                ddlEntityName.Items.Insert(0, new ListItem("Select", "NA"));
+                ddList.Items.Clear();
+                ddList.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId);
+                ddList.DataValueField = "ApplicantId";
+                ddList.DataTextField = "Applicantname";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -172,6 +178,7 @@ namespace vhcbcloud
             dvNewProduct.Visible = false;
             dvExistingEntities.Visible = false;
             dvNewEntirySubmit.Visible = false;
+            dvAttachEntities.Visible = false;
             ClearForm();
             hfApplicatId.Value = "";
 
@@ -217,7 +224,7 @@ namespace vhcbcloud
             if (btnAddAddress.Text.ToLower() == "add")
             {
                 EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntityAddress(ApplicantId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtState.Text, txtZip.Text,
-                       txtCounty.Text, int.Parse(ddlAddressType.SelectedValue.ToString()), cbDefaultAddress.Checked);
+                       txtCounty.Text, int.Parse(ddlAddressType.SelectedValue.ToString()), DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
 
                 btnAddAddress.Text = "Add";
 
@@ -233,7 +240,7 @@ namespace vhcbcloud
                 int AddressId = Convert.ToInt32(hfAddressId.Value);
 
                 EntityMaintenanceData.UpdateEntityAddress(ApplicantId, AddressId, int.Parse(ddlAddressType.SelectedValue.ToString()), txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, cbActive.Checked, cbDefaultAddress.Checked);
+                    txtState.Text, txtZip.Text, txtCounty.Text, cbActive.Checked, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
 
                 hfAddressId.Value = "";
                 btnAddAddress.Text = "Add";
@@ -251,6 +258,7 @@ namespace vhcbcloud
             BindAddressGrid();
             BindAttributeGrid();
             BindProductGrid();
+            BindAttachEntitiesGrid();
         }
 
         private void BindAddressGrid()
@@ -290,7 +298,8 @@ namespace vhcbcloud
             txtCounty.Text = "";
             //ddlCounty.SelectedIndex = -1;
             ddlAddressType.SelectedIndex = -1;
-
+            txtLattitude.Text = "";
+            txtLongitude.Text = "";
             cbActive.Checked = true;
             cbActive.Enabled = true;
             cbDefaultAddress.Checked = true;
@@ -439,7 +448,6 @@ namespace vhcbcloud
 
             PopulateDropDown(ddlEntityRole, EntityRole.ToString());
 
-            BindApplicants(EntityRole);
             PopulateDropDown(ddlEntityName, ApplicantId.ToString());
             EntityNameChanged();
         }
@@ -470,12 +478,25 @@ namespace vhcbcloud
                     {
                         dvNewAttribute.Visible = true;
                         dvNewProduct.Visible = true;
+                        dvAttachEntities.Visible = true;
+                        BindApplicants(26243, ddlIndividualApplicant);
                     }
                     else
                     {
+                        if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
+                        {
+                            dvAttachEntities.Visible = true;
+                            BindApplicants(26243, ddlIndividualApplicant);
+                        }
+                        else
+                        {
+                            dvAttachEntities.Visible = false;
+                        }
+
                         dvNewAttribute.Visible = false;
                         dvNewProduct.Visible = false;
                     }
+
                     BindGrids();
                     btnEntitySubmit.Text = "Update";
                 }
@@ -612,6 +633,8 @@ namespace vhcbcloud
                         txtState.Text = dr["State"].ToString();
                         txtZip.Text = dr["Zip"].ToString();
                         txtCounty.Text = dr["County"].ToString();
+                        txtLattitude.Text= dr["latitude"].ToString();
+                        txtLongitude.Text= dr["longitude"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["DefAddress"].ToString());
 
@@ -868,6 +891,87 @@ namespace vhcbcloud
             {
                 LogError(Pagename, "BindProductGrid", "", ex.Message);
             }
+        }
+
+        protected void btnAttachEntities_Click(object sender, EventArgs e)
+        {
+            if (ddlIndividualApplicant.SelectedIndex == 0)
+            {
+                LogMessage("Select Applicant");
+                ddlIndividualApplicant.Focus();
+                return;
+            }
+            
+            FormAttributeResult obAttributeResult = EntityMaintenanceData.AddApplicantApplicant(DataUtils.GetInt(hfApplicatId.Value),
+                DataUtils.GetInt(ddlIndividualApplicant.SelectedValue.ToString()));
+
+            ddlIndividualApplicant.SelectedIndex = -1;
+            cbAttachEntities.Checked = false;
+
+            BindAttachEntitiesGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Entity already attached as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("Entity already attached");
+            else
+                LogMessage("Entity added successfully");
+        }
+
+        private void BindAttachEntitiesGrid()
+        {
+            try
+            {
+                DataTable dt = EntityMaintenanceData.GetApplicantApplicantList(DataUtils.GetInt(hfApplicatId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAttachEntitiesGrid.Visible = true;
+                    gvAttachEntities.DataSource = dt;
+                    gvAttachEntities.DataBind();
+                }
+                else
+                {
+                    dvAttachEntitiesGrid.Visible = false;
+                    gvAttachEntities.DataSource = null;
+                    gvAttachEntities.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAttachEntitiesGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvAttachEntities_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAttachEntities.EditIndex = -1;
+            BindAttachEntitiesGrid();
+        }
+
+        protected void gvAttachEntities_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAttachEntities.EditIndex = e.NewEditIndex;
+            BindAttachEntitiesGrid();
+        }
+
+        protected void gvAttachEntities_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ApplicantApplicantId = DataUtils.GetInt(((Label)gvAttachEntities.Rows[rowIndex].FindControl("lblApplicantApplicantId")).Text);
+            //DateTime StartDate = Convert.ToDateTime(((TextBox)gvProduct.Rows[rowIndex].FindControl("txtStartDate")).Text);
+            //int LkDisp = DataUtils.GetInt(((DropDownList)gvAttachEntities.Rows[rowIndex].FindControl("ddlMjrDispositionE")).SelectedValue.ToString());
+            //DateTime DispDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtDispDate")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAttachEntities.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EntityMaintenanceData.UpdateApplicantApplicant(ApplicantApplicantId, RowIsActive);
+
+            gvAttachEntities.EditIndex = -1;
+
+            BindAttachEntitiesGrid();
+
+            LogMessage("Attached Entity Updated successfully");
         }
     }
 }

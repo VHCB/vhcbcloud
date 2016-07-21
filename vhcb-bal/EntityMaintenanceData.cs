@@ -207,7 +207,7 @@ namespace VHCBCommon.DataAccessLayer
         #region Address
 
         public static EntityMaintResult AddNewEntityAddress(int ApplicantId, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, int AddressType, bool DefAddress)
+            string Town, string State, string Zip, string County, int AddressType, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -231,6 +231,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
                         command.Parameters.Add(new SqlParameter("AddressType", AddressType));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
@@ -259,7 +261,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateEntityAddress(int ApplicantId, int AddressId, int LkAddressType, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, bool IsActive, bool DefAddress)
+            string Town, string State, string Zip, string County, bool IsActive, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -283,6 +285,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
 
                         command.ExecuteNonQuery();
@@ -607,6 +611,116 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("FarmProductsID", FarmProductsID));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
                         command.Parameters.Add(new SqlParameter("StartDate", StartDate));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion Products
+
+        #region AttachEntities
+        public static DataTable GetApplicantApplicantList(int ApplicantId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetApplicantApplicantList";
+                        command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static FormAttributeResult AddApplicantApplicant(int ApplicantId, int AttachedApplicantId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddApplicantApplicant";
+
+                        command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
+                        command.Parameters.Add(new SqlParameter("AttachedApplicantId", AttachedApplicantId));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        FormAttributeResult acs = new FormAttributeResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateApplicantApplicant(int ApplicantApplicantId, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateApplicantApplicant";
+
+                        command.Parameters.Add(new SqlParameter("ApplicantApplicantId", ApplicantApplicantId));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
 
