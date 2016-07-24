@@ -51,24 +51,40 @@ begin transaction
 	if (@LKEntityType2 = 26243)--Individual
 	begin
 
-		insert into contact (Firstname, Lastname, LkPosition, Title)
-		values (@Fname, @Lname, @Position, @Title)
+	set @isDuplicate = 1
+	
+		if not exists
+		(
+			select 1
+			from contact c(nolock)
+			join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
+			join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
+			where c.Firstname = @Fname 
+				and c.Lastname = @Lname
+				and a.email = @Email
+		)
+		begin
+			insert into contact (Firstname, Lastname, LkPosition, Title)
+			values (@Fname, @Lname, @Position, @Title)
 
-		set @contactid = @@identity;
+			set @contactid = @@identity;
 
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
+			insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
+			values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
 
-		set @applicantid = @@identity;
+			set @applicantid = @@identity;
 
-		insert into applicantcontact(ApplicantID, ContactID, DfltCont)
-		values(@applicantid, @contactid, 1)
+			insert into applicantcontact(ApplicantID, ContactID, DfltCont)
+			values(@applicantid, @contactid, 1)
 
-		insert into appname (applicantname) values ( @lname +', '+ @fname)
-		set @appnameid = @@identity	
+			insert into appname (applicantname) values ( @lname +', '+ @fname)
+			set @appnameid = @@identity	
 
-		insert into applicantappname (applicantid, appnameid, defname)
-		values (@applicantid, @appnameid, 1)
+			insert into applicantappname (applicantid, appnameid, defname)
+			values (@applicantid, @appnameid, 1)
+
+			set @isDuplicate = 0
+		end
 
 	end
 	else if (@LKEntityType2 = 26242)--Organization
@@ -84,6 +100,8 @@ begin transaction
 
 		insert into applicantappname (applicantid, appnameid, defname)
 		values (@applicantid, @appnameid, 1)
+
+		set @isDuplicate = 0
 	end
 	else if (@LKEntityType2 = 26244)--Farm
 	begin
@@ -92,10 +110,19 @@ begin transaction
 
 		set @applicantid = @@identity;
 
+		insert into appname (applicantname)
+		values (@ApplicantName)
+		set @appnameid = @@identity	
+
+		insert into applicantappname (applicantid, appnameid, defname)
+		values (@applicantid, @appnameid, 1)
+
 		insert into Farm(ApplicantID, FarmName, LkFVEnterpriseType, AcresInProduction, AcresOwned, AcresLeased, AcresLeasedOut, TotalAcres, OutOFBiz, 
 			Notes, AgEd, YearsManagingFarm, DateCreated)
 		values(@applicantid, @FarmName, @LkFVEnterpriseType, @AcresInProduction, @AcresOwned, @AcresLeased, @AcresLeasedOut, @TotalAcres, @OutOFBiz, 
 			@Notes, @AgEd, @YearsManagingFarm, getdate())
+
+		set @isDuplicate = 0
 	end
 
 	end try
@@ -196,6 +223,12 @@ begin transaction
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
 			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
 		from applicant where  ApplicantId = @ApplicantId
+
+		update an set an.Applicantname = @ApplicantName
+		from applicant a(nolock) 
+		join applicantappname aan(nolock) on aan.ApplicantID = a.ApplicantId
+		join appname an(nolock) on aan.AppNameID = an.AppNameID
+		where a.ApplicantId = @ApplicantId
 
 		update farm
 		set FarmName = @FarmName, LkFVEnterpriseType = @LkFVEnterpriseType, AcresInProduction = @AcresInProduction, 

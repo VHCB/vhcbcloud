@@ -395,9 +395,18 @@ namespace vhcbcloud
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
                             0);
-                        ClearForm();
-                        PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
-                        LogMessage("New Entity Added Successfully");
+
+                        if (objEntityMaintResult.IsDuplicate)
+                        {
+                            LogMessage("New Entity already exist");
+
+                        }
+                        else
+                        {
+                            ClearForm();
+                            PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
+                            LogMessage("New Entity Added Successfully");
+                        }
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                     {
@@ -448,6 +457,7 @@ namespace vhcbcloud
 
             PopulateDropDown(ddlEntityRole, EntityRole.ToString());
 
+            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), ddlEntityName);
             PopulateDropDown(ddlEntityName, ApplicantId.ToString());
             EntityNameChanged();
         }
