@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntityMaintenance.aspx.cs" Inherits="vhcbcloud.EntityMaintenance" 
-    MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntityMaintenance.aspx.cs" Inherits="vhcbcloud.EntityMaintenance"
+    MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -400,10 +400,14 @@
                                         <td style="width: 250px">
                                             <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
-                                        <td style="width: 150px"><span class="labelClass"></span></td>
-                                        <td style="width: 250px"></td>
-                                        <td><span class="labelClass"></span></td>
-                                        <td></td>
+                                        <td style="width: 150px"><span class="labelClass">Lattitude</span></td>
+                                        <td style="width: 250px">
+                                            <asp:TextBox ID="txtLattitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass">Longitude</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtLongitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -441,7 +445,7 @@
                                                 <asp:Label ID="lblAddressId" runat="Server" Text='<%# Eval("AddressId") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Address Type">
+                                        <asp:TemplateField HeaderText="Type">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAddressType" runat="Server" Text='<%# Eval("AddressType") %>' />
                                             </ItemTemplate>
@@ -644,7 +648,7 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="500px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Start Date">
+                                        <asp:TemplateField HeaderText="Start Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblStartDate" runat="Server" Text='<%# Eval("StartDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
@@ -671,6 +675,82 @@
                     </div>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvAttachEntities" visible="false">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Attach Entities</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAttachEntities" runat="server" Text="Attach Entities" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvAttachEntitiesForm">
+                            <asp:Panel runat="server" ID="Panel6">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 180px"><span class="labelClass">Individual Applicant</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlIndividualApplicant" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td style="width: 300px">
+                                            <asp:Button ID="btnAttachEntities" runat="server" Text="Attach" class="btn btn-info" OnClick="btnAttachEntities_Click" />
+                                        </td>
+                                        <td style="width: 270px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvAttachEntitiesGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAttachEntities" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowCancelingEdit="gvAttachEntities_RowCancelingEdit" OnRowEditing="gvAttachEntities_RowEditing" OnRowUpdating="gvAttachEntities_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ApplicantApplicantId" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblApplicantApplicantId" runat="Server" Text='<%# Eval("ApplicantApplicantId") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Applicant Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAttachedApplicantName" runat="Server" Text='<%# Eval("AttachedApplicantName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
                 <asp:HiddenField ID="hfVillage" runat="server" />
                 <asp:HiddenField ID="hfApplicatId" runat="server" />
                 <asp:HiddenField ID="hfAddressId" runat="server" />
@@ -687,11 +767,19 @@
 
         $('#<%= txtLastName.ClientID %>').bind('keypress keyup blur', function () {
             $('#<%= txtApplicantName.ClientID %>').val($(this).val() + ', ' + $('#<%= txtFirstName.ClientID %>').val());
+        });
+
+        $('#<%= txtFarmName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtApplicantName.ClientID %>').val($(this).val());
          });
 
-         if ($('#<%=ddlEntityRole.ClientID %> option:selected').text() == 'Individual') {
+         $('#<%= txtApplicantName.ClientID %>').bind('keypress keyup blur', function () {
+            $('#<%= txtFarmName.ClientID %>').val($(this).val());
+         });
+
+        if ($('#<%=ddlEntityRole.ClientID %> option:selected').text() == 'Individual') {
             $('#<%= txtApplicantName.ClientID %>')
-               .attr("disabled", "disabled")
+                .attr("disabled", "disabled")
         }
         else {
             $('#<%= txtApplicantName.ClientID %>')
@@ -708,13 +796,18 @@
             $('#<%= dvProductForm.ClientID%>').toggle(this.checked);
         }).change();
 
+        $('#<%= dvAttachEntitiesForm.ClientID%>').toggle($('#<%= cbAttachEntities.ClientID%>').is(':checked'));
+        $('#<%= cbAttachEntities.ClientID%>').click(function () {
+            $('#<%= dvAttachEntitiesForm.ClientID%>').toggle(this.checked);
+        }).change();
+
 
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
-            }
+        }
 
-            function onListPopulated() {
-                var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
+        function onListPopulated() {
+            var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
             completionList.style.width = 'auto';
             //completionList.style.css = 'clsAutoExtDropDownListItem';
         }
@@ -723,16 +816,18 @@
             //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
             var addressArray = eventArgs.get_value().split('~');
             $('#<%=txtStreetNo.ClientID%>').val(addressArray[0]);
-            $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
-            $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
-            $('#<%=txtState.ClientID%>').val(addressArray[3]);
-            $('#<%=txtZip.ClientID%>').val(addressArray[4]);
-            $('#<%=txtTown.ClientID%>').val(addressArray[5]);
-            $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
-        }
+                $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
+                $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
+                $('#<%=txtState.ClientID%>').val(addressArray[3]);
+                $('#<%=txtZip.ClientID%>').val(addressArray[4]);
+                $('#<%=txtTown.ClientID%>').val(addressArray[5]);
+                $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
+                $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
+                $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+            }
 
-        $(document).ready(function () {
-            $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
+            $(document).ready(function () {
+                $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
             }).change();
@@ -789,6 +884,8 @@
                                 }
                             }
                             addr.success = true;
+                            $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
+                            $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }

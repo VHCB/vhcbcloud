@@ -377,7 +377,7 @@ namespace DataAccessLayer
         }
 
         public static void UpdateProjectAddress(int ProjectId, int AddressId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool IsActive, bool DefAddress, int LkAddressType)
         {
             try
             {
@@ -404,6 +404,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
+                        command.Parameters.Add(new SqlParameter("LkAddressType", LkAddressType));
 
                         command.ExecuteNonQuery();
                     }
@@ -416,7 +417,7 @@ namespace DataAccessLayer
         }
 
         public static ProjectMaintResult AddProjectAddress(int ProjectId, string StreetNo, string Address1, string Address2,
-            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, decimal latitude, decimal longitude, bool DefAddress, int LkAddressType)
         {
             try
             {
@@ -443,6 +444,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("longitude", longitude == 0 ? System.Data.SqlTypes.SqlDecimal.Null : longitude));
                         //command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                         command.Parameters.Add(new SqlParameter("DefAddress", DefAddress));
+                        command.Parameters.Add(new SqlParameter("LkAddressType", LkAddressType));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;

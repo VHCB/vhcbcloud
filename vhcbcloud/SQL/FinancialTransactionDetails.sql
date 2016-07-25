@@ -1381,6 +1381,7 @@ Begin
 	where p.projectid = @projId
 	order by f.name
 end
+go
 
 alter procedure [dbo].[GetExistingCommittedFundByProject]
 (
@@ -1388,7 +1389,7 @@ alter procedure [dbo].[GetExistingCommittedFundByProject]
 )
 as
 Begin
-	select distinct f.FundId, f.name, p.projectid, sum(det.Amount) as amount from Fund f 
+	select distinct f.FundId, f.name, p.projectid, -sum(det.Amount) as amount from Fund f 
 			join detail det on det.FundId = f.FundId
 			join Trans tr on tr.TransId = det.TransId
 			join Project p on p.ProjectID  = tr.ProjectID

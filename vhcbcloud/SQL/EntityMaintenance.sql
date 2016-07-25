@@ -51,24 +51,40 @@ begin transaction
 	if (@LKEntityType2 = 26243)--Individual
 	begin
 
-		insert into contact (Firstname, Lastname, LkPosition, Title)
-		values (@Fname, @Lname, @Position, @Title)
+	set @isDuplicate = 1
+	
+		if not exists
+		(
+			select 1
+			from contact c(nolock)
+			join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
+			join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
+			where c.Firstname = @Fname 
+				and c.Lastname = @Lname
+				and a.email = @Email
+		)
+		begin
+			insert into contact (Firstname, Lastname, LkPosition, Title)
+			values (@Fname, @Lname, @Position, @Title)
 
-		set @contactid = @@identity;
+			set @contactid = @@identity;
 
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
+			insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
+			values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
 
-		set @applicantid = @@identity;
+			set @applicantid = @@identity;
 
-		insert into applicantcontact(ApplicantID, ContactID, DfltCont)
-		values(@applicantid, @contactid, 1)
+			insert into applicantcontact(ApplicantID, ContactID, DfltCont)
+			values(@applicantid, @contactid, 1)
 
-		insert into appname (applicantname) values ( @lname +', '+ @fname)
-		set @appnameid = @@identity	
+			insert into appname (applicantname) values ( @lname +', '+ @fname)
+			set @appnameid = @@identity	
 
-		insert into applicantappname (applicantid, appnameid, defname)
-		values (@applicantid, @appnameid, 1)
+			insert into applicantappname (applicantid, appnameid, defname)
+			values (@applicantid, @appnameid, 1)
+
+			set @isDuplicate = 0
+		end
 
 	end
 	else if (@LKEntityType2 = 26242)--Organization
@@ -84,6 +100,8 @@ begin transaction
 
 		insert into applicantappname (applicantid, appnameid, defname)
 		values (@applicantid, @appnameid, 1)
+
+		set @isDuplicate = 0
 	end
 	else if (@LKEntityType2 = 26244)--Farm
 	begin
@@ -92,10 +110,19 @@ begin transaction
 
 		set @applicantid = @@identity;
 
+		insert into appname (applicantname)
+		values (@ApplicantName)
+		set @appnameid = @@identity	
+
+		insert into applicantappname (applicantid, appnameid, defname)
+		values (@applicantid, @appnameid, 1)
+
 		insert into Farm(ApplicantID, FarmName, LkFVEnterpriseType, AcresInProduction, AcresOwned, AcresLeased, AcresLeasedOut, TotalAcres, OutOFBiz, 
 			Notes, AgEd, YearsManagingFarm, DateCreated)
 		values(@applicantid, @FarmName, @LkFVEnterpriseType, @AcresInProduction, @AcresOwned, @AcresLeased, @AcresLeasedOut, @TotalAcres, @OutOFBiz, 
 			@Notes, @AgEd, @YearsManagingFarm, getdate())
+
+		set @isDuplicate = 0
 	end
 
 	end try
@@ -196,6 +223,12 @@ begin transaction
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
 			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
 		from applicant where  ApplicantId = @ApplicantId
+
+		update an set an.Applicantname = @ApplicantName
+		from applicant a(nolock) 
+		join applicantappname aan(nolock) on aan.ApplicantID = a.ApplicantId
+		join appname an(nolock) on aan.AppNameID = an.AppNameID
+		where a.ApplicantId = @ApplicantId
 
 		update farm
 		set FarmName = @FarmName, LkFVEnterpriseType = @LkFVEnterpriseType, AcresInProduction = @AcresInProduction, 
@@ -298,7 +331,8 @@ create procedure dbo.AddNewEntityAddress
 	@County nvarchar(40),
 	@AddressType int,
 	@DefAddress bit,
-
+	@latitude float,
+	@longitude	float,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -319,8 +353,8 @@ begin transaction
 		where a.Street# = @StreetNo and a.Address1 = @Address1 and Town = @Town and aa.ApplicantId = @ApplicantId
 	)
 	begin
-		insert into [Address] (LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, RowIsActive, UserID)
-		values(@AddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @IsActive, 123)
+		insert into [Address] (LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, RowIsActive, UserID)
+		values(@AddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @IsActive, 123)
 
 		set @AddressId = @@identity	
 
@@ -373,7 +407,10 @@ as
 --exec GetEntityAddressDetailsList 1034, 1
 Begin
 
-	select a.AddressId, a.LkAddressType, rtrim(ltrim(lv.description)) as AddressType, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, ad.Defaddress, a.RowIsActive
+	select a.AddressId, a.LkAddressType, 
+	case (rtrim(ltrim(lv.description))) when 'Physical Location'then 'Physical'
+	else  (rtrim(ltrim(lv.description))) end as AddressType, 
+	a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, ad.Defaddress, a.RowIsActive
 	from ApplicantAddress ad(nolock) 
 	join Address a(nolock) on a.Addressid = ad.AddressId
 	left join LookupValues lv(nolock) on lv.typeid = a.LkAddressType
@@ -423,7 +460,9 @@ create procedure dbo.UpdateEntityAddress
 	@Zip nchar(20),
 	@County nvarchar(40),
 	@IsActive bit,
-	@DefAddress bit	
+	@DefAddress bit,
+	@latitude float,
+	@longitude	float
 )
 as
 begin transaction
@@ -440,6 +479,8 @@ begin transaction
 		State = @State,
 		Zip = @Zip,
 		County = @County,
+		latitude = @latitude,
+		longitude = @longitude,
 		RowIsActive = @IsActive,
 		DateModified = getdate()
 	from Address
@@ -671,6 +712,114 @@ begin transaction
 	update FarmProducts set  StartDate = @StartDate, RowIsActive = @RowIsActive, DateModified = getdate()
 	from FarmProducts 
 	where FarmProductsID = @FarmProductsID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+/* ApplicantApplicant */
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetApplicantApplicantList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetApplicantApplicantList
+go
+
+create procedure GetApplicantApplicantList
+(
+	@ApplicantId	int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetApplicantApplicantList 1, 1
+begin
+	select aa.ApplicantApplicantId, aa.AttachedApplicantId, an.Applicantname as AttachedApplicantName, aa.RowIsActive 
+	from ApplicantApplicant aa(nolock)
+	join ApplicantAppName aaname(nolock) on aaname.ApplicantID = aa.AttachedApplicantId
+	join AppName an(nolock) on an.AppNameID = aaname.AppNameID
+	where aa.ApplicantId = @ApplicantId
+	and (@IsActiveOnly = 0 or aa.RowIsActive = @IsActiveOnly)
+		order by aa.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddApplicantApplicant]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddApplicantApplicant
+go
+
+create procedure dbo.AddApplicantApplicant
+(
+	@ApplicantId				int,
+	@AttachedApplicantId		int,
+	@isDuplicate		bit output,
+	@isActive			bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from ApplicantApplicant(nolock)
+		where ApplicantId = @ApplicantId 
+			and AttachedApplicantId = @AttachedApplicantId
+    )
+	begin
+		insert into ApplicantApplicant(ApplicantId, AttachedApplicantId)
+		values(@ApplicantId, @AttachedApplicantId)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ApplicantApplicant(nolock)
+		where ApplicantId = @ApplicantId 
+			and AttachedApplicantId = @AttachedApplicantId
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateApplicantApplicant]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateApplicantApplicant
+go
+
+create procedure dbo.UpdateApplicantApplicant
+(
+	@ApplicantApplicantId	int,
+	@RowIsActive			bit
+) as
+begin transaction
+
+	begin try
+	
+	update ApplicantApplicant set  RowIsActive = @RowIsActive, DateModified = getdate()
+	from ApplicantApplicant 
+	where ApplicantApplicantId = @ApplicantApplicantId
 
 	end try
 	begin catch

@@ -441,6 +441,7 @@ create procedure dbo.AddNewProjectAddress
 	@longitude	float,
 	--@IsActive bit,
 	@DefAddress bit,
+	@LkAddressType	int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -461,8 +462,8 @@ begin transaction
 		where a.Street# = @StreetNo and a.Address1 = @Address1 and Town = @Town and pa.ProjectId = @ProjectId
 	)
 	begin
-		insert into [Address] (Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, UserID)
-		values(@StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @Village, 123)
+		insert into [Address] (LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, latitude, longitude, Village, UserID)
+		values(@LkAddressType, @StreetNo, @Address1, @Address2, @Town, @State, @Zip, @County, @latitude, @longitude, @Village, 123)
 
 		set @AddressId = @@identity	
 
@@ -509,6 +510,7 @@ create procedure [dbo].UpdateProjectAddress
 (
 	@ProjectId int,
 	@AddressId int,
+	@LkAddressType	int,
 	@StreetNo nvarchar(24),
 	@Address1 nvarchar(120),
 	@Address2 nvarchar(120),
@@ -529,6 +531,7 @@ begin transaction
 
 	update Address
 		set Street# = @StreetNo,
+		LkAddressType = @LkAddressType,
 		Address1 = @Address1,
 		Address2 = @Address2,
 		Village = @Village,
@@ -580,7 +583,7 @@ as
 --exec GetProjectAddressDetailsById 20, 20
 Begin
 
-	select a.AddressId, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, 
+	select a.AddressId, a.LkAddressType, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, 
 	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, isnull(a.Zip, null) as Zip, 
 	isnull(a.County, '') as County, isnull(Village, '') as Village,
 	a.RowIsActive, pa.PrimaryAdd
@@ -603,10 +606,14 @@ as
 --exec GetProjectAddressList 6588, 0
 Begin
 
-	select a.AddressId, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, 
+	select a.LkAddressType, 
+	case (rtrim(ltrim(lv.description))) when 'Physical Location'then 'Physical'
+	else  (rtrim(ltrim(lv.description))) end as AddressType, 
+	a.AddressId, a.Street#, a.Address1, a.Address2, a.latitude, a.longitude, a.Town, a.State, a.Zip, a.County, 
 	case isnull(pa.PrimaryAdd, '') when '' then 'No' when 0 then 'No' else 'Yes' end PrimaryAdd, a.RowIsActive
 	from ProjectAddress pa(nolock) 
 	join Address a(nolock) on a.Addressid = pa.AddressId
+	left join LookupValues lv(nolock) on lv.typeid = a.LkAddressType
 	where pa.ProjectId = @ProjectId
 		and (@IsActiveOnly = 0 or a.RowIsActive = @IsActiveOnly)
 	order by pa.PrimaryAdd desc, pa.DateModified desc
