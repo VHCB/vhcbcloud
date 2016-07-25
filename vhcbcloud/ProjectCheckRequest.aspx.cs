@@ -1459,9 +1459,9 @@ namespace vhcbcloud
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
 
 
-                DataTable dtable = FinancialTransactions.       (Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                //DataTable dtable = FinancialTransactions.       (Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                 
-                lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
+                //lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
 
                 ddlTransType.DataSource =  FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";
