@@ -79,15 +79,24 @@ namespace vhcbcloud
             if (ddlRFromProj.SelectedIndex > 0)
             {
                 hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
+                DataTable dtFund = new DataTable();
                 ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ddlRFromFund.DataValueField = "fundid";
                 ddlRFromFund.DataTextField = "name";
                 ddlRFromFund.DataBind();
                 ddlRFromFund.Items.Insert(0, new ListItem("Select", "NA"));
-
+                txtRfromDate.Text = DateTime.Now.ToShortDateString();
                 ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
                 BindAllFunds();
-                lbtnFromAwdSummary.Visible = true;
+                hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
+
+                if (rdBtnSelection.SelectedIndex > 0)
+                {
+                    dtFund =FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    txtRfromAmt.Text = dtFund.Rows[0]["amount"].ToString();
+                    ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
+                    BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                }
             }
         }
 
@@ -134,45 +143,124 @@ namespace vhcbcloud
         {
             if (ddlRFromFund.SelectedIndex > 0)
             {
-                if (ddlRFromFund.SelectedItem.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlRFromFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlRFromFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
-
-                //ddlRFromFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                ddlRFromFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                 ddlRFromFundType.DataValueField = "typeid";
-                ddlRFromFundType.DataTextField = "Description";
+                ddlRFromFundType.DataTextField = "fundtype";
                 ddlRFromFundType.DataBind();
-                ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlRFromFundType.Items.Count > 1)
+                    ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
             }
-
         }
 
         protected void ddlRToFund_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRToFund.SelectedIndex > 0)
             {
-                if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
-                //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                ddlRtoFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()), Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
                 ddlRtoFundType.DataValueField = "typeid";
-                ddlRtoFundType.DataTextField = "Description";
+                ddlRtoFundType.DataTextField = "fundtype";
                 ddlRtoFundType.DataBind();
-                ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlRtoFundType.Items.Count > 1)
+                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+
+            }
+        }
+              
+        public void ClearReallocationToPanel()
+        {
+            ddlRToProj.SelectedIndex = 0;
+
+            txtRToAmt.Text = "";
+        }
+
+        public void ClearReallocationFromPanel()
+        {
+            ddlRFromProj.SelectedIndex = 0;
+            ddlRFromFund.DataSource = null;
+            ddlRFromFund.DataBind();
+            txtRfromDate.Text = "";
+            txtRfromAmt.Text = "";
+        }
+
+        private void BindGvReallocate(int fromProjId)
+        {
+            try
+            {
+                DataTable dtFundDet = new DataTable();
+                dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+                gvReallocate.DataSource = dtFundDet;
+                gvReallocate.DataBind();
+                decimal totAmt = 0;
+                if (dtFundDet.Rows.Count > 0)
+                {
+                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
+                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
+                    if (dtFundDet.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                        {
+                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                        }
+                    }
+
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                    if (txtRfromAmt.Text != "")
+                    {
+                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                    }
+
+                    if (lblBalAmt.Text != "$0.00")
+                        lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                    else if (lblBalAmt.Text == "$0.00")
+                        CommonHelper.DisableButton(btnReallocateSubmit);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                lblRErrorMsg.Text = ex.Message;
+                throw;
             }
         }
 
-        protected void imgBtnReallocate_Click(object sender, EventArgs e)
+
+        protected void lbAwardSummary_Click(object sender, EventArgs e)
+        {
+            if (ddlRFromProj.SelectedIndex > 0)
+            {
+                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString() + "&Reallocations=true";
+                StringBuilder sb = new StringBuilder();
+                sb.Append("<script type = 'text/javascript'>");
+                sb.Append("window.open('");
+                sb.Append(url);
+                sb.Append("');");
+                sb.Append("</script>");
+                ClientScript.RegisterStartupScript(this.GetType(),
+                        "script", sb.ToString());
+            }
+        }
+
+
+        protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearReallocationFromPanel();
+            ClearReallocationToPanel();
+
+            if (rdBtnSelection.SelectedIndex==0)
+            {
+                gvReallocate.DataSource = null;
+                gvReallocate.DataBind();
+            }
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnReallocateSubmit_Click(object sender, EventArgs e)
         {
             int? nullable = null;
             try
@@ -183,13 +271,13 @@ namespace vhcbcloud
                     ddlRFromProj.Focus();
                     return;
                 }
-                if (ddlRFromFund.SelectedIndex == 0)
+                if (ddlRFromFund.Items.Count > 1 && ddlRFromFund.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select fund from reallocate from project";
                     ddlRFromFund.Focus();
                     return;
                 }
-                if (ddlRFromFundType.SelectedIndex == 0)
+                if (ddlRFromFundType.Items.Count > 1 && ddlRFromFundType.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select fund type from reallocate from project";
                     ddlRFromFundType.Focus();
@@ -201,19 +289,19 @@ namespace vhcbcloud
                     return;
                 }
 
-                if (ddlRToProj.SelectedIndex == 0)
+                if (ddlRToProj.Items.Count > 1 && ddlRToProj.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select reallocate to project";
                     ddlRToProj.Focus();
                     return;
                 }
-                if (ddlRToFund.SelectedIndex == 0)
+                if (ddlRToFund.Items.Count > 1 && ddlRToFund.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select fund from reallocate to project";
                     ddlRToFund.Focus();
                     return;
                 }
-                if (ddlRtoFundType.SelectedIndex == 0)
+                if (ddlRtoFundType.Items.Count > 1 && ddlRtoFundType.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select fund type from reallocate to project";
                     ddlRtoFundType.Focus();
@@ -276,76 +364,12 @@ namespace vhcbcloud
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][1].ToString();
                 lblRErrorMsg.Text = "Reallocation was added successfully";
-                BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()), Convert.ToInt32(hfTransId.Value));
+                BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ClearReallocationToPanel();
             }
             catch (Exception ex)
             {
                 lblRErrorMsg.Text = ex.Message;
-            }
-        }
-
-        public void ClearReallocationToPanel()
-        {
-            ddlRToFund.SelectedIndex = 0;
-            ddlRtoFundType.SelectedIndex = 0;
-            txtRToAmt.Text = "";
-        }
-
-        private void BindGvReallocate(int fromProjId, int toTransId)
-        {
-            try
-            {
-                DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
-                gvReallocate.DataSource = dtFundDet;
-                gvReallocate.DataBind();
-                decimal totAmt = 0;
-                if (dtFundDet.Rows.Count > 0)
-                {
-                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
-                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
-                    if (dtFundDet.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
-                        {
-                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
-                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
-                        }
-                    }
-
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
-                    if (txtRfromAmt.Text != "")
-                    {
-                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                    }
-
-                    if (lblBalAmt.Text != "$0.00")
-                        lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblRErrorMsg.Text = ex.Message;
-                throw;
-            }
-        }
-
-
-        protected void lbAwardSummary_Click(object sender, EventArgs e)
-        {
-            if (ddlRFromProj.SelectedIndex > 0)
-            {
-                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString() + "&Reallocations=true";
-                StringBuilder sb = new StringBuilder();
-                sb.Append("<script type = 'text/javascript'>");
-                sb.Append("window.open('");
-                sb.Append(url);
-                sb.Append("');");
-                sb.Append("</script>");
-                ClientScript.RegisterStartupScript(this.GetType(),
-                        "script", sb.ToString());
             }
         }
     }

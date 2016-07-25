@@ -9,7 +9,7 @@
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <asp:RadioButtonList ID="rdBtnFinancial" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
+                            <asp:RadioButtonList ID="rdBtnFinancial" class ="mySelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
                                 RepeatDirection="Horizontal"
                                 OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
                                 <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
@@ -26,7 +26,7 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
+                                        <asp:RadioButtonList ID="rdBtnSelection" class="mySelect" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
                                             OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                             <asp:ListItem Selected="True">New    </asp:ListItem>
                                             <asp:ListItem>Existing</asp:ListItem>
@@ -386,10 +386,31 @@
             var balAmt = document.getElementById("<%=hfBalAmt.ClientID%>").value;
             //var traAmt = document.getElementById("<%=hfTransAmt.ClientID%>").value;
 
-            if (needToConfirm && balAmt > 0)
-                return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
+            if (needToConfirm && balAmt > 0) {
+                alert("You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?");
+                return false;
+            }
         }
 
+        jQuery(document).ready(function ($) {
+            var index = $('#mySelect').prop('selectedIndex');
+            var select = $('#mySelect');
+            select.change(function (e) {
+                // alert(index)
+                var conf = confirm('Are You Sure?');
+                if (!conf) {
+                    $('#mySelect').prop('selectedIndex', index);
+                    // reset the select back to previous
+                    return false;
+                }
+                else {
+                    index = $('#mySelect').prop('selectedIndex');
+                }
+
+                // do stuff
+
+            });
+        });
 
 
         function RadioCheck(rb) {

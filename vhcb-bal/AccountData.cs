@@ -107,7 +107,41 @@ namespace VHCBCommon.DataAccessLayer
             return dtUserInfo;
         }
 
-        public static void AddUserInfo(string firstName, string lastName, string password, string email)
+        public static DataTable GetVHCBProgram()
+        {
+            DataTable dtUserInfo = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetVHCBProgram";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtUserInfo = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtUserInfo;
+        }
+
+        public static void AddUserInfo(string firstName, string lastName, string password, string email, int DfltPrg)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -119,7 +153,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Lname", lastName));
                 command.Parameters.Add(new SqlParameter("password", password));
                 command.Parameters.Add(new SqlParameter("email", email));
-
+                command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
                 using (connection)
                 {
                     connection.Open();
@@ -137,7 +171,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email)
+        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email, int DfltPrg)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -150,6 +184,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Lname", lastName));
                 command.Parameters.Add(new SqlParameter("password", password));
                 command.Parameters.Add(new SqlParameter("email", email));
+                command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
+
                 using (connection)
                 {
                     connection.Open();

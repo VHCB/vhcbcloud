@@ -47,6 +47,12 @@ namespace vhcbcloud
                 {
                     ClearPCRForm();
                     BindExistingPCR();
+                    ddlProjFilter.Enabled = false;
+                }
+                else if (rdBtnSelect.SelectedIndex == 0)
+                {
+                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    ddlProjFilter.Enabled = true;
                 }
             }
 
@@ -142,9 +148,12 @@ namespace vhcbcloud
         {
             try
             {
+                ddlPayee.DataSource = null;
+                ddlPayee.DataBind();
+
                 DataTable dtPayee;
                 dtPayee = new DataTable();
-                dtPayee = ProjectCheckRequestData.GetProjectApplicant(projId);
+                dtPayee = ProjectCheckRequestData.GetProjectFinLegalApplicant(projId);
 
                 ddlPayee.DataSource = dtPayee;
                 ddlPayee.DataValueField = "ApplicantId";
@@ -432,17 +441,18 @@ namespace vhcbcloud
                 DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
                 lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
                 BindApplicantName(int.Parse(tokens[0]));
-                lbAwardSummary.Visible = true;
+                hfProjId.Value = tokens[0].ToString();
                 rdBtnSelect.SelectedIndex = 0;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
                 BindFundTypeCommitments(int.Parse(tokens[0]));
+                txtTransDate.Text = DateTime.Now.ToShortDateString();
 
             }
             else
             {
                 lblProjName.Text = "--";
-                lbAwardSummary.Visible = false;
+                
             }
         }
 
@@ -723,7 +733,7 @@ namespace vhcbcloud
                 {
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
-                        decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
+                        decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count >0 ? int.Parse(ddlPayee.SelectedValue.ToString()):0, int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS);
                     if (dtPCR.Rows.Count > 0)
                     {
@@ -1092,9 +1102,9 @@ namespace vhcbcloud
             ddlApplicantName.Items.Clear();
             lblProjName.Text = "--";
             txtTransDate.Text = "";
-            ddlPayee.SelectedIndex = 0;
-            ddlProgram.SelectedIndex = 0;
-            ddlStatus.SelectedIndex = 0;
+            if (ddlPayee.Items.Count>0) ddlPayee.SelectedIndex = 0;
+            if (ddlProgram.Items.Count > 0) ddlProgram.SelectedIndex = 0;
+            if (ddlStatus.Items.Count > 0) ddlStatus.SelectedIndex = 0;
             EnableButton(btnCRSubmit);
             chkLCB.Checked = false;
             chkLegalReview.Checked = false;
@@ -1102,7 +1112,7 @@ namespace vhcbcloud
             if (txtEligibleAmt.Visible)
             {
                 txtEligibleAmt.Text = "";
-                ddlMatchingGrant.SelectedIndex = 0;
+                if (ddlMatchingGrant.Items.Count > 0) ddlMatchingGrant.SelectedIndex = 0;
             }
             else
             {
@@ -1112,7 +1122,7 @@ namespace vhcbcloud
                 lblMatchingGrant.Visible = true;
 
                 txtEligibleAmt.Text = "";
-                ddlMatchingGrant.SelectedIndex = 0;
+                if (ddlMatchingGrant.Items.Count > 0) ddlMatchingGrant.SelectedIndex = 0;
             }
             ddlDate.Visible = false;
             txtTransDate.Visible = true;
@@ -1297,6 +1307,7 @@ namespace vhcbcloud
                 this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
                 this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                 this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
+                this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
                 BindPCRTransDetails();
@@ -1304,8 +1315,7 @@ namespace vhcbcloud
                 ddlPCRQuestions.SelectedIndex = -1;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
-                fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
-                lbAwardSummary.Visible = true;
+                fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());                
                 DisablePCR();
             }
             else
@@ -1313,7 +1323,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "Please select the existing check request date selection.";
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
-                lbAwardSummary.Visible = false;
+                
             }
         }
 
@@ -1439,40 +1449,31 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
                 throw;
             }
-        }
-
-        protected void lbAwardSummary_Click(object sender, EventArgs e)
-        {
-            if (ddlProjFilter.SelectedIndex > 0)
-            {
-
-                string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-
-                string url = "/awardsummary.aspx?projectid=" + tokens[0].ToString();
-                StringBuilder sb = new StringBuilder();
-                sb.Append("<script type = 'text/javascript'>");
-                sb.Append("window.open('");
-                sb.Append(url);
-                sb.Append("');");
-                sb.Append("</script>");
-                ClientScript.RegisterStartupScript(this.GetType(),
-                        "script", sb.ToString());
-            }
-        }
+        }      
 
         protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-                
+
+
                 DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                
                 lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
-                ddlTransType.DataSource = dtable;
-                ddlTransType.DataValueField = "lktranstype";
+
+                ddlTransType.DataSource =  FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+                ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlTransType.Items.Count > 1)
+                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                //ddlTransType.DataSource = dtable;
+                //ddlTransType.DataValueField = "lktranstype";
+                //ddlTransType.DataTextField = "fundtype";
+                //ddlTransType.DataBind();
+                //ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
             }
             else
             {

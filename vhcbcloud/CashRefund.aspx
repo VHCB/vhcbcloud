@@ -250,7 +250,7 @@
                                                 </table>
                                                 <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnSubmit_Click" />--%>
                                                 <br />
-                                                <asp:Button ID="btnCommitmentSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCommitmentSubmit_Click" TabIndex="11" />
+                                                <asp:Button ID="btnCashRefundSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnCashRefundSubmit_Click" TabIndex="11" />
                                             </div>
                                             <br />
                                             <asp:GridView ID="gvBCommit" runat="server" AutoGenerateColumns="False"

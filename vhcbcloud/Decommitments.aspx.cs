@@ -14,7 +14,6 @@ namespace vhcbcloud
     {
         DataTable dtProjects;
         private int TRANS_PENDING_STATUS = 261;
-        private int BOARD_COMMITMENT = 238;
         private int BOARD_DECOMMITMENT = 239;
         private int ActiveOnly = 1;
         private string strLandUsePermit = "148";
@@ -23,10 +22,10 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-               
+
             }
         }
-     
+
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
@@ -71,24 +70,31 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
-       
-
-
         protected void BindFundAccounts()
         {
+            ddlAcctNum.DataSource = null;
+            ddlAcctNum.DataBind();
+            ddlFundName.DataSource = null;
+            ddlFundName.DataBind();
+
+            DataTable dtable = new DataTable();
             try
             {
-                DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetCommittedFundAccounts(GetTransId());
-                ddlAcctNum.Items.Clear();
+                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
 
+            }
+            try
+            {
                 dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetCommittedFundNames");
+                dtable = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value));
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
@@ -97,7 +103,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+
             }
         }
 
@@ -111,18 +117,21 @@ namespace vhcbcloud
 
                 ddlFundName.SelectedValue = ddlAcctNum.SelectedValue;
 
-                if (lblFundName.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
+                //if (lblFundName.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
+
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjAcct(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text);
                 ddlTransType.DataValueField = "typeid";
-                ddlTransType.DataTextField = "Description";
+                ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlTransType.Items.Count > 1)
+                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
                 BindUsePermit();
 
@@ -165,6 +174,8 @@ namespace vhcbcloud
         {
             try
             {
+                BindFundAccounts();
+
                 DataTable dtFundDet = new DataTable();
                 dtFundDet = FinancialTransactions.GetCommitmentFundDetailsByProjectId(transId, BOARD_DECOMMITMENT, ActiveOnly);
 
@@ -178,7 +189,7 @@ namespace vhcbcloud
                 if (dtFundDet.Rows.Count > 0)
                 {
                     //tranAmount = Convert.ToDecimal(dtFundDet.Rows[0]["TransAmt"].ToString());
-                    tranAmount = -Convert.ToDecimal(this.hfTransAmt.Value);
+                    tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
 
                     Label lblTotAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterAmount");
                     Label lblBalAmt = (Label)gvBCommit.FooterRow.FindControl("lblFooterBalance");
@@ -192,6 +203,7 @@ namespace vhcbcloud
                     }
 
                     totBalAmt = tranAmount + totFundAmt;
+
                     hfBalAmt.Value = (-totBalAmt).ToString();
 
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
@@ -241,7 +253,7 @@ namespace vhcbcloud
         {
         }
 
-      
+
         protected void btnDecommitmentSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -278,14 +290,22 @@ namespace vhcbcloud
                         return;
                     }
                 }
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+                if (dtAvailFunds != null)
+                    if (dtAvailFunds.Rows.Count > 0)
+                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
+                        {
+                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund";
+                            return;
+                        }
 
                 decimal currentTranAmount = 0;
                 decimal currentTranFudAmount = 0;
                 decimal currentBalAmount = 0;
 
-                currentTranAmount = Convert.ToDecimal(hfTransAmt.Value);
+                currentTranAmount = -Convert.ToDecimal(hfTransAmt.Value);
                 currentTranFudAmount = Convert.ToDecimal(txtAmt.Text);
-                currentBalAmount = Convert.ToDecimal(hfBalAmt.Value);
+                currentBalAmount = -Convert.ToDecimal(hfBalAmt.Value);
 
                 hfTransId.Value = GetTransId().ToString();
                 if (hfTransId.Value != null)
@@ -300,12 +320,16 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnTransactionSubmit);
                         return;
                     }
-                    else if (currentTranFudAmount > currentBalAmount)
+                    else if (currentTranFudAmount > (currentBalAmount < 0 ? -currentBalAmount : currentBalAmount))
                     {
-                        currentTranFudAmount = currentBalAmount;
-                        lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
-                        CommonHelper.DisableButton(btnTransactionSubmit);
-                        CommonHelper.EnableButton(btnDecommitmentSubmit);
+                        lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
+                        return;
+                    }
+                    else if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                       Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
+                    {
+                        lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                        return;
                     }
                     else
                     {
@@ -313,8 +337,23 @@ namespace vhcbcloud
                         CommonHelper.EnableButton(btnDecommitmentSubmit);
                     }
 
-                    FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
+                    if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    {
+                        if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                        {
+                            lblErrorMsg.Text = "Select Use Permit";
+                            ddlUsePermit.Focus();
+                            return;
+                        }
+
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount, ddlUsePermit.SelectedItem.Text);
+                    }
+                    else
+                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
+
+
 
                     BindFundDetails(transId);
                     ClearTransactionDetailForm();
@@ -337,8 +376,8 @@ namespace vhcbcloud
                     txtProjNum.Focus();
                     return;
                 }
-                
-                else if (txtTotAmt.Text.Trim() == "" )
+
+                else if (txtTotAmt.Text.Trim() == "")
                 {
                     lblErrorMsg.Text = "Select a valid transaction amount";
                     txtTotAmt.Focus();
@@ -356,12 +395,20 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Select a valid transaction amount";
                     return;
                 }
+                DataTable dtCommitFund = FinancialTransactions.GetCommittedFundPerProject(txtProjNum.Text);
+                if (dtCommitFund != null)
+                    if (dtCommitFund.Rows.Count > 0)
+                        if (Convert.ToDecimal(dtCommitFund.Rows[0]["availFunds"].ToString()) < Convert.ToDecimal(txtTotAmt.Text.Trim()))
+                        {
+                            lblErrorMsg.Text = "Decommitted amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtCommitFund.Rows[0]["availFunds"].ToString()) + " for the selected project";
+                            return;
+                        }
 
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
 
-                this.hfTransAmt.Value = TransAmount.ToString();
-                this.hfBalAmt.Value = TransAmount.ToString();
+                this.hfTransAmt.Value = (-TransAmount).ToString();
+                this.hfBalAmt.Value = (-TransAmount).ToString();
 
                 //if (pnlTranDetails.Visible)
                 //    ClearTransactionDetailForm();
@@ -459,7 +506,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_DECOMMITMENT);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
                 }
@@ -522,10 +569,10 @@ namespace vhcbcloud
                 }
                 else if (amount > allowed_amount)
                 {
-                    amount = allowed_amount;
-                    lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                    lblErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
                     CommonHelper.DisableButton(btnTransactionSubmit);
                     CommonHelper.EnableButton(btnDecommitmentSubmit);
+                    return;
                 }
                 else if (amount < allowed_amount)
                 {
@@ -682,7 +729,7 @@ namespace vhcbcloud
 
                     if (rdBtnSelection.SelectedIndex == 1)
                     {
-                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_DECOMMITMENT);
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
                         CommonHelper.DisableButton(btnTransactionSubmit);
@@ -777,7 +824,7 @@ namespace vhcbcloud
         }
 
 
-      
+
 
         protected void btnfind_Click(object sender, EventArgs e)
         {
@@ -837,7 +884,7 @@ namespace vhcbcloud
             gvPTrans.EditIndex = -1;
             BindTransGrid(GetTransId());
         }
-       
+
         protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
@@ -870,18 +917,21 @@ namespace vhcbcloud
 
                 ddlAcctNum.SelectedValue = ddlFundName.SelectedValue;
 
-                if (lblFundName.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
+                //if (lblFundName.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
+
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjAcct(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text);
                 ddlTransType.DataValueField = "typeid";
-                ddlTransType.DataTextField = "Description";
+                ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlTransType.Items.Count > 1)
+                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
                 BindUsePermit();
 

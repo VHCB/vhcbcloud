@@ -16,6 +16,25 @@ namespace vhcbcloud.Account
             if (!IsPostBack)
             {
                 BindUserInfo();
+                BindVHCBProgram();
+            }
+        }
+
+        protected void BindVHCBProgram()
+        {
+            try
+            {
+                DataTable table = AccountData.GetVHCBProgram();
+                ddlVHCBProgram.DataSource = table;
+                ddlVHCBProgram.DataValueField = "typeid";
+                ddlVHCBProgram.DataTextField = "Description";
+                ddlVHCBProgram.DataBind();
+                ddlVHCBProgram.Items.Insert(0, new ListItem("Select", "NA"));
+
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
             }
         }
 
@@ -56,9 +75,13 @@ namespace vhcbcloud.Account
         {
             try
             {
-                AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text);
+                int dfltPrg = 0;
+                if (ddlVHCBProgram.SelectedIndex != 0)
+                    dfltPrg = Convert.ToInt32(ddlVHCBProgram.SelectedValue.ToString());
+                AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg);
                 BindUserInfo();
                 ClearFields();
+                lblErrorMsg.Text = "User Information added successfully";
             }
             catch (Exception ex)
             {
@@ -98,11 +121,12 @@ namespace vhcbcloud.Account
                 string strLastName = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtLastName")).Text.Trim();
                 string strEmail = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtEmail")).Text.Trim();
                 string strPassword = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtPassword")).Text.Trim();
-
-                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail);
+                int dfltPgr = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedValue.ToString()) : 0;
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr);
 
                 gvUserInfo.EditIndex = -1;
                 BindUserInfo();
+                lblErrorMsg.Text = "User information updated successfully.";                
             }
             catch (Exception ex)
             {
@@ -121,8 +145,35 @@ namespace vhcbcloud.Account
 
         protected void gvUserInfo_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit) CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlPrg = (e.Row.FindControl("ddlEditVhcbPrg") as DropDownList);
+                    TextBox txtPrg = (e.Row.FindControl("txtDfltPrg") as TextBox);
+                    if (ddlPrg != null)
+                    {
+                        DataTable dtable = AccountData.GetVHCBProgram();
+                        ddlPrg.DataSource = dtable;
+                        ddlPrg.DataValueField = "typeid";
+                        ddlPrg.DataTextField = "Description";
+                        ddlPrg.DataBind();
+                        ddlPrg.Items.Insert(0, new ListItem("Select", "NA"));
+                        string itemToCompare = string.Empty;
+                        if (txtPrg != null)
+                            foreach (ListItem item in ddlPrg.Items)
+                            {
+                                itemToCompare = item.Text;
+                                if (txtPrg.Text.ToLower() == itemToCompare.ToLower())
+                                {
+                                    ddlPrg.ClearSelection();
+                                    item.Selected = true;
+                                }
+                            }
+                    }
+                }
+            }
         }
 
         protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)

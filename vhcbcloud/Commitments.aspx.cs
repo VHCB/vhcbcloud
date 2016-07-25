@@ -455,6 +455,13 @@ namespace vhcbcloud
                     return;
                 }
 
+                if(hfProjId.Value=="")
+                {
+                    lblErrorMsg.Text = "Select an existing project to make a commitment";
+                    txtProjNum.Focus();
+                    return;
+                }
+
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
 
@@ -509,7 +516,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                    dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_COMMITMENT);
                     gvPTrans.DataSource = dtTrans;
                     gvPTrans.DataBind();
                 }
@@ -960,7 +967,7 @@ namespace vhcbcloud
 
                     if (rdBtnSelection.SelectedIndex == 1)
                     {
-                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly);
+                        DataTable dtTrans = FinancialTransactions.GetFinancialTransByProjId(Convert.ToInt32(hfProjId.Value), ActiveOnly, BOARD_COMMITMENT);
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
                         CommonHelper.DisableButton(btnTransactionSubmit);
