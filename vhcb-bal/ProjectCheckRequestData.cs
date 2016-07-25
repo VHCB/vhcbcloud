@@ -115,6 +115,40 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtApplicantNames;
         }
+        public static DataTable PCR_Program(int ProjectId)
+        {
+            DataTable dtApplicantNames = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("projId", ProjectId));
+                command.CommandText = "PCR_Program";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtApplicantNames = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtApplicantNames;
+        }
 
         public static DataTable GetProjectApplicant(int ProjectId)
         {
