@@ -455,6 +455,13 @@ namespace vhcbcloud
                     return;
                 }
 
+                if(hfProjId.Value=="")
+                {
+                    lblErrorMsg.Text = "Select an existing project to make a commitment";
+                    txtProjNum.Focus();
+                    return;
+                }
+
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
 

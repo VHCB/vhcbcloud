@@ -15,13 +15,31 @@
                                     <asp:ListItem> Existing &nbsp;</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
-                            <td style="text-align: right">
+                            <%-- <td style="text-align: right">
                                 <asp:LinkButton ID="lbAwardSummary" Style="float: right; margin: 0" Visible="false" runat="server" Text="Award Summary" OnClick="lbAwardSummary_Click"></asp:LinkButton>
                                 <div style="clear: right;"></div>
+                            </td>--%>
+                            <td style="text-align: right">
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
+                                    OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
+                                &nbsp;<asp:ImageButton ID="imgNewAwardSummary" runat="server" ImageUrl="~/Images/$$.png" OnClientClick="PopupNewAwardSummary(); return false;" Style="border: none;" Text="Award Summary" ToolTip="Award summary" Visible="true" />
+                                <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false" OnClientClick="PopupExistingAwardSummary(); return false;" />
+                                &nbsp;<asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;" />
+
+                                <%--<asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />--%>
                             </td>
                         </tr>
                     </table>
                 </div>
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+
+                </asp:Panel>
                 <div class="panel-body">
                     <p class="lblErrMsg">
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
@@ -120,11 +138,11 @@
 
 
                             <td><span class="labelClass">Disbursement $:</span></td>
-                            <td >
-                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>                               
+                            <td>
+                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
-                            <td><span class="labelClass" style="visibility:hidden">Available Funds $:</span></td>
-                            <td colspan="5"> 
+                            <td><span class="labelClass" style="visibility: hidden">Available Funds $:</span></td>
+                            <td colspan="5">
                                 <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server" Visible="false"></asp:Label></td>
 
                         </tr>
@@ -237,13 +255,13 @@
                             </td>
                             <td>
                                 <%-- <span class="labelClass">State/VHCB #s:</span>--%>
-                                <span class="labelClass" >Available Funds $:</span>
+                                <span class="labelClass">Available Funds $:</span>
                             </td>
                             <td>
                                 <%-- <asp:DropDownList ID="ddlStateVHCBS" CssClass="clsDropDown" runat="server">
                                 </asp:DropDownList>--%>
 
-                                <asp:Label ID="lblCommittedAvailFunds" class="labelClass" Text="" runat="server" ></asp:Label>
+                                <asp:Label ID="lblCommittedAvailFunds" class="labelClass" Text="" runat="server"></asp:Label>
 
                             </td>
                             <td></td>
@@ -451,7 +469,7 @@
         <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
         <asp:HiddenField ID="hfPCRId" runat="server" />
         <asp:HiddenField ID="hfEditPCRId" runat="server" />
-
+         <asp:HiddenField ID="hfProjId" runat="server" />
         <%--<asp:HiddenField ID="hfPCRIDTransID" runat="server" />--%>
     </div>
 
@@ -470,5 +488,19 @@
                 }
             }
         }
+
+        function PopupNewAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+           };
+
+           function PopupProjectSearch() {
+               window.open('./projectsearch.aspx')
+           };
+
+           function PopupExistingAwardSummary() {
+               window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+
     </script>
 </asp:Content>

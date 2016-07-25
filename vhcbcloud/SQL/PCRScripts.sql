@@ -33,7 +33,7 @@ begin
 	join [dbo].[ApplicantAppName] aan(nolock) on an.AppNameID = aan.AppNameID
 	join Applicant a on a.ApplicantId = aan.ApplicantID
 	join ProjectApplicant pa on pa.ApplicantID = a.ApplicantID
-	where aan.DefName = 1 and projectID = @ProjectID
+	where aan.DefName = 1 and pa.LkApplicantRole=358 and projectID = @ProjectID
 	order by an.Applicantname
 end
 go

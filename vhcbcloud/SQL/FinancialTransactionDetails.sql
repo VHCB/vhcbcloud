@@ -1397,3 +1397,92 @@ Begin
 	group by f.FundId, f.name, p.ProjectId
 end
 go
+
+alter procedure UpdateFinancialTransactionStatus
+(
+	@transId int
+	
+)
+as
+--exec UpdateFinancialTransactionStatus 2958
+begin
+	
+	declare @toProjId int
+	declare  @ProjIdTable table(projIds int)
+	declare  @transIdTable table(transIds int)
+
+	select @toProjId= toprojectid from reallocatelink where totransid = 2958
+
+	insert into @ProjIdTable(projIds) select toprojectid from reallocatelink where fromprojectid = @toProjId
+	insert into @transIdTable(transIds)  select fromtransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
+	insert into @transIdTable(transIds)  select totransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
+	
+
+	update trans set LKStatus = 262
+	from trans
+	where TransId in (select distinct transIds from @transIdTable) 
+end
+go
+
+alter procedure PCR_ApplicantName
+(
+	@ProjectID int
+)
+as
+begin
+
+	select an.Applicantname 
+	from [dbo].[AppName] an(nolock)
+	join [dbo].[ApplicantAppName] aan(nolock) on an.AppNameID = aan.AppNameID
+	join Applicant a on a.ApplicantId = aan.ApplicantID
+	join ProjectApplicant pa on pa.ApplicantID = a.ApplicantID
+	where aan.DefName = 1 and pa.LkApplicantRole=358 and projectID = @ProjectID
+	order by an.Applicantname
+end
+go
+
+
+alter procedure dbo.GetProjectFinLegalApplicant
+(
+	@ProjectId int
+) 
+as
+begin 
+	select pa.ProjectApplicantID, 			
+			isnull(pa.IsApplicant, 0) as IsApplicant, 
+			isnull(pa.FinLegal, 0) as FinLegal,			
+			a.ApplicantId, a.Individual, 
+			an.applicantname,			
+			aan.appnameid, aan.defname
+		from ProjectApplicant pa(nolock)
+		join applicantappname aan(nolock) on pa.ApplicantId = aan.ApplicantID
+		join appname an(nolock) on aan.appnameid = an.appnameid
+		join applicant a(nolock) on a.applicantid = aan.applicantid
+		left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
+		left join contact c(nolock) on c.ContactID = ac.ContactID
+		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
+		where pa.ProjectId = @ProjectId
+			and pa.RowIsActive = 1 and pa.finlegal = 1
+		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc
+	end 
+go
+
+alter procedure GetDefaultPCRQuestions
+(
+@IsLegal bit = 0,
+@ProjectCheckReqID	int
+)
+as
+begin
+--Always include LkPCRQuestions.def=1 If any disbursement from  ProjectCheckReq.Legalreview=1 (entered above), then include LkPCRQuestions.TypeID=7
+
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
+	case when pcrq.Approved != 1 then ''
+		else ui.fname+' '+ui.Lname  end as staffid 
+	from ProjectCheckReqQuestions pcrq(nolock) 
+	left join  LkPCRQuestions q(nolock) on pcrq.LkPCRQuestionsID = q.TypeID 
+	left join UserInfo ui on pcrq.StaffID = ui.UserId
+	where   q.RowIsActive=1 and ProjectCheckReqID = @ProjectCheckReqID
+	
+end
+
