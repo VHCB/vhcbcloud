@@ -255,43 +255,38 @@ Begin
 		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
 		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
 	
-		select  p.projectid, 
-				det.FundId,
-				f.account, 
-				det.lktranstype, 
-								--case
-			--	when det.lktranstype = 241 then 'Grant'
-			--	when det.lktranstype = 242 then 'Loan' 
-			--	when det.lktranstype = 243 then 'Contract'
-			--end as FundType, 
-				ttv.description as FundType,
-				f.name,
-				p.proj_num, 
-				lv.Description as projectname, 
-				tr.ProjectCheckReqID,
-				f.abbrv,
-				sum(det.Amount) as CommitmentAmount, 
-				case 
-					when tr.lkstatus = 261 then 'Pending'
-					when tr.lkstatus = 262 then 'Final'
-				 end as lkStatus, 
-				 case
-					when tr.lkstatus = 261 then sum(det.amount)
-				 end as PendingAmount,
-				 max(tr.date) as TransDate
-				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId		
-		join LookupValues lv on lv.TypeID = pn.LkProjectname	
-		join Trans tr on tr.ProjectID = p.ProjectId
-		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId
-		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
-		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
-		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
-		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description, f.account
-		order by p.Proj_num
+		select   p.projectid, 
+			det.FundId,
+			f.account, 
+			det.lktranstype, 
+	
+			ttv.description as FundType,
+			f.name,
+			p.proj_num, 
+			lv.Description as projectname, 
+			tr.ProjectCheckReqID,
+			f.abbrv,det.amount as CommitmentAmount, 
+			case 
+				when tr.lkstatus = 261 then 'Pending'
+				when tr.lkstatus = 262 then 'Final'
+				end as lkStatus,
+			case
+				when tr.lkstatus = 261 then det.amount
+				end as PendingAmount,
+				max(tr.date) as TransDate
+			from Project p 
+	join ProjectName pn on pn.ProjectID = p.ProjectId		
+	join LookupValues lv on lv.TypeID = pn.LkProjectname	
+	join Trans tr on tr.ProjectID = p.ProjectId
+	join Detail det on det.TransId = tr.TransId	
+	join fund f on f.FundId = det.FundId
+	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
+	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
+	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
+	order by p.Proj_num
 
 
 		insert into @tempfundExpend (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, FundAbbrv, expendedamount,lkstatus, pendingamount, [Date])
@@ -1413,19 +1408,31 @@ as
 begin
 	
 	declare @toProjId int
-	declare  @ProjIdTable table(projIds int)
-	declare  @transIdTable table(transIds int)
+	declare @lkTrans int
 
-	select @toProjId= toprojectid from reallocatelink where totransid = @transid
+	select @lkTrans = LkTransaction from trans where TransId = @transId
+	
+	if (@lkTrans = 240)
+	Begin
 
-	insert into @ProjIdTable(projIds) select toprojectid from reallocatelink where fromprojectid = @toProjId
-	insert into @transIdTable(transIds)  select fromtransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
-	insert into @transIdTable(transIds)  select totransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
+		declare  @ProjIdTable table(projIds int)
+		declare  @transIdTable table(transIds int)
+
+		select @toProjId= toprojectid from reallocatelink where totransid = @transid
+
+		insert into @ProjIdTable(projIds) select toprojectid from reallocatelink where fromprojectid = @toProjId
+		insert into @transIdTable(transIds)  select fromtransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
+		insert into @transIdTable(transIds)  select totransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
 	
 
-	update trans set LKStatus = 262
-	from trans
-	where TransId in (select distinct transIds from @transIdTable) 
+		update trans set LKStatus = 262		
+		where TransId in (select distinct transIds from @transIdTable) 
+	end
+	else 
+	Begin
+		update trans set LKStatus = 262		
+		where TransId = @transId
+	end
 end
 go
 
