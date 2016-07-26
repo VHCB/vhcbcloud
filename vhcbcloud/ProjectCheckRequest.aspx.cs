@@ -27,7 +27,7 @@ namespace vhcbcloud
                 DisableButton(btnSubmit);
                 BindProjects();
                 
-                BindProgram();
+                //BindProgram();
                 BindStatus();
                 BindMatchingGrant();                
                 BindNODData();
@@ -132,7 +132,7 @@ namespace vhcbcloud
                 //ddlApplicantName.Items.Insert(0, new ListItem("Select", "NA"));
 
                 BindPayee(ProjectId);
-
+                BindProgram(ProjectId);
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
                 CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
 
@@ -159,7 +159,7 @@ namespace vhcbcloud
                 ddlPayee.DataValueField = "ApplicantId";
                 ddlPayee.DataTextField = "Applicantname";
                 ddlPayee.DataBind();
-                if (ddlPayee.Items.Count > 0)
+                if (ddlPayee.Items.Count > 1)
                     ddlPayee.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
@@ -169,13 +169,13 @@ namespace vhcbcloud
 
         }
 
-        protected void BindProgram()
+        protected void BindProgram(int projId)
         {
             try
             {
                 DataTable dtProgram;
                 dtProgram = new DataTable();
-                dtProgram = ProjectCheckRequestData.GetData("PCR_Program");
+                dtProgram = ProjectCheckRequestData.PCR_Program(projId);
 
                 ddlProgram.DataSource = dtProgram;
                 ddlProgram.DataValueField = "typeid";
@@ -441,6 +441,7 @@ namespace vhcbcloud
                 DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
                 lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
                 BindApplicantName(int.Parse(tokens[0]));
+
                 hfProjId.Value = tokens[0].ToString();
                 rdBtnSelect.SelectedIndex = 0;
                 pnlApprovals.Visible = false;
@@ -1458,9 +1459,9 @@ namespace vhcbcloud
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
 
 
-                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                //DataTable dtable = FinancialTransactions.       (Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                 
-                lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
+                //lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
 
                 ddlTransType.DataSource =  FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";

@@ -8,9 +8,14 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.lkstatus = 262--and tr.LkTransaction = 238
-
+	where tr.lkstatus = 262--and tr.LkTransaction = 238	
 	and tr.RowIsActive=1 and pn.defname=1
+	and p.ProjectId not in (select distinct p.projectid 
+							from project p(nolock)
+							join projectname pn(nolock) on p.projectid = pn.projectid	
+							join trans tr on tr.projectid = p.projectid
+							where tr.lkstatus = 261
+							and tr.RowIsActive=1 and pn.defname=1)
 	group by p.projectid, proj_num
 	order by proj_num 
 end
@@ -1411,7 +1416,7 @@ begin
 	declare  @ProjIdTable table(projIds int)
 	declare  @transIdTable table(transIds int)
 
-	select @toProjId= toprojectid from reallocatelink where totransid = 2958
+	select @toProjId= toprojectid from reallocatelink where totransid = @transid
 
 	insert into @ProjIdTable(projIds) select toprojectid from reallocatelink where fromprojectid = @toProjId
 	insert into @transIdTable(transIds)  select fromtransid from reallocatelink where toprojectid in (select projids from @ProjIdTable)
