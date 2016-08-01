@@ -72,7 +72,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetLandUsePermit");
+                dtable = FinancialTransactions.GetDataTableByProcName("GetAllLandUsePermit");
                 ddlUsePermit.DataSource = dtable;
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";

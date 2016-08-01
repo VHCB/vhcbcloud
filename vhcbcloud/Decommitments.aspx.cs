@@ -133,7 +133,7 @@ namespace vhcbcloud
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit();
+                BindUsePermit(Convert.ToInt32(hfProjId.Value));
 
                 if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
                 {
@@ -933,7 +933,7 @@ namespace vhcbcloud
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit();
+                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
                 if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
                 {
@@ -955,17 +955,18 @@ namespace vhcbcloud
                 //ClearDetailSelection();
             }
         }
-        protected void BindUsePermit()
+        protected void BindUsePermit(int projId)
         {
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetLandUsePermit");
+                dtable = FinancialTransactions.GetLandUsePermit(projId);
                 ddlUsePermit.DataSource = dtable;
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";
                 ddlUsePermit.DataBind();
-                ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
