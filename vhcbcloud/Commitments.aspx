@@ -104,7 +104,7 @@
                                                         <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="3"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </td>
-                                                    <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
+                                                    <td style="width: 10%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
@@ -200,7 +200,7 @@
                                                     <ItemTemplate>
                                                         <%--<asp:LinkButton ID="LinkButton3" runat="server" CausesValidation="False" CommandName="Update" Text="activate" OnClientClick="return confirm('Are you sure you want to activate this transaction?');"></asp:LinkButton>--%>
                                                 &nbsp;
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Inactivate" OnClientClick="return confirm('Are you sure you want to delete this transaction?');"></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="delete" OnClientClick="return confirm('Are you sure you want to delete this transaction?');"></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:CommandField ShowEditButton="True" UpdateText="Activate" Visible="false" />

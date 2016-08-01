@@ -274,11 +274,11 @@
         }
 
         function PopupNewAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+            window.open('./awardsummary.aspx?Reallocations=true&projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
         function PopupExistingAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+            window.open('./awardsummary.aspx?Reallocations=true&projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
         function PopupProjectSearch() {

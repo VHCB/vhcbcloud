@@ -26,10 +26,10 @@ namespace vhcbcloud
             {
                 DisableButton(btnSubmit);
                 BindProjects();
-                
+
                 //BindProgram();
                 BindStatus();
-                BindMatchingGrant();                
+                BindMatchingGrant();
                 BindNODData();
                 BindPCRQuestions(false);
                 BindPCRData();
@@ -135,8 +135,8 @@ namespace vhcbcloud
                 BindProgram(ProjectId);
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
                 CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
-
-                DisplayControls(ddlProgram.SelectedItem.ToString());
+                if (ddlProgram.Items.Count > 1)
+                    DisplayControls(ddlProgram.SelectedItem.ToString());
             }
             catch (Exception ex)
             {
@@ -181,7 +181,8 @@ namespace vhcbcloud
                 ddlProgram.DataValueField = "typeid";
                 ddlProgram.DataTextField = "Description";
                 ddlProgram.DataBind();
-                ddlProgram.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlProgram.Items.Count > 1)
+                    ddlProgram.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -229,7 +230,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindFundTypeCommitments( int projId)
+        protected void BindFundTypeCommitments(int projId)
         {
             try
             {
@@ -443,7 +444,6 @@ namespace vhcbcloud
                 BindApplicantName(int.Parse(tokens[0]));
 
                 hfProjId.Value = tokens[0].ToString();
-                rdBtnSelect.SelectedIndex = 0;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
                 BindFundTypeCommitments(int.Parse(tokens[0]));
@@ -453,7 +453,6 @@ namespace vhcbcloud
             else
             {
                 lblProjName.Text = "--";
-                
             }
         }
 
@@ -626,10 +625,20 @@ namespace vhcbcloud
                 ddlPayee.Focus();
                 return;
             }
-            else if (ddlProgram.Items.Count > 1 && ddlProgram.SelectedIndex == 0)
+            else if (ddlPayee.Items.Count == 0)
+            {
+                lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
+                return;
+            }
+            if (ddlProgram.Items.Count > 1 && ddlProgram.SelectedIndex == 0)
             {
                 lblErrorMsg.Text = "Select Program";
                 ddlProgram.Focus();
+                return;
+            }
+            else if (ddlProgram.Items.Count == 0)
+            {
+                lblErrorMsg.Text = "Add a program to this project before proceed with disbursement";
                 return;
             }
             //else if (ddlStatus.Items.Count > 1 && ddlStatus.SelectedIndex == 0)
@@ -734,7 +743,7 @@ namespace vhcbcloud
                 {
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
-                        decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count >0 ? int.Parse(ddlPayee.SelectedValue.ToString()):0, int.Parse(ddlStatus.SelectedValue.ToString()),
+                        decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS);
                     if (dtPCR.Rows.Count > 0)
                     {
@@ -779,7 +788,7 @@ namespace vhcbcloud
                 this.hfTransAmt.Value = txtDisbursementAmt.Text;
 
                 BindPCRData();
-                DisablePCR();                
+                DisablePCR();
                 //ClearPCRForm();
                 //ClearPCRDetails();
                 this.hfEditPCRId.Value = "";
@@ -1076,7 +1085,7 @@ namespace vhcbcloud
             txtTransDate.Enabled = true;
             ddlPayee.Enabled = true;
             ddlProgram.Enabled = true;
-            ddlStatus.Enabled = true;
+            ddlStatus.Enabled = false;
 
             chkLCB.Enabled = true;
             chkLegalReview.Enabled = true;
@@ -1103,7 +1112,7 @@ namespace vhcbcloud
             ddlApplicantName.Items.Clear();
             lblProjName.Text = "--";
             txtTransDate.Text = "";
-            if (ddlPayee.Items.Count>0) ddlPayee.SelectedIndex = 0;
+            if (ddlPayee.Items.Count > 0) ddlPayee.SelectedIndex = 0;
             if (ddlProgram.Items.Count > 0) ddlProgram.SelectedIndex = 0;
             if (ddlStatus.Items.Count > 0) ddlStatus.SelectedIndex = 0;
             EnableButton(btnCRSubmit);
@@ -1316,7 +1325,7 @@ namespace vhcbcloud
                 ddlPCRQuestions.SelectedIndex = -1;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
-                fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());                
+                fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
                 DisablePCR();
             }
             else
@@ -1324,7 +1333,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "Please select the existing check request date selection.";
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
-                
+
             }
         }
 
@@ -1450,7 +1459,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
                 throw;
             }
-        }      
+        }
 
         protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1460,10 +1469,10 @@ namespace vhcbcloud
 
 
                 //DataTable dtable = FinancialTransactions.       (Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-                
+
                 //lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
 
-                ddlTransType.DataSource =  FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();

@@ -93,8 +93,11 @@ namespace vhcbcloud
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
                     dtFund =FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
-                    txtRfromAmt.Text = dtFund.Rows[0]["amount"].ToString();
-                    ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
+                    if (dtFund.Rows.Count > 0)
+                    {
+                        txtRfromAmt.Text = dtFund.Rows[0]["amount"].ToString();
+                        ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
+                    }
                     BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 }
             }
