@@ -370,7 +370,7 @@ namespace vhcbcloud
         {
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
             PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
-            ddlProgram.Enabled = false;
+            //ddlProgram.Enabled = false;
             hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
             GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
             //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());

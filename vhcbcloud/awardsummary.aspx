@@ -63,7 +63,7 @@
                                         <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pending" SortExpression="pendingamount">
+                                <asp:TemplateField HeaderText="Pending Balance" SortExpression="pendingamount">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -80,7 +80,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Balance" SortExpression="balance">
+                                <asp:TemplateField HeaderText="Actual Balance" SortExpression="balance">
                                     <ItemTemplate>
                                         <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
                                     </ItemTemplate>

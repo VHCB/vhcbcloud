@@ -110,11 +110,11 @@
                                                 <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                                 <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                             </td>
-                                            <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
+                                            <td style="width: 20%; float: left"><span class="labelClass">Amount to Decommit $ :</span></td>
                                             <td style="width: 20%; float: left">
                                                 <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                                             <td style="width: 10%; float: left"></td>
-                                            <td style="width: 30%; float: left">
+                                            <td style="width: 20%; float: left">
                                                 <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server">
                                                 </asp:DropDownList>
                                             </td>
@@ -338,6 +338,9 @@
                                         </Columns>
                                         <FooterStyle CssClass="footerStyle" />
                                     </asp:GridView>
+                                    <br />
+                                    <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Submit" />
+                                    <br />
                                     <br />
                                 </div>
                             </div>

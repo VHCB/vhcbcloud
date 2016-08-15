@@ -215,10 +215,15 @@ namespace vhcbcloud
                     }
 
                     if (lblBalAmt.Text != "$0.00")
+                    {
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        btnNewTransaction.Visible = false;
+                    }
                     else if (lblBalAmt.Text == "$0.00")
+                    {
                         CommonHelper.DisableButton(btnReallocateSubmit);
-
+                        btnNewTransaction.Visible = true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -255,6 +260,11 @@ namespace vhcbcloud
             {
                 gvReallocate.DataSource = null;
                 gvReallocate.DataBind();
+                btnNewTransaction.Visible = true;
+            }
+            else
+            {
+                btnNewTransaction.Visible = false;
             }
         }
 
@@ -268,6 +278,7 @@ namespace vhcbcloud
             int? nullable = null;
             try
             {
+                btnNewTransaction.Visible = false;
                 if (ddlRFromProj.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select reallocate from project";
@@ -374,6 +385,11 @@ namespace vhcbcloud
             {
                 lblRErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void btnNewTransaction_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("reallocations.aspx");
         }
     }
 }
