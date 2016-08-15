@@ -217,6 +217,7 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnDecommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
+                        CommonHelper.DisableButton(btnNewTransaction);
                         if (rdBtnSelection.SelectedIndex == 0)
                         {
                             lblProjName.Text = "";
@@ -227,6 +228,7 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnDecommitmentSubmit);
+                        CommonHelper.DisableButton(btnNewTransaction);
                     }
 
                     if (lblBalAmt.Text != "$0.00")
@@ -770,6 +772,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = true;
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
+                btnNewTransaction.Visible = false;
             }
             else
             {
@@ -777,7 +780,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
-
+                btnNewTransaction.Visible = true;
             }
 
         }
@@ -973,6 +976,11 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
 
+        }
+
+        protected void btnNewTransaction_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("decommitments.aspx");
         }
     }
 }

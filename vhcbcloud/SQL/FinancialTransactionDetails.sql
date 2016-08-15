@@ -366,13 +366,15 @@ Begin
 		order by p.Proj_num
 	
 		select tc.projectid, tc.fundid,tc.account, tc.lktranstype,tc.FundType, tc.FundName, tc.FundAbbrv, tc.Projnum, tc.ProjectName, 
-			   tc.ProjectCheckReqID, tc.commitmentamount, ISNULL( te.expendedamount,0) as expendedamount, (tc.commitmentamount - (ISNULL( te.expendedamount, 0))) as balance,
-			   isnull(tc.pendingamount, 0) as pendingamount, tc.lkstatus, tc.Date 
+			   sum( tc.commitmentamount) as commitmentamount, sum( ISNULL( te.expendedamount,0)) as expendedamount, sum((tc.commitmentamount - (ISNULL( te.expendedamount, 0))) - isnull(tc.pendingamount, 0)) as balance,
+			   sum(isnull(tc.pendingamount, 0)) as pendingamount, max(tc.Date) as [date]
 		from @tempFundCommit tc 
 		left outer join @tempfundExpend te on tc.projectid = te.projectid 
 				and tc.fundid = te.fundid 
 				and tc.lktranstype = te.lktranstype
 		where tc.projectid = @projectid
+		group by tc.projectid, tc.fundid,tc.account, tc.lktranstype,tc.FundType, tc.FundName, tc.FundAbbrv, tc.Projnum, tc.ProjectName
+
 
 		select  p.projectid, 
 				det.FundId, f.account,
@@ -1542,7 +1544,9 @@ as
 begin
 --Always include LkPCRQuestions.def=1 If any disbursement from  ProjectCheckReq.Legalreview=1 (entered above), then include LkPCRQuestions.TypeID=7
 
-	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, 
+	case when pcrq.Approved = 1 then 'Yes'
+		else 'No' end as Approved , pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
 	case when pcrq.Approved != 1 then ''
 		else ui.fname+' '+ui.Lname  end as staffid 
 	from ProjectCheckReqQuestions pcrq(nolock) 
@@ -1551,4 +1555,3 @@ begin
 	where   q.RowIsActive=1 and ProjectCheckReqID = @ProjectCheckReqID
 	
 end
-

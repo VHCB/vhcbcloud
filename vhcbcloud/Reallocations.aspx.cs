@@ -215,10 +215,15 @@ namespace vhcbcloud
                     }
 
                     if (lblBalAmt.Text != "$0.00")
+                    {
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        CommonHelper.DisableButton(btnNewTransaction);
+                    }
                     else if (lblBalAmt.Text == "$0.00")
+                    {
                         CommonHelper.DisableButton(btnReallocateSubmit);
-
+                        CommonHelper.EnableButton(btnNewTransaction);
+                    }
                 }
             }
             catch (Exception ex)
@@ -255,6 +260,11 @@ namespace vhcbcloud
             {
                 gvReallocate.DataSource = null;
                 gvReallocate.DataBind();
+                btnNewTransaction.Visible = true;
+            }
+            else
+            {
+                btnNewTransaction.Visible = false;
             }
         }
 
@@ -374,6 +384,11 @@ namespace vhcbcloud
             {
                 lblRErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void btnNewTransaction_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("reallocations.aspx");
         }
     }
 }

@@ -104,11 +104,11 @@
                                                         <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="3"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </td>
-                                                    <td style="width: 10%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
+                                                    <td style="width: 20%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
-                                                    <td style="width: 30%; float: left">
+                                                    <td style="width: 20%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
                                                         </asp:DropDownList>
                                                     </td>
@@ -360,6 +360,9 @@
                                                 </Columns>
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>
+                                            <br />
+                                            <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" TabIndex="11" Text="Submit" OnClick="btnNewTransaction_Click" />
+                                            <br />
                                             <br />
                                         </div>
                                     </div>

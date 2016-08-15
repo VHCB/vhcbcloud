@@ -979,5 +979,10 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
+
+        protected void btnNewTransaction_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("cashrefund.aspx");
+        }
     }
 }
