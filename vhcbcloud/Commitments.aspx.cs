@@ -270,8 +270,7 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnCommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
-                        CommonHelper.EnableButton(btnNewTransaction);
-                        if (rdBtnSelection.SelectedIndex == 0)
+                        btnNewTransaction.Visible = true;
                         {
                             lblProjName.Text = "";
                             lblGrantee.Text = "";
@@ -283,6 +282,7 @@ namespace vhcbcloud
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCommitmentSubmit);
                         CommonHelper.DisableButton(btnNewTransaction);
+                        btnNewTransaction.Visible = false;
                     }
                     if (lblBalAmt.Text != "$0.00")
                     {
@@ -332,7 +332,7 @@ namespace vhcbcloud
             try
             {
                 lblErrorMsg.Text = "";
-
+                btnNewTransaction.Visible = false;
                 if (ddlAcctNum.Items.Count > 1 && ddlAcctNum.SelectedIndex == 0)
                 {
                     lblErrorMsg.Text = "Select Account to add new transaction detail";
@@ -525,7 +525,10 @@ namespace vhcbcloud
                 if (dtTrans.Rows.Count > 0)
                     CommonHelper.DisableButton(btnTransactionSubmit);
                 else
+                {
                     CommonHelper.EnableButton(btnTransactionSubmit);
+                    btnNewTransaction.Visible = false;
+                }
 
             }
             catch (Exception ex)

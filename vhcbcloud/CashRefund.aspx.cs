@@ -268,8 +268,13 @@ namespace vhcbcloud
                     if (lblBalAmt.Text != "$0.00")
                     {
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-
+                        btnNewTransaction.Visible = false;
                     }
+                    else if (lblBalAmt.Text == "$0.00")
+                    {
+                        btnNewTransaction.Visible = true;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -312,6 +317,7 @@ namespace vhcbcloud
         {
             try
             {
+                btnNewTransaction.Visible = false;
                 lblErrorMsg.Text = "";
 
                 if (ddlAcctNum.Items.Count > 1 && ddlAcctNum.SelectedIndex == 0)
@@ -515,7 +521,10 @@ namespace vhcbcloud
                 if (dtTrans.Rows.Count > 0)
                     CommonHelper.DisableButton(btnTransactionSubmit);
                 else
+                {
                     CommonHelper.EnableButton(btnTransactionSubmit);
+                    btnNewTransaction.Visible = false;
+                }
 
             }
             catch (Exception ex)
