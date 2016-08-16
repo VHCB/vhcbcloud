@@ -353,7 +353,7 @@
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>
                                             <br />
-                                            <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Submit" />
+                                            <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Visible="false" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Cash Refund" />
                                             <br />
                                             <br />
                                         </div>

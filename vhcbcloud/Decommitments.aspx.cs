@@ -297,8 +297,8 @@ namespace vhcbcloud
                     if (dtAvailFunds.Rows.Count > 0)
                         if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
                         {
-                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund";
-                            return;
+                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund. However the transaction is still added.";
+                            
                         }
 
                 decimal currentTranAmount = 0;

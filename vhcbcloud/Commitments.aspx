@@ -106,7 +106,7 @@
                                                     </td>
                                                     <td style="width: 20%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
-                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="4"></asp:TextBox></td>
+                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" class="totMoney" runat="server" TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
@@ -361,7 +361,7 @@
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>
                                             <br />
-                                            <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" TabIndex="11" Text="Submit" OnClick="btnNewTransaction_Click" />
+                                            <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" Visible="false" TabIndex="11" Text="Add New Commitment" OnClick="btnNewTransaction_Click" />
                                             <br />
                                             <br />
                                         </div>
@@ -450,6 +450,7 @@
 
             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
             __doPostBack(hdnCommitedProjValueID, "");
+            $('#totMoney').focus();
         }
 
         function OnContactSelected(source, eventArgs) {
