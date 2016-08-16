@@ -8,14 +8,9 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where tr.lkstatus = 262--and tr.LkTransaction = 238	
+	where defname = 1 --and tr.lkstatus = 262--and tr.LkTransaction = 238
+
 	and tr.RowIsActive=1 and pn.defname=1
-	and p.ProjectId not in (select distinct p.projectid 
-							from project p(nolock)
-							join projectname pn(nolock) on p.projectid = pn.projectid	
-							join trans tr on tr.projectid = p.projectid
-							where tr.lkstatus = 261
-							and tr.RowIsActive=1 and pn.defname=1)
 	group by p.projectid, proj_num
 	order by proj_num 
 end
@@ -980,7 +975,7 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.lkstatus != 261--and tr.LkTransaction = 238
+	where defname = 1 --and tr.lkstatus != 261--and tr.LkTransaction = 238
 	and tr.RowIsActive=1 and pn.defname=1	and p.Proj_num like @filter +'%'	
 	order by proj_num 
 end
@@ -998,7 +993,7 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 and tr.lkstatus != 261 and tr.LkTransaction = 236
+	where defname = 1and tr.LkTransaction = 236-- and tr.lkstatus != 261 
 	and tr.RowIsActive=1 and pn.defname=1	and p.Proj_num like @filter +'%'	
 	order by proj_num 
 end
