@@ -9,7 +9,7 @@
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <asp:RadioButtonList ID="rdBtnFinancial" class ="mySelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
+                            <asp:RadioButtonList ID="rdBtnFinancial" class="mySelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
                                 RepeatDirection="Horizontal"
                                 OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
                                 <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
@@ -32,7 +32,7 @@
                                             <asp:ListItem>Existing</asp:ListItem>
                                         </asp:RadioButtonList></td>
                                     <td style="text-align: right">
-                                        <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"  Style="border: none;" runat="server" Text="Project Search" Visible="true"
+                                        <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
                                             OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
                                         &nbsp;<asp:ImageButton ID="imgNewAwardSummary" runat="server" ImageUrl="~/Images/$$.png" OnClientClick="PopupNewAwardSummary(); return false;" Style="border: none;" Text="Award Summary" ToolTip="Award summary" Visible="true" />
                                         <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false" OnClientClick="PopupExistingAwardSummary(); return false;" />
@@ -152,12 +152,12 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                 <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                                     <ItemTemplate>
                                                     </ItemTemplate>
                                                     <ItemStyle Width="100px" />
                                                     <FooterStyle Width="100px" />
-                                                     <HeaderStyle Width="100px" />
+                                                    <HeaderStyle Width="100px" />
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
                                                     FooterStyle-HorizontalAlign="Right">
@@ -228,6 +228,11 @@
                                                         <td style="width: 20%; float: left">
                                                             <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
                                                             </asp:DropDownList>
+                                                            <asp:TextBox ID="txtAcctNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+
+                                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtAcctNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetFundAccountsByFilter">
+                                                            </ajaxToolkit:AutoCompleteExtender>
                                                         </td>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Fund Name :</span></td>
                                                         <td style="width: 20%; float: left">
@@ -331,7 +336,7 @@
                                                         <ItemStyle Width="200px" />
                                                         <FooterStyle Width="200px" />
                                                         <HeaderStyle Width="200px" />
-                                                    </asp:TemplateField>                                                   
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
@@ -376,6 +381,7 @@
                         <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
                         <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
                         <asp:HiddenField ID="hdnCommitedProjValue" OnValueChanged="hdnCommitedProjValue_ValueChanged" runat="server" />
+                        <asp:HiddenField ID="hdnFundAcct" OnValueChanged="hdnFundAcct_ValueChanged" runat="server" />
                     </div>
                 </div>
             </div>
@@ -447,6 +453,16 @@
         function OnCommittedProjectSelected(source, eventArgs) {
 
             var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
+
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+            $('#totMoney').focus();
+        }
+
+        
+        function OnFundAcctSelected(source, eventArgs) {
+
+            var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
 
             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
             __doPostBack(hdnCommitedProjValueID, "");

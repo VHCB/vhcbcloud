@@ -8,13 +8,37 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1 --and tr.lkstatus = 262--and tr.LkTransaction = 238
+	where defname = 1 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
 
 	and tr.RowIsActive=1 and pn.defname=1
 	group by p.projectid, proj_num
 	order by proj_num 
 end
 go
+
+alter procedure getCommittedProjectslistNoPendingTrans
+as
+begin
+
+	select distinct p.projectid, proj_num, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+	,round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where tr.lkstatus = 262--and tr.LkTransaction = 238	
+	and tr.RowIsActive=1 and pn.defname=1
+	and p.ProjectId not in (select distinct p.projectid 
+							from project p(nolock)
+							join projectname pn(nolock) on p.projectid = pn.projectid	
+							join trans tr on tr.projectid = p.projectid
+							where tr.lkstatus = 261
+							and tr.RowIsActive=1 and pn.defname=1)
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
+
 
 alter procedure getCommittedPendingProjectslist  
 as
@@ -446,7 +470,7 @@ Begin
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (236,237,238,239,240)
-		and  f.RowIsActive=1 and p.ProjectId = @projectid
+		and  f.RowIsActive=1 and p.ProjectId = @projectid and f.fundid = @fundid
 		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by  det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description,  ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, f.account
@@ -993,7 +1017,7 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
-	where defname = 1and tr.LkTransaction = 236-- and tr.lkstatus != 261 
+	where defname = 1 and tr.LkTransaction = 236-- and tr.lkstatus != 261 
 	and tr.RowIsActive=1 and pn.defname=1	and p.Proj_num like @filter +'%'	
 	order by proj_num 
 end
@@ -1078,6 +1102,17 @@ alter procedure GetProjectIdByProjNum
 as
 Begin
 	select projectId from project where proj_num = @filter
+End
+go
+
+
+alter procedure GetFundAccountsByFilter
+( @filter varchar(20))
+as
+Begin
+	select top 20 fundid, account, name from Fund 
+	where  RowIsActive = 1 and account like  @filter +'%'
+	order by account asc
 End
 go
 
@@ -1550,3 +1585,42 @@ begin
 	where   q.RowIsActive=1 and ProjectCheckReqID = @ProjectCheckReqID
 	
 end
+
+go
+
+alter procedure [dbo].[GetFundDetailsByFundId]
+(
+	@fundId int
+)
+as
+Begin
+	select lft.FundId, lft.account, lft.name, lft.abbrv, lft.VHCBCode,lft.LkAcctMethod, 
+	lft.DeptID,lft.Drawdown, lv.description, lft.LkFundType
+	from Fund lft
+	join LkFundType lv on lv.typeid = lft.lkfundtype
+	where lft.FundId = @fundId and  lft.RowIsActive=1
+	order by lft.name asc, lft.DateModified desc
+	
+End
+go
+
+alter procedure GetFundDetailsByFundAcct
+(
+	@fundAcct varchar(50)
+)
+as
+Begin
+	select lft.FundId, lft.account, lft.name, lft.abbrv, lft.VHCBCode,lft.LkAcctMethod, 
+	lft.DeptID,lft.Drawdown, lv.description, lft.LkFundType
+	from Fund lft
+	join LkFundType lv on lv.typeid = lft.lkfundtype
+	where lft.account = @fundAcct and  lft.RowIsActive=1
+	order by lft.name asc, lft.DateModified desc
+	
+End
+go
+
+
+
+
+
