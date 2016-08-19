@@ -157,16 +157,37 @@ namespace vhcbcloud
 
         protected void ddlRToFund_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlRToFund.SelectedIndex > 0)
+            if (ddlRFromProj.SelectedValue.ToString() != ddlRToProj.SelectedValue.ToString())
             {
-                ddlRtoFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()), Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
-                ddlRtoFundType.DataValueField = "typeid";
-                ddlRtoFundType.DataTextField = "fundtype";
-                ddlRtoFundType.DataBind();
-                if (ddlRtoFundType.Items.Count > 1)
-                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
-
+                if (ddlRToFund.SelectedIndex > 0)
+                {
+                    ddlRtoFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()), Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
+                    ddlRtoFundType.DataValueField = "typeid";
+                    ddlRtoFundType.DataTextField = "fundtype";
+                    ddlRtoFundType.DataBind();
+                    if (ddlRtoFundType.Items.Count > 1)
+                        ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                }
             }
+            else
+            {
+                if (ddlRToFund.SelectedIndex > 0)
+                {
+                    if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                    {
+                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                    }
+                    else
+                    {
+                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    }
+                    //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    ddlRtoFundType.DataValueField = "typeid";
+                    ddlRtoFundType.DataTextField = "Description";
+                    ddlRtoFundType.DataBind();
+                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+            }            
         }
               
         public void ClearReallocationToPanel()

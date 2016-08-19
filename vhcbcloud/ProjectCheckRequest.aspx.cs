@@ -43,6 +43,11 @@ namespace vhcbcloud
 
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
+                lblAmtEligibleForMatch.Visible = false;
+                txtEligibleAmt.Visible = false;
+                ddlMatchingGrant.Visible = false;
+                lblMatchingGrant.Visible = false;
+
                 if (rdBtnSelect.SelectedIndex == 1)
                 {
                     ClearPCRForm();
@@ -86,7 +91,7 @@ namespace vhcbcloud
             try
             {
                 dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
+                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslistNoPendingTrans");
                 ddlProjFilter.Items.Clear();
                 ddlProjFilter.DataSource = dtProjects;
                 ddlProjFilter.DataValueField = "project_id_name";
@@ -183,6 +188,7 @@ namespace vhcbcloud
                 ddlProgram.DataBind();
                 if (ddlProgram.Items.Count > 1)
                     ddlProgram.Items.Insert(0, new ListItem("Select", "NA"));
+                DisplayControls(ddlProgram.SelectedItem.ToString());
             }
             catch (Exception ex)
             {
@@ -1060,6 +1066,7 @@ namespace vhcbcloud
             DisableButton(btnCRSubmit);
             chkLCB.Enabled = false;
             chkLegalReview.Enabled = false;
+            lbNOD.Enabled = false;
 
             if (txtEligibleAmt.Visible)
             {
@@ -1086,7 +1093,7 @@ namespace vhcbcloud
             ddlPayee.Enabled = true;
             ddlProgram.Enabled = true;
             ddlStatus.Enabled = false;
-
+            lbNOD.Enabled = true;
             chkLCB.Enabled = true;
             chkLegalReview.Enabled = true;
 
@@ -1468,9 +1475,9 @@ namespace vhcbcloud
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
 
 
-                //DataTable dtable = FinancialTransactions.       (Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
 
-                //lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["pendingamount"].ToString()).ToString("#.##");
+                lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["CommitmentAmount"].ToString()).ToString("#.##");
 
                 ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";

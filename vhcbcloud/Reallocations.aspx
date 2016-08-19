@@ -2,7 +2,7 @@
     CodeBehind="Reallocations.aspx.cs" Inherits="vhcbcloud.Reallocations" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    all<asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
 
@@ -250,7 +250,7 @@
                                 </asp:GridView>
 
                                 <br />
-                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Reallocation" />
+                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Reallocation" Visible="False" />
                                 <br />
 
                                 <br />

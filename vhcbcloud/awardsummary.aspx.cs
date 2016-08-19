@@ -89,13 +89,13 @@ namespace vhcbcloud
                             if (Convert.ToDecimal(dtAwdStatus.Rows[i]["commitmentamount"].ToString()) > 0)
                                 totCommitAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["commitmentamount"].ToString());
 
-                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString()) > 0)
+                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString()) != 0)
                                 totExpendAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString());
 
-                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["pendingamount"].ToString()) > 0)
+                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["pendingamount"].ToString()) != 0)
                                 totPendAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["pendingamount"].ToString());
 
-                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["balance"].ToString()) > 0)
+                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["balance"].ToString()) != 0)
                                 totBalanceAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["balance"].ToString());
                         }
                     }

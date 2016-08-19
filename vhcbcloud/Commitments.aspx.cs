@@ -42,6 +42,21 @@ namespace vhcbcloud
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetFundAccountsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetFundAccountsByFilter", prefixText);
+
+            List<string> FundAccts = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                FundAccts.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return FundAccts.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
         {
             DataTable dt = new DataTable();
@@ -457,7 +472,7 @@ namespace vhcbcloud
                     return;
                 }
 
-                if(hfProjId.Value=="")
+                if (hfProjId.Value == "")
                 {
                     lblErrorMsg.Text = "Select an existing project to make a commitment";
                     txtProjNum.Focus();
@@ -881,6 +896,17 @@ namespace vhcbcloud
 
             ///populate the form based on retrieved data
             getDetails(dt);
+        }
+
+        protected void hdnFundAcct_ValueChanged(object sender, EventArgs e)
+        {
+            string AcctNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetFundDetailsByFundAcct", AcctNum.ToString());
+            if (dt.Rows.Count > 0)
+                ddlFundName.SelectedValue = dt.Rows[0]["FundId"].ToString();
+
         }
 
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
