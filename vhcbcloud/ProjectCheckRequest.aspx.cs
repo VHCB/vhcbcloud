@@ -91,7 +91,7 @@ namespace vhcbcloud
             try
             {
                 dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslistNoPendingTrans");
+                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
                 ddlProjFilter.Items.Clear();
                 ddlProjFilter.DataSource = dtProjects;
                 ddlProjFilter.DataValueField = "project_id_name";
@@ -606,13 +606,13 @@ namespace vhcbcloud
                 ddlProjFilter.Focus();
                 return;
             }
-            else if (txtTransDate.Text == "")
+            if (txtTransDate.Text == "")
             {
                 lblErrorMsg.Text = "Select Transaction Date";
                 txtTransDate.Focus();
                 return;
             }
-            else if (txtTransDate.Text.Trim() != "")
+             if (txtTransDate.Text.Trim() != "")
             {
                 DateTime dt;
                 bool isDateTime = DateTime.TryParse(txtTransDate.Text.Trim(), out dt);
@@ -631,7 +631,7 @@ namespace vhcbcloud
                 ddlPayee.Focus();
                 return;
             }
-            else if (ddlPayee.Items.Count == 0)
+            if (ddlPayee.Items.Count == 0)
             {
                 lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
                 return;
@@ -642,7 +642,7 @@ namespace vhcbcloud
                 ddlProgram.Focus();
                 return;
             }
-            else if (ddlProgram.Items.Count == 0)
+            if (ddlProgram.Items.Count == 0)
             {
                 lblErrorMsg.Text = "Add a program to this project before proceed with disbursement";
                 return;
@@ -668,7 +668,7 @@ namespace vhcbcloud
                     txtEligibleAmt.Focus();
                     return;
                 }
-                else if (txtEligibleAmt.Text.Trim() != "")
+                if (txtEligibleAmt.Text.Trim() != "")
                 {
                     decimal n;
                     bool isDecimal = decimal.TryParse(txtEligibleAmt.Text.Trim(), out n);
@@ -695,7 +695,7 @@ namespace vhcbcloud
                 txtDisbursementAmt.Focus();
                 return;
             }
-            else if (txtDisbursementAmt.Text.Trim() != "")
+            if (txtDisbursementAmt.Text.Trim() != "")
             {
                 decimal n;
                 bool isDecimal = decimal.TryParse(txtDisbursementAmt.Text.Trim(), out n);

@@ -194,7 +194,6 @@
     <Content Include="Decommitments.aspx" />
     <Content Include="FundGrantMaintenance.aspx" />
     <Content Include="BoardDecommitment.aspx" />
-    <Content Include="BoardFinancialTransactions.aspx" />
     <Content Include="Boarddates.aspx" />
     <Content Include="CheckRequest.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -533,13 +532,6 @@
     </Compile>
     <Compile Include="BoardDecommitment.aspx.designer.cs">
       <DependentUpon>BoardDecommitment.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BoardFinancialTransactions.aspx.cs">
-      <DependentUpon>BoardFinancialTransactions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BoardFinancialTransactions.aspx.designer.cs">
-      <DependentUpon>BoardFinancialTransactions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Boarddates.aspx.cs">
       <DependentUpon>Boarddates.aspx</DependentUpon>

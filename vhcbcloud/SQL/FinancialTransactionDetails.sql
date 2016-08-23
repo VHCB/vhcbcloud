@@ -186,13 +186,7 @@ begin
 				det.FundId,
 				f.account, 
 				det.lktranstype, 
-				--case
-				--	when det.lktranstype = 241 then 'Grant'
-				--	when det.lktranstype = 242 then 'Loan' 
-				--	when det.lktranstype = 243 then 'Contract'
-				--	else convert(varchar(5), det.lktranstype)
-				
-				--end as FundType, 
+			
 				ttv.description as FundType,
 				case 
 					when tr.LkTransaction = 236 then 'Cash Disbursement'
@@ -271,6 +265,15 @@ Begin
 		)
 
 		
+		if exists (select 1 from ReallocateLink where FromProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		if exists (select 1 from ReallocateLink where ToProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		
 	if (@isReallocation=1)
 	Begin
 	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
@@ -316,11 +319,7 @@ Begin
 			det.FundId,
 			f.account, 
 			det.lktranstype, 
-							--case
-		--	when det.lktranstype = 241 then 'Grant'
-		--	when det.lktranstype = 242 then 'Loan' 
-		--	when det.lktranstype = 243 then 'Contract'
-		--end as FundType, 
+						
 			ttv.description as FundType,
 			f.name,
 			p.proj_num, 
@@ -341,8 +340,7 @@ Begin
 		join LookupValues lv on lv.TypeID = pn.LkProjectname	
 		join Trans tr on tr.ProjectID = p.ProjectId
 		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId
-		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+		join fund f on f.FundId = det.FundId		
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
 		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
@@ -354,11 +352,7 @@ Begin
 		insert into @tempfundExpend (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, FundAbbrv, expendedamount,lkstatus, pendingamount, [Date])
 	
 		select  p.projectid, det.FundId, f.account, det.lktranstype, 
-				--case
-				--	when det.lktranstype = 241 then 'Grant'
-				--	when det.lktranstype = 242 then 'Loan' 
-				--	when det.lktranstype = 243 then 'Contract'
-				--end as FundType, 
+			
 				ttv.description as FundType,
 				f.name,
 				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
@@ -395,16 +389,10 @@ Begin
 		group by tc.projectid, tc.fundid,tc.account, tc.lktranstype,tc.FundType, tc.FundName, tc.FundAbbrv, tc.Projnum, tc.ProjectName
 
 
-		select  p.projectid, 
+		select distinct p.projectid, 
 				det.FundId, f.account,
 				det.lktranstype, 
-				--case
-				--	when det.lktranstype = 241 then 'Grant'
-				--	when det.lktranstype = 242 then 'Loan' 
-				--	when det.lktranstype = 243 then 'Contract'
-				--	else convert(varchar(5), det.lktranstype)
 				
-				--end as FundType, 
 				ttv.description as FundType,
 				case 
 					when tr.LkTransaction = 236 then 'Cash Disbursement'
@@ -1620,6 +1608,178 @@ Begin
 End
 go
 
+alter procedure [dbo].[GetReallocationDetailsTransId]
+(	
+	@fromProjId int
+	--,@toTransId int
+)
+as
+Begin	
+	
+	create table #temp ( transid int, toProjId int )
+	insert into #temp (transid, toProjId)
+	select FromTransID, ToProjectId from ReallocateLink where FromProjectId = @fromProjId
+	insert into #temp (transid, toProjId)
+	select ToTransID, ToProjectId from ReallocateLink  where FromProjectId = @fromProjId
+
+	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId  from Fund f 
+		join Detail d on d.FundId = f.FundId
+		join Trans t on t.TransId = d.TransId
+		join project p on p.projectid = t.projectid
+		join LookupValues lv on lv.TypeID = d.LkTransType
+	Where     f.RowIsActive=1 and t.LkTransaction = 240
+	and t.TransId in(select distinct transid from #temp)
+	 --and p.ProjectId in (select distinct toprojid from #temp)
+	order by d.DateModified desc
+
+End
+
+go
+
+alter procedure [dbo].[AddBoardReallocationTransaction]
+(
+	@FromProjectId int,
+	@ToProjectId int,
+	@transDate datetime,		
+
+	@Fromfundid int,	
+	@Fromfundtranstype int,
+	@Fromfundamount money,
+
+	@Tofundid int,	
+	@Tofundtranstype int,
+	@Tofundamount money,
+	@fromTransId int = null,
+	@toTransId int = null, 
+	@transGuid varchar(50) = null
+)
+as
+Begin	
+	--declare @fromPayeeapplicant int 
+	--declare @ToPayeeApplicant int
+
+	--select @fromPayeeapplicant = a.applicantid from Project p 
+	--	join ProjectName pn on pn.ProjectID = p.ProjectId
+	--	join ProjectApplicant pa on pa.ProjectId = p.ProjectID	
+	--	join Applicant a on a.ApplicantId = pa.ApplicantId	
+	--	join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
+	--	join AppName an on an.AppNameID = aan.AppNameID 
+	--	join LookupValues lv on lv.TypeID = pn.LkProjectname
+	--Where  a.finlegal=1 and p.ProjectId = @FromProjectId
+
+	--select @ToPayeeApplicant = a.applicantid from Project p 
+	--	join ProjectName pn on pn.ProjectID = p.ProjectId
+	--	join ProjectApplicant pa on pa.ProjectId = p.ProjectID	
+	--	join Applicant a on a.ApplicantId = pa.ApplicantId	
+	--	join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
+	--	join AppName an on an.AppNameID = aan.AppNameID 
+	--	join LookupValues lv on lv.TypeID = pn.LkProjectname		
+	--Where  a.finlegal=1 and p.ProjectId = @ToProjectId
+
+	--if(@toTransId >0)
+	--	Begin
+	--		insert into Detail (TransId, FundId, LkTransType, Amount)	values
+	--				(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+	--		insert into ReallocateLink(fromprojectid, fromtransid, totransid) values
+	--				(@FromProjectId, @fromTransId,@toTransId)
+	--	End
+	--Else
+		
+
+		if (@FromProjectId != @ToProjectId)
+		Begin
+			
+			if(@toTransId >0)
+			Begin
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+			else
+			begin
+
+				--set @Fromfundamount = @Fromfundamount -@Tofundamount
+
+				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus)
+					values (@FromProjectId, @transDate, 0, 240, 261) -- 240 Board Reallocation, 261 Pending
+				set @fromTransId = @@IDENTITY;
+	
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
+					values (@ToProjectId, @transDate, 0, 240, 261)
+				set @toTransId = @@IDENTITY;
+				
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)			
+				
+			end
+		end
+		else
+		Begin
+
+			if(@toTransId >0)
+			Begin
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+			else
+			begin			
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
+					values (@FromProjectId, @transDate, 0, 240, 261) -- 240 Board Reallocation, 261 Pending
+				set @fromTransId = @@IDENTITY;
+				set @toTransId = @@IDENTITY;
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+
+		End
+
+		insert into ReallocateLink(fromprojectid, fromtransid, ToProjectId, totransid, ReallocateGUID) values
+				(@FromProjectId, @fromTransId, @ToProjectId, @toTransId, @transGuid)
+		
+
+		Select @fromTransId as FromTransId, @toTransId as ToTransId
+end
+
+go
+
+create procedure [dbo].[GetReallocationDetailsByGuid]
+(	
+	@fromProjId int
+	,@reallocateGuid varchar(50)
+)
+as
+Begin	
+	
+	create table #temp ( transid int, toProjId int )
+	insert into #temp (transid, toProjId)
+	select FromTransID, ToProjectId from ReallocateLink where FromProjectId = @fromProjId and ReallocateGUID = @reallocateGuid
+	insert into #temp (transid, toProjId)
+	select ToTransID, ToProjectId from ReallocateLink  where FromProjectId = @fromProjId  and ReallocateGUID = @reallocateGuid
+
+	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId  from Fund f 
+		join Detail d on d.FundId = f.FundId
+		join Trans t on t.TransId = d.TransId
+		join project p on p.projectid = t.projectid
+		join LookupValues lv on lv.TypeID = d.LkTransType
+	Where     f.RowIsActive=1 and t.LkTransaction = 240
+	and t.TransId in(select distinct transid from #temp)
+	--and p.ProjectId in (select distinct toprojid from #temp)
+	order by d.DateModified desc
+
+End
+go
 
 
 

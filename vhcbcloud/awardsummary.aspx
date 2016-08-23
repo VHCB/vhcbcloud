@@ -55,7 +55,7 @@
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Commit" SortExpression="CommitmentAmount">
+                                <asp:TemplateField HeaderText="$ to Spend" SortExpression="CommitmentAmount">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -63,7 +63,7 @@
                                         <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pending Balance" SortExpression="pendingamount">
+                                <asp:TemplateField HeaderText="Pending Transactions" SortExpression="pendingamount">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -80,7 +80,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Actual Balance" SortExpression="balance">
+                                <asp:TemplateField HeaderText="Current Balance" SortExpression="balance">
                                     <ItemTemplate>
                                         <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
                                     </ItemTemplate>

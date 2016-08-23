@@ -115,7 +115,7 @@ namespace vhcbcloud
 
         protected void gvCurrentAwdStatus_RowCreated(object sender, GridViewRowEventArgs e)
         {
-            e.Row.Cells[0].Visible = isReallocation;
+            e.Row.Cells[0].Visible = false;//isReallocation;
 
             if (!isReallocation && e.Row.RowType == DataControlRowType.Footer)
             {
