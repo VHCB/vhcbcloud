@@ -296,7 +296,7 @@ namespace vhcbcloud
                     {
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCommitmentSubmit);
-                        CommonHelper.DisableButton(btnNewTransaction);
+                        
                         btnNewTransaction.Visible = false;
                     }
                     if (lblBalAmt.Text != "$0.00")
@@ -787,8 +787,7 @@ namespace vhcbcloud
                 txtProjNum.Visible = true;
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
-                imgExistingAwardSummary.Visible = true;
-                btnNewTransaction.Visible = true;
+                imgExistingAwardSummary.Visible = true;                
             }
         }
 

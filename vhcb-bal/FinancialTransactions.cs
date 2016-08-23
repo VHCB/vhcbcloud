@@ -368,7 +368,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
         public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
-                                decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId)
+                                decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, string transGuid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
@@ -388,6 +388,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Tofundamount", Tofundamount));
                 command.Parameters.Add(new SqlParameter("fromTransId", fromTransId));
                 command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                command.Parameters.Add(new SqlParameter("transGuid", transGuid));
+
                 using (connection)
                 {
                     connection.Open();
@@ -423,6 +425,42 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "GetReallocationDetailsTransId";
                 command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
                 //command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+        public static DataTable GetReallocationDetailsByGuid(int fromProjId, string reallocateGuid)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetReallocationDetailsByGuid";
+                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                command.Parameters.Add(new SqlParameter("reallocateGuid", reallocateGuid));
                 using (connection)
                 {
                     connection.Open();

@@ -2,7 +2,7 @@
     CodeBehind="Reallocations.aspx.cs" Inherits="vhcbcloud.Reallocations" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    all<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
 
@@ -262,6 +262,7 @@
                     <asp:HiddenField ID="hfTransId" runat="server" />
                     <asp:HiddenField ID="hfRFromTransId" runat="server" />
                     <asp:HiddenField ID="hfProjId" runat="server" />
+                    <asp:HiddenField ID="hfReallocateGuid" runat="server" />
                 </asp:Panel>
 
             </div>

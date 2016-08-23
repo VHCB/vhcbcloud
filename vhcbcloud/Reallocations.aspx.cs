@@ -92,7 +92,7 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFund =FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    dtFund = FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                     if (dtFund.Rows.Count > 0)
                     {
                         txtRfromAmt.Text = dtFund.Rows[0]["amount"].ToString();
@@ -187,9 +187,9 @@ namespace vhcbcloud
                     ddlRtoFundType.DataBind();
                     ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
                 }
-            }            
+            }
         }
-              
+
         public void ClearReallocationToPanel()
         {
             ddlRToProj.SelectedIndex = 0;
@@ -212,6 +212,16 @@ namespace vhcbcloud
             {
                 DataTable dtFundDet = new DataTable();
                 dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+
+                //if (rdBtnSelection.SelectedIndex > 0)
+                //{
+                //    dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+                //}
+                //else
+                //{
+                //    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                //}
+
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
                 decimal totAmt = 0;
@@ -277,11 +287,10 @@ namespace vhcbcloud
             ClearReallocationFromPanel();
             ClearReallocationToPanel();
 
-            if (rdBtnSelection.SelectedIndex==0)
+            if (rdBtnSelection.SelectedIndex == 0)
             {
                 gvReallocate.DataSource = null;
                 gvReallocate.DataBind();
-                btnNewTransaction.Visible = true;
             }
             else
             {
@@ -382,6 +391,7 @@ namespace vhcbcloud
                         lblRErrorMsg.Text = "Amount auto adjusted to available fund amount";
                     }
                 }
+                Guid StrGuid = Guid.NewGuid();
 
                 DataTable dtable = new DataTable();
                 dtable = FinancialTransactions.AddBoardReallocationTransaction(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()),
@@ -394,10 +404,11 @@ namespace vhcbcloud
                                                                       Convert.ToInt32(ddlRtoFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
-                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value));
+                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), StrGuid.ToString());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][1].ToString();
+                hfReallocateGuid.Value = StrGuid.ToString();
                 lblRErrorMsg.Text = "Reallocation was added successfully";
                 BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ClearReallocationToPanel();
