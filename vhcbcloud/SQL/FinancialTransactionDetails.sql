@@ -1754,7 +1754,7 @@ end
 
 go
 
-create procedure [dbo].[GetReallocationDetailsByGuid]
+alter procedure [dbo].[GetReallocationDetailsByGuid]
 (	
 	@fromProjId int
 	,@reallocateGuid varchar(50)
