@@ -126,6 +126,9 @@ namespace vhcbcloud
         {
             try
             {
+                ddlApplicantName.DataSource = null;
+                ddlApplicantName.DataBind();
+
                 DataTable dtApplicantname;
                 dtApplicantname = new DataTable();
                 dtApplicantname = ProjectCheckRequestData.GetApplicantName(ProjectId);
@@ -155,8 +158,7 @@ namespace vhcbcloud
             {
                 ddlPayee.DataSource = null;
                 ddlPayee.DataBind();
-
-                DataTable dtPayee;
+                DataTable dtPayee = new DataTable();
                 dtPayee = new DataTable();
                 dtPayee = ProjectCheckRequestData.GetProjectFinLegalApplicant(projId);
 
@@ -178,7 +180,9 @@ namespace vhcbcloud
         {
             try
             {
-                DataTable dtProgram;
+                ddlProgram.DataSource = null;
+                ddlProgram.DataBind();
+                DataTable dtProgram = new DataTable();
                 dtProgram = new DataTable();
                 dtProgram = ProjectCheckRequestData.PCR_Program(projId);
 
@@ -187,8 +191,12 @@ namespace vhcbcloud
                 ddlProgram.DataTextField = "Description";
                 ddlProgram.DataBind();
                 if (ddlProgram.Items.Count > 1)
+                {
                     ddlProgram.Items.Insert(0, new ListItem("Select", "NA"));
-                DisplayControls(ddlProgram.SelectedItem.ToString());
+                    DisplayControls(ddlProgram.SelectedItem.ToString());
+                }
+                else
+                    DisplayControls("");
             }
             catch (Exception ex)
             {
@@ -220,6 +228,9 @@ namespace vhcbcloud
         {
             try
             {
+                ddlMatchingGrant.DataSource = null;
+                ddlMatchingGrant.DataBind();
+
                 DataTable dtMatchingGrant;
                 dtMatchingGrant = new DataTable();
                 dtMatchingGrant = ProjectCheckRequestData.GetData("PCR_MatchingGrant");
@@ -325,7 +336,12 @@ namespace vhcbcloud
                     }
 
                     if (lblBalAmt.Text != "$0.00")
+                    {
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        btnNewPCR.Visible = false;
+                    }
+                    else if (lblBalAmt.Text == "$0.00")
+                        btnNewPCR.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -1334,6 +1350,7 @@ namespace vhcbcloud
                 pnlDisbursement.Visible = true;
                 fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
                 DisablePCR();
+                BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
             }
             else
             {
@@ -1473,12 +1490,7 @@ namespace vhcbcloud
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-
-
-                DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-
-                lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["CommitmentAmount"].ToString()).ToString("#.##");
-
+                              
                 ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
@@ -1486,6 +1498,12 @@ namespace vhcbcloud
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
+                if (ddlTransType.Items.Count == 1 )
+                {
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+                    lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["PendingAmount"].ToString()).ToString("#.##");
+                }
                 //ddlTransType.DataSource = dtable;
                 //ddlTransType.DataValueField = "lktranstype";
                 //ddlTransType.DataTextField = "fundtype";
@@ -1495,6 +1513,21 @@ namespace vhcbcloud
             else
             {
                 ddlTransType.Items.Clear();
+            }
+        }
+
+        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+
+            if (ddlTransType.Items.Count > 1)
+            {
+                if (ddlTransType.SelectedIndex != 0)
+                {
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+
+                    lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["PendingAmount"].ToString()).ToString("#.##");
+                }
             }
         }
     }

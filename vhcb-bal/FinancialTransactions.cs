@@ -1236,6 +1236,44 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtStatus;
         }
+
+        public static DataTable GetCommittedFundDetailsByFundTransType(int projectId, int fundId, int transtype)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.Parameters.Add(new SqlParameter("transtype", transtype));
+                command.CommandText = "GetCommittedFundDetailsByFundTransType";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static DataTable GetFundDetailsByFundId(int fundId)
         {
             DataTable dtStatus = null;
