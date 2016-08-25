@@ -242,7 +242,7 @@
                                         <span class="labelClass">Grant/Loan/Contract :</span>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server">
+                                        <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
                                         </asp:DropDownList>
                                     </td>
                                     <td></td>
@@ -360,6 +360,7 @@
                                             </Columns>
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
+                                        <br />
                                     </td>
                                 </tr>
                             </table>
@@ -460,6 +461,9 @@
                                             </Columns>
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
+                                        <br />
+                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" OnClick="btnSubmit_Click" Text="New Check Request" Visible="False" />
+                                        <br />
                                     </td>
                                 </tr>
                             </table>

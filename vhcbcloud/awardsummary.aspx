@@ -7,7 +7,8 @@
 
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="labelClass">Current Award Status for project: </span> <b><asp:Label runat="server" ID="lblProjId"></asp:Label></b></div>
+                <div class="panel-heading"><span class="labelClass">Current Award Status for project: </span><b>
+                    <asp:Label runat="server" ID="lblProjId"></asp:Label></b></div>
 
                 <div class="panel-body">
                     <p class="labelClass">
@@ -16,7 +17,7 @@
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                             OnRowCreated="gvCurrentAwdStatus_RowCreated"
+                            OnRowCreated="gvCurrentAwdStatus_RowCreated"
                             ShowFooter="True" Width="90%">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -24,8 +25,8 @@
                             <RowStyle CssClass="rowStyle" />
                             <FooterStyle CssClass="footerStyleTotals" />
                             <Columns>
-                                
-                                 <asp:TemplateField HeaderText="Reallocate To">
+
+                                <asp:TemplateField HeaderText="Reallocate To">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReallocateTo" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                     </ItemTemplate>
@@ -55,7 +56,8 @@
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="$ to Spend" SortExpression="CommitmentAmount">
+                                <asp:TemplateField HeaderText="$ to Spend" SortExpression="CommitmentAmount" ItemStyle-HorizontalAlign="Right"
+                                    FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -63,7 +65,8 @@
                                         <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pending Transactions" SortExpression="pendingamount">
+                                <asp:TemplateField HeaderText="Pending Transactions" SortExpression="pendingamount" ItemStyle-HorizontalAlign="Right"
+                                    FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -71,7 +74,8 @@
                                         <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Expend" SortExpression="expendedamount">
+                                <asp:TemplateField HeaderText="Disbursed" SortExpression="expendedamount" ItemStyle-HorizontalAlign="Right"
+                                    FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblExpendAmd" runat="Server" Text='<%# Eval("expendedamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -80,7 +84,8 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Current Balance" SortExpression="balance">
+                                <asp:TemplateField HeaderText="Current Balance" SortExpression="balance" ItemStyle-HorizontalAlign="Right"
+                                    FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -141,15 +146,15 @@
                                         <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("Transaction") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Detail" SortExpression="detail">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("detail", "{0:C2}") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
                                 <asp:TemplateField HeaderText="Status" SortExpression="lkstatus">
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatus" runat="Server" Text='<%# Eval("lkstatus") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Detail" SortExpression="detail" ItemStyle-HorizontalAlign="Right"
+                                    FooterStyle-HorizontalAlign="Right">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("detail", "{0:C2}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
