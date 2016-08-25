@@ -175,7 +175,7 @@ begin
 
 
 	select  tc.projectid, tc.fundid, tc.account, tc.lktranstype,tc.FundType, tc.FundName, tc.FundAbbrv, tc.Projnum, tc.ProjectName, 
-		   tc.ProjectCheckReqID, tc.commitmentamount, ISNULL( te.expendedamount,0) as expendedamount, (tc.commitmentamount - (ISNULL( te.expendedamount, 0))) as balance,
+		   tc.ProjectCheckReqID, ISNULL(tc.commitmentamount,0) as commitmentamount, ISNULL( te.expendedamount,0) as expendedamount, (ISNULL(tc.commitmentamount,0) - (ISNULL( te.expendedamount, 0))) as balance,
 		   isnull(tc.pendingamount, 0) as pendingamount, tc.lkstatus, tc.Date 
 	from @tempFundCommit tc 
 	left outer join @tempfundExpend te on tc.projectid = te.projectid 
@@ -361,7 +361,7 @@ Begin
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
-				   sum(isnull( commitmentamount,0)) as commitmentamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((commitmentamount - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as balance,
+				   sum(isnull( commitmentamount,0)) as commitmentamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as balance,
 			   sum(isnull(pendingamount, 0)) as pendingamount, max(Date) as [date]
 	from @tempFundCommit
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
