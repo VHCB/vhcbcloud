@@ -679,7 +679,7 @@ Begin
 					when tr.lkstatus = 262 then 'Final'
 				 end as lkStatus,
 				 case
-					when tr.lkstatus = 261 then sum(det.amount)
+					when tr.lkstatus = 261 then sum(det.amount) 
 				 end as PendingAmount,
 				 max(tr.date) as TransDate
 				from Project p 
