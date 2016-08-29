@@ -466,6 +466,7 @@ namespace vhcbcloud
                 BindApplicantName(int.Parse(tokens[0]));
 
                 hfProjId.Value = tokens[0].ToString();
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
                 BindFundTypeCommitments(int.Parse(tokens[0]));
@@ -840,7 +841,7 @@ namespace vhcbcloud
                     ddlFundTypeCommitments.Focus();
                     return;
                 }
-                else if (ddlTransType.Items.Count > 1 && ddlTransType.SelectedIndex == 0)
+                if (ddlTransType.Items.Count > 1 && ddlTransType.SelectedIndex == 0)
                 {
                     lblErrorMsg.Text = "Select Grant/Loan/Contract";
                     ddlTransType.Focus();
@@ -853,7 +854,7 @@ namespace vhcbcloud
                     txtTransDetailAmt.Focus();
                     return;
                 }
-                else if (txtTransDetailAmt.Text.Trim() != "")
+                if (txtTransDetailAmt.Text.Trim() != "")
                 {
                     decimal n;
                     bool isDecimal = decimal.TryParse(txtTransDetailAmt.Text.Trim(), out n);
@@ -863,6 +864,15 @@ namespace vhcbcloud
                         lblErrorMsg.Text = "Select a valid Amount";
                         txtTransDetailAmt.Focus();
                         return;
+                    }
+                    else
+                    {
+                        if (Convert.ToDecimal(txtTransDetailAmt.Text) > Convert.ToDecimal(lblCommittedAvailFunds.Text))
+                        {
+                            lblErrorMsg.Text = "Disbursement amount can not be more than Available funds.";
+                            txtTransDetailAmt.Focus();
+                            return;
+                        }
                     }
                 }
                 #endregion
@@ -1341,6 +1351,7 @@ namespace vhcbcloud
                 this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                 this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
                 this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
                 BindPCRTransDetails();
@@ -1490,7 +1501,7 @@ namespace vhcbcloud
             if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-                              
+                lblCommittedAvailFunds.Text = "";
                 ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
@@ -1501,8 +1512,8 @@ namespace vhcbcloud
                 if (ddlTransType.Items.Count == 1 )
                 {
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-
-                    lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["PendingAmount"].ToString()).ToString("#.##");
+                    hfAvFunds.Value = dtable.Rows[0]["commitmentamount"].ToString();
+                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()).ToString("#.##"));
                 }
                 //ddlTransType.DataSource = dtable;
                 //ddlTransType.DataValueField = "lktranstype";
@@ -1519,16 +1530,21 @@ namespace vhcbcloud
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-
+            
             if (ddlTransType.Items.Count > 1)
             {
                 if (ddlTransType.SelectedIndex != 0)
                 {
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
-
-                    lblCommittedAvailFunds.Text = Convert.ToDecimal(dtable.Rows[0]["PendingAmount"].ToString()).ToString("#.##");
+                    hfAvFunds.Value =dtable.Rows[0]["commitmentamount"].ToString();
+                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat( Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()).ToString("#.##"));
                 }
             }
+        }
+
+        protected void btnNewPCR_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("projectcheckrequest.aspx");
         }
     }
 }

@@ -51,13 +51,12 @@
                                         <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Grant/Loan/Contract" SortExpression="FundType">
+                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundType">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="$ to Spend" SortExpression="CommitmentAmount" ItemStyle-HorizontalAlign="Right"
-                                    FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="$ to Spend" SortExpression="CommitmentAmount" >
                                     <ItemTemplate>
                                         <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -65,8 +64,7 @@
                                         <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pending Transactions" SortExpression="pendingamount" ItemStyle-HorizontalAlign="Right"
-                                    FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Pend Trans" SortExpression="pendingamount" >
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -74,8 +72,7 @@
                                         <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Disbursed" SortExpression="expendedamount" ItemStyle-HorizontalAlign="Right"
-                                    FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Final Disbursed" SortExpression="expendedamount" >
                                     <ItemTemplate>
                                         <asp:Label ID="lblExpendAmd" runat="Server" Text='<%# Eval("expendedamount", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -84,8 +81,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Current Balance" SortExpression="balance" ItemStyle-HorizontalAlign="Right"
-                                    FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Current Balance" SortExpression="balance" >
                                     <ItemTemplate>
                                         <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -136,7 +132,7 @@
                                         <asp:Label ID="lblfundName" runat="Server" Text='<%# Eval("name") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Grant/Loan/Contract" SortExpression="FundType">
+                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundType">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
@@ -151,8 +147,7 @@
                                         <asp:Label ID="lblStatus" runat="Server" Text='<%# Eval("lkstatus") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Detail" SortExpression="detail" ItemStyle-HorizontalAlign="Right"
-                                    FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Detail" SortExpression="detail" >
                                     <ItemTemplate>
                                         <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("detail", "{0:C2}") %>' />
                                     </ItemTemplate>
