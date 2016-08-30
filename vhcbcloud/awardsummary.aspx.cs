@@ -74,6 +74,7 @@ namespace vhcbcloud
                 decimal totCommitAmt = 0;
                 decimal totPendAmt = 0;
                 decimal totExpendAmt = 0;
+                decimal totFinalExpendAmt = 0;
                 decimal totBalanceAmt = 0;
 
                 if (dtAwdStatus.Rows.Count > 0)
@@ -81,6 +82,7 @@ namespace vhcbcloud
                     Label lblCommit = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblCommit");
                     Label lblPending = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblPending");
                     Label lblExpend = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblExpend");
+                    Label lblFinalExpend = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblFinalExpend");
                     Label lblBalance = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblBalance");
                     if (dtAwdStatus.Rows.Count > 0)
                     {
@@ -91,6 +93,9 @@ namespace vhcbcloud
 
                             if (Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString()) != 0)
                                 totExpendAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString());
+
+                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["finaldisbursedamount"].ToString()) != 0)
+                                totFinalExpendAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["finaldisbursedamount"].ToString());
 
                             if (Convert.ToDecimal(dtAwdStatus.Rows[i]["pendingamount"].ToString()) != 0)
                                 totPendAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["pendingamount"].ToString());
@@ -104,6 +109,7 @@ namespace vhcbcloud
                     lblPending.Text = CommonHelper.myDollarFormat(totPendAmt);
                     lblExpend.Text = CommonHelper.myDollarFormat(totExpendAmt);
                     lblBalance.Text = CommonHelper.myDollarFormat(totBalanceAmt);
+                    lblFinalExpend.Text = CommonHelper.myDollarFormat(totFinalExpendAmt);
                 }
 
             }

@@ -629,7 +629,7 @@ namespace vhcbcloud
                 txtTransDate.Focus();
                 return;
             }
-             if (txtTransDate.Text.Trim() != "")
+            if (txtTransDate.Text.Trim() != "")
             {
                 DateTime dt;
                 bool isDateTime = DateTime.TryParse(txtTransDate.Text.Trim(), out dt);
@@ -867,7 +867,7 @@ namespace vhcbcloud
                     }
                     else
                     {
-                        if (Convert.ToDecimal(txtTransDetailAmt.Text) > Convert.ToDecimal(lblCommittedAvailFunds.Text))
+                        if (Convert.ToDecimal(txtTransDetailAmt.Text) > Convert.ToDecimal(hfAvFunds.Value.ToString()))
                         {
                             lblErrorMsg.Text = "Disbursement amount can not be more than Available funds.";
                             txtTransDetailAmt.Focus();
@@ -903,8 +903,9 @@ namespace vhcbcloud
                     }
                     else if (currentTranFudAmount > currentBalAmount)
                     {
-                        currentTranFudAmount = currentBalAmount;
-                        lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                        //currentTranFudAmount = currentBalAmount;
+                        lblErrorMsg.Text = "Amount entered is greater than available balance. ";
+                        return;
                     }
 
                     ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
@@ -1509,11 +1510,11 @@ namespace vhcbcloud
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                if (ddlTransType.Items.Count == 1 )
+                if (ddlTransType.Items.Count == 1)
                 {
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                     hfAvFunds.Value = dtable.Rows[0]["commitmentamount"].ToString();
-                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()).ToString("#.##"));
+                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()));
                 }
                 //ddlTransType.DataSource = dtable;
                 //ddlTransType.DataValueField = "lktranstype";
@@ -1530,14 +1531,14 @@ namespace vhcbcloud
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-            
+
             if (ddlTransType.Items.Count > 1)
             {
                 if (ddlTransType.SelectedIndex != 0)
                 {
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
-                    hfAvFunds.Value =dtable.Rows[0]["commitmentamount"].ToString();
-                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat( Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()).ToString("#.##"));
+                    hfAvFunds.Value = dtable.Rows[0]["commitmentamount"].ToString();
+                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["commitmentamount"].ToString()));
                 }
             }
         }
