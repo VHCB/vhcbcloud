@@ -140,5 +140,86 @@ namespace vhcbcloud
                 BindAwardSummary(Convert.ToInt32(ddlProj.SelectedValue.ToString()));
             }
         }
+
+        protected void gvTransDetail_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            DataTable dtTransDetail = new DataTable();
+            dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[1];
+
+            gvTransDetail.DataSource = SortDataTable(dtTransDetail, false);
+            gvTransDetail.DataBind();
+            gvTransDetail.PageIndex = pageIndex;
+        }
+
+
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        //===========================SORTING PROPERTIES START
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        protected void gvCurrentAwdStatus_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            DataTable dtTransDetail = new DataTable();
+            dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[0];
+
+            gvCurrentAwdStatus.DataSource = SortDataTable(dtTransDetail, false);
+            gvCurrentAwdStatus.DataBind();
+            gvCurrentAwdStatus.PageIndex = pageIndex;
+        }
     }
 }

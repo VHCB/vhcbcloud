@@ -18,7 +18,7 @@
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
                             OnRowCreated="gvCurrentAwdStatus_RowCreated"
-                            ShowFooter="True" Width="90%">
+                            ShowFooter="True" Width="90%" AllowSorting="True" OnSorting="gvCurrentAwdStatus_Sorting">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -113,7 +113,7 @@
                 <div class="panel-body">
                     <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="350px" ScrollBars="Vertical">
                         <asp:GridView ID="gvTransDetail" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                            AllowPaging="false" Width="90%">
+                            AllowPaging="false" Width="90%" AllowSorting="True" OnSorting="gvTransDetail_Sorting">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <HeaderStyle CssClass="headerStyle" />
                             <RowStyle CssClass="rowStyle" />

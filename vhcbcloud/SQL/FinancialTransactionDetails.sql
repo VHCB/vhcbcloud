@@ -230,6 +230,7 @@ Begin
 	--exec GetFinancialFundDetailsByProjectId 6578, 1
 
 	
+
 		declare @tempFundCommit table (
 		[projectid] [int] NULL,
 		[fundid] [int] NULL,
@@ -244,6 +245,7 @@ Begin
 		[commitmentamount] [money] NULL,
 		[lkstatus] varchar(20) null,
 		[expendedamount] [money] NULL default 0,
+		[finaldisbursedamount] [money] NULL default 0,
 		pendingamount money null ,
 		[Date] [date] NULL	
 		)
@@ -270,7 +272,10 @@ Begin
 			p.proj_num, 
 			lv.Description as projectname, 
 			tr.ProjectCheckReqID,
-			f.abbrv,det.amount as CommitmentAmount, 
+			f.abbrv,	
+			case
+				when tr.lkstatus = 262 then det.amount
+				end as CommitmentAmount, 
 			case 
 				when tr.lkstatus = 261 then 'Pending'
 				when tr.lkstatus = 262 then 'Final'
@@ -331,21 +336,26 @@ Begin
 		order by p.Proj_num
 	End
 
-		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, FundAbbrv, expendedamount,lkstatus, pendingamount, [Date])
+		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, expendedamount,lkstatus, finaldisbursedamount, [Date])
 	
 		select  p.projectid, det.FundId, f.account, det.lktranstype, 
 			
 				ttv.description as FundType,
 				f.name,
 				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
-				 f.abbrv,sum(det.Amount) as CommitmentAmount, 
+				 f.abbrv,
+				  case
+					when tr.lkstatus = 261 then sum(det.amount)
+				 end as pendingdisbursed,
+				 
 				 case 
 					when tr.lkstatus = 261 then 'Pending'
 					when tr.lkstatus = 262 then 'Final'
 				 end as lkStatus,
 				 case
-					when tr.lkstatus = 261 then sum(det.amount)
-				 end as PendingAmount,
+					when tr.lkstatus = 262 then sum(det.amount)
+				 end as finaldisbursed,
 				 max(tr.date) as TransDate
 				from Project p 
 		join ProjectName pn on pn.ProjectID = p.ProjectId		
@@ -361,8 +371,17 @@ Begin
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
-				   sum(isnull( commitmentamount,0)) as commitmentamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as balance,
-			   sum(isnull(pendingamount, 0)) as pendingamount, max(Date) as [date]
+				   sum(isnull( commitmentamount,0)) as commitmentamount,  sum(isnull(pendingamount, 0)) as pendingamount,
+				   sum( ISNULL( expendedamount,0)) as expendedamount, sum( ISNULL( finaldisbursedamount,0)) as finaldisbursedamount,
+					case when sum(isnull( commitmentamount,0)) = 0 then 0  
+						else
+							case when sum(isnull(pendingamount, 0)) > 0 then 
+								sum(isnull(commitmentamount,0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))
+							else
+								sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))) 
+							end
+					end as balance,
+			   max(Date) as [date]
 	from @tempFundCommit
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
 
@@ -401,10 +420,7 @@ Begin
 		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
 
-	--else
-	--begin
-	--	exec  [dbo].[GetReallocationFinancialFundDetailsByProjectId] @projectid, @isReallocation
-	--end
+
 End
 
 go
