@@ -90,6 +90,8 @@ namespace vhcbcloud
                 BindAllFunds();
                 hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
 
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
                     dtFund = FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
@@ -108,14 +110,16 @@ namespace vhcbcloud
             if (ddlRToProj.SelectedIndex > 0)
             {
                 hfTransId.Value = ""; hfRFromTransId.Value = "";
-                if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
-                {
-                    ddlRToFund.DataSource = FinancialTransactions.GetFundByProject(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()));
-                }
-                else
-                {
-                    ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
-                }
+                /*DO NOT Remove the below code*/
+                //if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
+                //{
+                //    ddlRToFund.DataSource = FinancialTransactions.GetFundByProject(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()));
+                //}
+                //else
+                //{
+                //    ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
+                //}
+                ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
                 ddlRToFund.DataValueField = "fundid";
                 ddlRToFund.DataTextField = "name";
                 ddlRToFund.DataBind();
@@ -386,9 +390,11 @@ namespace vhcbcloud
                         if (Convert.ToDecimal(hfBalAmt.Value) == 0)
                         {
                             lblRErrorMsg.Text = "Reallocation is complete, more funds not allowed";
+                            return;
                         }
-                        txtRToAmt.Text = hfBalAmt.Value;
-                        lblRErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                       // txtRToAmt.Text = hfBalAmt.Value;
+                        lblRErrorMsg.Text = "Amount can not be more than available balance amount";
+                        return;
                     }
                 }
                 Guid StrGuid = Guid.NewGuid();

@@ -462,7 +462,8 @@
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
                                         <br />
-                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" OnClick="btnSubmit_Click" Text="New Check Request" Visible="False" />
+                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info"  Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
+                                        <br />
                                         <br />
                                     </td>
                                 </tr>
@@ -476,6 +477,7 @@
                 <asp:HiddenField ID="hfPCRId" runat="server" />
                 <asp:HiddenField ID="hfEditPCRId" runat="server" />
                 <asp:HiddenField ID="hfProjId" runat="server" />
+                <asp:HiddenField ID="hfAvFunds" runat="server" />
                 <%--<asp:HiddenField ID="hfPCRIDTransID" runat="server" />--%>
             </div>
         </ContentTemplate>

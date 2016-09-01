@@ -318,8 +318,7 @@
                                                             Balance Amount :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right"
-                                                        FooterStyle-HorizontalAlign="Right">
+                                                    <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
