@@ -228,6 +228,7 @@ namespace vhcbcloud
 
         protected void btnProjectClear_Click(object sender, EventArgs e)
         {
+            dvSearchResults.Visible = false;
             txtProjNum.Text = "";
             txtProjectName.Text = "";
             ddlPrimaryApplicant.SelectedIndex = -1;

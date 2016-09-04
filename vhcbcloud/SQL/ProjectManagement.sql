@@ -203,6 +203,10 @@ begin transaction
 		from ProjectApplicant pa
 		where projectId = @projectId and pa.LkApplicantRole = 358
 
+		--Delete If the Entity/Applicant already assigned some time back.
+		delete from ProjectApplicant 
+		where ProjectId = @ProjectId and ApplicantId = @applicantId
+
 		--Insert New Primary Applicant
 		insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
 		values (@ProjectId, @applicantId, 358, 1)

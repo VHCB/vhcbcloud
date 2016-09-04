@@ -379,6 +379,7 @@ namespace vhcbcloud
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
 
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
+            txtProjectName.Enabled = false;
             txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
 
@@ -475,6 +476,7 @@ namespace vhcbcloud
                 txtProjNum.Visible = true;
                 ddlProject.Visible = false;
                 ddlProgram.Enabled = true;
+                txtProjectName.Enabled = true;
                 btnProjectUpdate.Visible = false;
                 dvSubmit.Visible = true;
                 cbActiveOnly.Visible = false;
@@ -561,6 +563,8 @@ namespace vhcbcloud
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()), 
                         txtClosingDate.Text, cbVerified.Checked, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
                         txtProjectName.Text);
+
+                    this.BindProjectEntityGrid();
 
                     LogMessage("Project updated successfully");
 
