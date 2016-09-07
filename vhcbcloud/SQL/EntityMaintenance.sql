@@ -197,7 +197,7 @@ begin transaction
 			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
 		from applicant where  ApplicantId = @ApplicantId
 
-		update an set an.Applicantname = @ApplicantName
+		update an set an.Applicantname =  @lname +', '+ @fname
 		from applicant a(nolock) 
 		join applicantappname aan(nolock) on aan.ApplicantID = a.ApplicantId
 		join appname an(nolock) on aan.AppNameID = an.AppNameID
