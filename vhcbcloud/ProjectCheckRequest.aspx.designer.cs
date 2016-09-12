@@ -301,6 +301,33 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnCRSubmit;
         
         /// <summary>
+        /// btnCrUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCrUpdate;
+        
+        /// <summary>
+        /// pnlFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlFund;
+        
+        /// <summary>
+        /// gvFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvFund;
+        
+        /// <summary>
         /// pnlPCRData control.
         /// </summary>
         /// <remarks>
@@ -461,6 +488,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfPCRId;
+        
+        /// <summary>
+        /// hfProjName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjName;
         
         /// <summary>
         /// hfEditPCRId control.

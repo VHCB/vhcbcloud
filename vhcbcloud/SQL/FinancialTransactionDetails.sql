@@ -227,7 +227,7 @@ alter procedure [dbo].[GetFinancialFundDetailsByProjectId]
 )
 as
 Begin
-	--exec GetFinancialFundDetailsByProjectId 6578, 1
+	--exec GetFinancialFundDetailsByProjectId 6054, 1
 
 	
 
@@ -424,6 +424,50 @@ Begin
 End
 
 go
+
+alter procedure [dbo].[GetAllFinancialFundDetailsByProjNum2]
+(
+        @proj_num varchar(50)
+)
+as
+begin
+                select distinct p.projectid, 
+                                det.FundId, f.account,
+                                det.lktranstype, 
+                                
+                                ttv.description as FundType,
+                                case 
+                                        when tr.LkTransaction = 236 then 'Cash Disbursement'
+                                        when tr.LkTransaction = 237 then 'Cash Refund'
+                                        when tr.LkTransaction = 238 then 'Board Commitment'
+                                        when tr.LkTransaction = 239 then 'Board Decommitment'
+                                        when tr.LkTransaction = 240 then 'Board Reallocation'
+                                end as 'Transaction',
+                                f.name,
+                                p.proj_num, 
+                                lv.Description as projectname,                          
+                                tr.ProjectCheckReqID,
+                                f.abbrv,
+                                det.Amount as detail, 
+                                case 
+                                        when tr.lkstatus = 261 then 'Pending'
+                                        when tr.lkstatus = 262 then 'Final'
+                                 end as lkStatus,                          
+                                tr.date as TransDate
+                                from Project p 
+                join ProjectName pn on pn.ProjectID = p.ProjectId               
+                join LookupValues lv on lv.TypeID = pn.LkProjectname    
+                join Trans tr on tr.ProjectID = p.ProjectId
+                join Detail det on det.TransId = tr.TransId     
+                join fund f on f.FundId = det.FundId
+                left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+                where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+                and tr.RowIsActive=1 and det.RowIsActive=1 and p.Proj_num = @proj_num
+                order by p.Proj_num
+end
+
+go
+
 
 alter procedure [dbo].[GetCommittedFundDetailsByFundId]
 (
@@ -2108,5 +2152,155 @@ End
 
 go
 
+alter procedure GetExistingPCR
+as
+Begin
+	select pcr.ProjectID, pcr.ProjectCheckReqId, 
+	CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	join LookupValues lv on lv.TypeID = t.LkStatus
+	where pv.defname = 1
+	order by pcr.ProjectCheckReqId desc
+End
+go
+
+alter procedure GetExistingPCRByProjId
+(
+	@projId int
+)
+as
+Begin
+	
+	declare @payee varchar (100)
+	set @payee = (select top 1 an.applicantname
+		from ProjectApplicant pa(nolock)
+		join applicantappname aan(nolock) on pa.ApplicantId = aan.ApplicantID
+		join appname an(nolock) on aan.appnameid = an.appnameid
+		join applicant a(nolock) on a.applicantid = aan.applicantid
+		left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
+		left join contact c(nolock) on c.ContactID = ac.ContactID
+		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
+		where pa.ProjectId = @projId
+			and pa.RowIsActive = 1 and pa.finlegal = 1
+		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc)
+
+	select pcr.ProjectID, pv.project_name, pcr.legalreview,pcr.LCB, pcr.initdate, pcr.ProjectCheckReqId, 
+	t.TransAmt, t.transid, an.Applicantname, @payee as Payee,
+	CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	join LookupValues lv on lv.TypeID = t.LkStatus
+	where pv.defname = 1 and pcr.projectid = @projId
+	order by pcr.ProjectCheckReqId desc
+
+	
+End
+go
 
 
+alter procedure PCR_Update
+(
+	@ProjectCheckReqID int,
+	@ProjectID int, 
+	@InitDate date, 
+	@LkProgram	int, 
+	@LegalReview	bit, 
+	@LCB	bit, 
+	@MatchAmt	money, 
+	@LkFVGrantMatch	int, 
+	@Notes	nvarchar(2000), 
+	@Disbursement decimal,
+	@Payee int,
+	@LkStatus int,
+	@UserID	int,
+	@LKNODs 	varchar(50),
+	@TransID	int output
+)
+as
+begin
+	begin transaction
+
+	begin try
+		update ProjectCheckReq set ProjectID = @ProjectID, InitDate = @InitDate, LkProgram = @LkProgram, LegalReview = @LegalReview, 
+			LCB =  @LCB, MatchAmt = @MatchAmt, LkFVGrantMatch = @LkFVGrantMatch, Notes = @Notes, UserID = @UserID
+		from ProjectCheckReq
+		where ProjectCheckReqID = @ProjectCheckReqID
+
+		select @TransID = TransID from Trans where ProjectCheckReqID = @ProjectCheckReqID
+
+		update Trans set ProjectID = ProjectID, Date = @InitDate, TransAmt = @Disbursement, PayeeApplicant = @Payee, LkTransaction = 236, LkStatus = @LkStatus
+		from Trans
+		where TransID = @TransID
+
+		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+
+		select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as transid
+		from ProjectCheckReq pcr(nolock)
+		join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+		join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+		join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+		join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+		join AppName an(nolock) on aan.AppNameID = an.AppNameID
+		join LookupValues lv on lv.TypeID = t.LkStatus
+	where pcr.ProjectCheckReqID = @ProjectCheckReqID
+	order by pcr.ProjectCheckReqId desc
+		
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
+
+go
+
+
+alter procedure PCR_Delete
+(
+	@ProjectCheckReqID int
+	
+)
+as
+begin
+	begin transaction
+
+	begin try
+		declare @transId int
+				
+		select @transId = transid from trans where ProjectCheckReqID = @ProjectCheckReqID
+		delete from detail where transid = @transId
+		delete from trans where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReq where ProjectCheckReqID = @ProjectCheckReqID
+		
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
+go
