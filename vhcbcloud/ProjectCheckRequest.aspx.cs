@@ -21,7 +21,7 @@ namespace vhcbcloud
         {
             lblErrorMsg.Text = "";
             lblMessage.Text = "";
-           
+
             if (!IsPostBack)
             {
                 btnCRSubmit.Visible = true;
@@ -1522,8 +1522,10 @@ namespace vhcbcloud
         {
             try
             {
-                GetPCRSelectedRecord(gvFund);
-                ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(hfPCRId.Value));
+                int rowIndex = e.RowIndex;
+                Label lblPCRId = (Label)gvFund.Rows[rowIndex].FindControl("lblProjectCheckReqId");
+                if (lblPCRId != null)
+                    ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(lblPCRId.Text));
                 BindPCRData(Convert.ToInt32(hfProjId.Value));
             }
             catch (Exception ex)
@@ -1795,7 +1797,7 @@ namespace vhcbcloud
                 }
 
                 decimal TotalDisbursementDetail = ProjectCheckRequestData.GetPCRDisbursemetDetailTotal(int.Parse(PCRID));
-               
+
                 PCRDetails pcr = new PCRDetails();
                 DataTable dtPCR = new DataTable();
                 if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
@@ -1822,7 +1824,7 @@ namespace vhcbcloud
                     }
 
                     lblMessage.Text = "Successfully Updated Check Request";
-                    gvFund.EditIndex = -1;                    
+                    gvFund.EditIndex = -1;
                     BindPCRData(int.Parse(ProjectTokens[0]));
                     btnCRSubmit.Visible = false;
                     btnCrUpdate.Visible = true;
