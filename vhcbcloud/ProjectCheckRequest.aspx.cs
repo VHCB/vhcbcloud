@@ -1514,13 +1514,17 @@ namespace vhcbcloud
         {
             gvFund.EditIndex = -1;
             BindPCRData(Convert.ToInt32(hfProjId.Value));
+            ClearPCRForm();
+            DisablePCR();
         }
 
         protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
             {
-
+                GetPCRSelectedRecord(gvFund);
+                ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(hfPCRId.Value));
+                BindPCRData(Convert.ToInt32(hfProjId.Value));
             }
             catch (Exception ex)
             {

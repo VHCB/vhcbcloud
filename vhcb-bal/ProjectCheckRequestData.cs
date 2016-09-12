@@ -707,7 +707,7 @@ namespace VHCBCommon.DataAccessLayer
                     }
 
                     PCRDetails pcr = new PCRDetails();
-                    pcr.ProjectCheckReqID = int.Parse(command.Parameters["@ProjectCheckReqID"].Value.ToString()); 
+                    pcr.ProjectCheckReqID = PRCID; 
                     pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
 
                     return dtPCRDet;
@@ -838,6 +838,36 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static void PCR_Delete(int ProjectCheckReqID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Delete";
+
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
+               
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
 
         public static decimal GetPCRDisbursemetDetailTotal(int ProjectCheckReqID)
         {
