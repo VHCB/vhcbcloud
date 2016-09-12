@@ -77,7 +77,7 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td>
-                                            <span class="labelClass">Legal</span>
+                                            <span class="labelClass">Legal Structure</span>
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="ddlEntityType" CssClass="clsDropDown" runat="server">
