@@ -21,9 +21,11 @@ namespace vhcbcloud
         {
             lblErrorMsg.Text = "";
             lblMessage.Text = "";
-
+           
             if (!IsPostBack)
             {
+                btnCRSubmit.Visible = true;
+                btnCrUpdate.Visible = false;
                 DisableButton(btnSubmit);
                 BindProjects();
 
@@ -407,6 +409,23 @@ namespace vhcbcloud
             }
         }
 
+        protected void BindPCRData(int projectId)
+        {
+            try
+            {
+                string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+                DataTable dtFundInfo = new DataTable();
+                dtFundInfo = ProjectCheckRequestData.GetExistingPCRByProjId(tokens[0].ToString());
+                gvFund.DataSource = dtFundInfo;
+                gvFund.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: BindPCRData: " + ex.Message;
+            }
+
+        }
+
         protected void AddDefaultPCRQuestions()
         {
             try
@@ -442,6 +461,7 @@ namespace vhcbcloud
                 ClearPCRForm();
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnSubmit);
+                GetPCRSelectedRecord(gvFund);
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
@@ -457,21 +477,49 @@ namespace vhcbcloud
         {
             if (ddlProjFilter.SelectedIndex != 0)
             {
-                ClearPCRForm();
-                EnablePCR();
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-                lblProjName.Text = tokens[1];
-                DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
-                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                BindApplicantName(int.Parse(tokens[0]));
+                if (rdBtnSelect.SelectedIndex == 0)
+                {
+                    ClearPCRForm();
+                    EnablePCR();
 
-                hfProjId.Value = tokens[0].ToString();
-                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
-                pnlApprovals.Visible = false;
-                pnlDisbursement.Visible = false;
-                BindFundTypeCommitments(int.Parse(tokens[0]));
-                txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    lblProjName.Text = tokens[1];
+                    DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
+                    lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                    BindApplicantName(int.Parse(tokens[0]));
 
+                    hfProjId.Value = tokens[0].ToString();
+                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+                    pnlApprovals.Visible = false;
+                    pnlDisbursement.Visible = false;
+                    BindFundTypeCommitments(int.Parse(tokens[0]));
+                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+
+                }
+                else
+                {
+                    DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(tokens[0].ToString());
+                    if (dtEPCR.Rows.Count > 0)
+                    {
+                        this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
+                        this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
+                        this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
+                        this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
+                        ifProjectNotes.Src = "ProjectNotes.aspx?fromPCR=1&ProjectId=" + hfProjId.Value;
+                        EnableButton(btnPCRTransDetails);
+                        DisableButton(btnCRSubmit);
+                        BindPCRTransDetails();
+                        BindPCRQuestionsForApproval();
+                        ddlPCRQuestions.SelectedIndex = -1;
+                        pnlApprovals.Visible = true;
+                        pnlDisbursement.Visible = true;
+                        BindPCRData(int.Parse(tokens[0]));
+
+                        //fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
+                        DisablePCR();
+                        BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
+                    }
+                }
             }
             else
             {
@@ -759,7 +807,7 @@ namespace vhcbcloud
                 //    }
                 //}
 
-                DataTable dtPCR = null;
+                DataTable dtPCR = new DataTable();
                 PCRDetails pcr = new PCRDetails();
 
                 if (PCRID == "")
@@ -792,11 +840,11 @@ namespace vhcbcloud
 
                     if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
                     {
-                        pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                            chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
-                            decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                            txtNotes.Text, GetUserId(), lbNODS);
-                        lblMessage.Text = "Successfully Updated Check Request";
+                        //pcr = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
+                        //    chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        //    decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
+                        //    txtNotes.Text, GetUserId(), lbNODS);
+                        //lblMessage.Text = "Successfully Updated Check Request";
                     }
                     else
                     {
@@ -974,101 +1022,7 @@ namespace vhcbcloud
 
         protected void gvPCRData_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            try
-            {
-                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                {
-                    ClearPCRDetails();
 
-                    CommonHelper.GridViewSetFocus(e.Row);
-
-                    if (e.Row.RowType == DataControlRowType.DataRow)
-                    {
-                        Label lblPCRId = e.Row.FindControl("lblProjectCheckReqId") as Label;
-                        Label lblProjectName = e.Row.FindControl("lblProjectName") as Label;
-
-                        this.hfEditPCRId.Value = lblPCRId.Text;
-
-                        DataSet ds = new DataSet();
-                        DataTable dtable = new DataTable();
-                        ds = ProjectCheckRequestData.GetPCRDetails(int.Parse(lblPCRId.Text));
-
-                        DataRow drPCR = ds.Tables[0].Rows[0];
-                        DataRow drTrans = ds.Tables[1].Rows[0];
-
-                        DataTable dtNOD = new DataTable();
-                        dtNOD = ds.Tables[4];
-
-                        lblProjName.Text = lblProjectName.Text;
-
-                        foreach (ListItem item in ddlProjFilter.Items)
-                        {
-                            if (drPCR["ProjectID"].ToString() + '|' + lblProjectName.Text == item.Value.ToString())
-                            {
-                                ddlProjFilter.ClearSelection();
-                                item.Selected = true;
-                                BindApplicantName(int.Parse(drPCR["ProjectID"].ToString()));
-                            }
-                        }
-
-                        txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : DateTime.Parse(drPCR["InitDate"].ToString()).ToShortDateString();
-
-                        foreach (ListItem item in ddlPayee.Items)
-                        {
-                            if (drTrans["PayeeApplicant"].ToString() == item.Value.ToString())
-                            {
-                                ddlPayee.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-
-                        foreach (ListItem item in ddlProgram.Items)
-                        {
-                            if (drPCR["LkProgram"].ToString() == item.Value.ToString())
-                            {
-                                ddlProgram.ClearSelection();
-                                item.Selected = true;
-                                DisplayControls(item.Text);
-                            }
-                        }
-
-                        foreach (ListItem item in ddlStatus.Items)
-                        {
-                            if (drTrans["LkStatus"].ToString() == item.Value.ToString())
-                            {
-                                ddlStatus.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-
-                        chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
-                        chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
-                        txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();
-                        txtNotes.Text = String.IsNullOrEmpty(drPCR["Notes"].ToString()) ? "" : drPCR["Notes"].ToString();
-                        txtDisbursementAmt.Text = String.IsNullOrEmpty(drTrans["TransAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drTrans["TransAmt"].ToString()), 2).ToString();
-
-                        foreach (ListItem item in ddlMatchingGrant.Items)
-                        {
-                            if (drPCR["LkFVGrantMatch"].ToString() == item.Value.ToString())
-                            {
-                                ddlMatchingGrant.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-
-                        foreach (ListItem item in lbNOD.Items)
-                        {
-                            foreach (DataRow dr in dtNOD.Rows)
-                                if (dr["LKNOD"].ToString() == item.Value.ToString())
-                                    item.Selected = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                lblErrorMsg.Text = "ProjectCheckRequest: gvPCRData_RowDataBound: " + ex.Message;
-            }
         }
 
         protected void gvPCRData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -1235,6 +1189,7 @@ namespace vhcbcloud
                             this.hfPCRId.Value = tokens[0];
                             this.hfTransId.Value = tokens[1];
                             this.hfTransAmt.Value = tokens[2];
+                            this.hfProjName.Value = tokens[3];
                         }
                         break;
                     }
@@ -1378,13 +1333,15 @@ namespace vhcbcloud
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
             ClearPCRForm();
+            ddlDate.Visible = false;
+            txtTransDate.Visible = true;
+
             if (rdBtnSelect.SelectedIndex == 0)
             {
-
                 EnablePCR();
-                ddlDate.Visible = false;
-                txtTransDate.Visible = true;
                 EnableButton(btnCRSubmit);
+                btnCRSubmit.Visible = true;
+                btnCrUpdate.Visible = false;
             }
             else
             {
@@ -1393,8 +1350,8 @@ namespace vhcbcloud
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
                 DisablePCR();
-                ddlDate.Visible = true;
-                txtTransDate.Visible = false;
+                btnCRSubmit.Visible = false;
+                btnCrUpdate.Visible = true;
             }
         }
 
@@ -1546,6 +1503,339 @@ namespace vhcbcloud
         protected void btnNewPCR_Click(object sender, EventArgs e)
         {
             Response.Redirect("projectcheckrequest.aspx");
+        }
+
+        protected void gvFund_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void gvFund_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvFund.EditIndex = -1;
+            BindPCRData(Convert.ToInt32(hfProjId.Value));
+        }
+
+        protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: CR Delete: " + ex.Message;
+            }
+        }
+
+        protected void gvFund_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            btnCRSubmit.Visible = false;
+            btnCrUpdate.Visible = true;
+            chkLegalReview.Enabled = true;
+            chkLCB.Enabled = true;
+            lbNOD.Enabled = true;
+            txtNotes.Enabled = true;
+            gvFund.EditIndex = e.NewEditIndex;
+            BindPCRData(Convert.ToInt32(hfProjId.Value));
+        }
+
+        protected void gvFund_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+
+        }
+
+        protected void gvFund_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetPCRSelectedRecord(gvFund);
+            fillPCRDetails(Convert.ToInt32(hfPCRId.Value), hfProjName.Value);
+        }
+
+        protected void gvFund_Sorting(object sender, GridViewSortEventArgs e)
+        {
+
+        }
+
+        protected void gvFund_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    ClearPCRDetails();
+
+                    CommonHelper.GridViewSetFocus(e.Row);
+
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        Label lblPCRId = e.Row.FindControl("lblProjectCheckReqId") as Label;
+                        Label lblProjectName = e.Row.FindControl("lblProjectName") as Label;
+
+                        this.hfEditPCRId.Value = lblPCRId.Text;
+
+                        DataSet ds = new DataSet();
+                        DataTable dtable = new DataTable();
+                        ds = ProjectCheckRequestData.GetPCRDetails(int.Parse(lblPCRId.Text));
+
+                        DataRow drPCR = ds.Tables[0].Rows[0];
+                        DataRow drTrans = ds.Tables[1].Rows[0];
+
+                        DataTable dtNOD = new DataTable();
+                        dtNOD = ds.Tables[4];
+
+                        lblProjName.Text = lblProjectName.Text;
+
+                        foreach (ListItem item in ddlProjFilter.Items)
+                        {
+                            if (drPCR["ProjectID"].ToString() + '|' + lblProjectName.Text == item.Value.ToString())
+                            {
+                                ddlProjFilter.ClearSelection();
+                                item.Selected = true;
+                                BindApplicantName(int.Parse(drPCR["ProjectID"].ToString()));
+                            }
+                        }
+
+                        txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : DateTime.Parse(drPCR["InitDate"].ToString()).ToShortDateString();
+
+                        foreach (ListItem item in ddlPayee.Items)
+                        {
+                            if (drTrans["PayeeApplicant"].ToString() == item.Value.ToString())
+                            {
+                                ddlPayee.ClearSelection();
+                                item.Selected = true;
+                            }
+                        }
+
+                        foreach (ListItem item in ddlProgram.Items)
+                        {
+                            if (drPCR["LkProgram"].ToString() == item.Value.ToString())
+                            {
+                                ddlProgram.ClearSelection();
+                                item.Selected = true;
+                                DisplayControls(item.Text);
+                            }
+                        }
+
+                        foreach (ListItem item in ddlStatus.Items)
+                        {
+                            if (drTrans["LkStatus"].ToString() == item.Value.ToString())
+                            {
+                                ddlStatus.ClearSelection();
+                                item.Selected = true;
+                            }
+                        }
+
+                        chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
+                        chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
+                        txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();
+                        txtNotes.Text = String.IsNullOrEmpty(drPCR["Notes"].ToString()) ? "" : drPCR["Notes"].ToString();
+                        txtDisbursementAmt.Text = String.IsNullOrEmpty(drTrans["TransAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drTrans["TransAmt"].ToString()), 2).ToString();
+
+                        foreach (ListItem item in ddlMatchingGrant.Items)
+                        {
+                            if (drPCR["LkFVGrantMatch"].ToString() == item.Value.ToString())
+                            {
+                                ddlMatchingGrant.ClearSelection();
+                                item.Selected = true;
+                            }
+                        }
+
+                        foreach (ListItem item in lbNOD.Items)
+                        {
+                            foreach (DataRow dr in dtNOD.Rows)
+                                if (dr["LKNOD"].ToString() == item.Value.ToString())
+                                    item.Selected = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: RowDataBound: " + ex.Message;
+            }
+        }
+
+        protected void btnCrUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string PCRID = this.hfEditPCRId.Value;
+
+                #region Validations
+                if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Project#";
+                    ddlProjFilter.Focus();
+                    return;
+                }
+                if (txtTransDate.Text == "")
+                {
+                    lblErrorMsg.Text = "Select Transaction Date";
+                    txtTransDate.Focus();
+                    return;
+                }
+                if (txtTransDate.Text.Trim() != "")
+                {
+                    DateTime dt;
+                    bool isDateTime = DateTime.TryParse(txtTransDate.Text.Trim(), out dt);
+
+                    if (!isDateTime)
+                    {
+                        lblErrorMsg.Text = "Select a valid Transaction Date";
+                        txtTransDate.Focus();
+                        return;
+                    }
+                }
+
+                if (ddlPayee.Items.Count > 1 && ddlPayee.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Payee";
+                    ddlPayee.Focus();
+                    return;
+                }
+                if (ddlPayee.Items.Count == 0)
+                {
+                    lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
+                    return;
+                }
+                if (ddlProgram.Items.Count > 1 && ddlProgram.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Program";
+                    ddlProgram.Focus();
+                    return;
+                }
+                if (ddlProgram.Items.Count == 0)
+                {
+                    lblErrorMsg.Text = "Add a program to this project before proceed with disbursement";
+                    return;
+                }
+                //else if (ddlStatus.Items.Count > 1 && ddlStatus.SelectedIndex == 0)
+                //{
+                //    lblErrorMsg.Text = "Select Status";
+                //    ddlStatus.Focus();
+                //    return;
+                //}
+                //else if (lbNOD.Items.Count > 1 && lbNOD.SelectedIndex == -1)
+                //{
+                //    lblErrorMsg.Text = "Select NOD";
+                //    lbNOD.Focus();
+                //    return;
+                //}
+
+                if (txtEligibleAmt.Visible)
+                {
+                    if (txtEligibleAmt.Text.Trim() == "")
+                    {
+                        lblErrorMsg.Text = "Select Eligible Amount";
+                        txtEligibleAmt.Focus();
+                        return;
+                    }
+                    if (txtEligibleAmt.Text.Trim() != "")
+                    {
+                        decimal n;
+                        bool isDecimal = decimal.TryParse(txtEligibleAmt.Text.Trim(), out n);
+
+                        if (!isDecimal || Convert.ToDecimal(txtEligibleAmt.Text) <= 0)
+                        {
+                            lblErrorMsg.Text = "Select a valid Eligible amount";
+                            txtEligibleAmt.Focus();
+                            return;
+                        }
+                    }
+                }
+
+                if (txtEligibleAmt.Visible && ddlMatchingGrant.Items.Count > 1 && ddlMatchingGrant.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Select Matching Grant";
+                    ddlMatchingGrant.Focus();
+                    return;
+                }
+
+                if (txtDisbursementAmt.Text.Trim() == "")
+                {
+                    lblErrorMsg.Text = "Select Disbursement Amount";
+                    txtDisbursementAmt.Focus();
+                    return;
+                }
+                if (txtDisbursementAmt.Text.Trim() != "")
+                {
+                    decimal n;
+                    bool isDecimal = decimal.TryParse(txtDisbursementAmt.Text.Trim(), out n);
+
+                    if (!isDecimal || Convert.ToDecimal(txtDisbursementAmt.Text) <= 0)
+                    {
+                        lblErrorMsg.Text = "Select a valid Disbursement amount";
+                        txtDisbursementAmt.Focus();
+                        return;
+                    }
+                    //bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                    //if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                    //{
+                    //    lblErrorMsg.Text = "Disbursement amount can't be more than available funds for the selected project";
+                    //    txtDisbursementAmt.Focus();
+                    //    return;
+                    //}
+                }
+                #endregion
+                string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+                string lbNODS = string.Empty;
+                DateTime TransDate = DateTime.Parse(txtTransDate.Text);
+
+                int MatchingGrant = 0;
+                decimal EligibleAmt = 0;
+
+                if (txtEligibleAmt.Visible)
+                {
+                    MatchingGrant = int.Parse(ddlMatchingGrant.SelectedValue.ToString());
+                    EligibleAmt = decimal.Parse(txtEligibleAmt.Text);
+                }
+
+                decimal TotalDisbursementDetail = ProjectCheckRequestData.GetPCRDisbursemetDetailTotal(int.Parse(PCRID));
+               
+                PCRDetails pcr = new PCRDetails();
+                DataTable dtPCR = new DataTable();
+                if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
+                {
+                    dtPCR = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
+                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
+                        txtNotes.Text, GetUserId(), lbNODS);
+
+                    if (dtPCR.Rows.Count > 0)
+                    {
+                        pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
+                        pcr.ProjectCheckReqID = Convert.ToInt32(dtPCR.Rows[0]["ProjectCheckReqId"].ToString());
+                        pcr.pcrDetails = dtPCR.Rows[0]["pcq"].ToString();
+
+                        foreach (ListItem listItem in lbNOD.Items)
+                        {
+                            if (listItem.Selected == true)
+                            {
+                                ProjectCheckRequestData.PCR_Submit_NOD(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
+                            }
+                        }
+                        BindTransDate(dtPCR);
+                    }
+
+                    lblMessage.Text = "Successfully Updated Check Request";
+                    gvFund.EditIndex = -1;                    
+                    BindPCRData(int.Parse(ProjectTokens[0]));
+                    btnCRSubmit.Visible = false;
+                    btnCrUpdate.Visible = true;
+                    ClearPCRForm();
+                    DisablePCR();
+                }
+                else
+                {
+                    lblMessage.Text = "Disbursement value cannot be less than total disbursement detail " + TotalDisbursementDetail + " value";
+                    txtDisbursementAmt.Focus();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: CrUpdate: " + ex.Message;
+            }
         }
     }
 }

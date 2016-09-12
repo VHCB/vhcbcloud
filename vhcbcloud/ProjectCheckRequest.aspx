@@ -119,14 +119,14 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="labelClass" id="lblAmtEligibleForMatch" runat="server">Amount Eligible For Match $ :</span>
+                                        <span class="labelClass" id="lblAmtEligibleForMatch" visible="false" runat="server">Amount Eligible For Match $ :</span>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxBlue1" Visible="false" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass" id="lblMatchingGrant" runat="server">Matching Grant :</span></td>
+                                    <td><span class="labelClass" id="lblMatchingGrant" visible="false" runat="server">Matching Grant :</span></td>
                                     <td>
-                                        <asp:DropDownList ID="ddlMatchingGrant" CssClass="clsDropDown" runat="server">
+                                        <asp:DropDownList ID="ddlMatchingGrant" Visible="false" CssClass="clsDropDown" runat="server">
                                         </asp:DropDownList>
                                     </td>
                                     <td></td>
@@ -164,7 +164,67 @@
 
                                 <tr>
                                     <td colspan="6" style="height: 5px">
-                                        <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" /></td>
+                                        <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
+                                        &nbsp;<asp:Button ID="btnCrUpdate" runat="server" class="btn btn-info" OnClick="btnCrUpdate_Click" Text="Update" Visible="False" />
+                                        <br />
+                                        <br />
+                                        <asp:Panel runat="server" ID="pnlFund" >
+                                            <asp:GridView ID="gvFund" runat="server" AutoGenerateColumns="False"
+                                                Width="95%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                                                GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvFund_RowCancelingEdit"
+                                                OnRowEditing="gvFund_RowEditing" OnRowUpdating="gvFund_RowUpdating" OnPageIndexChanging="gvFund_PageIndexChanging" AllowSorting="true"
+                                                OnSorting="gvFund_Sorting" OnRowDataBound="gvFund_RowDataBound" OnRowDeleting="gvFund_RowDeleting" OnSelectedIndexChanged="gvFund_SelectedIndexChanged">
+                                                <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                                <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                                <HeaderStyle CssClass="headerStyle" />
+                                                <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                                <RowStyle CssClass="rowStyle" />
+                                                <Columns>
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                                        <ItemTemplate>
+                                                            <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />                                                            
+                                                            <asp:HiddenField ID="hfIDs" runat="server" Value='<%# string.Concat(Eval("ProjectCheckReqId"), "|", Eval("transid"), "|", Eval("TransAmt"), "|", Eval("project_name"))%>' />
+                                                        </ItemTemplate>
+
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="ProjectCheckReqId" Visible="false" SortExpression="ProjectCheckReqId">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblProjectCheckReqId" runat="Server" Text='<%# Eval("ProjectCheckReqId") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Proj Name" SortExpression="project_name">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("project_name") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Date" SortExpression="initdate">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("initdate", "{0:dd/MM/yyyy}") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Appl Name" SortExpression="Applicantname">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblAppName" runat="Server" Text='<%# Eval("Applicantname") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Payee" SortExpression="Payee">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblPayee" runat="Server" Text='<%# Eval("Payee") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                     <asp:TemplateField HeaderText="Trans Amt" SortExpression="TransAmt">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:CommandField ShowEditButton="True" UpdateText="" />
+                                                    <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
+                                                </Columns>
+                                                <FooterStyle CssClass="footerStyle" />
+                                            </asp:GridView>
+                                        </asp:Panel>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6">
@@ -462,7 +522,7 @@
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
                                         <br />
-                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info"  Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
+                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
                                         <br />
                                         <br />
                                     </td>
@@ -475,6 +535,7 @@
                 <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
                 <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                 <asp:HiddenField ID="hfPCRId" runat="server" />
+                <asp:HiddenField ID="hfProjName" runat="server" />
                 <asp:HiddenField ID="hfEditPCRId" runat="server" />
                 <asp:HiddenField ID="hfProjId" runat="server" />
                 <asp:HiddenField ID="hfAvFunds" runat="server" />
@@ -497,7 +558,20 @@
                 }
             }
         }
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvFund.ClientID%>");
+            var rbs = gv.getElementsByTagName("input");
 
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
         function PopupNewAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
@@ -508,7 +582,7 @@
 
         function PopupExistingAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
-           };
+        };
 
 
     </script>
