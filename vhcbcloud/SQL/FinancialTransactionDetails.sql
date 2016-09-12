@@ -2287,6 +2287,7 @@ begin
 		delete from detail where transid = @transId
 		delete from trans where ProjectCheckReqID = @ProjectCheckReqID
 		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
 		delete from ProjectCheckReq where ProjectCheckReqID = @ProjectCheckReqID
 		
 	end try

@@ -219,7 +219,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:CommandField ShowEditButton="True" UpdateText="" />
-                                                    <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
+                                                    <asp:CommandField ShowDeleteButton="true" DeleteText="Delete" />
                                                 </Columns>
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>

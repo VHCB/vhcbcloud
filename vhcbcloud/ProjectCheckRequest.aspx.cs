@@ -1527,6 +1527,8 @@ namespace vhcbcloud
                 if (lblPCRId != null)
                     ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(lblPCRId.Text));
                 BindPCRData(Convert.ToInt32(hfProjId.Value));
+
+                lblErrorMsg.Text = "Project check request was successfully deleted";
             }
             catch (Exception ex)
             {
