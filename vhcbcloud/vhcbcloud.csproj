@@ -186,6 +186,7 @@
     <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
+    <Content Include="EventMaintenance.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -333,6 +334,7 @@
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
+    <Content Include="Viability.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -476,6 +478,13 @@
     </Compile>
     <Compile Include="EntityMaintenance.aspx.designer.cs">
       <DependentUpon>EntityMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventMaintenance.aspx.cs">
+      <DependentUpon>EventMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EventMaintenance.aspx.designer.cs">
+      <DependentUpon>EventMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="FederalRentalAffordability.aspx.cs">
       <DependentUpon>FederalRentalAffordability.aspx</DependentUpon>
@@ -832,6 +841,13 @@
     <Compile Include="Startup.cs" />
     <Compile Include="VHCBBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability.aspx.cs">
+      <DependentUpon>Viability.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability.aspx.designer.cs">
+      <DependentUpon>Viability.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
