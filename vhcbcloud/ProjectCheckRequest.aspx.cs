@@ -465,6 +465,8 @@ namespace vhcbcloud
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
+                pnlApprovals.Visible = true;
+                pnlDisbursement.Visible = true;
 
             }
             catch (Exception ex)
@@ -1516,6 +1518,7 @@ namespace vhcbcloud
             BindPCRData(Convert.ToInt32(hfProjId.Value));
             ClearPCRForm();
             DisablePCR();
+            btnCrUpdate.Visible = false;
         }
 
         protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
