@@ -2242,6 +2242,8 @@ begin
 		where TransID = @TransID
 
 		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
+
 
 		select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as transid
 		from ProjectCheckReq pcr(nolock)
