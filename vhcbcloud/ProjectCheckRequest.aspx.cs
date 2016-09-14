@@ -465,6 +465,8 @@ namespace vhcbcloud
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
+                pnlApprovals.Visible = true;
+                pnlDisbursement.Visible = true;
 
             }
             catch (Exception ex)
@@ -511,8 +513,8 @@ namespace vhcbcloud
                         BindPCRTransDetails();
                         BindPCRQuestionsForApproval();
                         ddlPCRQuestions.SelectedIndex = -1;
-                        pnlApprovals.Visible = true;
-                        pnlDisbursement.Visible = true;
+                        pnlApprovals.Visible = false;
+                        pnlDisbursement.Visible = false;
                         BindPCRData(int.Parse(tokens[0]));
 
                         //fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
@@ -1351,7 +1353,7 @@ namespace vhcbcloud
                 DisableButton(btnCRSubmit);
                 DisablePCR();
                 btnCRSubmit.Visible = false;
-                btnCrUpdate.Visible = true;
+                btnCrUpdate.Visible = false;
             }
         }
 
@@ -1516,6 +1518,7 @@ namespace vhcbcloud
             BindPCRData(Convert.ToInt32(hfProjId.Value));
             ClearPCRForm();
             DisablePCR();
+            btnCrUpdate.Visible = false;
         }
 
         protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -1824,12 +1827,12 @@ namespace vhcbcloud
                         }
                         BindTransDate(dtPCR);
                     }
-
+                    AddDefaultPCRQuestions();
                     lblMessage.Text = "Successfully Updated Check Request";
                     gvFund.EditIndex = -1;
                     BindPCRData(int.Parse(ProjectTokens[0]));
                     btnCRSubmit.Visible = false;
-                    btnCrUpdate.Visible = true;
+                    btnCrUpdate.Visible = false;
                     ClearPCRForm();
                     DisablePCR();
                 }
