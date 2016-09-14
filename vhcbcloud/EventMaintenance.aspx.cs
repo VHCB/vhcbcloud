@@ -31,19 +31,9 @@ namespace vhcbcloud
         {
             BindLookUP(ddlEventProgram, 34);
             BindProjects(ddlEventProject);
-
-            //BindLookUP(ddlProgram, 34);
-            
-            //BindLookUP(ddlProjectType, 119);
-            //BindManagers();
-            //BindPrimaryApplicants();
-            //BindProjects(ddlProject);
-            
-            //BindApplicants(ddlApplicantName);
             BindLookUP(ddlEventSubCategory, 163);
-            //BindLookUP(ddlApplicantRole, 56);
-            //ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
-            //BindLookUP(ddlAddressType, 1);
+            BindApplicantsForCurrentProject(ddlEventEntity);
+            BindPrjectEventGrid();
         }
 
         protected void BindProjects(DropDownList ddList)
@@ -84,12 +74,17 @@ namespace vhcbcloud
         {
             try
             {
-                //ddlEventEntity.Items.Clear();
-                //ddlEventEntity.DataSource = ProjectMaintenanceData.GetCurrentProjectApplicants(DataUtils.GetInt(hfProjectId.Value));
-                //ddlEventEntity.DataValueField = "appnameid";
-                //ddlEventEntity.DataTextField = "applicantname";
-                //ddlEventEntity.DataBind();
-                //ddlEventEntity.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlEventEntity.Items.Clear();
+
+                if((DataUtils.GetInt(hfProjectId.Value) == 0 ))
+                ddlEventEntity.DataSource = ApplicantData.GetApplicants();
+                else
+                    ddlEventEntity.DataSource = ProjectMaintenanceData.GetCurrentProjectApplicants(DataUtils.GetInt(hfProjectId.Value));
+
+                ddlEventEntity.DataValueField = "appnameid";
+                ddlEventEntity.DataTextField = "applicantname";
+                ddlEventEntity.DataBind();
+                ddlEventEntity.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -121,7 +116,41 @@ namespace vhcbcloud
 
         protected void btnAddEvent_Click(object sender, EventArgs e)
         {
+            if (IsProjectEventFormValid())
+            {
+                if (btnAddEvent.Text == "Add")
+                {
+                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
 
+                    ClearProjectEventForm();
+                    cbAddProjectEvent.Checked = false;
+
+                    BindPrjectEventGrid();
+
+                    if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                        LogMessage("Project Event already exist as in-active");
+                    else if (obProjectMaintResult.IsDuplicate)
+                        LogMessage("Project Event already exist");
+                    else
+                        LogMessage("New Project Event added successfully");
+                }
+                else
+                {
+                    ProjectMaintenanceData.UpdateProjectEvent(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                      DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                      DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId(), chkProjectEventActive.Checked);
+
+                    gvProjectEvent.EditIndex = -1;
+                    BindPrjectEventGrid();
+                    ClearProjectEventForm();
+                    btnAddEvent.Text = "Add";
+                    LogMessage("Project Event Updated Successfully");
+                }
+            }
         }
 
         protected void ddlEventProgram_SelectedIndexChanged(object sender, EventArgs e)
@@ -131,7 +160,7 @@ namespace vhcbcloud
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            this.BindPrjectEventGrid();
         }
 
         private void EventProgramSelection()
@@ -172,30 +201,31 @@ namespace vhcbcloud
             chkProjectEventActive.Enabled = false;
         }
 
-        //private void BindPrjectEventGrid()
-        //{
-        //    try
-        //    {
-        //        DataTable dtProjectEvents = ProjectMaintenanceData.GetProjectEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+        private void BindPrjectEventGrid()
+        {
+            try
+            {
+                DataTable dtProjectEvents = ProjectMaintenanceData.GetProjectEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+                Session["dtProjectEvents"] = dtProjectEvents;
 
-        //        if (dtProjectEvents.Rows.Count > 0)
-        //        {
-        //            dvProjectEventGrid.Visible = true;
-        //            gvProjectEvent.DataSource = dtProjectEvents;
-        //            gvProjectEvent.DataBind();
-        //        }
-        //        else
-        //        {
-        //            dvProjectEventGrid.Visible = false;
-        //            gvProjectEvent.DataSource = null;
-        //            gvProjectEvent.DataBind();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogError(Pagename, "BindPrjectEventGrid", "", ex.Message);
-        //    }
-        //}
+                if (dtProjectEvents.Rows.Count > 0)
+                {
+                    dvProjectEventGrid.Visible = true;
+                    gvProjectEvent.DataSource = dtProjectEvents;
+                    gvProjectEvent.DataBind();
+                }
+                else
+                {
+                    dvProjectEventGrid.Visible = false;
+                    gvProjectEvent.DataSource = null;
+                    gvProjectEvent.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindPrjectEventGrid", "", ex.Message);
+            }
+        }
 
         private bool IsProjectEventFormValid()
         {
@@ -205,11 +235,12 @@ namespace vhcbcloud
                 ddlEventProgram.Focus();
                 return false;
             }
+            
 
-            if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
+            if (ddlEvent.Items.Count > 1 && ddlEvent.SelectedIndex == 0)
             {
-                LogMessage("Select Event Project");
-                ddlEventProject.Focus();
+                LogMessage("Select Event");
+                ddlEvent.Focus();
                 return false;
             }
 
@@ -243,5 +274,155 @@ namespace vhcbcloud
                 return 0;
             }
         }
+
+        protected void ddlEventProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            hfProjectId.Value = "";
+            if (ddlEventProject.SelectedIndex != 0)
+            {
+                hfProjectId.Value = ddlEventProject.SelectedValue.ToString();
+            }
+
+            BindApplicantsForCurrentProject(ddlEventEntity);
+        }
+
+        protected void gvProjectEvent_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProjectEvent.EditIndex = e.NewEditIndex;
+            BindPrjectEventGrid();
+        }
+
+        protected void gvProjectEvent_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvProjectEvent.EditIndex = -1;
+            BindPrjectEventGrid();
+            ClearProjectEventForm();
+            hfProjectEventID.Value = "";
+            btnAddEvent.Text = "Add";
+            cbAddProjectEvent.Checked = false;
+        }
+
+        protected void gvProjectEvent_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddEvent.Text = "Update";
+                    cbAddProjectEvent.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[7].Controls[0].Visible = false;
+
+                        Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                        DataRow dr = ProjectMaintenanceData.GetProjectEventById(DataUtils.GetInt(lblProjectEventID.Text));
+
+                        hfProjectEventID.Value = lblProjectEventID.Text;
+
+                        PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
+                        PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
+                        PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
+                        PopulateDropDown(ddlEvent, dr["EventID"].ToString());
+                        PopulateDropDown(ddlEventSubCategory, dr["SubEventID"].ToString());
+                        txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                        txtNotes.Text = dr["Note"].ToString();
+                        chkProjectEventActive.Enabled = true;
+
+                        ddlEventProgram.Enabled = false;
+                        ddlEventProject.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvAppraisalInfo_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
+        protected void gvProjectEvent_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvProjectEvent.DataSource = SortDataTable((DataTable)Session["dtProjectEvents"], false);
+            gvProjectEvent.DataBind();
+            gvProjectEvent.PageIndex = pageIndex;
+        }
+
+        #region GridView Sorting Functions
+
+        //======================================== GRIDVIEW EventHandlers END
+
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+        //===========================SORTING PROPERTIES START
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        //===========================SORTING PROPERTIES END
+#endregion
     }
 }

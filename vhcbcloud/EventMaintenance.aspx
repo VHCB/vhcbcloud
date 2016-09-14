@@ -51,7 +51,8 @@
                                             <span class="labelClass">Project</span>
                                         </td>
                                         <td style="width: 237px">
-                                            <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
+                                                OnSelectedIndexChanged="ddlEventProject_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Entity</span></td>
@@ -110,13 +111,13 @@
                             </asp:Panel>
                         </div>
 
-                        <%-- <div class="panel-body" id="dvProjectEventGrid" runat="server">
+                         <div class="panel-body" id="dvProjectEventGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel11" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProjectEvent" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvProjectEvent_RowEditing" OnRowCancelingEdit="gvProjectEvent_RowCancelingEdit"
-                                    OnRowDataBound="gvProjectEvent_RowDataBound">
+                                    OnRowDataBound="gvProjectEvent_RowDataBound" OnSorting="gvProjectEvent_Sorting">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -128,32 +129,32 @@
                                                 <asp:Label ID="lblProjectEventID" runat="Server" Text='<%# Eval("ProjectEventID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Entity">
+                                        <asp:TemplateField HeaderText="Entity" SortExpression="applicantname">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("applicantname") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Event">
+                                        <asp:TemplateField HeaderText="Event" SortExpression="Event">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblEvent" runat="Server" Text='<%# Eval("Event") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date">
+                                        <asp:TemplateField HeaderText="Date" SortExpression="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="User">
+                                        <asp:TemplateField HeaderText="User" SortExpression="username">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUser" runat="Server" Text='<%# Eval("username") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Notes">
+                                        <asp:TemplateField HeaderText="Notes" SortExpression="Notes">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
+                                        <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
@@ -162,12 +163,15 @@
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
-                        </div>--%>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfProjectEventID" runat="server" />
+
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= dvProjectEventForm.ClientID%>').toggle($('#<%= cbAddProjectEvent.ClientID%>').is(':checked'));

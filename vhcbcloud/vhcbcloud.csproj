@@ -228,6 +228,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Housing\HomeOwnership.aspx" />
     <Content Include="Housing\HousingAttributes.aspx" />
     <Content Include="Housing\HousingFederalPrograms.aspx" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
@@ -706,6 +707,13 @@
     </Compile>
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\HomeOwnership.aspx.cs">
+      <DependentUpon>HomeOwnership.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\HomeOwnership.aspx.designer.cs">
+      <DependentUpon>HomeOwnership.aspx</DependentUpon>
     </Compile>
     <Compile Include="Housing\HousingAttributes.aspx.cs">
       <DependentUpon>HousingAttributes.aspx</DependentUpon>

@@ -61,6 +61,7 @@
     <Compile Include="FinancialTransactions.cs" />
     <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
+    <Compile Include="Housing\HomeOwnershipData.cs" />
     <Compile Include="Housing\HousingAttributesData.cs" />
     <Compile Include="Housing\HousingFederalProgramsData.cs" />
     <Compile Include="Housing\HousingSourcesUsesData.cs" />

@@ -32,7 +32,7 @@ begin
 	left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
 	left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
 	left join userinfo ui(nolock) on ui.userid = pe.UserId
-	where pe.ProjectID = @ProjectID
+	where isnull(pe.ProjectID, 0) = @ProjectID
 		and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
 	order by pe.DateModified desc
 end
