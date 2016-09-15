@@ -67,10 +67,16 @@
                             </td>
 
                         </tr>
+                        
+                        <tr>
+                            <td><span class="labelClass">Project Check Request</span></td>
+                            <td colspan="3"><asp:CheckBox ID="chkPCR" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" /></td>
+                        </tr>
+                        
                         <tr>
                             <td colspan="4" style="height: 5px">
                                 <br />
-                                <asp:Button ID="btnSubmitNotes" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmitNotes_Click" />
+                                <asp:Button ID="btnSubmitNotes" runat="server" class="btn btn-info" OnClick="btnSubmitNotes_Click" Text="Submit" />
                             </td>
                         </tr>
                         <tr>

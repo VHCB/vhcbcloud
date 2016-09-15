@@ -467,6 +467,7 @@ namespace vhcbcloud
                 ddlPCRQuestions.SelectedIndex = -1;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
+                ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
 
             }
             catch (Exception ex)
@@ -507,7 +508,7 @@ namespace vhcbcloud
                         this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                         this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
                         this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
-                        ifProjectNotes.Src = "ProjectNotes.aspx?fromPCR=1&ProjectId=" + hfProjId.Value;
+                        ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
                         EnableButton(btnPCRTransDetails);
                         DisableButton(btnCRSubmit);
                         BindPCRTransDetails();
@@ -834,6 +835,7 @@ namespace vhcbcloud
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
+                    ClearPCRForm();
                 }
                 else
                 {
@@ -1186,7 +1188,7 @@ namespace vhcbcloud
                         if (hf != null)
                         {
                             string[] tokens = hf.Value.Split('|');
-                            lblProjName.Text = tokens[1];
+                            lblProjName.Text = tokens[3];
 
                             this.hfPCRId.Value = tokens[0];
                             this.hfTransId.Value = tokens[1];
@@ -1504,6 +1506,7 @@ namespace vhcbcloud
 
         protected void btnNewPCR_Click(object sender, EventArgs e)
         {
+            ClearPCRForm();
             Response.Redirect("projectcheckrequest.aspx");
         }
 

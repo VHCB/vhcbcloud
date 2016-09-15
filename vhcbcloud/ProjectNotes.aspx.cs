@@ -21,7 +21,16 @@ namespace vhcbcloud
             lblErrorMsg1.Text = "";
 
             String ProjectId = Request.QueryString["ProjectId"];
-
+            string pcr = Request.QueryString["pcrid"];
+            chkPCR.Enabled = false;
+            if(pcr!="")
+            {                
+                chkPCR.Checked = true;                
+            }
+            else
+            {
+                chkPCR.Checked = false;
+            }
             ddlProject.Enabled = true;
             txtProjectName.Enabled = true;
             txtProjectNotesDate.Enabled = true;
@@ -104,12 +113,19 @@ namespace vhcbcloud
 
         protected void btnSubmitNotes_Click(object sender, EventArgs e)
         {
+            int pcrId = 0;
+            string pcr = Request.QueryString["pcrid"];
+            if (pcr!="")
+            {
+                pcrId = Convert.ToInt32(pcr);
+            }
+            
             if (IsProjectNotesValid(btnSubmitNotes.Text.ToLower()))
             {
                 if (btnSubmitNotes.Text.ToLower() == "submit")
                 {
                     ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
+                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text), pcrId);
                 }
                 else
                 {

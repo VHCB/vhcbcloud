@@ -172,7 +172,7 @@
                                             <asp:GridView ID="gvFund" runat="server" AutoGenerateColumns="False"
                                                 Width="95%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                                 GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvFund_RowCancelingEdit"
-                                                OnRowEditing="gvFund_RowEditing" OnRowUpdating="gvFund_RowUpdating" OnPageIndexChanging="gvFund_PageIndexChanging" AllowSorting="true"
+                                                OnRowEditing="gvFund_RowEditing" OnRowUpdating="gvFund_RowUpdating" OnPageIndexChanging="gvFund_PageIndexChanging" AllowSorting="True"
                                                 OnSorting="gvFund_Sorting" OnRowDataBound="gvFund_RowDataBound" OnRowDeleting="gvFund_RowDeleting" OnSelectedIndexChanged="gvFund_SelectedIndexChanged">
                                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -219,7 +219,11 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:CommandField ShowEditButton="True" UpdateText="" />
-                                                    <asp:CommandField ShowDeleteButton="true" DeleteText="Delete" />
+                                                    <asp:TemplateField ShowHeader="False">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete?');"></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                 </Columns>
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>

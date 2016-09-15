@@ -11,7 +11,7 @@ namespace DataAccessLayer
 {
     public class ProjectNotesData
     {
-        public static void AddProjectNotes(int ProjectID, int LkCategory, string UserName, string Notes, DateTime Date)
+        public static void AddProjectNotes(int ProjectID, int LkCategory, string UserName, string Notes, DateTime Date, int? pcrid = null)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("UserName", UserName));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                         command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
-                        
+                        command.Parameters.Add(new SqlParameter("pcrid", pcrid));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

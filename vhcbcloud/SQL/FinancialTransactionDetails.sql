@@ -2306,3 +2306,42 @@ begin
 		commit transaction;
 end
 go
+
+
+alter procedure dbo.AddProjectNotes
+(
+	@ProjectId	int,
+	@UserName	nvarchar(100),
+	@Lkcategory int, 
+	@Date		DateTime,
+	@Notes		nvarchar(max),
+	@pcrid		int = null
+)
+as
+begin transaction
+
+	begin try
+
+		declare @UserId int
+		
+		select @UserId = UserId 
+		from UserInfo(nolock) 
+		where  rtrim(ltrim(Username)) = @UserName 
+
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, ProjectCheckReqID)
+		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @pcrid)
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
