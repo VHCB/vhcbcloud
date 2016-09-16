@@ -835,7 +835,7 @@ namespace vhcbcloud
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
-                    ClearPCRForm();
+                    
                 }
                 else
                 {
@@ -870,8 +870,8 @@ namespace vhcbcloud
                 pnlDisbursement.Visible = true;
                 pnlApprovals.Visible = true;
 
-                ddlDate.Visible = true;
-                txtTransDate.Visible = false;
+                ddlDate.Visible = false;
+                txtTransDate.Visible = true;
 
             }
             catch (Exception ex)
@@ -1332,6 +1332,18 @@ namespace vhcbcloud
             }
         }
 
+        private void ClearHiddenFieldValues()
+        {
+            hfTransId.Value = "";
+            hfTransAmt.Value = "";
+            hfBalAmt.Value = "";
+            hfPCRId.Value = "";
+            hfProjName.Value = "";
+            hfEditPCRId.Value = "";
+            hfProjId.Value = "";
+            hfAvFunds.Value = "";
+        }
+
         protected void rdBtnSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             pnlApprovals.Visible = false;
@@ -1339,7 +1351,8 @@ namespace vhcbcloud
             ClearPCRForm();
             ddlDate.Visible = false;
             txtTransDate.Visible = true;
-
+            ClearHiddenFieldValues();
+            DisplayControls("");
             if (rdBtnSelect.SelectedIndex == 0)
             {
                 EnablePCR();
@@ -1522,6 +1535,8 @@ namespace vhcbcloud
             ClearPCRForm();
             DisablePCR();
             btnCrUpdate.Visible = false;
+            pnlDisbursement.Visible = false;
+            pnlApprovals.Visible = false;
         }
 
         protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -1533,7 +1548,8 @@ namespace vhcbcloud
                 if (lblPCRId != null)
                     ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(lblPCRId.Text));
                 BindPCRData(Convert.ToInt32(hfProjId.Value));
-
+                pnlDisbursement.Visible = false;
+                pnlApprovals.Visible = false;
                 lblErrorMsg.Text = "Project check request was successfully deleted";
             }
             catch (Exception ex)
@@ -1552,6 +1568,8 @@ namespace vhcbcloud
             txtNotes.Enabled = true;
             gvFund.EditIndex = e.NewEditIndex;
             BindPCRData(Convert.ToInt32(hfProjId.Value));
+            pnlApprovals.Visible = false;
+            pnlDisbursement.Visible = false;
         }
 
         protected void gvFund_RowUpdating(object sender, GridViewUpdateEventArgs e)

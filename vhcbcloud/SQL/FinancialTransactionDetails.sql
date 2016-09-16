@@ -227,7 +227,7 @@ alter procedure [dbo].[GetFinancialFundDetailsByProjectId]
 )
 as
 Begin
-	--exec GetFinancialFundDetailsByProjectId 6054, 1
+	--exec GetFinancialFundDetailsByProjectId 6640, 0
 
 	
 
@@ -313,7 +313,10 @@ Begin
 			lv.Description as projectname, 
 			tr.ProjectCheckReqID,
 			f.abbrv,
-			sum(det.Amount) as CommitmentAmount, 
+			case
+				when tr.lkstatus = 262 then sum(det.amount)
+				end as CommitmentAmount, 
+			--sum(det.Amount) as CommitmentAmount, 
 			case 
 				when tr.lkstatus = 261 then 'Pending'
 				when tr.lkstatus = 262 then 'Final'
@@ -380,6 +383,9 @@ Begin
 							else
 								sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))) 
 							end
+					end as Oldbalance,
+					case when sum(isnull( commitmentamount,0)) = 0 then 0  
+						 else sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) -(ISNULL( expendedamount, 0) + isnull(finaldisbursedamount,0)))) 
 					end as balance,
 			   max(Date) as [date]
 	from @tempFundCommit
@@ -424,6 +430,7 @@ Begin
 End
 
 go
+
 
 alter procedure [dbo].[GetAllFinancialFundDetailsByProjNum2]
 (
