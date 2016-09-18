@@ -80,6 +80,14 @@ namespace vhcbcloud
 
             if (SelectedRole.ToLower() == "individual")
             {
+                foreach (ListItem item in ddlEntityType.Items)
+                {
+                    if (item.Text.ToString() == "Individual")
+                    {
+                        ddlEntityType.ClearSelection();
+                        item.Selected = true;
+                    }
+                }
                 CommonFormHeader.InnerText = "Entity";
                 dvIndividual.Visible = true;
                 dvFarm.Visible = false;
@@ -194,8 +202,8 @@ namespace vhcbcloud
 
         protected void ddlEntityRole_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayPanels();
             ClearForm();
+            DisplayPanels();
         }
 
         private void LogError(string pagename, string method, string message, string error)
@@ -682,7 +690,7 @@ namespace vhcbcloud
         {
             if (ddlEntityType.Items.Count > 1 && ddlEntityType.SelectedIndex == 0)
             {
-                LogMessage("Select Entity Type");
+                LogMessage("Select Legal Structure");
                 ddlEntityType.Focus();
                 return false;
             }
