@@ -127,14 +127,13 @@
                             </asp:Panel>
                         </div>
 
-                        <div class="panel-body" id="dvAddressFormGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="200px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvAddressForm" runat="server" AutoGenerateColumns="False"
+                        <div class="panel-body" id="dvHOAddressGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel11" Width="100%" Height="200px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvHOAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    OnRowEditing="gvAddressForm_RowEditing" OnRowCancelingEdit="gvAddressForm_RowCancelingEdit" 
-                                    OnRowDataBound="gvAddressForm_RowDataBound"
-                                    OnSelectedIndexChanged="gvAddressForm_SelectedIndexChanged">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="false"
+                                    OnRowEditing="gvHOAddress_RowEditing" OnRowCancelingEdit="gvHOAddress_RowCancelingEdit"
+                                    OnRowDataBound="gvHOAddress_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -146,7 +145,7 @@
                                                 <asp:Label ID="lblHomeOwnershipID" runat="Server" Text='<%# Eval("HomeOwnershipID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                             <ItemTemplate>
                                                 <asp:RadioButton ID="rdBtnSelectAddress" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
                                                     OnCheckedChanged="rdBtnSelectAddress_CheckedChanged" />
@@ -159,19 +158,181 @@
                                                 <asp:Label ID="lblAddress" runat="Server" Text='<%# Eval("Address") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Manufactured/Mobile Home">
+                                        <asp:TemplateField HeaderText="Manufactured/Mobile Home">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkMH" Enabled="false" runat="server" Checked='<%# Eval("MH") %>' />
+                                                <asp:Label ID="lblMH" runat="Server" Text='<%# Eval("MH") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Single Family Detached">
+                                        <asp:TemplateField HeaderText="Single Family Detached">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkSFD" Enabled="false" runat="server" Checked='<%# Eval("SFD") %>' />
+                                                <asp:Label ID="lblSFD" runat="Server" Text='<%# Eval("SFD") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Condo">
+                                        <asp:TemplateField HeaderText="Condo">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkCondo" Enabled="false" runat="server" Checked='<%# Eval("Condo") %>' />
+                                                <asp:Label ID="lblCondo" runat="Server" Text='<%# Eval("Condo") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="panel-width" runat="server" id="dvNewHomeOwnerInfo" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Home Owner</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddOwner" runat="server" Text="Add New Owner" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvOwnerForm">
+                            <asp:Panel runat="server" ID="Panel1">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 390px"><span class="labelClass">Owner</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlOwner" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 300px">
+                                            <span class="labelClass">Lender</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                             <asp:DropDownList ID="ddlLender" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 406px"><span class="labelClass">VHFA Involved?</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbVHFAInv" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                         <td style="width: 390px"><span class="labelClass">RD Loan?</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbRDLoan" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
+                                        </td>
+                                        <td style="width: 300px"><span class="labelClass">VHCB's Grant</span></td>
+                                        <td style="width: 250px">
+                                            <asp:TextBox ID="txtVHCBGrant" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 406px">
+                                            <span class="labelClass">Owner's Appreciation at Resale</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:TextBox ID="txtOwnerAppAtResale" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+
+                                    <tr>
+                                         <td style="width: 390px"><span class="labelClass">Capital Improvements at Resale</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtCapitalImpAtResale" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                         <td style="width: 300px"><span class="labelClass">Fee at Purchase</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtFeeAtPurchase" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 406px"><span class="labelClass">Fee at Resale</span>
+                                        </td>
+                                        <td style="width: 250px">
+                                            <asp:TextBox ID="txtFeeAtResale" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                         <td style="width: 390px">
+                                            <span class="labelClass">Stewardship Fund Contribution</span></td>
+                                        <td style="width: 270px">
+                                             <asp:TextBox ID="txtStewardCont" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 300px"><span class="labelClass">VHCB Assistance Loan</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtVHCBAsstLoan" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td> 
+                                        <td style="width: 406px"><span class="labelClass">VHCB Rehab Loan</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtVHCBRehabLoan" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 390px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="chkOwnerActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                        <td colspan="4" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 390px">
+                                            <asp:Button ID="btnAddOwner" runat="server" Text="Submit" class="btn btn-info" OnClick="btnAddOwner_Click" />
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="width: 406px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvOwnerGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel4" Width="100%" Height="250px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvOwner" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowEditing="gvOwner_RowEditing" OnRowCancelingEdit="gvOwner_RowCancelingEdit" OnRowDataBound="gvOwner_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ProjectHomeOwnershipID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectHomeOwnershipID" runat="Server" Text='<%# Eval("ProjectHomeOwnershipID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Owner's Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblOwnerName" runat="Server" Text='<%# Eval("OwnerName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Lender Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLenderName" runat="Server" Text='<%# Eval("LenderName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="VHCB Grant Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblVHCBGrant" runat="Server" Text='<%# Eval("VHCBGrant", "{0:C2}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -186,12 +347,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfHomeOwnershipID" runat="server" />
+    <asp:HiddenField ID="hfProjectHomeOwnershipID" runat="server" />
     
     <script language="javascript">
         $(document).ready(function () {
@@ -200,10 +361,30 @@
                 $('#<%= dvNewAddressForm.ClientID%>').toggle(this.checked);
             }).change();
 
+         $('#<%= dvOwnerForm.ClientID%>').toggle($('#<%= cbAddOwner.ClientID%>').is(':checked'));
+            $('#<%= cbAddOwner.ClientID%>').click(function () {
+                $('#<%= dvOwnerForm.ClientID%>').toggle(this.checked);
+            }).change();
+
         });
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
+
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvHOAddress.ClientID%>");
+            var rbs = gv.getElementsByTagName("input");
+
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+    }
     </script>
 </asp:Content>
 

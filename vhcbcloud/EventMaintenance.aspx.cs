@@ -13,7 +13,7 @@ namespace vhcbcloud
 {
     public partial class EventMaintenance : System.Web.UI.Page
     {
-        string Pagename = "ProjectMaintenance";
+        string Pagename = "EventMaintenance";
 
         protected void Page_Load(object sender, EventArgs e)
         {
