@@ -7,7 +7,7 @@
         <p class="lead">Event Maintenance </p>
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" style="padding: 5px 5px 5px 5px">
                     <table style="width: 100%;">
                         <tr>
                             <td></td>
@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewProjectEvent">
-                    <div class="panel panel-default ">
-                        <div class="panel-heading ">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 5px 5px">
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
@@ -112,7 +112,7 @@
                         </div>
 
                          <div class="panel-body" id="dvProjectEventGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel11" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel11" Width="100%" Height="500px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProjectEvent" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
