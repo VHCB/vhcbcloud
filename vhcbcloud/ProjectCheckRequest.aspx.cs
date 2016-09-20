@@ -478,28 +478,28 @@ namespace vhcbcloud
 
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlProjFilter.SelectedIndex != 0)
+            string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+            if (rdBtnSelect.SelectedIndex == 0)
             {
-                string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
-                if (rdBtnSelect.SelectedIndex == 0)
-                {
-                    ClearPCRForm();
-                    EnablePCR();
+                ClearPCRForm();
+                EnablePCR();
 
-                    lblProjName.Text = tokens[1];
-                    DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
-                    lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                    BindApplicantName(int.Parse(tokens[0]));
+                lblProjName.Text = tokens[1];
+                DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
+                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                BindApplicantName(int.Parse(tokens[0]));
 
-                    hfProjId.Value = tokens[0].ToString();
-                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
-                    pnlApprovals.Visible = false;
-                    pnlDisbursement.Visible = false;
-                    BindFundTypeCommitments(int.Parse(tokens[0]));
-                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+                hfProjId.Value = tokens[0].ToString();
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+                pnlApprovals.Visible = false;
+                pnlDisbursement.Visible = false;
+                BindFundTypeCommitments(int.Parse(tokens[0]));
+                txtTransDate.Text = DateTime.Now.ToShortDateString();
 
-                }
-                else
+            }
+            else
+            {
+                if (ddlProjFilter.SelectedIndex > 1)
                 {
                     DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(tokens[0].ToString());
                     if (dtEPCR.Rows.Count > 0)
@@ -523,11 +523,10 @@ namespace vhcbcloud
                         BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
                     }
                 }
+                else
+                    ClearPCRForm();
             }
-            else
-            {
-                lblProjName.Text = "--";
-            }
+
         }
 
         protected void chkLegalReview_CheckedChanged(object sender, EventArgs e)
@@ -835,7 +834,7 @@ namespace vhcbcloud
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
-                    
+
                 }
                 else
                 {
@@ -1101,16 +1100,19 @@ namespace vhcbcloud
 
         private void ClearPCRForm()
         {
+            if (ddlProjFilter.Items.Count > 1) ddlProjFilter.SelectedIndex = 0;
             ddlApplicantName.Items.Clear();
+            ddlPayee.Items.Clear();
+            ddlProgram.Items.Clear();
+            ddlStatus.Items.Clear();
             lblProjName.Text = "--";
             txtTransDate.Text = "";
-            if (ddlPayee.Items.Count > 0) ddlPayee.SelectedIndex = 0;
-            if (ddlProgram.Items.Count > 0) ddlProgram.SelectedIndex = 0;
-            if (ddlStatus.Items.Count > 0) ddlStatus.SelectedIndex = 0;
+
             EnableButton(btnCRSubmit);
             chkLCB.Checked = false;
             chkLegalReview.Checked = false;
-
+            gvFund.DataSource = null;
+            gvFund.DataBind();
             if (txtEligibleAmt.Visible)
             {
                 txtEligibleAmt.Text = "";
@@ -1530,9 +1532,9 @@ namespace vhcbcloud
 
         protected void gvFund_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+            ClearPCRForm();
             gvFund.EditIndex = -1;
             BindPCRData(Convert.ToInt32(hfProjId.Value));
-            ClearPCRForm();
             DisablePCR();
             btnCrUpdate.Visible = false;
             pnlDisbursement.Visible = false;

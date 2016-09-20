@@ -193,14 +193,14 @@
                                                             <asp:Label ID="lblProjectCheckReqId" runat="Server" Text='<%# Eval("ProjectCheckReqId") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Proj Name" SortExpression="project_name">
+                                                    <asp:TemplateField HeaderText="Proj Name" Visible="false" SortExpression="project_name">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("project_name") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Date" SortExpression="initdate">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("initdate", "{0:dd/MM/yyyy}") %>' />
+                                                            <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("initdate", "{0:MM/dd/yyyy}") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Appl Name" SortExpression="Applicantname">
