@@ -600,7 +600,7 @@
                                             <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">Type</span></td>
+                                        <td style="width: 100px"><span class="labelClass">Role</span></td>
                                         <td style="width: 370px">
                                             <asp:DropDownList ID="ddlApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                         <td style="width: 70px">
@@ -646,7 +646,7 @@
                                                 <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Type">
+                                        <asp:TemplateField HeaderText="Role">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
                                             </ItemTemplate>

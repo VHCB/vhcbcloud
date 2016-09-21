@@ -115,7 +115,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlApprovalDisposition, 68);
 
             BindLookUP(ddlPlan, 142);
-            BindLookUP(ddlEvent, 146);
+            //BindLookUP(ddlEvent, 146);
         }
 
         private void BindGrids()
@@ -125,7 +125,7 @@ namespace vhcbcloud.Conservation
             BindViolationsGrid();
             BindApprovalsGrid();
             BindPlansGrid();
-            BindEventGrid();
+            //BindEventGrid();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -878,104 +878,104 @@ namespace vhcbcloud.Conservation
                 LogMessage("New Plan added successfully");
         }
 
-        protected void btnAddEvent_Click(object sender, EventArgs e)
-        {
-            if (ddlEvent.SelectedIndex == 0)
-            {
-                LogMessage("Select Event");
-                ddlEvent.Focus();
-                return;
-            }
+        //protected void btnAddEvent_Click(object sender, EventArgs e)
+        //{
+        //    if (ddlEvent.SelectedIndex == 0)
+        //    {
+        //        LogMessage("Select Event");
+        //        ddlEvent.Focus();
+        //        return;
+        //    }
 
-            if (txtEventDate.Text.Trim() == "")
-            {
-                LogMessage("Enter Date");
-                txtEventDate.Focus();
-                return;
-            }
-            else
-            {
-                if (!DataUtils.IsDateTime(txtEventDate.Text.Trim()))
-                {
-                    LogMessage("Enter Valid Date");
-                    txtEventDate.Focus();
-                    return;
-                }
-            }
+        //    if (txtEventDate.Text.Trim() == "")
+        //    {
+        //        LogMessage("Enter Date");
+        //        txtEventDate.Focus();
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        if (!DataUtils.IsDateTime(txtEventDate.Text.Trim()))
+        //        {
+        //            LogMessage("Enter Valid Date");
+        //            txtEventDate.Focus();
+        //            return;
+        //        }
+        //    }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveEvent(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetDate(txtEventDate.Text));
+        //    ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveEvent(DataUtils.GetInt(hfProjectId.Value),
+        //        DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetDate(txtEventDate.Text));
 
-            ClearEventForm();
+        //    ClearEventForm();
 
-            BindEventGrid();
+        //    BindEventGrid();
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Event already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Event already exist");
-            else
-                LogMessage("New Event added successfully");
-        }
+        //    if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+        //        LogMessage("New Event already exist as in-active");
+        //    else if (objAddConsAmend.IsDuplicate)
+        //        LogMessage("New Event already exist");
+        //    else
+        //        LogMessage("New Event added successfully");
+        //}
 
-        private void BindEventGrid()
-        {
-            try
-            {
-                DataTable dtEvent = ConservationStewardshipData.GetConserveEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+        //private void BindEventGrid()
+        //{
+        //    try
+        //    {
+        //        DataTable dtEvent = ConservationStewardshipData.GetConserveEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
 
-                if (dtEvent.Rows.Count > 0)
-                {
-                    dvEventGrid.Visible = true;
-                    gvEvent.DataSource = dtEvent;
-                    gvEvent.DataBind();
-                }
-                else
-                {
-                    dvEventGrid.Visible = false;
-                    gvEvent.DataSource = null;
-                    gvEvent.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindEventGrid", "", ex.Message);
-            }
-        }
+        //        if (dtEvent.Rows.Count > 0)
+        //        {
+        //            dvEventGrid.Visible = true;
+        //            gvEvent.DataSource = dtEvent;
+        //            gvEvent.DataBind();
+        //        }
+        //        else
+        //        {
+        //            dvEventGrid.Visible = false;
+        //            gvEvent.DataSource = null;
+        //            gvEvent.DataBind();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindEventGrid", "", ex.Message);
+        //    }
+        //}
 
-        private void ClearEventForm()
-        {
-            ddlEvent.SelectedIndex = -1;
-            txtEventDate.Text = "";
-            cbAddEvent.Checked = false;
-        }
+        //private void ClearEventForm()
+        //{
+        //    ddlEvent.SelectedIndex = -1;
+        //    txtEventDate.Text = "";
+        //    cbAddEvent.Checked = false;
+        //}
 
-        protected void gvEvent_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvEvent.EditIndex = e.NewEditIndex;
-            BindEventGrid();
-        }
+        //protected void gvEvent_RowEditing(object sender, GridViewEditEventArgs e)
+        //{
+        //    gvEvent.EditIndex = e.NewEditIndex;
+        //    BindEventGrid();
+        //}
 
-        protected void gvEvent_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvEvent.EditIndex = -1;
-            BindEventGrid();
-        }
+        //protected void gvEvent_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        //{
+        //    gvEvent.EditIndex = -1;
+        //    BindEventGrid();
+        //}
 
-        protected void gvEvent_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
+        //protected void gvEvent_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
 
-            int ConserveEventID = DataUtils.GetInt(((Label)gvEvent.Rows[rowIndex].FindControl("lblConserveEventID")).Text);
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvEvent.Rows[rowIndex].FindControl("txtEventDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvEvent.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+        //    int ConserveEventID = DataUtils.GetInt(((Label)gvEvent.Rows[rowIndex].FindControl("lblConserveEventID")).Text);
+        //    DateTime DispDate = Convert.ToDateTime(((TextBox)gvEvent.Rows[rowIndex].FindControl("txtEventDate")).Text);
+        //    bool RowIsActive = Convert.ToBoolean(((CheckBox)gvEvent.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            ConservationStewardshipData.UpdateConserveEvent(ConserveEventID, DispDate, RowIsActive);
-            gvEvent.EditIndex = -1;
+        //    ConservationStewardshipData.UpdateConserveEvent(ConserveEventID, DispDate, RowIsActive);
+        //    gvEvent.EditIndex = -1;
 
-            BindEventGrid();
+        //    BindEventGrid();
 
-            LogMessage("Plan updated successfully");
-        }
+        //    LogMessage("Plan updated successfully");
+        //}
     }
 }

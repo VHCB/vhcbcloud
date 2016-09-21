@@ -673,7 +673,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvNewEvent">
+               <%-- <div class="panel-width" runat="server" id="dvNewEvent">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -764,7 +764,7 @@
                             </asp:Panel>
                         </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -777,7 +777,7 @@
             $('#<%= dvViolationForm.ClientID%>').toggle($('#<%= cbAddViolation.ClientID%>').is(':checked'));
             $('#<%= dvApprovalForm.ClientID%>').toggle($('#<%= cbAddApproval.ClientID%>').is(':checked'));
             $('#<%= dvPlanForm.ClientID%>').toggle($('#<%= cbAddPlan.ClientID%>').is(':checked'));
-            $('#<%= dvEventForm.ClientID%>').toggle($('#<%= cbAddEvent.ClientID%>').is(':checked'));
+            <%--$('#<%= dvEventForm.ClientID%>').toggle($('#<%= cbAddEvent.ClientID%>').is(':checked'));;--%>
 
             $('#<%= cbAddMajor.ClientID%>').click(function () {
                 $('#<%= dvMajorForm.ClientID%>').toggle(this.checked);
@@ -799,9 +799,9 @@
                 $('#<%= dvPlanForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= cbAddEvent.ClientID%>').click(function () {
+           <%-- $('#<%= cbAddEvent.ClientID%>').click(function () {
                 $('#<%= dvEventForm.ClientID%>').toggle(this.checked);
-             }).change();
+             }).change();--%>
 
         });
 
