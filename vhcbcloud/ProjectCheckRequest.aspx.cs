@@ -42,7 +42,7 @@ namespace vhcbcloud
                 //BindPayee();
                 //BindTransType();
                 //BindStateVHCBS();
-
+                pnlFund.Visible = false;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
                 lblAmtEligibleForMatch.Visible = false;
@@ -465,6 +465,7 @@ namespace vhcbcloud
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
+                pnlFund.Visible = true;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
@@ -479,6 +480,9 @@ namespace vhcbcloud
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+            pnlFund.Visible = false;
+            pnlApprovals.Visible = false;
+            pnlDisbursement.Visible = false;
             if (rdBtnSelect.SelectedIndex == 0)
             {
                 ClearPCRForm();
@@ -491,31 +495,30 @@ namespace vhcbcloud
 
                 hfProjId.Value = tokens[0].ToString();
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
-                pnlApprovals.Visible = false;
-                pnlDisbursement.Visible = false;
+              
                 BindFundTypeCommitments(int.Parse(tokens[0]));
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
 
             }
             else
             {
-                if (ddlProjFilter.SelectedIndex > 1)
+                if (ddlProjFilter.SelectedIndex > 0)
                 {
                     DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(tokens[0].ToString());
                     if (dtEPCR.Rows.Count > 0)
                     {
+                        pnlFund.Visible = true;
                         this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
                         this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                         this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
                         this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
                         ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
+                        this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
                         EnableButton(btnPCRTransDetails);
                         DisableButton(btnCRSubmit);
                         BindPCRTransDetails();
                         BindPCRQuestionsForApproval();
-                        ddlPCRQuestions.SelectedIndex = -1;
-                        pnlApprovals.Visible = false;
-                        pnlDisbursement.Visible = false;
+                        ddlPCRQuestions.SelectedIndex = -1;                       
                         BindPCRData(int.Parse(tokens[0]));
 
                         //fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
@@ -868,7 +871,7 @@ namespace vhcbcloud
                 this.hfEditPCRId.Value = "";
                 pnlDisbursement.Visible = true;
                 pnlApprovals.Visible = true;
-
+                pnlFund.Visible = false;
                 ddlDate.Visible = false;
                 txtTransDate.Visible = true;
 
@@ -1099,8 +1102,7 @@ namespace vhcbcloud
         }
 
         private void ClearPCRForm()
-        {
-            if (ddlProjFilter.Items.Count > 1) ddlProjFilter.SelectedIndex = 0;
+        {            
             ddlApplicantName.Items.Clear();
             ddlPayee.Items.Clear();
             ddlProgram.Items.Clear();
@@ -1111,8 +1113,9 @@ namespace vhcbcloud
             EnableButton(btnCRSubmit);
             chkLCB.Checked = false;
             chkLegalReview.Checked = false;
-            gvFund.DataSource = null;
-            gvFund.DataBind();
+
+            pnlFund.Visible = false;
+           
             if (txtEligibleAmt.Visible)
             {
                 txtEligibleAmt.Text = "";
@@ -1348,6 +1351,7 @@ namespace vhcbcloud
 
         protected void rdBtnSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
+            pnlFund.Visible = false;
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
             ClearPCRForm();
@@ -1355,16 +1359,16 @@ namespace vhcbcloud
             txtTransDate.Visible = true;
             ClearHiddenFieldValues();
             DisplayControls("");
+            if (ddlProjFilter.Items.Count > 0) ddlProjFilter.SelectedIndex = 0;
             if (rdBtnSelect.SelectedIndex == 0)
-            {
+            {                
                 EnablePCR();
                 EnableButton(btnCRSubmit);
                 btnCRSubmit.Visible = true;
                 btnCrUpdate.Visible = false;
             }
             else
-            {
-                ddlProjFilter.SelectedIndex = 0;
+            {               
                 BindExistingPCR();
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
@@ -1539,6 +1543,7 @@ namespace vhcbcloud
             btnCrUpdate.Visible = false;
             pnlDisbursement.Visible = false;
             pnlApprovals.Visible = false;
+            pnlFund.Visible = true;
         }
 
         protected void gvFund_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -1552,6 +1557,7 @@ namespace vhcbcloud
                 BindPCRData(Convert.ToInt32(hfProjId.Value));
                 pnlDisbursement.Visible = false;
                 pnlApprovals.Visible = false;
+                pnlFund.Visible = true;
                 lblErrorMsg.Text = "Project check request was successfully deleted";
             }
             catch (Exception ex)
@@ -1572,6 +1578,7 @@ namespace vhcbcloud
             BindPCRData(Convert.ToInt32(hfProjId.Value));
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
+            pnlFund.Visible = true;
         }
 
         protected void gvFund_RowUpdating(object sender, GridViewUpdateEventArgs e)

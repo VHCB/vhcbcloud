@@ -69,7 +69,7 @@
                         </tr>
                         
                         <tr>
-                            <td><span class="labelClass">Project Check Request</span></td>
+                            <td><span id ="spnPCR" runat="server" class="labelClass">Project Check Request</span></td>
                             <td colspan="3"><asp:CheckBox ID="chkPCR" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" /></td>
                         </tr>
                         
