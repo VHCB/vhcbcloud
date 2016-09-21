@@ -22,14 +22,19 @@ namespace vhcbcloud
 
             String ProjectId = Request.QueryString["ProjectId"];
             string pcr = Request.QueryString["pcrid"];
-            chkPCR.Enabled = false;
-            if(pcr!="")
+            chkPCR.Visible = false;
+            spnPCR.Visible = false;
+            if(pcr != null)
             {                
-                chkPCR.Checked = true;                
+                chkPCR.Checked = true;
+                chkPCR.Visible = true;
+                spnPCR.Visible = true;
             }
             else
             {
                 chkPCR.Checked = false;
+                chkPCR.Visible = false;
+                spnPCR.Visible = false;
             }
             ddlProject.Enabled = true;
             txtProjectName.Enabled = true;
