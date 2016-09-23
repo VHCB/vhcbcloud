@@ -29,9 +29,9 @@ namespace vhcbcloud
             {
                 recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
                 if (ddlLkLookupViewname.SelectedIndex == 0 || recordId == 0)
-                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(0);
+                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
                 else
-                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(recordId);
+                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(recordId, cbActiveOnly.Checked);
 
                 gvLookup.DataBind();
             }
@@ -82,7 +82,8 @@ namespace vhcbcloud
 
                 LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive);
                 gvLookup.EditIndex = -1;
-                BindLookupMaintenance();
+                //BindLookupMaintenance();
+                BindGrids();
                 lblErrorMsg.Text = "Lookup details updated successfully";
                 txtDescription.Text = "";
             }
@@ -144,9 +145,9 @@ namespace vhcbcloud
                
             DataTable dt = new DataTable();
             if (ddlLkLookupViewname.SelectedIndex == 0)
-                dt = LookupMaintenanceData.GetLkLookupDetails(0);
+                dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
             else
-                dt = LookupMaintenanceData.GetLkLookupDetails(recordId);
+                dt = LookupMaintenanceData.GetLkLookupDetails(recordId, cbActiveOnly.Checked);
 
             SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
@@ -230,6 +231,15 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindGrids();
+        }
+        private void BindGrids()
+        {
+            BindLookupMaintenance();
         }
     }
 }
