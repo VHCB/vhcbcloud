@@ -33,7 +33,7 @@ namespace vhcbcloud
                 BindStatus();
                 BindMatchingGrant();
                 BindNODData();
-                BindPCRQuestions(false);               
+                BindPCRQuestions(false);
 
                 pnlFund.Visible = false;
                 pnlApprovals.Visible = false;
@@ -469,7 +469,7 @@ namespace vhcbcloud
             {
                 ClearPCRForm();
                 ClearPCRDetails();
-                
+                ClearTransactionDetailForm();
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnSubmit);
                 GetPCRSelectedRecord(gvFund);
@@ -551,10 +551,14 @@ namespace vhcbcloud
 
         private void ClearTransactionDetailForm()
         {
-            ddlFundTypeCommitments.SelectedIndex = 0;
-            ddlTransType.SelectedIndex = 0;
+            if (ddlFundTypeCommitments.Items.Count >= 0) ddlFundTypeCommitments.SelectedIndex = 0;
+
+            ddlTransType.Items.Clear();
+            ddlTransType.DataSource = null;
+            ddlTransType.DataBind();
+            
             txtTransDetailAmt.Text = "";
-            lblAvailFund.Text = "";
+            lblCommittedAvailFunds.Text = "";
         }
 
         public static void DisableButton(Button btn)
@@ -1891,6 +1895,23 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: CrUpdate: " + ex.Message;
+            }
+        }
+
+        protected void gvPTransDetails_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                Label lblDetailId = (Label)gvPTransDetails.Rows[rowIndex].FindControl("lblDetId");
+                if (lblDetailId != null)
+                    FinancialTransactions.DeleteTransactionDetail(Convert.ToInt32(lblDetailId.Text));
+                BindPCRTransDetails();
+                lblErrorMsg.Text = "Transaction detail was successfully deleted";
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: Delete detail: " + ex.Message;
             }
         }
     }

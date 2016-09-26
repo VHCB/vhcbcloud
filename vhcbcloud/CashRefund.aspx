@@ -346,9 +346,10 @@
                                                         </EditItemTemplate>
                                                         <ItemTemplate>
                                                             <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
-                                                            &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Delete" Text="Inactivate" OnClientClick="return confirm('Are you sure you want to delete the detail?');"></asp:LinkButton>
+                                                            &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete the detail?');"></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
+
                                                 </Columns>
                                                 <FooterStyle CssClass="footerStyle" />
                                             </asp:GridView>

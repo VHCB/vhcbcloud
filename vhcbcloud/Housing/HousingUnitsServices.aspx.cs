@@ -593,22 +593,16 @@ namespace vhcbcloud.Housing
                     gvMultiple.DataSource = dt;
                     gvMultiple.DataBind();
 
-                    Label lblFooterMultiUnitTotalUnits = (Label)gvMultiple.FooterRow.FindControl("lblFooterMultiUnitTotalUnits");
-                    int totMultiUnits = 0;
+                    //Label lblFooterMultiUnitTotalUnits = (Label)gvMultiple.FooterRow.FindControl("lblFooterMultiUnitTotalUnits");
+                    //int totMultiUnits = 0;
 
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
-                            totMultiUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
-                    }
-
-                    lblFooterMultiUnitTotalUnits.Text = totMultiUnits.ToString();
-
-                    //int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
-                    //if (TotalUnits - totMultiUnits != 0)
+                    //for (int i = 0; i < dt.Rows.Count; i++)
                     //{
-                    //    WarningMessage(dvSingleUnitWarning, lblSingleUnitWarning, "The Housing Single Units must be equal to Total Units.");
+                    //    if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                    //        totMultiUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
                     //}
+
+                    //lblFooterMultiUnitTotalUnits.Text = totMultiUnits.ToString();
                 }
                 else
                 {

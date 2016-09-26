@@ -265,22 +265,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
-        /// txtRecreationMonth control.
+        /// ddlRecreationMonth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRecreationMonth;
-        
-        /// <summary>
-        /// chkCopyOwner control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkCopyOwner;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRecreationMonth;
         
         /// <summary>
         /// ddlAffPeriod control.
@@ -337,13 +328,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox chkCHDO;
         
         /// <summary>
-        /// txtCHDORecert control.
+        /// ddlCHRDoRecert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCHDORecert;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCHRDoRecert;
         
         /// <summary>
         /// Div1 control.
@@ -535,6 +526,15 @@ namespace vhcbcloud.Housing {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtFundedDate;
         
         /// <summary>
+        /// ddlFundedDateCompleteBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundedDateCompleteBy;
+        
+        /// <summary>
         /// txtCloseDate control.
         /// </summary>
         /// <remarks>
@@ -551,6 +551,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtCloseDate;
+        
+        /// <summary>
+        /// ddlIDISCompletionDateCompletedBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlIDISCompletionDateCompletedBy;
         
         /// <summary>
         /// btnSubmitHomeForm control.
@@ -884,114 +893,6 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvUnitOccupany;
-        
-        /// <summary>
-        /// dvMedianIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMedianIncome;
-        
-        /// <summary>
-        /// cbAddMedianIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddMedianIncome;
-        
-        /// <summary>
-        /// dvMedianIncomeForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMedianIncomeForm;
-        
-        /// <summary>
-        /// Panel10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel10;
-        
-        /// <summary>
-        /// ddlMedianIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMedianIncome;
-        
-        /// <summary>
-        /// txtMedianIncomeUnits control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMedianIncomeUnits;
-        
-        /// <summary>
-        /// btnAddMedianIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddMedianIncome;
-        
-        /// <summary>
-        /// dvMedianIncomeGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMedianIncomeGrid;
-        
-        /// <summary>
-        /// dvMedianIncomeWarning control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMedianIncomeWarning;
-        
-        /// <summary>
-        /// lblMedianIncomeWarning control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMedianIncomeWarning;
-        
-        /// <summary>
-        /// Panel11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel11;
-        
-        /// <summary>
-        /// gvMedianIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvMedianIncome;
         
         /// <summary>
         /// hfProjectId control.

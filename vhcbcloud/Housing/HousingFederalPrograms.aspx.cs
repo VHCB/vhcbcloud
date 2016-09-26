@@ -91,13 +91,18 @@ namespace vhcbcloud.Housing
 
         private void BindControls()
         {
+            BindLookUP(ddlRecreationMonth, 172);
+            BindLookUP(ddlCHRDoRecert, 172);
+            
             BindLookUP(ddlFederalProgram, 105);
             BindLookUP(ddlAffPeriod, 2);
             BindStaff(ddlCompletedBy);
+            BindStaff(ddlFundedDateCompleteBy);
+            BindStaff(ddlIDISCompletionDateCompletedBy);
             BindStaff(ddlStaff);
             BindLookUP(ddlUnitType, 168);
             BindLookUP(ddlUnitOccupancyUnitType, 166);
-            BindLookUP(ddlMedianIncome, 167);
+            //BindLookUP(ddlMedianIncome, 167);
             BindLookUP(ddlHomeAff, 109);
         }
 
@@ -232,8 +237,8 @@ namespace vhcbcloud.Housing
             dvUnitOccupancy.Visible = true;
             BindUnitOccupancyGrid();
 
-            dvMedianIncome.Visible = true;
-            BindMedianIncomeGrid();
+            //dvMedianIncome.Visible = true;
+            //BindMedianIncomeGrid();
         }
 
         private void PopulateHomeForm()
@@ -244,13 +249,15 @@ namespace vhcbcloud.Housing
                 btnSubmitHomeForm.Text = "Update";
                 hfProjectFederalDetailId.Value = dr["ProjectFederalDetailId"].ToString();
 
-                txtRecreationMonth.Text = dr["Recert"].ToString() == "0" ? "" : dr["Recert"].ToString();
-                chkCopyOwner.Checked = DataUtils.GetBool(dr["Copyowner"].ToString());
+                //txtRecreationMonth.Text = dr["Recert"].ToString() == "0" ? "" : dr["Recert"].ToString();
+                PopulateDropDown(ddlRecreationMonth, dr["Recert"].ToString());
+                //chkCopyOwner.Checked = DataUtils.GetBool(dr["Copyowner"].ToString());
                 PopulateDropDown(ddlAffPeriod, dr["LKAffrdPer"].ToString());
                 txtAffrdStartDate.Text = dr["AffrdStart"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdStart"].ToString()).ToShortDateString();
                 txtAffrdEndDate.Text= dr["AffrdEnd"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdEnd"].ToString()).ToShortDateString();
                 chkCHDO.Checked = DataUtils.GetBool(dr["CHDO"].ToString());
-                txtCHDORecert.Text = dr["CHDORecert"].ToString() == "0" ? "" : dr["CHDORecert"].ToString();
+                //txtCHDORecert.Text = dr["CHDORecert"].ToString() == "0" ? "" : dr["CHDORecert"].ToString();
+                PopulateDropDown(ddlCHRDoRecert, dr["CHDORecert"].ToString());
 
                 txtFreq.Text = dr["freq"].ToString() == "0" ? "" : dr["freq"].ToString();
                 txtLastInspect.Text = dr["LastInspect"].ToString() == "" ? "" : Convert.ToDateTime(dr["LastInspect"].ToString()).ToShortDateString();
@@ -287,12 +294,14 @@ namespace vhcbcloud.Housing
 
         private void ClearHomeForm()
         {
-            txtRecreationMonth.Text = "";
-            chkCopyOwner.Checked = false;
+            //txtRecreationMonth.Text = "";
+            ddlRecreationMonth.SelectedIndex = -1;
+            //chkCopyOwner.Checked = false;
             ddlAffPeriod.SelectedIndex = -1;
             txtAffrdStartDate.Text = "";
             chkCHDO.Checked = false;
-            txtCHDORecert.Text = "";
+            //txtCHDORecert.Text = "";
+            ddlCHRDoRecert.SelectedIndex = -1;
 
             txtFreq.Text = "";
             txtLastInspect.Text = "";
@@ -360,7 +369,7 @@ namespace vhcbcloud.Housing
             dvNewHomeAff.Visible = false;
             dvRentalAffordability.Visible = false;
             dvUnitOccupancy.Visible = false;
-            dvMedianIncome.Visible = false;
+            //dvMedianIncome.Visible = false;
 
             try
             {
@@ -389,37 +398,54 @@ namespace vhcbcloud.Housing
         {
             try
             {
-                if (btnSubmitHomeForm.Text.ToLower() == "submit")
+                if (IsHOMEFormValid())
                 {
-                    HousingFederalProgramsData.AddProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalID.Value), chkCopyOwner.Checked, DataUtils.GetInt(txtRecreationMonth.Text),
-                        DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
-                        DataUtils.GetInt(txtCHDORecert.Text), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
-                        DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
-                        DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
-                        DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
-                    ClearHomeForm();
-                    PopulateHomeForm();
-                    LogMessage("Project home details added successfully");
-                    btnSubmitHomeForm.Text = "Update";
-                }
-                else
-                {
-                    HousingFederalProgramsData.UpdateProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalDetailId.Value), chkCopyOwner.Checked, DataUtils.GetInt(txtRecreationMonth.Text),
-                        DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
-                        DataUtils.GetInt(txtCHDORecert.Text), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
-                        DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
-                        DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
-                        DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
+                    if (btnSubmitHomeForm.Text.ToLower() == "submit")
+                    {
+                        HousingFederalProgramsData.AddProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                            DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
+                            DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
+                            DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
+                            DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
+                        ClearHomeForm();
+                        PopulateHomeForm();
+                        LogMessage("Project home details added successfully");
+                        btnSubmitHomeForm.Text = "Update";
+                    }
+                    else
+                    {
+                        HousingFederalProgramsData.UpdateProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalDetailId.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                            DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text), DataUtils.GetDate(txtLastInspect.Text), txtNextInspect.Text,
+                            DataUtils.GetInt(ddlStaff.SelectedValue.ToString()), DataUtils.GetDate(txtInspectDate.Text), DataUtils.GetDate(txtInspectLetter.Text),
+                            DataUtils.GetDate(txtRespDate.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
+                            DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetDate(txtCloseDate.Text));
 
-                    ClearHomeForm();
-                    PopulateHomeForm();
-                    LogMessage("Project home details updated successfully");
+                        ClearHomeForm();
+                        PopulateHomeForm();
+                        LogMessage("Project home details updated successfully");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogError(Pagename, "BindLookUP", "", ex.Message);
             }
+        }
+
+        private bool IsHOMEFormValid()
+        {
+            if(chkCHDO.Checked)
+            {
+                if (ddlCHRDoRecert.Items.Count > 1 && ddlCHRDoRecert.SelectedIndex == 0)
+                {
+                    LogMessage("Select CHDO Recertification Month");
+                    ddlCHRDoRecert.Focus();
+                    return false;
+                }
+            }
+            return true;
         }
 
         protected void btnAddRentalAffordability_Click(object sender, EventArgs e)
@@ -530,11 +556,11 @@ namespace vhcbcloud.Housing
                 dvUnitOccupanyWarning.Visible = false;
                 lblErrorMsg.Text = "";
             }
-            if (hfMedianIncomeWarning.Value != "1")
-            {
-                dvMedianIncomeWarning.Visible = false;
-                lblErrorMsg.Text = "";
-            }
+            //if (hfMedianIncomeWarning.Value != "1")
+            //{
+            //    dvMedianIncomeWarning.Visible = false;
+            //    lblErrorMsg.Text = "";
+            //}
             if (hfHomeAffWarning.Value != "1")
             {
                 dvHomeAffWarning.Visible = false;
@@ -712,135 +738,135 @@ namespace vhcbcloud.Housing
             BindUnitOccupancyGrid();
         }
 
-        protected void btnAddMedianIncome_Click(object sender, EventArgs e)
-        {
-            if (ddlMedianIncome.SelectedIndex == 0)
-            {
-                LogMessage("Select Median Income");
-                ddlMedianIncome.Focus();
-                return;
-            }
+        //protected void btnAddMedianIncome_Click(object sender, EventArgs e)
+        //{
+        //    if (ddlMedianIncome.SelectedIndex == 0)
+        //    {
+        //        LogMessage("Select Median Income");
+        //        ddlMedianIncome.Focus();
+        //        return;
+        //    }
 
-            if (string.IsNullOrWhiteSpace(txtMedianIncomeUnits.Text.ToString()) == true)
-            {
-                LogMessage("Enter Medain Income Number of Units");
-                txtMedianIncomeUnits.Focus();
-                return;
-            }
-            if (DataUtils.GetDecimal(txtMedianIncomeUnits.Text) <= 0)
-            {
-                LogMessage("Enter Valid median Income Number of Units");
-                txtMedianIncomeUnits.Focus();
-                return;
-            }
+        //    if (string.IsNullOrWhiteSpace(txtMedianIncomeUnits.Text.ToString()) == true)
+        //    {
+        //        LogMessage("Enter Medain Income Number of Units");
+        //        txtMedianIncomeUnits.Focus();
+        //        return;
+        //    }
+        //    if (DataUtils.GetDecimal(txtMedianIncomeUnits.Text) <= 0)
+        //    {
+        //        LogMessage("Enter Valid median Income Number of Units");
+        //        txtMedianIncomeUnits.Focus();
+        //        return;
+        //    }
 
-            HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddFederalMedIncome(DataUtils.GetInt(hfProjectFederalID.Value),
-                DataUtils.GetInt(ddlMedianIncome.SelectedValue.ToString()), DataUtils.GetInt(txtMedianIncomeUnits.Text));
+        //    HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddFederalMedIncome(DataUtils.GetInt(hfProjectFederalID.Value),
+        //        DataUtils.GetInt(ddlMedianIncome.SelectedValue.ToString()), DataUtils.GetInt(txtMedianIncomeUnits.Text));
 
-            ddlMedianIncome.SelectedIndex = -1;
-            txtMedianIncomeUnits.Text = "";
-            cbAddMedianIncome.Checked = false;
+        //    ddlMedianIncome.SelectedIndex = -1;
+        //    txtMedianIncomeUnits.Text = "";
+        //    cbAddMedianIncome.Checked = false;
 
-            BindMedianIncomeGrid();
+        //    BindMedianIncomeGrid();
 
-            if (objHousingFederalProgramsResult.IsDuplicate && !objHousingFederalProgramsResult.IsActive)
-                LogMessage("Medain Income already exist as in-active");
-            else if (objHousingFederalProgramsResult.IsDuplicate)
-                LogMessage("Medain Income already exist");
-            else
-                LogMessage("New Medain Income added successfully");
-        }
+        //    if (objHousingFederalProgramsResult.IsDuplicate && !objHousingFederalProgramsResult.IsActive)
+        //        LogMessage("Medain Income already exist as in-active");
+        //    else if (objHousingFederalProgramsResult.IsDuplicate)
+        //        LogMessage("Medain Income already exist");
+        //    else
+        //        LogMessage("New Medain Income added successfully");
+        //}
 
-        private void BindMedianIncomeGrid()
-        {
-            try
-            {
-                DataTable dt = HousingFederalProgramsData.GetFederalMedIncomeList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
+        //private void BindMedianIncomeGrid()
+        //{
+        //    try
+        //    {
+        //        DataTable dt = HousingFederalProgramsData.GetFederalMedIncomeList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
 
-                if (dt.Rows.Count > 0)
-                {
-                    dvMedianIncomeGrid.Visible = true;
-                    gvMedianIncome.DataSource = dt;
-                    gvMedianIncome.DataBind();
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            dvMedianIncomeGrid.Visible = true;
+        //            gvMedianIncome.DataSource = dt;
+        //            gvMedianIncome.DataBind();
 
-                    Label lblFooterTotalUnits = (Label)gvMedianIncome.FooterRow.FindControl("lblFooterTotalUnits");
-                    int totUnitTypeUnits = 0;
+        //            Label lblFooterTotalUnits = (Label)gvMedianIncome.FooterRow.FindControl("lblFooterTotalUnits");
+        //            int totUnitTypeUnits = 0;
 
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
-                            totUnitTypeUnits += DataUtils.GetInt(dt.Rows[i]["NumUnits"].ToString());
-                    }
+        //            for (int i = 0; i < dt.Rows.Count; i++)
+        //            {
+        //                if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+        //                    totUnitTypeUnits += DataUtils.GetInt(dt.Rows[i]["NumUnits"].ToString());
+        //            }
 
-                    lblFooterTotalUnits.Text = totUnitTypeUnits.ToString();
+        //            lblFooterTotalUnits.Text = totUnitTypeUnits.ToString();
 
-                    int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
+        //            int TotalUnits = DataUtils.GetInt(hfTotalProgramUnits.Value);
 
-                    hfMedianIncomeWarning.Value = "0";
-                    if (TotalUnits - totUnitTypeUnits != 0)
-                    {
-                        hfMedianIncomeWarning.Value = "1";
-                        WarningMessage(dvMedianIncomeWarning, lblMedianIncomeWarning,
-                            "The Median Income Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
-                    }
-                    else
-                    {
-                        dvMedianIncomeWarning.Visible = false;
-                        lblMedianIncomeWarning.Text = "";
-                    }
-                }
-                else
-                {
-                    dvMedianIncomeGrid.Visible = false;
-                    gvMedianIncome.DataSource = null;
-                    gvMedianIncome.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindMedianIncomeGrid", "", ex.Message);
-            }
-        }
+        //            hfMedianIncomeWarning.Value = "0";
+        //            if (TotalUnits - totUnitTypeUnits != 0)
+        //            {
+        //                hfMedianIncomeWarning.Value = "1";
+        //                WarningMessage(dvMedianIncomeWarning, lblMedianIncomeWarning,
+        //                    "The Median Income Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+        //            }
+        //            else
+        //            {
+        //                dvMedianIncomeWarning.Visible = false;
+        //                lblMedianIncomeWarning.Text = "";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            dvMedianIncomeGrid.Visible = false;
+        //            gvMedianIncome.DataSource = null;
+        //            gvMedianIncome.DataBind();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindMedianIncomeGrid", "", ex.Message);
+        //    }
+        //}
 
-        protected void gvMedianIncome_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvMedianIncome.EditIndex = e.NewEditIndex;
-            BindMedianIncomeGrid();
-        }
+        //protected void gvMedianIncome_RowEditing(object sender, GridViewEditEventArgs e)
+        //{
+        //    gvMedianIncome.EditIndex = e.NewEditIndex;
+        //    BindMedianIncomeGrid();
+        //}
 
-        protected void gvMedianIncome_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvMedianIncome.EditIndex = -1;
-            BindMedianIncomeGrid();
-        }
+        //protected void gvMedianIncome_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        //{
+        //    gvMedianIncome.EditIndex = -1;
+        //    BindMedianIncomeGrid();
+        //}
 
-        protected void gvMedianIncome_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            string strUnits = ((TextBox)gvMedianIncome.Rows[rowIndex].FindControl("txtUnits")).Text;
+        //protected void gvMedianIncome_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
+        //    string strUnits = ((TextBox)gvMedianIncome.Rows[rowIndex].FindControl("txtUnits")).Text;
 
-            if (string.IsNullOrWhiteSpace(strUnits) == true)
-            {
-                LogMessage("Enter Number of Units");
-                return;
-            }
-            if (DataUtils.GetDecimal(strUnits) <= 0)
-            {
-                LogMessage("Enter valid Number of Units");
-                return;
-            }
+        //    if (string.IsNullOrWhiteSpace(strUnits) == true)
+        //    {
+        //        LogMessage("Enter Number of Units");
+        //        return;
+        //    }
+        //    if (DataUtils.GetDecimal(strUnits) <= 0)
+        //    {
+        //        LogMessage("Enter valid Number of Units");
+        //        return;
+        //    }
 
-            int FederalMedIncomeID = DataUtils.GetInt(((Label)gvMedianIncome.Rows[rowIndex].FindControl("lblFederalMedIncomeID")).Text);
-            int Units = DataUtils.GetInt(strUnits);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMedianIncome.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+        //    int FederalMedIncomeID = DataUtils.GetInt(((Label)gvMedianIncome.Rows[rowIndex].FindControl("lblFederalMedIncomeID")).Text);
+        //    int Units = DataUtils.GetInt(strUnits);
+        //    bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMedianIncome.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            HousingFederalProgramsData.UpdateFederalMedIncome(FederalMedIncomeID, Units, RowIsActive);
-            gvMedianIncome.EditIndex = -1;
+        //    HousingFederalProgramsData.UpdateFederalMedIncome(FederalMedIncomeID, Units, RowIsActive);
+        //    gvMedianIncome.EditIndex = -1;
 
-            LogMessage("Median Income updated successfully");
+        //    LogMessage("Median Income updated successfully");
 
-            BindMedianIncomeGrid();
-        }
+        //    BindMedianIncomeGrid();
+        //}
 
         protected void btnAddHomeAff_Click(object sender, EventArgs e)
         {

@@ -362,7 +362,7 @@
                                                 <asp:TextBox ID="txtDescription" runat="Server" CssClass="clsApplicantBlue" Text='<%# Eval("Description") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="DefName">
+                                        <asp:TemplateField HeaderText="Default Name">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDefName" runat="Server" Text='<%# Eval("DefName") %>' />
                                             </ItemTemplate>

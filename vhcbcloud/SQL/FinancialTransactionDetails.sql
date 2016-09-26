@@ -2576,3 +2576,14 @@ Begin
 		order by p.Proj_num
 End
 go
+
+
+alter procedure DeleteTransactionDetail
+(
+	@detailId int
+)
+as
+Begin
+	Delete from Detail where DetailID = @detailId
+End
+go

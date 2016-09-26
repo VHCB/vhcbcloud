@@ -81,8 +81,42 @@ namespace vhcbcloud.Housing
         private void BindControls()
         {
             BindAddresses();
-            BindLookUP(ddlOwner, 117);
-            BindLookUP(ddlLender, 56);
+            PopulateHomeOwnerDropDown(ddlOwner, "Owner");
+            PopulateHomeOwnerDropDown(ddlLender, "Lender");
+            //BindLookUP(ddlOwner, 117);
+            //BindLookUP(ddlLender, 56);
+        }
+
+        private void PopulateHomeOwnerDropDown(DropDownList ddList, string Role)
+        {
+            try
+            {
+                DataTable dtProjectEntity = ProjectMaintenanceData.GetProjectApplicantList(DataUtils.GetInt(hfProjectId.Value), true);
+                ddList.Items.Clear();
+                ddList.DataSource = dtProjectEntity;
+                ddList.DataValueField = "ApplicantId";
+                ddList.DataTextField = "applicantname";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+
+                foreach(DataRow dr in dtProjectEntity.Rows)
+                {
+                    if (dr["ApplicantRoleDescription"].ToString().ToLower() == Role.ToLower())
+                    {
+                        ListItem selectedListItem = ddList.Items.FindByValue(dr["ApplicantId"].ToString());
+                        if (selectedListItem != null)
+                        {
+                            selectedListItem.Selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "PopulateOwnerDropDown", "", ex.Message);
+            }
+
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)

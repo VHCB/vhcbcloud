@@ -721,14 +721,14 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
-                if (lblDetId.ToString() != "")
+                Label lblDetailId = (Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId");
+                if (lblDetailId != null)
                 {
-                    FinancialTransactions.InactivateFinancialDetailByDetailId(Convert.ToInt32(lblDetId));
+                    FinancialTransactions.DeleteTransactionDetail(Convert.ToInt32(lblDetailId.Text));
 
                     BindFundDetails(GetTransId());
 
-                    lblErrorMsg.Text = "Transaction detail was successfully inactavited";
+                    lblErrorMsg.Text = "Transaction detail was successfully deleted";
                     CommonHelper.EnableButton(btnCommitmentSubmit);
                 }
             }

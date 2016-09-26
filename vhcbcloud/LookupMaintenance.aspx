@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="LookupMaintenance.aspx.cs" Inherits="vhcbcloud.LookupMaintenance" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" 
+    CodeBehind="LookupMaintenance.aspx.cs" Inherits="vhcbcloud.LookupMaintenance" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
@@ -6,13 +7,25 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 80px"><span class="labelClass">View name :</span></td>
+                            <td style="width: 233px">
+                                <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" 
+                                    OnSelectedIndexChanged="ddlLkLookupViewname_SelectedIndexChanged" AutoPostBack="true" Style="margin-left: 0">
+                                </asp:DropDownList></td>
+                            <td style="width: 120px"><span class="labelClass">New description :</span></td>
+                            <td style="width: 150px">
+                                <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
+                            <td style="text-align: right">
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" 
+                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                            </td>
+                        </tr>
+                    </table>
                     <p>
-                        <span class="labelClass">View name :</span>
-                        <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server" OnSelectedIndexChanged="ddlLkLookupViewname_SelectedIndexChanged" AutoPostBack="true">
-                        </asp:DropDownList>
-                        &nbsp;<span class="labelClass">New description :</span>
-                        <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox>
                         <%--&nbsp;<asp:ImageButton ID="imgSearch" runat="server" Height="25px" ImageUrl="~/Images/image004.png" Width="25px" OnClick="imgSearch_Click" />--%>
+
                         <br />
                         <asp:GridView ID="gvLkDescription" runat="server" AutoGenerateColumns="False"
                             Width="90%" CssClass="gridView"

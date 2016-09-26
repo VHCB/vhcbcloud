@@ -322,7 +322,7 @@ namespace vhcbcloud
             {
                 DataTable dtProjectNames = ProjectMaintenanceData.GetProjectNames(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
 
-                if (dtProjectNames.Rows.Count > 1)
+                if (dtProjectNames.Rows.Count > 0)
                 {
                     dvProjectNamesGrid.Visible = true;
                     gvProjectNames.DataSource = dtProjectNames;

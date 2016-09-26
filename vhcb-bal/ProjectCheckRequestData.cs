@@ -707,7 +707,7 @@ namespace VHCBCommon.DataAccessLayer
                     }
 
                     PCRDetails pcr = new PCRDetails();
-                    pcr.ProjectCheckReqID = PRCID; 
+                    pcr.ProjectCheckReqID = PRCID;
                     pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
 
                     return dtPCRDet;
@@ -850,7 +850,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "PCR_Delete";
 
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
-               
+
                 using (connection)
                 {
                     connection.Open();

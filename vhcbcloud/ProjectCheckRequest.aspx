@@ -349,7 +349,7 @@
                                         <asp:GridView ID="gvPTransDetails" runat="server" AutoGenerateColumns="False"
                                             Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                             GridLines="None" EnableTheming="True" AllowPaging="false"
-                                            ShowFooter="True" OnRowCancelingEdit="gvPTransDetails_RowCancelingEdit" OnRowDataBound="gvPTransDetails_RowDataBound" OnRowEditing="gvPTransDetails_RowEditing" OnRowUpdating="gvPTransDetails_RowUpdating">
+                                            ShowFooter="True" OnRowCancelingEdit="gvPTransDetails_RowCancelingEdit" OnRowDataBound="gvPTransDetails_RowDataBound" OnRowEditing="gvPTransDetails_RowEditing" OnRowUpdating="gvPTransDetails_RowUpdating" OnRowDeleting="gvPTransDetails_RowDeleting">
                                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                             <HeaderStyle CssClass="headerStyle" />
@@ -359,7 +359,7 @@
                                             <Columns>
                                                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
                                                     <ItemTemplate>
-                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("detailid")%>' />
+                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("detailid")%>' />                                                        
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
@@ -421,6 +421,11 @@
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:CommandField ShowEditButton="True" />
+                                                <asp:TemplateField ShowHeader="False">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete?');"></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                             </Columns>
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>

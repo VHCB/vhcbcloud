@@ -2330,5 +2330,32 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void DeleteTransactionDetail(int DetailId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteTransactionDetail";
+                command.Parameters.Add(new SqlParameter("detailId", DetailId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 }
