@@ -160,7 +160,8 @@
                                 <asp:Panel runat="server" ID="Panel9" Width="100%" Height="500px" ScrollBars="Vertical">
                                     <asp:GridView ID="gvSearchresults" runat="server" AutoGenerateColumns="False"
                                         Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand"
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand" 
+                                        OnRowDataBound="gvSearchresults_RowDataBound"
                                         OnSorting="gvSearchresults_Sorting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -188,7 +189,7 @@
                                                     <asp:Label ID="lblProgramName" runat="Server" Text='<%# Eval("programname") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Applicant Name" SortExpression="Applicantname">
+                                            <asp:TemplateField HeaderText="" SortExpression="Applicantname">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblApplicantname" runat="Server" Text='<%# Eval("Applicantname") %>' />
                                                 </ItemTemplate>

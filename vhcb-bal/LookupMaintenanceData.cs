@@ -164,7 +164,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtlkVname;
         }
 
-        public static DataTable GetLkLookupDetails(int recordId)
+        public static DataTable GetLkLookupDetails(int recordId, bool IsActiveOnly)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -174,6 +174,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetLkLookupDetails";
                 command.Parameters.Add(new SqlParameter("recordId", recordId));
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
                 using (connection)
                 {
                     connection.Open();

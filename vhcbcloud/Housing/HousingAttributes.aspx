@@ -144,10 +144,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Consolidated Plan Priorities</h3>
+                                        <h3 class="panel-title">Interagency Priorities</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddInterAgency" runat="server" Text="Add New InterAgency Priorities (Unit Characteristics)" />
+                                        <asp:CheckBox ID="cbAddInterAgency" runat="server" Text="Add New Interagency Priorities" />
                                     </td>
                                 </tr>
                             </table>

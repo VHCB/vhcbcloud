@@ -25,6 +25,10 @@ namespace vhcbcloud
                 BindControls();
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
             }
+            if (cbPrimaryApplicant.Checked)
+                gvSearchresults.Columns[4].HeaderText = "Applicant Name";
+            else
+                gvSearchresults.Columns[4].HeaderText = "Entity Name";
         }
 
         private void BindControls()
@@ -58,7 +62,7 @@ namespace vhcbcloud
             try
             {
                 ddlPrimaryApplicant.Items.Clear();
-                
+
                 if (cbPrimaryApplicant.Checked)
                     ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetPrimaryApplicants");
                 else
@@ -125,7 +129,7 @@ namespace vhcbcloud
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
-        
+
         protected void gvSearchresults_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "SelectProject")
@@ -237,6 +241,22 @@ namespace vhcbcloud
             ddlTown.SelectedIndex = -1;
             ddlCounty.SelectedIndex = -1;
             ddlProjectType.SelectedIndex = -1;
+        }
+
+        protected void gvSearchresults_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Header)
+            {
+                if (cbPrimaryApplicant.Checked)
+                    //    e.Row.Cells[4].Text = "Entity Name";
+                    //else
+                    //    e.Row.Cells[4].Text = "Applicant Name";
+
+                    gvSearchresults.Columns[4].HeaderText = "Applicant Name";
+                else
+                    gvSearchresults.Columns[4].HeaderText = "Entity Name";
+
+            }
         }
     }
 }

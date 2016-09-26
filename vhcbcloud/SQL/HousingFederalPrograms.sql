@@ -135,7 +135,7 @@ go
 create procedure dbo.AddProjectHOMEDetail
 (
 	@ProjectFederalId	int, 
-	@Copyowner			bit, 
+	--@Copyowner			bit, 
 	@Recert				int, 
 	@LKAffrdPer			int, 
 	@AffrdStart			DateTime, 
@@ -159,10 +159,10 @@ begin transaction
 
 	begin try
 
-	insert into ProjectHOMEDetail(ProjectFederalId, Copyowner, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
+	insert into ProjectHOMEDetail(ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
 		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, IDISNum, Setup, CompleteBy, FundedDate, 
 		IDISClose)
-	values(@ProjectFederalId, @Copyowner, @Recert, @LKAffrdPer, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
+	values(@ProjectFederalId, @Recert, @LKAffrdPer, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
 		@freq, @LastInspect, @NextInspect, @Staff, @InspectDate, @InspectLetter, @RespDate, @IDISNum, @Setup, @CompleteBy, @FundedDate, 
 		@IDISClose)
 
@@ -187,7 +187,7 @@ go
 create procedure dbo.UpdateProjectHOMEDetail
 (
 	@ProjectFederalDetailID	int,
-	@Copyowner			bit, 
+	--@Copyowner			bit, 
 	@Recert				int, 
 	@LKAffrdPer			int, 
 	@AffrdStart			DateTime, 
@@ -211,7 +211,7 @@ begin transaction
 
 	begin try
 
-	update ProjectHOMEDetail set Copyowner = @Copyowner, Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdStart = @AffrdStart, 
+	update ProjectHOMEDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdStart = @AffrdStart, 
 		AffrdEnd = @AffrdEnd, CHDO = @CHDO, CHDORecert = @CHDORecert, 
 		freq = @freq, LastInspect = @LastInspect, NextInspect = @NextInspect, Staff = @Staff, InspectDate = @InspectDate, InspectLetter = @InspectLetter, 
 		RespDate = @RespDate, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, IDISClose = @IDISClose, 
@@ -245,7 +245,7 @@ begin transaction
 
 	begin try
 
-	select ProjectFederalDetailId, ProjectFederalId, Copyowner, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
+	select ProjectFederalDetailId, ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
 		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, 
 		IDISNum, Setup, CompleteBy, FundedDate, IDISClose 
 	from ProjectHOMEDetail(nolock)

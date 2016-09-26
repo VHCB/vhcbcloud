@@ -497,41 +497,6 @@ namespace VHCBCommon.DataAccessLayer
             return dtTranDetails;
         }
 
-        public static DataTable GetExistingPCRByProjId(string ProjId)
-        {
-            DataTable dtTranDetails = null;
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
-            try
-            {
-                SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("projId", Convert.ToInt32(ProjId)));
-                command.CommandText = "GetExistingPCRByProjId";
-                using (connection)
-                {
-                    connection.Open();
-                    command.Connection = connection;
-
-                    var ds = new DataSet();
-                    var da = new SqlDataAdapter(command);
-                    da.Fill(ds);
-                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
-                    {
-                        dtTranDetails = ds.Tables[0];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return dtTranDetails;
-        }
-
         public static DataTable GetPCRQuestions(string ProjectCheckReqId)
         {
             DataTable dtTranDetails = null;
@@ -664,11 +629,10 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable UpdatePCR(int PRCID, int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
+        public static PCRDetails UpdatePCR(int PRCID, int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
            bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
-            DataTable dtPCRDet = null;
             try
             {
                 object returnMsg = "";
@@ -698,19 +662,13 @@ namespace VHCBCommon.DataAccessLayer
                 {
                     connection.Open();
                     command.Connection = connection;
-                    var ds = new DataSet();
-                    var da = new SqlDataAdapter(command);
-                    da.Fill(ds);
-                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
-                    {
-                        dtPCRDet = ds.Tables[0];
-                    }
+                    command.ExecuteNonQuery();
 
                     PCRDetails pcr = new PCRDetails();
-                    pcr.ProjectCheckReqID = PRCID; 
+                    pcr.ProjectCheckReqID = PRCID;
                     pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
 
-                    return dtPCRDet;
+                    return pcr;
                 }
             }
             catch (Exception ex)
@@ -838,36 +796,6 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
-
-        public static void PCR_Delete(int ProjectCheckReqID)
-        {
-            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
-            try
-            {
-                object returnMsg = "";
-                SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "PCR_Delete";
-
-                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
-               
-                using (connection)
-                {
-                    connection.Open();
-                    command.Connection = connection;
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
-
 
         public static decimal GetPCRDisbursemetDetailTotal(int ProjectCheckReqID)
         {

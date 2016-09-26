@@ -152,7 +152,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void AddProjectHOMEDetail(int ProjectFederalId, bool Copyowner, int Recert, int LKAffrdPer,
+        public static void AddProjectHOMEDetail(int ProjectFederalId, int Recert, int LKAffrdPer,
             DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, DateTime LastInspect, string NextInspect,
             int Staff, DateTime InspectDate, DateTime InspectLetter, DateTime RespDate, string IDISNum, DateTime Setup, int CompleteBy,
             DateTime FundedDate, DateTime IDISClose)
@@ -170,7 +170,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "AddProjectHOMEDetail";
 
                         command.Parameters.Add(new SqlParameter("ProjectFederalId", ProjectFederalId));
-                        command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
+                        //command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
@@ -202,7 +202,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateProjectHOMEDetail(int ProjectFederalDetailID, bool Copyowner, int Recert, int LKAffrdPer,
+        public static void UpdateProjectHOMEDetail(int ProjectFederalDetailID, int Recert, int LKAffrdPer,
            DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, DateTime LastInspect, string NextInspect,
            int Staff, DateTime InspectDate, DateTime InspectLetter, DateTime RespDate, string IDISNum, DateTime Setup, int CompleteBy,
            DateTime FundedDate, DateTime IDISClose)
@@ -220,7 +220,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "UpdateProjectHOMEDetail";
 
                         command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
-                        command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
+                       // command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
