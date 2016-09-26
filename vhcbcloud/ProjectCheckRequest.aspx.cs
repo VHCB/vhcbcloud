@@ -33,15 +33,8 @@ namespace vhcbcloud
                 BindStatus();
                 BindMatchingGrant();
                 BindNODData();
-                BindPCRQuestions(false);
-                BindPCRData();
+                BindPCRQuestions(false);               
 
-                //BindFundTypeCommitments();
-                //BindTransDate();
-                //BindApplicantName();
-                //BindPayee();
-                //BindTransType();
-                //BindStateVHCBS();
                 pnlFund.Visible = false;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
@@ -92,14 +85,28 @@ namespace vhcbcloud
         {
             try
             {
-                dtProjects = new DataTable();
-                dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
-                ddlProjFilter.Items.Clear();
-                ddlProjFilter.DataSource = dtProjects;
-                ddlProjFilter.DataValueField = "project_id_name";
-                ddlProjFilter.DataTextField = "Proj_num";
-                ddlProjFilter.DataBind();
-                ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+                if (rdBtnSelect.SelectedIndex == 0)
+                {
+                    dtProjects = new DataTable();
+                    dtProjects = ProjectCheckRequestData.GetData("getCommittedProjectslist");
+                    ddlProjFilter.Items.Clear();
+                    ddlProjFilter.DataSource = dtProjects;
+                    ddlProjFilter.DataValueField = "project_id_name";
+                    ddlProjFilter.DataTextField = "Proj_num";
+                    ddlProjFilter.DataBind();
+                    ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+                else
+                {
+                    dtProjects = new DataTable();
+                    dtProjects = ProjectCheckRequestData.GetData("getCommittedFinalProjectslistPCR");
+                    ddlProjFilter.Items.Clear();
+                    ddlProjFilter.DataSource = dtProjects;
+                    ddlProjFilter.DataValueField = "project_id_name";
+                    ddlProjFilter.DataTextField = "Proj_num";
+                    ddlProjFilter.DataBind();
+                    ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
+                }
             }
             catch (Exception ex)
             {
@@ -143,6 +150,7 @@ namespace vhcbcloud
 
                 BindPayee(ProjectId);
                 BindProgram(ProjectId);
+                BindStatus();
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
                 CommonHelper.PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
                 if (ddlProgram.Items.Count > 1)
@@ -299,7 +307,7 @@ namespace vhcbcloud
 
                 gvPTransDetails.DataSource = dtPCRTranDetails;
                 gvPTransDetails.DataBind();
-
+                hfBalAmt.Value = "0";
                 decimal tranAmount = 0;
                 decimal totFundAmt = 0;
                 decimal totBalAmt = 0;
@@ -454,17 +462,21 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message;
             }
         }
+
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 ClearPCRForm();
+                ClearPCRDetails();
+                
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnSubmit);
                 GetPCRSelectedRecord(gvFund);
                 BindPCRTransDetails();
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
+
                 pnlFund.Visible = true;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
@@ -495,7 +507,7 @@ namespace vhcbcloud
 
                 hfProjId.Value = tokens[0].ToString();
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
-              
+
                 BindFundTypeCommitments(int.Parse(tokens[0]));
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
 
@@ -518,7 +530,7 @@ namespace vhcbcloud
                         DisableButton(btnCRSubmit);
                         BindPCRTransDetails();
                         BindPCRQuestionsForApproval();
-                        ddlPCRQuestions.SelectedIndex = -1;                       
+                        ddlPCRQuestions.SelectedIndex = -1;
                         BindPCRData(int.Parse(tokens[0]));
 
                         //fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
@@ -542,6 +554,7 @@ namespace vhcbcloud
             ddlFundTypeCommitments.SelectedIndex = 0;
             ddlTransType.SelectedIndex = 0;
             txtTransDetailAmt.Text = "";
+            lblAvailFund.Text = "";
         }
 
         public static void DisableButton(Button btn)
@@ -864,7 +877,7 @@ namespace vhcbcloud
                 this.hfPCRId.Value = pcr.ProjectCheckReqID.ToString();
                 this.hfTransAmt.Value = txtDisbursementAmt.Text;
 
-                BindPCRData();
+                BindPCRData(int.Parse(ProjectTokens[0]));
                 DisablePCR();
                 //ClearPCRForm();
                 //ClearPCRDetails();
@@ -1023,7 +1036,7 @@ namespace vhcbcloud
         protected void gvPCRData_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvPCRData.EditIndex = e.NewEditIndex;
-            BindPCRData();
+            BindPCRData(Convert.ToInt32(hfProjId.Value));
         }
 
         protected void gvPCRData_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -1037,7 +1050,7 @@ namespace vhcbcloud
             ClearPCRForm();
             ClearPCRDetails();
             gvPCRData.EditIndex = -1;
-            BindPCRData();
+            BindPCRData(Convert.ToInt32(hfProjId.Value));
         }
 
         #endregion
@@ -1102,7 +1115,7 @@ namespace vhcbcloud
         }
 
         private void ClearPCRForm()
-        {            
+        {
             ddlApplicantName.Items.Clear();
             ddlPayee.Items.Clear();
             ddlProgram.Items.Clear();
@@ -1115,7 +1128,7 @@ namespace vhcbcloud
             chkLegalReview.Checked = false;
 
             pnlFund.Visible = false;
-           
+
             if (txtEligibleAmt.Visible)
             {
                 txtEligibleAmt.Text = "";
@@ -1354,6 +1367,7 @@ namespace vhcbcloud
             pnlFund.Visible = false;
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
+            BindProjects();
             ClearPCRForm();
             ddlDate.Visible = false;
             txtTransDate.Visible = true;
@@ -1361,14 +1375,14 @@ namespace vhcbcloud
             DisplayControls("");
             if (ddlProjFilter.Items.Count > 0) ddlProjFilter.SelectedIndex = 0;
             if (rdBtnSelect.SelectedIndex == 0)
-            {                
+            {
                 EnablePCR();
                 EnableButton(btnCRSubmit);
                 btnCRSubmit.Visible = true;
                 btnCrUpdate.Visible = false;
             }
             else
-            {               
+            {
                 BindExistingPCR();
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
@@ -1865,6 +1879,7 @@ namespace vhcbcloud
                     btnCrUpdate.Visible = false;
                     ClearPCRForm();
                     DisablePCR();
+                    pnlFund.Visible = true;
                 }
                 else
                 {
