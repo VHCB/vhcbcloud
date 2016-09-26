@@ -256,7 +256,7 @@
                                         Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                         GridLines="None" EnableTheming="True" AllowPaging="false"
                                         AllowSorting="true" ShowFooter="True" OnRowCancelingEdit="gvBCommit_RowCancelingEdit"
-                                        OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound">
+                                        OnRowEditing="gvBCommit_RowEditing" OnRowUpdating="gvBCommit_RowUpdating" OnRowDataBound="gvBCommit_RowDataBound" OnRowDeleting="gvBCommit_RowDeleting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />
@@ -335,6 +335,11 @@
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:CommandField ShowEditButton="True" />
+                                             <asp:TemplateField ShowHeader="False">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete?');"></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                         </Columns>
                                         <FooterStyle CssClass="footerStyle" />
                                     </asp:GridView>

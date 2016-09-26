@@ -49,6 +49,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.GridView gvCurrentAwdStatus;
         
         /// <summary>
+        /// lblAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAmt;
+        
+        /// <summary>
+        /// lblBalance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblBalance;
+        
+        /// <summary>
         /// lblErrorMsg control.
         /// </summary>
         /// <remarks>

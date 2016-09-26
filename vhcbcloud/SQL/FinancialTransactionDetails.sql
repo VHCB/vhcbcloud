@@ -16,6 +16,24 @@ begin
 end
 go
 
+alter procedure getCommittedFinalProjectslistPCR  
+as
+begin
+
+	select distinct p.projectid, proj_num, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+	,round(sum(tr.TransAmt),2) as availFund
+	from project p(nolock)
+	join projectname pn(nolock) on p.projectid = pn.projectid
+	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	join trans tr on tr.projectid = p.projectid
+	where defname = 1 and tr.lkstatus = 261 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
+
+	and tr.RowIsActive=1 and pn.defname=1
+	group by p.projectid, proj_num
+	order by proj_num 
+end
+go
+
 alter procedure getCommittedProjectslistNoPendingTrans
 as
 begin
@@ -227,7 +245,7 @@ alter procedure [dbo].[GetFinancialFundDetailsByProjectId]
 )
 as
 Begin
-	--exec GetFinancialFundDetailsByProjectId 6578, 1
+	--exec GetFinancialFundDetailsByProjectId 6640, 0
 
 	
 
@@ -249,6 +267,259 @@ Begin
 		pendingamount money null ,
 		[Date] [date] NULL	
 		)
+		if exists (select 1 from ReallocateLink where FromProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		if exists (select 1 from ReallocateLink where ToProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		
+	if (@isReallocation=1)
+	Begin
+	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
+		select   p.projectid, 
+			det.FundId,
+			f.account, 
+			det.lktranstype, 
+	
+			ttv.description as FundType,
+			f.name,
+			p.proj_num, 
+			lv.Description as projectname, 
+			tr.ProjectCheckReqID,
+			f.abbrv,	
+			case
+				when tr.lkstatus = 262 then det.amount
+				end as CommitmentAmount, 
+			case 
+				when tr.lkstatus = 261 then 'Pending'
+				when tr.lkstatus = 262 then 'Final'
+				end as lkStatus,
+			case
+				when tr.lkstatus = 261 then det.amount
+				end as PendingAmount,
+				max(tr.date) as TransDate
+			from Project p 
+	join ProjectName pn on pn.ProjectID = p.ProjectId		
+	join LookupValues lv on lv.TypeID = pn.LkProjectname	
+	join Trans tr on tr.ProjectID = p.ProjectId
+	join Detail det on det.TransId = tr.TransId	
+	join fund f on f.FundId = det.FundId
+	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
+	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
+	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
+	order by p.Proj_num
+	end
+	else
+	Begin
+	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
+		select  p.projectid, 
+			det.FundId,
+			f.account, 
+			det.lktranstype, 
+						
+			ttv.description as FundType,
+			f.name,
+			p.proj_num, 
+			lv.Description as projectname, 
+			tr.ProjectCheckReqID,
+			f.abbrv,
+			case
+				when tr.lkstatus = 262 then sum(det.amount)
+				end as CommitmentAmount, 
+			--sum(det.Amount) as CommitmentAmount, 
+			case 
+				when tr.lkstatus = 261 then 'Pending'
+				when tr.lkstatus = 262 then 'Final'
+				end as lkStatus, 
+				case
+				when tr.lkstatus = 261 then sum(det.amount)
+				end as PendingAmount,
+				max(tr.date) as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId		
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
+		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
+		f.abbrv, tr.lkstatus, ttv.description, f.account
+		order by p.Proj_num
+	End
+
+		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, expendedamount,lkstatus, finaldisbursedamount, [Date])
+	
+		select  p.projectid, det.FundId, f.account, det.lktranstype, 
+			
+				ttv.description as FundType,
+				f.name,
+				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
+				 f.abbrv,
+				  case
+					when tr.lkstatus = 261 then sum(det.amount)
+				 end as pendingdisbursed,
+				 
+				 case 
+					when tr.lkstatus = 261 then 'Pending'
+					when tr.lkstatus = 262 then 'Final'
+				 end as lkStatus,
+				 case
+					when tr.lkstatus = 262 then sum(det.amount)
+				 end as finaldisbursed,
+				 max(tr.date) as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (236, 237) 
+		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1 and p.ProjectId = @projectid
+		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
+		f.abbrv, tr.lkstatus, ttv.description, f.account
+		order by p.Proj_num
+	
+	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
+				   sum(isnull( commitmentamount,0)) as commitmentamount,  sum(isnull(pendingamount, 0)) as pendingamount,
+				   sum( ISNULL( expendedamount,0)) as expendedamount, sum( ISNULL( finaldisbursedamount,0)) as finaldisbursedamount,
+					case when sum(isnull( commitmentamount,0) + isnull( pendingamount,0)) <= 0 then 0  
+						else
+							case when sum(isnull(pendingamount, 0)) > 0 then 
+								sum(isnull(commitmentamount,0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))
+							else
+								sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))) 
+							end
+					end as Oldbalance,
+					case when sum(isnull( commitmentamount,0) + isnull( pendingamount,0)) <= 0 then 0  
+						 else sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) -(ISNULL( expendedamount, 0) + isnull(finaldisbursedamount,0)))) 
+					end as balance,
+			   max(Date) as [date]
+	from @tempFundCommit
+	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
+
+
+		select distinct p.projectid, 
+				det.FundId, f.account,
+				det.lktranstype, 
+				
+				ttv.description as FundType,
+				case 
+					when tr.LkTransaction = 236 then 'Cash Disbursement'
+					when tr.LkTransaction = 237 then 'Cash Refund'
+					when tr.LkTransaction = 238 then 'Board Commitment'
+					when tr.LkTransaction = 239 then 'Board Decommitment'
+					when tr.LkTransaction = 240 then 'Board Reallocation'
+				end as 'Transaction',
+				f.name,
+				p.proj_num, 
+				lv.Description as projectname,				
+				tr.ProjectCheckReqID,
+				f.abbrv,
+				det.Amount as detail, 
+				case 
+					when tr.lkstatus = 261 then 'Pending'
+					when tr.lkstatus = 262 then 'Final'
+				 end as lkStatus, 			 
+				tr.date as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
+		order by p.Proj_num
+
+
+End
+
+go
+
+
+alter procedure [dbo].[GetAllFinancialFundDetailsByProjNum2]
+(
+        @proj_num varchar(50)
+)
+as
+begin
+                select distinct p.projectid, 
+                                det.FundId, f.account,
+                                det.lktranstype, 
+                                
+                                ttv.description as FundType,
+                                case 
+                                        when tr.LkTransaction = 236 then 'Cash Disbursement'
+                                        when tr.LkTransaction = 237 then 'Cash Refund'
+                                        when tr.LkTransaction = 238 then 'Board Commitment'
+                                        when tr.LkTransaction = 239 then 'Board Decommitment'
+                                        when tr.LkTransaction = 240 then 'Board Reallocation'
+                                end as 'Transaction',
+                                f.name,
+                                p.proj_num, 
+                                lv.Description as projectname,                          
+                                tr.ProjectCheckReqID,
+                                f.abbrv,
+                                det.Amount as detail, 
+                                case 
+                                        when tr.lkstatus = 261 then 'Pending'
+                                        when tr.lkstatus = 262 then 'Final'
+                                 end as lkStatus,                          
+                                tr.date as TransDate
+                                from Project p 
+                join ProjectName pn on pn.ProjectID = p.ProjectId               
+                join LookupValues lv on lv.TypeID = pn.LkProjectname    
+                join Trans tr on tr.ProjectID = p.ProjectId
+                join Detail det on det.TransId = tr.TransId     
+                join fund f on f.FundId = det.FundId
+                left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+                where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+                and tr.RowIsActive=1 and det.RowIsActive=1 and p.Proj_num = @proj_num
+                order by p.Proj_num
+end
+
+go
+
+
+alter procedure [dbo].[GetCommittedFundDetailsByFundId]
+(
+	@projectid int,
+	@fundId int
+)
+as
+Begin
+				declare @tempFundCommit table (
+		[projectid] [int] NULL,
+		[fundid] [int] NULL,
+		account nvarchar (10)null,
+		[lktranstype] [int] NULL,
+		[FundType] [nvarchar](50) NULL,
+		[FundName] nvarchar(35) null,
+		[Projnum] [nvarchar](12) NULL,
+		[ProjectName] [nvarchar](80) NULL,
+		[ProjectCheckReqID] [int] NULL,
+		[FundAbbrv] [nvarchar](25) NULL,
+		[commitmentamount] [money] NULL,
+		[lkstatus] varchar(20) null,
+		[expendedamount] [money] NULL default 0,
+		[finaldisbursedamount] [money] NULL default 0,
+		pendingamount money null ,
+		[Date] [date] NULL	
+		)
+		declare @isReallocation bit
 		if exists (select 1 from ReallocateLink where FromProjectId = @projectid) 
 		begin
 			set @isReallocation=1
@@ -382,53 +653,18 @@ Begin
 							end
 					end as balance,
 			   max(Date) as [date]
-	from @tempFundCommit
+	from @tempFundCommit where fundid = @fundid 
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
-
-
-		select distinct p.projectid, 
-				det.FundId, f.account,
-				det.lktranstype, 
-				
-				ttv.description as FundType,
-				case 
-					when tr.LkTransaction = 236 then 'Cash Disbursement'
-					when tr.LkTransaction = 237 then 'Cash Refund'
-					when tr.LkTransaction = 238 then 'Board Commitment'
-					when tr.LkTransaction = 239 then 'Board Decommitment'
-					when tr.LkTransaction = 240 then 'Board Reallocation'
-				end as 'Transaction',
-				f.name,
-				p.proj_num, 
-				lv.Description as projectname,				
-				tr.ProjectCheckReqID,
-				f.abbrv,
-				det.Amount as detail, 
-				case 
-					when tr.lkstatus = 261 then 'Pending'
-					when tr.lkstatus = 262 then 'Final'
-				 end as lkStatus, 			 
-				tr.date as TransDate
-				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId		
-		join LookupValues lv on lv.TypeID = pn.LkProjectname	
-		join Trans tr on tr.ProjectID = p.ProjectId
-		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId
-		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
-		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
-		order by p.Proj_num
-
 
 End
 
 go
 
-alter procedure [dbo].[GetCommittedFundDetailsByFundId]
+alter procedure [dbo].[GetCommittedFundDetailsByFundTransType]
 (
 	@projectid int,
-	@fundId int
+	@fundId int,
+	@transtype int
 )
 as
 Begin
@@ -446,6 +682,7 @@ Begin
 		[commitmentamount] [money] NULL,
 		[lkstatus] varchar(20) null,
 		[expendedamount] [money] NULL default 0,
+		[finaldisbursedamount] [money] NULL default 0,
 		pendingamount money null ,
 		[Date] [date] NULL	
 		)
@@ -473,7 +710,10 @@ Begin
 			p.proj_num, 
 			lv.Description as projectname, 
 			tr.ProjectCheckReqID,
-			f.abbrv,det.amount as CommitmentAmount, 
+			f.abbrv,	
+			case
+				when tr.lkstatus = 262 then det.amount
+				end as CommitmentAmount, 
 			case 
 				when tr.lkstatus = 261 then 'Pending'
 				when tr.lkstatus = 262 then 'Final'
@@ -534,169 +774,26 @@ Begin
 		order by p.Proj_num
 	End
 
-		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, FundAbbrv, expendedamount,lkstatus, pendingamount, [Date])
+		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, expendedamount,lkstatus, finaldisbursedamount, [Date])
 	
 		select  p.projectid, det.FundId, f.account, det.lktranstype, 
 			
 				ttv.description as FundType,
 				f.name,
 				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
-				 f.abbrv,sum(det.Amount) as CommitmentAmount, 
-				 case 
-					when tr.lkstatus = 261 then 'Pending'
-					when tr.lkstatus = 262 then 'Final'
-				 end as lkStatus,
-				 case
+				 f.abbrv,
+				  case
 					when tr.lkstatus = 261 then sum(det.amount)
-				 end as PendingAmount,
-				 max(tr.date) as TransDate
-				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId		
-		join LookupValues lv on lv.TypeID = pn.LkProjectname	
-		join Trans tr on tr.ProjectID = p.ProjectId
-		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId
-		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (236, 237) 
-		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1 and p.ProjectId = @projectid
-		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
-		f.abbrv, tr.lkstatus, ttv.description, f.account
-		order by p.Proj_num
-	
-	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
-				   sum(isnull( commitmentamount,0)) as CommittedAmount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as commitmentamount,
-			   sum(isnull(pendingamount, 0)) as pendingamount, max(Date) as [date]
-	from @tempFundCommit where fundid = @fundid
-	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
-End
-
-go
-
-alter procedure [dbo].[GetCommittedFundDetailsByFundTransType]
-(
-	@projectid int,
-	@fundId int,
-	@transtype int
-)
-as
-Begin
-		declare @tempFundCommit table (
-		[projectid] [int] NULL,
-		[fundid] [int] NULL,
-		account nvarchar (10)null,
-		[lktranstype] [int] NULL,
-		[FundType] [nvarchar](50) NULL,
-		[FundName] nvarchar(35) null,
-		[Projnum] [nvarchar](12) NULL,
-		[ProjectName] [nvarchar](80) NULL,
-		[ProjectCheckReqID] [int] NULL,
-		[FundAbbrv] [nvarchar](25) NULL,
-		[commitmentamount] [money] NULL,
-		[lkstatus] varchar(20) null,
-		[expendedamount] [money] NULL default 0,
-		pendingamount money null ,
-		[Date] [date] NULL	
-		)
-		declare @isReallocation bit
-		if exists (select 1 from ReallocateLink where FromProjectId = @projectid) 
-		begin
-			set @isReallocation=1
-		end
-		if exists (select 1 from ReallocateLink where ToProjectId = @projectid) 
-		begin
-			set @isReallocation=1
-		end
-		
-	if (@isReallocation=1)
-	Begin
-	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
-		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
-		select   p.projectid, 
-			det.FundId,
-			f.account, 
-			det.lktranstype, 
-	
-			ttv.description as FundType,
-			f.name,
-			p.proj_num, 
-			lv.Description as projectname, 
-			tr.ProjectCheckReqID,
-			f.abbrv,det.amount as CommitmentAmount, 
-			case 
-				when tr.lkstatus = 261 then 'Pending'
-				when tr.lkstatus = 262 then 'Final'
-				end as lkStatus,
-			case
-				when tr.lkstatus = 261 then det.amount
-				end as PendingAmount,
-				max(tr.date) as TransDate
-			from Project p 
-	join ProjectName pn on pn.ProjectID = p.ProjectId		
-	join LookupValues lv on lv.TypeID = pn.LkProjectname	
-	join Trans tr on tr.ProjectID = p.ProjectId
-	join Detail det on det.TransId = tr.TransId	
-	join fund f on f.FundId = det.FundId
-	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
-	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
-	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
-	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
-	order by p.Proj_num
-	end
-	else
-	Begin
-	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
-		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
-		select  p.projectid, 
-			det.FundId,
-			f.account, 
-			det.lktranstype, 
-						
-			ttv.description as FundType,
-			f.name,
-			p.proj_num, 
-			lv.Description as projectname, 
-			tr.ProjectCheckReqID,
-			f.abbrv,
-			sum(det.Amount) as CommitmentAmount, 
-			case 
-				when tr.lkstatus = 261 then 'Pending'
-				when tr.lkstatus = 262 then 'Final'
-				end as lkStatus, 
-				case
-				when tr.lkstatus = 261 then sum(det.amount)
-				end as PendingAmount,
-				max(tr.date) as TransDate
-				from Project p 
-		join ProjectName pn on pn.ProjectID = p.ProjectId		
-		join LookupValues lv on lv.TypeID = pn.LkProjectname	
-		join Trans tr on tr.ProjectID = p.ProjectId
-		join Detail det on det.TransId = tr.TransId	
-		join fund f on f.FundId = det.FundId		
-		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
-		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
-		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description, f.account
-		order by p.Proj_num
-	End
-
-		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, FundAbbrv, expendedamount,lkstatus, pendingamount, [Date])
-	
-		select  p.projectid, det.FundId, f.account, det.lktranstype, 
-			
-				ttv.description as FundType,
-				f.name,
-				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
-				 f.abbrv,sum(det.Amount) as CommitmentAmount, 
+				 end as pendingdisbursed,
+				 
 				 case 
 					when tr.lkstatus = 261 then 'Pending'
 					when tr.lkstatus = 262 then 'Final'
 				 end as lkStatus,
 				 case
-					when tr.lkstatus = 261 then sum(det.amount) 
-				 end as PendingAmount,
+					when tr.lkstatus = 262 then sum(det.amount)
+				 end as finaldisbursed,
 				 max(tr.date) as TransDate
 				from Project p 
 		join ProjectName pn on pn.ProjectID = p.ProjectId		
@@ -712,15 +809,23 @@ Begin
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
-				   sum(isnull( commitmentamount,0)) as committedamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as commitmentamount,
-			   sum(isnull(pendingamount, 0)) as pendingamount, max(Date) as [date]
-	from @tempFundCommit where fundid = @fundid and lktranstype = @transtype
+				   sum(isnull( commitmentamount,0)) as commitmentamount,  sum(isnull(pendingamount, 0)) as pendingamount,
+				   sum( ISNULL( expendedamount,0)) as expendedamount, sum( ISNULL( finaldisbursedamount,0)) as finaldisbursedamount,
+					case when sum(isnull( commitmentamount,0)) = 0 then 0  
+						else
+							case when sum(isnull(pendingamount, 0)) > 0 then 
+								sum(isnull(commitmentamount,0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))
+							else
+								sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))) 
+							end
+					end as balance,
+			   max(Date) as [date]
+	from @tempFundCommit where fundid = @fundid  and lktranstype = @transtype
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
 
 End
 
 go
-
 
 alter procedure [dbo].[GetCommittedFundAccounts]
 (
@@ -2072,5 +2177,413 @@ End
 
 go
 
+alter procedure GetExistingPCR
+as
+Begin
+	select pcr.ProjectID, pcr.ProjectCheckReqId, 
+	CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	join LookupValues lv on lv.TypeID = t.LkStatus
+	where pv.defname = 1
+	order by pcr.ProjectCheckReqId desc
+End
+go
+
+alter procedure GetExistingPCRByProjId
+(
+	@projId int
+)
+as
+Begin
+	
+	declare @payee varchar (100)
+	set @payee = (select top 1 an.applicantname
+		from ProjectApplicant pa(nolock)
+		join applicantappname aan(nolock) on pa.ApplicantId = aan.ApplicantID
+		join appname an(nolock) on aan.appnameid = an.appnameid
+		join applicant a(nolock) on a.applicantid = aan.applicantid
+		left join applicantcontact ac(nolock) on a.ApplicantID = ac.ApplicantID
+		left join contact c(nolock) on c.ContactID = ac.ContactID
+		left join LookupValues lv(nolock) on lv.TypeID = pa.LkApplicantRole
+		where pa.ProjectId = @projId
+			and pa.RowIsActive = 1 and pa.finlegal = 1
+		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc)
+
+	select pcr.ProjectID, pv.project_name, pcr.legalreview,pcr.LCB, pcr.initdate, pcr.ProjectCheckReqId, 
+	t.TransAmt, t.transid, an.Applicantname, @payee as Payee,
+	CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
+	from ProjectCheckReq pcr(nolock)
+	join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+	join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+	join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+	join AppName an(nolock) on aan.AppNameID = an.AppNameID
+	join LookupValues lv on lv.TypeID = t.LkStatus
+	where pv.defname = 1 and pcr.projectid = @projId
+	order by pcr.ProjectCheckReqId desc
+
+	
+End
+go
 
 
+alter procedure PCR_Update
+(
+	@ProjectCheckReqID int,
+	@ProjectID int, 
+	@InitDate date, 
+	@LkProgram	int, 
+	@LegalReview	bit, 
+	@LCB	bit, 
+	@MatchAmt	money, 
+	@LkFVGrantMatch	int, 
+	@Notes	nvarchar(2000), 
+	@Disbursement decimal,
+	@Payee int,
+	@LkStatus int,
+	@UserID	int,
+	@LKNODs 	varchar(50),
+	@TransID	int output
+)
+as
+begin
+	begin transaction
+
+	begin try
+		update ProjectCheckReq set ProjectID = @ProjectID, InitDate = @InitDate, LkProgram = @LkProgram, LegalReview = @LegalReview, 
+			LCB =  @LCB, MatchAmt = @MatchAmt, LkFVGrantMatch = @LkFVGrantMatch, Notes = @Notes, UserID = @UserID
+		from ProjectCheckReq
+		where ProjectCheckReqID = @ProjectCheckReqID
+
+		select @TransID = TransID from Trans where ProjectCheckReqID = @ProjectCheckReqID
+
+		update Trans set ProjectID = ProjectID, Date = @InitDate, TransAmt = @Disbursement, PayeeApplicant = @Payee, LkTransaction = 236, LkStatus = @LkStatus
+		from Trans
+		where TransID = @TransID
+
+		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
+
+
+		select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as transid
+		from ProjectCheckReq pcr(nolock)
+		join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+		join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+		join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+		join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+		join AppName an(nolock) on aan.AppNameID = an.AppNameID
+		join LookupValues lv on lv.TypeID = t.LkStatus
+	where pcr.ProjectCheckReqID = @ProjectCheckReqID
+	order by pcr.ProjectCheckReqId desc
+		
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
+
+go
+
+
+alter procedure PCR_Delete
+(
+	@ProjectCheckReqID int
+	
+)
+as
+begin
+	begin transaction
+
+	begin try
+		declare @transId int
+				
+		select @transId = transid from trans where ProjectCheckReqID = @ProjectCheckReqID
+		delete from detail where transid = @transId
+		delete from trans where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReqQuestions where ProjectCheckReqID = @ProjectCheckReqID
+		delete from ProjectCheckReq where ProjectCheckReqID = @ProjectCheckReqID
+		
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
+go
+
+
+alter procedure dbo.AddProjectNotes
+(
+	@ProjectId	int,
+	@UserName	nvarchar(100),
+	@Lkcategory int, 
+	@Date		DateTime,
+	@Notes		nvarchar(max),
+	@pcrid		int = null
+)
+as
+begin transaction
+
+	begin try
+
+		declare @UserId int
+		
+		select @UserId = UserId 
+		from UserInfo(nolock) 
+		where  rtrim(ltrim(Username)) = @UserName 
+
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, ProjectCheckReqID)
+		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @pcrid)
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
+
+alter procedure [dbo].[GetAllFinancialFundDetailsByProjNum]
+(
+	@proj_num varchar(50)
+)
+as
+Begin
+
+		declare @tempFundCommit table (
+		[projectid] [int] NULL,
+		[fundid] [int] NULL,
+		account nvarchar (10)null,
+		[lktranstype] [int] NULL,
+		[FundType] [nvarchar](50) NULL,
+		[FundName] nvarchar(35) null,
+		[Projnum] [nvarchar](12) NULL,
+		[ProjectName] [nvarchar](80) NULL,
+		[ProjectCheckReqID] [int] NULL,
+		[FundAbbrv] [nvarchar](25) NULL,
+		[commitmentamount] [money] NULL,
+		[lkstatus] varchar(20) null,
+		[expendedamount] [money] NULL default 0,
+		[finaldisbursedamount] [money] NULL default 0,
+		pendingamount money null ,
+		[Date] [date] NULL	
+		)
+		declare @projectid int
+		declare @isReallocation bit
+
+		select @projectid = ProjectID from project where proj_num = @proj_num
+		
+		if exists (select 1 from ReallocateLink where FromProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		if exists (select 1 from ReallocateLink where ToProjectId = @projectid) 
+		begin
+			set @isReallocation=1
+		end
+		
+	if (@isReallocation=1)
+	Begin
+	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
+		select   p.projectid, 
+			det.FundId,
+			f.account, 
+			det.lktranstype, 
+	
+			ttv.description as FundType,
+			f.name,
+			p.proj_num, 
+			lv.Description as projectname, 
+			tr.ProjectCheckReqID,
+			f.abbrv,	
+			case
+				when tr.lkstatus = 262 then det.amount
+				end as CommitmentAmount, 
+			case 
+				when tr.lkstatus = 261 then 'Pending'
+				when tr.lkstatus = 262 then 'Final'
+				end as lkStatus,
+			case
+				when tr.lkstatus = 261 then det.amount
+				end as PendingAmount,
+				max(tr.date) as TransDate
+			from Project p 
+	join ProjectName pn on pn.ProjectID = p.ProjectId		
+	join LookupValues lv on lv.TypeID = pn.LkProjectname	
+	join Trans tr on tr.ProjectID = p.ProjectId
+	join Detail det on det.TransId = tr.TransId	
+	join fund f on f.FundId = det.FundId
+	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
+	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
+	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
+	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
+	order by p.Proj_num
+	end
+	else
+	Begin
+	insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, commitmentamount, lkstatus, pendingamount ,[Date])
+		select  p.projectid, 
+			det.FundId,
+			f.account, 
+			det.lktranstype, 
+						
+			ttv.description as FundType,
+			f.name,
+			p.proj_num, 
+			lv.Description as projectname, 
+			tr.ProjectCheckReqID,
+			f.abbrv,
+			sum(det.Amount) as CommitmentAmount, 
+			case 
+				when tr.lkstatus = 261 then 'Pending'
+				when tr.lkstatus = 262 then 'Final'
+				end as lkStatus, 
+				case
+				when tr.lkstatus = 261 then sum(det.amount)
+				end as PendingAmount,
+				max(tr.date) as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId		
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
+		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
+		f.abbrv, tr.lkstatus, ttv.description, f.account
+		order by p.Proj_num
+	End
+
+		insert into @tempFundCommit (projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, ProjectCheckReqID, 
+		FundAbbrv, expendedamount,lkstatus, finaldisbursedamount, [Date])
+	
+		select  p.projectid, det.FundId, f.account, det.lktranstype, 
+			
+				ttv.description as FundType,
+				f.name,
+				p.proj_num, lv.Description as projectname, tr.ProjectCheckReqID,
+				 f.abbrv,
+				  case
+					when tr.lkstatus = 261 then sum(det.amount)
+				 end as pendingdisbursed,
+				 
+				 case 
+					when tr.lkstatus = 261 then 'Pending'
+					when tr.lkstatus = 262 then 'Final'
+				 end as lkStatus,
+				 case
+					when tr.lkstatus = 262 then sum(det.amount)
+				 end as finaldisbursed,
+				 max(tr.date) as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (236, 237) 
+		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1 and p.ProjectId = @projectid
+		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
+		f.abbrv, tr.lkstatus, ttv.description, f.account
+		order by p.Proj_num
+	
+		select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
+					   sum(isnull( commitmentamount,0)) as commitmentamount,  sum(isnull(pendingamount, 0)) as pendingamount,
+					   sum( ISNULL( expendedamount,0)) as expendedamount, sum( ISNULL( finaldisbursedamount,0)) as finaldisbursedamount,
+						case when sum(isnull( commitmentamount,0) + isnull( pendingamount,0)) <= 0 then 0  
+							else
+								case when sum(isnull(pendingamount, 0)) > 0 then 
+									sum(isnull(commitmentamount,0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))
+								else
+									sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) - ISNULL( expendedamount, 0) - isnull(finaldisbursedamount,0))) 
+								end
+						end as Oldbalance,
+						case when sum(isnull( commitmentamount,0) +  isnull( pendingamount,0)) <= 0 then 0  
+							 else sum((isnull(commitmentamount,0) + isnull(pendingamount, 0) -(ISNULL( expendedamount, 0) + isnull(finaldisbursedamount,0)))) 
+						end as balance,
+				   max(Date) as [date]
+		from @tempFundCommit
+		group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
+
+		select distinct p.projectid, 
+				det.FundId, f.account,
+				det.lktranstype, 
+				
+				ttv.description as FundType,
+				case 
+					when tr.LkTransaction = 236 then 'Cash Disbursement'
+					when tr.LkTransaction = 237 then 'Cash Refund'
+					when tr.LkTransaction = 238 then 'Board Commitment'
+					when tr.LkTransaction = 239 then 'Board Decommitment'
+					when tr.LkTransaction = 240 then 'Board Reallocation'
+				end as 'Transaction',
+				f.name,
+				p.proj_num, 
+				lv.Description as projectname,				
+				tr.ProjectCheckReqID,
+				f.abbrv,
+				det.Amount as detail, 
+				case 
+					when tr.lkstatus = 261 then 'Pending'
+					when tr.lkstatus = 262 then 'Final'
+				 end as lkStatus, 			 
+				tr.date as TransDate
+				from Project p 
+		join ProjectName pn on pn.ProjectID = p.ProjectId		
+		join LookupValues lv on lv.TypeID = pn.LkProjectname	
+		join Trans tr on tr.ProjectID = p.ProjectId
+		join Detail det on det.TransId = tr.TransId	
+		join fund f on f.FundId = det.FundId
+		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
+		where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
+		order by p.Proj_num
+End
+go
+
+
+alter procedure DeleteTransactionDetail
+(
+	@detailId int
+)
+as
+Begin
+	Delete from Detail where DetailID = @detailId
+End
+go

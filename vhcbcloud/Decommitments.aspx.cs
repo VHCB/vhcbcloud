@@ -985,5 +985,22 @@ namespace vhcbcloud
         {
             Response.Redirect("decommitments.aspx");
         }
+
+        protected void gvBCommit_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                Label lblDetailId = (Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId");
+                if (lblDetailId != null)
+                    FinancialTransactions.DeleteTransactionDetail(Convert.ToInt32(lblDetailId.Text));
+                BindFundDetails(GetTransId());
+                lblErrorMsg.Text = "Transaction detail was successfully deleted";
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "Delete detail: " + ex.Message;
+            }
+        }
     }
 }
