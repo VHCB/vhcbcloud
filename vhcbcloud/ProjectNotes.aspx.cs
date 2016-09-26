@@ -21,7 +21,21 @@ namespace vhcbcloud
             lblErrorMsg1.Text = "";
 
             String ProjectId = Request.QueryString["ProjectId"];
-
+            string pcr = Request.QueryString["pcrid"];
+            chkPCR.Visible = false;
+            spnPCR.Visible = false;
+            if(pcr != null)
+            {                
+                chkPCR.Checked = true;
+                chkPCR.Visible = true;
+                spnPCR.Visible = true;
+            }
+            else
+            {
+                chkPCR.Checked = false;
+                chkPCR.Visible = false;
+                spnPCR.Visible = false;
+            }
             ddlProject.Enabled = true;
             txtProjectName.Enabled = true;
             txtProjectNotesDate.Enabled = true;
@@ -104,17 +118,24 @@ namespace vhcbcloud
 
         protected void btnSubmitNotes_Click(object sender, EventArgs e)
         {
+            int pcrId = 0;
+            string pcr = Request.QueryString["pcrid"];
+            if (pcr!="")
+            {
+                pcrId = Convert.ToInt32(pcr);
+            }
+            
             if (IsProjectNotesValid(btnSubmitNotes.Text.ToLower()))
             {
                 if (btnSubmitNotes.Text.ToLower() == "submit")
                 {
                     ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, txtURL.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
+                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text), pcrId);
                 }
                 else
                 {
                     ProjectNotesData.UpdateProjectNotes(DataUtils.GetInt(hfProjectNotesId.Value), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        txtNotes.Text, txtURL.Text, cbActive.Checked);
+                        txtNotes.Text, cbActive.Checked);
                     hfProjectNotesId.Value = "";
                     gvProjectNotes.EditIndex = -1;
 
@@ -219,7 +240,6 @@ namespace vhcbcloud
             ddlCategory.SelectedIndex = -1;
             txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
-            txtURL.Text = "";
         }
 
         protected void gvProjectNotes_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -280,7 +300,6 @@ namespace vhcbcloud
 
                         txtProjectNotesDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
                         txtNotes.Text = dr["Notes"].ToString();
-                        txtURL.Text = dr["URL"].ToString();
                         ddlCategory.SelectedValue = dr["LKProjCategory"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
