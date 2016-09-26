@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/SiteWithoutHeader.Master" CodeBehind="ProjectNotes.aspx.cs" Inherits="vhcbcloud.ProjectNotes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/SiteWithoutHeader.Master" CodeBehind="ProjectNotes.aspx.cs" 
+    Inherits="vhcbcloud.ProjectNotes" %>
 
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -65,7 +66,18 @@
                             <td colspan="3">
                                 <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
                             </td>
-
+                        </tr>
+                         <tr>
+                            <td colspan="4" style="height: 5px"></td>
+                        </tr>
+                         <tr>
+                            <td><span class="labelClass">URL</span></td>
+                            <td colspan="3">
+                                <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server"  Width="350px"></asp:TextBox>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td colspan="4" style="height: 5px"></td>
                         </tr>
                         
                         <tr>
@@ -121,6 +133,13 @@
                                             <asp:TemplateField HeaderText="Notes">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                             <asp:TemplateField HeaderText="URL">
+                                                <ItemTemplate>
+                                                    <%--<asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />--%>
+                                                    <%--<asp:HyperLink ID="hlURL" runat="server"   NavigateUrl ='<%# Eval("URL").ToString() %>' Text="Link" />--%>
+                                                    <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Active">

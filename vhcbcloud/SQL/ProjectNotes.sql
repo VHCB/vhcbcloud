@@ -12,7 +12,8 @@ create procedure dbo.AddProjectNotes
 	@Lkcategory int, 
 	@Date		DateTime,
 	@Notes		nvarchar(max),
-	@URL		nvarchar(1500)
+	@URL		nvarchar(1500),
+	@pcrid		int = null
 )
 as
 begin transaction
@@ -25,8 +26,8 @@ begin transaction
 		from UserInfo(nolock) 
 		where  rtrim(ltrim(Username)) = @UserName 
 
-		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, URL)
-		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @URL)
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, URL,ProjectCheckReqID)
+		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @URL, @pcrid)
 
 	end try
 	begin catch
