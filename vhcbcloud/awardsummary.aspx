@@ -88,7 +88,7 @@
                                         <asp:Label ID="lblFinalExpend" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Provisional Balance" SortExpression="balance"ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Provisional Balance" SortExpression="balance" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
                                     </ItemTemplate>
