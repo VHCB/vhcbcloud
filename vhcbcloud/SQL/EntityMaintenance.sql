@@ -35,6 +35,7 @@ create procedure dbo.AddNewEntity
 	@Notes				nvarchar(max) = null,
 	@AgEd				nvarchar(max) = null,
 	@YearsManagingFarm	int = null,
+	@AppRole			int = null,
 	@isDuplicate		bit output,
 	@ApplicantId		int output
 ) as
@@ -89,8 +90,8 @@ begin transaction
 	end
 	else if (@LKEntityType2 = 26242)--Organization
 	begin
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
+		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
+		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
 
 		set @applicantid = @@identity;
 
@@ -105,8 +106,8 @@ begin transaction
 	end
 	else if (@LKEntityType2 = 26244)--Farm
 	begin
-		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
+		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
+		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
 
 		set @applicantid = @@identity;
 
@@ -173,7 +174,8 @@ create procedure dbo.UpdateEntity
 	@OutOFBiz			bit = null,
 	@Notes				nvarchar(max) = null,
 	@AgEd				nvarchar(max) = null,
-	@YearsManagingFarm	int = null
+	@YearsManagingFarm	int = null,
+	@AppRole			int = null
 ) as
 begin transaction
 
@@ -208,7 +210,8 @@ begin transaction
 	begin
 		update applicant 
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
-			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
+			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email,
+			AppRole = @AppRole
 		from applicant where  ApplicantId = @ApplicantId
 
 		update an set an.Applicantname = @ApplicantName
@@ -221,7 +224,8 @@ begin transaction
 	begin
 		update applicant 
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
-			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
+			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email,
+			AppRole = @AppRole
 		from applicant where  ApplicantId = @ApplicantId
 
 		update an set an.Applicantname = @ApplicantName
@@ -269,7 +273,7 @@ begin
 	from applicant a(nolock) 
 	where  a.ApplicantId = @ApplicantId
 
-	select a.LkEntityType, a.LKEntityType2, a.Individual, a.FYend, a.website, a.email, a.HomePhone, a.WorkPhone, a.CellPhone, a.Stvendid,
+	select a.LkEntityType, a.LKEntityType2, a.Individual, a.FYend, a.website, a.email, a.HomePhone, a.WorkPhone, a.CellPhone, a.Stvendid, a.AppRole,
 		c.Firstname, c.Lastname, c.LkPosition, c.Title,
 		an.Applicantname,
 		f.ApplicantID, f.FarmId, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, f.OutOFBiz, 

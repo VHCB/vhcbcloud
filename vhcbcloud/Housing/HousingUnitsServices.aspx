@@ -173,7 +173,7 @@
                                                 <asp:Label ID="lblHousingTypeID" runat="Server" Text='<%# Eval("HousingTypeID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="House Type">
+                                        <asp:TemplateField HeaderText="Sub Type">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblHouseType" runat="Server" Text='<%# Eval("HouseType") %>' />
                                             </ItemTemplate>
@@ -218,10 +218,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Single Count Characteristics</h3>
+                                        <h3 class="panel-title">New Construction/Reuse/Rehab</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddSingleUnit" runat="server" Text="Add New Single Count Characteristics" />
+                                        <asp:CheckBox ID="cbAddSingleUnit" runat="server" Text="Add New Construction/Reuse/Rehab" />
                                     </td>
                                 </tr>
                             </table>
@@ -324,10 +324,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Multi-Count Characteristics</h3>
+                                        <h3 class="panel-title">Accessible/Adaptable/Transitional</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Multi-Count Characteristics" />
+                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Accessible/Adaptable/Transitional" />
                                     </td>
                                 </tr>
                             </table>
@@ -371,7 +371,7 @@
                             <asp:Panel runat="server" ID="Panel5" Width="100%" Height="150px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvMultiple" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
                                     OnRowEditing="gvMultiple_RowEditing" OnRowCancelingEdit="gvMultiple_RowCancelingEdit" OnRowUpdating="gvMultiple_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -389,9 +389,9 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblCharacteristic" runat="Server" Text='<%# Eval("Characteristic") %>' />
                                             </ItemTemplate>
-                                            <FooterTemplate>
+                                           <%-- <FooterTemplate>
                                                 Grand Total :
-                                            </FooterTemplate>
+                                            </FooterTemplate>--%>
                                             <ItemStyle Width="400px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Units">
@@ -401,9 +401,9 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtNumunits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                            <FooterTemplate>
+                                           <%-- <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterMultiUnitTotalUnits" Text=""></asp:Label>
-                                            </FooterTemplate>
+                                            </FooterTemplate>--%>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">

@@ -11,7 +11,8 @@ create procedure dbo.AddProjectNotes
 	@UserName	nvarchar(100),
 	@Lkcategory int, 
 	@Date		DateTime,
-	@Notes		nvarchar(max)
+	@Notes		nvarchar(max),
+	@URL		nvarchar(1500)
 )
 as
 begin transaction
@@ -24,8 +25,8 @@ begin transaction
 		from UserInfo(nolock) 
 		where  rtrim(ltrim(Username)) = @UserName 
 
-		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes)
-		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes)
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, URL)
+		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @URL)
 
 	end try
 	begin catch
@@ -50,6 +51,7 @@ create procedure dbo.UpdateProjectNotes
 	@ProjectNotesID int,
 	@LkCategory		int, 
 	@Notes			nvarchar(max),
+	@URL			nvarchar(1500),
 	@RowIsActive	bit
 )
 as
@@ -57,7 +59,7 @@ begin transaction
 
 	begin try
 	
-		update ProjectNotes set LkCategory = @LkCategory, Notes = @Notes, RowIsActive = @RowIsActive, DateModified = getdate()
+		update ProjectNotes set LkCategory = @LkCategory, Notes = @Notes, URL = @URL, RowIsActive = @RowIsActive, DateModified = getdate()
 		from ProjectNotes 
 		where ProjectNotesID = @ProjectNotesID
 
@@ -90,7 +92,9 @@ begin transaction
 	begin try
 	
 		select ProjectNotesID, LkCategory, lv.description, pn.UserId, ui.username, convert(varchar(10), Date, 101) as Date, 
-			substring(Notes, 0, 25) Notes, Notes as FullNotes, pn.RowIsActive
+			substring(Notes, 0, 25) Notes, Notes as FullNotes, pn.URL, 
+			CASE when isnull(pn.URL, '') = '' then '' else 'Click here' end as URLText,
+			pn.RowIsActive
 		from ProjectNotes pn(nolock)
 		join lookupvalues lv(nolock) on lv.Typeid = LkCategory
 		left join userinfo ui(nolock) on ui.userid = pn.UserId
@@ -123,7 +127,7 @@ begin transaction
 --exec GetProjectNotesById 4
 	begin try
 	
-		select ProjectId, LkCategory as LKProjCategory, UserId, Date, Notes, RowIsActive
+		select ProjectId, LkCategory as LKProjCategory, UserId, Date, Notes, URL, RowIsActive
 		from ProjectNotes pn(nolock)
 		where ProjectNotesID = @ProjectNotesId
 

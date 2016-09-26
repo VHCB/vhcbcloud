@@ -11,7 +11,7 @@ namespace DataAccessLayer
 {
     public class ProjectNotesData
     {
-        public static void AddProjectNotes(int ProjectID, int LkCategory, string UserName, string Notes, DateTime Date)
+        public static void AddProjectNotes(int ProjectID, int LkCategory, string UserName, string Notes, string URL, DateTime Date)
         {
             try
             {
@@ -30,6 +30,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
                         command.Parameters.Add(new SqlParameter("UserName", UserName));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         
                         command.CommandTimeout = 60 * 5;
@@ -45,7 +46,7 @@ namespace DataAccessLayer
         }
 
 
-        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, string Notes, bool RowIsActive)
+        public static void UpdateProjectNotes(int ProjectNotesID, int LkCategory, string Notes, string URL, bool RowIsActive)
         {
             try
             {
@@ -64,6 +65,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
                         //command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

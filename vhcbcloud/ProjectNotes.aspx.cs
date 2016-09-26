@@ -109,12 +109,12 @@ namespace vhcbcloud
                 if (btnSubmitNotes.Text.ToLower() == "submit")
                 {
                     ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
+                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, txtURL.Text, DataUtils.GetDate(txtProjectNotesDate.Text));
                 }
                 else
                 {
                     ProjectNotesData.UpdateProjectNotes(DataUtils.GetInt(hfProjectNotesId.Value), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        txtNotes.Text, cbActive.Checked);
+                        txtNotes.Text, txtURL.Text, cbActive.Checked);
                     hfProjectNotesId.Value = "";
                     gvProjectNotes.EditIndex = -1;
 
@@ -219,6 +219,7 @@ namespace vhcbcloud
             ddlCategory.SelectedIndex = -1;
             txtProjectNotesDate.Text = DateTime.Now.ToShortDateString();
             txtNotes.Text = "";
+            txtURL.Text = "";
         }
 
         protected void gvProjectNotes_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -279,6 +280,7 @@ namespace vhcbcloud
 
                         txtProjectNotesDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
                         txtNotes.Text = dr["Notes"].ToString();
+                        txtURL.Text = dr["URL"].ToString();
                         ddlCategory.SelectedValue = dr["LKProjCategory"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }

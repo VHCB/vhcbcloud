@@ -61,6 +61,11 @@ begin transaction
 
 	set @isDuplicate = 1
 	set @isActive = 1
+	
+	declare @AppNameID int
+	set @AppNameID = @ApplicantID
+	set @ApplicantID = 0
+	select @ApplicantID = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameID
 
 	if not exists
     (
@@ -125,6 +130,11 @@ create procedure dbo.UpdateProjectEvent
 begin transaction
 
 	begin try
+
+	declare @AppNameID int
+	set @AppNameID = @ApplicantID
+	set @ApplicantID = 0
+	select @ApplicantID = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameID
 
 	update ProjectEvent set ApplicantID = @ApplicantID, EventID= @EventID, SubEventID = @SubEventID, Date = @Date, Note = @Note, UserID = @UserID,
 		RowIsActive = @IsRowIsActive, DateModified = getdate()

@@ -31,7 +31,7 @@
                             </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
-                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
+                                    OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary"
                                     Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
@@ -166,7 +166,7 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Home</h3>
+                                                <h3 class="panel-title">HOME</h3>
                                             </td>
                                         </tr>
                                     </table>
@@ -176,57 +176,51 @@
                                     <asp:Panel runat="server" ID="Panel1">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 177px"><span class="labelClass">Recertification Month</span></td>
-                                                <td style="width: 194px">
-                                                    <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <td style="width: 155px"><span class="labelClass">Recertification Month</span></td>
+                                                <td style="width: 181px">
+                                                    <asp:DropDownList ID="ddlRecreationMonth" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
+                                                    </asp:DropDownList>
+
+                                                    <%-- <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
                                                         ControlToValidate="txtRecreationMonth" ErrorMessage="Recertification Month should only accept numbers 1-12"
-                                                        Style="top: 435px; left: 365px; position: absolute; height: 22px; width: 500px" />
+                                                        Style="top: 435px; left: 365px; position: absolute; height: 22px; width: 500px" />--%>
                                                 </td>
-                                                <td style="width: 186px"><span class="labelClass">Copy owner on reminder letter</span></td>
-                                                <td style="width: 126px">
-                                                    <asp:CheckBox ID="chkCopyOwner" runat="server" />
-                                                </td>
-                                                <td style="width: 156px"><span class="labelClass">Affordability Period</span></td>
-                                                <td style="width: 180px">
+                                                <td style="width: 105px"><span class="labelClass">Affordability Period</span></td>
+                                                <td style="width: 86px">
                                                     <asp:DropDownList ID="ddlAffPeriod" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
                                                     </asp:DropDownList>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6" style="height: 5px"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 177px"><span class="labelClass">Affordability Start Date</span></td>
-                                                <td style="width: 194px">
+                                                <td style="width: 165px"><span class="labelClass">Affordability Period Start Date</span></td>
+                                                <td style="width: 180px">
                                                     <asp:TextBox ID="txtAffrdStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdStartDate" TargetControlID="txtAffrdStartDate">
                                                     </ajaxToolkit:CalendarExtender>
+
                                                 </td>
-                                                <td style="width: 186px"><span class="labelClass">Affordability End Date</span></td>
-                                                <td style="width: 126px">
-                                                    <asp:TextBox ID="txtAffrdEndDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdEndDate" TargetControlID="txtAffrdEndDate">
-                                                    </ajaxToolkit:CalendarExtender>
-                                                </td>
-                                                <td style="width: 156px"><span class="labelClass">CHDO</span></td>
-                                                <td style="width: 180px">
-                                                    <asp:CheckBox ID="chkCHDO" runat="server" /></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 177px"><span class="labelClass">CHDO Recertification Month</span></td>
-                                                <td style="width: 194px" colspan="4">
-                                                    <asp:TextBox ID="txtCHDORecert" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
-                                                        ControlToValidate="txtCHDORecert" ErrorMessage="CHDO Recertification Month should only accept numbers 1-12" />
+                                                <td style="width: 155px"><span class="labelClass">Affordability Period End Date</span></td>
+                                                <td style="width: 181px">
+                                                    <asp:TextBox ID="txtAffrdEndDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdEndDate" TargetControlID="txtAffrdEndDate">
+                                                    </ajaxToolkit:CalendarExtender>
+
                                                 </td>
-                                                <%-- <td style="width: 186px"></td>
-                                                <td style="width: 126px"></td>
-                                                <td style="width: 156px"></td>
-                                                <td style="width: 180px"></td>--%>
+                                                <td style="width: 105px"><span class="labelClass">CHDO Project</span></td>
+                                                <td style="width: 86px">
+                                                    <asp:CheckBox ID="chkCHDO" runat="server" />
+
+                                                </td>
+                                                <td style="width: 165px"><span class="labelClass">CHDO Recertification Month</span></td>
+                                                <td style="width: 180px">
+                                                    <%--<asp:TextBox ID="txtCHDORecert" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                                    <asp:DropDownList ID="ddlCHRDoRecert" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
+                                                    </asp:DropDownList>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
@@ -256,7 +250,7 @@
                                                             ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
                                                             Style="top: 550px; left: 395px; position: absolute; height: 22px; width: 355px" />
                                                     </td>
-                                                    <td style="width: 192px"><span class="labelClass">Date of Last Inspection</span></td>
+                                                    <td style="width: 138px"><span class="labelClass">Date of Last Inspection</span></td>
                                                     <td style="width: 126px">
                                                         <asp:TextBox ID="txtLastInspect" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtLastInspect" TargetControlID="txtLastInspect">
@@ -276,7 +270,7 @@
                                                         <asp:DropDownList ID="ddlStaff" CssClass="clsDropDown" runat="server">
                                                         </asp:DropDownList>
                                                     </td>
-                                                    <td style="width: 192px"><span class="labelClass">Inspection Date</span></td>
+                                                    <td style="width: 138px"><span class="labelClass">Inspection Date</span></td>
                                                     <td style="width: 126px">
                                                         <asp:TextBox ID="txtInspectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectDate" TargetControlID="txtInspectDate">
@@ -299,7 +293,7 @@
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRespDate" TargetControlID="txtRespDate">
                                                         </ajaxToolkit:CalendarExtender>
                                                     </td>
-                                                    <td style="width: 192px"></td>
+                                                    <td style="width: 138px"></td>
                                                     <td style="width: 126px"></td>
                                                     <td style="width: 156px"></td>
                                                     <td style="width: 180px"></td>
@@ -326,12 +320,12 @@
                                         <asp:Panel runat="server" ID="Panel4">
                                             <table class="nav-justified">
                                                 <tr>
-                                                    <td style="width: 182px"><span class="labelClass">IDIS #</span></td>
-                                                    <td style="width: 206px">
+                                                    <td style="width: 159px"><span class="labelClass">IDIS #</span></td>
+                                                    <td style="width: 189px">
                                                         <asp:TextBox ID="txtIDSNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     </td>
-                                                    <td style="width: 221px"><span class="labelClass">Setup Date</span></td>
-                                                    <td style="width: 126px">
+                                                    <td style="width: 106px"><span class="labelClass">Setup Date</span></td>
+                                                    <td style="width: 153px">
                                                         <asp:TextBox ID="txtSetupDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtSetupDate" TargetControlID="txtSetupDate">
                                                         </ajaxToolkit:CalendarExtender>
@@ -346,22 +340,40 @@
                                                     <td colspan="6" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 182px"><span class="labelClass">Funded Date</span></td>
-                                                    <td style="width: 206px">
+                                                    <td style="width: 159px"><span class="labelClass">Funded Date</span></td>
+                                                    <td style="width: 189px">
                                                         <asp:TextBox ID="txtFundedDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtFundedDate" TargetControlID="txtFundedDate">
                                                         </ajaxToolkit:CalendarExtender>
                                                     </td>
-                                                    <td style="width: 221px"><span class="labelClass">Closeout Date</span></td>
-                                                    <td style="width: 126px">
+                                                    <td style="width: 106px"><span class="labelClass">Completed By</span></td>
+                                                    <td style="width: 153px">
+                                                        <asp:DropDownList ID="ddlFundedDateCompleteBy" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 156px"><span class="labelClass">IDIS Completion Date</span></td>
+                                                    <td style="width: 180px">
                                                         <asp:TextBox ID="txtCloseDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                         <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtCloseDate" TargetControlID="txtCloseDate">
                                                         </ajaxToolkit:CalendarExtender>
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6" style="height: 5px"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 159px"><span class="labelClass">Completed By</span></td>
+                                                    <td style="width: 189px">
+                                                        <asp:DropDownList ID="ddlIDISCompletionDateCompletedBy" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td style="width: 106px"></td>
+                                                    <td style="width: 153px"></td>
                                                     <td style="width: 156px"></td>
                                                     <td style="width: 180px">
                                                         <asp:Button ID="btnSubmitHomeForm" runat="server" Text="Submit" class="btn btn-info"
-                                                            OnClick="btnSubmitHomeForm_Click" /></td>
+                                                            OnClick="btnSubmitHomeForm_Click" />
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="6" style="height: 5px"></td>
@@ -381,10 +393,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Home Affordability</h3>
+                                        <h3 class="panel-title">HOME Income Restrictions</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddHomeAff" runat="server" Text="Add New Home Affordability" />
+                                        <asp:CheckBox ID="cbAddHomeAff" runat="server" Text="Add New HOME Income Restriction" />
                                     </td>
                                 </tr>
                             </table>
@@ -394,7 +406,7 @@
                             <asp:Panel runat="server" ID="Panel12">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Home</span></td>
+                                        <td style="width: 140px"><span class="labelClass">HOME</span></td>
                                         <td style="width: 215px">
                                             <asp:DropDownList ID="ddlHomeAff" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -443,7 +455,7 @@
                                                 <asp:Label ID="lblProjectHomeAffordUnitsID" runat="Server" Text='<%# Eval("ProjectHomeAffordUnitsID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Home">
+                                        <asp:TemplateField HeaderText="Income">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblVHCB" runat="Server" Text='<%# Eval("Home") %>' />
                                             </ItemTemplate>
@@ -452,7 +464,7 @@
                                             </FooterTemplate>
                                             <ItemStyle Width="400px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
+                                        <asp:TemplateField HeaderText="#Units">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblHomeNumunits" runat="Server" Text='<%# Eval("Numunits") %>' />
                                             </ItemTemplate>
@@ -488,10 +500,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Rental Affordability</h3>
+                                        <h3 class="panel-title">HOME Rent Restrictions</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddRentalAffordability" runat="server" Text="Add New Rental Affordability" />
+                                        <asp:CheckBox ID="cbAddRentalAffordability" runat="server" Text="Add New HOME Rent Restriction" />
                                     </td>
                                 </tr>
                             </table>
@@ -503,8 +515,8 @@
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Unit Type</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlUnitType" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                            <div><asp:DropDownList ID="ddlUnitType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList></div>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Number of Units
@@ -559,7 +571,7 @@
                                             </FooterTemplate>
                                             <ItemStyle Width="400px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
+                                        <asp:TemplateField HeaderText="#Units">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
                                             </ItemTemplate>
@@ -595,10 +607,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Unit Occupancy</h3>
+                                        <h3 class="panel-title">HOME Unit Sizes</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddUnitOccupancy" runat="server" Text="Add New Unit Occupancy" />
+                                        <asp:CheckBox ID="cbAddUnitOccupancy" runat="server" Text="Add New HOME Unit Sizes" />
                                     </td>
                                 </tr>
                             </table>
@@ -657,7 +669,7 @@
                                                 <asp:Label ID="lblFederalUnitID" runat="Server" Text='<%# Eval("FederalUnitID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Unit Type">
+                                        <asp:TemplateField HeaderText="Unit Size">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnitType" runat="Server" Text='<%# Eval("UnitTypeName") %>' />
                                             </ItemTemplate>
@@ -666,7 +678,7 @@
                                             </FooterTemplate>
                                             <ItemStyle Width="400px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
+                                        <asp:TemplateField HeaderText="#Units">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
                                             </ItemTemplate>
@@ -696,7 +708,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvMedianIncome" visible="false">
+                <%--<div class="panel-width" runat="server" id="dvMedianIncome" visible="false">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -773,7 +785,7 @@
                                             </FooterTemplate>
                                             <ItemStyle Width="400px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
+                                        <asp:TemplateField HeaderText="#Units">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("NumUnits") %>' />
                                             </ItemTemplate>
@@ -801,7 +813,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -856,10 +868,25 @@
                 $('#<%= dvUnitOccupancyForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= dvMedianIncomeForm.ClientID%>').toggle($('#<%= cbAddMedianIncome.ClientID%>').is(':checked'));
+           <%-- $('#<%= dvMedianIncomeForm.ClientID%>').toggle($('#<%= cbAddMedianIncome.ClientID%>').is(':checked'));
             $('#<%= cbAddMedianIncome.ClientID%>').click(function () {
                 $('#<%= dvMedianIncomeForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
+
+            $('#<%= ddlUnitType.ClientID%>').each(function () {
+                var i = 0;
+                var sel = this;
+                for (i = 0; i < sel.length; i++) {
+                    if (sel.options[i].text.toLowerCase() == 'home high') {
+                        sel.options[i].title = '30% of 65% AMI, adjusted for # of bedrooms or FMR, whichever is lower';
+                    }
+                    else if (sel.options[i].text.toLowerCase() == 'home low') {
+                        sel.options[i].title = '30% of 50% AMI, adjusted for # of bedrooms or FMR, whichever is lower';
+                    } else {
+                        sel.options[i].title = '';
+                    }
+                }
+            });
         });
 
         function PopupAffrdEndDate() {
