@@ -492,6 +492,12 @@ namespace vhcbcloud
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+            DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
+            if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+            else
+                lblAvailFund.Text =  "0.00";
+
             pnlFund.Visible = false;
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
@@ -501,8 +507,6 @@ namespace vhcbcloud
                 EnablePCR();
 
                 lblProjName.Text = tokens[1];
-                DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
-                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
                 BindApplicantName(int.Parse(tokens[0]));
 
                 hfProjId.Value = tokens[0].ToString();
@@ -556,7 +560,7 @@ namespace vhcbcloud
             ddlTransType.Items.Clear();
             ddlTransType.DataSource = null;
             ddlTransType.DataBind();
-            
+
             txtTransDetailAmt.Text = "";
             lblCommittedAvailFunds.Text = "";
         }
@@ -607,8 +611,9 @@ namespace vhcbcloud
                 }
                 else if (amount > allowed_amount)
                 {
-                    amount = allowed_amount;
-                    lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                    //amount = allowed_amount;
+                    lblErrorMsg.Text = "Detail amount can't be more than transaction amount";
+                    return;
                 }
                 else if (amount < allowed_amount)
                 {
@@ -793,13 +798,17 @@ namespace vhcbcloud
                     txtDisbursementAmt.Focus();
                     return;
                 }
-                //bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
-                //if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
-                //{
-                //    lblErrorMsg.Text = "Disbursement amount can't be more than available funds for the selected project";
-                //    txtDisbursementAmt.Focus();
-                //    return;
-                //}
+                bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                if (!availFunds || Convert.ToDecimal(txtDisbursementAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                {
+                    if (!availFunds)
+                        lblErrorMsg.Text = "Disbursement amount can't be more than available funds (" + CommonHelper.myDollarFormat(0) + ") for the selected project";
+                    else
+                        lblErrorMsg.Text = "Disbursement amount can't be more than available funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected project";
+
+                    txtDisbursementAmt.Focus();
+                    return;
+                }
             }
             #endregion
 
@@ -1305,15 +1314,15 @@ namespace vhcbcloud
                 //Checking whether the Row is Data Row
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
-                    //CheckBox cbApproved = (e.Row.FindControl("cbApproved") as CheckBox);
-                    //Label lblProjectCheckReqQuestionID = (e.Row.FindControl("hfProjectCheckReqQuestionID") as Label);
-                    //Label lblApproved = (e.Row.FindControl("lblApproved") as Label);
+                    CheckBox cbApproved = (e.Row.FindControl("cbApproved") as CheckBox);
+                    Label lblProjectCheckReqQuestionID = (e.Row.FindControl("hfProjectCheckReqQuestionID") as Label);
+                    Label lblApproved = (e.Row.FindControl("lblApproved") as Label);
 
 
-                    //if (cbApproved != null)
-                    //{
-                    //    //cbApproved.Checked = bool.Parse(lblApproved.Text);
-                    //}
+                    if (cbApproved != null)
+                    {
+                        cbApproved.Checked = bool.Parse(lblApproved.Text);
+                    }
                 }
             }
 

@@ -137,15 +137,13 @@
                                 </tr>
 
                                 <tr>
-
-
                                     <td><span class="labelClass">Disbursement $:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass" style="visibility: hidden">Available Funds $:</span></td>
+                                    <td><span class="labelClass" >Available Funds $:</span></td>
                                     <td colspan="5">
-                                        <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server" Visible="false"></asp:Label></td>
+                                        <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server" ></asp:Label></td>
 
                                 </tr>
                                 <tr>
@@ -512,7 +510,7 @@
                                                         <asp:Label ID="lblApproved" runat="Server" Text='<%# Eval("Approved") %>' />
                                                     </ItemTemplate>
                                                     <EditItemTemplate>
-                                                        <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("Approved") %>' />
+                                                        <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("chkApproved") %>' />
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Staff Name" SortExpression="StaffID">
