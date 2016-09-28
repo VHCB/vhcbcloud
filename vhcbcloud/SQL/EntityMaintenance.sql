@@ -36,6 +36,7 @@ create procedure dbo.AddNewEntity
 	@AgEd				nvarchar(max) = null,
 	@YearsManagingFarm	int = null,
 	@AppRole			int = null,
+	@Operation			int = null,
 	@isDuplicate		bit output,
 	@ApplicantId		int output
 ) as
@@ -49,7 +50,7 @@ begin transaction
 
 	set @isDuplicate = 0
 
-	if (@LKEntityType2 = 26243)--Individual
+	if (@Operation = 1)--Individual
 	begin
 
 	set @isDuplicate = 1
@@ -88,7 +89,7 @@ begin transaction
 		end
 
 	end
-	else if (@LKEntityType2 = 26242)--Organization
+	else if (@Operation = 2)--Organization
 	begin
 		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
 		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
@@ -104,7 +105,7 @@ begin transaction
 
 		set @isDuplicate = 0
 	end
-	else if (@LKEntityType2 = 26244)--Farm
+	else if (@Operation = 3)--Farm
 	begin
 		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
 		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
@@ -175,7 +176,8 @@ create procedure dbo.UpdateEntity
 	@Notes				nvarchar(max) = null,
 	@AgEd				nvarchar(max) = null,
 	@YearsManagingFarm	int = null,
-	@AppRole			int = null
+	@AppRole			int = null,
+	@Operation			int = null
 ) as
 begin transaction
 
@@ -186,7 +188,7 @@ begin transaction
 	declare @AddressId int;
 
 
-	if (@LKEntityType2 = 26243)--Individual
+	if (@Operation = 1)--Individual
 	begin
 
 		update c set Firstname = @Fname, Lastname = @Lname, LkPosition =@Position, Title = @Title
@@ -206,7 +208,7 @@ begin transaction
 		where a.ApplicantId = @ApplicantId
 
 	end
-	else if (@LKEntityType2 = 26242)--Organization
+	else if (@Operation = 2)--Organization
 	begin
 		update applicant 
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
@@ -220,7 +222,7 @@ begin transaction
 		join appname an(nolock) on aan.AppNameID = an.AppNameID
 		where a.ApplicantId = @ApplicantId
 	end
-	else if (@LKEntityType2 = 26244)--Farm
+	else if (@Operation = 3)--Farm
 	begin
 		update applicant 
 		set LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
@@ -276,8 +278,8 @@ begin
 	select a.LkEntityType, a.LKEntityType2, a.Individual, a.FYend, a.website, a.email, a.HomePhone, a.WorkPhone, a.CellPhone, a.Stvendid, a.AppRole,
 		c.Firstname, c.Lastname, c.LkPosition, c.Title,
 		an.Applicantname,
-		f.ApplicantID, f.FarmId, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, f.OutOFBiz, 
-			f.Notes, f.AgEd, f.YearsManagingFarm
+		f.ApplicantID, f.FarmId, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, 
+		f.OutOFBiz, f.Notes, f.AgEd, f.YearsManagingFarm
 	from applicant a(nolock) 
 	left join applicantcontact ac(nolock) on ac.ApplicantID = a.ApplicantID
 	left join contact c(nolock) on c.ContactId = ac.ContactID
@@ -295,12 +297,13 @@ go
 
 create procedure dbo.GetEntitiesByRole
 (
-	@LKEntityType2	int
+	@LKEntityType2	int,
+	@Operation		int
 )
 as
 begin
 --exec GetEntitiesByRole 26242
-	if(@LKEntityType2 != 26244)
+	if(@Operation != 3) --3 is farm
 	begin
 		select a.ApplicantId, an.ApplicantName 
 		from Appname an(nolock)
@@ -438,7 +441,8 @@ as
 Begin
 
 	select a.LkAddressType,  a.AddressId, isnull(a.Street#, '') as Street#, isnull(a.Address1, '') as Address1, isnull(a.Address2, '') as Address2, 
-	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, isnull(a.Zip, null) as Zip, 
+	isnull(a.latitude, '') as latitude, isnull(a.longitude, '') as longitude, isnull(a.Town, '') as Town, isnull(a.State, '') as State, 
+	isnull(a.Zip, null) as Zip, 
 	isnull(a.County, '') as County, isnull(Village, '') as Village,
 	a.RowIsActive, pa.DefAddress
 	from ApplicantAddress pa(nolock) 

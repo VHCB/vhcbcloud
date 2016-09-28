@@ -35,7 +35,7 @@ namespace vhcbcloud
                     string SelectedRole = ddlEntityRole.SelectedValue.ToString();
 
                     dvExistingEntities.Visible = true;
-                    BindApplicants(DataUtils.GetInt(SelectedRole), ddlEntityName);
+                    BindApplicants(DataUtils.GetInt(SelectedRole), ddlEntityRole.SelectedItem.ToString(), ddlEntityName);
                 }
                 else
                 {
@@ -172,12 +172,21 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-        protected void BindApplicants(int RoleId, DropDownList ddList)
+        protected void BindApplicants(int RoleId, string RoleName, DropDownList ddList)
         {
             try
             {
-                ddList.Items.Clear();
-                ddList.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId);
+                int Operation = 0;
+
+                if (RoleName.ToLower() == "individual")
+                    Operation = 1;
+                else if (RoleName.ToLower() == "organization")
+                    Operation = 2;
+                else if (RoleName.ToLower() == "farm")
+                    Operation = 3;
+
+                    ddList.Items.Clear();
+                ddList.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId, Operation);
                 ddList.DataValueField = "ApplicantId";
                 ddList.DataTextField = "Applicantname";
                 ddList.DataBind();
@@ -441,7 +450,7 @@ namespace vhcbcloud
                             txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
-                            0, null);
+                            0, null, 1); //1=Individual
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
@@ -461,7 +470,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
-                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()));
+                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2); //2=Organization
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -472,7 +481,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()));
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3); //3=Farm
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -480,6 +489,15 @@ namespace vhcbcloud
                 }
                 else
                 {
+                    int Operation = 0;
+
+                    if (ddlEntityRole.SelectedItem.Text.ToLower() == "individual")
+                        Operation = 1;
+                    else if(ddlEntityRole.SelectedItem.Text.ToLower() == "organization")
+                        Operation = 2;
+                    else if(ddlEntityRole.SelectedItem.Text.ToLower() == "farm")
+                        Operation = 3;
+
                     string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
                     string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
                     string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
@@ -488,7 +506,7 @@ namespace vhcbcloud
                            txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                            txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()));
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation);
                     ClearForm();
                     PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                     LogMessage("Entity Updated Successfully");
@@ -504,7 +522,7 @@ namespace vhcbcloud
 
             PopulateDropDown(ddlEntityRole, EntityRole.ToString());
 
-            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), ddlEntityName);
+            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), ddlEntityRole.SelectedItem.ToString(), ddlEntityName);
             PopulateDropDown(ddlEntityName, ApplicantId.ToString());
             EntityNameChanged();
         }
@@ -537,14 +555,14 @@ namespace vhcbcloud
                         dvNewAttribute.Visible = true;
                         dvNewProduct.Visible = true;
                         dvAttachEntities.Visible = true;
-                        BindApplicants(26243, ddlIndividualApplicant);
+                        BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
                     }
                     else
                     {
                         if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                         {
                             dvAttachEntities.Visible = true;
-                            BindApplicants(26243, ddlIndividualApplicant);
+                            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
                         }
                         else
                         {

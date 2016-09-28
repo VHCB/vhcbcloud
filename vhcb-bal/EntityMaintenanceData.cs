@@ -14,7 +14,8 @@ namespace VHCBCommon.DataAccessLayer
 
         public static EntityMaintResult AddNewEntity(int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
-            int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int? AppRole)
+            int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int? AppRole,
+            int Operation)
         {
             try
             {
@@ -54,7 +55,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AgEd", AgEd));
                         command.Parameters.Add(new SqlParameter("YearsManagingFarm", YearsManagingFarm));
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
-
+                        command.Parameters.Add(new SqlParameter("Operation", Operation));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
@@ -84,7 +86,8 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateEntity(int ApplicantId, int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
-            int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int AppRole)
+            int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int AppRole, 
+            int Operation)
         {
             try
             {
@@ -125,6 +128,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AgEd", AgEd));
                         command.Parameters.Add(new SqlParameter("YearsManagingFarm", YearsManagingFarm));
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
+                        command.Parameters.Add(new SqlParameter("Operation", Operation));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -171,7 +175,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static DataTable GetEntitiesByRole(int LKEntityType2)
+        public static DataTable GetEntitiesByRole(int LKEntityType2, int Operation)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -181,6 +185,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetEntitiesByRole";
                 command.Parameters.Add(new SqlParameter("LKEntityType2", LKEntityType2));
+                command.Parameters.Add(new SqlParameter("Operation", Operation));
+
                 using (connection)
                 {
                     connection.Open();
