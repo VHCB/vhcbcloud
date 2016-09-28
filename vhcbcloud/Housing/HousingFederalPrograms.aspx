@@ -162,6 +162,7 @@
 
                         <div class="panel-body" style="padding: 2px 15px 0px 2px" runat="server" id="dvFedProgramHome" visible="false">
                             <div class="panel panel-default" style="margin-bottom: 2px;">
+
                                 <div class="panel-heading" style="padding: 5px 5px 1px 5px">
                                     <table style="width: 100%;">
                                         <tr>
@@ -225,85 +226,24 @@
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
-                                        </table>
-                                    </asp:Panel>
-                                </div>
-
-                                <div class="panel panel-default" style="margin-bottom: -1px;">
-                                    <div class="panel-heading" style="padding: 5px 5px 1px 5px">
-                                        <table style="width: 100%;">
                                             <tr>
-                                                <td>
-                                                    <h3 class="panel-title">Inspections</h3>
+                                                <td style="width: 155px"><span class="labelClass">Inspection Frequency</span></td>
+                                                <td style="width: 181px">
+                                                    <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
+                                                        ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
+                                                        Style="top: 520px; left: 650px; position: absolute; height: 218px; width: 355px" />
                                                 </td>
+                                                <td style="width: 105px"><span class="labelClass"></span></td>
+                                                <td style="width: 86px"></td>
+                                                <td style="width: 165px"><span class="labelClass"></span></td>
+                                                <td style="width: 180px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                         </table>
-                                    </div>
-                                    <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="Div1">
-                                        <asp:Panel runat="server" ID="Panel2">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td style="width: 177px"><span class="labelClass">Inspection Frequency</span></td>
-                                                    <td style="width: 194px">
-                                                        <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                        <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
-                                                            ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
-                                                            Style="top: 550px; left: 395px; position: absolute; height: 22px; width: 355px" />
-                                                    </td>
-                                                    <td style="width: 138px"><span class="labelClass">Date of Last Inspection</span></td>
-                                                    <td style="width: 126px">
-                                                        <asp:TextBox ID="txtLastInspect" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtLastInspect" TargetControlID="txtLastInspect">
-                                                        </ajaxToolkit:CalendarExtender>
-                                                    </td>
-                                                    <td style="width: 156px"><span class="labelClass">Next Inspection year</span></td>
-                                                    <td style="width: 180px">
-                                                        <asp:TextBox ID="txtNextInspect" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" style="height: 5px"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 177px"><span class="labelClass">Staff responsible</span></td>
-                                                    <td style="width: 194px">
-                                                        <asp:DropDownList ID="ddlStaff" CssClass="clsDropDown" runat="server">
-                                                        </asp:DropDownList>
-                                                    </td>
-                                                    <td style="width: 138px"><span class="labelClass">Inspection Date</span></td>
-                                                    <td style="width: 126px">
-                                                        <asp:TextBox ID="txtInspectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectDate" TargetControlID="txtInspectDate">
-                                                        </ajaxToolkit:CalendarExtender>
-                                                    </td>
-                                                    <td style="width: 156px"><span class="labelClass">Date Inspection letter sent</span></td>
-                                                    <td style="width: 180px">
-                                                        <asp:TextBox ID="txtInspectLetter" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectLetter" TargetControlID="txtInspectLetter">
-                                                        </ajaxToolkit:CalendarExtender>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" style="height: 5px"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 177px"><span class="labelClass">Date of Response</span></td>
-                                                    <td style="width: 194px">
-                                                        <asp:TextBox ID="txtRespDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                        <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRespDate" TargetControlID="txtRespDate">
-                                                        </ajaxToolkit:CalendarExtender>
-                                                    </td>
-                                                    <td style="width: 138px"></td>
-                                                    <td style="width: 126px"></td>
-                                                    <td style="width: 156px"></td>
-                                                    <td style="width: 180px"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6" style="height: 5px"></td>
-                                                </tr>
-                                            </table>
-                                        </asp:Panel>
-                                    </div>
+                                    </asp:Panel>
                                 </div>
 
                                 <div class="panel panel-default" style="margin-bottom: 0px;">
@@ -382,6 +322,136 @@
                                         </asp:Panel>
                                     </div>
                                 </div>
+
+                                <div class="panel-width" runat="server" id="dvNewInspections">
+                                    <div class="panel panel-default" style="margin-bottom: 0px;">
+                                        <div class="panel-heading ">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>
+                                                        <h3 class="panel-title">Inspections</h3>
+                                                    </td>
+                                                    <td style="text-align: right">
+                                                        <asp:CheckBox ID="cbAddNewInspections" runat="server" Text="Add New Inspection" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvInspectionsForm">
+                                            <asp:Panel runat="server" ID="Panel2">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 177px"><span class="labelClass">Inspection Date</span></td>
+                                                        <td style="width: 194px">
+                                                            <asp:TextBox ID="txtInspectDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectDate" TargetControlID="txtInspectDate">
+                                                            </ajaxToolkit:CalendarExtender>
+                                                        </td>
+                                                        <td style="width: 138px"><span class="labelClass">Inspection performed by</span></td>
+                                                        <td style="width: 158px">
+                                                            <asp:DropDownList ID="ddlStaff" CssClass="clsDropDown" runat="server">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                        <td style="width: 156px"><span class="labelClass">Next Inspection year</span></td>
+                                                        <td style="width: 180px">
+                                                            <asp:TextBox ID="txtNextInspect" CssClass="clsTextBoxBlueSm" runat="server" Style="margin-left: 2px"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="height: 5px"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 177px"><span class="labelClass">Date Inspection letter sent</span></td>
+                                                        <td style="width: 194px">
+                                                            <asp:TextBox ID="txtInspectLetter" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtInspectLetter" TargetControlID="txtInspectLetter">
+                                                            </ajaxToolkit:CalendarExtender>
+                                                        </td>
+                                                        <td style="width: 138px"><span class="labelClass">Date of Response</span></td>
+                                                        <td style="width: 158px">
+                                                            <asp:TextBox ID="txtRespDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtRespDate" TargetControlID="txtRespDate">
+                                                            </ajaxToolkit:CalendarExtender>
+                                                        </td>
+                                                        <td style="width: 156px"><span class="labelClass">Deficiency(ies) Found?</span></td>
+                                                        <td style="width: 180px">
+                                                            <asp:CheckBox ID="cbDeficiency" runat="server" Checked="false" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" style="height: 5px"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 177px"><span class="labelClass">Next Inspection Deadline</span></td>
+                                                        <td style="width: 194px">
+                                                            <asp:TextBox ID="txtNextInspDeadLine" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtNextInspDeadLine" TargetControlID="txtNextInspDeadLine">
+                                                            </ajaxToolkit:CalendarExtender>
+                                                        </td>
+                                                        <td style="width: 138px"><span class="labelClass"></span></td>
+                                                        <td style="width: 158px"></td>
+                                                        <td style="width: 156px">
+                                                            <asp:Button ID="btnAddInspection" runat="server" Text="Add" class="btn btn-info"
+                                                                OnClick="btnAddInspection_Click" />
+                                                        </td>
+                                                        <td style="width: 180px"></td>
+                                                    </tr>
+                                                </table>
+                                            </asp:Panel>
+                                        </div>
+
+                                        <div class="panel-body" id="dvInspectionGrid" runat="server">
+                                            <asp:Panel runat="server" ID="Panel10" Width="100%" Height="150px" ScrollBars="Vertical">
+                                                <asp:GridView ID="gvInspection" runat="server" AutoGenerateColumns="False"
+                                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
+                                                    OnRowEditing="gvInspection_RowEditing" OnRowCancelingEdit="gvInspection_RowCancelingEdit">
+                                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                                    <HeaderStyle CssClass="headerStyle" />
+                                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                                    <RowStyle CssClass="rowStyle" />
+                                                    <FooterStyle CssClass="footerStyleTotals" />
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="ProjectHOMEInspectionID" Visible="false">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblProjectHOMEInspectionID" runat="Server" Text='<%# Eval("ProjectHOMEInspectionID") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Inspection Date">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblInspectDate" runat="Server" Text='<%# Eval("InspectDate") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle Width="400px" />
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Performed By">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblHomeNumunits" runat="Server" Text='<%# Eval("InspectStaff") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle Width="200px" />
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Next Inspection year">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblNextInspect" runat="Server" Text='<%# Eval("NextInspect") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle Width="200px" />
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Active">
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle Width="200px" />
+                                                        </asp:TemplateField>
+                                                        <asp:CommandField ShowEditButton="True" />
+                                                    </Columns>
+                                                </asp:GridView>
+                                            </asp:Panel>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -515,8 +585,10 @@
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Unit Type</span></td>
                                         <td style="width: 215px">
-                                            <div><asp:DropDownList ID="ddlUnitType" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList></div>
+                                            <div>
+                                                <asp:DropDownList ID="ddlUnitType" CssClass="clsDropDown" runat="server">
+                                                </asp:DropDownList>
+                                            </div>
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Number of Units
@@ -827,7 +899,7 @@
     <asp:HiddenField ID="hfMedianIncomeWarning" runat="server" />
     <asp:HiddenField ID="hfHousingID" runat="server" />
     <asp:HiddenField ID="hfHomeAffWarning" runat="server" />
-
+    
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
@@ -844,9 +916,9 @@
                 PopupNextInspectionYear();
             });
 
-            $('#<%= txtLastInspect.ClientID%>').blur(function () {
+ <%--           $('#<%= txtLastInspect.ClientID%>').blur(function () {
                 PopupNextInspectionYear();
-            });
+            });--%>
 
             $('#<%= dvProgramSetupForm.ClientID%>').toggle($('#<%= cbAddFedProgram.ClientID%>').is(':checked'));
             $('#<%= cbAddFedProgram.ClientID%>').click(function () {
@@ -856,6 +928,11 @@
             $('#<%= dvHomeAffForm.ClientID%>').toggle($('#<%= cbAddHomeAff.ClientID%>').is(':checked'));
             $('#<%= cbAddHomeAff.ClientID%>').click(function () {
                 $('#<%= dvHomeAffForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvInspectionsForm.ClientID%>').toggle($('#<%= cbAddNewInspections.ClientID%>').is(':checked'));
+            $('#<%= cbAddNewInspections.ClientID%>').click(function () {
+                $('#<%= dvInspectionsForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvRentalAffordabilityForm.ClientID%>').toggle($('#<%= cbAddRentalAffordability.ClientID%>').is(':checked'));
@@ -868,7 +945,7 @@
                 $('#<%= dvUnitOccupancyForm.ClientID%>').toggle(this.checked);
             }).change();
 
-           <%-- $('#<%= dvMedianIncomeForm.ClientID%>').toggle($('#<%= cbAddMedianIncome.ClientID%>').is(':checked'));
+<%--            $('#<%= dvMedianIncomeForm.ClientID%>').toggle($('#<%= cbAddMedianIncome.ClientID%>').is(':checked'));
             $('#<%= cbAddMedianIncome.ClientID%>').click(function () {
                 $('#<%= dvMedianIncomeForm.ClientID%>').toggle(this.checked);
             }).change();--%>
@@ -917,7 +994,7 @@
             }
         };
 
-        function PopupNextInspectionYear() {
+        <%--function PopupNextInspectionYear() {
             if (!isNaN($('#<%=txtFreq.ClientID%>').val()) && $('#<%=txtLastInspect.ClientID%>').val() != "") {
 
                 var startDate = new Date($('#<%=txtLastInspect.ClientID%>').val());
@@ -927,7 +1004,7 @@
             else {
                 $('#<%=txtNextInspect.ClientID%>').val('');
             }
-        };
+        };--%>
 
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
