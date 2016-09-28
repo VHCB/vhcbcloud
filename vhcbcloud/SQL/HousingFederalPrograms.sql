@@ -153,18 +153,20 @@ create procedure dbo.AddProjectHOMEDetail
 	@Setup				DateTime, 
 	@CompleteBy			int, 
 	@FundedDate			DateTime, 
-	@IDISClose			DateTime
+	@FundCompleteBy		int,
+	@IDISClose			DateTime,
+	@IDISCompleteBy		int
 ) as
 begin transaction
 
 	begin try
 
 	insert into ProjectHOMEDetail(ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
-		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, IDISNum, Setup, CompleteBy, FundedDate, 
-		IDISClose)
+		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy,
+		IDISClose, IDISCompleteBy)
 	values(@ProjectFederalId, @Recert, @LKAffrdPer, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
 		@freq, @LastInspect, @NextInspect, @Staff, @InspectDate, @InspectLetter, @RespDate, @IDISNum, @Setup, @CompleteBy, @FundedDate, 
-		@IDISClose)
+		@FundCompleteBy, @IDISClose, @IDISCompleteBy)
 
 	end try
 	begin catch
@@ -205,7 +207,9 @@ create procedure dbo.UpdateProjectHOMEDetail
 	@Setup				DateTime, 
 	@CompleteBy			int, 
 	@FundedDate			DateTime, 
-	@IDISClose			DateTime
+	@FundCompleteBy		int,
+	@IDISClose			DateTime,
+	@IDISCompleteBy		int
 ) as
 begin transaction
 
@@ -214,8 +218,8 @@ begin transaction
 	update ProjectHOMEDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdStart = @AffrdStart, 
 		AffrdEnd = @AffrdEnd, CHDO = @CHDO, CHDORecert = @CHDORecert, 
 		freq = @freq, LastInspect = @LastInspect, NextInspect = @NextInspect, Staff = @Staff, InspectDate = @InspectDate, InspectLetter = @InspectLetter, 
-		RespDate = @RespDate, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, IDISClose = @IDISClose, 
-		DateModified = getdate()
+		RespDate = @RespDate, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, FundCompleteBy = @FundCompleteBy,
+		IDISClose = @IDISClose, IDISCompleteBy = @IDISCompleteBy, DateModified = getdate()
 	from ProjectHOMEDetail
 	where ProjectFederalDetailID = @ProjectFederalDetailID
 	
@@ -247,7 +251,7 @@ begin transaction
 
 	select ProjectFederalDetailId, ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
 		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, 
-		IDISNum, Setup, CompleteBy, FundedDate, IDISClose 
+		IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy
 	from ProjectHOMEDetail(nolock)
 	where ProjectFederalId = @ProjectFederalId
 	end try
@@ -726,6 +730,110 @@ begin transaction
 	update ProjectHomeAffordUnits set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
 	from ProjectHomeAffordUnits
 	where ProjectHomeAffordUnitsID = @ProjectHomeAffordUnitsID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+/* ProjectHOMEInspection */
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectHOMEInspectionList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectHOMEInspectionList
+go
+
+create procedure GetProjectHOMEInspectionList  
+(
+	@ProjectFederalDetailID	int,
+	@IsActiveOnly	bit
+)
+as
+begin 
+--exec GetProjectHOMEInspectionList 1, 1
+
+	select i.ProjectHOMEInspectionID, i.InspectDate, i.NextInspect, i.InspectStaff, i.InspectLetter, 
+		i.RespDate, i.Deficiency, i.InspectDeadline, i.RowIsActive
+	from ProjectHOMEInspection i(nolock)
+	where i.ProjectFederalDetailID = @ProjectFederalDetailID 
+		and (@IsActiveOnly = 0 or i.RowIsActive = @IsActiveOnly)
+	order by i.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectHOMEInspection]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddProjectHOMEInspection
+go
+
+create procedure dbo.AddProjectHOMEInspection
+(
+	
+	@ProjectFederalDetailID	int, 
+	@InspectDate			datetime, 
+	@NextInspect			nchar(4), 
+	@InspectStaff			int, 
+	@InspectLetter			datetime, 
+	@RespDate				datetime, 
+	@Deficiency				bit, 
+	@InspectDeadline		datetime
+	--@isDuplicate		bit output,
+	--@isActive			bit Output
+) as
+begin transaction
+
+	begin try
+
+		insert into ProjectHOMEInspection(ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+			RespDate, Deficiency, InspectDeadline, DateModified)
+		values(@ProjectFederalDetailID, @InspectDate, @NextInspect, @InspectStaff, @InspectLetter, 
+			@RespDate, @Deficiency, @InspectDeadline, getdate())
+		
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectHOMEInspection]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectHOMEInspection
+go
+
+create procedure dbo.UpdateProjectHOMEInspection
+(
+	@ProjectHOMEInspectionID	int, 
+	@InspectDate				datetime, 
+	@NextInspect				nchar(4), 
+	@InspectStaff				int, 
+	@InspectLetter				datetime, 
+	@RespDate					datetime, 
+	@Deficiency					bit, 
+	@InspectDeadline			datetime,
+	@RowIsActive				bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectHOMEInspection set  InspectDate = @InspectDate, NextInspect = @NextInspect, InspectStaff = @InspectStaff, 
+		InspectLetter = @InspectLetter, RespDate = @RespDate, Deficiency = @Deficiency, InspectDeadline = @InspectDeadline,
+		RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHOMEInspection
+	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
 
 	end try
 	begin catch

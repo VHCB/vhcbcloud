@@ -153,9 +153,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static void AddProjectHOMEDetail(int ProjectFederalId, int Recert, int LKAffrdPer,
-            DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, DateTime LastInspect, string NextInspect,
-            int Staff, DateTime InspectDate, DateTime InspectLetter, DateTime RespDate, string IDISNum, DateTime Setup, int CompleteBy,
-            DateTime FundedDate, DateTime IDISClose)
+            DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
+            DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
         {
             try
             {
@@ -170,7 +169,6 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "AddProjectHOMEDetail";
 
                         command.Parameters.Add(new SqlParameter("ProjectFederalId", ProjectFederalId));
-                        //command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
@@ -178,17 +176,13 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
                         command.Parameters.Add(new SqlParameter("CHDORecert", CHDORecert));
                         command.Parameters.Add(new SqlParameter("freq", freq));
-                        command.Parameters.Add(new SqlParameter("LastInspect", LastInspect.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : LastInspect));
-                        command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
-                        command.Parameters.Add(new SqlParameter("Staff", Staff));
-                        command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
-                        command.Parameters.Add(new SqlParameter("InspectLetter", InspectLetter.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectLetter));
-                        command.Parameters.Add(new SqlParameter("RespDate", RespDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : RespDate));
                         command.Parameters.Add(new SqlParameter("IDISNum", IDISNum));
                         command.Parameters.Add(new SqlParameter("Setup", Setup.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Setup));
                         command.Parameters.Add(new SqlParameter("CompleteBy", CompleteBy));
                         command.Parameters.Add(new SqlParameter("FundedDate", FundedDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : FundedDate));
+                        command.Parameters.Add(new SqlParameter("FundCompleteBy", FundCompleteBy));
                         command.Parameters.Add(new SqlParameter("IDISClose", IDISClose.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : IDISClose));
+                        command.Parameters.Add(new SqlParameter("IDISCompleteBy", IDISCompleteBy));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -203,9 +197,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static void UpdateProjectHOMEDetail(int ProjectFederalDetailID, int Recert, int LKAffrdPer,
-           DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, DateTime LastInspect, string NextInspect,
-           int Staff, DateTime InspectDate, DateTime InspectLetter, DateTime RespDate, string IDISNum, DateTime Setup, int CompleteBy,
-           DateTime FundedDate, DateTime IDISClose)
+           DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
+           DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
         {
             try
             {
@@ -220,7 +213,6 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "UpdateProjectHOMEDetail";
 
                         command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
-                       // command.Parameters.Add(new SqlParameter("Copyowner", Copyowner));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
@@ -228,17 +220,13 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
                         command.Parameters.Add(new SqlParameter("CHDORecert", CHDORecert));
                         command.Parameters.Add(new SqlParameter("freq", freq));
-                        command.Parameters.Add(new SqlParameter("LastInspect", LastInspect.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : LastInspect));
-                        command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
-                        command.Parameters.Add(new SqlParameter("Staff", Staff));
-                        command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
-                        command.Parameters.Add(new SqlParameter("InspectLetter", InspectLetter.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectLetter));
-                        command.Parameters.Add(new SqlParameter("RespDate", RespDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : RespDate));
                         command.Parameters.Add(new SqlParameter("IDISNum", IDISNum));
                         command.Parameters.Add(new SqlParameter("Setup", Setup.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Setup));
                         command.Parameters.Add(new SqlParameter("CompleteBy", CompleteBy));
                         command.Parameters.Add(new SqlParameter("FundedDate", FundedDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : FundedDate));
+                        command.Parameters.Add(new SqlParameter("FundCompleteBy", FundCompleteBy));
                         command.Parameters.Add(new SqlParameter("IDISClose", IDISClose.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : IDISClose));
+                        command.Parameters.Add(new SqlParameter("IDISCompleteBy", IDISCompleteBy));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -623,6 +611,78 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         #endregion Median Income
+
+        #region Inspections
+        public static DataTable GetProjectHOMEInspectionList(int ProjectFederalDetailID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectHOMEInspectionList";
+                        command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void AddProjectHOMEInspection(int ProjectFederalDetailID, DateTime InspectDate, string NextInspect, 
+            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectHOMEInspection";
+
+                        command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
+                        command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
+                        command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
+                        command.Parameters.Add(new SqlParameter("InspectStaff", InspectStaff));
+                        command.Parameters.Add(new SqlParameter("InspectLetter", InspectLetter.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectLetter));
+                        command.Parameters.Add(new SqlParameter("RespDate", RespDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : RespDate));
+                        command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
+                        command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Inspections
     }
 
     public class HousingFederalProgramsResult
