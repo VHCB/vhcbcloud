@@ -647,6 +647,39 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return dt;
         }
 
+        public static DataRow GetProjectHOMEInspectionById(int ProjectHOMEInspectionID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectHOMEInspectionById";
+                        command.Parameters.Add(new SqlParameter("ProjectHOMEInspectionID", ProjectHOMEInspectionID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
         public static void AddProjectHOMEInspection(int ProjectFederalDetailID, DateTime InspectDate, string NextInspect, 
             int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline)
         {
@@ -671,6 +704,43 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
                         command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
                         
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateProjectHOMEInspection(int ProjectHOMEInspectionID, DateTime InspectDate, string NextInspect,
+            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectHOMEInspection";
+
+                        command.Parameters.Add(new SqlParameter("ProjectHOMEInspectionID", ProjectHOMEInspectionID));
+                        command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
+                        command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
+                        command.Parameters.Add(new SqlParameter("InspectStaff", InspectStaff));
+                        command.Parameters.Add(new SqlParameter("InspectLetter", InspectLetter.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectLetter));
+                        command.Parameters.Add(new SqlParameter("RespDate", RespDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : RespDate));
+                        command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
+                        command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

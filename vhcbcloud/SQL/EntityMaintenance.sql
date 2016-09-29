@@ -1,4 +1,4 @@
-use VHCBSandbox 
+use VHCBSandbox
 go
 
 
@@ -71,8 +71,8 @@ begin transaction
 
 			set @contactid = @@identity;
 
-			insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid)
-			values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid)
+			insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
+			values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @Position)
 
 			set @applicantid = @@identity;
 
@@ -92,7 +92,7 @@ begin transaction
 	else if (@Operation = 2)--Organization
 	begin
 		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
+		values(@LkEntityType, @LKEntityType2, 0, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
 
 		set @applicantid = @@identity;
 
@@ -108,7 +108,7 @@ begin transaction
 	else if (@Operation = 3)--Farm
 	begin
 		insert into applicant(LkEntityType, LKEntityType2, Individual, FYend, website, email, HomePhone, WorkPhone, CellPhone, Stvendid, AppRole)
-		values(@LkEntityType, @LKEntityType2, 1, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
+		values(@LkEntityType, @LKEntityType2, 0, @FYend, @Website, @Email, @HomePhone, @WorkPhone, @CellPhone, @Stvendid, @AppRole)
 
 		set @applicantid = @@identity;
 
@@ -191,14 +191,15 @@ begin transaction
 	if (@Operation = 1)--Individual
 	begin
 
-		update c set Firstname = @Fname, Lastname = @Lname, LkPosition =@Position, Title = @Title
+		update c set Firstname = @Fname, Lastname = @Lname, LkPosition = @Position, Title = @Title
 		from contact c(nolock)
 		join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
 		where ac.ApplicantId = @ApplicantId
 
 		update applicant 
 		set  LkEntityType = @LkEntityType, FYend = @FYend, website = @Website, Stvendid = @Stvendid, 
-			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email
+			HomePhone = @HomePhone, CellPhone = @CellPhone, WorkPhone = @WorkPhone, email = @Email,
+			AppRole = @Position
 		from applicant where  ApplicantId = @ApplicantId
 
 		update an set an.Applicantname =  @lname +', '+ @fname

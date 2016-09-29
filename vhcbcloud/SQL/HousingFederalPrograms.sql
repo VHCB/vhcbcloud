@@ -19,7 +19,7 @@ go
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectFederalList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetProjectFederalList
 go
-
+ 
 create procedure GetProjectFederalList  
 (
 	@ProjectID		int,
@@ -760,7 +760,7 @@ begin
 --exec GetProjectHOMEInspectionList 1, 1
 
 	select i.ProjectHOMEInspectionID, i.InspectDate, i.NextInspect, i.InspectStaff, i.InspectLetter, 
-		i.RespDate, i.Deficiency, i.InspectDeadline, i.RowIsActive
+		i.RespDate, i.Deficiency, i.InspectDeadline, i.RowIsActive, dbo.GetApplicantName(i.InspectStaff) 'InspectionPerformedBy'
 	from ProjectHOMEInspection i(nolock)
 	where i.ProjectFederalDetailID = @ProjectFederalDetailID 
 		and (@IsActiveOnly = 0 or i.RowIsActive = @IsActiveOnly)
@@ -835,6 +835,36 @@ begin transaction
 	from ProjectHOMEInspection
 	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
 
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectHOMEInspectionById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectHOMEInspectionById
+go
+
+create procedure dbo.GetProjectHOMEInspectionById
+(
+	@ProjectHOMEInspectionID	int
+) as
+begin transaction
+
+	begin try
+
+	select ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+		RespDate, Deficiency, InspectDeadline, RowIsActive, DateModified
+	from ProjectHOMEInspection(nolock)
+	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
 	end try
 	begin catch
 		if @@trancount > 0

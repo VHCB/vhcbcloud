@@ -100,11 +100,44 @@ namespace vhcbcloud.Housing
             BindStaff(ddlFundedDateCompleteBy);
             BindStaff(ddlIDISCompletionDateCompletedBy);
             //BindStaff(ddlStaff);
-            BindLookUP(ddlStaff, 117);
+            //BindLookUP(ddlStaff, 117);
+            PopulateInspectorDropDown(ddlStaff, "Home Inspector");
             BindLookUP(ddlUnitType, 168);
             BindLookUP(ddlUnitOccupancyUnitType, 166);
             //BindLookUP(ddlMedianIncome, 167);
             BindLookUP(ddlHomeAff, 109);
+        }
+
+        private void PopulateInspectorDropDown(DropDownList ddList, string Role)
+        {
+            try
+            {
+                DataTable dtProjectEntity = ProjectMaintenanceData.GetProjectApplicantList(DataUtils.GetInt(hfProjectId.Value), true);
+                ddList.Items.Clear();
+                ddList.DataSource = dtProjectEntity;
+                ddList.DataValueField = "ApplicantId";
+                ddList.DataTextField = "applicantname";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+
+                foreach (DataRow dr in dtProjectEntity.Rows)
+                {
+                    if (dr["ApplicantRoleDescription"].ToString().ToLower() == Role.ToLower())
+                    {
+                        ListItem selectedListItem = ddList.Items.FindByValue(dr["ApplicantId"].ToString());
+                        if (selectedListItem != null)
+                        {
+                            selectedListItem.Selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "PopulateOwnerDropDown", "", ex.Message);
+            }
+
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -224,14 +257,31 @@ namespace vhcbcloud.Housing
                 {
                     hfHousingID.Value = drHousing["HousingID"].ToString();
                 }
-                BindHomeAffordGrid();
-
                 dvFedProgramHome.Visible = true;
-                dvNewHomeAff.Visible = true;
                 ClearHomeForm();
                 PopulateHomeForm();
-                BindInspectionsGrid();
+                cbAddHomeAff.Text = "Add New HOME Income Restriction";
+                cbAddRentalAffordability.Text = "Add New HOME Rent Restriction";
+                cbAddUnitOccupancy.Text = "Add New HOME Unit Sizes";
+                spnUnitSizes.InnerText = "HOME Unit Sizes";
+                spnRentRest.InnerText = "HOME Rent Restrictions";
+                spnIncomeRest.InnerText = "HOME Income Restrictions";
             }
+            else if (hfProjectFedProgram.Value.ToLower() == "htf")
+            {
+                cbAddHomeAff.Text = "Add New HTF Income Restriction";
+                cbAddRentalAffordability.Text = "Add New HTF Rent Restriction";
+                cbAddUnitOccupancy.Text = "Add New HTF Unit Sizes";
+                spnUnitSizes.InnerText = "HTF Unit Sizes";
+                spnRentRest.InnerText = "HTF Rent Restrictions";
+                spnIncomeRest.InnerText = "HTF Income Restrictions";
+            }
+
+                dvNewInspections.Visible = true;
+            BindInspectionsGrid();
+
+            dvNewHomeAff.Visible = true;
+            BindHomeAffordGrid();
 
             dvRentalAffordability.Visible = true;
             BindRentalAffordabilityGrid();
@@ -1004,25 +1054,63 @@ namespace vhcbcloud.Housing
 
         protected void btnAddInspection_Click(object sender, EventArgs e)
         {
-            HousingFederalProgramsData.AddProjectHOMEInspection(DataUtils.GetInt(hfProjectFederalDetailId.Value),
+            if (btnAddInspection.Text.ToLower() == "add")
+            {
+                HousingFederalProgramsData.AddProjectHOMEInspection(DataUtils.GetInt(hfProjectFederalDetailId.Value),
                            DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                            DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
                            DataUtils.GetDate(txtNextInspDeadLine.Text));
-            cbAddNewInspections.Checked = false;
+                cbAddNewInspections.Checked = false;
 
-            BindInspectionsGrid();
+                BindInspectionsGrid();
+                ClearInspectionsForm();
+                LogMessage("New Inspection details added successfully");
+            }
+            else
+            {
+                HousingFederalProgramsData.UpdateProjectHOMEInspection(DataUtils.GetInt(hfProjectFederalDetailId.Value),
+                          DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
+                          DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
+                          DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked);
 
-            LogMessage("New Inspection details added successfully");
+                gvInspection.EditIndex = -1;
+                BindInspectionsGrid();
+                ClearInspectionsForm();
+                LogMessage("Inspection details updated successfully");
+                btnAddInspection.Text = "Add";
+                chkInspectionActive.Checked = true;
+            }
         }
 
         protected void gvInspection_RowEditing(object sender, GridViewEditEventArgs e)
         {
-
+            gvInspection.EditIndex = e.NewEditIndex;
+            BindInspectionsGrid();
         }
 
         protected void gvInspection_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+            gvInspection.EditIndex = -1;
+            BindInspectionsGrid();
+            ClearInspectionsForm();
+            hfProjectHOMEInspectionID.Value = "";
+            btnAddInspection.Text = "Add";
+            cbAddNewInspections.Checked = false;
+            chkInspectionActive.Checked = true;
+        }
 
+        private void ClearInspectionsForm()
+        {
+            txtNextInspect.Text = "";
+            ddlStaff.SelectedIndex = -1;
+            PopulateInspectorDropDown(ddlStaff, "Home Inspector");
+            txtInspectDate.Text = "";
+            txtInspectLetter.Text = "";
+            txtRespDate.Text = "";
+            cbDeficiency.Checked = false;
+            txtNextInspDeadLine.Text = "";
+            chkInspectionActive.Enabled = false;
+            cbAddNewInspections.Checked = false;
         }
 
         private void BindInspectionsGrid()
@@ -1047,6 +1135,45 @@ namespace vhcbcloud.Housing
             catch (Exception ex)
             {
                 LogError(Pagename, "BindInspectionsGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvInspection_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddInspection.Text = "Update";
+                    cbAddNewInspections.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[0].Visible = false;
+
+                        Label lblProjectHOMEInspectionID = e.Row.FindControl("lblProjectHOMEInspectionID") as Label;
+                        DataRow dr = HousingFederalProgramsData.GetProjectHOMEInspectionById(DataUtils.GetInt(lblProjectHOMEInspectionID.Text));
+
+                        hfProjectHOMEInspectionID.Value = lblProjectHOMEInspectionID.Text;
+
+                        txtInspectDate.Text = dr["InspectDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDate"].ToString()).ToShortDateString();
+                        PopulateDropDown(ddlStaff, dr["InspectStaff"].ToString());
+                        txtNextInspect.Text = dr["NextInspect"].ToString();
+                        txtInspectLetter.Text = dr["InspectLetter"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectLetter"].ToString()).ToShortDateString();
+
+                        txtRespDate.Text = dr["RespDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["RespDate"].ToString()).ToShortDateString();
+                        txtNextInspDeadLine.Text = dr["InspectDeadline"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDeadline"].ToString()).ToShortDateString();
+                        cbDeficiency.Checked = DataUtils.GetBool(dr["Deficiency"].ToString());
+                        chkInspectionActive.Enabled = true;
+                        chkInspectionActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvInspection_RowDataBound", "", ex.Message);
             }
         }
     }
