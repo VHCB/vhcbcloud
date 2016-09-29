@@ -16,6 +16,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
+                hfReallocateGuid.Value = "";
                 BindProjects();
             }
         }
@@ -78,8 +79,9 @@ namespace vhcbcloud
         {
             if (ddlRFromProj.SelectedIndex > 0)
             {
+                hfReallocateGuid.Value = "";
                 hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
-                DataTable dtFund = new DataTable();
+
                 ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ddlRFromFund.DataValueField = "fundid";
                 ddlRFromFund.DataTextField = "name";
@@ -94,11 +96,17 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
+                    DataTable dtFund = new DataTable();
+                    DataTable dtRelAmt = new DataTable();
                     dtFund = FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                     if (dtFund.Rows.Count > 0)
-                    {
-                        txtRfromAmt.Text = dtFund.Rows[0]["amount"].ToString();
+                    {                        
                         ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
+                    }
+                    dtRelAmt= FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    if ( dtRelAmt.Rows.Count>0)
+                    {
+                        txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
                     }
                     BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 }
@@ -119,11 +127,33 @@ namespace vhcbcloud
                 //{
                 //    ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
                 //}
+
                 ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
                 ddlRToFund.DataValueField = "fundid";
                 ddlRToFund.DataTextField = "name";
                 ddlRToFund.DataBind();
                 ddlRToFund.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
+                {
+                    ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
+                    ddlRToFund.Enabled = false;
+                    if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                    {
+                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                    }
+                    else
+                    {
+                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    }
+                    //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    ddlRtoFundType.DataValueField = "typeid";
+                    ddlRtoFundType.DataTextField = "Description";
+                    ddlRtoFundType.DataBind();
+                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+                else
+                    ddlRToFund.Enabled = true;
             }
         }
 
@@ -156,6 +186,15 @@ namespace vhcbcloud
                 ddlRFromFundType.DataBind();
                 if (ddlRFromFundType.Items.Count > 1)
                     ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (ddlRToProj.SelectedIndex > 0)
+                    if (ddlRToProj.SelectedValue != ddlRFromProj.SelectedValue)
+                    {
+                        ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
+                        ddlRToFund.Enabled = false;
+                    }
+                    else
+                        ddlRToFund.Enabled = true;
             }
         }
 
@@ -163,15 +202,16 @@ namespace vhcbcloud
         {
             if (ddlRFromProj.SelectedValue.ToString() != ddlRToProj.SelectedValue.ToString())
             {
-                if (ddlRToFund.SelectedIndex > 0)
-                {
-                    ddlRtoFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()), Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
-                    ddlRtoFundType.DataValueField = "typeid";
-                    ddlRtoFundType.DataTextField = "fundtype";
-                    ddlRtoFundType.DataBind();
-                    if (ddlRtoFundType.Items.Count > 1)
-                        ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
-                }
+                /*Do not Remove below*/
+                //if (ddlRToFund.SelectedIndex > 0)
+                //{
+                //    ddlRtoFundType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(ddlRToProj.SelectedValue.ToString()), Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
+                //    ddlRtoFundType.DataValueField = "typeid";
+                //    ddlRtoFundType.DataTextField = "fundtype";
+                //    ddlRtoFundType.DataBind();
+                //    if (ddlRtoFundType.Items.Count > 1)
+                //        ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                //}
             }
             else
             {
@@ -197,7 +237,10 @@ namespace vhcbcloud
         public void ClearReallocationToPanel()
         {
             ddlRToProj.SelectedIndex = 0;
-
+            ddlRToFund.DataSource = null;
+            ddlRToFund.DataBind();
+            ddlRtoFundType.DataSource = null;
+            ddlRtoFundType.DataBind();
             txtRToAmt.Text = "";
         }
 
@@ -206,6 +249,8 @@ namespace vhcbcloud
             ddlRFromProj.SelectedIndex = 0;
             ddlRFromFund.DataSource = null;
             ddlRFromFund.DataBind();
+            ddlRFromFundType.DataSource = null;
+            ddlRFromFundType.DataBind();
             txtRfromDate.Text = "";
             txtRfromAmt.Text = "";
         }
@@ -215,16 +260,16 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+                // dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
 
-                //if (rdBtnSelection.SelectedIndex > 0)
-                //{
-                //    dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
-                //}
-                //else
-                //{
-                //    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
-                //}
+                if (rdBtnSelection.SelectedIndex > 0)
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+                }
+                else
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                }
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
@@ -254,11 +299,17 @@ namespace vhcbcloud
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                     }
-                    else if (lblBalAmt.Text == "$0.00")
+                    if (lblBalAmt.Text == "$0.00")
                     {
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
+                        hfReallocateGuid.Value = "";
                     }
+                }
+                else
+                {
+                    btnReallocateSubmit.Visible = false;
+                    btnNewTransaction.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -273,7 +324,7 @@ namespace vhcbcloud
         {
             if (ddlRFromProj.SelectedIndex > 0)
             {
-                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString() + "&Reallocations=true";
+                string url = "/awardsummary.aspx?projectid=" + ddlRFromProj.SelectedValue.ToString();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<script type = 'text/javascript'>");
                 sb.Append("window.open('");
@@ -288,16 +339,21 @@ namespace vhcbcloud
 
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
+            hfReallocateGuid.Value = "";
             ClearReallocationFromPanel();
             ClearReallocationToPanel();
-
+            lblRErrorMsg.Text = "";
+            gvReallocate.DataSource = null;
+            gvReallocate.DataBind();
             if (rdBtnSelection.SelectedIndex == 0)
             {
-                gvReallocate.DataSource = null;
-                gvReallocate.DataBind();
+                btnReallocateSubmit.Visible = true;
+                CommonHelper.EnableButton(btnReallocateSubmit);
+
             }
             else
             {
+                btnReallocateSubmit.Visible = false;
                 btnNewTransaction.Visible = false;
             }
         }
@@ -313,6 +369,7 @@ namespace vhcbcloud
             try
             {
                 btnNewTransaction.Visible = false;
+                #region validations
                 if (ddlRFromProj.SelectedIndex == 0)
                 {
                     lblRErrorMsg.Text = "Select reallocate from project";
@@ -392,12 +449,17 @@ namespace vhcbcloud
                             lblRErrorMsg.Text = "Reallocation is complete, more funds not allowed";
                             return;
                         }
-                       // txtRToAmt.Text = hfBalAmt.Value;
+                        // txtRToAmt.Text = hfBalAmt.Value;
                         lblRErrorMsg.Text = "Amount can not be more than available balance amount";
                         return;
                     }
                 }
-                Guid StrGuid = Guid.NewGuid();
+                #endregion
+
+                if (hfReallocateGuid.Value == "")
+                {
+                    hfReallocateGuid.Value = Guid.NewGuid().ToString();
+                }
 
                 DataTable dtable = new DataTable();
                 dtable = FinancialTransactions.AddBoardReallocationTransaction(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()),
@@ -410,11 +472,11 @@ namespace vhcbcloud
                                                                       Convert.ToInt32(ddlRtoFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
-                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), StrGuid.ToString());
+                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][1].ToString();
-                hfReallocateGuid.Value = StrGuid.ToString();
+
                 lblRErrorMsg.Text = "Reallocation was added successfully";
                 BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ClearReallocationToPanel();
