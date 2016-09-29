@@ -161,7 +161,7 @@
 
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
-                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%">
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" >
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
