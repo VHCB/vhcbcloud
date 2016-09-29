@@ -222,6 +222,42 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
+        public static DataTable GetReallocationAmtByProjId(int projectId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetReallocationAmtByProjId";
+                command.Parameters.Add(new SqlParameter("fromProjId", projectId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
         public static bool IsDuplicateFundDetailPerTransaction(int transid, int fundid, int fundtranstype)
         {
             bool isDuplicate = false;
