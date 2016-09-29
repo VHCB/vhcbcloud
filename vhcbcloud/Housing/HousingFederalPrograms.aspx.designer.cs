@@ -598,6 +598,15 @@ namespace vhcbcloud.Housing {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtNextInspDeadLine;
         
         /// <summary>
+        /// chkInspectionActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkInspectionActive;
+        
+        /// <summary>
         /// btnAddInspection control.
         /// </summary>
         /// <remarks>
@@ -641,6 +650,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewHomeAff;
+        
+        /// <summary>
+        /// spnIncomeRest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnIncomeRest;
         
         /// <summary>
         /// cbAddHomeAff control.
@@ -751,6 +769,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvRentalAffordability;
         
         /// <summary>
+        /// spnRentRest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnRentRest;
+        
+        /// <summary>
         /// cbAddRentalAffordability control.
         /// </summary>
         /// <remarks>
@@ -857,6 +884,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvUnitOccupancy;
+        
+        /// <summary>
+        /// spnUnitSizes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnUnitSizes;
         
         /// <summary>
         /// cbAddUnitOccupancy control.
@@ -1046,5 +1082,14 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfHomeAffWarning;
+        
+        /// <summary>
+        /// hfProjectHOMEInspectionID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectHOMEInspectionID;
     }
 }

@@ -1027,6 +1027,35 @@ namespace DataAccessLayer
             }
             return dt;
         }
+
+        public static string GetApplicantAppRole(int AppNameId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetApplicantAppRole";
+                command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    returnMsg = command.ExecuteScalar();
+                    return returnMsg == null ? "" : returnMsg.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 
     public class AddProject

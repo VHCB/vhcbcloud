@@ -597,7 +597,7 @@
                                     <tr>
                                         <td style="width: 130px"><span class="labelClass">Entity Name</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantName_SelectedIndexChanged" AutoPostBack="true">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Role</span></td>
