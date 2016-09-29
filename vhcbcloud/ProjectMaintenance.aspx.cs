@@ -915,6 +915,7 @@ namespace vhcbcloud
                     DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()), isApplicant);
 
                 ddlApplicantName.SelectedIndex = -1;
+                ddlApplicantRole.SelectedIndex = -1;
 
                 LogMessage("Entity Attached Successfully");
 
@@ -1657,6 +1658,12 @@ namespace vhcbcloud
             {
                 return 0;
             }
+        }
+
+        protected void ddlApplicantName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlApplicantRole.ClearSelection();
+            PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString())));
         }
     }
 
