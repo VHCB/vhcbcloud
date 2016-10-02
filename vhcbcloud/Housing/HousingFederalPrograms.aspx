@@ -167,7 +167,7 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">HOME</h3>
+                                                <h3 class="panel-title"><span id ="spnFormTitle" runat="server" >HOME </span></h3>
                                             </td>
                                         </tr>
                                     </table>
@@ -177,22 +177,22 @@
                                     <asp:Panel runat="server" ID="Panel1">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 155px"><span class="labelClass">Recertification Month</span></td>
-                                                <td style="width: 181px">
+                                                <td style="width: 182px"><span class="labelClass">Recertification Month</span></td>
+                                                <td style="width: 189px">
                                                     <asp:DropDownList ID="ddlRecreationMonth" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
                                                     </asp:DropDownList>
-
-                                                    <%-- <asp:TextBox ID="txtRecreationMonth" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="12"
-                                                        ControlToValidate="txtRecreationMonth" ErrorMessage="Recertification Month should only accept numbers 1-12"
-                                                        Style="top: 435px; left: 365px; position: absolute; height: 22px; width: 500px" />--%>
                                                 </td>
-                                                <td style="width: 105px"><span class="labelClass">Affordability Period</span></td>
-                                                <td style="width: 86px">
+                                                <td style="width: 139px"><span class="labelClass">Affordability Period</span></td>
+                                                <td style="width: 151px">
                                                     <asp:DropDownList ID="ddlAffPeriod" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
                                                     </asp:DropDownList>
+                                                    <asp:TextBox ID="txtAffPeriod" CssClass="clsTextBoxBlueSm" Text="30" runat="server" ></asp:TextBox>
+                                                     <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" 
+                                                         MinimumValue="30" MaximumValue="9999"
+                                                        ControlToValidate="txtAffPeriod" ErrorMessage="Affordability Period not be less than 30 Years"
+                                                        Style="top: 435px; left: 730px; position: absolute; height: 218px; width: 355px" />
                                                 </td>
-                                                <td style="width: 165px"><span class="labelClass">Affordability Period Start Date</span></td>
+                                                <td style="width: 235px"><span class="labelClass">Affordability Period Start Date</span></td>
                                                 <td style="width: 180px">
                                                     <asp:TextBox ID="txtAffrdStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdStartDate" TargetControlID="txtAffrdStartDate">
@@ -204,39 +204,44 @@
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 155px"><span class="labelClass">Affordability Period End Date</span></td>
-                                                <td style="width: 181px">
+                                                <td style="width: 182px"><span class="labelClass">Affordability Period End Date</span></td>
+                                                <td style="width: 189px">
                                                     <asp:TextBox ID="txtAffrdEndDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtAffrdEndDate" TargetControlID="txtAffrdEndDate">
                                                     </ajaxToolkit:CalendarExtender>
-
                                                 </td>
-                                                <td style="width: 105px"><span class="labelClass">CHDO Project</span></td>
-                                                <td style="width: 86px">
-                                                    <asp:CheckBox ID="chkCHDO" runat="server" />
-
+                                                 <td style="width: 139px"><span class="labelClass">Inspection Frequency</span></td>
+                                                <td style="width: 151px">
+                                                    <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                    <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
+                                                        ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
+                                                        Style="top: 510px; left: 730px; position: absolute; height: 218px; width: 355px" />
                                                 </td>
-                                                <td style="width: 165px"><span class="labelClass">CHDO Recertification Month</span></td>
+
+                                                <td style="width: 235px"><span class="labelClass" id="spnCHDORequest" runat="server">CHDO Project</span></td>
                                                 <td style="width: 180px">
-                                                    <%--<asp:TextBox ID="txtCHDORecert" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
-                                                    <asp:DropDownList ID="ddlCHRDoRecert" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
-                                                    </asp:DropDownList>
+                                                    <asp:CheckBox ID="chkCHDO" runat="server" />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 155px"><span class="labelClass">Inspection Frequency</span></td>
-                                                <td style="width: 181px">
+                                                <td style="width: 182px"><span class="labelClass" id="spnCHDORecertMonth" runat="server">CHDO Recertification Month</span></td>
+                                                <td style="width: 189px">
+                                                    <asp:DropDownList ID="ddlCHRDoRecert" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <%--<td style="width: 165px"><span class="labelClass">Inspection Frequency</span></td>
+                                                <td style="width: 180px">
                                                     <asp:TextBox ID="txtFreq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                                     <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" MinimumValue="1" MaximumValue="3"
                                                         ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
                                                         Style="top: 520px; left: 650px; position: absolute; height: 218px; width: 355px" />
-                                                </td>
-                                                <td style="width: 105px"><span class="labelClass"></span></td>
-                                                <td style="width: 86px"></td>
-                                                <td style="width: 165px"><span class="labelClass"></span></td>
+                                                </td>--%>
+                                                <td style="width: 139px"><span class="labelClass"></span></td>
+                                                <td style="width: 151px"></td>
+                                                <td style="width: 235px"><span class="labelClass"></span></td>
                                                 <td style="width: 180px"></td>
                                             </tr>
                                             <tr>
@@ -420,9 +425,9 @@
                                     <RowStyle CssClass="rowStyle" />
                                     <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
-                                        <asp:TemplateField HeaderText="ProjectHOMEInspectionID" Visible="false">
+                                        <asp:TemplateField HeaderText="FederalProjectInspectionID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProjectHOMEInspectionID" runat="Server" Text='<%# Eval("ProjectHOMEInspectionID") %>' />
+                                                <asp:Label ID="lblFederalProjectInspectionID" runat="Server" Text='<%# Eval("FederalProjectInspectionID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Inspection Date">
@@ -892,7 +897,7 @@
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfProjectFederalID" runat="server" />
-    <asp:HiddenField ID="hfProjectFederalDetailId" runat="server" />
+    <asp:HiddenField ID="hfProjectFederalProgramDetailID" runat="server" />
     <asp:HiddenField ID="hfProjectFedProgram" runat="server" />
     <asp:HiddenField ID="hfSubTypeWarning" runat="server" />
     <asp:HiddenField ID="hfTotalProgramUnits" runat="server" />
@@ -900,8 +905,8 @@
     <asp:HiddenField ID="hfMedianIncomeWarning" runat="server" />
     <asp:HiddenField ID="hfHousingID" runat="server" />
     <asp:HiddenField ID="hfHomeAffWarning" runat="server" />
-    <asp:HiddenField ID="hfProjectHOMEInspectionID" runat="server" />
-
+    <asp:HiddenField ID="hfFederalProjectInspectionID" runat="server" />
+    
 
     <script language="javascript">
         $(document).ready(function () {

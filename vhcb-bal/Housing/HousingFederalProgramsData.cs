@@ -152,7 +152,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void AddProjectHOMEDetail(int ProjectFederalId, int Recert, int LKAffrdPer,
+        public static void AddProjectFederalProgramDetail(int ProjectFederalId, int Recert, int LKAffrdPer, int AffrdPeriod,
             DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
             DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
         {
@@ -166,11 +166,12 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "AddProjectHOMEDetail";
+                        command.CommandText = "AddProjectFederalProgramDetail";
 
                         command.Parameters.Add(new SqlParameter("ProjectFederalId", ProjectFederalId));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
+                        command.Parameters.Add(new SqlParameter("AffrdPeriod", AffrdPeriod));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
                         command.Parameters.Add(new SqlParameter("AffrdEnd", AffrdEnd.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdEnd));
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
@@ -196,7 +197,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateProjectHOMEDetail(int ProjectFederalDetailID, int Recert, int LKAffrdPer,
+        public static void UpdateProjectFederalProgramDetail(int ProjectFederalProgramDetailID, int Recert, int LKAffrdPer, int AffrdPeriod,
            DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
            DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
         {
@@ -210,11 +211,12 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "UpdateProjectHOMEDetail";
+                        command.CommandText = "UpdateProjectFederalProgramDetail";
 
-                        command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
+                        command.Parameters.Add(new SqlParameter("ProjectFederalProgramDetailID", ProjectFederalProgramDetailID));
                         command.Parameters.Add(new SqlParameter("Recert", Recert));
                         command.Parameters.Add(new SqlParameter("LKAffrdPer", LKAffrdPer));
+                        command.Parameters.Add(new SqlParameter("AffrdPeriod", AffrdPeriod));
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
                         command.Parameters.Add(new SqlParameter("AffrdEnd", AffrdEnd.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdEnd));
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
@@ -240,7 +242,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static DataRow GetProjectHOMEDetailById(int ProjectFederalId)
+        public static DataRow GetProjectFederalProgramDetailById(int ProjectFederalId)
         {
             DataRow dt = null;
             try
@@ -253,7 +255,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "GetProjectHOMEDetailById";
+                        command.CommandText = "GetProjectFederalProgramDetailById";
                         command.Parameters.Add(new SqlParameter("ProjectFederalId", ProjectFederalId));
 
                         DataSet ds = new DataSet();
@@ -613,7 +615,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
         #endregion Median Income
 
         #region Inspections
-        public static DataTable GetProjectHOMEInspectionList(int ProjectFederalDetailID, bool IsActiveOnly)
+        public static DataTable GetFederalProjectInspectionList(int ProjectFederalID, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -626,8 +628,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "GetProjectHOMEInspectionList";
-                        command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
+                        command.CommandText = "GetFederalProjectInspectionList";
+                        command.Parameters.Add(new SqlParameter("ProjectFederalID", ProjectFederalID));
                         command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
@@ -647,7 +649,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return dt;
         }
 
-        public static DataRow GetProjectHOMEInspectionById(int ProjectHOMEInspectionID)
+        public static DataRow GetFederalProjectInspectionById(int FederalProjectInspectionID)
         {
             DataRow dt = null;
             try
@@ -660,8 +662,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "GetProjectHOMEInspectionById";
-                        command.Parameters.Add(new SqlParameter("ProjectHOMEInspectionID", ProjectHOMEInspectionID));
+                        command.CommandText = "GetFederalProjectInspectionById";
+                        command.Parameters.Add(new SqlParameter("FederalProjectInspectionID", FederalProjectInspectionID));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -680,7 +682,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return dt;
         }
 
-        public static void AddProjectHOMEInspection(int ProjectFederalDetailID, DateTime InspectDate, string NextInspect, 
+        public static void AddFederalProjectInspection(int ProjectFederalID, DateTime InspectDate, string NextInspect, 
             int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline)
         {
             try
@@ -693,9 +695,9 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "AddProjectHOMEInspection";
+                        command.CommandText = "AddFederalProjectInspection";
 
-                        command.Parameters.Add(new SqlParameter("ProjectFederalDetailID", ProjectFederalDetailID));
+                        command.Parameters.Add(new SqlParameter("ProjectFederalID", ProjectFederalID));
                         command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
                         command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
                         command.Parameters.Add(new SqlParameter("InspectStaff", InspectStaff));
@@ -716,7 +718,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateProjectHOMEInspection(int ProjectHOMEInspectionID, DateTime InspectDate, string NextInspect,
+        public static void UpdateFederalProjectInspection(int FederalProjectInspectionID, DateTime InspectDate, string NextInspect,
             int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, bool RowIsActive)
         {
             try
@@ -729,9 +731,9 @@ namespace VHCBCommon.DataAccessLayer.Housing
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "UpdateProjectHOMEInspection";
+                        command.CommandText = "UpdateFederalProjectInspection";
 
-                        command.Parameters.Add(new SqlParameter("ProjectHOMEInspectionID", ProjectHOMEInspectionID));
+                        command.Parameters.Add(new SqlParameter("FederalProjectInspectionID", FederalProjectInspectionID));
                         command.Parameters.Add(new SqlParameter("InspectDate", InspectDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDate));
                         command.Parameters.Add(new SqlParameter("NextInspect", NextInspect));
                         command.Parameters.Add(new SqlParameter("InspectStaff", InspectStaff));

@@ -249,35 +249,53 @@ namespace vhcbcloud.Housing
 
             hfProjectFederalID.Value = GetFederalProgramSelectedRecordID(gvFedProgram);
 
+            DataRow drHousing = HousingUnitsServicesData.GetHousingDetailsById(DataUtils.GetInt(hfProjectId.Value));
+
+            if (drHousing != null)
+            {
+                hfHousingID.Value = drHousing["HousingID"].ToString();
+            }
+
             if (hfProjectFedProgram.Value.ToLower() == "home")
             {
-                DataRow drHousing = HousingUnitsServicesData.GetHousingDetailsById(DataUtils.GetInt(hfProjectId.Value));
-
-                if (drHousing != null)
-                {
-                    hfHousingID.Value = drHousing["HousingID"].ToString();
-                }
-                dvFedProgramHome.Visible = true;
-                ClearHomeForm();
-                PopulateHomeForm();
+                spnFormTitle.InnerText = "HOME";
                 cbAddHomeAff.Text = "Add New HOME Income Restriction";
                 cbAddRentalAffordability.Text = "Add New HOME Rent Restriction";
                 cbAddUnitOccupancy.Text = "Add New HOME Unit Sizes";
                 spnUnitSizes.InnerText = "HOME Unit Sizes";
                 spnRentRest.InnerText = "HOME Rent Restrictions";
                 spnIncomeRest.InnerText = "HOME Income Restrictions";
+
+                spnCHDORequest.Visible = true;
+                chkCHDO.Visible = spnCHDORequest.Visible = true;
+                spnCHDORecertMonth.Visible = true;
+                ddlCHRDoRecert.Visible = true;
+                txtAffPeriod.Visible = false;
+                ddlAffPeriod.Visible = true;
             }
             else if (hfProjectFedProgram.Value.ToLower() == "htf")
             {
+                spnFormTitle.InnerText = "HTF";
                 cbAddHomeAff.Text = "Add New HTF Income Restriction";
                 cbAddRentalAffordability.Text = "Add New HTF Rent Restriction";
                 cbAddUnitOccupancy.Text = "Add New HTF Unit Sizes";
                 spnUnitSizes.InnerText = "HTF Unit Sizes";
                 spnRentRest.InnerText = "HTF Rent Restrictions";
                 spnIncomeRest.InnerText = "HTF Income Restrictions";
+
+                spnCHDORequest.Visible = false;
+                chkCHDO.Visible = false;
+                spnCHDORecertMonth.Visible = false;
+                ddlCHRDoRecert.Visible = false;
+                txtAffPeriod.Visible = true;
+                ddlAffPeriod.Visible = false;
             }
 
-                dvNewInspections.Visible = true;
+            dvFedProgramHome.Visible = true;
+            ClearDetailForm();
+            PopulateDetailsForm();
+
+            dvNewInspections.Visible = true;
             BindInspectionsGrid();
 
             dvNewHomeAff.Visible = true;
@@ -293,13 +311,15 @@ namespace vhcbcloud.Housing
             //BindMedianIncomeGrid();
         }
 
-        private void PopulateHomeForm()
+        private void PopulateDetailsForm()
         {
-            DataRow dr = HousingFederalProgramsData.GetProjectHOMEDetailById(DataUtils.GetInt(hfProjectFederalID.Value));
+            btnSubmitHomeForm.Text = "Submit";
+
+            DataRow dr = HousingFederalProgramsData.GetProjectFederalProgramDetailById(DataUtils.GetInt(hfProjectFederalID.Value));
             if (dr != null)
             {
                 btnSubmitHomeForm.Text = "Update";
-                hfProjectFederalDetailId.Value = dr["ProjectFederalDetailId"].ToString();
+                hfProjectFederalProgramDetailID.Value = dr["ProjectFederalProgramDetailID"].ToString();
 
                 //txtRecreationMonth.Text = dr["Recert"].ToString() == "0" ? "" : dr["Recert"].ToString();
                 PopulateDropDown(ddlRecreationMonth, dr["Recert"].ToString());
@@ -347,30 +367,23 @@ namespace vhcbcloud.Housing
             }
         }
 
-        private void ClearHomeForm()
+        private void ClearDetailForm()
         {
-            //txtRecreationMonth.Text = "";
             ddlRecreationMonth.SelectedIndex = -1;
-            //chkCopyOwner.Checked = false;
             ddlAffPeriod.SelectedIndex = -1;
+            txtAffPeriod.Text = "30";
             txtAffrdStartDate.Text = "";
             chkCHDO.Checked = false;
-            //txtCHDORecert.Text = "";
             ddlCHRDoRecert.SelectedIndex = -1;
-
+            txtAffrdEndDate.Text = "";
             txtFreq.Text = "";
-            //txtLastInspect.Text = "";
-            //txtNextInspect.Text = "";
-            //ddlStaff.SelectedIndex = -1;
-            //txtInspectDate.Text = "";
-            //txtInspectLetter.Text = "";
-            //txtRespDate.Text = "";
-
             txtIDSNum.Text = "";
             txtSetupDate.Text = "";
             ddlCompletedBy.SelectedIndex = -1;
             txtFundedDate.Text = "";
             txtCloseDate.Text = "";
+            ddlIDISCompletionDateCompletedBy.SelectedIndex = -1;
+            ddlFundedDateCompleteBy.SelectedIndex = -1;
         }
 
         private string GetFederalProgramSelectedRecordID(GridView gvFedProgram)
@@ -424,7 +437,7 @@ namespace vhcbcloud.Housing
             dvNewHomeAff.Visible = false;
             dvRentalAffordability.Visible = false;
             dvUnitOccupancy.Visible = false;
-            //dvMedianIncome.Visible = false;
+            dvNewInspections.Visible = false;
 
             try
             {
@@ -453,31 +466,31 @@ namespace vhcbcloud.Housing
         {
             try
             {
-                if (IsHOMEFormValid())
+                if (IsDetailFormValid())
                 {
                     if (btnSubmitHomeForm.Text.ToLower() == "submit")
                     {
-                        HousingFederalProgramsData.AddProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
-                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                        HousingFederalProgramsData.AddProjectFederalProgramDetail(DataUtils.GetInt(hfProjectFederalID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetInt(txtAffPeriod.Text),  DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text),
                             txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()));
-                        ClearHomeForm();
-                        PopulateHomeForm();
+                        ClearDetailForm();
+                        PopulateDetailsForm();
                         LogMessage("Project home details added successfully");
                         btnSubmitHomeForm.Text = "Update";
                     }
                     else
                     {
-                        HousingFederalProgramsData.UpdateProjectHOMEDetail(DataUtils.GetInt(hfProjectFederalDetailId.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
-                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                        HousingFederalProgramsData.UpdateProjectFederalProgramDetail(DataUtils.GetInt(hfProjectFederalProgramDetailID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetInt(txtAffPeriod.Text), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()));
 
-                        ClearHomeForm();
-                        PopulateHomeForm();
+                        ClearDetailForm();
+                        PopulateDetailsForm();
                         LogMessage("Project home details updated successfully");
                     }
                 }
@@ -488,7 +501,7 @@ namespace vhcbcloud.Housing
             }
         }
 
-        private bool IsHOMEFormValid()
+        private bool IsDetailFormValid()
         {
             if (chkCHDO.Checked)
             {
@@ -1056,7 +1069,7 @@ namespace vhcbcloud.Housing
         {
             if (btnAddInspection.Text.ToLower() == "add")
             {
-                HousingFederalProgramsData.AddProjectHOMEInspection(DataUtils.GetInt(hfProjectFederalDetailId.Value),
+                HousingFederalProgramsData.AddFederalProjectInspection(DataUtils.GetInt(hfProjectFederalID.Value),
                            DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                            DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
                            DataUtils.GetDate(txtNextInspDeadLine.Text));
@@ -1068,7 +1081,7 @@ namespace vhcbcloud.Housing
             }
             else
             {
-                HousingFederalProgramsData.UpdateProjectHOMEInspection(DataUtils.GetInt(hfProjectFederalDetailId.Value),
+                HousingFederalProgramsData.UpdateFederalProjectInspection(DataUtils.GetInt(hfFederalProjectInspectionID.Value),
                           DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                           DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
                           DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked);
@@ -1093,7 +1106,7 @@ namespace vhcbcloud.Housing
             gvInspection.EditIndex = -1;
             BindInspectionsGrid();
             ClearInspectionsForm();
-            hfProjectHOMEInspectionID.Value = "";
+            hfFederalProjectInspectionID.Value = "";
             btnAddInspection.Text = "Add";
             cbAddNewInspections.Checked = false;
             chkInspectionActive.Checked = true;
@@ -1117,7 +1130,7 @@ namespace vhcbcloud.Housing
         {
             try
             {
-                DataTable dt = HousingFederalProgramsData.GetProjectHOMEInspectionList(DataUtils.GetInt(hfProjectFederalDetailId.Value), cbActiveOnly.Checked);
+                DataTable dt = HousingFederalProgramsData.GetFederalProjectInspectionList(DataUtils.GetInt(hfProjectFederalID.Value), cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -1153,10 +1166,10 @@ namespace vhcbcloud.Housing
                     {
                         e.Row.Cells[5].Controls[0].Visible = false;
 
-                        Label lblProjectHOMEInspectionID = e.Row.FindControl("lblProjectHOMEInspectionID") as Label;
-                        DataRow dr = HousingFederalProgramsData.GetProjectHOMEInspectionById(DataUtils.GetInt(lblProjectHOMEInspectionID.Text));
+                        Label lblFederalProjectInspectionID = e.Row.FindControl("lblFederalProjectInspectionID") as Label;
+                        DataRow dr = HousingFederalProgramsData.GetFederalProjectInspectionById(DataUtils.GetInt(lblFederalProjectInspectionID.Text));
 
-                        hfProjectHOMEInspectionID.Value = lblProjectHOMEInspectionID.Text;
+                        hfFederalProjectInspectionID.Value = lblFederalProjectInspectionID.Text;
 
                         txtInspectDate.Text = dr["InspectDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDate"].ToString()).ToShortDateString();
                         PopulateDropDown(ddlStaff, dr["InspectStaff"].ToString());
