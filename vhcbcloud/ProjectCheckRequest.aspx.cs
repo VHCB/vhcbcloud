@@ -494,10 +494,16 @@ namespace vhcbcloud
             string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
             DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(tokens[0]));
             if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+            {
                 lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                //.ToString("#.##");
+            }
             else
-                lblAvailFund.Text =  "0.00";
-
+            {
+                lblAvailFund.Text = "0.00";
+                lblAvailVisibleFund.Text = "0.00";
+            }
             pnlFund.Visible = false;
             pnlApprovals.Visible = false;
             pnlDisbursement.Visible = false;
