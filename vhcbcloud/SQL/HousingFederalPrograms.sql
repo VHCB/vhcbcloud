@@ -128,27 +128,23 @@ begin transaction
 		commit transaction;
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectHOMEDetail]') and type in (N'P', N'PC'))
-drop procedure [dbo].AddProjectHOMEDetail
+/* Project Federal Details*/
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectFederalProgramDetail]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddProjectFederalProgramDetail
 go
 
-create procedure dbo.AddProjectHOMEDetail
+create procedure dbo.AddProjectFederalProgramDetail
 (
 	@ProjectFederalId	int, 
-	--@Copyowner			bit, 
 	@Recert				int, 
 	@LKAffrdPer			int, 
+	@AffrdPeriod		int,
 	@AffrdStart			DateTime, 
 	@AffrdEnd			DateTime, 
 	@CHDO				bit, 
 	@CHDORecert			int, 
 	@freq				int, 
-	@LastInspect		DateTime, 
-	@NextInspect		nchar(8), 
-	@Staff				int, 
-	@InspectDate		DateTime, 
-	@InspectLetter		DateTime, 
-	@RespDate			DateTime, 
 	@IDISNum			nvarchar(4), 
 	@Setup				DateTime, 
 	@CompleteBy			int, 
@@ -161,12 +157,10 @@ begin transaction
 
 	begin try
 
-	insert into ProjectHOMEDetail(ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
-		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy,
-		IDISClose, IDISCompleteBy)
-	values(@ProjectFederalId, @Recert, @LKAffrdPer, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
-		@freq, @LastInspect, @NextInspect, @Staff, @InspectDate, @InspectLetter, @RespDate, @IDISNum, @Setup, @CompleteBy, @FundedDate, 
-		@FundCompleteBy, @IDISClose, @IDISCompleteBy)
+	insert into ProjectFederalProgramDetail(ProjectFederalId, Recert, LKAffrdPer, AffrdPeriod, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
+		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy)
+	values(@ProjectFederalId, @Recert, @LKAffrdPer, @AffrdPeriod, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
+		@freq, @IDISNum, @Setup, @CompleteBy, @FundedDate, @FundCompleteBy, @IDISClose, @IDISCompleteBy)
 
 	end try
 	begin catch
@@ -182,27 +176,21 @@ begin transaction
 		commit transaction;
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectHOMEDetail]') and type in (N'P', N'PC'))
-drop procedure [dbo].UpdateProjectHOMEDetail
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectFederalProgramDetail]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectFederalProgramDetail
 go
 
-create procedure dbo.UpdateProjectHOMEDetail
+create procedure dbo.UpdateProjectFederalProgramDetail
 (
-	@ProjectFederalDetailID	int,
-	--@Copyowner			bit, 
+	@ProjectFederalProgramDetailID	int,
 	@Recert				int, 
 	@LKAffrdPer			int, 
+	@AffrdPeriod		int,
 	@AffrdStart			DateTime, 
 	@AffrdEnd			DateTime, 
 	@CHDO				bit, 
 	@CHDORecert			int, 
 	@freq				int, 
-	@LastInspect		DateTime, 
-	@NextInspect		nchar(8), 
-	@Staff				int, 
-	@InspectDate		DateTime, 
-	@InspectLetter		DateTime, 
-	@RespDate			DateTime, 
 	@IDISNum			nvarchar(4), 
 	@Setup				DateTime, 
 	@CompleteBy			int, 
@@ -215,13 +203,12 @@ begin transaction
 
 	begin try
 
-	update ProjectHOMEDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdStart = @AffrdStart, 
+	update ProjectFederalProgramDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdPeriod = @AffrdPeriod, @AffrdStart = @AffrdStart, 
 		AffrdEnd = @AffrdEnd, CHDO = @CHDO, CHDORecert = @CHDORecert, 
-		freq = @freq, LastInspect = @LastInspect, NextInspect = @NextInspect, Staff = @Staff, InspectDate = @InspectDate, InspectLetter = @InspectLetter, 
-		RespDate = @RespDate, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, FundCompleteBy = @FundCompleteBy,
+		freq = @freq, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, FundCompleteBy = @FundCompleteBy,
 		IDISClose = @IDISClose, IDISCompleteBy = @IDISCompleteBy, DateModified = getdate()
-	from ProjectHOMEDetail
-	where ProjectFederalDetailID = @ProjectFederalDetailID
+	from ProjectFederalProgramDetail
+	where ProjectFederalProgramDetailID = @ProjectFederalProgramDetailID
 	
 	end try
 	begin catch
@@ -237,11 +224,11 @@ begin transaction
 		commit transaction;
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectHOMEDetailById]') and type in (N'P', N'PC'))
-drop procedure [dbo].GetProjectHOMEDetailById
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectFederalProgramDetailById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectFederalProgramDetailById
 go
 
-create procedure dbo.GetProjectHOMEDetailById
+create procedure dbo.GetProjectFederalProgramDetailById
 (
 	@ProjectFederalId	int
 ) as
@@ -249,10 +236,9 @@ begin transaction
 
 	begin try
 
-	select ProjectFederalDetailId, ProjectFederalId, Recert, LKAffrdPer, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
-		freq, LastInspect, NextInspect, Staff, InspectDate, InspectLetter, RespDate, 
-		IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy
-	from ProjectHOMEDetail(nolock)
+	select ProjectFederalProgramDetailID, ProjectFederalId, Recert, LKAffrdPer, AffrdPeriod, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
+		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy
+	from ProjectFederalProgramDetail(nolock)
 	where ProjectFederalId = @ProjectFederalId
 	end try
 	begin catch
@@ -768,14 +754,78 @@ begin
 end
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectHOMEInspection]') and type in (N'P', N'PC'))
-drop procedure [dbo].AddProjectHOMEInspection
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetFederalProjectInspectionList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetFederalProjectInspectionList
 go
 
-create procedure dbo.AddProjectHOMEInspection
+create procedure GetFederalProjectInspectionList  
+(
+	@ProjectFederalID	int,
+	@IsActiveOnly	bit
+)
+as
+begin 
+--exec GetFederalProjectInspectionList 1, 1
+
+	select i.FederalProjectInspectionID, i.InspectDate, i.NextInspect, i.InspectStaff, i.InspectLetter, 
+		i.RespDate, i.Deficiency, i.InspectDeadline, i.RowIsActive, dbo.GetApplicantName(i.InspectStaff) 'InspectionPerformedBy'
+	from FederalProjectInspection i(nolock)
+	where i.ProjectFederalID = @ProjectFederalID  
+		and (@IsActiveOnly = 0 or i.RowIsActive = @IsActiveOnly)
+	order by i.DateModified desc
+end
+go
+
+--if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectHOMEInspection]') and type in (N'P', N'PC'))
+--drop procedure [dbo].AddProjectHOMEInspection
+--go
+
+--create procedure dbo.AddProjectHOMEInspection
+--(
+	
+--	@ProjectFederalDetailID	int, 
+--	@InspectDate			datetime, 
+--	@NextInspect			nchar(4), 
+--	@InspectStaff			int, 
+--	@InspectLetter			datetime, 
+--	@RespDate				datetime, 
+--	@Deficiency				bit, 
+--	@InspectDeadline		datetime
+--	--@isDuplicate		bit output,
+--	--@isActive			bit Output
+--) as
+--begin transaction
+
+--	begin try
+
+--		insert into ProjectHOMEInspection(ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+--			RespDate, Deficiency, InspectDeadline, DateModified)
+--		values(@ProjectFederalDetailID, @InspectDate, @NextInspect, @InspectStaff, @InspectLetter, 
+--			@RespDate, @Deficiency, @InspectDeadline, getdate())
+		
+--	end try
+--	begin catch
+--		if @@trancount > 0
+--		rollback transaction;
+
+--		DECLARE @msg nvarchar(4000) = error_message()
+--        RAISERROR (@msg, 16, 1)
+--		return 1  
+--	end catch
+
+--	if @@trancount > 0
+--		commit transaction;
+--go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddFederalProjectInspection]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddFederalProjectInspection
+go
+
+create procedure dbo.AddFederalProjectInspection
 (
 	
-	@ProjectFederalDetailID	int, 
+	@ProjectFederalID		int, 
 	@InspectDate			datetime, 
 	@NextInspect			nchar(4), 
 	@InspectStaff			int, 
@@ -790,9 +840,9 @@ begin transaction
 
 	begin try
 
-		insert into ProjectHOMEInspection(ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+		insert into FederalProjectInspection(ProjectFederalID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
 			RespDate, Deficiency, InspectDeadline, DateModified)
-		values(@ProjectFederalDetailID, @InspectDate, @NextInspect, @InspectStaff, @InspectLetter, 
+		values(@ProjectFederalID, @InspectDate, @NextInspect, @InspectStaff, @InspectLetter, 
 			@RespDate, @Deficiency, @InspectDeadline, getdate())
 		
 	end try
@@ -809,13 +859,53 @@ begin transaction
 		commit transaction;
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectHOMEInspection]') and type in (N'P', N'PC'))
-drop procedure [dbo].UpdateProjectHOMEInspection
+--if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectHOMEInspection]') and type in (N'P', N'PC'))
+--drop procedure [dbo].UpdateProjectHOMEInspection
+--go
+
+--create procedure dbo.UpdateProjectHOMEInspection
+--(
+--	@ProjectHOMEInspectionID	int, 
+--	@InspectDate				datetime, 
+--	@NextInspect				nchar(4), 
+--	@InspectStaff				int, 
+--	@InspectLetter				datetime, 
+--	@RespDate					datetime, 
+--	@Deficiency					bit, 
+--	@InspectDeadline			datetime,
+--	@RowIsActive				bit
+--) as
+--begin transaction
+
+--	begin try
+
+--	update ProjectHOMEInspection set  InspectDate = @InspectDate, NextInspect = @NextInspect, InspectStaff = @InspectStaff, 
+--		InspectLetter = @InspectLetter, RespDate = @RespDate, Deficiency = @Deficiency, InspectDeadline = @InspectDeadline,
+--		RowIsActive = @RowIsActive, DateModified = getdate()
+--	from ProjectHOMEInspection
+--	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
+
+--	end try
+--	begin catch
+--		if @@trancount > 0
+--		rollback transaction;
+
+--		DECLARE @msg nvarchar(4000) = error_message()
+--      RAISERROR (@msg, 16, 1)
+--		return 1  
+--	end catch
+
+--	if @@trancount > 0
+--		commit transaction;
+--go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateFederalProjectInspection]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateFederalProjectInspection
 go
 
-create procedure dbo.UpdateProjectHOMEInspection
+create procedure dbo.UpdateFederalProjectInspection
 (
-	@ProjectHOMEInspectionID	int, 
+	@FederalProjectInspectionID	int, 
 	@InspectDate				datetime, 
 	@NextInspect				nchar(4), 
 	@InspectStaff				int, 
@@ -829,11 +919,11 @@ begin transaction
 
 	begin try
 
-	update ProjectHOMEInspection set  InspectDate = @InspectDate, NextInspect = @NextInspect, InspectStaff = @InspectStaff, 
+	update FederalProjectInspection set  InspectDate = @InspectDate, NextInspect = @NextInspect, InspectStaff = @InspectStaff, 
 		InspectLetter = @InspectLetter, RespDate = @RespDate, Deficiency = @Deficiency, InspectDeadline = @InspectDeadline,
 		RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectHOMEInspection
-	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
+	from FederalProjectInspection
+	where FederalProjectInspectionID = @FederalProjectInspectionID
 
 	end try
 	begin catch
@@ -849,22 +939,52 @@ begin transaction
 		commit transaction;
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectHOMEInspectionById]') and type in (N'P', N'PC'))
-drop procedure [dbo].GetProjectHOMEInspectionById
+--if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectHOMEInspectionById]') and type in (N'P', N'PC'))
+--drop procedure [dbo].GetProjectHOMEInspectionById
+--go
+
+--create procedure dbo.GetProjectHOMEInspectionById
+--(
+--	@ProjectHOMEInspectionID	int
+--) as
+--begin transaction
+
+--	begin try
+
+--	select ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+--		RespDate, Deficiency, InspectDeadline, RowIsActive, DateModified
+--	from ProjectHOMEInspection(nolock)
+--	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
+--	end try
+--	begin catch
+--		if @@trancount > 0
+--		rollback transaction;
+
+--		DECLARE @msg nvarchar(4000) = error_message()
+--      RAISERROR (@msg, 16, 1)
+--		return 1  
+--	end catch
+
+--	if @@trancount > 0
+--		commit transaction;
+--go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetFederalProjectInspectionById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetFederalProjectInspectionById
 go
 
-create procedure dbo.GetProjectHOMEInspectionById
+create procedure dbo.GetFederalProjectInspectionById
 (
-	@ProjectHOMEInspectionID	int
+	@FederalProjectInspectionID	int
 ) as
 begin transaction
 
 	begin try
 
-	select ProjectFederalDetailID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
+	select FederalProjectInspectionID, InspectDate, NextInspect, InspectStaff, InspectLetter, 
 		RespDate, Deficiency, InspectDeadline, RowIsActive, DateModified
-	from ProjectHOMEInspection(nolock)
-	where ProjectHOMEInspectionID = @ProjectHOMEInspectionID
+	from FederalProjectInspection(nolock)
+	where FederalProjectInspectionID = @FederalProjectInspectionID
 	end try
 	begin catch
 		if @@trancount > 0

@@ -247,6 +247,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvFedProgramHome;
         
         /// <summary>
+        /// spnFormTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnFormTitle;
+        
+        /// <summary>
         /// dvFedProgramHomeForm control.
         /// </summary>
         /// <remarks>
@@ -281,6 +290,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlAffPeriod;
+        
+        /// <summary>
+        /// txtAffPeriod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAffPeriod;
         
         /// <summary>
         /// txtAffrdStartDate control.
@@ -319,6 +337,24 @@ namespace vhcbcloud.Housing {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtAffrdEndDate;
         
         /// <summary>
+        /// txtFreq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFreq;
+        
+        /// <summary>
+        /// spnCHDORequest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnCHDORequest;
+        
+        /// <summary>
         /// chkCHDO control.
         /// </summary>
         /// <remarks>
@@ -328,6 +364,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox chkCHDO;
         
         /// <summary>
+        /// spnCHDORecertMonth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnCHDORecertMonth;
+        
+        /// <summary>
         /// ddlCHRDoRecert control.
         /// </summary>
         /// <remarks>
@@ -335,15 +380,6 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCHRDoRecert;
-        
-        /// <summary>
-        /// txtFreq control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFreq;
         
         /// <summary>
         /// Div2 control.
@@ -1012,13 +1048,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.HiddenField hfProjectFederalID;
         
         /// <summary>
-        /// hfProjectFederalDetailId control.
+        /// hfProjectFederalProgramDetailID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfProjectFederalDetailId;
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectFederalProgramDetailID;
         
         /// <summary>
         /// hfProjectFedProgram control.
@@ -1084,12 +1120,12 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.HiddenField hfHomeAffWarning;
         
         /// <summary>
-        /// hfProjectHOMEInspectionID control.
+        /// hfFederalProjectInspectionID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfProjectHOMEInspectionID;
+        protected global::System.Web.UI.WebControls.HiddenField hfFederalProjectInspectionID;
     }
 }
