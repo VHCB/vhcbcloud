@@ -88,7 +88,8 @@ namespace vhcbcloud
                     {
                         for (int i = 0; i < dtAwdStatus.Rows.Count; i++)
                         {
-                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["commitmentamount"].ToString()) > 0)
+                            //09/29/2016 - modified the totals of commitment amount to !=0 from >0
+                            if (Convert.ToDecimal(dtAwdStatus.Rows[i]["commitmentamount"].ToString()) != 0)
                                 totCommitAmt += Convert.ToDecimal(dtAwdStatus.Rows[i]["commitmentamount"].ToString());
 
                             if (Convert.ToDecimal(dtAwdStatus.Rows[i]["expendedamount"].ToString()) != 0)

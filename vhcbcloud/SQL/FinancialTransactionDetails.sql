@@ -1493,7 +1493,7 @@ Begin
 			join detail det on det.FundId = f.FundId
 			join Trans tr on tr.TransId = det.TransId
 			join Project p on p.ProjectID  = tr.ProjectID
-	where p.projectid = @projId and tr.LkTransaction = 240
+	where p.projectid = @projId and tr.LkTransaction = 240 and tr.lkstatus = 261
 	group by f.FundId, f.name, p.ProjectId
 end
 go
@@ -1653,7 +1653,7 @@ Begin
 		join Trans t on t.TransId = d.TransId
 		join project p on p.projectid = t.projectid
 		join LookupValues lv on lv.TypeID = d.LkTransType
-	Where     f.RowIsActive=1 and t.LkTransaction = 240
+	Where     f.RowIsActive=1 and t.LkTransaction = 240 and t.lkstatus = 261
 	and t.TransId in(select distinct transid from #temp)
 	 --and p.ProjectId in (select distinct toprojid from #temp)
 	order by d.DateModified desc
@@ -1681,7 +1681,7 @@ Begin
 		join Trans t on t.TransId = d.TransId
 		join project p on p.projectid = t.projectid
 		join LookupValues lv on lv.TypeID = d.LkTransType
-	Where     f.RowIsActive=1 and t.LkTransaction = 240 and d.amount > 0
+	Where     f.RowIsActive=1 and t.LkTransaction = 240 and d.amount > 0 and t.lkstatus = 261
 	and t.TransId in(select distinct transid from #temp)
 	group by LkTransaction	 
 	
@@ -2875,3 +2875,4 @@ Begin
 End
 
 go
+

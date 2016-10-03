@@ -100,11 +100,11 @@ namespace vhcbcloud
                     DataTable dtRelAmt = new DataTable();
                     dtFund = FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                     if (dtFund.Rows.Count > 0)
-                    {                        
+                    {
                         ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
                     }
-                    dtRelAmt= FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
-                    if ( dtRelAmt.Rows.Count>0)
+                    dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    if (dtRelAmt.Rows.Count > 0)
                     {
                         txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
                     }
@@ -418,15 +418,16 @@ namespace vhcbcloud
                     txtRToAmt.Focus();
                     return;
                 }
-                if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
-                {
-                    if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
+                if (ddlRFromProj.SelectedValue == ddlRToProj.SelectedValue)
+                    if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
                     {
-                        lblRErrorMsg.Text = "Fund can not be reallocated to same fund type. Reallocate to different fund type.";
-                        ddlRtoFundType.Focus();
-                        return;
+                        if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
+                        {
+                            lblRErrorMsg.Text = "Fund cannot be reallocated to same fund type. Reallocate to different fund type.";
+                            ddlRtoFundType.Focus();
+                            return;
+                        }
                     }
-                }
                 //if (hfTransId.Value != "" && hfRFromTransId.Value !="")
                 //{
                 //    DataTable dtIsDuplicate = new DataTable();

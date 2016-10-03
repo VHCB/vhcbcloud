@@ -143,7 +143,9 @@
                                     </td>
                                     <td><span class="labelClass" >Available Funds $:</span></td>
                                     <td colspan="5">
-                                        <asp:Label ID="lblAvailFund" class="labelClass" Text="" runat="server" ></asp:Label></td>
+                                        <asp:Label ID="lblAvailFund" class="labelClass" Visible="false" Text="" runat="server" ></asp:Label>
+                                        <asp:Label ID="lblAvailVisibleFund" class="labelClass" Text="" runat="server" ></asp:Label>
+                                    </td>
 
                                 </tr>
                                 <tr>
