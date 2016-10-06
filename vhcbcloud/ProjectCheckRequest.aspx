@@ -52,8 +52,21 @@
                                 <tr>
                                     <td><span class="labelClass">Project # :</span></td>
                                     <td>
-                                        <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
-                                        </asp:DropDownList></td>
+                                        <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" Visible="false" runat="server" OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                        <asp:TextBox ID="txtProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                        <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>--%>
+                                        <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                            OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                        </ajaxToolkit:AutoCompleteExtender>
+                                        <asp:TextBox ID="txtCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                                        <%--<ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>--%>
+                                        <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                            OnClientItemSelected="OnCommittedProjectSelected" CompletionInterval="100" ServiceMethod="GetCommittedFinalProjectslistPCRFilter">
+                                        </ajaxToolkit:AutoCompleteExtender>
+                                    </td>
                                     <td>
                                         <span class="labelClass">Project Name :</span>
                                     </td>
@@ -141,10 +154,10 @@
                                     <td>
                                         <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass" >Available Funds $:</span></td>
+                                    <td><span class="labelClass">Available Funds $:</span></td>
                                     <td colspan="5">
-                                        <asp:Label ID="lblAvailFund" class="labelClass" Visible="false" Text="" runat="server" ></asp:Label>
-                                        <asp:Label ID="lblAvailVisibleFund" class="labelClass" Text="" runat="server" ></asp:Label>
+                                        <asp:Label ID="lblAvailFund" class="labelClass" Visible="false" Text="" runat="server"></asp:Label>
+                                        <asp:Label ID="lblAvailVisibleFund" class="labelClass" Text="" runat="server"></asp:Label>
                                     </td>
 
                                 </tr>
@@ -168,7 +181,7 @@
                                         &nbsp;<asp:Button ID="btnCrUpdate" runat="server" class="btn btn-info" OnClick="btnCrUpdate_Click" Text="Update" Visible="False" />
                                         <br />
                                         <br />
-                                        <asp:Panel runat="server" ID="pnlFund" >
+                                        <asp:Panel runat="server" ID="pnlFund">
                                             <asp:GridView ID="gvFund" runat="server" AutoGenerateColumns="False"
                                                 Width="95%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                                 GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvFund_RowCancelingEdit"
@@ -182,7 +195,7 @@
                                                 <Columns>
                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                                         <ItemTemplate>
-                                                            <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />                                                            
+                                                            <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
                                                             <asp:HiddenField ID="hfIDs" runat="server" Value='<%# string.Concat(Eval("ProjectCheckReqId"), "|", Eval("transid"), "|", Eval("TransAmt"), "|", Eval("project_name"))%>' />
                                                         </ItemTemplate>
 
@@ -213,7 +226,7 @@
                                                             <asp:Label ID="lblPayee" runat="Server" Text='<%# Eval("Payee") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField HeaderText="Trans Amt" SortExpression="TransAmt">
+                                                    <asp:TemplateField HeaderText="Trans Amt" SortExpression="TransAmt">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
                                                         </ItemTemplate>
@@ -359,7 +372,7 @@
                                             <Columns>
                                                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
                                                     <ItemTemplate>
-                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("detailid")%>' />                                                        
+                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("detailid")%>' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
@@ -422,10 +435,10 @@
                                                 </asp:TemplateField>
                                                 <asp:CommandField ShowEditButton="True" />
                                                 <asp:TemplateField ShowHeader="False">
-                                                        <ItemTemplate>
-                                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete?');"></asp:LinkButton>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete?');"></asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                             </Columns>
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
@@ -548,6 +561,8 @@
                 <asp:HiddenField ID="hfEditPCRId" runat="server" />
                 <asp:HiddenField ID="hfProjId" runat="server" />
                 <asp:HiddenField ID="hfAvFunds" runat="server" />
+                <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                <asp:HiddenField ID="hdnCommitedProjValue" OnValueChanged="hdnCommitedProjValue_ValueChanged" runat="server" />
                 <%--<asp:HiddenField ID="hfPCRIDTransID" runat="server" />--%>
             </div>
         </ContentTemplate>
@@ -581,8 +596,25 @@
                 }
             }
         }
-        function PopupNewAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+
+        function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+
+        function OnCommittedProjectSelected(source, eventArgs) {
+
+            var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
+
+             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+             __doPostBack(hdnCommitedProjValueID, "");
+             $('#totMoney').focus();
+         }
+         function PopupNewAwardSummary() {
+             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
         function PopupProjectSearch() {
