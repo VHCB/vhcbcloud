@@ -30,8 +30,9 @@ namespace vhcbcloud
         public static string[] GetProjectsByFilter(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
-
+            //dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+            
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
