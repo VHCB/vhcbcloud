@@ -17,6 +17,37 @@ namespace vhcbcloud
     {
         string Pagename = "ProjectCheckRequest";
         DataTable dtProjects;
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetCommittedFinalProjectslistPCRFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("getCommittedFinalProjectslistPCRFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
@@ -402,6 +433,136 @@ namespace vhcbcloud
 
         #endregion
 
+        protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelect.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelect.SelectedIndex > 0)
+            {
+                if (txtCommitedProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtProjNum.Text == "")
+                {
+                    lblErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        private void getDetails(DataTable dt)
+        {
+            try
+            {
+                if (dt.Rows.Count != 0)
+                {
+                    hfProjId.Value = dt.Rows[0][0].ToString();
+
+                    //string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+                    DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
+                    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                    {
+                        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                        //.ToString("#.##");
+                    }
+                    else
+                    {
+                        lblAvailFund.Text = "0.00";
+                        lblAvailVisibleFund.Text = "0.00";
+                    }
+                    pnlFund.Visible = false;
+                    pnlApprovals.Visible = false;
+                    pnlDisbursement.Visible = false;
+                    if (rdBtnSelect.SelectedIndex == 0)
+                    {
+                        ClearPCRForm();
+                        EnablePCR();
+
+                        lblProjName.Text = dt.Rows[0][1].ToString(); ;
+                        BindApplicantName(int.Parse(hfProjId.Value));
+                        ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+
+                        BindFundTypeCommitments(int.Parse(hfProjId.Value));
+                        txtTransDate.Text = DateTime.Now.ToShortDateString();
+
+                    }
+                    else
+                    {
+                        if (txtCommitedProjNum.Text != "")
+                        {
+                            DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
+                            if (dtEPCR.Rows.Count > 0)
+                            {
+                                pnlFund.Visible = true;
+                                this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
+                                this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
+                                this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
+                                this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
+                                ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
+                                this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
+                                EnableButton(btnPCRTransDetails);
+                                DisableButton(btnCRSubmit);
+                                BindPCRTransDetails();
+                                BindPCRQuestionsForApproval();
+                                ddlPCRQuestions.SelectedIndex = -1;
+                                BindPCRData(int.Parse(hfProjId.Value));
+
+                                //fillPCRDetails(Convert.ToInt32(hfPCRId.Value), dtEPCR.Rows[0]["project_name"].ToString());
+                                DisablePCR();
+                                BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
+                            }
+                        }
+                        else
+                            ClearPCRForm();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
         protected void BindPCRData()
         {
             try
@@ -420,10 +581,9 @@ namespace vhcbcloud
         protected void BindPCRData(int projectId)
         {
             try
-            {
-                string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+            {                
                 DataTable dtFundInfo = new DataTable();
-                dtFundInfo = ProjectCheckRequestData.GetExistingPCRByProjId(tokens[0].ToString());
+                dtFundInfo = ProjectCheckRequestData.GetExistingPCRByProjId(projectId.ToString());
                 gvFund.DataSource = dtFundInfo;
                 gvFund.DataBind();
             }
@@ -1393,10 +1553,14 @@ namespace vhcbcloud
             ClearHiddenFieldValues();
             DisplayControls("");
             if (ddlProjFilter.Items.Count > 0) ddlProjFilter.SelectedIndex = 0;
+            txtCommitedProjNum.Text = "";
+            txtProjNum.Text = "";
             if (rdBtnSelect.SelectedIndex == 0)
             {
                 EnablePCR();
                 EnableButton(btnCRSubmit);
+                txtCommitedProjNum.Visible = false;
+                txtProjNum.Visible = true;
                 btnCRSubmit.Visible = true;
                 btnCrUpdate.Visible = false;
             }
@@ -1406,6 +1570,8 @@ namespace vhcbcloud
                 EnableButton(btnPCRTransDetails);
                 DisableButton(btnCRSubmit);
                 DisablePCR();
+                txtProjNum.Visible = false;
+                txtCommitedProjNum.Visible = true;
                 btnCRSubmit.Visible = false;
                 btnCrUpdate.Visible = false;
             }
