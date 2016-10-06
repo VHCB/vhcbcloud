@@ -32,6 +32,7 @@ namespace vhcbcloud
             {
                 if (ddlEntityRole.SelectedIndex != 0)
                 {
+                    ae_txtApplicantName.ContextKey = ddlEntityRole.SelectedItem.ToString();
                     string SelectedRole = ddlEntityRole.SelectedValue.ToString();
 
                     dvExistingEntities.Visible = true;
@@ -69,6 +70,7 @@ namespace vhcbcloud
                 }
                 else
                 {
+                    ae_txtApplicantName.ContextKey = ddlEntityRole.SelectedItem.ToString();
                     DisplayPanelsBasedOnEntityRole();
                 }
             }
@@ -1368,5 +1370,24 @@ namespace vhcbcloud
 
         //===========================SORTING PROPERTIES END
         #endregion
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetEntityNames(string prefixText, int count, string contextKey)
+        {
+            List<string>EntityNames = new List<string>();
+
+            if (contextKey.ToLower() == "organization")
+            {
+                DataTable dt = new DataTable();
+                dt = EntityMaintenanceData.GetEntityNames(prefixText);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+                }
+            }
+            return EntityNames.ToArray();
+        }
     }
 }

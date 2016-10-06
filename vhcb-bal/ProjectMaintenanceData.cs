@@ -13,7 +13,7 @@ namespace DataAccessLayer
     public class ProjectMaintenanceData
     {
         public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, DateTime ClosingDate, 
-            bool verified, int appNameId, string projName)
+            int appNameId, string projName)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace DataAccessLayer
                         //command.Parameters.Add(new SqlParameter("LkBoardDate", LkBoardDate == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkBoardDate));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClosingDate));
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", GrantClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : GrantClosingDate));
-                        command.Parameters.Add(new SqlParameter("verified", verified));
+                        //command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
                         command.Parameters.Add(new SqlParameter("projName", projName));
 
@@ -68,7 +68,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string ClosingDate, bool verified, 
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string ClosingDate, 
             int appNameId, string projName)
         {
             try
@@ -90,7 +90,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Manager", Manager));
                         command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ClosingDate)));
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
-                        command.Parameters.Add(new SqlParameter("verified", verified));
+                        //command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appNameId", appNameId));
                         // command.Parameters.Add(new SqlParameter("projName", projName));
 

@@ -34,7 +34,7 @@
                 <td>
                     <p class="lead">Project Search</p>
                 </td>
-               <%-- <td style="text-align: right; padding-right: 14px">
+                <%-- <td style="text-align: right; padding-right: 14px">
                     <asp:Button ID="btnNewProject" runat="server" Text="New Project" class="btn btn-info"
                         OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
                     &nbsp;
@@ -42,7 +42,7 @@
             </tr>
         </table>
 
-        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes1" 
+        <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes1"
             CancelControlID="btnClose" BackgroundCssClass="MEBackground">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
@@ -60,11 +60,12 @@
                             <td style="text-align: right">
                                 <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 &nbsp;
-                                <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project" 
+                               
+                                <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project"
                                     Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
                             </td>
                         </tr>
-                        </table>
+                    </table>
                 </div>
 
                 <div id="dvMessage" runat="server" visible="false">
@@ -76,10 +77,21 @@
                             <tr>
                                 <td><span class="labelClass">Number</span></td>
                                 <td>
-                                    <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server" ToolTip="Enter first 7 digits of Number"></asp:TextBox>
-                                    <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999" ClearMaskOnLostFocus="false"
+                                    <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                  <%--  <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                                         MaskType="Number" TargetControlID="txtProjNum">
-                                    </ajaxToolkit:MaskedEditExtender>
+                                    </ajaxToolkit:MaskedEditExtender>--%>
+                                    <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1"
+                                        EnableCaching="true" CompletionSetCount="1"
+                                        CompletionInterval="100" ServiceMethod="GetProjectNumber" DelimiterCharacters="-">
+                                    </ajaxToolkit:AutoCompleteExtender>
+                                    
+                                    <%--<asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server" ToolTip="Enter Project Number"></asp:TextBox>
+                                    
+                                     <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="4"
+                                                EnableCaching="true" CompletionSetCount="1" CompletionListCssClass="clsAutoExtDropDown"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>--%>
                                 </td>
                                 <td>
                                     <span class="labelClass">Name</span>
@@ -149,10 +161,10 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">Search Results: <asp:Label runat="server" ID="lblSearcresultsCount"></asp:Label></h3>
+                                            <h3 class="panel-title">Search Results:
+                                                <asp:Label runat="server" ID="lblSearcresultsCount"></asp:Label></h3>
                                         </td>
-                                        <td>
-                                        </td>
+                                        <td></td>
                                     </tr>
                                 </table>
                             </div>
@@ -160,7 +172,7 @@
                                 <asp:Panel runat="server" ID="Panel9" Width="100%" Height="500px" ScrollBars="Vertical">
                                     <asp:GridView ID="gvSearchresults" runat="server" AutoGenerateColumns="False"
                                         Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand" 
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" OnRowCommand="gvSearchresults_RowCommand"
                                         OnRowDataBound="gvSearchresults_RowDataBound"
                                         OnSorting="gvSearchresults_Sorting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />

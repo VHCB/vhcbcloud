@@ -1,6 +1,24 @@
 use vhcbsandbox
 go
- 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNumbers]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectNumbers 
+go
+
+create procedure GetProjectNumbers
+(
+	@ProjectNum varchar(50)
+)  
+as
+--exec GetProjectNameById 6588
+begin
+
+	select top 20 proj_num --replace(proj_num, '-', '')
+	from project
+	where  replace(proj_num, '-', '') like @ProjectNum+ '%'
+end
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNameById]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetProjectNameById 
 go
@@ -93,7 +111,7 @@ create procedure dbo.add_new_project
 	@LkProgram			int,
 	@Manager			int,
 	@ClosingDate		datetime,
-	@verified			bit,
+	--@verified			bit,
 	@appNameId			int,
 	@projName			varchar(75),
 	@isDuplicate		bit output,
@@ -125,8 +143,8 @@ begin transaction
 
 			set @nameId = @@IDENTITY
 
-			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, ClosingDate, verified,  userid)
-			values (@projNum, @LkProjectType, @LkProgram, @Manager, @ClosingDate, @verified,  123)
+			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, ClosingDate, userid)
+			values (@projNum, @LkProjectType, @LkProgram, @Manager, @ClosingDate, 123)
 	
 			set @ProjectId = @@IDENTITY
 
@@ -170,7 +188,7 @@ create procedure dbo.UpdateProjectInfo
 	@LkProgram			int,
 	@Manager			int,
 	@ClosingDate		datetime,
-	@verified			bit,
+	--@verified			bit,
 	@appNameId			int
 	--@projName			varchar(75)
 ) as
@@ -182,7 +200,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager, ClosingDate = @ClosingDate, verified = @verified
+		Manager = @Manager, ClosingDate = @ClosingDate--, verified = @verified
 	from Project
 	where ProjectId = @ProjectId
 
@@ -1103,3 +1121,4 @@ end try
 	if @@trancount > 0
 		commit transaction;
 go
+
