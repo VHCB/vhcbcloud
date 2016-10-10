@@ -843,3 +843,28 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEntityNames]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEntityNames 
+go
+
+create procedure GetEntityNames
+(
+	@EntityNamePrefix varchar(50)
+)  
+as
+--exec GetEntityNames 'ab'
+begin
+
+	select top 20 an.ApplicantName
+	from Appname an(nolock)
+	join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
+	join applicant a(nolock) on a.applicantid = aan.ApplicantID
+	join LookupValues lv(nolock) on lv.TypeID = a.LKEntityType2
+	where lv.Description = 'Organization' and an.Applicantname like @EntityNamePrefix + '%'
+	order by an.Applicantname asc 
+
+ 
+end
+go

@@ -133,7 +133,10 @@ namespace vhcbcloud.Housing
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
-            snFederalProgramUnits.InnerText = HousingUnitsServicesData.GetTotalFederalProgramUnits(DataUtils.GetInt(hfProjectId.Value)).ToString();
+            if(HousingUnitsServicesData.GetTotalFederalProgramUnits(DataUtils.GetInt(hfProjectId.Value)) > 0)
+                snFederalProgramUnits.InnerText = "Yes";
+            else
+                snFederalProgramUnits.InnerText = "No";
         }
 
         private void GenerateTabs()

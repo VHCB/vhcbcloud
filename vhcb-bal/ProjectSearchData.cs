@@ -12,8 +12,8 @@ namespace DataAccessLayer
 {
     public class ProjectSearchData
     {
-        public static DataTable ProjectSearch(string ProjNum, string ProjectName, string AppNameID, string LKProgram, 
-            string LKProjectType, string Town,  string County, bool IsPrimaryApplicant)
+        public static DataTable ProjectSearch(string ProjNum, string ProjectName, string AppNameID, string LKProgram,
+            string LKProjectType, string Town, string County, bool IsPrimaryApplicant)
         {
             DataTable dt = null;
             try
@@ -45,7 +45,7 @@ namespace DataAccessLayer
                             command.Parameters.Add(new SqlParameter("County", County));
 
                         command.Parameters.Add(new SqlParameter("IsPrimaryApplicant", IsPrimaryApplicant));
-                        
+
                         command.CommandTimeout = 60 * 5;
 
                         DataSet ds = new DataSet();
@@ -64,6 +64,42 @@ namespace DataAccessLayer
                 throw ex;
             }
             return dt;
+        }
+
+
+        public static DataTable GetProjectNumbers(string ProjectNumPrefix)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetProjectNumbers";
+                command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNumPrefix));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
         }
     }
 }

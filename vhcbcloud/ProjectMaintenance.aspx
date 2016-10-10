@@ -105,7 +105,7 @@
                                             <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Manager</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Key Staff</span></td>
                                         <td>
                                             <asp:DropDownList ID="ddlManager" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -115,17 +115,18 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Verified</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Closing Date</span></td>
                                         <td style="width: 250px">
-                                            <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass">Closing Date</span>
-                                        </td>
-                                        <td style="width: 270px">
+                                           <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />--%>
                                             <asp:TextBox ID="txtClosingDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClosingDate" TargetControlID="txtClosingDate">
                                             </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            
                                         </td>
                                         <td style="width: 170px"><span class="labelClass"></span></td>
                                         <td></td>

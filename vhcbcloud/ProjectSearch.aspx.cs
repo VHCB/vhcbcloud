@@ -161,6 +161,9 @@ namespace vhcbcloud
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
                 ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
 
+            if(dtSearchResults.Rows.Count >0 && txtProjNum.Text.Length == 12)
+                Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + dtSearchResults.Rows[0]["ProjectId"].ToString());
+
             Session["dtSearchResults"] = dtSearchResults;
             lblSearcresultsCount.Text = dtSearchResults.Rows.Count.ToString();
             gvSearchresults.DataSource = dtSearchResults;
@@ -257,6 +260,21 @@ namespace vhcbcloud
                     gvSearchresults.Columns[4].HeaderText = "Entity Name";
 
             }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumber(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString()+"'");
+            }
+            return ProjNumbers.ToArray();
         }
     }
 }
