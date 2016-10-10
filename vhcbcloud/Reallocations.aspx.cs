@@ -20,7 +20,20 @@ namespace vhcbcloud
                 BindProjects();
             }
         }
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnFinancial.SelectedIndex == 0)
@@ -110,6 +123,99 @@ namespace vhcbcloud
                     }
                     BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 }
+            }
+        }
+
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtFromCommitedProjNum.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtFromProjNum.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                if (txtFromCommitedProjNum.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+            else
+            {
+                if (txtFromProjNum.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please select project number";
+                    return;
+                }
+                dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+            }
+
+            ///populate the form based on retrieved data
+            getDetails(dt);
+        }
+
+        private void getDetails(DataTable dt)
+        {
+            hfProjId.Value = dt.Rows[0][0].ToString();
+
+            hfReallocateGuid.Value = "";
+            hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
+
+            ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(hfProjId.Value));
+            ddlRFromFund.DataValueField = "fundid";
+            ddlRFromFund.DataTextField = "name";
+            ddlRFromFund.DataBind();
+            ddlRFromFund.Items.Insert(0, new ListItem("Select", "NA"));
+            txtRfromDate.Text = DateTime.Now.ToShortDateString();
+            ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
+            BindAllFunds();
+            hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
+
+            ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
+
+            if (rdBtnSelection.SelectedIndex > 0)
+            {
+                DataTable dtFund = new DataTable();
+                DataTable dtRelAmt = new DataTable();
+                dtFund = FinancialTransactions.GetExistingCommittedFundByProject(Convert.ToInt32(hfProjId.Value));
+                if (dtFund.Rows.Count > 0)
+                {
+                    ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
+                }
+                dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(hfProjId.Value));
+                if (dtRelAmt.Rows.Count > 0)
+                {
+                    txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
+                }
+                BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
             }
         }
 

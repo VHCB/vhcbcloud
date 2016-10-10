@@ -57,7 +57,7 @@ namespace vhcbcloud
         {
             try
             {
-                gvLkDescription.DataSource = FundTypeData.GetFundType("GetFundTypeData");
+                gvLkDescription.DataSource = FundTypeData.GetFundTypeData(cbActiveOnly.Checked);
                 gvLkDescription.DataBind();
             }
             catch (Exception ex)
@@ -100,14 +100,14 @@ namespace vhcbcloud
         protected void BindGridWithSort()
         {
             DataTable dt = new DataTable();
-            dt = FundTypeData.GetFundType("GetFundTypeData");
+            dt = FundTypeData.GetFundTypeData(cbActiveOnly.Checked);
             SortDireaction = CommonHelper.GridSorting(gvLkDescription, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
 
         protected void gvLookup_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
-            DataTable dt = FundTypeData.GetFundType("GetFundTypeData");
+            DataTable dt = FundTypeData.GetFundTypeData(cbActiveOnly.Checked);
             SortDireaction = CommonHelper.GridSorting(gvLkDescription, dt, SortExpression, SortDireaction);
         }
 
@@ -143,7 +143,7 @@ namespace vhcbcloud
         protected void gvLkDescription_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
-            DataTable dt = FundTypeData.GetFundType("GetFundTypeData");
+            DataTable dt = FundTypeData.GetFundTypeData(cbActiveOnly.Checked);
             SortDireaction = CommonHelper.GridSorting(gvLkDescription, dt, SortExpression, SortDireaction);
         }
 
@@ -187,6 +187,11 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindFundTypeData();
         }
     }
 }

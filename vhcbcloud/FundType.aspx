@@ -16,7 +16,9 @@
                         &nbsp;
             <span class="labelClass">Source :</span>
                         <asp:DropDownList ID="ddlLkLookupViewname" CssClass="clsDropDownLong" runat="server">
-                        </asp:DropDownList>
+                        </asp:DropDownList> &nbsp; &nbsp;
+                         <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" 
+                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                         <br />
                         <asp:Label runat="server" class="lblErrMsg" ID="lblErrorMsg"></asp:Label>
                         <br />
