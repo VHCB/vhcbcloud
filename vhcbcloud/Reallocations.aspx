@@ -67,13 +67,27 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="ddlRFromProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlRFromProj_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlRFromProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" Visible="false" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlRFromProj_SelectedIndexChanged">
                                             </asp:DropDownList>
                                             <%--<asp:TextBox ID="txtFromProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
 
                                             <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtFromProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                                                 OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>--%>
+
+                                            <asp:TextBox ID="txtFromProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>--%>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtFromProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+
+                                            <asp:TextBox ID="txtFromCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                                            <%--<ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>--%>
+                                            <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtFromCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnCommittedProjectSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
 
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Date :</span></td>
@@ -109,9 +123,7 @@
                                             <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxBlueSm"></asp:TextBox>
                                         </td>
                                         <td style="width: 10%; float: left"></td>
-                                        <td style="width: 30%; float: left">
-                                            
-                                        </td>
+                                        <td style="width: 30%; float: left"></td>
                                     </tr>
                                 </table>
                                 <br />
@@ -130,9 +142,16 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project# :</span></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="ddlRToProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
+                                            <asp:DropDownList ID="ddlRToProj" CssClass="clsDropDown" AutoPostBack="true" Visible="false" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlRToProj_SelectedIndexChanged">
-                                            </asp:DropDownList></td>
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
+                                            </ajaxToolkit:MaskedEditExtender>--%>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
                                             <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged">
@@ -161,7 +180,7 @@
 
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
-                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" >
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -262,7 +281,13 @@
                     <asp:HiddenField ID="hfTransId" runat="server" />
                     <asp:HiddenField ID="hfRFromTransId" runat="server" />
                     <asp:HiddenField ID="hfProjId" runat="server" />
+                    <asp:HiddenField ID="hfToProjId" runat="server" />
                     <asp:HiddenField ID="hfReallocateGuid" runat="server" />
+                    <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                    <asp:HiddenField ID="hdnCommitedProjValue" OnValueChanged="hdnCommitedProjValue_ValueChanged" runat="server" />
+                    <asp:HiddenField ID="hdnToValue" OnValueChanged="hdnToValue_ValueChanged" runat="server" />
+                    
+
                 </asp:Panel>
 
             </div>
@@ -289,6 +314,42 @@
         function PopupProjectSearch() {
             window.open('./projectsearch.aspx')
         };
+
+        function OnCommittedProjectSelected(source, eventArgs) {
+
+            var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
+
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+            $('#totMoney').focus();
+        }
+
+
+        function OnFundAcctSelected(source, eventArgs) {
+
+            var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
+
+             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+             __doPostBack(hdnCommitedProjValueID, "");
+             $('#totMoney').focus();
+         }
+
+         function OnContactSelected(source, eventArgs) {
+
+             var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+
+
+        function OnToProjectSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnToValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }      
 
     </script>
 </asp:Content>

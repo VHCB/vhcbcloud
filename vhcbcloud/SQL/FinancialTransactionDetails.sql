@@ -41,7 +41,7 @@ alter procedure getCommittedFinalProjectslistPCRFilter
 as
 begin
 
-	select distinct p.projectid, proj_num, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+	select distinct  proj_num,p.projectid, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
 	,round(sum(tr.TransAmt),2) as availFund
 	from project p(nolock)
 	join projectname pn(nolock) on p.projectid = pn.projectid
