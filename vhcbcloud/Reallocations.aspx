@@ -149,14 +149,7 @@
                                             <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
-                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
-                                            </ajaxToolkit:AutoCompleteExtender>
-
-                                            <asp:TextBox ID="txtToCommitedProjNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
-                                            <%--<ajaxToolkit:MaskedEditExtender ID="ameCommitExt" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtCommitedProjNum">
-                                            </ajaxToolkit:MaskedEditExtender>--%>
-                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtToCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
-                                                OnClientItemSelected="OnCommittedProjectSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
+                                                OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
@@ -288,9 +281,12 @@
                     <asp:HiddenField ID="hfTransId" runat="server" />
                     <asp:HiddenField ID="hfRFromTransId" runat="server" />
                     <asp:HiddenField ID="hfProjId" runat="server" />
+                    <asp:HiddenField ID="hfToProjId" runat="server" />
                     <asp:HiddenField ID="hfReallocateGuid" runat="server" />
                     <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
                     <asp:HiddenField ID="hdnCommitedProjValue" OnValueChanged="hdnCommitedProjValue_ValueChanged" runat="server" />
+                    <asp:HiddenField ID="hdnToValue" OnValueChanged="hdnToValue_ValueChanged" runat="server" />
+                    
 
                 </asp:Panel>
 
@@ -323,28 +319,37 @@
 
             var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
 
-             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
-             __doPostBack(hdnCommitedProjValueID, "");
-             $('#totMoney').focus();
-         }
-
-
-         function OnFundAcctSelected(source, eventArgs) {
-
-             var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
-
             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
             __doPostBack(hdnCommitedProjValueID, "");
             $('#totMoney').focus();
         }
 
-        function OnContactSelected(source, eventArgs) {
 
-            var hdnValueID = "<%= hdnValue.ClientID %>";
+        function OnFundAcctSelected(source, eventArgs) {
+
+            var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
+
+             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+             __doPostBack(hdnCommitedProjValueID, "");
+             $('#totMoney').focus();
+         }
+
+         function OnContactSelected(source, eventArgs) {
+
+             var hdnValueID = "<%= hdnValue.ClientID %>";
 
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
         }
+
+
+        function OnToProjectSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnToValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }      
 
     </script>
 </asp:Content>

@@ -265,24 +265,6 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender1;
         
         /// <summary>
-        /// txtToCommitedProjNum control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtToCommitedProjNum;
-        
-        /// <summary>
-        /// AutoCompleteExtender2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender2;
-        
-        /// <summary>
         /// ddlRToFund control.
         /// </summary>
         /// <remarks>
@@ -382,6 +364,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.HiddenField hfProjId;
         
         /// <summary>
+        /// hfToProjId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfToProjId;
+        
+        /// <summary>
         /// hfReallocateGuid control.
         /// </summary>
         /// <remarks>
@@ -407,5 +398,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCommitedProjValue;
+        
+        /// <summary>
+        /// hdnToValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnToValue;
     }
 }
