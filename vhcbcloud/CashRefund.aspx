@@ -98,12 +98,11 @@
                                                     <td style="width: 10%; float: left"><span class="labelClass">Total Amount  $ :</span></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="4"></asp:TextBox></td>
-                                                    <td style="width: 10%; float: left"><span class="labelClass">Available Funds $:</span></td>
-                                                    <td style="width: 30%; float: left">
+                                                    <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:</span></td>
+                                                    <td style="width: 20%; float: left">
                                                         <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
                                                         <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
-                                                        <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
-                                                        </asp:DropDownList>
+                                                       
                                                     </td>
                                                 </tr>
                                             </table>

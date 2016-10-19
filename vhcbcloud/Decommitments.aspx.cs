@@ -729,17 +729,18 @@ namespace vhcbcloud
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
                     DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
-                    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
-                    {
-                        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
-                        //.ToString("#.##");
-                    }
-                    else
-                    {
-                        lblAvailFund.Text = "0.00";
-                        lblAvailVisibleFund.Text = "0.00";
-                    }
+                    if (dr != null)
+                        if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                        {
+                            lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                            lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                            //.ToString("#.##");
+                        }
+                        else
+                        {
+                            lblAvailFund.Text = "0.00";
+                            lblAvailVisibleFund.Text = "0.00";
+                        }
 
                     pnlTranDetails.Visible = false;
                     lblErrorMsg.Text = "";
