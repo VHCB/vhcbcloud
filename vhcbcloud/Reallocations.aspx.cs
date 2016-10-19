@@ -198,6 +198,19 @@ namespace vhcbcloud
         private void getDetails(DataTable dt)
         {
             hfProjId.Value = dt.Rows[0][0].ToString();
+            
+            DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
+            if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+            {
+                lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+           
+            }
+            else
+            {
+                lblAvailFund.Text = "0.00";
+                lblAvailVisibleFund.Text = "0.00";
+            }
 
             hfReallocateGuid.Value = "";
             hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
@@ -689,6 +702,19 @@ namespace vhcbcloud
                         return;
                     }
                 }
+                decimal n;
+                bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                if (!availFunds || Convert.ToDecimal(txtRfromAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                {
+                    if (!availFunds)
+                        lblRErrorMsg.Text = "Amount can't be more than available reallocate funds (" + CommonHelper.myDollarFormat(0) + ") for the selected from project";
+                    else
+                        lblRErrorMsg.Text = "Amount can't be more than available reallocate from funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected from project";
+
+                    txtRfromAmt.Focus();
+                    return;
+                }
+
                 #endregion
 
                 if (hfReallocateGuid.Value == "")

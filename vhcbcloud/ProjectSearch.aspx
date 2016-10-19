@@ -83,7 +83,7 @@
                                     </ajaxToolkit:MaskedEditExtender>--%>
                                     <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1"
                                         EnableCaching="true" CompletionSetCount="1"
-                                        CompletionInterval="100" ServiceMethod="GetProjectNumber" DelimiterCharacters="-">
+                                        CompletionInterval="100" ServiceMethod="GetProjectNumber">
                                     </ajaxToolkit:AutoCompleteExtender>
                                     
                                     <%--<asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server" ToolTip="Enter Project Number"></asp:TextBox>

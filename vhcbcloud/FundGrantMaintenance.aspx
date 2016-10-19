@@ -13,7 +13,17 @@
         <p class="lead">Fund/Grant Maintenance</p>        
         <div class="container"> 
             <div class="panel panel-default">
-                <div class="panel-heading">Fund Information</div> 
+                <div class="panel-heading">
+                     <table style="width: 100%;">
+                        <tr>
+                            <td>Fund Information </td>
+                            <td style="text-align: right;">
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" 
+                                    OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                            </td>
+                        </tr>
+                    </table>
+                </div> 
                 <div class="panel-body">
                     <table style="width: 90%">
                         <tr>
@@ -92,6 +102,7 @@
                                     <ItemTemplate>
                                         <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
                                         <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("fundId")%>' />
+                                        <asp:HiddenField ID="hfIsActive" runat="server" Value='<%#Eval("RowIsActive")%>' />
                                     </ItemTemplate>
 
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
