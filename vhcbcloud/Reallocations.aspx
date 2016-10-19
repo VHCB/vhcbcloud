@@ -122,9 +122,10 @@
                                         <td style="width: 20%; float: left">
                                             <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxBlueSm"></asp:TextBox>
                                         </td>
-                                        <td style="width: 10%; float: left"><span class="labelClass">Available Funds $:</span></td>
-                                        <td style="width: 30%; float: left">
-                                            <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
+                                        <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false">
+                                            </asp:Label>
                                             <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
                                         </td>
                                     </tr>
@@ -289,7 +290,7 @@
                     <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
                     <asp:HiddenField ID="hdnCommitedProjValue" OnValueChanged="hdnCommitedProjValue_ValueChanged" runat="server" />
                     <asp:HiddenField ID="hdnToValue" OnValueChanged="hdnToValue_ValueChanged" runat="server" />
-                    
+
 
                 </asp:Panel>
 
@@ -332,14 +333,14 @@
 
             var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
 
-             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
-             __doPostBack(hdnCommitedProjValueID, "");
-             $('#totMoney').focus();
-         }
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+            $('#totMoney').focus();
+        }
 
-         function OnContactSelected(source, eventArgs) {
+        function OnContactSelected(source, eventArgs) {
 
-             var hdnValueID = "<%= hdnValue.ClientID %>";
+            var hdnValueID = "<%= hdnValue.ClientID %>";
 
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
@@ -352,7 +353,7 @@
 
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
-        }      
+        }
 
     </script>
 </asp:Content>

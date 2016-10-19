@@ -211,7 +211,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             catch (Exception ex)
             {
-                throw ex;
+               return null;
             }
             finally
             {

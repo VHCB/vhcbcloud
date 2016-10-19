@@ -32,7 +32,7 @@ namespace vhcbcloud
             DataTable dt = new DataTable();
             //dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
             dt = Project.GetProjects("GetProjectsByFilter", prefixText);
-            
+
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -66,8 +66,8 @@ namespace vhcbcloud
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";
                 ddlUsePermit.DataBind();
-                if (ddlUsePermit.Items.Count>1)
-                ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -462,7 +462,7 @@ namespace vhcbcloud
                 //        }
 
                 if (txtTotAmt.Text.Trim() != "")
-                {                    
+                {
                     bool isDecimal = decimal.TryParse(txtTotAmt.Text.Trim(), out n);
 
                     if (!isDecimal || Convert.ToDecimal(txtTotAmt.Text) <= 0)
@@ -963,17 +963,18 @@ namespace vhcbcloud
                 {
                     hfProjId.Value = dt.Rows[0][0].ToString();
                     DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
-                    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
-                    {
-                        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
-                        //.ToString("#.##");
-                    }
-                    else
-                    {
-                        lblAvailFund.Text = "0.00";
-                        lblAvailVisibleFund.Text = "0.00";
-                    }
+                    if (dr != null)
+                        if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                        {
+                            lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                            lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                            //.ToString("#.##");
+                        }
+                        else
+                        {
+                            lblAvailFund.Text = "0.00";
+                            lblAvailVisibleFund.Text = "0.00";
+                        }
 
                     pnlTranDetails.Visible = false;
                     lblErrorMsg.Text = "";
