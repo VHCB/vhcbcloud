@@ -111,13 +111,15 @@ begin transaction
 -- exec ProjectSearch  '0000-000', null, null, null, null, null, null, null
 --select * from projects_v
 	begin try
-	
+	declare @ProjNum1 varchar(50)
+	select @ProjNum1 = dbo.GetHyphenProjectNumber(@ProjNum);
+
 	if(isnull(@IsPrimaryApplicant, 0) = 0)
 	begin
 		select distinct ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
 			AppNameID, Applicantname 
 		from projects_v
-		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
+		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum1 + '%')
 			and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
 			and (@AppNameID is null or AppNameID = @AppNameID)
 			and (@LKProgram is null or LKProgram = @LKProgram)
@@ -132,7 +134,7 @@ begin transaction
 		select distinct ProjectId, Proj_num, ProjectName, LKProjectType, LKProgram, programname,  Address, FullAddress, County, Town, 
 			AppNameID, Applicantname
 		from projects_v
-		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum + '%')
+		where  (@ProjNum is null or Proj_num like '%'+ @ProjNum1 + '%')
 			and (@ProjectName is null or ProjectName like '%'+ @ProjectName + '%')
 			and (@AppNameID is null or AppNameID = @AppNameID)
 			and (@LKProgram is null or LKProgram = @LKProgram)
@@ -187,4 +189,35 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+go
+
+--select dbo.GetHyphenProjectNumber('2222-2222-23')
+CREATE FUNCTION dbo.GetHyphenProjectNumber 
+(
+	@Original_Project_Num VARCHAR(50)
+)
+RETURNS VARCHAR(50)
+AS BEGIN
+Declare @Project_Num varchar(50)
+set @Project_Num = replace(@Original_Project_Num, '-', '')-- '1222222221'
+Declare @FinalNum varchar(50)
+
+if(len(@Project_Num) > 4)
+begin
+	--print 'Here1'
+	--set @FinalNum = STUFF(STUFF(@Project_Num, LEN(@Project_Num)-  2, 0,'-'), LEN(@Project_Num) + 1, 0,'-')
+	set @FinalNum = STUFF(@Project_Num, 5, 0,'-')
+	if(len(@Project_Num) > 7)
+	begin
+		--print 'Here2'
+		set @FinalNum = STUFF(@FinalNum, 9, 0,'-')
+	end
+end
+else
+begin
+	--print 'Here'
+	set @FinalNum = @Project_Num
+end
+return  @FinalNum
+end
 go

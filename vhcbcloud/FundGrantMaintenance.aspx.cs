@@ -99,7 +99,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundInfo = new DataTable();
-                dtFundInfo = FinancialTransactions.GetFundInfoDetails();
+                dtFundInfo = FinancialTransactions.GetFundInfoDetails(cbActiveOnly.Checked);
                 gvFund.DataSource = dtFundInfo;
                 gvFund.DataBind();
             }
@@ -114,7 +114,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dtFundInfo = new DataTable();
-                dtFundInfo = FinancialTransactions.GetFundInfoDetailsByLastModified();
+                dtFundInfo = FinancialTransactions.GetFundInfoDetailsByLastModified(cbActiveOnly.Checked);
                 gvFund.DataSource = dtFundInfo;
                 gvFund.DataBind();
             }
@@ -127,7 +127,7 @@ namespace vhcbcloud
         protected void BindGridWithSort()
         {
             DataTable dt = new DataTable();
-            dt = FinancialTransactions.GetFundInfoDetails();
+            dt = FinancialTransactions.GetFundInfoDetails(cbActiveOnly.Checked);
             SortDireaction = CommonHelper.GridSorting(gvFund, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
 
         }
@@ -227,8 +227,18 @@ namespace vhcbcloud
             try
             {
                 int fundId = Convert.ToInt32(((Label)gvFund.Rows[e.RowIndex].FindControl("lblFundId")).Text);
-                FinancialTransactions.DeleteFundInfo(fundId);
-                BindFundInfo();
+
+                HiddenField hfIsActive = (HiddenField)gvFund.Rows[e.RowIndex].Cells[0].FindControl("hfIsActive");
+                if (hfIsActive.Value.ToString().ToLower() == "true")
+                {
+                    FinancialTransactions.DeleteFundInfo(fundId);
+                    BindFundInfo();
+                }
+                else
+                {
+                    FinancialTransactions.ActivateFundInfo(fundId);
+                    BindFundInfo();
+                }
             }
             catch (Exception ex)
             {
@@ -266,7 +276,7 @@ namespace vhcbcloud
         {
             SortExpression = e.SortExpression;
             dtable = new DataTable();
-            dtable = FinancialTransactions.GetFundInfoDetails();
+            dtable = FinancialTransactions.GetFundInfoDetails(cbActiveOnly.Checked);
             if (dtable.Rows.Count > 0)
             {
                 gvFund.DataSource = dtable;
@@ -277,6 +287,16 @@ namespace vhcbcloud
 
         protected void gvFund_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            foreach (GridViewRow row in gvFund.Rows)
+            {
+                HiddenField hfIsActive = (HiddenField)row.Cells[0].FindControl("hfIsActive");
+                if(hfIsActive.Value.ToString().ToLower() != "true")
+                {
+                    LinkButton lb = (LinkButton)row.Cells[7].Controls[0];
+                    lb.Text = "Activate";
+                }
+            }
+
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
             {
                 CommonHelper.GridViewSetFocus(e.Row);
@@ -905,6 +925,11 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindFundInfo();
         }
     }
 }

@@ -452,14 +452,37 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Select a valid transaction amount";
                     return;
                 }
-                DataTable dtCommitFund = FinancialTransactions.GetCommittedFundPerProject(txtProjNum.Text);
-                if (dtCommitFund != null)
-                    if (dtCommitFund.Rows.Count > 0)
-                        if (Convert.ToDecimal(dtCommitFund.Rows[0]["availFunds"].ToString()) < Convert.ToDecimal(txtTotAmt.Text.Trim()))
-                        {
-                            lblErrorMsg.Text = "Cash Refund amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtCommitFund.Rows[0]["availFunds"].ToString()) + " for the selected project";
-                            return;
-                        }
+                //DataTable dtCommitFund = FinancialTransactions.GetCommittedFundPerProject(txtProjNum.Text);
+                //if (dtCommitFund != null)
+                //    if (dtCommitFund.Rows.Count > 0)
+                //        if (Convert.ToDecimal(dtCommitFund.Rows[0]["availFunds"].ToString()) < Convert.ToDecimal(txtTotAmt.Text.Trim()))
+                //        {
+                //            lblErrorMsg.Text = "Cash Refund amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtCommitFund.Rows[0]["availFunds"].ToString()) + " for the selected project";
+                //            return;
+                //        }
+
+                if (txtTotAmt.Text.Trim() != "")
+                {                    
+                    bool isDecimal = decimal.TryParse(txtTotAmt.Text.Trim(), out n);
+
+                    if (!isDecimal || Convert.ToDecimal(txtTotAmt.Text) <= 0)
+                    {
+                        lblErrorMsg.Text = "Select a valid cash refund amount";
+                        txtTotAmt.Focus();
+                        return;
+                    }
+                    bool availFunds = decimal.TryParse(lblAvailFund.Text.Trim(), out n);
+                    if (!availFunds || Convert.ToDecimal(txtTotAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
+                    {
+                        if (!availFunds)
+                            lblErrorMsg.Text = "Cash refund amount can't be more than available funds (" + CommonHelper.myDollarFormat(0) + ") for the selected project";
+                        else
+                            lblErrorMsg.Text = "Cash refund amount can't be more than available funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected project";
+
+                        txtTotAmt.Focus();
+                        return;
+                    }
+                }
 
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
@@ -939,6 +962,19 @@ namespace vhcbcloud
                 if (dt.Rows.Count != 0)
                 {
                     hfProjId.Value = dt.Rows[0][0].ToString();
+                    DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
+                    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                    {
+                        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                        //.ToString("#.##");
+                    }
+                    else
+                    {
+                        lblAvailFund.Text = "0.00";
+                        lblAvailVisibleFund.Text = "0.00";
+                    }
+
                     pnlTranDetails.Visible = false;
                     lblErrorMsg.Text = "";
 

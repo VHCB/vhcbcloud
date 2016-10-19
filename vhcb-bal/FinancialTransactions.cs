@@ -1859,6 +1859,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void ActivateFundInfo(int fundId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ActivateFund";
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void UpdateFundInfo(int fundid, string fAcct, string fName, string fAbbrv, int fFundsType,
                                             string vhcbCode, int lkAcctMethod, string deptId, bool drawDown)
         {
@@ -1896,7 +1923,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetFundInfoDetails()
+        public static DataTable GetFundInfoDetails(bool IsActiveOnly)
         {
             DataTable dtStatus = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1905,6 +1932,8 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetFundInfoDetails";
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
                 using (connection)
                 {
                     connection.Open();
@@ -1930,7 +1959,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtStatus;
         }
 
-        public static DataTable GetFundInfoDetailsByLastModified()
+        public static DataTable GetFundInfoDetailsByLastModified(bool IsActiveOnly)
         {
             DataTable dtStatus = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1939,6 +1968,8 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetFundInfoDetailsByLastModified";
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
                 using (connection)
                 {
                     connection.Open();

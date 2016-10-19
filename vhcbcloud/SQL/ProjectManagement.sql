@@ -1,7 +1,6 @@
 use vhcbsandbox
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNumbers]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetProjectNumbers 
 go
 
@@ -12,10 +11,18 @@ create procedure GetProjectNumbers
 as
 --exec GetProjectNameById 6588
 begin
-
-	select top 20 proj_num --replace(proj_num, '-', '')
-	from project
-	where  replace(proj_num, '-', '') like @ProjectNum+ '%'
+	if(CHARINDEX('-', @ProjectNum) > 0)
+	begin
+		select top 20 proj_num
+		from project
+		where  proj_num like @ProjectNum+ '%'
+	end
+	else
+	begin
+		select top 20 proj_num 
+		from project
+		where  replace(proj_num, '-', '') like @ProjectNum+ '%'
+	end
 end
 go
 
