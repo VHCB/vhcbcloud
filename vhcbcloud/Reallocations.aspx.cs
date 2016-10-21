@@ -197,21 +197,23 @@ namespace vhcbcloud
 
         private void getDetails(DataTable dt)
         {
+            lblAvailFund.Text = "";
+            lblAvailVisibleFund.Text = "";
             hfProjId.Value = dt.Rows[0][0].ToString();
 
-            DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
-            if (dr != null)
-                if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
-                {
-                    lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+            //DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
+            //if (dr != null)
+            //    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+            //    {
+            //        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+            //        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
 
-                }
-                else
-                {
-                    lblAvailFund.Text = "0.00";
-                    lblAvailVisibleFund.Text = "0.00";
-                }
+            //    }
+            //    else
+            //    {
+            //        lblAvailFund.Text = "0.00";
+            //        lblAvailVisibleFund.Text = "0.00";
+            //    }
 
             hfReallocateGuid.Value = "";
             hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
@@ -223,7 +225,7 @@ namespace vhcbcloud
             ddlRFromFund.Items.Insert(0, new ListItem("Select", "NA"));
             txtRfromDate.Text = DateTime.Now.ToShortDateString();
             //ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
-            //txtToProjNum.Text = txtFromProjNum.Text;
+            txtToProjNum.Text = txtFromProjNum.Text;
             BindAllFunds();
 
             ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
@@ -419,8 +421,21 @@ namespace vhcbcloud
                 ddlRFromFundType.DataValueField = "typeid";
                 ddlRFromFundType.DataTextField = "fundtype";
                 ddlRFromFundType.DataBind();
+                lblAvailVisibleFund.Text = "";
+                lblAvailFund.Text = "";
                 if (ddlRFromFundType.Items.Count > 1)
+                {
                     ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                }
+                else if (ddlRFromFundType.Items.Count == 1)
+                {
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+                    if (dtable.Rows.Count > 0)
+                    {
+                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
+                        lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
+                    }
+                }
 
                 if (txtToProjNum.Text != "")
                     //if (ddlRToProj.SelectedValue != ddlRFromProj.SelectedValue)
@@ -431,6 +446,22 @@ namespace vhcbcloud
                     }
                     else
                         ddlRToFund.Enabled = true;
+            }
+        }
+
+        protected void ddlRFromFundType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlRFromFundType.Items.Count > 1)
+            {
+                if (ddlRFromFundType.SelectedIndex != 0)
+                {
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
+                    if (dtable.Rows.Count > 0)
+                    {
+                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
+                        lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
+                    }
+                }
             }
         }
 
@@ -754,5 +785,6 @@ namespace vhcbcloud
             Response.Redirect("reallocations.aspx");
         }
 
+       
     }
 }

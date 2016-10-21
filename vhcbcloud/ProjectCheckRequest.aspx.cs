@@ -858,10 +858,15 @@ namespace vhcbcloud
             string PCRID = this.hfEditPCRId.Value;
 
             #region Validations
-            if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+            //if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+            //{
+            //    lblErrorMsg.Text = "Select Project#";
+            //    ddlProjFilter.Focus();
+            //    return;
+            //}
+            if(txtProjNum.Text=="")
             {
                 lblErrorMsg.Text = "Select Project#";
-                ddlProjFilter.Focus();
                 return;
             }
             if (txtTransDate.Text == "")
@@ -980,7 +985,7 @@ namespace vhcbcloud
 
             try
             {
-                string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+               // string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 string lbNODS = string.Empty;
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);
 
@@ -1009,7 +1014,7 @@ namespace vhcbcloud
 
                 if (PCRID == "")
                 {
-                    dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
+                    dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS);
@@ -1056,7 +1061,7 @@ namespace vhcbcloud
                 this.hfPCRId.Value = pcr.ProjectCheckReqID.ToString();
                 this.hfTransAmt.Value = txtDisbursementAmt.Text;
 
-                BindPCRData(int.Parse(ProjectTokens[0]));
+                BindPCRData(int.Parse(hfProjId.Value));
                 DisablePCR();
                 //ClearPCRForm();
                 //ClearPCRDetails();

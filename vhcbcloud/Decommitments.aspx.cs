@@ -723,7 +723,8 @@ namespace vhcbcloud
         {
             try
             {
-
+                lblAvailFund.Text = "";
+                lblAvailVisibleFund.Text = "";
                 if (dt.Rows.Count != 0)
                 {
                     hfProjId.Value = dt.Rows[0][0].ToString();
