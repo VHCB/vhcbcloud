@@ -116,7 +116,7 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Type :</span></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="ddlRFromFundType" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;">
+                                            <asp:DropDownList ID="ddlRFromFundType" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlRFromFundType_SelectedIndexChanged">
                                             </asp:DropDownList></td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                         <td style="width: 20%; float: left">
