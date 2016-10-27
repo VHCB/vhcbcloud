@@ -168,12 +168,27 @@
                                     <tr>
                                         <td><span class="labelClass">First Name</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
+                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtFirstName" runat="server" TargetControlID="txtFirstName"
+                                                MinimumPrefixLength="1"
+                                                EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetIndividualFirstNames" 
+                                                OnClientItemSelected="PopulateFnameDetails"
+                                                OnClientPopulated="onFirstNamePopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
                                         <td>
                                             <span class="labelClass">Last Name</span>
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtLastName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtLastName" runat="server" TargetControlID="txtLastName"
+                                                MinimumPrefixLength="1"
+                                                EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetIndividualLastNames" 
+                                                OnClientItemSelected="PopulateLnameDetails"
+                                                OnClientPopulated="onLirstNamePopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td><span class="labelClass">Role</span></td>
                                         <td>
@@ -960,38 +975,63 @@
             $('#<%= dvProjectEventForm.ClientID%>').toggle(this.checked);
         }).change();
 
-         function onEntityListPopulated() {
+        function onEntityListPopulated() {
             var completionList = $find('<%=ae_txtApplicantName.ClientID%>').get_completionList();
-        completionList.style.width = 'auto';
-        //completionList.style.css = 'clsAutoExtDropDownListItem';
+             completionList.style.width = 'auto';
+             //completionList.style.css = 'clsAutoExtDropDownListItem';
          }
+        function onFirstNamePopulated() {
+            var completionList = $find('<%=ac_txtFirstName.ClientID%>').get_completionList();
+             completionList.style.width = 'auto';
+             //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+        function onLirstNamePopulated() {
+            var completionList = $find('<%=ac_txtLastName.ClientID%>').get_completionList();
+             completionList.style.width = 'auto';
+             //completionList.style.css = 'clsAutoExtDropDownListItem';
+         } 
+        
+        function PopulateFnameDetails(source, eventArgs) {
+            //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
+            var addressArray = eventArgs.get_value().split(',');
+            $('#<%=txtFirstName.ClientID%>').val(addressArray[0].trim());
+            $('#<%=txtLastName.ClientID%>').val(addressArray[1].trim());
+            $('#<%=txtEmail.ClientID%>').val(addressArray[2].trim());
+        }
 
-        function SetContextKey() {
-            $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
+        function PopulateLnameDetails(source, eventArgs) {
+            //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
+            var addressArray = eventArgs.get_value().split(',');
+            $('#<%=txtFirstName.ClientID%>').val(addressArray[1].trim());
+            $('#<%=txtLastName.ClientID%>').val(addressArray[0].trim());
+            $('#<%=txtEmail.ClientID%>').val(addressArray[2].trim());
+        }
+         function SetContextKey() {
+             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
         }
 
         function onListPopulated() {
             var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
-        completionList.style.width = 'auto';
-        //completionList.style.css = 'clsAutoExtDropDownListItem';
-    }
-
-    function GetAddressDetails(source, eventArgs) {
-        //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
-        var addressArray = eventArgs.get_value().split('~');
-        $('#<%=txtStreetNo.ClientID%>').val(addressArray[0]);
-            $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
-            $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
-            $('#<%=txtState.ClientID%>').val(addressArray[3]);
-            $('#<%=txtZip.ClientID%>').val(addressArray[4]);
-            $('#<%=txtTown.ClientID%>').val(addressArray[5]);
-            $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
-            $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
-            $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
         }
 
-        $(document).ready(function () {
-            $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
+        function GetAddressDetails(source, eventArgs) {
+            //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
+            var addressArray = eventArgs.get_value().split('~');
+            $('#<%=txtStreetNo.ClientID%>').val(addressArray[0]);
+        $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
+        $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
+        $('#<%=txtState.ClientID%>').val(addressArray[3]);
+        $('#<%=txtZip.ClientID%>').val(addressArray[4]);
+        $('#<%=txtTown.ClientID%>').val(addressArray[5]);
+        $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
+        $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
+        $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+    }
+
+    $(document).ready(function () {
+        $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
             }).change();
@@ -1011,30 +1051,30 @@
         }
         function getAddressInfoByZip(zip) {
             $('#<%= txtTown.ClientID%>').val('');
-                $('#<%= txtState.ClientID%>').val('');
-                $('#<%= txtCounty.ClientID%>').val('');
-                if (zip.length >= 5 && typeof google != 'undefined') {
-                    var addr = {};
-                    var geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ 'address': zip }, function (results, status) {
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            if (results.length >= 1) {
-                                for (var ii = 0; ii < results[0].address_components.length; ii++) {
-                                    var street_number = route = street = city = state = zipcode = country = formatted_address = '';
-                                    var types = results[0].address_components[ii].types.join(",");
-                                    if (types == "street_number") {
-                                        addr.street_number = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "route" || types == "point_of_interest,establishment") {
-                                        addr.route = results[0].address_components[ii].long_name;
-                                    }
-                                    if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
-                                        addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                        $('#<%= txtTown.ClientID%>').val(addr.city);
+            $('#<%= txtState.ClientID%>').val('');
+            $('#<%= txtCounty.ClientID%>').val('');
+            if (zip.length >= 5 && typeof google != 'undefined') {
+                var addr = {};
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': zip }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results.length >= 1) {
+                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                var types = results[0].address_components[ii].types.join(",");
+                                if (types == "street_number") {
+                                    addr.street_number = results[0].address_components[ii].long_name;
                                 }
-                                if (types == "administrative_area_level_1,political") {
-                                    addr.state = results[0].address_components[ii].short_name;
-                                    $('#<%= txtState.ClientID%>').val(addr.state);
+                                if (types == "route" || types == "point_of_interest,establishment") {
+                                    addr.route = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                                    }
+                                    if (types == "administrative_area_level_1,political") {
+                                        addr.state = results[0].address_components[ii].short_name;
+                                        $('#<%= txtState.ClientID%>').val(addr.state);
                                 }
                                 if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
                                     addr.zipcode = results[0].address_components[ii].long_name;
@@ -1050,20 +1090,20 @@
                             addr.success = true;
                             $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
                             $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
-                            for (name in addr) {
-                                console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                                for (name in addr) {
+                                    console.log('### google maps api ### ' + name + ': ' + addr[name]);
+                                }
+                                response(addr);
+                            } else {
+                                response({ success: false });
                             }
-                            response(addr);
                         } else {
                             response({ success: false });
                         }
-                    } else {
-                        response({ success: false });
-                    }
-                });
-            } else {
-                response({ success: false });
+                    });
+                } else {
+                    response({ success: false });
+                }
             }
-        }
     </script>
 </asp:Content>

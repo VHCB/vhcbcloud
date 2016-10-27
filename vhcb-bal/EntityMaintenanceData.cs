@@ -60,6 +60,10 @@ namespace VHCBCommon.DataAccessLayer
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
+                        
+                        SqlParameter parmMessage2 = new SqlParameter("@DuplicateId", SqlDbType.Int);
+                        parmMessage2.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage2);
 
                         SqlParameter parmMessage1 = new SqlParameter("@ApplicantId", SqlDbType.Int);
                         parmMessage1.Direction = ParameterDirection.Output;
@@ -72,6 +76,7 @@ namespace VHCBCommon.DataAccessLayer
                         EntityMaintResult ap = new EntityMaintResult();
 
                         ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.DuplicateId = DataUtils.GetInt(command.Parameters["@DuplicateId"].Value.ToString());
                         ap.ApplicantId = DataUtils.GetInt(command.Parameters["@ApplicantId"].Value.ToString());
 
                         return ap;
@@ -247,6 +252,75 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
+        public static DataTable GetFirstNames(string FirstNamePrefix)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetFirstNames";
+                command.Parameters.Add(new SqlParameter("FirstNamePrefix", FirstNamePrefix));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetLastNames(string LastNamePrefix)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLastNames";
+                command.Parameters.Add(new SqlParameter("LastNamePrefix", LastNamePrefix));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
         #region Address
 
         public static EntityMaintResult AddNewEntityAddress(int ApplicantId, string StreetNo, string Address1, string Address2,
@@ -783,6 +857,7 @@ namespace VHCBCommon.DataAccessLayer
     public class EntityMaintResult
     {
         public bool IsDuplicate { set; get; }
+        public int DuplicateId { set; get; }
         public int ApplicantId { set; get; }
         public bool IsActive { set; get; }
     }

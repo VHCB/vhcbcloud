@@ -874,6 +874,40 @@ namespace DataAccessLayer
             return dt;
         }
 
+        public static DataTable GetEventListByEntity(int ApplicantID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEventListByEntity";
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
         public static ProjectMaintResult AddProjectEvent(int ProjectId, int Prog, int ApplicantID, int EventID, 
             int SubEventID, DateTime Date, string Note, int UserID)
         {

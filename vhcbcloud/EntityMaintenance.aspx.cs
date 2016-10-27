@@ -456,8 +456,12 @@ namespace vhcbcloud
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
-                            LogMessage("New Entity already exist");
-
+                            if(objEntityMaintResult.DuplicateId == 1)
+                                LogMessage("Entity with same Email already exist");
+                            else if(objEntityMaintResult.DuplicateId == 2)
+                                LogMessage("Entity with same First Name and Last Name already exist");
+                            else if (objEntityMaintResult.DuplicateId == 3)
+                                LogMessage("Entity with same First Name, Last Name and Email already exist");
                         }
                         else
                         {
@@ -1059,7 +1063,7 @@ namespace vhcbcloud
         {
             try
             {
-                DataTable dtProjectEvents = ProjectMaintenanceData.GetProjectEventList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+                DataTable dtProjectEvents = ProjectMaintenanceData.GetEventListByEntity(DataUtils.GetInt(hfApplicatId.Value), cbActiveOnly.Checked);
                 Session["dtProjectEvents"] = dtProjectEvents;
 
                 if (dtProjectEvents.Rows.Count > 0)
@@ -1387,6 +1391,42 @@ namespace vhcbcloud
                     EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
                 }
             }
+            return EntityNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetIndividualFirstNames(string prefixText, int count)
+        {
+            List<string> EntityNames = new List<string>();
+
+            
+                DataTable dt = new DataTable();
+                dt = EntityMaintenanceData.GetFirstNames(prefixText);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+                }
+          
+            return EntityNames.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetIndividualLastNames(string prefixText, int count)
+        {
+            List<string> EntityNames = new List<string>();
+
+
+            DataTable dt = new DataTable();
+            dt = EntityMaintenanceData.GetLastNames(prefixText);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+
             return EntityNames.ToArray();
         }
     }
