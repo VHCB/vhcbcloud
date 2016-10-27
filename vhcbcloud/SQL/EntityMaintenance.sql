@@ -38,6 +38,7 @@ create procedure dbo.AddNewEntity
 	@AppRole			int = null,
 	@Operation			int = null,
 	@isDuplicate		bit output,
+	@DuplicateId		int output,
 	@ApplicantId		int output
 ) as
 begin transaction
@@ -49,22 +50,50 @@ begin transaction
 	declare @AddressId int;
 
 	set @isDuplicate = 0
+	set @DuplicateId = 0;
 
 	if (@Operation = 1)--Individual
 	begin
 
 	set @isDuplicate = 1
-	
-		if not exists
-		(
-			select 1
-			from contact c(nolock)
-			join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
-			join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
-			where c.Firstname = @Fname 
-				and c.Lastname = @Lname
-				and a.email = @Email
-		)
+
+	if exists
+	(
+		select 1
+		from contact c(nolock)
+		join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
+		join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
+		where c.Firstname = @Fname 
+		and c.Lastname = @Lname
+		and a.email != '' and a.email = @Email
+	)
+	begin
+		set @DuplicateId = 3
+	end
+	else if exists
+	(
+		select 1
+		from contact c(nolock)
+		join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
+		join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
+		where c.Firstname = @Fname 
+		and c.Lastname = @Lname
+	)
+	begin
+		set @DuplicateId = 2
+	end
+	else if exists
+	(
+		select 1
+		from contact c(nolock)
+		join applicantcontact ac(nolock) on c.ContactID = ac.ContactID
+		join applicant a(nolock) on ac.ApplicantID = a.ApplicantID
+		where  @Email != '' and a.email = @email
+	)
+	begin
+		set @DuplicateId = 1
+	end
+	else
 		begin
 			insert into contact (Firstname, Lastname, LkPosition, Title)
 			values (@Fname, @Lname, @Position, @Title)
@@ -87,7 +116,6 @@ begin transaction
 
 			set @isDuplicate = 0
 		end
-
 	end
 	else if (@Operation = 2)--Organization
 	begin
@@ -866,5 +894,47 @@ begin
 	order by an.Applicantname asc 
 
  
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetFirstNames]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetFirstNames 
+go
+
+create procedure GetFirstNames
+(
+	@FirstNamePrefix varchar(50)
+)  
+as
+--exec GetFirstNames 'rama'
+begin
+
+  select top 5 c.Firstname +', '+ c.Lastname +', '+  a.email 
+  from applicantcontact ac(nolock)
+  join contact c(nolock) on c.ContactId = ac.ContactID
+  join Applicant a(nolock) on a.ApplicantId = ac.ApplicantID
+  where c.Firstname like @FirstNamePrefix + '%'
+  order by c.Firstname asc 
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetLastNames]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetLastNames 
+go
+
+create procedure GetLastNames
+(
+	@LastNamePrefix varchar(50)
+)  
+as
+--exec GetLastNames 'na'
+begin
+
+  select top 5 c.Lastname + ', '+ c.Firstname +', '+  a.email 
+  from applicantcontact ac(nolock)
+  join contact c(nolock) on c.ContactId = ac.ContactID
+  join Applicant a(nolock) on a.ApplicantId = ac.ApplicantID
+  where c.Lastname like @LastNamePrefix + '%'
+  order by c.Lastname asc 
 end
 go
