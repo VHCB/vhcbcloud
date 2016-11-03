@@ -61,8 +61,7 @@
 
                             </asp:Panel>
                             <div class="panel-heading">Reallocate from</div>
-                            <div class="panel-body">
-
+                            <div class="panel-body" id="pnlReallocateFrom" runat="server">
                                 <table style="width: 100%" class="">
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>

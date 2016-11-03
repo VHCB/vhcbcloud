@@ -502,7 +502,7 @@ namespace vhcbcloud
             }
         }
 
-        public void ClearReallocationToPanel()
+        private void ClearReallocationToPanel()
         {
             txtToProjNum.Text = "";
             ddlRToProj.SelectedIndex = 0;
@@ -513,7 +513,7 @@ namespace vhcbcloud
             txtRToAmt.Text = "";
         }
 
-        public void ClearReallocationFromPanel()
+        private void ClearReallocationFromPanel()
         {
             ddlRFromProj.SelectedIndex = 0;
             txtFromProjNum.Text = "";
@@ -523,6 +523,24 @@ namespace vhcbcloud
             ddlRFromFundType.DataBind();
             txtRfromDate.Text = "";
             txtRfromAmt.Text = "";
+        }
+
+        private void DisableReallocationFromPanel()
+        {
+            txtFromProjNum.Enabled = false;
+            ddlRFromFund.Enabled = false;
+            ddlRFromFundType.Enabled = false;
+            txtRfromDate.Enabled = false;
+            txtRfromAmt.Enabled = false;
+        }
+
+        private void EnableReallocationFromPanel()
+        {
+            txtFromProjNum.Enabled = true;
+            ddlRFromFund.Enabled = true;
+            ddlRFromFundType.Enabled = true;
+            txtRfromDate.Enabled = true;
+            txtRfromAmt.Enabled = true;
         }
 
         private void BindGvReallocate(int fromProjId)
@@ -569,12 +587,14 @@ namespace vhcbcloud
                     {
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
+                        DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
                         hfReallocateGuid.Value = "";
+                        EnableReallocationFromPanel();
                     }
                 }
                 else
