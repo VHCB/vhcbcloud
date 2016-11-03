@@ -1687,7 +1687,7 @@ namespace vhcbcloud
             {
                 string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 lblCommittedAvailFunds.Text = "";
-                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
@@ -1696,7 +1696,7 @@ namespace vhcbcloud
 
                 if (ddlTransType.Items.Count == 1)
                 {
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value.ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
                     hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
                     lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                 }
@@ -1720,7 +1720,7 @@ namespace vhcbcloud
             {
                 if (ddlTransType.SelectedIndex != 0)
                 {
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(tokens[0].ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value.ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
                     hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
                     lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                 }
