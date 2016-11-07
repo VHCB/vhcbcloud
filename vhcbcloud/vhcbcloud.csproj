@@ -113,6 +113,9 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
+    <Reference Include="WebReportsApi">
+      <HintPath>..\..\..\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -336,6 +339,7 @@
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
+    <Content Include="TestExago.aspx" />
     <Content Include="Viability.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
@@ -848,6 +852,13 @@
       <DependentUpon>SiteWithoutHeader.Master</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="TestExago.aspx.cs">
+      <DependentUpon>TestExago.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestExago.aspx.designer.cs">
+      <DependentUpon>TestExago.aspx</DependentUpon>
+    </Compile>
     <Compile Include="VHCBBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

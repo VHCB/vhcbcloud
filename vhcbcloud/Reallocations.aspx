@@ -183,7 +183,8 @@
 
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
-                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%">
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit" 
+                                    OnRowEditing="gvReallocate_RowEditing" OnRowDeleting="gvReallocate_RowDeleting">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
