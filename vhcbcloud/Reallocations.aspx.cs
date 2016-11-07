@@ -244,7 +244,7 @@ namespace vhcbcloud
                 {
                     txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
                 }
-                BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+                //BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
             }
         }
 
@@ -515,10 +515,14 @@ namespace vhcbcloud
 
         private void ClearReallocationFromPanel()
         {
+            txtFromCommitedProjNum.Text = "";
             ddlRFromProj.SelectedIndex = 0;
             txtFromProjNum.Text = "";
-            ddlRFromFund.DataSource = null;
+            DataSet ds = new DataSet();
+            
+            ddlRFromFund.DataSource = ds;
             ddlRFromFund.DataBind();
+
             ddlRFromFundType.DataSource = null;
             ddlRFromFundType.DataBind();
             txtRfromDate.Text = "";
@@ -802,9 +806,24 @@ namespace vhcbcloud
 
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
-            Response.Redirect("reallocations.aspx");
+            Response.Redirect("reallocations.aspx");            
         }
 
-       
+        protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvReallocate.EditIndex = e.NewEditIndex;
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+        }
+
+        protected void gvReallocate_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvReallocate.EditIndex = -1;
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+        }       
+
+        protected void gvReallocate_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+
+        }
     }
 }
