@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -14,43 +15,36 @@ namespace vhcbcloud
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            anchorId.HRef = GetExagoURL("6588", "Grid Project Address");
-            anchorId1.HRef = GetExagoURL("6639", "Grid Project Address");
-            //Response.Redirect(URL);
+            anchorId.HRef = Helper.GetExagoURL("6588", "Grid Project Address");
+            anchorId1.HRef = Helper.GetExagoURL("6639", "Grid Project Address");
+            //Response.Redirect(URL); 
         }
 
-        private string GetExagoURL(string ProjID, string ReportName)
-        {
-            string URL = string.Empty;
-            Api api = new Api(@"/eWebReports");
+        //private string GetExagoURL(string ProjID, string ReportName)
+        //{
+        //    string URL = string.Empty;
+        //    Api api = new Api(@"/eWebReports");
 
-            Report report = (Report)api.ReportObjectFactory.LoadFromRepository(@"\Grid Reports\" + ReportName);
-            report.ExportType = wrExportType.Html;
-            report.ShowStatus = true;
+        //    Report report = (Report)api.ReportObjectFactory.LoadFromRepository(@"\Grid Reports\" + ReportName);
+        //    report.ExportType = wrExportType.Html;
+        //    report.ShowStatus = true;
 
-            // Set the action to execute the report
-            api.Action = wrApiAction.ExecuteReport;
-            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");
-            parameter.Value = ProjID;
-            parameter.IsHidden = true;
+        //    // Set the action to execute the report
+        //    api.Action = wrApiAction.ExecuteReport;
+        //    WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");
+        //    parameter.Value = ProjID;
+        //    parameter.IsHidden = true;
 
-            api.ReportObjectFactory.SaveToApi(report);
-            URL = "/ewebreports/" + api.GetUrlParamString("ExagoHome", true);
+        //    api.ReportObjectFactory.SaveToApi(report);
+        //    URL = ConfigurationManager.AppSettings["ExagoURL"]+ api.GetUrlParamString("ExagoHome", true);
             
-            return URL;
-        }
+        //    return URL;
+        //}
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-            string url = GetExagoURL("6588", "Grid Project Address");
-            StringBuilder sb = new StringBuilder();
-            sb.Append("<script type = 'text/javascript'>");
-            sb.Append("window.open('");
-            sb.Append(url);
-            sb.Append("', '_blank');");
-            sb.Append("</script>");
             ClientScript.RegisterStartupScript(this.GetType(),
-                    "script", sb.ToString());
+                    "script", Helper.GetExagoURL("6588", "Grid Project Address"));
         }
     }
 }
