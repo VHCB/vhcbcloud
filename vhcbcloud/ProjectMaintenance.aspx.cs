@@ -1665,6 +1665,12 @@ namespace vhcbcloud
             ddlApplicantRole.ClearSelection();
             PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString())));
         }
+
+        protected void ImgButtonAddressReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Address"));
+        }
     }
 
     public class KeyVal

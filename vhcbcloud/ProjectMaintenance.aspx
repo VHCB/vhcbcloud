@@ -26,13 +26,13 @@
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" 
+                                <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary"
                                     Style="border: none; vertical-align: middle;" Visible="false"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" 
+                                <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     ToolTip="Project Notes" Style="border: none; vertical-align: middle;" Visible="false" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -117,7 +117,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Closing Date</span></td>
                                         <td style="width: 250px">
-                                           <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />--%>
+                                            <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />--%>
                                             <asp:TextBox ID="txtClosingDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClosingDate" TargetControlID="txtClosingDate">
                                             </ajaxToolkit:CalendarExtender>
@@ -125,9 +125,7 @@
                                         <td style="width: 100px">
                                             <span class="labelClass"></span>
                                         </td>
-                                        <td style="width: 270px">
-                                            
-                                        </td>
+                                        <td style="width: 270px"></td>
                                         <td style="width: 170px"><span class="labelClass"></span></td>
                                         <td></td>
                                     </tr>
@@ -174,7 +172,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Program</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEventProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
+                                            <asp:DropDownList ID="ddlEventProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true"
                                                 OnSelectedIndexChanged="ddlEventProgram_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
@@ -395,8 +393,12 @@
                                     <td>
                                         <h3 class="panel-title">Addresses</h3>
                                     </td>
-                                    <td style="text-align: right">
+                                    <td style="text-align:right">
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
+                                    </td>
+                                    <td style="text-align: right; width:25px;">
+                                        <asp:ImageButton ID="ImgButtonAddressReport" ImageUrl="~/Images/search.png" ToolTip="Address Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Project Search" OnClick="ImgButtonAddressReport_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -406,13 +408,13 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Address Type</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                         <td style="width: 100px"><span class="labelClass">Street #</span></td>
-                                         <td style="width: 270px">
+                                        <td style="width: 100px"><span class="labelClass">Street #</span></td>
+                                        <td style="width: 270px">
                                             <asp:TextBox ID="txtStreetNo" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox><%-- onkeyup="SetContextKey()"--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="ae_txtStreetNo" runat="server" TargetControlID="txtStreetNo" MinimumPrefixLength="1"
                                                 EnableCaching="true" CompletionSetCount="1" CompletionListCssClass="clsAutoExtDropDown"
@@ -1001,7 +1003,7 @@
                             }
                             addr.success = true;
                             $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
-                                $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
+                            $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
 
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
