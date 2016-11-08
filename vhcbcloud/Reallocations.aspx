@@ -257,6 +257,11 @@
                                             <FooterStyle Width="200px" />
                                             <HeaderStyle Width="200px" />
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Guid" SortExpression="projguid" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjGuid" runat="Server" Text='<%# Eval("projguid") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Id" SortExpression="FundID" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />

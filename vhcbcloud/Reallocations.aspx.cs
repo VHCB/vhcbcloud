@@ -239,11 +239,11 @@ namespace vhcbcloud
                 {
                     ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
                 }
-                dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(hfProjId.Value));
-                if (dtRelAmt.Rows.Count > 0)
-                {
-                    txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
-                }
+                //dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(hfProjId.Value));
+                //if (dtRelAmt.Rows.Count > 0)
+                //{
+                //    txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
+                //}
                 //BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
             }
         }
@@ -435,6 +435,8 @@ namespace vhcbcloud
                         lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                         lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
                     }
+                    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+
                 }
 
                 if (txtToProjNum.Text != "")
@@ -461,6 +463,7 @@ namespace vhcbcloud
                         lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                         lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
                     }
+                    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
                 }
             }
         }
@@ -518,9 +521,8 @@ namespace vhcbcloud
             txtFromCommitedProjNum.Text = "";
             ddlRFromProj.SelectedIndex = 0;
             txtFromProjNum.Text = "";
-            DataSet ds = new DataSet();
-            
-            ddlRFromFund.DataSource = ds;
+
+            ddlRFromFund.DataSource = null;
             ddlRFromFund.DataBind();
 
             ddlRFromFundType.DataSource = null;
@@ -592,6 +594,142 @@ namespace vhcbcloud
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                         DisableReallocationFromPanel();
+                    }
+                    if (lblBalAmt.Text == "$0.00")
+                    {
+                        CommonHelper.DisableButton(btnReallocateSubmit);
+                        btnNewTransaction.Visible = true;
+                        hfReallocateGuid.Value = "";
+                        EnableReallocationFromPanel();
+                    }
+                }
+                else
+                {
+                    btnReallocateSubmit.Visible = false;
+                    btnNewTransaction.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblRErrorMsg.Text = ex.Message;
+                throw;
+            }
+        }
+
+        private void BindGvReallocate(int fromProjId, int fundId)
+        {
+            try
+            {
+                DataTable dtFundDet = new DataTable();
+                // dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+
+                if (rdBtnSelection.SelectedIndex > 0)
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsProjFund(fromProjId, fundId);
+                }
+                else
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                }
+
+                gvReallocate.DataSource = dtFundDet;
+                gvReallocate.DataBind();
+                decimal totAmt = 0;
+                hfBalAmt.Value = "";
+                if (dtFundDet.Rows.Count > 0)
+                {
+                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
+                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
+                    if (dtFundDet.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                        {
+                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                        }
+                    }
+
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                    if (txtRfromAmt.Text != "")
+                    {
+                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                    }
+
+                    if (lblBalAmt.Text != "$0.00")
+                    {
+                        lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        btnNewTransaction.Visible = false;
+                        if (rdBtnSelection.SelectedIndex == 0)
+                            DisableReallocationFromPanel();
+                    }
+                    if (lblBalAmt.Text == "$0.00")
+                    {
+                        CommonHelper.DisableButton(btnReallocateSubmit);
+                        btnNewTransaction.Visible = true;
+                        hfReallocateGuid.Value = "";
+                        EnableReallocationFromPanel();
+                    }
+                }
+                else
+                {
+                    btnReallocateSubmit.Visible = false;
+                    btnNewTransaction.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblRErrorMsg.Text = ex.Message;
+                throw;
+            }
+        }
+
+        private void BindGvReallocate(int fromProjId, int fundId, int transTypeId)
+        {
+            try
+            {
+                DataTable dtFundDet = new DataTable();
+                // dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+
+                if (rdBtnSelection.SelectedIndex > 0)
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsProjFundTransType(fromProjId, fundId, transTypeId);
+                }
+                else
+                {
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                }
+
+                gvReallocate.DataSource = dtFundDet;
+                gvReallocate.DataBind();
+                decimal totAmt = 0;
+                hfBalAmt.Value = "";
+                if (dtFundDet.Rows.Count > 0)
+                {
+                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
+                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
+                    if (dtFundDet.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                        {
+                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                        }
+                    }
+
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                    if (txtRfromAmt.Text != "")
+                    {
+                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
+                    }
+
+                    if (lblBalAmt.Text != "$0.00")
+                    {
+                        lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        btnNewTransaction.Visible = false;
+                        if (rdBtnSelection.SelectedIndex == 0)
+                            DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
@@ -806,7 +944,7 @@ namespace vhcbcloud
 
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
-            Response.Redirect("reallocations.aspx");            
+            Response.Redirect("reallocations.aspx");
         }
 
         protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)
@@ -819,7 +957,7 @@ namespace vhcbcloud
         {
             gvReallocate.EditIndex = -1;
             BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
-        }       
+        }
 
         protected void gvReallocate_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
