@@ -713,6 +713,7 @@
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Housing\HomeOwnership.aspx.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
