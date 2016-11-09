@@ -239,7 +239,7 @@ namespace vhcbcloud
                 {
                     ddlRFromFund.SelectedItem.Text = dtFund.Rows[0]["name"].ToString();
                 }
-                //dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(hfProjId.Value));
+                dtRelAmt = FinancialTransactions.GetReallocationAmtByProjId(Convert.ToInt32(hfProjId.Value));
                 //if (dtRelAmt.Rows.Count > 0)
                 //{
                 //    txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
