@@ -403,6 +403,7 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
         public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
                                 decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, string transGuid)
         {
@@ -631,6 +632,33 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
             return dtable;
+        }
+
+        public static void DeleteReallocationsByGUID(string reallocateGuid)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteReallocationsByGUID";
+                command.Parameters.Add(new SqlParameter("reallocateGUID", reallocateGuid));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public static void UpdateTransDetails(int detailId, int fundtranstype, decimal fundamount)

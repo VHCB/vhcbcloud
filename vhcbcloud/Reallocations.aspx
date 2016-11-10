@@ -184,7 +184,7 @@
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
                                     PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit" 
-                                    OnRowEditing="gvReallocate_RowEditing" OnRowDeleting="gvReallocate_RowDeleting">
+                                    OnRowEditing="gvReallocate_RowEditing" OnRowDeleting="gvReallocate_RowDeleting" OnRowDataBound="gvReallocate_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -272,7 +272,7 @@
                                                 <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:CommandField ShowEditButton="false" ShowDeleteButton="true" />
                                     </Columns>
                                     <FooterStyle CssClass="footerStyle" />
                                 </asp:GridView>
