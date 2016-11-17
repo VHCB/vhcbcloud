@@ -1695,7 +1695,7 @@ Begin
 	select distinct transid, projguid from @temp
 	
 	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId 
-		,td.projguid
+		,td.projguid, t.datemodified
 		 from Fund f 
 		join Detail d on d.FundId = f.FundId
 		join Trans t on t.TransId = d.TransId
@@ -1732,7 +1732,7 @@ Begin
 	select distinct transid, projguid from @temp
 	
 	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId 
-		,td.projguid
+		,td.projguid, t.datemodified
 		 from Fund f 
 		join Detail d on d.FundId = f.FundId
 		join Trans t on t.TransId = d.TransId
@@ -1768,7 +1768,7 @@ Begin
 	select distinct transid, projguid from @temp
 	
 	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId 
-		,td.projguid
+		,td.projguid, t.datemodified
 		 from Fund f 
 		join Detail d on d.FundId = f.FundId
 		join Trans t on t.TransId = d.TransId
@@ -1951,7 +1951,7 @@ Begin
 	
 
 	Select t.projectid, p.proj_num, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, d.LkTransType, t.LkTransaction,t.TransId
-		, td. projGuid
+		, td. projGuid, t.datemodified
 	
 	 from Fund f 
 		join Detail d on d.FundId = f.FundId
@@ -1973,8 +1973,15 @@ alter procedure DeleteReallocationsByGUID
 )
 as
 Begin
-	
+	declare  @temp table ( transid int, toProjId int, projGuid varchar(100) )
+	insert into @temp (transid, toProjId, projGuid)
+	select FromTransID, ToProjectId,ReallocateGUID  from ReallocateLink where ReallocateGUID = @reallocateGuid
+	insert into @temp (transid, toProjId, projGuid)
+	select ToTransID, ToProjectId, ReallocateGUID from ReallocateLink  where ReallocateGUID = @reallocateGuid
+
 	delete reallocatelink where reallocateguid = @reallocateGUID
+	delete Detail where transid in (select distinct transid from @temp)
+	delete Trans where transid in (select distinct transid from @temp)
 End
 go
 

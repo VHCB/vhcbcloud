@@ -261,6 +261,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="ExistingReallocations.aspx" />
     <Content Include="SQL\ConservationAct250.sql" />
     <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />
@@ -824,6 +825,13 @@
       <DependentUpon>ProjectSearch.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExistingReallocations.aspx.cs">
+      <DependentUpon>ExistingReallocations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExistingReallocations.aspx.designer.cs">
+      <DependentUpon>ExistingReallocations.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Reallocations.aspx.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
