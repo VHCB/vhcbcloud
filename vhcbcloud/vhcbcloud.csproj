@@ -114,7 +114,7 @@
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
     <Reference Include="WebReportsApi">
-      <HintPath>..\..\..\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +713,7 @@
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Housing\HomeOwnership.aspx.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
