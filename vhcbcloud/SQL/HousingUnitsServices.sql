@@ -34,14 +34,15 @@ create procedure SubmitHousingUnits
 	@Previous		int,
 	@NewUnits		int,
 	@RelCovenant	int,
-	@ResRelease		Date
+	@ResRelease		Date,
+	@IsSash			bit
 ) as
 begin transaction
 
 	begin try
 
 	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @TotalUnits, Hsqft = @Hsqft, 
-	Previous = @Previous, NewUnits = @NewUnits, RelCovenant = @RelCovenant, ResRelease = @ResRelease
+	Previous = @Previous, NewUnits = @NewUnits, RelCovenant = @RelCovenant, ResRelease = @ResRelease, Sash = @IsSash
 	
 	from Housing(nolock) 
 	where HousingID = @HousingID
@@ -498,6 +499,115 @@ begin transaction
 		commit transaction;
 go
 
+/* Secondary Supp Serv*/
+ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingSecServList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHousingSecServList 
+go
+
+create procedure GetHousingSecServList
+(
+	@HousingID		int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetHousingSecServList 1, 0
+begin
+	select  hs.ProjectSecSuppServID, hs.LKSecSuppServ, lv.description as Service, hs.Numunits, hs.RowIsActive
+	from ProjectSecSuppServ hs(nolock)
+	join LookupValues lv(nolock) on lv.TypeId = hs.LKSecSuppServ
+	where hs.HousingID = @HousingID 
+		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
+		order by hs.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddHousingSecServ]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddHousingSecServ
+go
+
+create procedure dbo.AddHousingSecServ
+(
+	@HousingID		int,
+	@LKSecSuppServ	int,
+	@Numunits		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1
+		from ProjectSecSuppServ(nolock)
+		where HousingID = @HousingID 
+			and LKSecSuppServ = @LKSecSuppServ
+    )
+	begin
+		insert into ProjectSecSuppServ(HousingID, LKSecSuppServ, Numunits, DateModified)
+		values(@HousingID, @LKSecSuppServ, @Numunits, getdate())
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ProjectSecSuppServ(nolock)
+		where HousingID = @HousingID 
+			and LKSecSuppServ = @LKSecSuppServ
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateHousingSecServ]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateHousingSecServ
+go
+
+create procedure dbo.UpdateHousingSecServ
+(
+	@ProjectSecSuppServID	int,
+	@Numunits				int,
+	@RowIsActive			bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectSuppServ set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectSecSuppServ
+	where ProjectSecSuppServID = @ProjectSecSuppServID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 /* ProjectVHCBAffordUnits */
 
  if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingVHCBAffordUnitsList]') and type in (N'P', N'PC'))
@@ -593,6 +703,116 @@ begin transaction
 	update ProjectVHCBAffordUnits set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
 	from ProjectVHCBAffordUnits
 	where ProjectVHCBAffordUnitsID = @ProjectVHCBAffordUnitsID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+/* Project Age Restrict*/
+
+ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectAgeRestrictList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectAgeRestrictList 
+go
+
+create procedure GetProjectAgeRestrictList
+(
+	@HousingID		int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetProjectAgeRestrictList 1, 0
+begin
+	select  hs.ProjectAgeRestrictID, hs.LKAgeRestrict, lv.description as Service, hs.Numunits, hs.RowIsActive
+	from ProjectAgeRestrict hs(nolock)
+	join LookupValues lv(nolock) on lv.TypeId = hs.LKAgeRestrict
+	where hs.HousingID = @HousingID 
+		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
+		order by hs.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectAgeRestrict]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddProjectAgeRestrict
+go
+
+create procedure dbo.AddProjectAgeRestrict
+(
+	@HousingID		int,
+	@LKAgeRestrict	int,
+	@Numunits		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1
+		from ProjectAgeRestrict(nolock)
+		where HousingID = @HousingID 
+			and LKAgeRestrict = @LKAgeRestrict
+    )
+	begin
+		insert into ProjectAgeRestrict(HousingID, LKAgeRestrict, Numunits, DateModified)
+		values(@HousingID, @LKAgeRestrict, @Numunits, getdate())
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ProjectAgeRestrict(nolock)
+		where HousingID = @HousingID 
+			and LKAgeRestrict = @LKAgeRestrict
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectAgeRestrict]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectAgeRestrict
+go
+
+create procedure dbo.UpdateProjectAgeRestrict
+(
+	@ProjectAgeRestrictID	int,
+	@Numunits				int,
+	@RowIsActive			bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectAgeRestrict set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectAgeRestrict
+	where ProjectAgeRestrictID = @ProjectAgeRestrictID
 
 	end try
 	begin catch
