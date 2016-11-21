@@ -13,7 +13,7 @@ using VHCBCommon.DataAccessLayer.Housing;
 using VHCBCommon.DataAccessLayer.Lead;
 
 namespace vhcbcloud.Housing
-{
+{ 
     public partial class HomeOwnership : System.Web.UI.Page
     {
         string Pagename = "HomeOwnership";

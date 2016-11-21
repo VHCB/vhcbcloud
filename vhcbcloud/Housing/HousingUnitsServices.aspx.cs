@@ -11,7 +11,7 @@ using VHCBCommon.DataAccessLayer;
 using VHCBCommon.DataAccessLayer.Housing;
 
 namespace vhcbcloud.Housing
-{
+{ 
     public partial class HousingUnitsServices : System.Web.UI.Page
     {
         string Pagename = "HousingUnitsServices";
