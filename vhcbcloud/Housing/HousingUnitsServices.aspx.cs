@@ -59,18 +59,6 @@ namespace vhcbcloud.Housing
                 dvVHCBUnitWarning.Visible = false;
                 lblVHCBUnitWarning.Text = "";
             }
-
-            if (hfPrimaryServiceWarning.Value != "1")
-            {
-                dvPrimaryServiceWarning.Visible = false;
-                lblPrimaryServiceWarning.Text = "";
-            }
-
-            if (hfAgeRestrWarning.Value != "1")
-            {
-                dvAgeRestrWarning.Visible = false;
-                lblAgeRestrWarning.Text = "";
-            }
         }
 
         private void BindHousingUnitsForm()
@@ -125,8 +113,6 @@ namespace vhcbcloud.Housing
             BindMultiUnitGrid();
             BindSuppServiceGrid();
             BindVHCBAffordGrid();
-            BindSecServiceGrid();
-            BindAgeRestrictionGrid();
             //BindHomeAffordGrid();
         }
 
@@ -195,8 +181,6 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlSingleUnitCharacteristic, 145);
             BindLookUP(ddlMultipleUnitCharacteristic, 96);
             BindLookUP(ddlSuppService, 87);
-            BindLookUP(ddlSecService, 188);//188
-            BindLookUP(ddlAgeRest, 189); //189
             BindLookUP(ddlVHCBAff, 109);
             //BindLookUP(ddlHomeAff, 109);
         }
@@ -331,8 +315,7 @@ namespace vhcbcloud.Housing
 
             HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), DataUtils.GetInt(txtTotalUnits.Text),
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
-                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRelFromCov.Text), DataUtils.GetDate(txtRestrictionsReleaseDate.Text), 
-                chkSash.Checked);
+                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRelFromCov.Text), DataUtils.GetDate(txtRestrictionsReleaseDate.Text));
 
             BindHousingUnitsForm();
 
@@ -738,19 +721,6 @@ namespace vhcbcloud.Housing
                     }
 
                     lblFooterSuppServiceTotalUnits.Text = totSuppServiceUnits.ToString();
-                    int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
-
-                    hfPrimaryServiceWarning.Value = "0";
-                    if (TotalUnits - totSuppServiceUnits != 0)
-                    {
-                        hfPrimaryServiceWarning.Value = "1";
-                        WarningMessage(dvPrimaryServiceWarning, lblPrimaryServiceWarning, "The Primary Service Units must be equal to Total Units.");
-                    }
-                    else
-                    {
-                        dvPrimaryServiceWarning.Visible = false;
-                        lblPrimaryServiceWarning.Text = "";
-                    }
                 }
                 else
                 {
@@ -931,247 +901,6 @@ namespace vhcbcloud.Housing
             LogMessage("VHCB Affordability Units updated successfully");
 
             BindVHCBAffordGrid();
-        }
-
-        protected void btnAddSecServices_Click(object sender, EventArgs e)
-        {
-            if (ddlSecService.SelectedIndex == 0)
-            {
-                LogMessage("Select Service");
-                ddlSecService.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtSecServiceUnits.Text.ToString()) == true)
-            {
-                LogMessage("Enter Units");
-                txtSecServiceUnits.Focus();
-                return;
-            }
-            if (DataUtils.GetDecimal(txtSecServiceUnits.Text) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                txtSecServiceUnits.Focus();
-                return;
-            }
-
-            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingSecServ(DataUtils.GetInt(hfHousingID.Value),
-                DataUtils.GetInt(ddlSecService.SelectedValue.ToString()), DataUtils.GetInt(txtSecServiceUnits.Text));
-
-            ddlSecService.SelectedIndex = -1;
-            txtSecServiceUnits.Text = "";
-            cbAddSecService.Checked = false;
-
-            BindSecServiceGrid();
-
-            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Secondary Support Service already exist as in-active");
-            else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Secondary Support Service already exist");
-            else
-                LogMessage("New Secondary Support Service added successfully");
-        }
-
-        private void BindSecServiceGrid()
-        {
-            try
-            {
-                DataTable dt = HousingUnitsServicesData.GetHousingSecServList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
-
-                if (dt.Rows.Count > 0)
-                {
-                    dvSecServiceGrid.Visible = true;
-                    gvSecService.DataSource = dt;
-                    gvSecService.DataBind();
-
-                    Label lblFooterSecServiceTotalUnits = (Label)gvSecService.FooterRow.FindControl("lblFooterSecServiceTotalUnits");
-                    int totSecServiceUnits = 0;
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
-                            totSecServiceUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
-                    }
-
-                    lblFooterSecServiceTotalUnits.Text = totSecServiceUnits.ToString();
-                }
-                else
-                {
-                    dvSecServiceGrid.Visible = false;
-                    gvSecService.DataSource = null;
-                    gvSecService.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindSecServiceGrid", "", ex.Message);
-            }
-        }
-
-        protected void gvSecService_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvSecService.EditIndex = e.NewEditIndex;
-            BindSecServiceGrid();
-        }
-
-        protected void gvSecService_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvSecService.EditIndex = -1;
-            BindSecServiceGrid();
-        }
-
-        protected void gvSecService_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            string strUnits = ((TextBox)gvSecService.Rows[rowIndex].FindControl("txtSecServiceNumunits")).Text;
-
-            if (string.IsNullOrWhiteSpace(strUnits) == true)
-            {
-                LogMessage("Enter Units");
-                return;
-            }
-            if (DataUtils.GetDecimal(strUnits) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                return;
-            }
-            int ProjectSecSuppServID = DataUtils.GetInt(((Label)gvSecService.Rows[rowIndex].FindControl("lblProjectSecSuppServID")).Text);
-            int Units = DataUtils.GetInt(strUnits);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvSecService.Rows[rowIndex].FindControl("chkActive")).Checked); ;
-
-            HousingUnitsServicesData.UpdateHousingSecServ(ProjectSecSuppServID, Units, RowIsActive);
-            gvSecService.EditIndex = -1;
-
-            LogMessage("Secondary Support Service updated successfully");
-
-            BindSecServiceGrid();
-        }
-
-        protected void btnAddAgeRest_Click(object sender, EventArgs e)
-        {
-            if (ddlAgeRest.SelectedIndex == 0)
-            {
-                LogMessage("Select Age Restriction");
-                ddlAgeRest.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtAgeRestUnits.ToString()) == true)
-            {
-                LogMessage("Enter Units");
-                txtAgeRestUnits.Focus();
-                return;
-            }
-            if (DataUtils.GetDecimal(txtAgeRestUnits.Text) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                txtAgeRestUnits.Focus();
-                return;
-            }
-
-            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddProjectAgeRestrict(DataUtils.GetInt(hfHousingID.Value),
-                DataUtils.GetInt(ddlAgeRest.SelectedValue.ToString()), DataUtils.GetInt(txtAgeRestUnits.Text));
-
-            ddlAgeRest.SelectedIndex = -1;
-            txtAgeRestUnits.Text = "";
-            cbAddAgeRes.Checked = false;
-
-            BindAgeRestrictionGrid();
-
-            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Age restriction already exist as in-active");
-            else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Age Restriction already exist");
-            else
-                LogMessage("Age Restriction added successfully");
-        }
-
-        private void BindAgeRestrictionGrid()
-        {
-            try
-            {
-                DataTable dt = HousingUnitsServicesData.GetProjectAgeRestrictList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
-
-                if (dt.Rows.Count > 0)
-                {
-                    dvAgeRestrGrid.Visible = true;
-                    gvAgeRestr.DataSource = dt;
-                    gvAgeRestr.DataBind();
-
-                    Label lblFooterAgeRestrTotalUnits = (Label)gvAgeRestr.FooterRow.FindControl("lblFooterAgeRestrTotalUnits");
-                    int totAgeRestrUnits = 0;
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
-                            totAgeRestrUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
-                    }
-
-                    lblFooterAgeRestrTotalUnits.Text = totAgeRestrUnits.ToString();
-                    int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
-
-                    hfAgeRestrWarning.Value = "0";
-                    if (TotalUnits - totAgeRestrUnits != 0)
-                    {
-                        hfAgeRestrWarning.Value = "1";
-                        WarningMessage(dvAgeRestrWarning, lblAgeRestrWarning, "Age restrictions Units must be equal to Total Units.");
-                    }
-                    else
-                    {
-                        dvAgeRestrWarning.Visible = false;
-                        lblAgeRestrWarning.Text = "";
-                    }
-                }
-                else
-                {
-                    dvAgeRestrGrid.Visible = false;
-                    gvAgeRestr.DataSource = null;
-                    gvAgeRestr.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindSecServiceGrid", "", ex.Message);
-            }
-        }
-
-        protected void gvAgeRestr_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvAgeRestr.EditIndex = e.NewEditIndex;
-            BindAgeRestrictionGrid();
-        }
-
-        protected void gvAgeRestr_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvAgeRestr.EditIndex = -1;
-            BindAgeRestrictionGrid();
-        }
-
-        protected void gvAgeRestr_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            string strUnits = ((TextBox)gvAgeRestr.Rows[rowIndex].FindControl("txtAgeRestrNumunits")).Text;
-
-            if (string.IsNullOrWhiteSpace(strUnits) == true)
-            {
-                LogMessage("Enter Units");
-                return;
-            }
-            if (DataUtils.GetDecimal(strUnits) <= 0)
-            {
-                LogMessage("Enter valid Units");
-                return;
-            }
-            int ProjectAgeRestrictID = DataUtils.GetInt(((Label)gvAgeRestr.Rows[rowIndex].FindControl("lblProjectAgeRestrictID")).Text);
-            int Units = DataUtils.GetInt(strUnits);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAgeRestr.Rows[rowIndex].FindControl("chkActive")).Checked); ;
-
-            HousingUnitsServicesData.UpdateProjectAgeRestrict(ProjectAgeRestrictID, Units, RowIsActive);
-            gvAgeRestr.EditIndex = -1;
-
-            LogMessage("Age restrictions updated successfully");
-
-            BindAgeRestrictionGrid();
         }
 
         //protected void btnAddHomeAff_Click(object sender, EventArgs e)

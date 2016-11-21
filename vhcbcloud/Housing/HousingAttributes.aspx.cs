@@ -90,7 +90,7 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlPriorities, 60);
             BindLookUP(ddlInterAgencyPriorities, 79);
             BindLookUP(ddlVHCBPriorities, 90);
-            //BindLookUP(ddlOutcomes, 81);
+            BindLookUP(ddlOutcomes, 81);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -115,7 +115,7 @@ namespace vhcbcloud.Housing
             BindConsolidatedPlanPrioritiesGrid();
             BindInterAgencyGrid();
             BindVHCBGrid();
-            //BindOtherGrid();
+            BindOtherGrid();
         }
 
         private void BindConsolidatedPlanPrioritiesGrid()
@@ -385,7 +385,7 @@ namespace vhcbcloud.Housing
 
             LogMessage("VHCB Priority updated successfully");
         }
-/*
+
         protected void btnAddOutcomes_Click(object sender, EventArgs e)
         {
             if (ddlOutcomes.SelectedIndex == 0)
@@ -463,6 +463,5 @@ namespace vhcbcloud.Housing
                 LogError(Pagename, "BindOtherGrid", "", ex.Message);
             }
         }
-        */
     }
 }

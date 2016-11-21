@@ -85,18 +85,13 @@
                                 <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtRestrictionsReleaseDate">
                                 </ajaxToolkit:CalendarExtender>
                             </td>
-                            <td><span class="labelClass">Sash</span></td>
-                            <td>
-                               <asp:CheckBox ID="chkSash" runat="server" />
-                            </td>
                             <td><span class="labelClass">Federal Program Units</span></td>
                             <td>
                                <span class="labelClass" id="snFederalProgramUnits" runat="server"></span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5">
+                            <td>
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
+                            <td style="height: 5px"></td>
                         </tr>
                     </table>
                 </div>
@@ -329,10 +324,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Accessible/Adaptable</h3>
+                                        <h3 class="panel-title">Accessible/Adaptable/Transitional</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Accessible/Adaptable" />
+                                        <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Accessible/Adaptable/Transitional" />
                                     </td>
                                 </tr>
                             </table>
@@ -435,10 +430,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Primary Service Support</h3>
+                                        <h3 class="panel-title">Service Supported</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddSuppService" runat="server" Text="Add New Primary Service Support" />
+                                        <asp:CheckBox ID="cbAddSuppService" runat="server" Text="Add New Service Supported" />
                                     </td>
                                 </tr>
                             </table>
@@ -473,12 +468,6 @@
                         </div>
 
                         <div class="panel-body" id="dvSuppServiceGrid" runat="server">
-                            <div id="dvPrimaryServiceWarning" runat="server">
-                                <p class="bg-info">
-                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                                    <asp:Label runat="server" ID="lblPrimaryServiceWarning" class="labelClass"></asp:Label>
-                                </p>
-                            </div>
                             <asp:Panel runat="server" ID="Panel7" Width="100%" Height="150px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvSuppService" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -514,214 +503,6 @@
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterSuppServiceTotalUnits" Text=""></asp:Label>
-                                            </FooterTemplate>
-                                            <ItemStyle Width="200px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
-                                            <ItemStyle Width="200px" />
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="panel-width" runat="server" id="dvNewSecServices">
-                    <div class="panel panel-default ">
-                        <div class="panel-heading ">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Secondary Service Support</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddSecService" runat="server" Text="Add New Secondary Service Support" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="panel-body" runat="server" id="dvSecServiceForm">
-                            <asp:Panel runat="server" ID="Panel11">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass">Service</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlSecService" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass"># of Units
-                                            </span>
-                                        </td>
-                                        <td style="width: 180px">
-                                            <asp:TextBox ID="txtSecServiceUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 170px">
-                                            <asp:Button ID="btnAddSecServices" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddSecServices_Click" /></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" id="dvSecServiceGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel12" Width="100%" Height="150px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvSecService" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                    OnRowEditing="gvSecService_RowEditing" OnRowCancelingEdit="gvSecService_RowCancelingEdit" 
-                                    OnRowUpdating="gvSecService_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <FooterStyle CssClass="footerStyleTotals" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="ProjectSecSuppServID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectSecSuppServID" runat="Server" Text='<%# Eval("ProjectSecSuppServID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Service">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblService" runat="Server" Text='<%# Eval("Service") %>' />
-                                            </ItemTemplate>
-                                            <FooterTemplate>
-                                                Grand Total :
-                                            </FooterTemplate>
-                                            <ItemStyle Width="400px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblNumunits" runat="Server" Text='<%# Eval("Numunits") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtSecServiceNumunits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                            <FooterTemplate>
-                                                <asp:Label runat="server" ID="lblFooterSecServiceTotalUnits" Text=""></asp:Label>
-                                            </FooterTemplate>
-                                            <ItemStyle Width="200px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
-                                            <ItemStyle Width="200px" />
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="panel-width" runat="server" id="dvNewAgeRestrictions">
-                    <div class="panel panel-default ">
-                        <div class="panel-heading ">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Age Restrictions</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddAgeRes" runat="server" Text="Add New Age Restrictions" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="panel-body" runat="server" id="dvAgeRestForm">
-                            <asp:Panel runat="server" ID="Panel13">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass">Age Restrictions</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlAgeRest" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass"># of Units
-                                            </span>
-                                        </td>
-                                        <td style="width: 180px">
-                                            <asp:TextBox ID="txtAgeRestUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 170px">
-                                            <asp:Button ID="btnAddAgeRest" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddAgeRest_Click" /></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" id="dvAgeRestrGrid" runat="server">
-                             <div id="dvAgeRestrWarning" runat="server">
-                                <p class="bg-info">
-                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                                    <asp:Label runat="server" ID="lblAgeRestrWarning" class="labelClass"></asp:Label>
-                                </p>
-                            </div>
-                            <asp:Panel runat="server" ID="Panel14" Width="100%" Height="150px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvAgeRestr" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                    OnRowEditing="gvAgeRestr_RowEditing" OnRowCancelingEdit="gvAgeRestr_RowCancelingEdit"
-                                    OnRowUpdating="gvAgeRestr_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <FooterStyle CssClass="footerStyleTotals" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="ProjectAgeRestrictID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProjectAgeRestrictID" runat="Server" Text='<%# Eval("ProjectAgeRestrictID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Age Restriction">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAgeRestriction" runat="Server" Text='<%# Eval("AgeRestriction") %>' />
-                                            </ItemTemplate>
-                                            <FooterTemplate>
-                                                Grand Total :
-                                            </FooterTemplate>
-                                            <ItemStyle Width="400px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblNumunits" runat="Server" Text='<%# Eval("Numunits") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtAgeRestrNumunits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                            <FooterTemplate>
-                                                <asp:Label runat="server" ID="lblFooterAgeRestrTotalUnits" Text=""></asp:Label>
                                             </FooterTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
@@ -957,9 +738,6 @@
     <asp:HiddenField ID="hfSubTypeWarning" runat="server" />
     <asp:HiddenField ID="hfSingleUnitWarning" runat="server" />
     <asp:HiddenField ID="hfVHCBUnitWarning" runat="server" />
-    <asp:HiddenField ID="hfPrimaryServiceWarning" runat="server" />
-    <asp:HiddenField ID="hfAgeRestrWarning" runat="server" />
-    
 
     <script language="javascript">
         $(document).ready(function () {
@@ -992,18 +770,6 @@
 
             $('#<%= cbAddSuppService.ClientID%>').click(function () {
                 $('#<%= dvSuppServiceForm.ClientID%>').toggle(this.checked);
-            }).change();
-
-            $('#<%= dvSecServiceForm.ClientID%>').toggle($('#<%= cbAddSecService.ClientID%>').is(':checked'));
-
-            $('#<%= cbAddSecService.ClientID%>').click(function () {
-                $('#<%= dvSecServiceForm.ClientID%>').toggle(this.checked);
-            }).change();
-
-            $('#<%= dvAgeRestForm.ClientID%>').toggle($('#<%= cbAddAgeRes.ClientID%>').is(':checked'));
-
-            $('#<%= cbAddAgeRes.ClientID%>').click(function () {
-                $('#<%= dvAgeRestForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvVHCBAffForm.ClientID%>').toggle($('#<%= cbAddVHCBAff.ClientID%>').is(':checked'));

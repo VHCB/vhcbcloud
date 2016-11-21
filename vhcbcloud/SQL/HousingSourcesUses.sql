@@ -364,7 +364,7 @@ begin transaction
 
 		select TypeId, Description 
 		from lookupvalues 
-		where lookuptype = 114 
+		where lookuptype = 99 
 			and description like 'vhcb%'
 	end
 	else
@@ -372,7 +372,7 @@ begin transaction
 
 		select TypeId, Description 
 		from lookupvalues 
-		where lookuptype = 114 
+		where lookuptype = 99 
 			and description not like 'vhcb%'
 
 	end
