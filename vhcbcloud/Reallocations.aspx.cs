@@ -1034,7 +1034,7 @@ namespace vhcbcloud
             Label lblGuid = (Label)gvReallocate.Rows[e.RowIndex].FindControl("lblProjGuid");
 
             FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
         }
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)

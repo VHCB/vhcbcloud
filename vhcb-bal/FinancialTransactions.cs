@@ -487,7 +487,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
-        public static DataTable GetReallocationDetailsProjFund(int fromProjId, int fundId)
+        public static DataTable GetReallocationDetailsProjFund(int fromProjId, int fundId, DateTime dtModified)
         {
             DataTable dtable = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -498,6 +498,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "GetReallocationDetailsProjFund";
                 command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.Parameters.Add(new SqlParameter("datemodified", dtModified));
                 using (connection)
                 {
                     connection.Open();
@@ -523,7 +524,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
-        public static DataTable GetReallocationDetailsProjFundTransType(int fromProjId, int fundId, int transTypeId)
+        public static DataTable GetReallocationDetailsProjFundTransType(int fromProjId, int fundId, int transTypeId, DateTime dtModified)
         {
             DataTable dtable = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -535,6 +536,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.Parameters.Add(new SqlParameter("transTypeId", transTypeId));
+                command.Parameters.Add(new SqlParameter("datemodified", dtModified));
                 using (connection)
                 {
                     connection.Open();
@@ -559,6 +561,82 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtable;
         }
+
+        public static DataTable GetReallocationDetailsNewProjFund(int fromProjId, int fundId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetReallocationDetailsNewProjFund";
+                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+        public static DataTable GetReallocationDetailsNewProjFundTransType(int fromProjId, int fundId, int transTypeId)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetReallocationDetailsNewProjFundTransType";
+                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.Parameters.Add(new SqlParameter("transTypeId", transTypeId));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
 
         public static DataTable GetReallocationDetailsByGuid(int fromProjId, string reallocateGuid)
         {

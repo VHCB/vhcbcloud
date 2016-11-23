@@ -938,7 +938,7 @@ namespace vhcbcloud
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            OnDataBound(sender, e, gvReallocate);
+            //OnDataBound(sender, e, gvReallocate);
         }
     }
 }
