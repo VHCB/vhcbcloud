@@ -3,7 +3,7 @@
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron" id="vhcb">
-        <!-- Tabs -->
+        <!-- Tabs   -->
         <div id="dvTabs" runat="server">
             <div id="page-inner">
                 <div id="VehicleDetail">
@@ -223,10 +223,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">VHCB Priorities</h3>
+                                        <h3 class="panel-title">VHCB Priorities/Outcomes</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddVHCB" runat="server" Text="Add New VHCB Priorities" />
+                                        <asp:CheckBox ID="cbAddVHCB" runat="server" Text="Add New VHCB Priorities/Outcomes" />
                                     </td>
                                 </tr>
                             </table>
@@ -236,7 +236,7 @@
                             <asp:Panel runat="server" ID="Panel3">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Priorities</span></td>
+                                        <td style="width: 140px"><span class="labelClass">Priorities/Outcomes</span></td>
                                         <td style="width: 215px">
                                             <asp:DropDownList ID="ddlVHCBPriorities" CssClass="clsDropDownLong" runat="server">
                                             </asp:DropDownList>
@@ -296,7 +296,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvNewOther">
+               <%-- <div class="panel-width" runat="server" id="dvNewOther">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
                         <div class="panel-heading" style="padding: 5px 5px 1px 5px">
                             <table style="width: 100%;">
@@ -373,7 +373,7 @@
                             </asp:Panel>
                         </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -396,10 +396,10 @@
                 $('#<%= dvVHCBForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= dvOtherForm.ClientID%>').toggle($('#<%= cbAddOther.ClientID%>').is(':checked'));
+           <%-- $('#<%= dvOtherForm.ClientID%>').toggle($('#<%= cbAddOther.ClientID%>').is(':checked'));
             $('#<%= cbAddOther.ClientID%>').click(function () {
                 $('#<%= dvOtherForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
             
         });
         function PopupAwardSummary() {
