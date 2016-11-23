@@ -114,7 +114,7 @@
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
     <Reference Include="WebReportsApi">
-      <HintPath>..\..\..\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

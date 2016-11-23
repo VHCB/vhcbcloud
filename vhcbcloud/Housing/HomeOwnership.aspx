@@ -3,7 +3,7 @@
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron" id="vhcb">
-        <!-- Tabs -->
+        <! -- Tabs -->
         <div id="dvTabs" runat="server">
             <div id="page-inner">
                 <div id="VehicleDetail">
@@ -267,7 +267,7 @@
                                         <td style="width: 270px">
                                              <asp:TextBox ID="txtStewardCont" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 300px"><span class="labelClass">VHCB Assistance Loan</span></td>
+                                        <td style="width: 300px"><span class="labelClass">Single Family Assistance Loan</span></td>
                                         <td>
                                             <asp:TextBox ID="txtVHCBAsstLoan" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td> 

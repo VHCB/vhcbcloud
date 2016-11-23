@@ -3,7 +3,7 @@ go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingID]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetHousingID
-go
+go 
 
 create procedure GetHousingID
 (
@@ -364,7 +364,7 @@ begin transaction
 
 		select TypeId, Description 
 		from lookupvalues 
-		where lookuptype = 99 
+		where lookuptype = 114 
 			and description like 'vhcb%'
 	end
 	else
@@ -372,7 +372,7 @@ begin transaction
 
 		select TypeId, Description 
 		from lookupvalues 
-		where lookuptype = 99 
+		where lookuptype = 114 
 			and description not like 'vhcb%'
 
 	end
