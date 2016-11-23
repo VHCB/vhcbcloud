@@ -689,7 +689,7 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsProjFund(fromProjId, fundId);
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFund(fromProjId, fundId);
                 }
                 else
                 {
@@ -757,7 +757,7 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsProjFundTransType(fromProjId, fundId, transTypeId);
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFundTransType(fromProjId, fundId, transTypeId);
                 }
                 else
                 {
