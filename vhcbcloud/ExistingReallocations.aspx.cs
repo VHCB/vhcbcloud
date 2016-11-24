@@ -10,14 +10,13 @@ using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
-    public partial class Reallocations : System.Web.UI.Page
+    public partial class ExistingReallocations : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
             if (!IsPostBack)
             {
-                rdBtnSelection.SelectedIndex = 0;
+                rdBtnSelection.SelectedIndex = 1;
                 hfReallocateGuid.Value = "";
                 BindProjects();
             }
@@ -437,8 +436,8 @@ namespace vhcbcloud
                         lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                         lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
                     }
-                    if (rdBtnSelection.SelectedIndex>0)
-                    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+                    if (rdBtnSelection.SelectedIndex > 0)
+                        BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
 
                 }
 
@@ -596,13 +595,13 @@ namespace vhcbcloud
                     if (lblBalAmt.Text != "$0.00")
                     {
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                        btnNewTransaction.Visible = false;
+
                         DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
                         CommonHelper.DisableButton(btnReallocateSubmit);
-                        btnNewTransaction.Visible = true;
+
                         hfReallocateGuid.Value = "";
                         EnableReallocationFromPanel();
                     }
@@ -610,7 +609,7 @@ namespace vhcbcloud
                 else
                 {
                     btnReallocateSubmit.Visible = false;
-                    btnNewTransaction.Visible = true;
+
                 }
             }
             catch (Exception ex)
@@ -630,47 +629,7 @@ namespace vhcbcloud
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
-                decimal totAmt = 0;
-                hfBalAmt.Value = "";
-                if (dtFundDet.Rows.Count > 0)
-                {
-                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
-                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
-                    if (dtFundDet.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
-                        {
-                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
-                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
-                        }
-                    }
 
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
-                    if (txtRfromAmt.Text != "")
-                    {
-                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                    }
-
-                    if (lblBalAmt.Text != "$0.00")
-                    {
-                        //lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                        btnNewTransaction.Visible = false;
-                        DisableReallocationFromPanel();
-                    }
-                    if (lblBalAmt.Text == "$0.00")
-                    {
-                        CommonHelper.DisableButton(btnReallocateSubmit);
-                        btnNewTransaction.Visible = true;
-                        hfReallocateGuid.Value = "";
-                        EnableReallocationFromPanel();
-                    }
-                }
-                else
-                {
-                    btnReallocateSubmit.Visible = false;
-                    btnNewTransaction.Visible = true;
-                }
             }
             catch (Exception ex)
             {
@@ -698,48 +657,7 @@ namespace vhcbcloud
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
-                decimal totAmt = 0;
-                hfBalAmt.Value = "";
-                if (dtFundDet.Rows.Count > 0)
-                {
-                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
-                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
-                    if (dtFundDet.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
-                        {
-                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
-                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
-                        }
-                    }
 
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
-                    if (txtRfromAmt.Text != "")
-                    {
-                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                    }
-
-                    if (lblBalAmt.Text != "$0.00")
-                    {
-                        //lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                        btnNewTransaction.Visible = false;
-                        if (rdBtnSelection.SelectedIndex == 0)
-                            DisableReallocationFromPanel();
-                    }
-                    if (lblBalAmt.Text == "$0.00")
-                    {
-                        CommonHelper.DisableButton(btnReallocateSubmit);
-                        btnNewTransaction.Visible = true;
-                        hfReallocateGuid.Value = "";
-                        EnableReallocationFromPanel();
-                    }
-                }
-                else
-                {
-                    btnReallocateSubmit.Visible = false;
-                    btnNewTransaction.Visible = true;
-                }
             }
             catch (Exception ex)
             {
@@ -766,48 +684,7 @@ namespace vhcbcloud
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
-                decimal totAmt = 0;
-                hfBalAmt.Value = "";
-                if (dtFundDet.Rows.Count > 0)
-                {
-                    Label lblTotAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterAmount");
-                    Label lblBalAmt = (Label)gvReallocate.FooterRow.FindControl("lblFooterBalance");
-                    if (dtFundDet.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
-                        {
-                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
-                                totAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
-                        }
-                    }
 
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
-                    if (txtRfromAmt.Text != "")
-                    {
-                        lblBalAmt.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                        hfBalAmt.Value = Convert.ToString(Convert.ToDecimal(txtRfromAmt.Text) - totAmt);
-                    }
-
-                    if (lblBalAmt.Text != "$0.00")
-                    {
-                       // lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                        btnNewTransaction.Visible = false;
-                        if (rdBtnSelection.SelectedIndex == 0)
-                            DisableReallocationFromPanel();
-                    }
-                    if (lblBalAmt.Text == "$0.00")
-                    {
-                        CommonHelper.DisableButton(btnReallocateSubmit);
-                        btnNewTransaction.Visible = true;
-                        hfReallocateGuid.Value = "";
-                        EnableReallocationFromPanel();
-                    }
-                }
-                else
-                {
-                    btnReallocateSubmit.Visible = false;
-                    btnNewTransaction.Visible = true;
-                }
             }
             catch (Exception ex)
             {
@@ -843,15 +720,15 @@ namespace vhcbcloud
             lblRErrorMsg.Text = "";
             gvReallocate.DataSource = null;
             gvReallocate.DataBind();
-            btnNewTransaction.Visible = false;
+
             if (rdBtnSelection.SelectedIndex == 0)
             {
+                Response.Redirect("reallocations.aspx");
                 btnReallocateSubmit.Visible = true;
                 CommonHelper.EnableButton(btnReallocateSubmit);
             }
             else
             {
-                Response.Redirect("existingreallocations.aspx");
                 btnReallocateSubmit.Visible = false;
             }
         }
@@ -866,7 +743,7 @@ namespace vhcbcloud
             int? nullable = null;
             try
             {
-                btnNewTransaction.Visible = false;
+
                 #region validations
                 //if (ddlRFromProj.SelectedIndex == 0)
                 //{
@@ -1006,17 +883,39 @@ namespace vhcbcloud
             }
         }
 
-        protected void btnNewTransaction_Click(object sender, EventArgs e)
+
+        protected void OnDataBound(object sender, EventArgs e, GridView gv)
         {
-            Response.Redirect("reallocations.aspx");
+            for (int i = gv.Rows.Count - 1; i > 0; i--)
+            {
+                GridViewRow row = gv.Rows[i];
+                GridViewRow previousRow = gv.Rows[i - 1];
+
+                if (row.Cells[1].Text == previousRow.Cells[1].Text)
+                {
+                    if (previousRow.Cells[1].RowSpan == 0)
+                    {
+                        if (row.Cells[8].RowSpan == 0)
+                        {
+                            previousRow.Cells[8].RowSpan += 2;
+                        }
+                        else
+                        {
+                            previousRow.Cells[8].RowSpan = row.Cells[8].RowSpan + 1;
+                        }
+                        row.Cells[8].Visible = false;
+                    }
+                }
+            }
         }
+
 
         protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvReallocate.EditIndex = e.NewEditIndex;
             Label lblGuid = (Label)gvReallocate.Rows[e.NewEditIndex].FindControl("lblProjGuid");
-           
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()),lblGuid.Text);
+
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()), lblGuid.Text);
         }
 
         protected void gvReallocate_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -1030,16 +929,16 @@ namespace vhcbcloud
 
         protected void gvReallocate_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            
+
             Label lblGuid = (Label)gvReallocate.Rows[e.RowIndex].FindControl("lblProjGuid");
 
             FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
         }
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-           
+            //OnDataBound(sender, e, gvReallocate);
         }
     }
 }
