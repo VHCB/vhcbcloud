@@ -13,7 +13,8 @@ create procedure dbo.AddProjectNotes
 	@Date		DateTime,
 	@Notes		nvarchar(max),
 	@URL		nvarchar(1500),
-	@pcrid		int = null
+	@pcrid		int = null,
+	@PageId		int = null
 )
 as
 begin transaction
@@ -26,8 +27,8 @@ begin transaction
 		from UserInfo(nolock) 
 		where  rtrim(ltrim(Username)) = @UserName 
 
-		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, URL,ProjectCheckReqID)
-		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @URL, @pcrid)
+		insert into ProjectNotes(ProjectId,  LkCategory, UserId, Date, Notes, URL,ProjectCheckReqID, PageId)
+		values(@ProjectId, @Lkcategory, @UserId, @Date, @Notes, @URL, @pcrid, @PageId)
 
 	end try
 	begin catch
@@ -148,4 +149,73 @@ go
 
 
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetPageId]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetPageId
+go
 
+create procedure dbo.GetPageId
+(
+	@PageName varchar(50),
+	@PageId	  int output
+)
+as
+begin transaction
+--exec GetPageId 'ConservationSummary.aspx', null
+	begin try
+	
+		select @PageId = ProgramTabID
+		from ProgramTab 
+		where PageName = @PageName
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[IsNotesExist]') and type in (N'P', N'PC'))
+drop procedure [dbo].IsNotesExist
+go
+
+create procedure dbo.IsNotesExist
+(
+	@PageId			int,
+	@IsNotesExist	bit output
+)
+as
+begin transaction
+--exec IsNotesExist 1, null 
+	begin try
+
+	set @IsNotesExist = 1
+	if not exists
+    (
+		select 1
+		from ProjectNotes 
+		where PageId = @PageId
+    )
+	begin
+		set @IsNotesExist = 0
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

@@ -30,7 +30,9 @@ create procedure GetConserveDetailsById
 as
 --exec GetConserveDetailsById 1
 begin
-	select  c.ConserveID, c.LkConsTrack, lv.Description as ConservationTrack, c.PrimStew, c.NumEase, c.TotalAcres, c.Wooded, c.Prime, c.Statewide, c.UserID
+	select  c.ConserveID, c.LkConsTrack, lv.Description as ConservationTrack, c.PrimStew, c.NumEase, c.TotalAcres, 
+	c.Wooded, c.Prime, c.Statewide, c.Tillable, c.Pasture, c.Unmanaged, c.FarmResident,
+	c.UserID
 	from Conserve c(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = c.LkConsTrack
 	where c.ProjectID = @ProjectID 
@@ -50,7 +52,11 @@ create procedure SubmitConserve
 	@TotalAcres		int,
 	@Wooded			int,
 	@Prime			int,
-	@Statewide		int,
+	@Statewide		int, 
+	@Tillable		int,
+	@Pasture		int, 
+	@Unmanaged		int,
+	@FarmResident	int,
 	@UserID			int
 )
 as
@@ -67,17 +73,25 @@ begin
 		where ProjectID = @ProjectId
     )
 	begin
-		insert into Conserve(ProjectID, LkConsTrack, PrimStew, NumEase, TotalAcres, Wooded, Prime, Statewide, UserID, DateModified)
-		values(@ProjectID, @LkConsTrack, @PrimStew, @NumEase, @TotalAcres, @Wooded, @Prime, @Statewide, @UserID, getdate())
+		insert into Conserve(ProjectID, LkConsTrack, PrimStew, NumEase, TotalAcres, Wooded, Prime, Statewide, 
+		Tillable, Pasture, Unmanaged, FarmResident, UserID, DateModified)
+		values(@ProjectID, @LkConsTrack, @PrimStew, @NumEase, @TotalAcres, @Wooded, @Prime, @Statewide, 
+		@Tillable, @Pasture, @Unmanaged, @FarmResident, @UserID, getdate())
 
 		set @ConserveID = @@IDENTITY
+
+		exec dbo.AddConserveEholder @ProjectID, @PrimStew, null, null
 	end
 	else
 	begin
 		update Conserve set LkConsTrack = @LkConsTrack, PrimStew = @PrimStew, NumEase = @NumEase, TotalAcres = @TotalAcres, 
-			Wooded = @Wooded, Prime = @Prime, Statewide = @Statewide, UserID = @UserID, DateModified = getdate()
+			Wooded = @Wooded, Prime = @Prime, Statewide = @Statewide, 
+			Tillable = @Tillable, Pasture = @Pasture, Unmanaged = @Unmanaged, FarmResident = @FarmResident, 
+			UserID = @UserID, DateModified = getdate()
 		from Conserve
 		where ProjectID = @ProjectId 
+
+		exec dbo.AddConserveEholder @ProjectID, @PrimStew, null, null
 	end
 	
 	end try

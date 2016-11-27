@@ -86,7 +86,7 @@
                                     <td>
                                         <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Value of land with option</span></td>
+                                    <td><span class="labelClass">Value of land only with option</span></td>
                                     <td>
                                         <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
@@ -273,6 +273,11 @@
                                         <asp:TemplateField HeaderText="Date Received">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAppRecd" runat="Server" Text='<%# Eval("AppRecd", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Effective Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEffDate" runat="Server" Text='<%# Eval("EffDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="Right">

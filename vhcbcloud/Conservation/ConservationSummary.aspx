@@ -23,12 +23,12 @@
                             <td></td>
                             <td style="text-align: left"></td>
                             <td style="text-align: right">
-                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="border: none; vertical-align: middle;"/>
+                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -84,36 +84,20 @@
                                     <td>
                                         <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>
-                                    <td><span class="labelClass">Total Project Acres:</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <%-- <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
+                                    </td>--%>
                                 </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
 
-                                    <td><span class="labelClass">Wooded:</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtWooded" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">Prime:</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtPrime" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">StateWide</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtStateWide" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                <tr>
+                                <%-- <tr>
                                     <td><span class="labelClass">% Wooded:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="pctWooded" runat="server"></span>
+                                    <td>  
                                     </td>
                                     <td><span class="labelClass">% Prime:</span></td>
                                     <td>
@@ -128,14 +112,81 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-
                                     <td><span class="labelClass">Other Acres:</span></td>
                                     <td><span class="labelClass" id="otherAcres" runat="server"></span></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
+                                        </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>--%>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="Div1">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <h3 class="panel-title">Acres</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td><span class="labelClass">Tillable:</span></td>
+                                    <td style="width: 142px">
+                                        <asp:TextBox ID="txtTillable" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">UnManaged:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtUnManaged" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">Prime:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtPrime" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="labelClass">Pasture:</span></td>
+                                    <td style="width: 142px">
+                                        <asp:TextBox ID="txtPasture" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">Farmstead/Residential:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtFarmResident" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">StateWide:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtStateWide" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="labelClass">Wooded:</span></td>
+                                    <td style="width: 142px">
+                                        <asp:TextBox ID="txtWooded" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">% Wooded:</span></td>
+                                    <td><span class="labelClass" id="pctWooded" runat="server"></span></td>
+                                    <td><span class="labelClass">% Prime + Statewide:</span></td>
+                                    <td><span class="labelClass" id="pctPrimeStateWide" runat="server"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="labelClass">Total Project:</span></td>
+                                    <td><span class="labelClass" id="spnTotalProject" runat="server"></span></td>
+                                    <td><span class="labelClass"></span></td>
+                                    <td><span class="labelClass" id="Span1" runat="server"></span></td>
+                                    <td><span class="labelClass"></span></td>
+                                    <td>
+                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -460,8 +511,39 @@
                 $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle(this.checked);
             }).change();
 
+            var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>');
+            $.each(txtboxs, function() {
+                $(this).blur(function() {
+                    CalculatePercentages();
+                });
+            });
 
-            $('#<%= txtTotProjAcres.ClientID%>').blur(function () {
+            function CalculatePercentages() {
+                
+                var totTillable = (isNaN(parseInt($('#<%=txtTillable.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtTillable.ClientID%>').val(), 10));
+                var totPasture = (isNaN(parseInt($('#<%=txtPasture.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtPasture.ClientID%>').val(), 10));
+                var totWooded = (isNaN(parseInt($('#<%=txtWooded.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtWooded.ClientID%>').val(), 10));
+                var totUnManaged = (isNaN(parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10));
+                var totFarmResident = (isNaN(parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10));
+                
+                var Total = totTillable + totPasture + totWooded + totUnManaged +  totFarmResident;
+                $('#<%=spnTotalProject.ClientID%>').text(Total);
+
+                $('#<%=pctPrimeStateWide.ClientID%>').text('-');
+
+                if (Total != 0) {
+                    var totPrime = (isNaN(parseInt($('#<%=txtPrime.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtPrime.ClientID%>').val(), 10));
+                    var totStateWide = (isNaN(parseInt($('#<%=txtStateWide.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtStateWide.ClientID%>').val(), 10));
+
+                    var totPS = totPrime + totStateWide;
+                    var pctPS = Math.round(totPS * 100 / Total);
+                    $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS.toPrecision(2));
+                }
+                var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
+                $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2));
+            };
+
+            <%--$('#<%= txtTotProjAcres.ClientID%>').blur(function () {
                 CalculatePercentages();
             });
             $('#<%= txtWooded.ClientID%>').blur(function () {
@@ -505,11 +587,11 @@
                     $('#<%=pctState.ClientID%>').text("-");
                     $('#<%=otherAcres.ClientID%>').text("-");
                 }
-            };
+            };--%>
         });
 
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
-            };
+        };
     </script>
 </asp:Content>

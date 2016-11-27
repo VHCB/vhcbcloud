@@ -8,7 +8,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     public class ConservationSummaryData
     {
         #region Conserve
-        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, int TotalAcres, int Wooded, int Prime, int Statewide, int UserID)
+        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, int TotalAcres, int Wooded, 
+            int Prime, int Statewide, int Tillable, int Pasture, int Unmanaged, int FarmResident, int UserID)
         {
             try
             {
@@ -30,6 +31,10 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("Wooded", Wooded));
                         command.Parameters.Add(new SqlParameter("Prime", Prime));
                         command.Parameters.Add(new SqlParameter("Statewide", Statewide));
+                        command.Parameters.Add(new SqlParameter("Tillable", Tillable));
+                        command.Parameters.Add(new SqlParameter("Pasture", Pasture));
+                        command.Parameters.Add(new SqlParameter("Unmanaged", Unmanaged));
+                        command.Parameters.Add(new SqlParameter("FarmResident", FarmResident));
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
 
                         command.CommandTimeout = 60 * 5;

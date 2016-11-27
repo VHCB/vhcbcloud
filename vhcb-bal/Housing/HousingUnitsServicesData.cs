@@ -276,7 +276,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateHouseSingleCount(int ProjectSingleCountID, int Numunits, bool RowIsActive)
+        public static void UpdateHouseSingleCount(int ProjectHouseConsReuseRehabID, int Numunits, bool RowIsActive)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateHouseSingleCount";
 
-                        command.Parameters.Add(new SqlParameter("ProjectSingleCountID", ProjectSingleCountID));
+                        command.Parameters.Add(new SqlParameter("ProjectHouseConsReuseRehabID", ProjectHouseConsReuseRehabID));
                         command.Parameters.Add(new SqlParameter("Numunits", Numunits));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
@@ -388,7 +388,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateHouseMultiCount(int ProjectMultiCountID, int Numunits, bool RowIsActive)
+        public static void UpdateHouseMultiCount(int ProjectHouseAccessAdaptID, int Numunits, bool RowIsActive)
         {
             try
             {
@@ -402,7 +402,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateHouseMultiCount";
 
-                        command.Parameters.Add(new SqlParameter("ProjectMultiCountID", ProjectMultiCountID));
+                        command.Parameters.Add(new SqlParameter("ProjectHouseAccessAdaptID", ProjectHouseAccessAdaptID));
                         command.Parameters.Add(new SqlParameter("Numunits", Numunits));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 

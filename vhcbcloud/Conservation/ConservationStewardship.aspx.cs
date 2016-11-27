@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using System.IO;
 
 namespace vhcbcloud.Conservation
 {
@@ -21,12 +22,8 @@ namespace vhcbcloud.Conservation
             lblErrorMsg.Text = "";
 
             hfProjectId.Value = "0";
-            if (Request.QueryString["ProjectId"] != null)
-            {
-                hfProjectId.Value = Request.QueryString["ProjectId"];
-                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
-            }
 
+            ProjectNotesSetUp();
             GenerateTabs();
 
             if (!IsPostBack)
@@ -35,6 +32,20 @@ namespace vhcbcloud.Conservation
 
                 BindControls();
                 BindGrids();
+            }
+        }
+
+        private void ProjectNotesSetUp()
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            if (ProjectNotesData.IsNotesExist(PageId))
+                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
+
+            if (Request.QueryString["ProjectId"] != null)
+            {
+                hfProjectId.Value = Request.QueryString["ProjectId"];
+                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                    "&PageId=" + PageId;
             }
         }
 

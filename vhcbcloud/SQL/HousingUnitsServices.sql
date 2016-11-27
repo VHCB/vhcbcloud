@@ -170,7 +170,7 @@ begin transaction
 		commit transaction;
 go
 
-  /* ProjectHouseSingleCount*/
+  /* ProjectHouseSingleCount (ProjectHouseConsReuseRehab)*/
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHouseSingleCountList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetHouseSingleCountList 
@@ -184,8 +184,8 @@ create procedure GetHouseSingleCountList
 as
 --exec GetHouseSingleCountList 1, 0
 begin
-	select  hs.ProjectSingleCountID, hs.LkUnitChar, lv.description as Characteristic, hs.Numunits, hs.RowIsActive
-	from ProjectHouseSingleCount hs(nolock)
+	select  hs.ProjectHouseConsReuseRehabID, hs.LkUnitChar, lv.description as Characteristic, hs.Numunits, hs.RowIsActive
+	from ProjectHouseConsReuseRehab hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LkUnitChar
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -215,12 +215,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectHouseSingleCount(nolock)
+		from ProjectHouseConsReuseRehab(nolock)
 		where HousingID = @HousingID 
 			and LkUnitChar = @LkUnitChar
     )
 	begin
-		insert into ProjectHouseSingleCount(HousingID, LkUnitChar, Numunits, DateModified)
+		insert into ProjectHouseConsReuseRehab(HousingID, LkUnitChar, Numunits, DateModified)
 		values(@HousingID, @LkUnitChar, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -229,7 +229,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectHouseSingleCount(nolock)
+		from ProjectHouseConsReuseRehab(nolock)
 		where HousingID = @HousingID 
 			and LkUnitChar = @LkUnitChar
 	end
@@ -254,7 +254,7 @@ go
 
 create procedure dbo.UpdateHouseSingleCount
 (
-	@ProjectSingleCountID	int,
+	@ProjectHouseConsReuseRehabID	int,
 	@Numunits				int,
 	@RowIsActive			bit
 ) as
@@ -262,9 +262,9 @@ begin transaction
 
 	begin try
 
-	update ProjectHouseSingleCount set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectHouseSingleCount
-	where ProjectSingleCountID = @ProjectSingleCountID
+	update ProjectHouseConsReuseRehab set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseConsReuseRehab
+	where ProjectHouseConsReuseRehabID = @ProjectHouseConsReuseRehabID
 
 	end try
 	begin catch
@@ -280,7 +280,7 @@ begin transaction
 		commit transaction;
 go
 
- /* ProjectHouseMultiCount*/
+ /* ProjectHouseAccessAdapt (ProjectHouseMultiCount)*/
  if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHouseMultiCountList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetHouseMultiCountList 
 go
@@ -293,8 +293,8 @@ create procedure GetHouseMultiCountList
 as
 --exec GetHouseMultiCountList 1, 0
 begin
-	select  hs.ProjectMultiCountID, hs.LkUnitChar, lv.description as Characteristic, hs.Numunits, hs.RowIsActive
-	from ProjectHouseMultiCount hs(nolock)
+	select  hs.ProjectHouseAccessAdaptID, hs.LkUnitChar, lv.description as Characteristic, hs.Numunits, hs.RowIsActive
+	from ProjectHouseAccessAdapt hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LkUnitChar
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -324,12 +324,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectHouseMultiCount(nolock)
+		from ProjectHouseAccessAdapt(nolock)
 		where HousingID = @HousingID 
 			and LkUnitChar = @LkUnitChar
     )
 	begin
-		insert into ProjectHouseMultiCount(HousingID, LkUnitChar, Numunits, DateModified)
+		insert into ProjectHouseAccessAdapt(HousingID, LkUnitChar, Numunits, DateModified)
 		values(@HousingID, @LkUnitChar, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -338,7 +338,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectHouseMultiCount(nolock)
+		from ProjectHouseAccessAdapt(nolock)
 		where HousingID = @HousingID 
 			and LkUnitChar = @LkUnitChar
 	end
@@ -363,7 +363,7 @@ go
 
 create procedure dbo.UpdateHouseMultiCount
 (
-	@ProjectMultiCountID	int,
+	@ProjectHouseAccessAdaptID	int,
 	@Numunits				int,
 	@RowIsActive			bit
 ) as
@@ -371,9 +371,9 @@ begin transaction
 
 	begin try
 
-	update ProjectHouseMultiCount set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectHouseMultiCount
-	where ProjectMultiCountID = @ProjectMultiCountID
+	update ProjectHouseAccessAdapt set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseAccessAdapt
+	where ProjectHouseAccessAdaptID = @ProjectHouseAccessAdaptID
 
 	end try
 	begin catch

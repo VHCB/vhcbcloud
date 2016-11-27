@@ -166,22 +166,31 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.DropDownList ddlPSO;
         
         /// <summary>
-        /// txtTotProjAcres control.
+        /// Div1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTotProjAcres;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
         
         /// <summary>
-        /// txtWooded control.
+        /// txtTillable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWooded;
+        protected global::System.Web.UI.WebControls.TextBox txtTillable;
+        
+        /// <summary>
+        /// txtUnManaged control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtUnManaged;
         
         /// <summary>
         /// txtPrime control.
@@ -193,6 +202,24 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.TextBox txtPrime;
         
         /// <summary>
+        /// txtPasture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPasture;
+        
+        /// <summary>
+        /// txtFarmResident control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFarmResident;
+        
+        /// <summary>
         /// txtStateWide control.
         /// </summary>
         /// <remarks>
@@ -200,6 +227,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStateWide;
+        
+        /// <summary>
+        /// txtWooded control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWooded;
         
         /// <summary>
         /// pctWooded control.
@@ -211,31 +247,31 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctWooded;
         
         /// <summary>
-        /// pctPrime control.
+        /// pctPrimeStateWide control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrime;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrimeStateWide;
         
         /// <summary>
-        /// pctState control.
+        /// spnTotalProject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctState;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalProject;
         
         /// <summary>
-        /// otherAcres control.
+        /// Span1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl otherAcres;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Span1;
         
         /// <summary>
         /// btnSubmit control.
