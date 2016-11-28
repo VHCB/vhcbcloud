@@ -184,7 +184,13 @@
                                                 <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
                                             </FooterTemplate>--%>
                                         </asp:TemplateField>
-
+                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                            <FooterStyle Width="200px" />
+                                            <HeaderStyle Width="200px" />
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Id" SortExpression="FundID" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
