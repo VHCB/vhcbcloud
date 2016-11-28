@@ -121,7 +121,7 @@
                                         <td style="width: 20%; float: left">
                                             <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxBlueSm"></asp:TextBox>
                                         </td>
-                                        <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:reall</span></td>
+                                        <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:</span></td>
                                         <td style="width: 20%; float: left">
                                             <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false">
                                             </asp:Label>
