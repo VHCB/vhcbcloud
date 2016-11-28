@@ -463,7 +463,7 @@ namespace vhcbcloud.Housing
                     if (TotalUnits - totSingleUnits != 0)
                     {
                         hfSingleUnitWarning.Value = "1";
-                        WarningMessage(dvSingleUnitWarning, lblSingleUnitWarning, "The Housing Single Units must be equal to Total Units.");
+                        WarningMessage(dvSingleUnitWarning, lblSingleUnitWarning, "The New Construction/Reuse/Rehab Units must be equal to Total Units.");
                     }
                     else
                     {
@@ -516,11 +516,11 @@ namespace vhcbcloud.Housing
             BindSubTypeGrid();
 
             if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Housing Single Unit Characteristic already exist as in-active");
+                LogMessage("New Construction/Reuse/Rehab Characteristic already exist as in-active");
             else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Housing Single Unit Characteristic already exist");
+                LogMessage("New Construction/Reuse/Rehab Characteristic already exist");
             else
-                LogMessage("New Housing Single Unit Characteristic added successfully");
+                LogMessage("New Construction/Reuse/Rehab Characteristic added successfully");
         }
 
         protected void gvSingle_RowEditing(object sender, GridViewEditEventArgs e)
@@ -558,7 +558,7 @@ namespace vhcbcloud.Housing
             HousingUnitsServicesData.UpdateHouseSingleCount(ProjectSingleCountID, Units, RowIsActive);
             gvSingle.EditIndex = -1;
 
-            LogMessage("Housing Single Unit Characteristic updated successfully");
+            LogMessage("New Construction/Reuse/Rehab Characteristic updated successfully");
 
             BindSingleUnitGrid();
         }
@@ -594,11 +594,11 @@ namespace vhcbcloud.Housing
             BindMultiUnitGrid();
 
             if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Housing Multiple Unit Characteristic already exist as in-active");
+                LogMessage("Accessible/Adaptable Characteristic already exist as in-active");
             else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Housing Multiple Unit Characteristic already exist");
+                LogMessage("Accessible/Adaptable Characteristic already exist");
             else
-                LogMessage("New Housing Multiple Unit Characteristic added successfully");
+                LogMessage("New Accessible/Adaptable Characteristic added successfully");
         }
 
         private void BindMultiUnitGrid()
@@ -673,7 +673,7 @@ namespace vhcbcloud.Housing
             HousingUnitsServicesData.UpdateHouseMultiCount(ProjectMultiCountID, Units, RowIsActive);
             gvMultiple.EditIndex = -1;
 
-            LogMessage("Housing Multiple Unit Characteristic updated successfully");
+            LogMessage("Accessible/Adaptable Characteristic updated successfully");
 
             BindMultiUnitGrid();
         }

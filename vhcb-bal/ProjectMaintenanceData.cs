@@ -1090,6 +1090,41 @@ namespace DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static int GetNextProjectId(int ProjectId, int Action)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetNextProjectId";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("Action", Action));
+                        
+                        SqlParameter parmMessage = new SqlParameter("@ReturnProjectId", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        return DataUtils.GetInt(command.Parameters["@ReturnProjectId"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
     public class AddProject

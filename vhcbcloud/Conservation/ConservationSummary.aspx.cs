@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -22,11 +23,8 @@ namespace vhcbcloud.Conservation
             lblErrorMsg.Text = "";
 
             hfProjectId.Value = "0";
-            if (Request.QueryString["ProjectId"] != null)
-            {
-                hfProjectId.Value = Request.QueryString["ProjectId"];
-                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
-            }
+
+            ProjectNotesSetUp();
 
             GenerateTabs();
 
@@ -36,6 +34,20 @@ namespace vhcbcloud.Conservation
 
                 BindControls();
                 BindConConserveForm();
+            }
+        }
+
+        private void ProjectNotesSetUp()
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            if (ProjectNotesData.IsNotesExist(PageId))
+                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
+
+            if (Request.QueryString["ProjectId"] != null)
+            {
+                hfProjectId.Value = Request.QueryString["ProjectId"];
+                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                    "&PageId=" + PageId;
             }
         }
 
@@ -53,25 +65,37 @@ namespace vhcbcloud.Conservation
                 PopulateDropDown(ddlConservationTrack, drConserve["LkConsTrack"].ToString());
                 txtEasements.Text = drConserve["NumEase"].ToString();
                 PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
-                txtTotProjAcres.Text = drConserve["TotalAcres"].ToString();
+                //txtTotProjAcres.Text = drConserve["TotalAcres"].ToString();
                 txtWooded.Text = drConserve["Wooded"].ToString();
                 txtPrime.Text = drConserve["Prime"].ToString();
                 txtStateWide.Text = drConserve["Statewide"].ToString();
-
+                txtTillable.Text = drConserve["Tillable"].ToString();
+                txtUnManaged.Text = drConserve["Unmanaged"].ToString();
+                txtPasture.Text = drConserve["Pasture"].ToString();
+                txtFarmResident.Text= drConserve["FarmResident"].ToString();
                 pctWooded.InnerText = "0";
-                pctPrime.InnerText = "0";
-                pctState.InnerText = "0";
-                otherAcres.InnerText = "0";
+                //pctPrime.InnerText = "0";
+                //pctState.InnerText = "0";
+                //otherAcres.InnerText = "0";
 
-                if (DataUtils.GetInt(txtTotProjAcres.Text) != 0)
-                {
-                    //                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
-                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
-                    pctPrime.InnerText = (Math.Round(DataUtils.GetDecimal(txtPrime.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
-                    pctState.InnerText = (Math.Round(DataUtils.GetDecimal(txtStateWide.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
-                    otherAcres.InnerText = (DataUtils.GetInt(txtTotProjAcres.Text) - (DataUtils.GetDecimal(txtWooded.Text) + DataUtils.GetDecimal(txtPrime.Text)
-                    + DataUtils.GetDecimal(txtStateWide.Text))).ToString();
-                }
+                //if (DataUtils.GetInt(txtTotProjAcres.Text) != 0)
+                //{
+                //    //                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100, 2)).ToString();
+                //    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
+                //    pctPrime.InnerText = (Math.Round(DataUtils.GetDecimal(txtPrime.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
+                //    pctState.InnerText = (Math.Round(DataUtils.GetDecimal(txtStateWide.Text) / DataUtils.GetInt(txtTotProjAcres.Text) * 100)).ToString();
+                //    otherAcres.InnerText = (DataUtils.GetInt(txtTotProjAcres.Text) - (DataUtils.GetDecimal(txtWooded.Text) + DataUtils.GetDecimal(txtPrime.Text)
+                //    + DataUtils.GetDecimal(txtStateWide.Text))).ToString();
+                //}
+                var Total = DataUtils.GetDecimal(txtTillable.Text) + DataUtils.GetDecimal(txtPasture.Text) + DataUtils.GetDecimal(txtWooded.Text) 
+                    + DataUtils.GetDecimal(txtUnManaged.Text) + DataUtils.GetDecimal(txtFarmResident.Text);
+                spnTotalProject.InnerText = Total.ToString();
+
+                var TotalPS = DataUtils.GetDecimal(txtPrime.Text) + DataUtils.GetDecimal(txtStateWide.Text);
+
+                pctPrimeStateWide.InnerText = Math.Round(TotalPS * 100 / Total).ToString();
+
+                pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString();
 
                 btnSubmit.Text = "Update";
                 dvNewEasementHolder.Visible = true;
@@ -231,8 +255,10 @@ namespace vhcbcloud.Conservation
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ConservationSummaryData.SubmitConserve(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlConservationTrack.SelectedValue.ToString()),
-                DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), DataUtils.GetInt(txtTotProjAcres.Text),
-                DataUtils.GetInt(txtWooded.Text), DataUtils.GetInt(txtPrime.Text), DataUtils.GetInt(txtStateWide.Text), GetUserId());
+                DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 0,//DataUtils.GetInt(txtTotProjAcres.Text),
+                DataUtils.GetInt(txtWooded.Text), DataUtils.GetInt(txtPrime.Text), DataUtils.GetInt(txtStateWide.Text),
+                DataUtils.GetInt(txtTillable.Text), DataUtils.GetInt(txtPasture.Text), DataUtils.GetInt(txtUnManaged.Text), 
+                DataUtils.GetInt(txtFarmResident.Text), GetUserId());
 
             BindConConserveForm();
 

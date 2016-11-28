@@ -14,6 +14,7 @@ namespace vhcbcloud
     public partial class ProjectNotes : System.Web.UI.Page
     {
         string Pagename = "ProjectNotes";
+        int PageId = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,6 +23,11 @@ namespace vhcbcloud
 
             String ProjectId = Request.QueryString["ProjectId"];
             string pcr = Request.QueryString["pcrid"];
+            string strPageId = Request.QueryString["PageId"];
+
+            if (strPageId != null)
+                PageId = DataUtils.GetInt(strPageId);
+
             chkPCR.Visible = false;
             spnPCR.Visible = false;
             if(pcr != null)
@@ -36,6 +42,7 @@ namespace vhcbcloud
                 chkPCR.Visible = false;
                 spnPCR.Visible = false;
             }
+
             ddlProject.Enabled = true;
             txtProjectName.Enabled = true;
             txtProjectNotesDate.Enabled = true;
@@ -55,8 +62,6 @@ namespace vhcbcloud
                     BindProjectNotesGrid();
                 }
             }
-
-
         }
 
         private void BindControls()
@@ -135,7 +140,7 @@ namespace vhcbcloud
                 if (btnSubmitNotes.Text.ToLower() == "submit")
                 {
                     ProjectNotesData.AddProjectNotes(DataUtils.GetInt(ddlProject.SelectedValue.ToString()), DataUtils.GetInt(ddlCategory.SelectedValue.ToString()), 
-                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text), URL, pcrId);
+                        Context.User.Identity.GetUserName().Trim(), txtNotes.Text, DataUtils.GetDate(txtProjectNotesDate.Text), URL, pcrId, PageId);
                 }
                 else
                 {

@@ -139,6 +139,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectInfo;
         
         /// <summary>
+        /// ImgPreviousProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgPreviousProject;
+        
+        /// <summary>
+        /// ImgNextProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgNextProject;
+        
+        /// <summary>
         /// pnlProjectInfo control.
         /// </summary>
         /// <remarks>

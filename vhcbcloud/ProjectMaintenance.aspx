@@ -56,7 +56,21 @@
                 <div class="panel-width" runat="server" id="dvProjectInfo">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
-                            <h3 class="panel-title">Project Info</h3>
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Project Info</h3>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <asp:ImageButton ID="ImgPreviousProject" ImageUrl="~/Images/Left.png" ToolTip="Previous Project"
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Previous Project" 
+                                            OnClick="ImgPreviousProject_Click"></asp:ImageButton>
+                                        <asp:ImageButton ID="ImgNextProject" ImageUrl="~/Images/Right.png" ToolTip="Next Project"
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Next Project" 
+                                            OnClick="ImgNextProject_Click"></asp:ImageButton>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="panel-body">
                             <asp:Panel runat="server" ID="pnlProjectInfo">
@@ -393,10 +407,10 @@
                                     <td>
                                         <h3 class="panel-title">Addresses</h3>
                                     </td>
-                                    <td style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
                                     </td>
-                                    <td style="text-align: right; width:25px;">
+                                    <td style="text-align: right; width: 25px;">
                                         <asp:ImageButton ID="ImgButtonAddressReport" ImageUrl="~/Images/search.png" ToolTip="Address Report"
                                             Style="border: none; vertical-align: middle;" runat="server" Text="Project Search" OnClick="ImgButtonAddressReport_Click" />
                                     </td>

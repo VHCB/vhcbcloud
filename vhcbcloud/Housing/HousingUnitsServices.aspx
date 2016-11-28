@@ -281,7 +281,7 @@
                                     <Columns>
                                         <asp:TemplateField HeaderText="ProjectSingleCountID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProjectSingleCountID" runat="Server" Text='<%# Eval("ProjectSingleCountID") %>' />
+                                                <asp:Label ID="lblProjectSingleCountID" runat="Server" Text='<%# Eval("ProjectHouseConsReuseRehabID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Characteristic">
@@ -387,7 +387,7 @@
                                     <Columns>
                                         <asp:TemplateField HeaderText="ProjectMultiCountID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProjectMultiCountID" runat="Server" Text='<%# Eval("ProjectMultiCountID") %>' />
+                                                <asp:Label ID="lblProjectMultiCountID" runat="Server" Text='<%# Eval("ProjectHouseAccessAdaptID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Characteristic">

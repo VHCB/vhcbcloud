@@ -1671,6 +1671,16 @@ namespace vhcbcloud
             ClientScript.RegisterStartupScript(this.GetType(),
                     "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Address"));
         }
+
+        protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(DataUtils.GetInt(hfProjectId.Value), 1));
+        }
+
+        protected void ImgPreviousProject_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(DataUtils.GetInt(hfProjectId.Value), 2));
+        }
     }
 
     public class KeyVal
