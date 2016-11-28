@@ -524,7 +524,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
-        public static DataTable GetReallocationDetailsProjFundTransType(int fromProjId, int fundId, int transTypeId, DateTime dtModified)
+        public static DataTable GetReallocationDetailsProjFundTransType(int fromProjId, int fundId, int transTypeId, DateTime dtModified, string Guid)
         {
             DataTable dtable = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -537,6 +537,46 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.Parameters.Add(new SqlParameter("transTypeId", transTypeId));
                 command.Parameters.Add(new SqlParameter("datemodified", dtModified));
+                command.Parameters.Add(new SqlParameter("guid", Guid));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtable = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtable;
+        }
+
+        public static DataTable GetDistinctReallocationGuidsByProjFundTransType(int fromProjId, int fundId, int transTypeId, DateTime dtModified)
+        {
+            DataTable dtable = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetDistinctReallocationGuidsByProjFundTransType";
+                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.Parameters.Add(new SqlParameter("transTypeId", transTypeId));
+                command.Parameters.Add(new SqlParameter("datemodified", dtModified));
+                
                 using (connection)
                 {
                     connection.Open();
