@@ -648,7 +648,9 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFund(fromProjId, fundId);
+                    DateTime dtFromDate = Convert.ToDateTime(txtRfromDate.Text);
+
+                    dtFundDet = FinancialTransactions.GetReallocationDetailsProjFund(fromProjId, fundId, dtFromDate);
                 }
                 else
                 {
@@ -675,7 +677,13 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFundTransType(fromProjId, fundId, transTypeId);
+                    if (txtRfromDate.Text != "")
+                    {
+                        DateTime dtFromDate = Convert.ToDateTime(txtRfromDate.Text);
+                        dtFundDet = FinancialTransactions.GetReallocationDetailsProjFundTransType(fromProjId, fundId, transTypeId, dtFromDate);
+                    }
+                    else
+                        dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFundTransType(fromProjId, fundId, transTypeId);
                 }
                 else
                 {
