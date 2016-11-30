@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -289,6 +290,15 @@ namespace vhcbcloud
                     {
                         LinkButton lnkEdit = (LinkButton)e.Row.FindControl("lnkEdit");
                         lnkEdit.Visible = false;
+                    }
+                    
+                    Label lblPageID = (Label)e.Row.FindControl("lblPageID");
+
+                    if (lblPageID.Text.ToLower().Trim() == PageId.ToString())
+                    {
+                        e.Row.BackColor = Color.Aqua;
+                        
+                        //e.Row.Attributes.Add("style", "this.style.backgroundColor = '#FFFFFF';");
                     }
                 }
 

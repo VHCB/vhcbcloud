@@ -1091,7 +1091,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static int GetNextProjectId(int ProjectId, int Action)
+        public static int GetNextProjectId(string Proj_num, int Action)
         {
             try
             {
@@ -1105,7 +1105,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetNextProjectId";
 
-                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("Proj_num", Proj_num));
                         command.Parameters.Add(new SqlParameter("Action", Action));
                         
                         SqlParameter parmMessage = new SqlParameter("@ReturnProjectId", SqlDbType.Int);

@@ -115,6 +115,11 @@
                                                     <asp:Label ID="lblProjectNotesID" runat="Server" Text='<%# Eval("ProjectNotesID") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Page ID" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPageID" runat="Server" Text='<%# Eval("PageID") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Date">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />

@@ -1135,29 +1135,30 @@ go
 
 create procedure dbo.GetNextProjectId
 (
-	@ProjectId			int,
+	@Proj_num			varchar(50),
 	@Action				int, --1: Next 2:Previous
 	@ReturnProjectId	int output
 )
 as
 begin transaction
---exec GetNextProjectId 1, 1, null
+--exec GetNextProjectId '0000-000-000', 1, null
 	begin try
 	
 	create table #Temp
 	(
-		RowNumber int, 
-		ProjectId int
+		RowNumber	int, 
+		Proj_num	varchar(50),
+		ProjectId	int
 	)
 
 	declare @CurrentRowNumber int
 
 	insert into #Temp 
-	select row_number() over (order by ProjectId) as RowNumber, ProjectId 
+	select row_number() over (order by Proj_num) as RowNumber, Proj_num, ProjectId
 	from project
 
 	--select * from #Temp
-	select @CurrentRowNumber = RowNumber from #Temp where ProjectId = @ProjectId
+	select @CurrentRowNumber = RowNumber from #Temp where Proj_num = @Proj_num
 
 	if(@Action = 1)
 	begin
