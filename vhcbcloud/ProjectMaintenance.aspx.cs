@@ -231,6 +231,8 @@ namespace vhcbcloud
                 {
                     ibAwardSummary.Visible = true;
                     btnProjectNotes1.Visible = true;
+                    ImgPreviousProject.Visible = true;
+                    ImgNextProject.Visible = true;
 
                     dvTabs.Visible = true;
                     dvUpdate.Visible = true;
@@ -280,6 +282,8 @@ namespace vhcbcloud
                 {
                     ibAwardSummary.Visible = false;
                     btnProjectNotes1.Visible = false;
+                    ImgPreviousProject.Visible = false;
+                    ImgNextProject.Visible = false;
 
                     dvTabs.Visible = false;
                     dvUpdate.Visible = false;
@@ -472,6 +476,8 @@ namespace vhcbcloud
             {
                 ibAwardSummary.Visible = false;
                 btnProjectNotes1.Visible = false;
+                ImgPreviousProject.Visible = false;
+                ImgNextProject.Visible = false;
 
                 txtProjNum.Visible = true;
                 ddlProject.Visible = false;
@@ -1674,12 +1680,12 @@ namespace vhcbcloud
 
         protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(DataUtils.GetInt(hfProjectId.Value), 1));
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(ddlProject.SelectedItem.Text, 1));
         }
 
         protected void ImgPreviousProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(DataUtils.GetInt(hfProjectId.Value), 2));
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(ddlProject.SelectedItem.Text, 2));
         }
     }
 

@@ -91,14 +91,17 @@ namespace vhcbcloud.Housing
                 txtNetNewUnits.Text = drHousing["NewUnits"].ToString();
                 txtUnitsRelFromCov.Text = drHousing["RelCovenant"].ToString();
                 txtRestrictionsReleaseDate.Text = drHousing["ResRelease"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["ResRelease"].ToString()).ToShortDateString();
+                chkSash.Checked = DataUtils.GetBool(drHousing["SASH"].ToString());
 
-                if(ddlHousingType.SelectedIndex == 0)
+                if (ddlHousingType.SelectedIndex == 0)
                 {
                     dvNewHousingSubType.Visible = false;
                     dvNewSingle.Visible = false;
                     dvNewMultiple.Visible = false;
                     dvNewSuppServices.Visible = false;
                     dvNewVHCBAff.Visible = false;
+                    dvNewSecServices.Visible = false;
+                    dvNewAgeRestrictions.Visible = false;
                     //dvNewHomeAff.Visible = false;
 
                 }
@@ -111,6 +114,8 @@ namespace vhcbcloud.Housing
                     dvNewMultiple.Visible = true;
                     dvNewSuppServices.Visible = true;
                     dvNewVHCBAff.Visible = true;
+                    dvNewSecServices.Visible = true;
+                    dvNewAgeRestrictions.Visible = true;
                     //dvNewHomeAff.Visible = true;
                 }
 

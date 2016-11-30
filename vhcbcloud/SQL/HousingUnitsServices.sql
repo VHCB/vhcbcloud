@@ -75,7 +75,7 @@ as
 --exec GetHousingSubTypeList 1, 0
 begin
 	select  hs.HousingTypeID, hs.LkHouseType, lv.description as HouseType, hs.Units, hs.RowIsActive
-	from HousingSubType hs(nolock)
+	from ProjectHouseSubType hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LkHouseType
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -105,12 +105,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from HousingSubType(nolock)
+		from ProjectHouseSubType(nolock)
 		where HousingID = @HousingID 
 			and LkHouseType = @LkHouseType
     )
 	begin
-		insert into HousingSubType(HousingID, LkHouseType, Units, DateModified)
+		insert into ProjectHouseSubType(HousingID, LkHouseType, Units, DateModified)
 		values(@HousingID, @LkHouseType, @Units, getdate())
 		
 		set @isDuplicate = 0
@@ -119,7 +119,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from HousingSubType(nolock)
+		from ProjectHouseSubType(nolock)
 		where HousingID = @HousingID 
 			and LkHouseType = @LkHouseType
 	end
@@ -152,8 +152,8 @@ begin transaction
 
 	begin try
 	
-	update HousingSubType set  Units = @Units, RowIsActive = @RowIsActive, DateModified = getdate()
-	from HousingSubType
+	update ProjectHouseSubType set  Units = @Units, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseSubType
 	where HousingTypeID = @HousingTypeID
 
 	end try
@@ -403,7 +403,7 @@ as
 --exec GetHousingSuppServList 1, 0
 begin
 	select  hs.ProjectSuppServID, hs.LkSuppServ, lv.description as Service, hs.Numunits, hs.RowIsActive
-	from ProjectSuppServ hs(nolock)
+	from ProjectHouseSuppServ hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LkSuppServ
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -433,12 +433,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectSuppServ(nolock)
+		from ProjectHouseSuppServ(nolock)
 		where HousingID = @HousingID 
 			and LkSuppServ = @LkSuppServ
     )
 	begin
-		insert into ProjectSuppServ(HousingID, LkSuppServ, Numunits, DateModified)
+		insert into ProjectHouseSuppServ(HousingID, LkSuppServ, Numunits, DateModified)
 		values(@HousingID, @LkSuppServ, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -447,7 +447,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectSuppServ(nolock)
+		from ProjectHouseSuppServ(nolock)
 		where HousingID = @HousingID 
 			and LkSuppServ = @LkSuppServ
 	end
@@ -480,8 +480,8 @@ begin transaction
 
 	begin try
 
-	update ProjectSuppServ set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectSuppServ
+	update ProjectHouseSuppServ set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseSuppServ
 	where ProjectSuppServID = @ProjectSuppServID
 
 	end try
@@ -512,7 +512,7 @@ as
 --exec GetHousingSecServList 1, 0
 begin
 	select  hs.ProjectSecSuppServID, hs.LKSecSuppServ, lv.description as Service, hs.Numunits, hs.RowIsActive
-	from ProjectSecSuppServ hs(nolock)
+	from ProjectHouseSecSuppServ hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LKSecSuppServ
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -542,12 +542,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectSecSuppServ(nolock)
+		from ProjectHouseSecSuppServ(nolock)
 		where HousingID = @HousingID 
 			and LKSecSuppServ = @LKSecSuppServ
     )
 	begin
-		insert into ProjectSecSuppServ(HousingID, LKSecSuppServ, Numunits, DateModified)
+		insert into ProjectHouseSecSuppServ(HousingID, LKSecSuppServ, Numunits, DateModified)
 		values(@HousingID, @LKSecSuppServ, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -556,7 +556,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectSecSuppServ(nolock)
+		from ProjectHouseSecSuppServ(nolock)
 		where HousingID = @HousingID 
 			and LKSecSuppServ = @LKSecSuppServ
 	end
@@ -589,8 +589,8 @@ begin transaction
 
 	begin try
 
-	update ProjectSuppServ set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectSecSuppServ
+	update ProjectHouseSecSuppServ set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseSecSuppServ
 	where ProjectSecSuppServID = @ProjectSecSuppServID
 
 	end try
@@ -622,7 +622,7 @@ as
 --exec GetHousingVHCBAffordUnitsList 1, 0
 begin
 	select  hs.ProjectVHCBAffordUnitsID, hs.LkAffordunits, lv.description as VHCB, hs.Numunits, hs.RowIsActive
-	from ProjectVHCBAffordUnits hs(nolock)
+	from ProjectHouseVHCBAfford hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LkAffordunits
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -652,12 +652,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectVHCBAffordUnits(nolock)
+		from ProjectHouseVHCBAfford(nolock)
 		where HousingID = @HousingID 
 			and LkAffordunits = @LkAffordunits
     )
 	begin
-		insert into ProjectVHCBAffordUnits(HousingID, LkAffordunits, Numunits, DateModified)
+		insert into ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits, DateModified)
 		values(@HousingID, @LkAffordunits, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -666,7 +666,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectVHCBAffordUnits(nolock)
+		from ProjectHouseVHCBAfford(nolock)
 		where HousingID = @HousingID 
 			and LkAffordunits = @LkAffordunits
 	end
@@ -699,8 +699,8 @@ begin transaction
 
 	begin try
 
-	update ProjectVHCBAffordUnits set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectVHCBAffordUnits
+	update ProjectHouseVHCBAfford set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseVHCBAfford
 	where ProjectVHCBAffordUnitsID = @ProjectVHCBAffordUnitsID
 
 	end try
@@ -732,7 +732,7 @@ as
 --exec GetProjectAgeRestrictList 1, 0
 begin
 	select  hs.ProjectAgeRestrictID, hs.LKAgeRestrict, lv.description as Service, hs.Numunits, hs.RowIsActive
-	from ProjectAgeRestrict hs(nolock)
+	from ProjectHouseAgeRestrict hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LKAgeRestrict
 	where hs.HousingID = @HousingID 
 		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
@@ -762,12 +762,12 @@ begin transaction
 	if not exists
     (
 		select 1
-		from ProjectAgeRestrict(nolock)
+		from ProjectHouseAgeRestrict(nolock)
 		where HousingID = @HousingID 
 			and LKAgeRestrict = @LKAgeRestrict
     )
 	begin
-		insert into ProjectAgeRestrict(HousingID, LKAgeRestrict, Numunits, DateModified)
+		insert into ProjectHouseAgeRestrict(HousingID, LKAgeRestrict, Numunits, DateModified)
 		values(@HousingID, @LKAgeRestrict, @Numunits, getdate())
 		
 		set @isDuplicate = 0
@@ -776,7 +776,7 @@ begin transaction
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from ProjectAgeRestrict(nolock)
+		from ProjectHouseAgeRestrict(nolock)
 		where HousingID = @HousingID 
 			and LKAgeRestrict = @LKAgeRestrict
 	end
@@ -809,8 +809,8 @@ begin transaction
 
 	begin try
 
-	update ProjectAgeRestrict set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
-	from ProjectAgeRestrict
+	update ProjectHouseAgeRestrict set  Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectHouseAgeRestrict
 	where ProjectAgeRestrictID = @ProjectAgeRestrictID
 
 	end try
