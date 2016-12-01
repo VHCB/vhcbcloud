@@ -425,9 +425,9 @@ namespace vhcbcloud
                     {
                         DateTime dtFromDate = Convert.ToDateTime(txtRfromDate.Text);
                         dtFundDet = FinancialTransactions.GetDistinctReallocationGuidsByProjFundTransType(fromProjId, fundId, transTypeId, dtFromDate);
-                    }                    
+                    }
                 }
-               
+
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
@@ -488,63 +488,63 @@ namespace vhcbcloud
                 if (txtRfromDate.Text != "")
                 {
                     DateTime dtFromDate = Convert.ToDateTime(txtRfromDate.Text);
-                    dtDetails = FinancialTransactions.GetReallocationDetailsProjFundTransType(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), 
+                    dtDetails = FinancialTransactions.GetReallocationDetailsProjFundTransType(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()),
                         Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()), dtFromDate, guid);
-                }                
+                }
                 gvDetails.DataSource = dtDetails;
                 gvDetails.DataBind();
             }
         }
         protected void OnDataBound(object sender, EventArgs e, GridView gv)
         {
-           
-
-
-                //for (int i = gv.Rows.Count - 1; i > 0; i--)
-                //{
-                //    GridViewRow row = gv.Rows[i];
-                //    GridViewRow previousRow = gv.Rows[i - 1];
-
-                //    if (row.Cells[1].Text == previousRow.Cells[1].Text)
-                //    {
-                //        if (previousRow.Cells[1].RowSpan == 0)
-                //        {
-                //            if (row.Cells[9].RowSpan == 0)
-                //            {
-                //                previousRow.Cells[9].RowSpan += 2;
-                //            }
-                //            else
-                //            {
-                //                previousRow.Cells[9].RowSpan = row.Cells[9].RowSpan + 1;
-                //            }
-                //            row.Cells[9].Visible = false;
-                //        }
-                //    }
-                //}
 
 
 
-                //for (int rowIndex = gv.Rows.Count - 2; rowIndex >= 0; rowIndex += -1)
-                //{
-                //    GridViewRow gviewRow = gv.Rows[rowIndex];
-                //    GridViewRow gviewPreviousRow = gv.Rows[rowIndex + 1];
-                //    for (int cellCount = 0; cellCount <= gviewRow.Cells.Count - 1; cellCount++)
-                //    {
-                //        if (gviewRow.Cells[cellCount].Text == gviewPreviousRow.Cells[cellCount].Text)
-                //        {
-                //            if (gviewPreviousRow.Cells[cellCount].RowSpan < 2)
-                //            {
-                //                gviewRow.Cells[cellCount].RowSpan = 2;
-                //            }
-                //            else
-                //            {
-                //                gviewRow.Cells[cellCount].RowSpan = gviewPreviousRow.Cells[cellCount].RowSpan + 1;
-                //            }
-                //            gviewPreviousRow.Cells[cellCount].Visible = false;
-                //        }
-                //    }
-                //}
-            }
+            //for (int i = gv.Rows.Count - 1; i > 0; i--)
+            //{
+            //    GridViewRow row = gv.Rows[i];
+            //    GridViewRow previousRow = gv.Rows[i - 1];
+
+            //    if (row.Cells[1].Text == previousRow.Cells[1].Text)
+            //    {
+            //        if (previousRow.Cells[1].RowSpan == 0)
+            //        {
+            //            if (row.Cells[9].RowSpan == 0)
+            //            {
+            //                previousRow.Cells[9].RowSpan += 2;
+            //            }
+            //            else
+            //            {
+            //                previousRow.Cells[9].RowSpan = row.Cells[9].RowSpan + 1;
+            //            }
+            //            row.Cells[9].Visible = false;
+            //        }
+            //    }
+            //}
+
+
+
+            //for (int rowIndex = gv.Rows.Count - 2; rowIndex >= 0; rowIndex += -1)
+            //{
+            //    GridViewRow gviewRow = gv.Rows[rowIndex];
+            //    GridViewRow gviewPreviousRow = gv.Rows[rowIndex + 1];
+            //    for (int cellCount = 0; cellCount <= gviewRow.Cells.Count - 1; cellCount++)
+            //    {
+            //        if (gviewRow.Cells[cellCount].Text == gviewPreviousRow.Cells[cellCount].Text)
+            //        {
+            //            if (gviewPreviousRow.Cells[cellCount].RowSpan < 2)
+            //            {
+            //                gviewRow.Cells[cellCount].RowSpan = 2;
+            //            }
+            //            else
+            //            {
+            //                gviewRow.Cells[cellCount].RowSpan = gviewPreviousRow.Cells[cellCount].RowSpan + 1;
+            //            }
+            //            gviewPreviousRow.Cells[cellCount].Visible = false;
+            //        }
+            //    }
+            //}
+        }
 
         protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)
         {
@@ -590,6 +590,19 @@ namespace vhcbcloud
 
             //FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
             //BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
+        }
+
+        protected void lnkDelete_Click(object sender, EventArgs e)
+        {
+            int transId = 0;
+            LinkButton lnkDelete = (LinkButton)sender;
+            if (lnkDelete != null)
+                int.TryParse(lnkDelete.CommandArgument, out transId);
+            if (transId != 0)
+            {
+                FinancialTransactions.DeleteReallocationTrans(transId);
+                BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
+            }
         }
     }
 }
