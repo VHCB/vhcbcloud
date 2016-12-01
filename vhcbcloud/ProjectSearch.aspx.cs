@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -23,12 +24,23 @@ namespace vhcbcloud
                 Session["dtSearchResults"] = null;
                 dvSearchResults.Visible = false;
                 BindControls();
-                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
+                //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
+                ProjectNotesSetUp();
             }
             if (cbPrimaryApplicant.Checked)
                 gvSearchresults.Columns[4].HeaderText = "Applicant Name";
             else
                 gvSearchresults.Columns[4].HeaderText = "Entity Name";
+        }
+
+        private void ProjectNotesSetUp()
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            if (ProjectNotesData.IsNotesExist(PageId))
+                btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
+
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                    "&PageId=" + PageId;
         }
 
         private void BindControls()

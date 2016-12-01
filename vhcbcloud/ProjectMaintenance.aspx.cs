@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -36,8 +37,7 @@ namespace vhcbcloud
                 DisplayControlsbasedOnSelection();
                 if (Request.QueryString["ProjectId"] != null)
                 {
-                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
-
+                    ProjectNotesSetUp(Request.QueryString["ProjectId"]);
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
                 BindApplicantsForCurrentProject(ddlEventEntity);
@@ -45,6 +45,21 @@ namespace vhcbcloud
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+        }
+
+
+        private void ProjectNotesSetUp(string ProjectId)
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            if (ProjectNotesData.IsNotesExist(PageId))
+                btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
+
+            if (Request.QueryString["ProjectId"] != null)
+            {
+                hfProjectId.Value = Request.QueryString["ProjectId"];
+                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ProjectId +
+                    "&PageId=" + PageId;
+            }
         }
 
         #region Bind Controls
@@ -239,7 +254,9 @@ namespace vhcbcloud
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
                     //txtProjectName.Text = tokens[1];
                     hfProjectId.Value = ddlProject.SelectedValue.ToString();
-                    ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
+                    ProjectNotesSetUp(ddlProject.SelectedValue.ToString());
+
+                    //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
 
                     BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
 
