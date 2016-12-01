@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Data;
+using System.IO;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
@@ -19,12 +20,7 @@ namespace vhcbcloud.Lead
             lblErrorMsg.Text = "";
 
             hfProjectId.Value = "0";
-            if (Request.QueryString["ProjectId"] != null)
-            {
-                hfProjectId.Value = Request.QueryString["ProjectId"];
-                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
-            }
-
+            ProjectNotesSetUp();
             GenerateTabs();
 
             if (!IsPostBack)
@@ -33,6 +29,20 @@ namespace vhcbcloud.Lead
                 PopulateProjectDetails();
                 BindControls();
                 BindGrids();
+            }
+        }
+
+        private void ProjectNotesSetUp()
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            if (ProjectNotesData.IsNotesExist(PageId))
+                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
+
+            if (Request.QueryString["ProjectId"] != null)
+            {
+                hfProjectId.Value = Request.QueryString["ProjectId"];
+                ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                    "&PageId=" + PageId;
             }
         }
 
