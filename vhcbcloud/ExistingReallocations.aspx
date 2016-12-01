@@ -132,9 +132,9 @@
                                     </tr>
                                 </table>
                                 <br />
-                                <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
+                                <asp:GridView ID="gvReallocate" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
                                     OnRowCancelingEdit="gvReallocate_RowCancelingEdit" OnRowDeleting="gvReallocate_RowDeleting"
-                                    OnRowEditing="gvReallocate_RowEditing" PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" DataKeyNames="projguid" OnRowDataBound="OnRowDataBound">
+                                    OnRowEditing="gvReallocate_RowEditing" PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="95%" DataKeyNames="projguid" OnRowDataBound="OnRowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -148,13 +148,14 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>--%>
-                                        <asp:TemplateField HeaderText="Guid" SortExpression="projguid" Visible="true">
+                                        <asp:TemplateField HeaderText="Guid" SortExpression="projguid" Visible="true"  >
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProjGuid" runat="Server" Text='<%# Eval("projguid") %>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="25%" />
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField>
+                                        <asp:TemplateField >
                                             <HeaderTemplate>Transaction Details</HeaderTemplate>
                                             <ItemTemplate>
                                                 <asp:Panel ID="pnlDetails" runat="server">
@@ -187,16 +188,17 @@
                                                                 </ItemTemplate>
                                                                 <EditItemTemplate>
                                                                     <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
-                                                                </EditItemTemplate>
+                                                                </EditItemTemplate>                                                                
+                                                                <ItemStyle HorizontalAlign="Right" />
 
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                                         <%--   <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                                                 <ItemTemplate>
                                                                 </ItemTemplate>
                                                                 <ItemStyle Width="200px" />
                                                                 <FooterStyle Width="200px" />
                                                                 <HeaderStyle Width="200px" />
-                                                            </asp:TemplateField>
+                                                            </asp:TemplateField>--%>
                                                             <asp:TemplateField HeaderText="Fund Id" SortExpression="FundID" Visible="false">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
@@ -207,11 +209,22 @@
                                                                     <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:CommandField ShowDeleteButton="true" ShowEditButton="false" />
+                                                            <asp:TemplateField HeaderText="GuId" SortExpression="Guid" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lblGuid" runat="Server" Text='<%# Eval("projguid") %>' />
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" >
+                                                                <ItemTemplate  >
+                                                                    <asp:LinkButton ID="lnkDelete" runat="server" CommandArgument='<%# Eval("transid") %>' OnClick="lnkDelete_Click">Delete</asp:LinkButton>
+                                                                </ItemTemplate>
+                                                                 <ItemStyle HorizontalAlign="Right" />
+                                                            </asp:TemplateField>
                                                         </Columns>
                                                     </asp:GridView>
                                                 </asp:Panel>
                                             </ItemTemplate>
+                                            <ItemStyle Width="75%" />
                                         </asp:TemplateField>
                                     </Columns>
                                     <FooterStyle CssClass="footerStyle" />
