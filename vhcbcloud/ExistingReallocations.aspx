@@ -171,9 +171,14 @@
                                                                     <asp:Label ID="lblRProjNum" runat="Server" Text='<%# Eval("proj_num") %>' />
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Date" SortExpression="DateModified">
+                                                          <%--  <asp:TemplateField HeaderText="Date" SortExpression="DateModified">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblDateModified" runat="Server" Text='<%# Eval("DateModified","{0:MM/dd/yyyy}") %>' />
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>--%>
+                                                            <asp:TemplateField HeaderText="Fund Name" SortExpression="fundname">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("fundname") %>' />
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
