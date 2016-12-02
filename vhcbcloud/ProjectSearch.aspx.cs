@@ -36,8 +36,8 @@ namespace vhcbcloud
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
-            if (ProjectNotesData.IsNotesExist(PageId))
-                btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
+            //if (ProjectNotesData.IsNotesExist(PageId))
+            //    btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
 
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
                     "&PageId=" + PageId;

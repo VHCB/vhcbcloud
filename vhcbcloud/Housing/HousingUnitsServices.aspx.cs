@@ -40,14 +40,14 @@ namespace vhcbcloud.Housing
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
-            if (ProjectNotesData.IsNotesExist(PageId))
-                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
 
             if (Request.QueryString["ProjectId"] != null)
             {
                 hfProjectId.Value = Request.QueryString["ProjectId"];
                 ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
                     "&PageId=" + PageId;
+                if (ProjectNotesData.IsNotesExist(PageId, DataUtils.GetInt(hfProjectId.Value)))
+                    btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
             }
         }
 
@@ -103,6 +103,7 @@ namespace vhcbcloud.Housing
                 txtUnitsRelFromCov.Text = drHousing["RelCovenant"].ToString();
                 txtRestrictionsReleaseDate.Text = drHousing["ResRelease"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["ResRelease"].ToString()).ToShortDateString();
                 chkSash.Checked = DataUtils.GetBool(drHousing["SASH"].ToString());
+                txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
                 {
@@ -348,7 +349,7 @@ namespace vhcbcloud.Housing
             HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), DataUtils.GetInt(txtTotalUnits.Text),
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
                 DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRelFromCov.Text), DataUtils.GetDate(txtRestrictionsReleaseDate.Text), 
-                chkSash.Checked);
+                chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text));
 
             BindHousingUnitsForm();
 
@@ -754,13 +755,13 @@ namespace vhcbcloud.Housing
                     }
 
                     lblFooterSuppServiceTotalUnits.Text = totSuppServiceUnits.ToString();
-                    int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
+                    int TotalServSuppUnits = DataUtils.GetInt(txtSSUnits.Text);
 
                     hfPrimaryServiceWarning.Value = "0";
-                    if (TotalUnits - totSuppServiceUnits != 0)
+                    if (TotalServSuppUnits - totSuppServiceUnits != 0)
                     {
                         hfPrimaryServiceWarning.Value = "1";
-                        WarningMessage(dvPrimaryServiceWarning, lblPrimaryServiceWarning, "The Primary Service Units must be equal to Total Units.");
+                        WarningMessage(dvPrimaryServiceWarning, lblPrimaryServiceWarning, "The Primary Service Units must be equal to Service Supported Units.");
                     }
                     else
                     {

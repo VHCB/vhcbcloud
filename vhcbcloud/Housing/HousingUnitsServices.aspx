@@ -94,6 +94,14 @@
                                <span class="labelClass" id="snFederalProgramUnits" runat="server"></span>
                             </td>
                         </tr>
+                         <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="labelClass">Service Supported Units</span></td>
+                            <td><asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                            <td colspan="4"></td>
+                        </tr>
                         <tr>
                             <td colspan="5">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>

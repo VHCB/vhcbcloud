@@ -13,10 +13,10 @@ as
 --exec GetHousingDetailsById 6588
 begin
 	select h.HousingID, h.LkHouseCat, lv.Description as HouseCat, h.Hsqft, h.TotalUnits, h.Previous, h.NewUnits, h.RelCovenant, 
-		h.ResRelease, h.AdaptReuse, h.NewConst, h.Rehab, h.RowIsActive
+		h.ResRelease, h.AdaptReuse, h.NewConst, h.Rehab, h.RowIsActive, h.SASH, h.ServSuppUnits
 	from Housing h(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = h.LkHouseCat
-	where h.ProjectID = @ProjectID 
+	where h.ProjectID = @ProjectID  
 end
 go
 
@@ -34,14 +34,17 @@ create procedure SubmitHousingUnits
 	@NewUnits		int,
 	@RelCovenant	int,
 	@ResRelease		Date,
-	@IsSash			bit
+	@IsSash			bit,
+	@ServSuppUnits	int	
+
 ) as
 begin transaction
 
 	begin try
 
 	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @TotalUnits, Hsqft = @Hsqft, 
-	Previous = @Previous, NewUnits = @NewUnits, RelCovenant = @RelCovenant, ResRelease = @ResRelease, Sash = @IsSash
+	Previous = @Previous, NewUnits = @NewUnits, RelCovenant = @RelCovenant, ResRelease = @ResRelease, Sash = @IsSash, 
+	ServSuppUnits = @ServSuppUnits
 	
 	from Housing(nolock) 
 	where HousingID = @HousingID

@@ -40,14 +40,14 @@ namespace vhcbcloud.Conservation
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
-            if (ProjectNotesData.IsNotesExist(PageId))
-                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
 
             if (Request.QueryString["ProjectId"] != null)
             {
                 hfProjectId.Value = Request.QueryString["ProjectId"];
                 ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
                     "&PageId=" + PageId;
+                if (ProjectNotesData.IsNotesExist(PageId, DataUtils.GetInt(hfProjectId.Value)))
+                    btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
             }
         }
 
@@ -93,9 +93,11 @@ namespace vhcbcloud.Conservation
 
                 var TotalPS = DataUtils.GetDecimal(txtPrime.Text) + DataUtils.GetDecimal(txtStateWide.Text);
 
-                pctPrimeStateWide.InnerText = Math.Round(TotalPS * 100 / Total).ToString();
-
-                pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString();
+                if (Total != 0)
+                {
+                    pctPrimeStateWide.InnerText = Math.Round(TotalPS * 100 / Total).ToString();
+                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString();
+                }
 
                 btnSubmit.Text = "Update";
                 dvNewEasementHolder.Visible = true;
