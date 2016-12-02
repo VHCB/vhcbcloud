@@ -13,7 +13,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
     {
         #region Housing
         public static void SubmitHousingUnits(int HousingID, int LkHouseCat, int TotalUnits, int Hsqft, int Previous, 
-            int NewUnits, int RelCovenant, DateTime ResRelease, bool IsSash)
+            int NewUnits, int RelCovenant, DateTime ResRelease, bool IsSash, int ServSuppUnits)
         {
             try
             {
@@ -36,6 +36,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("RelCovenant", RelCovenant));
                         command.Parameters.Add(new SqlParameter("ResRelease", ResRelease.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ResRelease));
                         command.Parameters.Add(new SqlParameter("IsSash", IsSash));
+                        command.Parameters.Add(new SqlParameter("ServSuppUnits", ServSuppUnits));
 
                         command.CommandTimeout = 60 * 5;
 

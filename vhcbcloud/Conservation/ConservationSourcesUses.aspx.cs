@@ -44,14 +44,14 @@ namespace vhcbcloud.Conservation
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
-            if (ProjectNotesData.IsNotesExist(PageId))
-                btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
 
             if (Request.QueryString["ProjectId"] != null)
             {
                 hfProjectId.Value = Request.QueryString["ProjectId"];
                 ifProjectNotes.Src = "../ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
                     "&PageId=" + PageId;
+                if (ProjectNotesData.IsNotesExist(PageId, DataUtils.GetInt(hfProjectId.Value)))
+                    btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
             }
         }
 

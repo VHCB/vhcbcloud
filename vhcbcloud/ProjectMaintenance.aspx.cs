@@ -23,7 +23,7 @@ namespace vhcbcloud
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
-            
+
             if (!IsPostBack)
             {
                 if (Request.QueryString["Type"] == "new")
@@ -37,7 +37,9 @@ namespace vhcbcloud
                 DisplayControlsbasedOnSelection();
                 if (Request.QueryString["ProjectId"] != null)
                 {
+                    //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
                     ProjectNotesSetUp(Request.QueryString["ProjectId"]);
+
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
                 BindApplicantsForCurrentProject(ddlEventEntity);
@@ -47,19 +49,14 @@ namespace vhcbcloud
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
         }
 
-
         private void ProjectNotesSetUp(string ProjectId)
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
-            if (ProjectNotesData.IsNotesExist(PageId))
+            ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ProjectId + "&PageId=" + PageId;
+            if (ProjectNotesData.IsNotesExist(PageId, DataUtils.GetInt(ProjectId)))
                 btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
-
-            if (Request.QueryString["ProjectId"] != null)
-            {
-                hfProjectId.Value = Request.QueryString["ProjectId"];
-                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ProjectId +
-                    "&PageId=" + PageId;
-            }
+            else
+                btnProjectNotes1.ImageUrl = "~/Images/notes.png";
         }
 
         #region Bind Controls
@@ -254,10 +251,8 @@ namespace vhcbcloud
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
                     //txtProjectName.Text = tokens[1];
                     hfProjectId.Value = ddlProject.SelectedValue.ToString();
-                    ProjectNotesSetUp(ddlProject.SelectedValue.ToString());
-
                     //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
-
+                    ProjectNotesSetUp(ddlProject.SelectedValue.ToString());
                     BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
 
                     //ProjectNames
@@ -288,7 +283,7 @@ namespace vhcbcloud
                     BindRelatedProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
                     cbRelatedProjects.Checked = false;
-                    
+
                     //ProjectEvent
                     dvNewProjectEvent.Visible = true;
                     dvProjectEventGrid.Visible = true;
@@ -545,9 +540,9 @@ namespace vhcbcloud
             {
                 if (IsProjectInfoFormValid(false))
                 {
-                    AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), 
+                    AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        DataUtils.GetDate(txtClosingDate.Text), DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
+                        DataUtils.GetDate(txtClosingDate.Text), DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
                         txtProjectName.Text);
 
                     if (ap.IsDuplicate)
@@ -582,9 +577,9 @@ namespace vhcbcloud
             {
                 if (IsProjectInfoFormValid(true))
                 {
-                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()), 
-                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()), 
-                        txtClosingDate.Text, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), 
+                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
+                        txtClosingDate.Text, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
                         txtProjectName.Text);
 
                     this.BindProjectEntityGrid();
@@ -792,7 +787,7 @@ namespace vhcbcloud
                     else //add
                     {
                         ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
-                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked, 
+                            txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked,
                             int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         btnAddAddress.Text = "Add";
@@ -1062,7 +1057,7 @@ namespace vhcbcloud
                 ddlProjectType.Focus();
                 return false;
             }
-            
+
             if (txtClosingDate.Text.Trim() != "")
             {
                 if (!DataUtils.IsDateTime(txtClosingDate.Text.Trim()))
@@ -1336,7 +1331,7 @@ namespace vhcbcloud
             List<string> items = new List<string>(count);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["Street#"].ToString() 
+                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["Street#"].ToString()
                     + ' ' + dt.Rows[i]["Address1"].ToString() + ' ' + dt.Rows[i]["Town"].ToString(),
                     dt.Rows[i]["Street#"].ToString()
                     + '~' + dt.Rows[i]["Address1"].ToString()
@@ -1349,7 +1344,7 @@ namespace vhcbcloud
                     + '~' + dt.Rows[i]["longitude"].ToString()
                     + '~' + dt.Rows[i]["Village"].ToString()
                     );
-            items.Add(str);
+                items.Add(str);
                 //ProjNames.Add(dt.Rows[i][0].ToString());
             }
             //return ProjNames.ToArray();
@@ -1460,7 +1455,7 @@ namespace vhcbcloud
             ClearProjectEventForm();
             hfProjectEventID.Value = "";
             btnAddEvent.Text = "Add";
-            cbAddProjectEvent.Checked = false;   
+            cbAddProjectEvent.Checked = false;
         }
 
         protected void gvProjectEvent_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -1509,10 +1504,10 @@ namespace vhcbcloud
             {
                 if (btnAddEvent.Text == "Add")
                 {
-                  ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
-                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
-                      DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
-                      DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
+                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
 
                     ClearProjectEventForm();
                     cbAddProjectEvent.Checked = false;

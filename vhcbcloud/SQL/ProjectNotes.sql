@@ -188,6 +188,7 @@ go
 create procedure dbo.IsNotesExist
 (
 	@PageId			int,
+	@ProjectId		int,
 	@IsNotesExist	bit output
 )
 as
@@ -200,7 +201,7 @@ begin transaction
     (
 		select 1
 		from ProjectNotes 
-		where PageId = @PageId
+		where PageId = @PageId and ProjectId = @ProjectId
     )
 	begin
 		set @IsNotesExist = 0

@@ -183,7 +183,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static bool IsNotesExist(int PageId)
+        public static bool IsNotesExist(int PageId, int ProjectId)
         {
             try
             {
@@ -197,6 +197,7 @@ namespace DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "IsNotesExist";
                         command.Parameters.Add(new SqlParameter("PageId", PageId));
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
 
                         SqlParameter parmMessage = new SqlParameter("@IsNotesExist", SqlDbType.Int);
                         parmMessage.Direction = ParameterDirection.Output;
