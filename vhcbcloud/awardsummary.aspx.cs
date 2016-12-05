@@ -29,10 +29,28 @@ namespace vhcbcloud
                 {
                     lblProjId.Text = GetProjectName(dtProjects, projId);
                     ddlProj.Items.FindByValue(projId).Selected = true;
+                    txtFromCommitedProjNum.Text = ddlProj.SelectedItem.Text;
                     BindAwardSummary(Convert.ToInt32(projId));
                 }
+                ddlProj.Visible = false;
             }
         }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
 
         private string GetProjectName(DataTable dtProjects, string projId)
         {
@@ -54,6 +72,19 @@ namespace vhcbcloud
             ddlProj.DataTextField = "Proj_num";
             ddlProj.DataBind();
             ddlProj.Items.Insert(0, new ListItem("Select", "NA"));
+        }
+
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+
+            dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+
+            ///populate the form based on retrieved data
+            if (dt.Rows.Count > 0)
+                BindAwardSummary(Convert.ToInt32(dt.Rows[0][0].ToString()));
         }
 
         private void BindAwardSummary(int projectid)

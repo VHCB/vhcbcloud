@@ -7,13 +7,18 @@
 
         <div class="container">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="labelClass">Current Award Status for project: </span><b>
-                    <asp:Label runat="server" ID="lblProjId"></asp:Label></b></div>
-
+                <div class="panel-heading">
+                    <span class="labelClass">Current Award Status for project: <b>
+                        <asp:Label runat="server" ID="lblProjId"></asp:Label></b></span>
+                </div>
                 <div class="panel-body">
                     <p class="labelClass">
-                        Project # :
+                        <span class="labelClass">Project # :</span>
                         <asp:DropDownList ID="ddlProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProj_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:TextBox ID="txtFromCommitedProjNum" runat="server" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                        <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtFromCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                               OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
@@ -154,7 +159,7 @@
                                         <asp:Label ID="lblStatus" runat="Server" Text='<%# Eval("lkstatus") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Detail" SortExpression="detail" >
+                                <asp:TemplateField HeaderText="Detail" SortExpression="detail">
                                     <ItemTemplate>
                                         <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("detail", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -162,10 +167,21 @@
                             </Columns>
                         </asp:GridView>
                     </asp:Panel>
+                    <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                        
                 </div>
             </div>
         </div>
     </div>
 
+    <script type="text/javascript">
+         function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+    </script>
 </asp:Content>
 
