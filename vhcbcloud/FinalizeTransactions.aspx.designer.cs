@@ -31,6 +31,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProjFilter;
         
         /// <summary>
+        /// txtFromCommitedProjNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFromCommitedProjNum;
+        
+        /// <summary>
+        /// aceCommitAuto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender aceCommitAuto;
+        
+        /// <summary>
         /// lblProjNameText control.
         /// </summary>
         /// <remarks>
@@ -146,5 +164,23 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnTranSubmit;
+        
+        /// <summary>
+        /// hdnValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnValue;
+        
+        /// <summary>
+        /// hfProjId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjId;
     }
 }

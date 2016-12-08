@@ -25,9 +25,13 @@
                             <tr>
                                 <td style="width: 20%; float: left"><span class="labelClass">Project # :</span></td>
                                 <td style="width: 20%; float: left">
-                                    <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
+                                    <asp:DropDownList ID="ddlProjFilter" Visible="false" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
                                         OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" Width="111px">
-                                    </asp:DropDownList></td>
+                                    </asp:DropDownList>
+                                    <asp:TextBox ID="txtFromCommitedProjNum" runat="server" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                                    <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" CompletionInterval="100" CompletionSetCount="1" EnableCaching="false" MinimumPrefixLength="1" OnClientItemSelected="OnContactSelected" ServiceMethod="GetProjectsByFilter" TargetControlID="txtFromCommitedProjNum">
+                                    </ajaxToolkit:AutoCompleteExtender>
+                                </td>
                                 <td style="width: 10%; float: left">
                                     <asp:Label ID="lblProjNameText" class="labelClass" Visible="false" Text="Project Name :" runat="server"></asp:Label>
                                 </td>
@@ -164,8 +168,18 @@
                         <br />
                     </div>
                 </asp:Panel>
-
+                 <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                <asp:HiddenField ID="hfProjId" runat="server" />
             </div>
         </asp:Panel>
     </div>
+      <script type="text/javascript">
+         function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+    </script>
 </asp:Content>

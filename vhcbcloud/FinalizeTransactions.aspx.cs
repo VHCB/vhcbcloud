@@ -49,6 +49,22 @@ namespace vhcbcloud
             }
         }
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
+
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -79,19 +95,51 @@ namespace vhcbcloud
             }
         }
 
+
+        protected void hdnValue_ValueChanged(object sender, EventArgs e)
+        {
+            string projNum = ((HiddenField)sender).Value;
+
+            DataTable dt = new DataTable();
+
+            dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
+
+            ///populate the form based on retrieved data
+            if (dt.Rows.Count > 0)
+            {
+                lblProjNameText.Visible = true;
+
+                if (txtFromCommitedProjNum.Text.ToLower() == "all")
+                    lblProjName.Text = "All";
+                else
+                {
+                    DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(dt.Rows[0][0].ToString()));
+                    lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+
+                    hfProjId.Value = dt.Rows[0][0].ToString();
+                }
+            }
+            else
+            {
+                lblProjNameText.Visible = false;
+                lblProjName.Text = "";
+            }
+        }
+
         protected void btnSubit_click(object sender, EventArgs e)
         {
             DateTime tranFromDate;
             DateTime tranToDate;
 
             #region Validation
-            if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
-            {
-                lblErrorMsg.Text = "Select Project";
-                ddlProjFilter.Focus();
-                return;
-            }
-            else if (ddlFinancialTrans.Items.Count > 1 && ddlFinancialTrans.SelectedIndex == 0)
+            //if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
+            //{
+            //    lblErrorMsg.Text = "Select Project";
+            //    ddlProjFilter.Focus();
+            //    return;
+            //}
+            //            else
+            if (ddlFinancialTrans.Items.Count > 1 && ddlFinancialTrans.SelectedIndex == 0)
             {
                 lblErrorMsg.Text = "Select financial transaction";
                 ddlFinancialTrans.Focus();
@@ -148,9 +196,10 @@ namespace vhcbcloud
             ViewState["FromDate"] = tranFromDate;
             ViewState["EndDate"] = tranToDate;
 
-            PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
-            
+            PopulateTransactions(Convert.ToInt32(hfProjId.Value), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+
         }
+
 
         private void PopulateTransactions(int Projectid, DateTime TranFromDate, DateTime TranToDate, int TransType)
         {
@@ -224,7 +273,7 @@ namespace vhcbcloud
                 }
             }
 
-            PopulateTransactions(Convert.ToInt32(ddlProjFilter.SelectedValue.ToString()), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
+            PopulateTransactions(Convert.ToInt32(hfProjId.Value), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
                 Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
             lblErrorMsg.Text = "Transaction finalized successfully";
         }

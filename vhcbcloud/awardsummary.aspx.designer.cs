@@ -31,6 +31,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProj;
         
         /// <summary>
+        /// txtFromCommitedProjNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFromCommitedProjNum;
+        
+        /// <summary>
+        /// aceCommitAuto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender aceCommitAuto;
+        
+        /// <summary>
         /// Panel1 control.
         /// </summary>
         /// <remarks>
@@ -74,5 +92,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvTransDetail;
+        
+        /// <summary>
+        /// hdnValue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnValue;
     }
 }
