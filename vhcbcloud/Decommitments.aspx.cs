@@ -977,6 +977,14 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+                    if (dtAvailFunds != null)
+                        if (dtAvailFunds.Rows.Count > 0)
+                            lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+
+                }
 
                 BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
@@ -1040,6 +1048,15 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = "Delete detail: " + ex.Message;
             }
+        }
+
+        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+            if (dtAvailFunds != null)
+                if (dtAvailFunds.Rows.Count > 0)
+                    lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+
         }
     }
 }
