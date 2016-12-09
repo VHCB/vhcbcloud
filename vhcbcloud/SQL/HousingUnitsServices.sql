@@ -734,7 +734,7 @@ create procedure GetProjectAgeRestrictList
 as
 --exec GetProjectAgeRestrictList 1, 0
 begin
-	select  hs.ProjectAgeRestrictID, hs.LKAgeRestrict, lv.description as Service, hs.Numunits, hs.RowIsActive
+	select  hs.ProjectAgeRestrictID, hs.LKAgeRestrict, lv.description as AgeRestriction, hs.Numunits, hs.RowIsActive
 	from ProjectHouseAgeRestrict hs(nolock)
 	join LookupValues lv(nolock) on lv.TypeId = hs.LKAgeRestrict
 	where hs.HousingID = @HousingID 
