@@ -63,10 +63,10 @@
                                     </td>
                                     <td style="text-align: right;">
                                         <asp:ImageButton ID="ImgPreviousProject" ImageUrl="~/Images/Left.png" ToolTip="Previous Project"
-                                            Style="border: none; vertical-align: middle;" runat="server" Text="Previous Project" 
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Previous Project"
                                             OnClick="ImgPreviousProject_Click"></asp:ImageButton>
                                         <asp:ImageButton ID="ImgNextProject" ImageUrl="~/Images/Right.png" ToolTip="Next Project"
-                                            Style="border: none; vertical-align: middle;" runat="server" Text="Next Project" 
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Next Project"
                                             OnClick="ImgNextProject_Click"></asp:ImageButton>
                                     </td>
                                 </tr>
@@ -194,8 +194,13 @@
                                             <span class="labelClass">Project</span>
                                         </td>
                                         <td style="width: 237px">
-                                            <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
+                                            <asp:TextBox ID="txtEventProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtEventProjNum" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Entity</span></td>
                                         <td>

@@ -1288,7 +1288,7 @@ namespace vhcbcloud
             //{
             if (btnAddEvent.Text == "Add")
             {
-                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectMilestone(ddlEventProject.SelectedValue.ToString(),
                     DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
                     DataUtils.GetDate(txtEventDate.Text), txtEventNotes.Text, GetUserId());

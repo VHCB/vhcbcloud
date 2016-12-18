@@ -1,4 +1,4 @@
-use VHCBSandbox
+use VHCB
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddEntityNotes]') and type in (N'P', N'PC'))
