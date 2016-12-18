@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -24,6 +25,16 @@ namespace vhcbcloud
                 BindControls();
                 DisplayPanels();
             }
+        }
+
+        private void ProjectNotesSetUp()
+        {
+            int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
+            //if (ProjectNotesData.IsNotesExist(PageId))
+            //    btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
+
+            ifProjectNotes.Src = "EntityNotes.aspx?EntityId=" + ddlEntityName.SelectedValue.ToString() +
+                "&PageId=" + PageId;
         }
 
         private void DisplayPanels()
@@ -149,12 +160,12 @@ namespace vhcbcloud
             BindLookUP(ddlAttribute, 169);
             BindLookUP(ddlProduct, 12);
             BindLookUP(ddlDefaultRole, 56);
-            
+
             //Project Events
             BindLookUP(ddlEventProgram, 34);
             BindProjects(ddlEventProject);
             BindLookUP(ddlEventSubCategory, 163);
-            BindApplicantsForCurrentProject(ddlEventEntity);
+            // BindApplicantsForCurrentProject(ddlEntityName);
             BindPrjectEventGrid();
         }
 
@@ -187,7 +198,7 @@ namespace vhcbcloud
                 else if (RoleName.ToLower() == "farm")
                     Operation = 3;
 
-                    ddList.Items.Clear();
+                ddList.Items.Clear();
                 ddList.DataSource = EntityMaintenanceData.GetEntitiesByRole(RoleId, Operation);
                 ddList.DataValueField = "ApplicantId";
                 ddList.DataTextField = "Applicantname";
@@ -456,9 +467,9 @@ namespace vhcbcloud
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
-                            if(objEntityMaintResult.DuplicateId == 1)
+                            if (objEntityMaintResult.DuplicateId == 1)
                                 LogMessage("Entity with same Email already exist");
-                            else if(objEntityMaintResult.DuplicateId == 2)
+                            else if (objEntityMaintResult.DuplicateId == 2)
                                 LogMessage("Entity with same First Name and Last Name already exist");
                             else if (objEntityMaintResult.DuplicateId == 3)
                                 LogMessage("Entity with same First Name, Last Name and Email already exist");
@@ -499,9 +510,9 @@ namespace vhcbcloud
 
                     if (ddlEntityRole.SelectedItem.Text.ToLower() == "individual")
                         Operation = 1;
-                    else if(ddlEntityRole.SelectedItem.Text.ToLower() == "organization")
+                    else if (ddlEntityRole.SelectedItem.Text.ToLower() == "organization")
                         Operation = 2;
-                    else if(ddlEntityRole.SelectedItem.Text.ToLower() == "farm")
+                    else if (ddlEntityRole.SelectedItem.Text.ToLower() == "farm")
                         Operation = 3;
 
                     string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
@@ -542,10 +553,14 @@ namespace vhcbcloud
         {
             ClearForm();
             ClearAddressForm();
-
+            EntityName.InnerHtml = "";
+            btnProjectNotes1.Visible = false;
             if (ddlEntityName.SelectedIndex != 0)
             {
                 DisplayPanelsBasedOnEntityRole();
+                EntityName.InnerHtml = ddlEntityName.SelectedItem.ToString();
+                btnProjectNotes1.Visible = true;
+                ProjectNotesSetUp();
 
                 hfApplicatId.Value = ddlEntityName.SelectedValue.ToString();
 
@@ -718,8 +733,8 @@ namespace vhcbcloud
                         txtState.Text = dr["State"].ToString();
                         txtZip.Text = dr["Zip"].ToString();
                         txtCounty.Text = dr["County"].ToString();
-                        txtLattitude.Text= dr["latitude"].ToString();
-                        txtLongitude.Text= dr["longitude"].ToString();
+                        txtLattitude.Text = dr["latitude"].ToString();
+                        txtLongitude.Text = dr["longitude"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["DefAddress"].ToString());
 
@@ -986,7 +1001,7 @@ namespace vhcbcloud
                 ddlIndividualApplicant.Focus();
                 return;
             }
-            
+
             FormAttributeResult obAttributeResult = EntityMaintenanceData.AddApplicantApplicant(DataUtils.GetInt(hfApplicatId.Value),
                 DataUtils.GetInt(ddlIndividualApplicant.SelectedValue.ToString()));
 
@@ -1141,7 +1156,7 @@ namespace vhcbcloud
                 hfProjectId.Value = ddlEventProject.SelectedValue.ToString();
             }
 
-            BindApplicantsForCurrentProject(ddlEventEntity);
+            //BindApplicantsForCurrentProject(ddlEntityName);
         }
 
         private void BindApplicantsForCurrentProject(DropDownList ddlEventEntity)
@@ -1171,13 +1186,15 @@ namespace vhcbcloud
             cbAddProjectEvent.Checked = false;
 
             //SetEventProjectandProgram();
-            ddlEventEntity.SelectedIndex = -1;
+            //ddlEventEntity.SelectedIndex = -1;
+            ddlEventProject.SelectedIndex = -1;
+            ddlEventProgram.SelectedIndex = -1;
             ddlEvent.SelectedIndex = -1;
             ddlEventSubCategory.SelectedIndex = -1;
             txtEventDate.Text = "";
-            txtNotes.Text = "";
-            ddlEventProgram.Enabled = true;
-            ddlEventProject.Enabled = true;
+            txtEventNotes.Text = "";
+            //ddlEventProgram.Enabled = true;
+            //ddlEventProject.Enabled = true;
             chkProjectEventActive.Enabled = false;
         }
 
@@ -1219,15 +1236,15 @@ namespace vhcbcloud
 
                         PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
                         PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
-                        PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
+                        //PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
                         PopulateDropDown(ddlEvent, dr["EventID"].ToString());
                         PopulateDropDown(ddlEventSubCategory, dr["SubEventID"].ToString());
                         txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
-                        txtNotes.Text = dr["Note"].ToString();
+                        txtEventNotes.Text = dr["Note"].ToString();
                         chkProjectEventActive.Enabled = true;
 
-                        ddlEventProgram.Enabled = false;
-                        ddlEventProject.Enabled = false;
+                        //ddlEventProgram.Enabled = false;
+                        //ddlEventProject.Enabled = false;
                     }
                 }
             }
@@ -1267,41 +1284,41 @@ namespace vhcbcloud
 
         protected void btnAddEvent_Click(object sender, EventArgs e)
         {
-            if (IsProjectEventFormValid())
+            //if (IsProjectEventFormValid())
+            //{
+            if (btnAddEvent.Text == "Add")
             {
-                if (btnAddEvent.Text == "Add")
-                {
-                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
-                        DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
+                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                    DataUtils.GetDate(txtEventDate.Text), txtEventNotes.Text, GetUserId());
 
-                    ClearProjectEventForm();
-                    cbAddProjectEvent.Checked = false;
+                ClearProjectEventForm();
+                cbAddProjectEvent.Checked = false;
 
-                    BindPrjectEventGrid();
+                BindPrjectEventGrid();
 
-                    if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
-                        LogMessage("Project Event already exist as in-active");
-                    else if (obProjectMaintResult.IsDuplicate)
-                        LogMessage("Project Event already exist");
-                    else
-                        LogMessage("New Project Event added successfully");
-                }
+                if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                    LogMessage("Project Event already exist as in-active");
+                else if (obProjectMaintResult.IsDuplicate)
+                    LogMessage("Project Event already exist");
                 else
-                {
-                    ProjectMaintenanceData.UpdateProjectEvent(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
-                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
-                      DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
-                      DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId(), chkProjectEventActive.Checked);
-
-                    gvProjectEvent.EditIndex = -1;
-                    BindPrjectEventGrid();
-                    ClearProjectEventForm();
-                    btnAddEvent.Text = "Add";
-                    LogMessage("Project Event Updated Successfully");
-                }
+                    LogMessage("New Project Event added successfully");
             }
+            else
+            {
+                ProjectMaintenanceData.UpdateProjectEvent(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                  DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()),
+                  DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
+                  DataUtils.GetDate(txtEventDate.Text), txtEventNotes.Text, GetUserId(), chkProjectEventActive.Checked);
+
+                gvProjectEvent.EditIndex = -1;
+                BindPrjectEventGrid();
+                ClearProjectEventForm();
+                btnAddEvent.Text = "Add";
+                LogMessage("Project Event Updated Successfully");
+            }
+            //}
         }
 
         protected void gvProjectEvent_Sorting(object sender, GridViewSortEventArgs e)
@@ -1379,7 +1396,7 @@ namespace vhcbcloud
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetEntityNames(string prefixText, int count, string contextKey)
         {
-            List<string>EntityNames = new List<string>();
+            List<string> EntityNames = new List<string>();
 
             if (contextKey.ToLower() == "organization")
             {
@@ -1400,15 +1417,15 @@ namespace vhcbcloud
         {
             List<string> EntityNames = new List<string>();
 
-            
-                DataTable dt = new DataTable();
-                dt = EntityMaintenanceData.GetFirstNames(prefixText);
 
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
-                }
-          
+            DataTable dt = new DataTable();
+            dt = EntityMaintenanceData.GetFirstNames(prefixText);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                EntityNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+
             return EntityNames.ToArray();
         }
 

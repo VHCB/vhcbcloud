@@ -136,7 +136,7 @@ begin transaction
 	set @ApplicantID = 0
 	select @ApplicantID = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameID
 
-	update ProjectEvent set ApplicantID = @ApplicantID, EventID= @EventID, SubEventID = @SubEventID, Date = @Date, Note = @Note, UserID = @UserID,
+	update ProjectEvent set Prog = @Prog, ProjectID = @ProjectID, ApplicantID = @ApplicantID, EventID= @EventID, SubEventID = @SubEventID, Date = @Date, Note = @Note, UserID = @UserID,
 		RowIsActive = @IsRowIsActive, DateModified = getdate()
 	from ProjectEvent
 	where ProjectEventID = @ProjectEventID

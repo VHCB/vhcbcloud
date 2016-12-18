@@ -171,10 +171,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Events</h3>
+                                        <h3 class="panel-title">Milestones</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Event" />
+                                        <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Milestone" />
                                     </td>
                                 </tr>
                             </table>
@@ -207,13 +207,13 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Event</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Milestone</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 140px">
-                                            <span class="labelClass">Event SubCategory</span>
+                                            <span class="labelClass">Milestone SubCategory</span>
                                         </td>
                                         <td style="width: 237px">
                                             <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
@@ -230,7 +230,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Notes</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Comments</span></td>
                                         <td colspan="3">
                                             <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="605px" Height="49px" />
                                         </td>

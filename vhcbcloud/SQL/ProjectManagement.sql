@@ -13,13 +13,13 @@ as
 begin
 	if(CHARINDEX('-', @ProjectNum) > 0)
 	begin
-		select top 20 proj_num
+		select top 25 proj_num
 		from project
 		where  proj_num like @ProjectNum+ '%'
 	end
 	else
 	begin
-		select top 20 proj_num 
+		select top 25 proj_num 
 		from project
 		where  replace(proj_num, '-', '') like @ProjectNum+ '%'
 	end
