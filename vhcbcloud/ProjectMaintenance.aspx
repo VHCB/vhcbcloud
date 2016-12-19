@@ -82,8 +82,16 @@
                                             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                                                 MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
-                                            <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
-                                            </asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
+                                            </asp:DropDownList>--%>
+
+                                            <asp:TextBox ID="txtProjectNumDDL" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server" 
+                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtProjectNumDDL" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>
+
                                             <div id="divErrorProjectNumber" style="display: none">
                                                 <span style="color: red">Project Number already exist</span>
                                             </div>
@@ -903,9 +911,9 @@
             });--%>
         });
 
-        function PopupAwardSummary() {
+        <%--function PopupAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= ddlProject.ClientID%>  option:selected").val())
-        };
+        };--%>
 
         function IsProjectNumberExist() {
             $.ajax({
