@@ -957,6 +957,55 @@ namespace DataAccessLayer
             }
         }
 
+        public static ProjectMaintResult AddProjectMilestone(string ProjectNum, int Prog, int ApplicantID, int EventID,
+            int SubEventID, DateTime Date, string Note, int UserID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectMilestone";
+
+                        command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNum));
+                        command.Parameters.Add(new SqlParameter("Prog", Prog));
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("EventID", EventID));
+                        command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
         public static void UpdateProjectEvent(int ProjectEventID, int ProjectId, int Prog, int ApplicantID, int EventID,
             int SubEventID, DateTime Date, string Note, int UserID, bool IsRowIsActive)
         {
@@ -975,6 +1024,42 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("Prog", Prog));
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("EventID", EventID));
+                        command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateProjectMilestone(int ProjectEventID, int ApplicantID, int EventID,
+            int SubEventID, DateTime Date, string Note, int UserID, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectMilestone";
+
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
                         command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
                         command.Parameters.Add(new SqlParameter("EventID", EventID));
                         command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));

@@ -96,7 +96,7 @@ begin transaction
 		select ProjectNotesID, LkCategory, lv.description, pn.UserId, ui.username, convert(varchar(10), Date, 101) as Date, 
 			substring(Notes, 0, 25) Notes, Notes as FullNotes, pn.URL, 
 			CASE when isnull(pn.URL, '') = '' then '' else 'Click here' end as URLText,
-			pn.RowIsActive
+			pn.RowIsActive, pn.PageID 
 		from ProjectNotes pn(nolock)
 		join lookupvalues lv(nolock) on lv.Typeid = LkCategory
 		left join userinfo ui(nolock) on ui.userid = pn.UserId

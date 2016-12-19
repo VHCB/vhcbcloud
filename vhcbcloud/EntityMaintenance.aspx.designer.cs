@@ -22,6 +22,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnAction;
         
         /// <summary>
+        /// btnProjectNotes1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes1;
+        
+        /// <summary>
         /// cbActiveOnly control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,42 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
+        
+        /// <summary>
+        /// mpExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender mpExtender;
+        
+        /// <summary>
+        /// pnlProjectNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlProjectNotes;
+        
+        /// <summary>
+        /// ifProjectNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlIframe ifProjectNotes;
+        
+        /// <summary>
+        /// btnClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClose;
         
         /// <summary>
         /// dvMessage control.
@@ -958,13 +1003,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlEventProject;
         
         /// <summary>
-        /// ddlEventEntity control.
+        /// EntityName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEventEntity;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl EntityName;
         
         /// <summary>
         /// ddlEvent control.
@@ -1003,13 +1048,13 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtEventDate;
         
         /// <summary>
-        /// TextBox1 control.
+        /// txtEventNotes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtEventNotes;
         
         /// <summary>
         /// chkProjectEventActive control.

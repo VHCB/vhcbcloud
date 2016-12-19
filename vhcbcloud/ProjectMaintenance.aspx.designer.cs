@@ -184,13 +184,22 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.MaskedEditExtender ameProjNum;
         
         /// <summary>
-        /// ddlProject control.
+        /// txtProjectNumDDL control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProject;
+        protected global::System.Web.UI.WebControls.TextBox txtProjectNumDDL;
+        
+        /// <summary>
+        /// AutoCompleteExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender1;
         
         /// <summary>
         /// txtProjectName control.
@@ -328,13 +337,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlEventProgram;
         
         /// <summary>
-        /// ddlEventProject control.
+        /// txtEventProjNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEventProject;
+        protected global::System.Web.UI.WebControls.TextBox txtEventProjNum;
+        
+        /// <summary>
+        /// ae_txtProjNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender ae_txtProjNum;
         
         /// <summary>
         /// ddlEventEntity control.

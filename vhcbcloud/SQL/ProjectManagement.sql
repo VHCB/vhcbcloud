@@ -13,13 +13,13 @@ as
 begin
 	if(CHARINDEX('-', @ProjectNum) > 0)
 	begin
-		select top 20 proj_num
+		select top 25 proj_num
 		from project
 		where  proj_num like @ProjectNum+ '%'
 	end
 	else
 	begin
-		select top 20 proj_num 
+		select top 25 proj_num 
 		from project
 		where  replace(proj_num, '-', '') like @ProjectNum+ '%'
 	end
@@ -1198,6 +1198,64 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectNum]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectNum
+go
+
+create procedure dbo.GetProjectNum
+(
+	@ProjectId			int
+) as
+begin transaction
+-- exec GetProjectNum 4834
+	begin try
+
+	select proj_num from Project where ProjectId = @ProjectId
+		
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectId]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectId
+go
+
+create procedure dbo.GetProjectId
+(
+	@ProjectNum		nvarchar(20),
+	@ProjectId		int output 
+) as
+begin transaction
+-- exec GetProjectId '2001-001-001', ''
+	begin try
+
+	select @ProjectId = ProjectId from Project where proj_num = @ProjectNum
+		
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
 
 
 

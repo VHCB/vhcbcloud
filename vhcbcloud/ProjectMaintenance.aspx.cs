@@ -24,6 +24,11 @@ namespace vhcbcloud
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
 
+            var ctrlName = Request.Params[Page.postEventSourceID];
+            var args = Request.Params[Page.postEventArgumentID];
+
+            HandleCustomPostbackEvent(ctrlName, args);
+
             if (!IsPostBack)
             {
                 if (Request.QueryString["Type"] == "new")
@@ -59,6 +64,20 @@ namespace vhcbcloud
                 btnProjectNotes1.ImageUrl = "~/Images/notes.png";
         }
 
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            var onBlurScript = Page.ClientScript.GetPostBackEventReference(txtProjectNumDDL, "OnBlur");
+            txtProjectNumDDL.Attributes.Add("onblur", onBlurScript);
+        }
+
+        private void HandleCustomPostbackEvent(string ctrlName, string args)
+        {
+            if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur")
+            {
+                ProjectSelectionChanged();
+            }
+        }
+
         #region Bind Controls
         private void BindControls()
         {
@@ -67,8 +86,8 @@ namespace vhcbcloud
             BindLookUP(ddlProjectType, 119);
             BindManagers();
             BindPrimaryApplicants();
-            BindProjects(ddlProject);
-            BindProjects(ddlEventProject);
+            //BindProjects(ddlProject);
+            //BindProjects(ddlEventProject);
             BindApplicants(ddlApplicantName);
             BindLookUP(ddlEventSubCategory, 163);
             BindLookUP(ddlApplicantRole, 56);
@@ -239,7 +258,8 @@ namespace vhcbcloud
             {
                 ClearForm();
                 hfProjectId.Value = "";
-                if (ddlProject.SelectedIndex != 0)
+                //if (ddlProject.SelectedIndex != 0)
+                if (txtProjectNumDDL.Text != "")
                 {
                     ibAwardSummary.Visible = true;
                     btnProjectNotes1.Visible = true;
@@ -250,9 +270,9 @@ namespace vhcbcloud
                     dvUpdate.Visible = true;
                     //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
                     //txtProjectName.Text = tokens[1];
-                    hfProjectId.Value = ddlProject.SelectedValue.ToString();
+                    hfProjectId.Value = GetProjectID(txtProjectNumDDL.Text).ToString();
                     //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
-                    ProjectNotesSetUp(ddlProject.SelectedValue.ToString());
+                    ProjectNotesSetUp(hfProjectId.Value);
                     BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
 
                     //ProjectNames
@@ -330,6 +350,11 @@ namespace vhcbcloud
             {
                 LogError(Pagename, "ProjectSelectionChanged", "", ex.Message);
             }
+        }
+
+        private int GetProjectID(string ProjectNum)
+        {
+            return ProjectMaintenanceData.GetProjectId(ProjectNum);
         }
 
         private void BindProjectNamesGrid()
@@ -451,7 +476,8 @@ namespace vhcbcloud
 
         private void RadioButtonSelectionChanged()
         {
-            ddlProject.SelectedIndex = -1;
+            //ddlProject.SelectedIndex = -1;
+            txtProjectNumDDL.Text = "";
             DisplayControlsbasedOnSelection();
 
             dvUpdate.Visible = false;
@@ -492,7 +518,8 @@ namespace vhcbcloud
                 ImgNextProject.Visible = false;
 
                 txtProjNum.Visible = true;
-                ddlProject.Visible = false;
+                //ddlProject.Visible = false;
+                txtProjectNumDDL.Visible = false;
                 ddlProgram.Enabled = true;
                 txtProjectName.Enabled = true;
                 btnProjectUpdate.Visible = false;
@@ -502,7 +529,8 @@ namespace vhcbcloud
             else
             {
                 txtProjNum.Visible = false;
-                ddlProject.Visible = true;
+                //ddlProject.Visible = true;
+                txtProjectNumDDL.Visible = true;
                 btnProjectUpdate.Visible = true;
                 dvSubmit.Visible = false;
                 cbActiveOnly.Visible = true;
@@ -563,12 +591,18 @@ namespace vhcbcloud
         private void PopulateForm(int ProjectId)
         {
             ClearForm();
-            BindProjects(ddlProject);
-            BindProjects(ddlEventProject);
+            //BindProjects(ddlProject);
+            //BindProjects(ddlEventProject);
             rdBtnSelection.SelectedIndex = 1;
             RadioButtonSelectionChanged();
-            ddlProject.SelectedValue = ProjectId.ToString();
+            //ddlProject.SelectedValue = ProjectId.ToString();
+            txtProjectNumDDL.Text = GetProjectNumber(ProjectId);
             ProjectSelectionChanged();
+        }
+
+        private string GetProjectNumber(int ProjectId)
+        {
+            return ProjectMaintenanceData.GetProjectNum(ProjectId);
         }
 
         protected void btnProjectUpdate_Click(object sender, EventArgs e)
@@ -1004,10 +1038,12 @@ namespace vhcbcloud
         {
             if (isUpdate)
             {
-                if (ddlProject.SelectedIndex == 0)
+                //if (ddlProject.SelectedIndex == 0)
+                if(txtProjectNumDDL.Text !="")
                 {
                     LogMessage("Select Project Number");
-                    ddlProject.Focus();
+                    txtProjectNumDDL.Focus();
+                    //ddlProject.Focus();
                     return false;
                 }
             }
@@ -1477,8 +1513,8 @@ namespace vhcbcloud
                         DataRow dr = ProjectMaintenanceData.GetProjectEventById(DataUtils.GetInt(lblProjectEventID.Text));
 
                         hfProjectEventID.Value = lblProjectEventID.Text;
-
-                        PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
+                        txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString(); // dr["ProjectID"].ToString();
+                        //PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
                         PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
                         PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
                         PopulateDropDown(ddlEvent, dr["EventID"].ToString());
@@ -1488,7 +1524,8 @@ namespace vhcbcloud
                         chkProjectEventActive.Enabled = true;
 
                         ddlEventProgram.Enabled = false;
-                        ddlEventProject.Enabled = false;
+                        //ddlEventProject.Enabled = false;
+                        txtEventProjNum.Enabled = false;
                     }
                 }
             }
@@ -1504,7 +1541,7 @@ namespace vhcbcloud
             {
                 if (btnAddEvent.Text == "Add")
                 {
-                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectEvent(DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
+                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectMilestone(txtEventProjNum.Text,
                         DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
                         DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
@@ -1523,8 +1560,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    ProjectMaintenanceData.UpdateProjectEvent(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventProject.SelectedValue.ToString()),
-                      DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                    ProjectMaintenanceData.UpdateProjectMilestone(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
                       DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
                       DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId(), chkProjectEventActive.Checked);
 
@@ -1548,15 +1584,18 @@ namespace vhcbcloud
             txtEventDate.Text = "";
             txtNotes.Text = "";
             ddlEventProgram.Enabled = true;
-            ddlEventProject.Enabled = true;
+            //ddlEventProject.Enabled = true;
+            txtEventProjNum.Enabled = true;
             chkProjectEventActive.Enabled = false;
         }
 
         private void SetEventProjectandProgram()
         {
-            ddlEventProject.SelectedIndex = -1;
+            //ddlEventProject.SelectedIndex = -1;
+            txtEventProjNum.Text = "";
             ddlEventProgram.SelectedIndex = -1;
-            ddlEventProject.SelectedValue = hfProjectId.Value;
+            //ddlEventProject.SelectedValue = hfProjectId.Value;
+            txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString();
             PopulateDropDown(ddlEventProgram, hfProgramId.Value);
             EventProgramSelection();
         }
@@ -1595,10 +1634,12 @@ namespace vhcbcloud
                 return false;
             }
 
-            if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
+            //if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
+            if (txtEventProjNum.Text == "") 
             {
                 LogMessage("Select Event Project");
-                ddlEventProject.Focus();
+                txtEventProjNum.Focus();
+                //ddlEventProject.Focus();
                 return false;
             }
 
@@ -1692,12 +1733,27 @@ namespace vhcbcloud
 
         protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(ddlProject.SelectedItem.Text, 1));
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 1));
         }
 
         protected void ImgPreviousProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(ddlProject.SelectedItem.Text, 2));
+            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 2));
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumber(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
         }
     }
 

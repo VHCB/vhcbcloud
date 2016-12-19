@@ -63,10 +63,10 @@
                                     </td>
                                     <td style="text-align: right;">
                                         <asp:ImageButton ID="ImgPreviousProject" ImageUrl="~/Images/Left.png" ToolTip="Previous Project"
-                                            Style="border: none; vertical-align: middle;" runat="server" Text="Previous Project" 
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Previous Project"
                                             OnClick="ImgPreviousProject_Click"></asp:ImageButton>
                                         <asp:ImageButton ID="ImgNextProject" ImageUrl="~/Images/Right.png" ToolTip="Next Project"
-                                            Style="border: none; vertical-align: middle;" runat="server" Text="Next Project" 
+                                            Style="border: none; vertical-align: middle;" runat="server" Text="Next Project"
                                             OnClick="ImgNextProject_Click"></asp:ImageButton>
                                     </td>
                                 </tr>
@@ -82,8 +82,16 @@
                                             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                                                 MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
-                                            <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
-                                            </asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
+                                            </asp:DropDownList>--%>
+
+                                            <asp:TextBox ID="txtProjectNumDDL" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server" 
+                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtProjectNumDDL" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>
+
                                             <div id="divErrorProjectNumber" style="display: none">
                                                 <span style="color: red">Project Number already exist</span>
                                             </div>
@@ -171,10 +179,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Events</h3>
+                                        <h3 class="panel-title">Milestones</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Event" />
+                                        <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Milestone" />
                                     </td>
                                 </tr>
                             </table>
@@ -194,8 +202,13 @@
                                             <span class="labelClass">Project</span>
                                         </td>
                                         <td style="width: 237px">
-                                            <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
+                                            <asp:TextBox ID="txtEventProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtEventProjNum" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Entity</span></td>
                                         <td>
@@ -207,13 +220,13 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Event</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Milestone</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 140px">
-                                            <span class="labelClass">Event SubCategory</span>
+                                            <span class="labelClass">Milestone SubCategory</span>
                                         </td>
                                         <td style="width: 237px">
                                             <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
@@ -230,7 +243,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Notes</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Comments</span></td>
                                         <td colspan="3">
                                             <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="605px" Height="49px" />
                                         </td>
@@ -898,9 +911,9 @@
             });--%>
         });
 
-        function PopupAwardSummary() {
+        <%--function PopupAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= ddlProject.ClientID%>  option:selected").val())
-        };
+        };--%>
 
         function IsProjectNumberExist() {
             $.ajax({
