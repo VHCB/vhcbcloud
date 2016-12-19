@@ -1210,6 +1210,69 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
+
+        public static string GetProjectNum(int ProjectId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetProjectNum";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    returnMsg = command.ExecuteScalar();
+                    return returnMsg == null ? "" : returnMsg.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static int GetProjectId(string ProjectNum)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectId";
+
+                        command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNum));
+
+                        SqlParameter parmMessage = new SqlParameter("@ProjectId", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        return DataUtils.GetInt(command.Parameters["@ProjectId"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
     public class AddProject
