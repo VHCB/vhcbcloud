@@ -252,6 +252,8 @@ namespace vhcbcloud
 
                     if (totBalAmt == 0)
                     {
+                        tblFundDetails.Visible = false;
+                        btnCashRefundSubmit.Visible = false;
                         CommonHelper.DisableButton(btnCashRefundSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
                         if (rdBtnSelection.SelectedIndex == 0)
@@ -263,6 +265,8 @@ namespace vhcbcloud
                     }
                     else
                     {
+                        btnCashRefundSubmit.Visible = true;
+                        tblFundDetails.Visible = true;
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCashRefundSubmit);
                     }

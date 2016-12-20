@@ -210,7 +210,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div id="divTransDetailEntry" runat="server">
-                                        <table style="width: 100%">
+                                        <table style="width: 100%" runat="server" id="tblFundDet">
                                             <tr>
                                                 <td style="width: 10%; float: left">
                                                     <span class="labelClass">Fund # :</span></td>
@@ -251,7 +251,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <br />
                                         <%--  <asp:LinkButton ID="btnDecommitSubmit" runat="server" visible="false" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
                                 OnClick="btnSubmit_Click" />--%>
                                         <br />

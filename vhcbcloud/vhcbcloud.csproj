@@ -189,6 +189,7 @@
     <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
+    <Content Include="EntityNotes.aspx" />
     <Content Include="EventMaintenance.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
@@ -485,6 +486,13 @@
     </Compile>
     <Compile Include="EntityMaintenance.aspx.designer.cs">
       <DependentUpon>EntityMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityNotes.aspx.cs">
+      <DependentUpon>EntityNotes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EntityNotes.aspx.designer.cs">
+      <DependentUpon>EntityNotes.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventMaintenance.aspx.cs">
       <DependentUpon>EventMaintenance.aspx</DependentUpon>

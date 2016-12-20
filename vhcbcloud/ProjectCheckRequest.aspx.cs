@@ -372,8 +372,13 @@ namespace vhcbcloud
 
                     if (totBalAmt == 0)
                     {
+                        tblFundDetails.Visible = false;
                         DisableButton(btnPCRTransDetails);
                         EnableButton(btnSubmit);
+                    }
+                    else
+                    {
+                        tblFundDetails.Visible = true;
                     }
 
                     if (lblBalAmt.Text != "$0.00")

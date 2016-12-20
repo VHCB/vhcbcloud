@@ -595,12 +595,16 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                     {
+                        tblReallocateTo.Visible = true;
+                        btnReallocateSubmit.Visible = true;
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                         DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
+                        tblReallocateTo.Visible = false;
+                        btnReallocateSubmit.Visible = false;
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
                         hfReallocateGuid.Value = "";
@@ -654,12 +658,16 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                     {
+                        btnReallocateSubmit.Visible = true;
+                        tblReallocateTo.Visible = true;
                         //lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                         DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
+                        btnReallocateSubmit.Visible = false;
+                        tblReallocateTo.Visible = false;
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
                         hfReallocateGuid.Value = "";
@@ -722,6 +730,8 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                     {
+                        tblReallocateTo.Visible = true;
+                        btnReallocateSubmit.Visible = true;
                         //lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                         if (rdBtnSelection.SelectedIndex == 0)
@@ -729,6 +739,8 @@ namespace vhcbcloud
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
+                        tblReallocateTo.Visible = false;
+                        btnReallocateSubmit.Visible = false;
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
                         hfReallocateGuid.Value = "";
@@ -790,13 +802,17 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                     {
-                       // lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        tblReallocateTo.Visible = true;
+                        btnReallocateSubmit.Visible = true;
+                        // lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
                         btnNewTransaction.Visible = false;
                         if (rdBtnSelection.SelectedIndex == 0)
                             DisableReallocationFromPanel();
                     }
                     if (lblBalAmt.Text == "$0.00")
                     {
+                        tblReallocateTo.Visible = false;
+                        btnReallocateSubmit.Visible = false;
                         CommonHelper.DisableButton(btnReallocateSubmit);
                         btnNewTransaction.Visible = true;
                         hfReallocateGuid.Value = "";

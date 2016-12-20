@@ -221,7 +221,7 @@
                                         </div>
                                         <div class="panel-body">
                                             <div id="divTransDetailEntry" runat="server">
-                                                <table style="width: 100%">
+                                                <table style="width: 100%" id="tblFundDet" runat="server">
                                                     <tr>
                                                         <td style="width: 10%; float: left">
                                                             <span class="labelClass">Fund # :</span></td>

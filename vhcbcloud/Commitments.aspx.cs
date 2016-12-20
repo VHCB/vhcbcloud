@@ -283,6 +283,8 @@ namespace vhcbcloud
 
                     if (totBalAmt == 0)
                     {
+                        tblFundDet.Visible = false;
+                        btnCommitmentSubmit.Visible = false;
                         CommonHelper.DisableButton(btnCommitmentSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
                         btnNewTransaction.Visible = true;
@@ -294,6 +296,8 @@ namespace vhcbcloud
                     }
                     else
                     {
+                        tblFundDet.Visible = true;
+                        btnCommitmentSubmit.Visible = true;
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCommitmentSubmit);
                         
