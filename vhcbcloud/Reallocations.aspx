@@ -141,7 +141,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Reallocate To</div>
                             <div class="panel-body">
-                                <table style="width: 100%">
+                                <table style="width: 100%" runat="server" id="tblReallocateTo">
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Project# :</span></td>
                                         <td style="width: 20%; float: left">
