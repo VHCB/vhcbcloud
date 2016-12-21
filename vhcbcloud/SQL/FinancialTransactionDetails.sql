@@ -2187,7 +2187,7 @@ alter procedure PCR_Update
 	@MatchAmt	money, 
 	@LkFVGrantMatch	int, 
 	@Notes	nvarchar(2000), 
-	@Disbursement decimal,
+	@Disbursement decimal(8,2),
 	@Payee int,
 	@LkStatus int,
 	@UserID	int,

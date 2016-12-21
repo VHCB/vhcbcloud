@@ -810,6 +810,10 @@ namespace vhcbcloud
         {
             gvPTransDetails.EditIndex = e.NewEditIndex;
             BindPCRTransDetails();
+            if (btnNewPCR.Visible == true)
+            {
+                btnNewPCR.Visible = false;
+            }
         }
 
         protected void gvPTransDetails_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -1419,6 +1423,10 @@ namespace vhcbcloud
         {
             gvQuestionsForApproval.EditIndex = e.NewEditIndex;
             BindPCRQuestionsForApproval();
+            if (btnNewPCR.Visible == true)
+            {
+                btnNewPCR.Visible = false;
+            }
         }
 
         protected void gvQuestionsForApproval_RowUpdating(object sender, GridViewUpdateEventArgs e)

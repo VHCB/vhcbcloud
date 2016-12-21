@@ -566,6 +566,10 @@ namespace vhcbcloud
         {
             gvBCommit.EditIndex = e.NewEditIndex;
             BindFundDetails(GetTransId());
+            if (btnNewTransaction.Visible==true)
+            {
+                btnNewTransaction.Visible = false;
+            }
         }
 
         protected void gvBCommit_RowUpdating(object sender, GridViewUpdateEventArgs e)
