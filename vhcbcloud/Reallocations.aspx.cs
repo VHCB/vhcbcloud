@@ -1033,6 +1033,10 @@ namespace vhcbcloud
             Label lblGuid = (Label)gvReallocate.Rows[e.NewEditIndex].FindControl("lblProjGuid");
            
             BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()),lblGuid.Text);
+            if (btnNewTransaction.Visible == true)
+            {
+                btnNewTransaction.Visible = false;
+            }
         }
 
         protected void gvReallocate_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
