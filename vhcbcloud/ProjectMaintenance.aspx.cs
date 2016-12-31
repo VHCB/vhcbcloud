@@ -300,7 +300,7 @@ namespace vhcbcloud
                     dvNewRelatedProjects.Visible = true;
                     //dvRelatedProjects.Visible = false;
                     dvRelatedProjectsGrid.Visible = true;
-                    BindRelatedProjects(ddlRelatedProjects);
+                   // BindRelatedProjects(ddlRelatedProjects);
                     BindRelatedProjectsGrid();
                     cbRelatedProjects.Checked = false;
 
@@ -1039,7 +1039,7 @@ namespace vhcbcloud
             if (isUpdate)
             {
                 //if (ddlProject.SelectedIndex == 0)
-                if(txtProjectNumDDL.Text !="")
+                if(txtProjectNumDDL.Text =="")
                 {
                     LogMessage("Select Project Number");
                     txtProjectNumDDL.Focus();
@@ -1191,16 +1191,16 @@ namespace vhcbcloud
         {
             if (IsRelatedProjectFormValid())
             {
-                string[] tokens = ddlRelatedProjects.SelectedValue.ToString().Split('|');
+                //string[] tokens = ddlRelatedProjects.SelectedValue.ToString().Split('|');
                 //txtProjectName.Text = tokens[1];
-
-                if (hfProjectId.Value == tokens[0])
+                int RelProjectId = ProjectMaintenanceData.GetProjectId(txtRelatedProjects.Text);
+                if (hfProjectId.Value == RelProjectId.ToString())
                 {
                     LogMessage("Related Project can't be same Project");
                     return;
                 }
 
-                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(tokens[0]));
+                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId);
 
                 if (!isDuplicate)
                 {
@@ -1222,10 +1222,11 @@ namespace vhcbcloud
 
         private bool IsRelatedProjectFormValid()
         {
-            if (ddlRelatedProjects.Items.Count > 1 && ddlRelatedProjects.SelectedIndex == 0)
+            //if (ddlRelatedProjects.Items.Count > 1 && ddlRelatedProjects.SelectedIndex == 0)
+            if(txtRelatedProjects.Text == "")
             {
                 LogMessage("Select Related Project");
-                ddlRelatedProjects.Focus();
+                txtRelatedProjects.Focus();
                 return false;
             }
             return true;
@@ -1258,7 +1259,8 @@ namespace vhcbcloud
 
         private void ClearRelatedProjectsForm()
         {
-            ddlRelatedProjects.SelectedIndex = -1;
+            //ddlRelatedProjects.SelectedIndex = -1;
+            txtRelatedProjects.Text = "";
             txtRelatedProjectName.Text = "";
         }
 
@@ -1752,6 +1754,24 @@ namespace vhcbcloud
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumbersWithName(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbersWithName(prefixText);
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["proj_num"].ToString(),
+                    dt.Rows[i]["project_name"].ToString());
+                ProjNumbers.Add(str);
+                //ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
         }

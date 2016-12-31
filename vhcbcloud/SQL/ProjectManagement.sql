@@ -1240,7 +1240,10 @@ begin transaction
 -- exec GetProjectId '2001-001-001', ''
 	begin try
 
-	select @ProjectId = ProjectId from Project where proj_num = @ProjectNum
+	declare @ProjNum1 varchar(50)
+	select @ProjNum1 = dbo.GetHyphenProjectNumber(@ProjectNum);
+
+	select @ProjectId = ProjectId from Project where proj_num = @ProjNum1
 		
 
 	end try
@@ -1257,5 +1260,29 @@ begin transaction
 		commit transaction;
 go
 
+drop procedure [dbo].GetProjectNumbersWithName
+go
+
+create procedure GetProjectNumbersWithName
+(
+	@ProjectNum varchar(50)
+)  
+as
+--exec GetProjectNumbersWithName 2016
+begin
+	if(CHARINDEX('-', @ProjectNum) > 0)
+	begin
+		select top 25 proj_num, rtrim(ltrim(project_name)) as project_name, convert(varchar(25), proj_num) +'|' + rtrim(ltrim(project_name)) as project_num_name
+		from project_v
+		where  proj_num like @ProjectNum+ '%' and defname = 1
+	end
+	else
+	begin
+		select top 25 proj_num, rtrim(ltrim(project_name)) as project_name, convert(varchar(25), proj_num) +'|' + rtrim(ltrim(project_name)) as project_num_name
+		from project_v
+		where  replace(proj_num, '-', '') like @ProjectNum+ '%' and defname = 1
+	end
+end
+go
 
 

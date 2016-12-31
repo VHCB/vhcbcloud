@@ -113,8 +113,9 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi">
-      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+    <Reference Include="WebReportsApi, Version=2016.3.0.104, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Exago\eWebReportsAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +190,7 @@
     <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
+    <Content Include="EntityNotes.aspx" />
     <Content Include="EventMaintenance.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
@@ -240,12 +242,15 @@
     <Content Include="Images\%24%24.png" />
     <Content Include="Images\%24%24_0.png" />
     <Content Include="Images\%24%24_1.png" />
+    <Content Include="Images\currentpagenotes.png" />
     <Content Include="Images\image004.png" />
     <Content Include="FundType.aspx" />
+    <Content Include="Images\Left.png" />
     <Content Include="Images\NewProject.png" />
     <Content Include="Images\notebook.png" />
     <Content Include="Images\notes.png" />
     <Content Include="Images\notes_1.png" />
+    <Content Include="Images\Right.png" />
     <Content Include="Images\Search.png" />
     <Content Include="Lead\ProjectLeadBuildings.aspx" />
     <Content Include="Lead\ProjectLeadData.aspx" />
@@ -267,6 +272,7 @@
     <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ConservationSummary.sql" />
     <Content Include="SQL\EntityMaintenance.sql" />
+    <Content Include="SQL\EntityNotes.sql" />
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
@@ -484,6 +490,13 @@
     </Compile>
     <Compile Include="EntityMaintenance.aspx.designer.cs">
       <DependentUpon>EntityMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityNotes.aspx.cs">
+      <DependentUpon>EntityNotes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EntityNotes.aspx.designer.cs">
+      <DependentUpon>EntityNotes.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventMaintenance.aspx.cs">
       <DependentUpon>EventMaintenance.aspx</DependentUpon>
