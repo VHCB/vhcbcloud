@@ -196,8 +196,20 @@ namespace vhcbcloud
             ViewState["FromDate"] = tranFromDate;
             ViewState["EndDate"] = tranToDate;
 
-            PopulateTransactions(Convert.ToInt32(hfProjId.Value), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+            lblProjNameText.Visible = true;
+            lblProjName.Text = "";
 
+            if (hfProjId.Value != "")
+            {
+                PopulateTransactions(Convert.ToInt32(hfProjId.Value), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+                DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
+                lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+            }
+            else
+            {
+                lblProjName.Text = "All";
+                PopulateTransactions(-1, tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+            }
         }
 
 
