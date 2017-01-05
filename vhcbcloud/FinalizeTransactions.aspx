@@ -28,7 +28,7 @@
                                     <asp:DropDownList ID="ddlProjFilter" Visible="false" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
                                         OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged" Width="111px">
                                     </asp:DropDownList>
-                                    <asp:TextBox ID="txtFromCommitedProjNum" runat="server" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
+                                    <asp:TextBox ID="txtFromCommitedProjNum" runat="server" CssClass="clsTextBoxBlueSm" Width="120px">All</asp:TextBox>
                                     <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" CompletionInterval="100" CompletionSetCount="1" EnableCaching="false" MinimumPrefixLength="1" OnClientItemSelected="OnContactSelected" ServiceMethod="GetProjectsByFilter" TargetControlID="txtFromCommitedProjNum">
                                     </ajaxToolkit:AutoCompleteExtender>
                                 </td>
