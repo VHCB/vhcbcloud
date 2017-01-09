@@ -13,7 +13,8 @@ namespace vhcbcloud
     public partial class CashRefund : System.Web.UI.Page
     {
         DataTable dtProjects;
-        private int BOARD_REFUND = 239;
+        private int BOARD_REFUND = 237;
+        
         private int TRANS_PENDING_STATUS = 261;
         private int ActiveOnly = 1;
         private string strLandUsePermit = "148";
@@ -30,8 +31,8 @@ namespace vhcbcloud
         public static string[] GetProjectsByFilter(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            //dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
-            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+            dt = Project.GetProjects("getCommittedCashRefundProjectslistByFilter", prefixText);
+            //dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -505,7 +506,7 @@ namespace vhcbcloud
                     granteeId = Convert.ToInt32(hfGrantee.Value);
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
-                    TransAmount, granteeId, "Board Commitment",
+                    TransAmount, granteeId, "Cash Refund",
                     TRANS_PENDING_STATUS);
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
