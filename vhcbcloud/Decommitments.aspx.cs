@@ -481,6 +481,7 @@ namespace vhcbcloud
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
+            lblAvailVisibleFund.Text = "";
             ClearTransactionDetailForm();
             GetSelectedTransId(gvPTrans);
             BindFundDetails(GetTransId());
