@@ -241,8 +241,9 @@ namespace vhcbcloud
                         }
                     }
 
-                    totBalAmt = tranAmount - totFundAmt;
-                    hfBalAmt.Value = totBalAmt.ToString();
+                    totBalAmt = tranAmount + totFundAmt;
+
+                    hfBalAmt.Value = (-totBalAmt).ToString();
 
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
                     lblBalAmt.Text = CommonHelper.myDollarFormat(totBalAmt);
@@ -257,6 +258,7 @@ namespace vhcbcloud
                         btnCashRefundSubmit.Visible = false;
                         CommonHelper.DisableButton(btnCashRefundSubmit);
                         CommonHelper.EnableButton(btnTransactionSubmit);
+                        btnNewTransaction.Visible = true;
                         if (rdBtnSelection.SelectedIndex == 0)
                         {
                             lblProjName.Text = "";
@@ -270,6 +272,7 @@ namespace vhcbcloud
                         tblFundDetails.Visible = true;
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCashRefundSubmit);
+                        btnNewTransaction.Visible = false;
                     }
                     if (lblBalAmt.Text != "$0.00")
                     {
@@ -788,6 +791,7 @@ namespace vhcbcloud
             txtCommitedProjNum.Text = "";
             txtProjNum.Text = "";
             lblGrantee.Text = "";
+            lblAvailVisibleFund.Text = "";
             if (rdBtnSelection.SelectedIndex > 0)
             {
                 txtProjNum.Visible = false;
