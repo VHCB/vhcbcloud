@@ -738,8 +738,13 @@
                                     <tr>
                                         <td style="width: 180px"><span class="labelClass">Related Project</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+<%--                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
+                                            <asp:TextBox ID="txtRelatedProjects" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtRelatedProjects" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumbersWithName" OnClientItemSelected="GetRelatedProjectName">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">
@@ -857,6 +862,12 @@
             $('#<%=ddlVillages.ClientID%>').append($("<option></option>").val(addressArray[9]).html(addressArray[9]));
         }
 
+        function GetRelatedProjectName(source, eventArgs) {
+            //var relatedProjectArray = eventArgs.get_value().split('~');
+            //$('#<%=txtRelatedProjects.ClientID%>').val(relatedProjectArray[0]);
+            $('#<%=txtRelatedProjectName.ClientID%>').val(eventArgs.get_value());
+        }
+
         $(document).ready(function () {
             $('#<%= dvProjectEventForm.ClientID%>').toggle($('#<%= cbAddProjectEvent.ClientID%>').is(':checked'));
             $('#<%= dvProjectNameForm.ClientID%>').toggle($('#<%= cbAddProjectName.ClientID%>').is(':checked'));
@@ -896,10 +907,10 @@
                 $('#<%=hfVillage.ClientID%>').val($('#<%= ddlVillages.ClientID%>').val());
             });
 
-            $('#<%= ddlRelatedProjects.ClientID%>').change(function () {
+            <%--$('#<%= ddlRelatedProjects.ClientID%>').change(function () {
                 var arr = $('#<%= ddlRelatedProjects.ClientID%>').val().split('|');
                 $('#<%=txtRelatedProjectName.ClientID%>').val(arr[1]);
-            });
+            });--%>
 
             $('#<%= txtProjNum.ClientID%>').blur(function () {
                 IsProjectNumberExist();
