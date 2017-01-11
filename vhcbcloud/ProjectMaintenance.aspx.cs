@@ -241,7 +241,7 @@ namespace vhcbcloud
             ddlProgram.SelectedIndex = -1;
             //ddlAppStatus.SelectedIndex = -1;
             ddlManager.SelectedIndex = -1;
-            txtClosingDate.Text = "";
+            //txtClosingDate.Text = "";
             //cbVerified.Checked = false;
             ddlPrimaryApplicant.SelectedIndex = -1;
             txtProjectName.Text = "";
@@ -421,7 +421,7 @@ namespace vhcbcloud
 
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
             txtProjectName.Enabled = false;
-            txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
+            //txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             //cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
 
             //Event Form
@@ -570,7 +570,7 @@ namespace vhcbcloud
                 {
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        DataUtils.GetDate(txtClosingDate.Text), DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
                         txtProjectName.Text);
 
                     if (ap.IsDuplicate)
@@ -613,7 +613,7 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtClosingDate.Text, DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
                         txtProjectName.Text);
 
                     this.BindProjectEntityGrid();
@@ -1094,15 +1094,15 @@ namespace vhcbcloud
                 return false;
             }
 
-            if (txtClosingDate.Text.Trim() != "")
-            {
-                if (!DataUtils.IsDateTime(txtClosingDate.Text.Trim()))
-                {
-                    LogMessage("Enter valid Closing Date");
-                    txtClosingDate.Focus();
-                    return false;
-                }
-            }
+            //if (txtClosingDate.Text.Trim() != "")
+            //{
+            //    if (!DataUtils.IsDateTime(txtClosingDate.Text.Trim()))
+            //    {
+            //        LogMessage("Enter valid Closing Date");
+            //        txtClosingDate.Focus();
+            //        return false;
+            //    }
+            //}
             return true;
         }
 
