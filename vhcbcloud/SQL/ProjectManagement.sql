@@ -111,13 +111,12 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[add_n
 drop procedure [dbo].add_new_project
 go
 
-create procedure dbo.add_new_project
+alter procedure dbo.add_new_project
 (
 	@projNum			nvarchar(12),
 	@LkProjectType		int,
 	@LkProgram			int,
 	@Manager			int,
-	@ClosingDate		datetime,
 	--@verified			bit,
 	@appNameId			int,
 	@projName			varchar(75),
@@ -150,8 +149,8 @@ begin transaction
 
 			set @nameId = @@IDENTITY
 
-			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, ClosingDate, userid)
-			values (@projNum, @LkProjectType, @LkProgram, @Manager, @ClosingDate, 123)
+			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, userid)
+			values (@projNum, @LkProjectType, @LkProgram, @Manager, 123)
 	
 			set @ProjectId = @@IDENTITY
 
@@ -194,7 +193,7 @@ create procedure dbo.UpdateProjectInfo
 	@LkProjectType		int,
 	@LkProgram			int,
 	@Manager			int,
-	@ClosingDate		datetime,
+	--@ClosingDate		datetime,
 	--@verified			bit,
 	@appNameId			int
 	--@projName			varchar(75)
@@ -207,7 +206,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager, ClosingDate = @ClosingDate--, verified = @verified
+		Manager = @Manager--, ClosingDate = @ClosingDate--, verified = @verified
 	from Project
 	where ProjectId = @ProjectId
 

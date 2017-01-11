@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
@@ -46,8 +47,43 @@ namespace vhcbcloud
             BindLookUP(ddlTransCompounding, 190);
             BindLookUP(ddlTransPaymentFreq, 191);
             BindLookUP(ddlTransPaymentType, 192);
+
+            BindPrimaryApplicants();
+            BindFund(ddlFund);
+            //BindFund(ddlNotesFund);
+        }
+        private void BindPrimaryApplicants()
+        {
+            try
+            {
+                ddlPrimaryApplicant.Items.Clear();
+                ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
+                ddlPrimaryApplicant.DataValueField = "appnameid";
+                ddlPrimaryApplicant.DataTextField = "Applicantname";
+                ddlPrimaryApplicant.DataBind();
+                ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
+            }
         }
 
+        private void BindFund(DropDownList ddList)
+        {
+            try
+            {
+                ddList.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
+                ddList.DataValueField = "fundid";
+                ddList.DataTextField = "name";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
+            }
+        }
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -68,12 +104,90 @@ namespace vhcbcloud
         {
             if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur")
             {
-                //ProjectSelectionChanged();
+                ProjectSelectionChanged();
             }
+        }
+
+        private void ProjectSelectionChanged()
+        {
+            ClearLoanMasterForm();
+            hfProjectId.Value = "";
+            txtProjName.InnerHtml = "";
+
+            dvNewProjectInfo.Visible = false;
+            dvNewLoanDetailInfo.Visible = false;
+            dvNewEvent.Visible = false;
+            dvTransaction.Visible = false;
+            dvNotes.Visible = false;
+            cbAddLoanMaster.Checked = false;
+
+            if (txtProjectNumDDL.Text != "")
+            {
+                //dvDetails.Visible = true;
+                lblProjName.Visible = true;
+                txtProjName.Visible = true;
+                hfProjectId.Value = GetProjectID(txtProjectNumDDL.Text).ToString();
+                DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
+                txtProjName.InnerText = dr["ProjectName"].ToString();
+                dvNewProjectInfo.Visible = true;
+                BindProjectLoanMasterGrid();
+            }
+            else
+            {
+                //dvDetails.Visible = false;
+                lblProjName.Visible = false;
+                txtProjName.Visible = false;
+            }
+        }
+
+        private void ClearLoanMasterForm()
+        {
+            txtDescriptor.Text = "";
+            txtTaxCreditPartner.Text = "";
+            txtNoteOwner.Text = "";
+            ddlFund.SelectedIndex = -1;
+            ddlPrimaryApplicant.SelectedIndex = -1;
+            cbLoanMasterActive.Checked = true;
+            cbLoanMasterActive.Enabled = false;
+        }
+
+        private void BindProjectInfoForm(int ProjectId)
+        {
+            //hfLoanId.Value = "";
+            DataRow dr = ProjectMaintenanceData.GetProjectNameById(ProjectId);
+            txtProjName.InnerText = dr["ProjectName"].ToString();
+            btnLoanMaster.Text = "Add";
+
+            DataRow drLoanMasterDetails = LoanMaintenanceData.GetProjectLoanMasterDetails(ProjectId);
+            if (drLoanMasterDetails != null)
+            {
+                //hfLoanId.Value = drLoanMasterDetails["LoanID"].ToString();
+                txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
+                txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
+                txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
+                PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["ApplicantID"].ToString());
+                PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
+                btnLoanMaster.Text = "Update";
+            }
+        }
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+        private int GetProjectID(string ProjectNum)
+        {
+            return ProjectMaintenanceData.GetProjectId(ProjectNum);
         }
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            BindProjectLoanMasterGrid();
         }
 
         protected void btnLoanUpdate_Click(object sender, EventArgs e)
@@ -90,6 +204,12 @@ namespace vhcbcloud
             }
             else
                 lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+        }
+
+        private void LogMessage(string message)
+        {
+            dvMessage.Visible = true;
+            lblErrorMsg.Text = message;
         }
 
         [System.Web.Services.WebMethod()]
@@ -178,7 +298,7 @@ namespace vhcbcloud
 
         private void VisibleCapitalizing()
         {
-            
+
             spanIntrestRate.Visible = false;
             txtTransIntrestRate.Visible = false;
             spanCompounding.Visible = false;
@@ -450,14 +570,489 @@ namespace vhcbcloud
 
         }
 
-        protected void btnAddNotes_Click(object sender, EventArgs e)
+        protected void AddEvent_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoanResult objLoanResult = LoanMaintenanceData.AddLoanEvent(DataUtils.GetInt(hfLoanId.Value), txtEventDescription.Text);
+
+                if (objLoanResult.IsDuplicate && !objLoanResult.IsActive)
+                    LogMessage("Loan Event already exist as in-active");
+                else if (objLoanResult.IsDuplicate)
+                    LogMessage("Loan Event already exist");
+                else
+                    LogMessage("New Loan Event added successfully");
+
+                BindLoanEventsGrid();
+                txtEventDescription.Text = "";
+                cbAddEvent.Checked = false;
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddProjectName_Click", "", ex.Message);
+            }
+        }
+
+        protected void btnLoanMaster_Click(object sender, EventArgs e)
+        {
+            if (btnLoanMaster.Text == "Add")
+            {
+                LoanMaintenanceData.AddLoanMaster(DataUtils.GetInt(hfProjectId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
+                    txtNoteOwner.Text, DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()));
+            }
+            else
+            {
+                LoanMaintenanceData.UpdateLoanMaster(DataUtils.GetInt(hfLoanId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
+                    txtNoteOwner.Text, DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), cbLoanMasterActive.Checked);
+
+                LogMessage("Loan Master updated successfully");
+
+                hfLoanId.Value = "";
+                btnLoanMaster.Text = "Add";
+                cbAddLoanMaster.Checked = false;
+                gvLoanMaster.EditIndex = -1;
+            }
+            ClearLoanMasterForm();
+            BindProjectLoanMasterGrid();
+        }
+        private void BindLoanMasterDetailsGrid()
+        {
+            try
+            {
+                DataTable dtLoanDetails = LoanMaintenanceData.GetLoanDetailListByLoanId(DataUtils.GetInt(hfLoanId.Value), cbActiveOnly.Checked);
+
+                if (dtLoanDetails.Rows.Count > 0)
+                {
+                    dvProjectLoanDetailsGrid.Visible = true;
+                    gvProjectLoanDetails.DataSource = dtLoanDetails;
+                    gvProjectLoanDetails.DataBind();
+                }
+                else
+                {
+                    dvProjectLoanDetailsGrid.Visible = false;
+                    gvProjectLoanDetails.DataSource = null;
+                    gvProjectLoanDetails.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProjectLoanDetailsGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvProjectLoanDetails_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbAddNewLoanDetails.Checked = false;
+            ClearLoanDetailsForm();
+            btnAddLoanDetails.Text = "Add";
+            gvProjectLoanDetails.EditIndex = -1;
+            BindLoanMasterDetailsGrid();
+        }
+
+        private void ClearLoanDetailsForm()
+        {
+            ddlLoanCat.SelectedIndex = -1;
+            txtOriginalDateOfNote.Text = "";
+            txtMaturityDate.Text = "";
+            txtNoteAmount.Text = "";
+            txtIntrestRate.Text = "";
+            ddlCompounded.SelectedIndex = -1;
+            ddlPaymentFreq.SelectedIndex = -1;
+            ddlPaymentType.SelectedIndex = -1;
+            txtWatchDate.Text = "";
+            cbLoanDetailActive.Checked = true;
+            cbLoanDetailActive.Enabled = false;
+        }
+
+        protected void gvProjectLoanDetails_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddLoanDetails.Text = "Update";
+                    cbAddNewLoanDetails.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[4].Controls[0].Visible = false;
+                        Label lblLoanDetailID = e.Row.FindControl("lblLoanDetailID") as Label;
+                        DataRow dr = LoanMaintenanceData.GetLoanDetailsByLoanDetailId(Convert.ToInt32(lblLoanDetailID.Text));
+
+                        hfLoanDetailID.Value = lblLoanDetailID.Text;
+                        //Populate Edit Form
+
+                        PopulateDropDown(ddlLoanCat, dr["LoanCat"].ToString());
+
+                        txtOriginalDateOfNote.Text = dr["NoteDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["NoteDate"].ToString()).ToShortDateString();
+                        txtMaturityDate.Text = dr["MaturityDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MaturityDate"].ToString()).ToShortDateString();
+                        txtNoteAmount.Text = dr["NoteAmt"].ToString();
+                        txtIntrestRate.Text = dr["IntRate"].ToString();
+                        PopulateDropDown(ddlCompounded, dr["Compound"].ToString());
+                        PopulateDropDown(ddlPaymentFreq, dr["Frequency"].ToString());
+                        PopulateDropDown(ddlPaymentType, dr["PaymentType"].ToString());
+
+                        txtWatchDate.Text = dr["WatchDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["WatchDate"].ToString()).ToShortDateString();
+
+                        cbLoanDetailActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+                        cbLoanDetailActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvAddress_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvProjectLoanDetails_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProjectLoanDetails.EditIndex = e.NewEditIndex;
+            BindLoanMasterDetailsGrid();
+        }
+
+        protected void btnAddLoanDetails_Click(object sender, EventArgs e)
+        {
+            if (btnAddLoanDetails.Text == "Add")
+            {
+                LoanMaintenanceData.AddLoanDetail(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
+                    DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
+                    DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetDecimal(txtIntrestRate.Text),
+                    DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
+                    DataUtils.GetDate(txtWatchDate.Text));
+                LogMessage("Loan details added successfully");
+            }
+            else
+            {
+                LoanMaintenanceData.UpdateLoanDetail(DataUtils.GetInt(hfLoanDetailID.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
+                    DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
+                    DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetDecimal(txtIntrestRate.Text),
+                    DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
+                    DataUtils.GetDate(txtWatchDate.Text), cbLoanDetailActive.Checked);
+                LogMessage("Loan details updated successfully");
+                hfLoanDetailID.Value = "";
+                btnAddLoanDetails.Text = "Add";
+                gvProjectLoanDetails.EditIndex = -1;
+            }
+            cbAddNewLoanDetails.Checked = false;
+            ClearLoanDetailsForm();
+            BindLoanMasterDetailsGrid();
+        }
+
+        private void BindProjectLoanMasterGrid()
+        {
+            dvNewLoanDetailInfo.Visible = false;
+            dvNewEvent.Visible = false;
+            dvTransaction.Visible = false;
+            dvNotes.Visible = false;
+
+            try
+            {
+                DataTable dtLoanMasterDetails = LoanMaintenanceData.GetLoanMasterListByProject(DataUtils.GetInt(hfProjectId.Value),
+                    cbActiveOnly.Checked);
+
+                if (dtLoanMasterDetails.Rows.Count > 0)
+                {
+                    dvLoanMasterGrid.Visible = true;
+                    gvLoanMaster.DataSource = dtLoanMasterDetails;
+                    gvLoanMaster.DataBind();
+                }
+                else
+                {
+                    dvLoanMasterGrid.Visible = false;
+                    gvLoanMaster.DataSource = null;
+                    gvLoanMaster.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProjectLoanDetailsGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvLoanMaster_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnLoanMaster.Text = "Update";
+                    cbAddLoanMaster.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblLoanID = e.Row.FindControl("lblLoanID") as Label;
+                        DataRow drLoanMasterDetails = LoanMaintenanceData.GetLoanMasterDetailsByLoanID(Convert.ToInt32(lblLoanID.Text));
+
+                        hfLoanId.Value = lblLoanID.Text;
+                        txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
+                        txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
+                        txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
+                        PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["ApplicantID"].ToString());
+                        PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
+                        btnLoanMaster.Text = "Update";
+
+                        cbLoanMasterActive.Checked = DataUtils.GetBool(drLoanMasterDetails["RowIsActive"].ToString()); ;
+                        cbLoanMasterActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvLoanMaster_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvLoanMaster_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbAddLoanMaster.Checked = false;
+            ClearLoanMasterForm();
+            btnLoanMaster.Text = "Add";
+            gvLoanMaster.EditIndex = -1;
+            BindProjectLoanMasterGrid();
+        }
+
+        protected void gvLoanMaster_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvLoanMaster.EditIndex = e.NewEditIndex;
+            BindProjectLoanMasterGrid();
+        }
+
+        protected void gvLoanMaster_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        protected void AddEvent_Click(object sender, EventArgs e)
+        protected void rdBtnSelectLoan_CheckedChanged(object sender, EventArgs e)
         {
+            SelectedLoanMasterInfo objSelectedLoanMasterInfo = GetLoanMasterSelectedRecordID(gvLoanMaster);
 
+            hfLoanId.Value = objSelectedLoanMasterInfo.LoanID.ToString();
+            //hfSelectedBuilding.Value = objSelectedBldInfo.Building.ToString();
+            dvNewLoanDetailInfo.Visible = true;
+            dvNewEvent.Visible = true;
+            dvTransaction.Visible = true;
+            dvNotes.Visible = true;
+            BindLoanMasterDetailsGrid();
+            BindLoanEventsGrid();
+            BindLoanNotesGrid();
+        }
+
+        private SelectedLoanMasterInfo GetLoanMasterSelectedRecordID(GridView gvBldgInfo)
+        {
+            SelectedLoanMasterInfo objSelectedLoanMasterInfo = new SelectedLoanMasterInfo();
+
+            for (int i = 0; i < gvBldgInfo.Rows.Count; i++)
+            {
+                RadioButton rbLoanMasterInfo = (RadioButton)gvBldgInfo.Rows[i].Cells[0].FindControl("rdBtnSelectLoan");
+                if (rbLoanMasterInfo != null)
+                {
+                    if (rbLoanMasterInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvBldgInfo.Rows[i].Cells[0].FindControl("HiddenLoanID");
+                        //Label lblBuilding = (Label)gvBldgInfo.Rows[i].Cells[1].FindControl("lblBuilding");
+
+                        if (hf != null)
+                        {
+                            objSelectedLoanMasterInfo.LoanID = DataUtils.GetInt(hf.Value);
+                            //objSelectedLoanMasterInfo.Building = DataUtils.GetInt(lblBuilding.Text);
+                        }
+                        break;
+                    }
+                }
+            }
+            return objSelectedLoanMasterInfo;
+        }
+
+        public class SelectedLoanMasterInfo
+        {
+            public int LoanID { set; get; }
+            public int Building { set; get; }
+        }
+
+        private void BindLoanEventsGrid()
+        {
+            try
+            {
+                DataTable dtLoanEvents = LoanMaintenanceData.GetLoanEventsListByLoanID(DataUtils.GetInt(hfLoanId.Value),
+                    cbActiveOnly.Checked);
+
+                if (dtLoanEvents.Rows.Count > 0)
+                {
+                    dvLoanEventsGrid.Visible = true;
+                    gvLoanEvents.DataSource = dtLoanEvents;
+                    gvLoanEvents.DataBind();
+                }
+                else
+                {
+                    dvLoanEventsGrid.Visible = false;
+                    gvLoanEvents.DataSource = null;
+                    gvLoanEvents.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLoanEvents", "", ex.Message);
+            }
+        }
+
+        protected void gvLoanEvents_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvLoanEvents.EditIndex = e.NewEditIndex;
+            BindLoanEventsGrid();
+        }
+
+        protected void gvLoanEvents_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            string Description = ((TextBox)gvLoanEvents.Rows[rowIndex].FindControl("txtDescription")).Text;
+            int LoanEventID = DataUtils.GetInt(((Label)gvLoanEvents.Rows[rowIndex].FindControl("lblLoanEventID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvLoanEvents.Rows[rowIndex].FindControl("chkActiveEditEvent")).Checked); ;
+
+            LoanMaintenanceData.UpdateLoanEvent(LoanEventID, Description, RowIsActive);
+            gvLoanEvents.EditIndex = -1;
+
+            BindLoanEventsGrid();
+            LogMessage("Loan event updated successfully");
+        }
+
+        protected void gvLoanEvents_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        CheckBox chkActiveEditEvent = e.Row.FindControl("chkActiveEditEvent") as CheckBox;
+                        chkActiveEditEvent.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvLoanEvents_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvLoanEvents_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvLoanEvents.EditIndex = -1;
+            BindLoanEventsGrid();
+        }
+
+        private void BindLoanNotesGrid()
+        {
+            try
+            {
+                DataTable dtLoanNotes = LoanMaintenanceData.GetLoanNotesListByLoanID(DataUtils.GetInt(hfLoanId.Value),
+                    cbActiveOnly.Checked);
+
+                if (dtLoanNotes.Rows.Count > 0)
+                {
+                    dvProjectLoanNotesGrid.Visible = true;
+                    gvProjectLoanNotes.DataSource = dtLoanNotes;
+                    gvProjectLoanNotes.DataBind();
+                }
+                else
+                {
+                    dvProjectLoanNotesGrid.Visible = false;
+                    gvProjectLoanNotes.DataSource = null;
+                    gvProjectLoanNotes.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLoanEvents", "", ex.Message);
+            }
+        }
+
+        protected void gvProjectLoanNotes_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbAddNotes.Checked = false;
+            txtFHL.Text = "";
+            txtNotes.Text = "";
+            btnAddNotes.Text = "Add";
+            gvProjectLoanNotes.EditIndex = -1;
+            BindLoanNotesGrid();
+            cbLoanNoteActive.Checked = true;
+            cbLoanNoteActive.Enabled = false;
+        }
+
+        protected void gvProjectLoanNotes_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddNotes.Text = "Update";
+                    cbAddNotes.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[4].Controls[0].Visible = false;
+                        Label lblLoanNoteID = e.Row.FindControl("lblLoanNoteID") as Label;
+                        DataRow dr = LoanMaintenanceData.GetLoanNotesByLoanID(Convert.ToInt32(lblLoanNoteID.Text));
+
+                        hfLoanNoteID.Value = lblLoanNoteID.Text;
+                        //Populate Edit Form
+
+                        //PopulateDropDown(ddlLoanCat, dr["LoanCat"].ToString());
+
+                        txtNotes.Text = dr["LoanNote"].ToString();
+                        txtFHL.Text = dr["FHLink"].ToString();
+
+                        cbLoanNoteActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+                        cbLoanNoteActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvProjectLoanNotes_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvProjectLoanNotes_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProjectLoanNotes.EditIndex = e.NewEditIndex;
+            BindLoanNotesGrid();
+        }
+
+        protected void btnAddNotes_Click(object sender, EventArgs e)
+        {
+            if (btnAddNotes.Text == "Add")
+            {
+                LoanMaintenanceData.AddLoanNotes(DataUtils.GetInt(hfLoanId.Value), txtNotes.Text, txtFHL.Text);
+                LogMessage("Loan Notes added successfully");
+            }
+            else
+            {
+                LoanMaintenanceData.UpdateLoanNotes(DataUtils.GetInt(hfLoanNoteID.Value), txtNotes.Text, txtFHL.Text,
+                    cbLoanNoteActive.Checked);
+                LogMessage("Loan Notes updated successfully");
+                hfLoanNoteID.Value = "";
+                btnAddNotes.Text = "Add";
+                gvProjectLoanNotes.EditIndex = -1;
+            }
+            cbAddNotes.Checked = false;
+            txtNotes.Text = "";
+            txtFHL.Text = "";
+            cbLoanNoteActive.Checked = true;
+            cbLoanNoteActive.Enabled = false;
+            BindLoanNotesGrid();
         }
     }
 }

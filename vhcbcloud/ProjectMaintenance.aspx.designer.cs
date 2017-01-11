@@ -256,24 +256,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlManager;
         
         /// <summary>
-        /// txtClosingDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClosingDate;
-        
-        /// <summary>
-        /// ce_txtClosingDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtClosingDate;
-        
-        /// <summary>
         /// dvUpdate control.
         /// </summary>
         /// <remarks>
@@ -364,15 +346,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlEventEntity;
         
         /// <summary>
-        /// ddlEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEvent;
-        
-        /// <summary>
         /// ddlEventSubCategory control.
         /// </summary>
         /// <remarks>
@@ -380,6 +353,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEventSubCategory;
+        
+        /// <summary>
+        /// ddlEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEvent;
         
         /// <summary>
         /// txtEventDate control.

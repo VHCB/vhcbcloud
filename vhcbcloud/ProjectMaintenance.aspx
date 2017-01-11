@@ -136,10 +136,10 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                    <tr>
+                                   <%-- <tr>
                                         <td style="width: 150px"><span class="labelClass">Closing Date</span></td>
                                         <td style="width: 250px">
-                                            <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />--%>
+                                            <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />
                                             <asp:TextBox ID="txtClosingDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClosingDate" TargetControlID="txtClosingDate">
                                             </ajaxToolkit:CalendarExtender>
@@ -153,7 +153,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
-                                    </tr>
+                                    </tr>--%>
                                 </table>
                                 <div id="dvUpdate" runat="server" visible="false">
                                     <table>
@@ -222,14 +222,15 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Milestone</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
+                                            
                                         </td>
                                         <td style="width: 140px">
-                                            <span class="labelClass">Milestone SubCategory</span>
+                                            <span class="labelClass">Program Milestone </span>
                                         </td>
                                         <td style="width: 237px">
-                                            <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Date</span></td>
