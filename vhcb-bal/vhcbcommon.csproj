@@ -48,6 +48,7 @@
     <Compile Include="CheckRequestData.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="ConservationAct250Data.cs" />
+    <Compile Include="ConservationSourcesUsesData.cs" />
     <Compile Include="Conservation\ConservationAppraisalsData.cs" />
     <Compile Include="Conservation\ConservationAttributeData.cs" />
     <Compile Include="Conservation\ConservationSourcesUsesData.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Lead\ProjectLeadDataData.cs" />
     <Compile Include="Lead\ProjectLeadMilestonesData.cs" />
     <Compile Include="Lead\ProjectLeadOccupantsData.cs" />
+    <Compile Include="LoanMaintenanceData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="LookupValuesData.cs" />
     <Compile Include="Project.cs" />
