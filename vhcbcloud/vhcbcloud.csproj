@@ -256,6 +256,7 @@
     <Content Include="Lead\ProjectLeadData.aspx" />
     <Content Include="Lead\ProjectLeadMilestones.aspx" />
     <Content Include="Lead\ProjectLeadOccupants.aspx" />
+    <Content Include="LoanMaintenance.aspx" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
@@ -287,6 +288,7 @@
     <Content Include="SQL\Lead\ProjectLeadBuildingsUnits.sql" />
     <Content Include="SQL\Lead\ProjectLeadMilestone.sql" />
     <Content Include="SQL\Lead\ProjectLeadOccupant.sql" />
+    <Content Include="SQL\LoanProjectMaintenance.sql" />
     <Content Include="SQL\ProjectEvent.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
@@ -790,6 +792,13 @@
     </Compile>
     <Compile Include="Lead\ProjectLeadOccupants.aspx.designer.cs">
       <DependentUpon>ProjectLeadOccupants.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoanMaintenance.aspx.cs">
+      <DependentUpon>LoanMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanMaintenance.aspx.designer.cs">
+      <DependentUpon>LoanMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>

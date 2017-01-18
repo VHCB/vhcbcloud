@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using VHCBCommon.DataAccessLayer;
 
 namespace DataAccessLayer
-{
+{ 
     public class TabsData
     {
         public static DataTable GetProgramTabs(int LKProgramID)

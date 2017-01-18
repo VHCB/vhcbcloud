@@ -71,6 +71,7 @@
     <Compile Include="Lead\ProjectLeadDataData.cs" />
     <Compile Include="Lead\ProjectLeadMilestonesData.cs" />
     <Compile Include="Lead\ProjectLeadOccupantsData.cs" />
+    <Compile Include="LoanMaintenanceData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="LookupValuesData.cs" />
     <Compile Include="Project.cs" />
