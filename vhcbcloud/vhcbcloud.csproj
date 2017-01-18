@@ -349,6 +349,7 @@
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
     <Content Include="TestExago.aspx" />
+    <Content Include="UserSecurity.aspx" />
     <Content Include="Viability.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
@@ -889,6 +890,13 @@
     </Compile>
     <Compile Include="TestExago.aspx.designer.cs">
       <DependentUpon>TestExago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurity.aspx.cs">
+      <DependentUpon>UserSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSecurity.aspx.designer.cs">
+      <DependentUpon>UserSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="VHCBBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
