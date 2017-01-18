@@ -71,6 +71,7 @@
     <Compile Include="Lead\ProjectLeadDataData.cs" />
     <Compile Include="Lead\ProjectLeadMilestonesData.cs" />
     <Compile Include="Lead\ProjectLeadOccupantsData.cs" />
+    <Compile Include="LoanMaintenanceData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="LookupValuesData.cs" />
     <Compile Include="Project.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ProjectSearchData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabsData.cs" />
+    <Compile Include="UserSecurityData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

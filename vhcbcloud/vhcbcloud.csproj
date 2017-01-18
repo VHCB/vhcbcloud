@@ -256,6 +256,7 @@
     <Content Include="Lead\ProjectLeadData.aspx" />
     <Content Include="Lead\ProjectLeadMilestones.aspx" />
     <Content Include="Lead\ProjectLeadOccupants.aspx" />
+    <Content Include="LoanMaintenance.aspx" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
@@ -347,6 +348,7 @@
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
     <Content Include="TestExago.aspx" />
+    <Content Include="UserSecurity.aspx" />
     <Content Include="Viability.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
@@ -791,6 +793,13 @@
     <Compile Include="Lead\ProjectLeadOccupants.aspx.designer.cs">
       <DependentUpon>ProjectLeadOccupants.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LoanMaintenance.aspx.cs">
+      <DependentUpon>LoanMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanMaintenance.aspx.designer.cs">
+      <DependentUpon>LoanMaintenance.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -880,6 +889,13 @@
     </Compile>
     <Compile Include="TestExago.aspx.designer.cs">
       <DependentUpon>TestExago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSecurity.aspx.cs">
+      <DependentUpon>UserSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSecurity.aspx.designer.cs">
+      <DependentUpon>UserSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="VHCBBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
