@@ -133,13 +133,56 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="4" style="float: left">
-                                                            <asp:Button ID="btnPageSecurity" runat="server" class="btn btn-info" TabIndex="6" Text="Submit" />
-                                                            <br />
+                                                            <asp:Button ID="btnPageSecurity" runat="server" class="btn btn-info" TabIndex="6" Text="Submit" OnClick="btnPageSecurity_Click" />
                                                         </td>
                                                         <td style="width: 10%; float: left">&nbsp;</td>
                                                         <td style="float: left">&nbsp;</td>
                                                     </tr>
                                                 </table>
+                                                <br />
+                                                <asp:GridView ID="gvPageSecurity" runat="server" AutoGenerateColumns="False"
+                                                    Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                                                    GridLines="None" EnableTheming="True" OnRowDeleting="gvPageSecurity_RowDeleting" TabIndex="7">
+                                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                                    <HeaderStyle CssClass="headerStyle" />
+                                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                                    <RowStyle CssClass="rowStyle" />
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="pagesecurityid" SortExpression="pagesecurityid" Visible="false">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblpagesecurityid" runat="Server" Text='<%# Eval("pagesecurityid") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="UserId" SortExpression="userid" Visible="false">
+                                                             <ItemTemplate>
+                                                                <asp:Label ID="lbluserid" runat="Server" Text='<%# Eval("userid") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="User Name" SortExpression="username">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblUser" runat="Server" Text='<%# Eval("username") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Page" SortExpression="PageDescription">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblPage" runat="Server" Text='<%# Eval("PageDescription") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField  HeaderText="Field" SortExpression="FieldDescription">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblField" runat="Server" Text='<%# Eval("FieldDescription") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Action" SortExpression="ActionDescription">
+                                                             <ItemTemplate>
+                                                                <asp:Label ID="lblAction" runat="Server" Text='<%# Eval("ActionDescription") %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:CommandField ShowDeleteButton="True" />
+                                                    </Columns>
+                                                </asp:GridView>
+                                                <br />
                                             </div>
                                         </div>
                                     </div>
@@ -151,6 +194,7 @@
 
                 </div>
             </div>
+             <asp:HiddenField ID="hfUserId" runat="server" />
         </ContentTemplate>
     </asp:UpdatePanel>
     <script type="text/javascript">
