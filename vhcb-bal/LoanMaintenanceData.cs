@@ -47,7 +47,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dt;
         }
-        
+
         public static DataRow GetLoanMasterDetailsByLoanID(int LoanId)
         {
             DataRow dr = null;
@@ -215,7 +215,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static void AddLoanDetail(int LoanId, int LoanCat, DateTime NoteDate, DateTime MaturityDate, decimal NoteAmt, 
+        public static void AddLoanDetail(int LoanId, int LoanCat, DateTime NoteDate, DateTime MaturityDate, decimal NoteAmt,
             decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate)
         {
             try
@@ -579,6 +579,53 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
         #endregion LoanNotes
+
+        #region LoanTransactions
+
+        public static void AddLoanTransactions(int LoanId, int TransType, DateTime TransDate, decimal? IntRate, 
+            int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate,
+            decimal? Amount, DateTime? StopDate, decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddLoanTransactions";
+
+                        command.Parameters.Add(new SqlParameter("LoanId", LoanId));
+                        command.Parameters.Add(new SqlParameter("TransType", TransType));
+                        command.Parameters.Add(new SqlParameter("TransDate", TransDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : TransDate));
+                        command.Parameters.Add(new SqlParameter("IntRate", IntRate));
+                        command.Parameters.Add(new SqlParameter("Compound", Compound));
+                        command.Parameters.Add(new SqlParameter("Freq", Freq));
+                        command.Parameters.Add(new SqlParameter("PayType", PayType));
+                        command.Parameters.Add(new SqlParameter("MatDate", MatDate));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate));
+                        command.Parameters.Add(new SqlParameter("Amount", Amount));
+                        command.Parameters.Add(new SqlParameter("StopDate", StopDate));
+                        command.Parameters.Add(new SqlParameter("Principal", Principal));
+                        command.Parameters.Add(new SqlParameter("Interest", Interest));
+                        command.Parameters.Add(new SqlParameter("Description", Description));
+                        command.Parameters.Add(new SqlParameter("TransferTo", TransferTo));
+                        command.Parameters.Add(new SqlParameter("ConvertFrom", ConvertFrom));
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion LoanTransactions
     }
 
     public class LoanResult
