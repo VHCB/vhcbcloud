@@ -284,10 +284,18 @@ namespace vhcbcloud
                     }
                 }
             }
-
-            PopulateTransactions(Convert.ToInt32(hfProjId.Value), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
+            if (hfProjId.Value != "")
+            {
+                PopulateTransactions(Convert.ToInt32(hfProjId.Value), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()),
                 Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
-            lblErrorMsg.Text = "Transaction finalized successfully";
+                lblErrorMsg.Text = "Transaction finalized successfully";
+            }
+            else
+            {
+                lblProjName.Text = "All";
+                PopulateTransactions(-1, DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()), Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+                lblErrorMsg.Text = "Transaction finalized successfully";
+            }
         }
     }
 }
