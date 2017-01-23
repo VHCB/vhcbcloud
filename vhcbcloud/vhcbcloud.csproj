@@ -288,6 +288,7 @@
     <Content Include="SQL\Lead\ProjectLeadBuildingsUnits.sql" />
     <Content Include="SQL\Lead\ProjectLeadMilestone.sql" />
     <Content Include="SQL\Lead\ProjectLeadOccupant.sql" />
+    <Content Include="SQL\LoanProjectMaintenance.sql" />
     <Content Include="SQL\ProjectEvent.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />

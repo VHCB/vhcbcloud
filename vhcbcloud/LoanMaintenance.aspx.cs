@@ -44,9 +44,16 @@ namespace vhcbcloud
             BindLookUP(ddlPaymentType, 192);
             BindLookUP(ddlTransType, 178);
 
-            BindLookUP(ddlTransCompounding, 190);
-            BindLookUP(ddlTransPaymentFreq, 191);
-            BindLookUP(ddlTransPaymentType, 192);
+            BindLookUP(ad_ddlTransCompounding, 190);
+            BindLookUP(ad_ddlTransPaymentFreq, 191);
+            BindLookUP(ad_ddlTransPaymentType, 192);
+
+            BindLookUP(cap_ddlTransPaymentType, 192);
+            BindLookUP(cr_ddlTransPaymentType, 192);
+
+            BindLookUP(cv_ddlTransCompounding, 190);
+            BindLookUP(cv_ddlTransPaymentFreq, 191);
+            BindLookUP(cv_ddlTransPaymentType, 192);
 
             BindPrimaryApplicants();
             BindFund(ddlFund);
@@ -229,345 +236,454 @@ namespace vhcbcloud
 
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            VisibleAll();
+            //VisibleAll();
+            dvCaptalizing.Visible = false;
+            dvAdgustment.Visible = false;
+            dvCR.Visible = false;
+            dvConversion.Visible = false;
+
             if (ddlTransType.SelectedIndex != 0)
             {
                 switch (ddlTransType.SelectedItem.ToString().ToLower())
                 {
                     case "capitalizing":
-                        VisibleCapitalizing();
+                        dvCaptalizing.Visible = true;
+                        //VisibleCapitalizing();
                         break;
                     case "adjustment":
-                        VisibleAdjustment();
+                        dvAdgustment.Visible = true;
+                        //VisibleAdjustment();
                         break;
                     case "cash receipt":
-                        VisibleCashReceipt();
+                        dvCR.Visible = true;
+                        //VisibleCashReceipt();
                         break;
                     case "conversion":
-                        VisibleConversion();
+                        dvConversion.Visible = true;
+                        //VisibleConversion();
                         break;
-                    case "disbursement":
-                        VisibleDisbursement();
-                        break;
-                    case "forgiveness":
-                        VisibleForgiveness();
-                        break;
-                    case "note modification":
-                        VisibleNoteModification();
-                        break;
-                    case "transfer":
-                        VisibleTransfer();
-                        break;
+                        //case "disbursement":
+                        //    VisibleDisbursement();
+                        //    break;
+                        //case "forgiveness":
+                        //    VisibleForgiveness();
+                        //    break;
+                        //case "note modification":
+                        //    VisibleNoteModification();
+                        //    break;
+                        //case "transfer":
+                        //    VisibleTransfer();
+                        //    break;
                 }
 
 
             }
         }
 
-        private void VisibleAll()
-        {
-            spanTransactionDate.Visible = true;
-            txtTransDate.Visible = true;
-            spanIntrestRate.Visible = true;
-            txtTransIntrestRate.Visible = true;
-            spanCompounding.Visible = true;
-            ddlTransCompounding.Visible = true;
-            spanPaymentFreq.Visible = true;
-            ddlTransPaymentFreq.Visible = true;
-            spanPaymentType.Visible = true;
-            ddlTransPaymentType.Visible = true;
-            spanMaturityDate.Visible = true;
-            txtTransMaturityDate.Visible = true;
-            spanStartDate.Visible = true;
-            txtTransStartDate.Visible = true;
-            spanAmount.Visible = true;
-            txtTransAmount.Visible = true;
-            spanStopDate.Visible = true;
-            txtTransStopDate.Visible = true;
-            spanPrinciple.Visible = true;
-            txtTransPrinciple.Visible = true;
-            spanIntrest.Visible = true;
-            txtTransIntrest.Visible = true;
-            spanDescription.Visible = true;
-            txtTransDescription.Visible = true;
-            spanProjTranf.Visible = true;
-            txtTransProjTransfered.Visible = true;
-            spanConverted.Visible = true;
-            txtTransProjConverted.Visible = true;
-        }
+        //private void VisibleAll()
+        //{
+        //    spanTransactionDate.Visible = true;
+        //    txtTransDate.Visible = true;
+        //    spanIntrestRate.Visible = true;
+        //    txtTransIntrestRate.Visible = true;
+        //    spanCompounding.Visible = true;
+        //    ddlTransCompounding.Visible = true;
+        //    spanPaymentFreq.Visible = true;
+        //    ddlTransPaymentFreq.Visible = true;
+        //    spanPaymentType.Visible = true;
+        //    ddlTransPaymentType.Visible = true;
+        //    spanMaturityDate.Visible = true;
+        //    txtTransMaturityDate.Visible = true;
+        //    spanStartDate.Visible = true;
+        //    txtTransStartDate.Visible = true;
+        //    spanAmount.Visible = true;
+        //    txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = true;
+        //    txtTransStopDate.Visible = true;
+        //    spanPrinciple.Visible = true;
+        //    txtTransPrinciple.Visible = true;
+        //    spanIntrest.Visible = true;
+        //    txtTransIntrest.Visible = true;
+        //    spanDescription.Visible = true;
+        //    txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = true;
+        //    txtTransProjTransfered.Visible = true;
+        //    spanConverted.Visible = true;
+        //    txtTransProjConverted.Visible = true;
+        //}
 
-        private void VisibleCapitalizing()
-        {
+        //private void VisibleCapitalizing()
+        //{
 
-            spanIntrestRate.Visible = false;
-            txtTransIntrestRate.Visible = false;
-            spanCompounding.Visible = false;
-            ddlTransCompounding.Visible = false;
-            spanPaymentFreq.Visible = false;
-            ddlTransPaymentFreq.Visible = false;
-            spanPaymentType.Visible = false;
-            ddlTransPaymentType.Visible = false;
+        //    spanIntrestRate.Visible = false;
+        //    txtTransIntrestRate.Visible = false;
+        //    spanCompounding.Visible = false;
+        //    ddlTransCompounding.Visible = false;
+        //    spanPaymentFreq.Visible = false;
+        //    ddlTransPaymentFreq.Visible = false;
+        //    spanPaymentType.Visible = false;
+        //    ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            spanStartDate.Visible = false;
-            txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    spanStartDate.Visible = false;
+        //    txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            spanStopDate.Visible = false;
-            txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            spanIntrest.Visible = false;
-            txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            spanConverted.Visible = false;
-            txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = false;
+        //    txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    spanIntrest.Visible = false;
+        //    txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    spanConverted.Visible = false;
+        //    txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleCashReceipt()
-        {
+        //private void VisibleCashReceipt()
+        //{
 
-            spanIntrestRate.Visible = false;
-            txtTransIntrestRate.Visible = false;
-            spanCompounding.Visible = false;
-            ddlTransCompounding.Visible = false;
-            spanPaymentFreq.Visible = false;
-            ddlTransPaymentFreq.Visible = false;
-            //spanPaymentType.Visible = false;
-            //ddlTransPaymentType.Visible = false;
+        //    spanIntrestRate.Visible = false;
+        //    txtTransIntrestRate.Visible = false;
+        //    spanCompounding.Visible = false;
+        //    ddlTransCompounding.Visible = false;
+        //    spanPaymentFreq.Visible = false;
+        //    ddlTransPaymentFreq.Visible = false;
+        //    //spanPaymentType.Visible = false;
+        //    //ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            spanStartDate.Visible = false;
-            txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    spanStartDate.Visible = false;
+        //    txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            spanStopDate.Visible = false;
-            txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            //spanIntrest.Visible = false;
-            //txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            spanConverted.Visible = false;
-            txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = false;
+        //    txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    //spanIntrest.Visible = false;
+        //    //txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    spanConverted.Visible = false;
+        //    txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleConversion()
-        {
+        //private void VisibleConversion()
+        //{
 
-            //spanIntrestRate.Visible = false;
-            //txtTransIntrestRate.Visible = false;
-            //spanCompounding.Visible = false;
-            //ddlTransCompounding.Visible = false;
-            //spanPaymentFreq.Visible = false;
-            //ddlTransPaymentFreq.Visible = false;
-            //spanPaymentType.Visible = false;
-            //ddlTransPaymentType.Visible = false;
+        //    //spanIntrestRate.Visible = false;
+        //    //txtTransIntrestRate.Visible = false;
+        //    //spanCompounding.Visible = false;
+        //    //ddlTransCompounding.Visible = false;
+        //    //spanPaymentFreq.Visible = false;
+        //    //ddlTransPaymentFreq.Visible = false;
+        //    //spanPaymentType.Visible = false;
+        //    //ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            //spanStartDate.Visible = false;
-            //txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    //spanStartDate.Visible = false;
+        //    //txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            //spanStopDate.Visible = false;
-            //txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            //spanIntrest.Visible = false;
-            //txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            //spanConverted.Visible = false;
-            //txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    //spanStopDate.Visible = false;
+        //    //txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    //spanIntrest.Visible = false;
+        //    //txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    //spanConverted.Visible = false;
+        //    //txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleDisbursement()
-        {
-            spanTransactionDate.Visible = false;
-            txtTransDate.Visible = false;
-            spanIntrestRate.Visible = false;
-            txtTransIntrestRate.Visible = false;
-            spanCompounding.Visible = false;
-            ddlTransCompounding.Visible = false;
-            spanPaymentFreq.Visible = false;
-            ddlTransPaymentFreq.Visible = false;
-            spanPaymentType.Visible = false;
-            ddlTransPaymentType.Visible = false;
+        //private void VisibleDisbursement()
+        //{
+        //    spanTransactionDate.Visible = false;
+        //    txtTransDate.Visible = false;
+        //    spanIntrestRate.Visible = false;
+        //    txtTransIntrestRate.Visible = false;
+        //    spanCompounding.Visible = false;
+        //    ddlTransCompounding.Visible = false;
+        //    spanPaymentFreq.Visible = false;
+        //    ddlTransPaymentFreq.Visible = false;
+        //    spanPaymentType.Visible = false;
+        //    ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            spanStartDate.Visible = false;
-            txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    spanStartDate.Visible = false;
+        //    txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            spanStopDate.Visible = false;
-            txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            spanIntrest.Visible = false;
-            txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            spanConverted.Visible = false;
-            txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = false;
+        //    txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    spanIntrest.Visible = false;
+        //    txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    spanConverted.Visible = false;
+        //    txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleForgiveness()
-        {
-            //spanTransactionDate.Visible = false;
-            //txtTransDate.Visible = false;
-            spanIntrestRate.Visible = false;
-            txtTransIntrestRate.Visible = false;
-            spanCompounding.Visible = false;
-            ddlTransCompounding.Visible = false;
-            spanPaymentFreq.Visible = false;
-            ddlTransPaymentFreq.Visible = false;
-            spanPaymentType.Visible = false;
-            ddlTransPaymentType.Visible = false;
+        //private void VisibleForgiveness()
+        //{
+        //    //spanTransactionDate.Visible = false;
+        //    //txtTransDate.Visible = false;
+        //    spanIntrestRate.Visible = false;
+        //    txtTransIntrestRate.Visible = false;
+        //    spanCompounding.Visible = false;
+        //    ddlTransCompounding.Visible = false;
+        //    spanPaymentFreq.Visible = false;
+        //    ddlTransPaymentFreq.Visible = false;
+        //    spanPaymentType.Visible = false;
+        //    ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            spanStartDate.Visible = false;
-            txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    spanStartDate.Visible = false;
+        //    txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            spanStopDate.Visible = false;
-            txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            spanIntrest.Visible = false;
-            txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            spanConverted.Visible = false;
-            txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = false;
+        //    txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    spanIntrest.Visible = false;
+        //    txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    spanConverted.Visible = false;
+        //    txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleTransfer()
-        {
-            //spanTransactionDate.Visible = false;
-            //txtTransDate.Visible = false;
-            spanIntrestRate.Visible = false;
-            txtTransIntrestRate.Visible = false;
-            spanCompounding.Visible = false;
-            ddlTransCompounding.Visible = false;
-            spanPaymentFreq.Visible = false;
-            ddlTransPaymentFreq.Visible = false;
-            spanPaymentType.Visible = false;
-            ddlTransPaymentType.Visible = false;
+        //private void VisibleTransfer()
+        //{
+        //    //spanTransactionDate.Visible = false;
+        //    //txtTransDate.Visible = false;
+        //    spanIntrestRate.Visible = false;
+        //    txtTransIntrestRate.Visible = false;
+        //    spanCompounding.Visible = false;
+        //    ddlTransCompounding.Visible = false;
+        //    spanPaymentFreq.Visible = false;
+        //    ddlTransPaymentFreq.Visible = false;
+        //    spanPaymentType.Visible = false;
+        //    ddlTransPaymentType.Visible = false;
 
-            spanMaturityDate.Visible = false;
-            txtTransMaturityDate.Visible = false;
-            spanStartDate.Visible = false;
-            txtTransStartDate.Visible = false;
+        //    spanMaturityDate.Visible = false;
+        //    txtTransMaturityDate.Visible = false;
+        //    spanStartDate.Visible = false;
+        //    txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            spanStopDate.Visible = false;
-            txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            spanIntrest.Visible = false;
-            txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            //spanProjTranf.Visible = false;
-            //txtTransProjTransfered.Visible = false;
-            //spanConverted.Visible = false;
-            //txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    spanStopDate.Visible = false;
+        //    txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    spanIntrest.Visible = false;
+        //    txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    //spanProjTranf.Visible = false;
+        //    //txtTransProjTransfered.Visible = false;
+        //    //spanConverted.Visible = false;
+        //    //txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleNoteModification()
-        {
-            //spanTransactionDate.Visible = false;
-            //txtTransDate.Visible = false;
-            //spanIntrestRate.Visible = false;
-            //txtTransIntrestRate.Visible = false;
-            //spanCompounding.Visible = false;
-            //ddlTransCompounding.Visible = false;
-            //spanPaymentFreq.Visible = false;
-            //ddlTransPaymentFreq.Visible = false;
-            //spanPaymentType.Visible = false;
-            //ddlTransPaymentType.Visible = false;
+        //private void VisibleNoteModification()
+        //{
+        //    //spanTransactionDate.Visible = false;
+        //    //txtTransDate.Visible = false;
+        //    //spanIntrestRate.Visible = false;
+        //    //txtTransIntrestRate.Visible = false;
+        //    //spanCompounding.Visible = false;
+        //    //ddlTransCompounding.Visible = false;
+        //    //spanPaymentFreq.Visible = false;
+        //    //ddlTransPaymentFreq.Visible = false;
+        //    //spanPaymentType.Visible = false;
+        //    //ddlTransPaymentType.Visible = false;
 
-            //spanMaturityDate.Visible = false;
-            //txtTransMaturityDate.Visible = false;
-            //spanStartDate.Visible = false;
-            //txtTransStartDate.Visible = false;
+        //    //spanMaturityDate.Visible = false;
+        //    //txtTransMaturityDate.Visible = false;
+        //    //spanStartDate.Visible = false;
+        //    //txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            //spanStopDate.Visible = false;
-            //txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            //spanIntrest.Visible = false;
-            //txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            spanProjTranf.Visible = false;
-            txtTransProjTransfered.Visible = false;
-            spanConverted.Visible = false;
-            txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    //spanStopDate.Visible = false;
+        //    //txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    //spanIntrest.Visible = false;
+        //    //txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    spanProjTranf.Visible = false;
+        //    txtTransProjTransfered.Visible = false;
+        //    spanConverted.Visible = false;
+        //    txtTransProjConverted.Visible = false;
+        //}
 
-        private void VisibleAdjustment()
-        {
-            //spanTransactionDate.Visible = false;
-            //txtTransDate.Visible = false;
-            //spanIntrestRate.Visible = false;
-            //txtTransIntrestRate.Visible = false;
-            //spanCompounding.Visible = false;
-            //ddlTransCompounding.Visible = false;
-            //spanPaymentFreq.Visible = false;
-            //ddlTransPaymentFreq.Visible = false;
-            //spanPaymentType.Visible = false;
-            //ddlTransPaymentType.Visible = false;
+        //private void VisibleAdjustment()
+        //{
+        //    //spanTransactionDate.Visible = false;
+        //    //txtTransDate.Visible = false;
+        //    //spanIntrestRate.Visible = false;
+        //    //txtTransIntrestRate.Visible = false;
+        //    //spanCompounding.Visible = false;
+        //    //ddlTransCompounding.Visible = false;
+        //    //spanPaymentFreq.Visible = false;
+        //    //ddlTransPaymentFreq.Visible = false;
+        //    //spanPaymentType.Visible = false;
+        //    //ddlTransPaymentType.Visible = false;
 
-            //spanMaturityDate.Visible = false;
-            //txtTransMaturityDate.Visible = false;
-            //spanStartDate.Visible = false;
-            //txtTransStartDate.Visible = false;
+        //    //spanMaturityDate.Visible = false;
+        //    //txtTransMaturityDate.Visible = false;
+        //    //spanStartDate.Visible = false;
+        //    //txtTransStartDate.Visible = false;
 
-            //spanAmount.Visible = true;
-            //txtTransAmount.Visible = true;
-            //spanStopDate.Visible = false;
-            //txtTransStopDate.Visible = false;
-            //spanPrinciple.Visible = true;
-            //txtTransPrinciple.Visible = true;
-            //spanIntrest.Visible = false;
-            //txtTransIntrest.Visible = false;
-            //spanDescription.Visible = true;
-            //txtTransDescription.Visible = true;
-            //spanProjTranf.Visible = false;
-            //txtTransProjTransfered.Visible = false;
-            //spanConverted.Visible = false;
-            //txtTransProjConverted.Visible = false;
-        }
+        //    //spanAmount.Visible = true;
+        //    //txtTransAmount.Visible = true;
+        //    //spanStopDate.Visible = false;
+        //    //txtTransStopDate.Visible = false;
+        //    //spanPrinciple.Visible = true;
+        //    //txtTransPrinciple.Visible = true;
+        //    //spanIntrest.Visible = false;
+        //    //txtTransIntrest.Visible = false;
+        //    //spanDescription.Visible = true;
+        //    //txtTransDescription.Visible = true;
+        //    //spanProjTranf.Visible = false;
+        //    //txtTransProjTransfered.Visible = false;
+        //    //spanConverted.Visible = false;
+        //    //txtTransProjConverted.Visible = false;
+        //}
 
         protected void btnAddTransaction_Click(object sender, EventArgs e)
         {
+            bool IsSuccess = false;
 
+            if (ddlTransType.SelectedIndex != 0)
+            {
+                if (ddlTransType.SelectedItem.Text.ToLower() == "adjustment")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(ad_txtTransDate.Text), DataUtils.GetDecimal(ad_txtTransIntrestRate.Text), DataUtils.GetInt(ad_ddlTransCompounding.SelectedValue),
+                        DataUtils.GetInt(ad_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(ad_ddlTransPaymentType.SelectedValue),
+                        DataUtils.GetDate(ad_txtTransMaturityDate.Text), DataUtils.GetDate(ad_txtTransStartDate.Text), DataUtils.GetDecimal(ad_txtTransAmount.Text),
+                        DataUtils.GetDate(ad_txtTransStopDate.Text), DataUtils.GetDecimal(ad_txtTransPrinciple.Text), DataUtils.GetDecimal(ad_txtTransIntrest.Text),
+                        ad_txtTransDescription.Text, DataUtils.GetInt(ad_txtTransProjTransfered.Text), DataUtils.GetInt(ad_txtTransProjConverted.Text));
+
+                    ddlTransType.SelectedIndex = -1;
+                    ad_txtTransDate.Text = "";
+                    ad_txtTransIntrestRate.Text = "";
+                    ad_ddlTransCompounding.SelectedIndex = -1;
+                    ad_ddlTransPaymentFreq.SelectedIndex = -1;
+                    ad_ddlTransPaymentType.SelectedIndex = -1;
+                    ad_txtTransMaturityDate.Text = "";
+                    ad_txtTransStartDate.Text = "";
+                    ad_txtTransAmount.Text = "";
+                    ad_txtTransStopDate.Text = "";
+                    ad_txtTransPrinciple.Text = "";
+                    ad_txtTransIntrest.Text = "";
+                    ad_txtTransDescription.Text = "";
+                    ad_txtTransProjTransfered.Text = "";
+                    ad_txtTransProjConverted.Text = "";
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "capitalizing")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cap_txtTransDate.Text), null, null,
+                        null, DataUtils.GetInt(cap_ddlTransPaymentType.SelectedValue),
+                        null, null, DataUtils.GetDecimal(cap_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(cap_txtTransPrinciple.Text), null,
+                        cap_txtTransDescription.Text, null, null);
+
+                    ddlTransType.SelectedIndex = -1;
+                    cap_txtTransDate.Text = "";
+                    cap_ddlTransPaymentType.SelectedIndex = -1;
+                    cap_txtTransAmount.Text = "";
+                    cap_txtTransPrinciple.Text = "";
+                    cap_txtTransDescription.Text = "";
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "cash receipt")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cr_txtTransDate.Text), null, null,
+                        null, DataUtils.GetInt(cr_ddlTransPaymentType.SelectedValue),
+                        null, null, DataUtils.GetDecimal(cr_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(cr_txtTransPrinciple.Text), DataUtils.GetInt(cr_txtTransIntrest.Text),
+                        cr_txtTransDescription.Text, null, null);
+
+                    ddlTransType.SelectedIndex = -1;
+                    cr_txtTransDate.Text = "";
+                    cr_ddlTransPaymentType.SelectedIndex = -1;
+                    cr_txtTransAmount.Text = "";
+                    cr_txtTransPrinciple.Text = "";
+                    cr_txtTransIntrest.Text = "";
+                    cr_txtTransDescription.Text = "";
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "conversion")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cv_txtTransDate.Text), DataUtils.GetDecimal(cv_txtTransIntrestRate.Text), DataUtils.GetInt(cv_ddlTransCompounding.SelectedValue),
+                        DataUtils.GetInt(cv_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(cv_ddlTransPaymentType.SelectedValue),
+                        null, DataUtils.GetDate(cv_txtTransStartDate.Text), DataUtils.GetDecimal(cv_txtTransAmount.Text),
+                        DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
+                        cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text));
+
+                    ddlTransType.SelectedIndex = -1;
+                    cv_txtTransDate.Text = "";
+                    cv_txtTransIntrestRate.Text = "";
+                    cv_ddlTransCompounding.SelectedIndex = -1;
+                    cv_ddlTransPaymentFreq.SelectedIndex = -1;
+                    cv_ddlTransPaymentType.SelectedIndex = -1;
+                    cv_txtTransStartDate.Text = "";
+                    cv_txtTransAmount.Text = "";
+                    cv_txtTransStopDate.Text = "";
+                    cv_txtTransPrinciple.Text = "";
+                    cv_txtTransIntrest.Text = "";
+                    cv_txtTransDescription.Text = "";
+                    cv_txtTransProjConverted.Text = "";
+                }
+                }
+
+            if (IsSuccess)
+                LogMessage("Transaction added successfully");
+
+            cbAddTransaction.Checked = false;
+        }
+
+        private bool AddLoanTransactions(int LoanId, int TransType, DateTime TransDate, decimal? IntRate,
+            int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate, decimal? Amount, DateTime? StopDate,
+            decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
+        {
+            LoanMaintenanceData.AddLoanTransactions(LoanId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate, StartDate,
+                Amount, StopDate, Principal, Interest, Description, TransferTo, ConvertFrom);
+
+            return true;
         }
 
         protected void AddEvent_Click(object sender, EventArgs e)

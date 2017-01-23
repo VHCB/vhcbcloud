@@ -290,7 +290,12 @@
                                                 <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("applicantname") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Event">
+                                         <asp:TemplateField HeaderText="Milestone">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPM" runat="Server" Text='<%# Eval("SubEvent") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Program Milestone">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblEvent" runat="Server" Text='<%# Eval("Event") %>' />
                                             </ItemTemplate>
