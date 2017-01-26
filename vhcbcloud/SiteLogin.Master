@@ -1,0 +1,93 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteLogin.Master.cs" Inherits="vhcbcloud.SiteLoginMaster" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - VHCB Cloud Application</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+    <form runat="server">
+        <div class="page">
+            <ajaxToolkit:ToolkitScriptManager runat="server" EnablePageMethods="true">
+                <Scripts>
+                    <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                    <%--Framework Scripts--%>
+                    <asp:ScriptReference Name="jquery" />
+                    <asp:ScriptReference Name="bootstrap" />
+                    <%--<asp:ScriptReference Name="respond" />--%>
+                    <asp:ScriptReference Name="WebForms.js" Path="~/Scripts/WebForms/WebForms.js" />
+                    <asp:ScriptReference Name="WebUIValidation.js" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                    <asp:ScriptReference Name="MenuStandards.js" Path="~/Scripts/WebForms/MenuStandards.js" />
+                    <asp:ScriptReference Name="GridView.js" Path="~/Scripts/WebForms/GridView.js" />
+                    <asp:ScriptReference Name="DetailsView.js" Path="~/Scripts/WebForms/DetailsView.js" />
+                    <asp:ScriptReference Name="TreeView.js" Path="~/Scripts/WebForms/TreeView.js" />
+                    <asp:ScriptReference Name="WebParts.js" Path="~/Scripts/WebForms/WebParts.js" />
+                    <asp:ScriptReference Name="Focus.js" Path="~/Scripts/WebForms/Focus.js" />
+
+                    <asp:ScriptReference Name="WebFormsBundle" />
+                    <%--Site Scripts--%>
+                </Scripts>
+            </ajaxToolkit:ToolkitScriptManager>
+            <br />
+            <div class="navbar navbar-inverse ">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+
+                        </button>
+                        <a class="navbar-brand" href="projectsearch.aspx">
+                            <img alt="" src="~/Images/vhcb_logo_1_rgb_sm.png" class="img-responsive img-rounded" runat="server" /></a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <asp:LoginView runat="server" ViewStateMode="Disabled">
+                            <AnonymousTemplate>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a runat="server" href="~/Account/Register">Register</a></li>
+                                    <li><a runat="server" href="~/Account/Login">Log in</a></li>
+                                </ul>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
+                                    <li>
+                                        <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                    </li>
+                                </ul>
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </div>
+                </div>
+            </div>
+            <div class="container body-content">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+                <hr />
+                <footer>
+                    <table cellspacing="2" style="height: 10px" width="100%">
+                        <tr style="height: 10px">
+                            <td style="background-color: #c1ca66"></td>
+                            <td style="background-color: #f78b0e"></td>
+                            <td style="background-color: #3589a4"></td>
+                        </tr>
+                    </table>
+                    <p>&copy; <%: DateTime.Now.Year %> - Vermont Housing & Conservation Board</p>
+                </footer>
+            </div>
+        </div>
+
+    </form>
+</body>
+</html>

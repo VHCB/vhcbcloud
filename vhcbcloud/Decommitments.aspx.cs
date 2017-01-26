@@ -218,7 +218,7 @@ namespace vhcbcloud
                         tblFundDet.Visible = false;
                         btnDecommitmentSubmit.Visible = false;
                         CommonHelper.DisableButton(btnDecommitmentSubmit);
-                        CommonHelper.EnableButton(btnTransactionSubmit);
+                        CommonHelper.DisableButton(btnTransactionSubmit);
                         btnNewTransaction.Visible = true;
                         if (rdBtnSelection.SelectedIndex == 0)
                         {
