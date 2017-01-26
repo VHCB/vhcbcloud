@@ -257,7 +257,7 @@ namespace vhcbcloud
                         tblFundDetails.Visible = false;
                         btnCashRefundSubmit.Visible = false;
                         CommonHelper.DisableButton(btnCashRefundSubmit);
-                        CommonHelper.EnableButton(btnTransactionSubmit);
+                        CommonHelper.DisableButton(btnTransactionSubmit);
                         btnNewTransaction.Visible = true;
                         if (rdBtnSelection.SelectedIndex == 0)
                         {

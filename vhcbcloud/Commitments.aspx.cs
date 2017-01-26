@@ -286,7 +286,7 @@ namespace vhcbcloud
                         tblFundDet.Visible = false;
                         btnCommitmentSubmit.Visible = false;
                         CommonHelper.DisableButton(btnCommitmentSubmit);
-                        CommonHelper.EnableButton(btnTransactionSubmit);
+                        CommonHelper.DisableButton(btnTransactionSubmit);
                         btnNewTransaction.Visible = true;
                         {
                             lblProjName.Text = "";
