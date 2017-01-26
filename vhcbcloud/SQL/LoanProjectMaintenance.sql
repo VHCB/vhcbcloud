@@ -555,6 +555,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
 go
 
 /*LoanTransactions*/
@@ -602,4 +603,5 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
 go
