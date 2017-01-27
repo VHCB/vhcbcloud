@@ -603,5 +603,127 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+<<<<<<< HEAD
+go
 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateLoanTransactions]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateLoanTransactions
+go
+
+create procedure dbo.UpdateLoanTransactions
+(
+	@LoanTransID	int, 
+	@TransType		int, 
+	@TransDate		datetime, 
+	@IntRate		float = null, 
+	@Compound		int = null,
+	@Freq			int = null,
+	@PayType		int = null,
+	@MatDate		datetime = null,
+	@StartDate		datetime = null,
+	@Amount			money = null,
+	@StopDate		datetime = null,
+	@Principal		money = null,
+	@Interest		money = null,
+	@Description	nvarchar(150) = null, 
+	@TransferTo		int = null,
+	@ConvertFrom	int = null,
+	@RowIsActive	bit
+) as
+begin transaction
+
+	begin try
+
+		update LoanTransactions set TransType = @TransType, TransDate = @TransDate, IntRate = @IntRate, Compound = @Compound, Freq = @Freq, 
+		PayType = @PayType, MatDate = @MatDate, StartDate = @StartDate, Amount = @Amount, StopDate = @StopDate, Principal = @Principal, Interest = @Interest, 
+		Description = @Description, TransferTo = @TransferTo, ConvertFrom = @ConvertFrom, RowIsActive = @RowIsActive
+		where LoanTransID = @LoanTransID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetLoanTransactionsList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetLoanTransactionsList
+go
+
+create procedure dbo.GetLoanTransactionsList
+(
+	@LoanID			int,
+	@IsActiveOnly	bit
+) as
+--GetLoanTransactionsList 11, 1
+begin transaction
+
+	begin try
+	
+	select LoanTransID, LoanID, TransType, lv.description as TransTypeDesc, TransDate, IntRate, Compound, Freq, PayType, 
+		MatDate, StartDate, Amount, StopDate, Principal, Interest, lt.Description, TransferTo, 
+		ConvertFrom, lt.RowIsActive, lt.DateModified 
+	from LoanTransactions lt(nolock) 
+	left join lookupvalues lv(nolock) on lv.Typeid = lt.TransType
+	where lt.LoanID = @LoanID
+	and (@IsActiveOnly = 0 or lt.RowIsActive = @IsActiveOnly)
+	order by lt.DateModified desc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetLoanTransByLoanID]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetLoanTransByLoanID
+go
+
+create procedure dbo.GetLoanTransByLoanID
+(
+	@LoanTransID			int
+) as
+--GetLoanTransByLoanID 2
+begin transaction
+
+	begin try
+	
+	select LoanID, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate, StartDate, 
+		Amount, StopDate, Principal, Interest, Description, TransferTo, ConvertFrom, RowIsActive
+	from LoanTransactions lm(nolock) 
+	where lm.LoanTransID = @LoanTransID
+	
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+=======
+
+>>>>>>> f6e5e26ca9c53ab47c7e6651127fec38ff46dbbd
 go

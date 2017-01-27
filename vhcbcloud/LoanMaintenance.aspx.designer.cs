@@ -733,6 +733,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox ad_txtTransProjConverted;
         
         /// <summary>
+        /// ad_cbLoanTransActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ad_cbLoanTransActive;
+        
+        /// <summary>
         /// dvCaptalizing control.
         /// </summary>
         /// <remarks>
@@ -830,6 +839,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span10;
+        
+        /// <summary>
+        /// cap_cbLoanTransActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cap_cbLoanTransActive;
         
         /// <summary>
         /// dvCR control.
@@ -938,6 +956,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransDescription;
+        
+        /// <summary>
+        /// cr_cbLoanTransActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cr_cbLoanTransActive;
         
         /// <summary>
         /// dvConversion control.
@@ -1093,6 +1120,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cv_txtTransProjConverted;
         
         /// <summary>
+        /// cv_cbLoanTransActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cv_cbLoanTransActive;
+        
+        /// <summary>
         /// btnAddTransaction control.
         /// </summary>
         /// <remarks>
@@ -1100,6 +1136,33 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddTransaction;
+        
+        /// <summary>
+        /// dvLoanTransGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLoanTransGrid;
+        
+        /// <summary>
+        /// Panel6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel6;
+        
+        /// <summary>
+        /// gvLoanTrans control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvLoanTrans;
         
         /// <summary>
         /// dvNotes control.
@@ -1235,5 +1298,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfLoanNoteID;
+        
+        /// <summary>
+        /// hfLoanTransID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfLoanTransID;
     }
 }

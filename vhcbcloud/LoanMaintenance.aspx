@@ -535,8 +535,8 @@
                                             <td style="width: 336px">
                                                 <asp:TextBox ID="ad_txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             </td>
-                                            <td style="width: 354px"><span class="labelClass"></span></td>
-                                            <td></td>
+                                            <td style="width: 354px"><span class="labelClass">Active</span></td>
+                                            <td><asp:CheckBox ID="ad_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" /></td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" style="height: 5px"></td>
@@ -575,8 +575,8 @@
                                             <td style="width: 336px">
                                                 <asp:TextBox ID="cap_txtTransDescription" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
                                             </td>
-                                            <td style="width: 89px"><span class="labelClass" runat="server" id="span10"></span></td>
-                                            <td></td>
+                                            <td style="width: 89px"><span class="labelClass" runat="server" id="span10">Active</span></td>
+                                            <td><asp:CheckBox ID="cap_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" /></td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" style="height: 5px"></td>
@@ -623,6 +623,12 @@
                                         <tr>
                                             <td colspan="6" style="height: 5px"></td>
                                         </tr>
+                                         <tr>
+                                            <td style="width: 140px"><span class="labelClass">Active</span></td>
+                                            <td style="width: 215px" colspan="4">
+                                        <asp:CheckBox ID="cr_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                                </td>
+                                             </tr>
                                     </table>
                                 </div>
 
@@ -706,122 +712,86 @@
                                         <tr>
                                             <td colspan="6" style="height: 5px"></td>
                                         </tr>
+                                         <tr>
+                                            <td style="width: 196px"><span class="labelClass">Interest</span></td>
+                                            <td style="width: 215px" colspan="4">
+                                                <asp:CheckBox ID="cv_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                            </td>
+                                             </tr>
+                                        
+
                                     </table>
                                 </div>
+
                                 <table>
                                     <tr>
                                         <td> <asp:Button ID="btnAddTransaction" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddTransaction_Click" /></td>
+                                                OnClick="btnAddTransaction_Click" Visible="false" /></td>
                                     </tr>
                                 </table>
-                                <br />
-                               <%-- <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass"></span></td>
-                                        <td style="width: 215px"></td>
-                                        <td style="width: 234px"><span class="labelClass" runat="server" id="spanTransactionDate">Transaction Date</span></td>
-                                        <td style="width: 336px">
-                                            <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender11" TargetControlID="txtTransDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 354px"><span class="labelClass" runat="server" id="spanIntrestRate">Interest Rate</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtTransIntrestRate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass" runat="server" id="spanCompounding">Compounding</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlTransCompounding" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 234px"><span class="labelClass" runat="server" id="spanPaymentFreq">Payment Frequency</span></td>
-                                        <td style="width: 336px">
-                                            <asp:DropDownList ID="ddlTransPaymentFreq" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 354px"><span class="labelClass" runat="server" id="span6">Payment Type</span></td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlTransPaymentType" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass" runat="server" id="spanMaturityDate">Maturity Date</span></td>
-                                        <td style="width: 215px">
-                                            <asp:TextBox ID="txtTransMaturityDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender12" TargetControlID="txtTransMaturityDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 234px"><span class="labelClass" runat="server" id="spanStartDate">Start Date</span></td>
-                                        <td style="width: 336px">
-                                            <asp:TextBox ID="txtTransStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender13" TargetControlID="txtTransStartDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 354px"><span class="labelClass" runat="server" id="spanAmount">Amount</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtTransAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass" runat="server" id="spanStopDate">Stop Date</span></td>
-                                        <td style="width: 215px">
-                                            <asp:TextBox ID="txtTransStopDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender14" TargetControlID="txtTransStopDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 234px"><span class="labelClass" runat="server" id="spanPrinciple">Principle</span></td>
-                                        <td style="width: 336px">
-                                            <asp:TextBox ID="txtTransPrinciple" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 354px"><span class="labelClass" runat="server" id="spanIntrest">Interest</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtTransIntrest" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass" runat="server" id="spanDescription">Description</span></td>
-                                        <td style="width: 215px">
-                                            <asp:TextBox ID="txtTransDescription" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 234px"><span class="labelClass" runat="server" id="spanProjTranf">Project Transferred To</span></td>
-                                        <td style="width: 336px">
-                                            <asp:TextBox ID="txtTransProjTransfered" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-
-                                        </td>
-                                        <td style="width: 354px"><span class="labelClass" runat="server" id="spanConverted">Project Converted From</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px">
-                                            <asp:Button ID="btnAddTransaction" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddTransaction_Click" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>--%>
                             </asp:Panel>
                         </div>
 
                         <!-- Grid Here -->
+                         <div class="panel-body" id="dvLoanTransGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvLoanTrans" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowCancelingEdit="gvLoanTrans_RowCancelingEdit"
+                                    OnRowDataBound="gvLoanTrans_RowDataBound"
+                                    OnRowEditing="gvLoanTrans_RowEditing">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="LoanTransID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLoanTransID" runat="Server" Text='<%# Eval("LoanTransID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="TransTypeDesc">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransTypeDesc" runat="Server" Text='<%# Eval("TransTypeDesc") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("TransDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:c2}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Principal">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPrincipal" runat="Server" Text='<%# Eval("Principal", "{0:c2}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Interest">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblInterest" runat="Server" Text='<%# Eval("Interest", "{0:0.00}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDescription" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActiveLD" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
                     </div>
                 </div>
 
@@ -928,6 +898,8 @@
             <asp:HiddenField ID="hfLoanId" runat="server" />
             <asp:HiddenField ID="hfLoanDetailID" runat="server" />
             <asp:HiddenField ID="hfLoanNoteID" runat="server" />
+            <asp:HiddenField ID="hfLoanTransID" runat="server" />
+            
         </div>
     </div>
     <script language="javascript">
