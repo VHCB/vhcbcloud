@@ -234,52 +234,6 @@ namespace vhcbcloud
             return ProjNumbers.ToArray();
         }
 
-        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //VisibleAll();
-            dvCaptalizing.Visible = false;
-            dvAdgustment.Visible = false;
-            dvCR.Visible = false;
-            dvConversion.Visible = false;
-
-            if (ddlTransType.SelectedIndex != 0)
-            {
-                switch (ddlTransType.SelectedItem.ToString().ToLower())
-                {
-                    case "capitalizing":
-                        dvCaptalizing.Visible = true;
-                        //VisibleCapitalizing();
-                        break;
-                    case "adjustment":
-                        dvAdgustment.Visible = true;
-                        //VisibleAdjustment();
-                        break;
-                    case "cash receipt":
-                        dvCR.Visible = true;
-                        //VisibleCashReceipt();
-                        break;
-                    case "conversion":
-                        dvConversion.Visible = true;
-                        //VisibleConversion();
-                        break;
-                        //case "disbursement":
-                        //    VisibleDisbursement();
-                        //    break;
-                        //case "forgiveness":
-                        //    VisibleForgiveness();
-                        //    break;
-                        //case "note modification":
-                        //    VisibleNoteModification();
-                        //    break;
-                        //case "transfer":
-                        //    VisibleTransfer();
-                        //    break;
-                }
-
-
-            }
-        }
-
         //private void VisibleAll()
         //{
         //    spanTransactionDate.Visible = true;
@@ -581,107 +535,27 @@ namespace vhcbcloud
         //    //txtTransProjConverted.Visible = false;
         //}
 
-        protected void btnAddTransaction_Click(object sender, EventArgs e)
-        {
-            bool IsSuccess = false;
-
-            if (ddlTransType.SelectedIndex != 0)
-            {
-                if (ddlTransType.SelectedItem.Text.ToLower() == "adjustment")
-                {
-                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
-                        DataUtils.GetDate(ad_txtTransDate.Text), DataUtils.GetDecimal(ad_txtTransIntrestRate.Text), DataUtils.GetInt(ad_ddlTransCompounding.SelectedValue),
-                        DataUtils.GetInt(ad_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(ad_ddlTransPaymentType.SelectedValue),
-                        DataUtils.GetDate(ad_txtTransMaturityDate.Text), DataUtils.GetDate(ad_txtTransStartDate.Text), DataUtils.GetDecimal(ad_txtTransAmount.Text),
-                        DataUtils.GetDate(ad_txtTransStopDate.Text), DataUtils.GetDecimal(ad_txtTransPrinciple.Text), DataUtils.GetDecimal(ad_txtTransIntrest.Text),
-                        ad_txtTransDescription.Text, DataUtils.GetInt(ad_txtTransProjTransfered.Text), DataUtils.GetInt(ad_txtTransProjConverted.Text));
-
-                    ddlTransType.SelectedIndex = -1;
-                    ad_txtTransDate.Text = "";
-                    ad_txtTransIntrestRate.Text = "";
-                    ad_ddlTransCompounding.SelectedIndex = -1;
-                    ad_ddlTransPaymentFreq.SelectedIndex = -1;
-                    ad_ddlTransPaymentType.SelectedIndex = -1;
-                    ad_txtTransMaturityDate.Text = "";
-                    ad_txtTransStartDate.Text = "";
-                    ad_txtTransAmount.Text = "";
-                    ad_txtTransStopDate.Text = "";
-                    ad_txtTransPrinciple.Text = "";
-                    ad_txtTransIntrest.Text = "";
-                    ad_txtTransDescription.Text = "";
-                    ad_txtTransProjTransfered.Text = "";
-                    ad_txtTransProjConverted.Text = "";
-                }
-                else if (ddlTransType.SelectedItem.Text.ToLower() == "capitalizing")
-                {
-                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
-                        DataUtils.GetDate(cap_txtTransDate.Text), null, null,
-                        null, DataUtils.GetInt(cap_ddlTransPaymentType.SelectedValue),
-                        null, null, DataUtils.GetDecimal(cap_txtTransAmount.Text),
-                        null, DataUtils.GetDecimal(cap_txtTransPrinciple.Text), null,
-                        cap_txtTransDescription.Text, null, null);
-
-                    ddlTransType.SelectedIndex = -1;
-                    cap_txtTransDate.Text = "";
-                    cap_ddlTransPaymentType.SelectedIndex = -1;
-                    cap_txtTransAmount.Text = "";
-                    cap_txtTransPrinciple.Text = "";
-                    cap_txtTransDescription.Text = "";
-                }
-                else if (ddlTransType.SelectedItem.Text.ToLower() == "cash receipt")
-                {
-                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
-                        DataUtils.GetDate(cr_txtTransDate.Text), null, null,
-                        null, DataUtils.GetInt(cr_ddlTransPaymentType.SelectedValue),
-                        null, null, DataUtils.GetDecimal(cr_txtTransAmount.Text),
-                        null, DataUtils.GetDecimal(cr_txtTransPrinciple.Text), DataUtils.GetInt(cr_txtTransIntrest.Text),
-                        cr_txtTransDescription.Text, null, null);
-
-                    ddlTransType.SelectedIndex = -1;
-                    cr_txtTransDate.Text = "";
-                    cr_ddlTransPaymentType.SelectedIndex = -1;
-                    cr_txtTransAmount.Text = "";
-                    cr_txtTransPrinciple.Text = "";
-                    cr_txtTransIntrest.Text = "";
-                    cr_txtTransDescription.Text = "";
-                }
-                else if (ddlTransType.SelectedItem.Text.ToLower() == "conversion")
-                {
-                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
-                        DataUtils.GetDate(cv_txtTransDate.Text), DataUtils.GetDecimal(cv_txtTransIntrestRate.Text), DataUtils.GetInt(cv_ddlTransCompounding.SelectedValue),
-                        DataUtils.GetInt(cv_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(cv_ddlTransPaymentType.SelectedValue),
-                        null, DataUtils.GetDate(cv_txtTransStartDate.Text), DataUtils.GetDecimal(cv_txtTransAmount.Text),
-                        DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
-                        cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text));
-
-                    ddlTransType.SelectedIndex = -1;
-                    cv_txtTransDate.Text = "";
-                    cv_txtTransIntrestRate.Text = "";
-                    cv_ddlTransCompounding.SelectedIndex = -1;
-                    cv_ddlTransPaymentFreq.SelectedIndex = -1;
-                    cv_ddlTransPaymentType.SelectedIndex = -1;
-                    cv_txtTransStartDate.Text = "";
-                    cv_txtTransAmount.Text = "";
-                    cv_txtTransStopDate.Text = "";
-                    cv_txtTransPrinciple.Text = "";
-                    cv_txtTransIntrest.Text = "";
-                    cv_txtTransDescription.Text = "";
-                    cv_txtTransProjConverted.Text = "";
-                }
-                }
-
-            if (IsSuccess)
-                LogMessage("Transaction added successfully");
-
-            cbAddTransaction.Checked = false;
-        }
-
         private bool AddLoanTransactions(int LoanId, int TransType, DateTime TransDate, decimal? IntRate,
             int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate, decimal? Amount, DateTime? StopDate,
             decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
         {
-            LoanMaintenanceData.AddLoanTransactions(LoanId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate, StartDate,
-                Amount, StopDate, Principal, Interest, Description, TransferTo, ConvertFrom);
+            DateTime MatDate1 = MatDate ?? DateTime.MinValue;
+            DateTime StartDate1 = StartDate ?? DateTime.MinValue;
+            DateTime StopDate1 = StopDate ?? DateTime.MinValue;
+
+
+            LoanMaintenanceData.AddLoanTransactions(LoanId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate1, StartDate1,
+                Amount, StopDate1, Principal, Interest, Description, TransferTo, ConvertFrom);
+
+            return true;
+        }
+
+        private bool UpdateLoanTransactions(int LoanTransId, int TransType, DateTime TransDate, decimal? IntRate,
+            int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate, decimal? Amount, DateTime? StopDate,
+            decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom, bool RowIsActive)
+        {
+            LoanMaintenanceData.UpdateLoanTransactions(LoanTransId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate, StartDate,
+                Amount, StopDate, Principal, Interest, Description, TransferTo, ConvertFrom, RowIsActive);
 
             return true;
         }
@@ -961,6 +835,7 @@ namespace vhcbcloud
             BindLoanMasterDetailsGrid();
             BindLoanEventsGrid();
             BindLoanNotesGrid();
+            BindLoanTransGrid();
         }
 
         private SelectedLoanMasterInfo GetLoanMasterSelectedRecordID(GridView gvBldgInfo)
@@ -1169,6 +1044,404 @@ namespace vhcbcloud
             cbLoanNoteActive.Checked = true;
             cbLoanNoteActive.Enabled = false;
             BindLoanNotesGrid();
+        }
+
+        private void BindLoanTransGrid()
+        {
+            try
+            {
+                DataTable dtTrans = LoanMaintenanceData.GetLoanTransactionsList(DataUtils.GetInt(hfLoanId.Value),
+                    cbActiveOnly.Checked);
+
+                if (dtTrans.Rows.Count > 0)
+                {
+                    dvLoanTransGrid.Visible = true;
+                    gvLoanTrans.DataSource = dtTrans;
+                    gvLoanTrans.DataBind();
+                }
+                else
+                {
+                    dvLoanTransGrid.Visible = false;
+                    gvLoanTrans.DataSource = null;
+                    gvLoanTrans.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLoanTransGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvLoanTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbAddTransaction.Checked = false;
+            gvLoanTrans.EditIndex = -1;
+            BindLoanTransGrid();
+            ClearLoanTransForm();
+            //cbLoanNoteActive.Checked = true;
+            //cbLoanNoteActive.Enabled = false;
+        }
+
+        private void ClearLoanTransForm()
+        {
+            ddlTransType.SelectedIndex = -1;
+            TransactionTypeChanged();
+
+            //Capitalizing
+            cap_txtTransDate.Text = "";
+            cap_ddlTransPaymentType.SelectedIndex = -1;
+            cap_txtTransAmount.Text = "";
+            cap_txtTransPrinciple.Text = "";
+            cap_txtTransDescription.Text = "";
+        }
+
+        protected void gvLoanTrans_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    //btnAddNotes.Text = "Update";
+                    cbAddTransaction.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[8].Controls[0].Visible = false;
+                        Label lblLoanTransID = e.Row.FindControl("lblLoanTransID") as Label;
+                        DataRow dr = LoanMaintenanceData.GetLoanTransByLoanID(Convert.ToInt32(lblLoanTransID.Text));
+
+                        hfLoanTransID.Value = lblLoanTransID.Text;
+                        //Populate Edit Form
+                        PopulateLoanTransEditForm(dr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvProjectLoanNotes_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private void PopulateLoanTransEditForm(DataRow dr)
+        {
+            PopulateDropDown(ddlTransType, dr["TransType"].ToString());
+            TransactionTypeChanged();
+            btnAddTransaction.Text = "Update";
+
+            if (ddlTransType.SelectedIndex != 0)
+            {
+                switch (ddlTransType.SelectedItem.ToString().ToLower())
+                {
+                    case "capitalizing":
+                        PopulateCapitalizingForm(dr);
+                        break;
+                    case "adjustment":
+                        PopulateAdjustmentForm(dr);
+                        break;
+                    case "cash receipt":
+                        PopulateCashReceiptForm(dr);
+                        break;
+                    case "conversion":
+                        PopulateConversionForm(dr);
+                        break;
+                }
+            }
+        }
+
+        private void PopulateConversionForm(DataRow dr)
+        {
+            cv_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            cv_txtTransIntrestRate.Text = dr["IntRate"].ToString(); ;
+            PopulateDropDown(cv_ddlTransCompounding, dr["Compound"].ToString());
+            PopulateDropDown(cv_ddlTransPaymentType, dr["PayType"].ToString());
+            PopulateDropDown(cv_ddlTransPaymentFreq, dr["Freq"].ToString());
+            cv_txtTransStartDate.Text = dr["StartDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StartDate"].ToString()).ToShortDateString();
+            cv_txtTransAmount.Text = dr["Amount"].ToString();
+            cv_txtTransStopDate.Text = dr["StopDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StopDate"].ToString()).ToShortDateString();
+            cv_txtTransPrinciple.Text = dr["Principal"].ToString();
+            cv_txtTransIntrest.Text = dr["Interest"].ToString();
+            cv_txtTransDescription.Text = dr["Description"].ToString();
+            cv_txtTransProjConverted.Text = dr["ConvertFrom"].ToString();
+            cv_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            cv_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateCashReceiptForm(DataRow dr)
+        {
+            cr_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            PopulateDropDown(cr_ddlTransPaymentType, dr["PayType"].ToString());
+            cr_txtTransAmount.Text = dr["Amount"].ToString();
+            cr_txtTransPrinciple.Text = dr["Principal"].ToString();
+            cr_txtTransIntrest.Text = dr["Interest"].ToString();
+            cr_txtTransDescription.Text = dr["Description"].ToString();
+            cr_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            cr_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateAdjustmentForm(DataRow dr)
+        {
+            ad_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            PopulateDropDown(ad_ddlTransCompounding, dr["Compound"].ToString());
+            PopulateDropDown(ad_ddlTransPaymentType, dr["PayType"].ToString());
+            PopulateDropDown(ad_ddlTransPaymentFreq, dr["Freq"].ToString());
+
+            ad_txtTransIntrestRate.Text = dr["IntRate"].ToString();
+            ad_txtTransMaturityDate.Text = dr["MatDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MatDate"].ToString()).ToShortDateString();
+            ad_txtTransStartDate.Text = dr["StartDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StartDate"].ToString()).ToShortDateString();
+            ad_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            ad_txtTransIntrest.Text = dr["Interest"].ToString();
+            ad_txtTransAmount.Text = dr["Amount"].ToString();
+            ad_txtTransStopDate.Text = dr["StopDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StopDate"].ToString()).ToShortDateString();
+            ad_txtTransDescription.Text = dr["Description"].ToString();
+            ad_txtTransProjTransfered.Text = dr["TransferTo"].ToString();
+            ad_txtTransProjConverted.Text = dr["ConvertFrom"].ToString();
+
+            ad_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            ad_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateCapitalizingForm(DataRow dr)
+        {
+            cap_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            PopulateDropDown(cap_ddlTransPaymentType, dr["PayType"].ToString());
+            cap_txtTransAmount.Text = dr["Amount"].ToString();
+            cap_txtTransPrinciple.Text = dr["Principal"].ToString();
+            cap_txtTransDescription.Text = dr["Description"].ToString();
+            cap_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            cap_cbLoanTransActive.Enabled = true;
+        }
+
+        protected void gvLoanTrans_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvLoanTrans.EditIndex = e.NewEditIndex;
+            BindLoanTransGrid();
+        }
+
+        protected void btnAddTransaction_Click(object sender, EventArgs e)
+        {
+            if (btnAddTransaction.Text == "Add")
+            {
+                AddLoanTransaction();
+            }
+            else
+            {
+                UpdateTransaction();
+            }
+        }
+
+        private void UpdateTransaction()
+        {
+            if (ddlTransType.SelectedItem.Text.ToLower() == "adjustment")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(ad_txtTransDate.Text), DataUtils.GetDecimal(ad_txtTransIntrestRate.Text), DataUtils.GetInt(ad_ddlTransCompounding.SelectedValue),
+                    DataUtils.GetInt(ad_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(ad_ddlTransPaymentType.SelectedValue),
+                    DataUtils.GetDate(ad_txtTransMaturityDate.Text), DataUtils.GetDate(ad_txtTransStartDate.Text), DataUtils.GetDecimal(ad_txtTransAmount.Text),
+                    DataUtils.GetDate(ad_txtTransStopDate.Text), DataUtils.GetDecimal(ad_txtTransPrinciple.Text), DataUtils.GetDecimal(ad_txtTransIntrest.Text),
+                    ad_txtTransDescription.Text, DataUtils.GetInt(ad_txtTransProjTransfered.Text), DataUtils.GetInt(ad_txtTransProjConverted.Text), 
+                    ad_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "capitalizing")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(cap_txtTransDate.Text), null, null,
+                    null, DataUtils.GetInt(cap_ddlTransPaymentType.SelectedValue),
+                    null, null, DataUtils.GetDecimal(cap_txtTransAmount.Text),
+                    null, DataUtils.GetDecimal(cap_txtTransPrinciple.Text), null,
+                    cap_txtTransDescription.Text, null, null, cap_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "cash receipt")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(cr_txtTransDate.Text), null, null,
+                    null, DataUtils.GetInt(cr_ddlTransPaymentType.SelectedValue),
+                    null, null, DataUtils.GetDecimal(cr_txtTransAmount.Text),
+                    null, DataUtils.GetDecimal(cr_txtTransPrinciple.Text), DataUtils.GetInt(cr_txtTransIntrest.Text),
+                    cr_txtTransDescription.Text, null, null, cr_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "conversion")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(cv_txtTransDate.Text), DataUtils.GetDecimal(cv_txtTransIntrestRate.Text), DataUtils.GetInt(cv_ddlTransCompounding.SelectedValue),
+                    DataUtils.GetInt(cv_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(cv_ddlTransPaymentType.SelectedValue),
+                    null, DataUtils.GetDate(cv_txtTransStartDate.Text), DataUtils.GetDecimal(cv_txtTransAmount.Text),
+                    DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
+                    cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text), cv_cbLoanTransActive.Checked);
+            }
+            LogMessage("Transaction updated successfully");
+
+            ddlTransType.SelectedIndex = -1;
+            TransactionTypeChanged();
+            ClearTransForm();
+            hfLoanTransID.Value = "";
+            btnAddTransaction.Text = "Add";
+            gvLoanTrans.EditIndex = -1;
+
+            cbAddTransaction.Checked = false;
+            BindLoanTransGrid();
+        }
+
+        private void AddLoanTransaction()
+        {
+            bool IsSuccess = false;
+
+            if (ddlTransType.SelectedIndex != 0)
+            {
+                if (ddlTransType.SelectedItem.Text.ToLower() == "adjustment")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(ad_txtTransDate.Text), DataUtils.GetDecimal(ad_txtTransIntrestRate.Text), DataUtils.GetInt(ad_ddlTransCompounding.SelectedValue),
+                        DataUtils.GetInt(ad_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(ad_ddlTransPaymentType.SelectedValue),
+                        DataUtils.GetDate(ad_txtTransMaturityDate.Text), DataUtils.GetDate(ad_txtTransStartDate.Text), DataUtils.GetDecimal(ad_txtTransAmount.Text),
+                        DataUtils.GetDate(ad_txtTransStopDate.Text), DataUtils.GetDecimal(ad_txtTransPrinciple.Text), DataUtils.GetDecimal(ad_txtTransIntrest.Text),
+                        ad_txtTransDescription.Text, DataUtils.GetInt(ad_txtTransProjTransfered.Text), DataUtils.GetInt(ad_txtTransProjConverted.Text));
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "capitalizing")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cap_txtTransDate.Text), null, null,
+                        null, DataUtils.GetInt(cap_ddlTransPaymentType.SelectedValue),
+                        null, null, DataUtils.GetDecimal(cap_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(cap_txtTransPrinciple.Text), null,
+                        cap_txtTransDescription.Text, null, null);
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "cash receipt")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cr_txtTransDate.Text), null, null,
+                        null, DataUtils.GetInt(cr_ddlTransPaymentType.SelectedValue),
+                        null, null, DataUtils.GetDecimal(cr_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(cr_txtTransPrinciple.Text), DataUtils.GetInt(cr_txtTransIntrest.Text),
+                        cr_txtTransDescription.Text, null, null);
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "conversion")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(cv_txtTransDate.Text), DataUtils.GetDecimal(cv_txtTransIntrestRate.Text), DataUtils.GetInt(cv_ddlTransCompounding.SelectedValue),
+                        DataUtils.GetInt(cv_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(cv_ddlTransPaymentType.SelectedValue),
+                        null, DataUtils.GetDate(cv_txtTransStartDate.Text), DataUtils.GetDecimal(cv_txtTransAmount.Text),
+                        DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
+                        cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text));
+                }
+            }
+
+            if (IsSuccess)
+                LogMessage("Transaction added successfully");
+
+            cbAddTransaction.Checked = false;
+            ddlTransType.SelectedIndex = -1;
+            TransactionTypeChanged();
+            ClearTransForm();
+            BindLoanTransGrid();
+        }
+
+        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TransactionTypeChanged();
+        }
+
+        private void TransactionTypeChanged()
+        {
+            //VisibleAll();
+            dvCaptalizing.Visible = false;
+            dvAdgustment.Visible = false;
+            dvCR.Visible = false;
+            dvConversion.Visible = false;
+
+            ClearTransForm();
+
+            if (ddlTransType.SelectedIndex != 0)
+            {
+                btnAddTransaction.Visible = true;
+                btnAddTransaction.Text = "Add";
+
+                switch (ddlTransType.SelectedItem.ToString().ToLower())
+                {
+                    case "capitalizing":
+                        dvCaptalizing.Visible = true;
+                        //VisibleCapitalizing();
+                        break;
+                    case "adjustment":
+                        dvAdgustment.Visible = true;
+                        //VisibleAdjustment();
+                        break;
+                    case "cash receipt":
+                        dvCR.Visible = true;
+                        //VisibleCashReceipt();
+                        break;
+                    case "conversion":
+                        dvConversion.Visible = true;
+                        //VisibleConversion();
+                        break;
+                        //case "disbursement":
+                        //    VisibleDisbursement();
+                        //    break;
+                        //case "forgiveness":
+                        //    VisibleForgiveness();
+                        //    break;
+                        //case "note modification":
+                        //    VisibleNoteModification();
+                        //    break;
+                        //case "transfer":
+                        //    VisibleTransfer();
+                        //    break;
+                }
+            }
+        }
+
+        private void ClearTransForm()
+        {
+            //ddlTransType.SelectedIndex = -1;
+            btnAddTransaction.Visible = false;
+            ad_txtTransDate.Text = "";
+            ad_txtTransIntrestRate.Text = "";
+            ad_ddlTransCompounding.SelectedIndex = -1;
+            ad_ddlTransPaymentFreq.SelectedIndex = -1;
+            ad_ddlTransPaymentType.SelectedIndex = -1;
+            ad_txtTransMaturityDate.Text = "";
+            ad_txtTransStartDate.Text = "";
+            ad_txtTransAmount.Text = "";
+            ad_txtTransStopDate.Text = "";
+            ad_txtTransPrinciple.Text = "";
+            ad_txtTransIntrest.Text = "";
+            ad_txtTransDescription.Text = "";
+            ad_txtTransProjTransfered.Text = "";
+            ad_txtTransProjConverted.Text = "";
+            ad_cbLoanTransActive.Checked = true;
+            ad_cbLoanTransActive.Enabled = false;
+
+            cap_txtTransDate.Text = "";
+            cap_ddlTransPaymentType.SelectedIndex = -1;
+            cap_txtTransAmount.Text = "";
+            cap_txtTransPrinciple.Text = "";
+            cap_txtTransDescription.Text = "";
+            cap_cbLoanTransActive.Checked = true;
+            cap_cbLoanTransActive.Enabled = false;
+
+            cr_txtTransDate.Text = "";
+            cr_ddlTransPaymentType.SelectedIndex = -1;
+            cr_txtTransAmount.Text = "";
+            cr_txtTransPrinciple.Text = "";
+            cr_txtTransIntrest.Text = "";
+            cr_txtTransDescription.Text = "";
+            cr_cbLoanTransActive.Checked = true;
+            cr_cbLoanTransActive.Enabled = false;
+
+            cv_txtTransDate.Text = "";
+            cv_txtTransIntrestRate.Text = "";
+            cv_ddlTransCompounding.SelectedIndex = -1;
+            cv_ddlTransPaymentFreq.SelectedIndex = -1;
+            cv_ddlTransPaymentType.SelectedIndex = -1;
+            cv_txtTransStartDate.Text = "";
+            cv_txtTransAmount.Text = "";
+            cv_txtTransStopDate.Text = "";
+            cv_txtTransPrinciple.Text = "";
+            cv_txtTransIntrest.Text = "";
+            cv_txtTransDescription.Text = "";
+            cv_txtTransProjConverted.Text = "";
+            cv_cbLoanTransActive.Checked = true;
+            cv_cbLoanTransActive.Enabled = false;
         }
     }
 }

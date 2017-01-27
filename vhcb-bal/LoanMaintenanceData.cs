@@ -581,10 +581,43 @@ namespace VHCBCommon.DataAccessLayer
         #endregion LoanNotes
 
         #region LoanTransactions
+        public static DataTable GetLoanTransactionsList(int LoanId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetLoanTransactionsList";
+                        command.Parameters.Add(new SqlParameter("LoanId", LoanId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
 
         public static void AddLoanTransactions(int LoanId, int TransType, DateTime TransDate, decimal? IntRate, 
-            int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate,
-            decimal? Amount, DateTime? StopDate, decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
+            int? Compound, int? Freq, int? PayType, DateTime MatDate, DateTime StartDate,
+            decimal? Amount, DateTime StopDate, decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
         {
             try
             {
@@ -605,10 +638,10 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Compound", Compound));
                         command.Parameters.Add(new SqlParameter("Freq", Freq));
                         command.Parameters.Add(new SqlParameter("PayType", PayType));
-                        command.Parameters.Add(new SqlParameter("MatDate", MatDate));
-                        command.Parameters.Add(new SqlParameter("StartDate", StartDate));
+                        command.Parameters.Add(new SqlParameter("MatDate", TransDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MatDate));
+                        command.Parameters.Add(new SqlParameter("StartDate", TransDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
                         command.Parameters.Add(new SqlParameter("Amount", Amount));
-                        command.Parameters.Add(new SqlParameter("StopDate", StopDate));
+                        command.Parameters.Add(new SqlParameter("StopDate", TransDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StopDate));
                         command.Parameters.Add(new SqlParameter("Principal", Principal));
                         command.Parameters.Add(new SqlParameter("Interest", Interest));
                         command.Parameters.Add(new SqlParameter("Description", Description));
@@ -624,6 +657,86 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static void UpdateLoanTransactions(int LoanTransId, int TransType, DateTime TransDate, decimal? IntRate,
+            int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate,
+            decimal? Amount, DateTime? StopDate, decimal? Principal, decimal? Interest, string Description, 
+            int? TransferTo, int? ConvertFrom, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateLoanTransactions";
+
+                        command.Parameters.Add(new SqlParameter("LoanTransId", LoanTransId));
+                        command.Parameters.Add(new SqlParameter("TransType", TransType));
+                        command.Parameters.Add(new SqlParameter("TransDate", TransDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : TransDate));
+                        command.Parameters.Add(new SqlParameter("IntRate", IntRate));
+                        command.Parameters.Add(new SqlParameter("Compound", Compound));
+                        command.Parameters.Add(new SqlParameter("Freq", Freq));
+                        command.Parameters.Add(new SqlParameter("PayType", PayType));
+                        command.Parameters.Add(new SqlParameter("MatDate", MatDate));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate));
+                        command.Parameters.Add(new SqlParameter("Amount", Amount));
+                        command.Parameters.Add(new SqlParameter("StopDate", StopDate));
+                        command.Parameters.Add(new SqlParameter("Principal", Principal));
+                        command.Parameters.Add(new SqlParameter("Interest", Interest));
+                        command.Parameters.Add(new SqlParameter("Description", Description));
+                        command.Parameters.Add(new SqlParameter("TransferTo", TransferTo));
+                        command.Parameters.Add(new SqlParameter("ConvertFrom", ConvertFrom));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataRow GetLoanTransByLoanID(int LoanTransID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetLoanTransByLoanID";
+                        command.Parameters.Add(new SqlParameter("LoanTransID", LoanTransID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
         #endregion LoanTransactions
     }
