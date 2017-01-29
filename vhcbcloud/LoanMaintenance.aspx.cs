@@ -48,6 +48,10 @@ namespace vhcbcloud
             BindLookUP(ad_ddlTransPaymentFreq, 191);
             BindLookUP(ad_ddlTransPaymentType, 192);
 
+            BindLookUP(nm_ddlTransCompounding, 190);
+            BindLookUP(nm_ddlTransPaymentFreq, 191);
+            BindLookUP(nm_ddlTransPaymentType, 192);
+
             BindLookUP(cap_ddlTransPaymentType, 192);
             BindLookUP(cr_ddlTransPaymentType, 192);
 
@@ -233,329 +237,34 @@ namespace vhcbcloud
             }
             return ProjNumbers.ToArray();
         }
-
-        //private void VisibleAll()
-        //{
-        //    spanTransactionDate.Visible = true;
-        //    txtTransDate.Visible = true;
-        //    spanIntrestRate.Visible = true;
-        //    txtTransIntrestRate.Visible = true;
-        //    spanCompounding.Visible = true;
-        //    ddlTransCompounding.Visible = true;
-        //    spanPaymentFreq.Visible = true;
-        //    ddlTransPaymentFreq.Visible = true;
-        //    spanPaymentType.Visible = true;
-        //    ddlTransPaymentType.Visible = true;
-        //    spanMaturityDate.Visible = true;
-        //    txtTransMaturityDate.Visible = true;
-        //    spanStartDate.Visible = true;
-        //    txtTransStartDate.Visible = true;
-        //    spanAmount.Visible = true;
-        //    txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = true;
-        //    txtTransStopDate.Visible = true;
-        //    spanPrinciple.Visible = true;
-        //    txtTransPrinciple.Visible = true;
-        //    spanIntrest.Visible = true;
-        //    txtTransIntrest.Visible = true;
-        //    spanDescription.Visible = true;
-        //    txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = true;
-        //    txtTransProjTransfered.Visible = true;
-        //    spanConverted.Visible = true;
-        //    txtTransProjConverted.Visible = true;
-        //}
-
-        //private void VisibleCapitalizing()
-        //{
-
-        //    spanIntrestRate.Visible = false;
-        //    txtTransIntrestRate.Visible = false;
-        //    spanCompounding.Visible = false;
-        //    ddlTransCompounding.Visible = false;
-        //    spanPaymentFreq.Visible = false;
-        //    ddlTransPaymentFreq.Visible = false;
-        //    spanPaymentType.Visible = false;
-        //    ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    spanStartDate.Visible = false;
-        //    txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = false;
-        //    txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    spanIntrest.Visible = false;
-        //    txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    spanConverted.Visible = false;
-        //    txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleCashReceipt()
-        //{
-
-        //    spanIntrestRate.Visible = false;
-        //    txtTransIntrestRate.Visible = false;
-        //    spanCompounding.Visible = false;
-        //    ddlTransCompounding.Visible = false;
-        //    spanPaymentFreq.Visible = false;
-        //    ddlTransPaymentFreq.Visible = false;
-        //    //spanPaymentType.Visible = false;
-        //    //ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    spanStartDate.Visible = false;
-        //    txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = false;
-        //    txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    //spanIntrest.Visible = false;
-        //    //txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    spanConverted.Visible = false;
-        //    txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleConversion()
-        //{
-
-        //    //spanIntrestRate.Visible = false;
-        //    //txtTransIntrestRate.Visible = false;
-        //    //spanCompounding.Visible = false;
-        //    //ddlTransCompounding.Visible = false;
-        //    //spanPaymentFreq.Visible = false;
-        //    //ddlTransPaymentFreq.Visible = false;
-        //    //spanPaymentType.Visible = false;
-        //    //ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    //spanStartDate.Visible = false;
-        //    //txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    //spanStopDate.Visible = false;
-        //    //txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    //spanIntrest.Visible = false;
-        //    //txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    //spanConverted.Visible = false;
-        //    //txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleDisbursement()
-        //{
-        //    spanTransactionDate.Visible = false;
-        //    txtTransDate.Visible = false;
-        //    spanIntrestRate.Visible = false;
-        //    txtTransIntrestRate.Visible = false;
-        //    spanCompounding.Visible = false;
-        //    ddlTransCompounding.Visible = false;
-        //    spanPaymentFreq.Visible = false;
-        //    ddlTransPaymentFreq.Visible = false;
-        //    spanPaymentType.Visible = false;
-        //    ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    spanStartDate.Visible = false;
-        //    txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = false;
-        //    txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    spanIntrest.Visible = false;
-        //    txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    spanConverted.Visible = false;
-        //    txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleForgiveness()
-        //{
-        //    //spanTransactionDate.Visible = false;
-        //    //txtTransDate.Visible = false;
-        //    spanIntrestRate.Visible = false;
-        //    txtTransIntrestRate.Visible = false;
-        //    spanCompounding.Visible = false;
-        //    ddlTransCompounding.Visible = false;
-        //    spanPaymentFreq.Visible = false;
-        //    ddlTransPaymentFreq.Visible = false;
-        //    spanPaymentType.Visible = false;
-        //    ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    spanStartDate.Visible = false;
-        //    txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = false;
-        //    txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    spanIntrest.Visible = false;
-        //    txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    spanConverted.Visible = false;
-        //    txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleTransfer()
-        //{
-        //    //spanTransactionDate.Visible = false;
-        //    //txtTransDate.Visible = false;
-        //    spanIntrestRate.Visible = false;
-        //    txtTransIntrestRate.Visible = false;
-        //    spanCompounding.Visible = false;
-        //    ddlTransCompounding.Visible = false;
-        //    spanPaymentFreq.Visible = false;
-        //    ddlTransPaymentFreq.Visible = false;
-        //    spanPaymentType.Visible = false;
-        //    ddlTransPaymentType.Visible = false;
-
-        //    spanMaturityDate.Visible = false;
-        //    txtTransMaturityDate.Visible = false;
-        //    spanStartDate.Visible = false;
-        //    txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    spanStopDate.Visible = false;
-        //    txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    spanIntrest.Visible = false;
-        //    txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    //spanProjTranf.Visible = false;
-        //    //txtTransProjTransfered.Visible = false;
-        //    //spanConverted.Visible = false;
-        //    //txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleNoteModification()
-        //{
-        //    //spanTransactionDate.Visible = false;
-        //    //txtTransDate.Visible = false;
-        //    //spanIntrestRate.Visible = false;
-        //    //txtTransIntrestRate.Visible = false;
-        //    //spanCompounding.Visible = false;
-        //    //ddlTransCompounding.Visible = false;
-        //    //spanPaymentFreq.Visible = false;
-        //    //ddlTransPaymentFreq.Visible = false;
-        //    //spanPaymentType.Visible = false;
-        //    //ddlTransPaymentType.Visible = false;
-
-        //    //spanMaturityDate.Visible = false;
-        //    //txtTransMaturityDate.Visible = false;
-        //    //spanStartDate.Visible = false;
-        //    //txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    //spanStopDate.Visible = false;
-        //    //txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    //spanIntrest.Visible = false;
-        //    //txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    spanProjTranf.Visible = false;
-        //    txtTransProjTransfered.Visible = false;
-        //    spanConverted.Visible = false;
-        //    txtTransProjConverted.Visible = false;
-        //}
-
-        //private void VisibleAdjustment()
-        //{
-        //    //spanTransactionDate.Visible = false;
-        //    //txtTransDate.Visible = false;
-        //    //spanIntrestRate.Visible = false;
-        //    //txtTransIntrestRate.Visible = false;
-        //    //spanCompounding.Visible = false;
-        //    //ddlTransCompounding.Visible = false;
-        //    //spanPaymentFreq.Visible = false;
-        //    //ddlTransPaymentFreq.Visible = false;
-        //    //spanPaymentType.Visible = false;
-        //    //ddlTransPaymentType.Visible = false;
-
-        //    //spanMaturityDate.Visible = false;
-        //    //txtTransMaturityDate.Visible = false;
-        //    //spanStartDate.Visible = false;
-        //    //txtTransStartDate.Visible = false;
-
-        //    //spanAmount.Visible = true;
-        //    //txtTransAmount.Visible = true;
-        //    //spanStopDate.Visible = false;
-        //    //txtTransStopDate.Visible = false;
-        //    //spanPrinciple.Visible = true;
-        //    //txtTransPrinciple.Visible = true;
-        //    //spanIntrest.Visible = false;
-        //    //txtTransIntrest.Visible = false;
-        //    //spanDescription.Visible = true;
-        //    //txtTransDescription.Visible = true;
-        //    //spanProjTranf.Visible = false;
-        //    //txtTransProjTransfered.Visible = false;
-        //    //spanConverted.Visible = false;
-        //    //txtTransProjConverted.Visible = false;
-        //}
-
-        private bool AddLoanTransactions(int LoanId, int TransType, DateTime TransDate, decimal? IntRate,
+        
+        private bool AddLoanTransactions(int LoanId, int TransType, DateTime? TransDate, decimal? IntRate,
             int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate, decimal? Amount, DateTime? StopDate,
             decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom)
         {
+            DateTime TransDate1 = TransDate ?? DateTime.MinValue;
             DateTime MatDate1 = MatDate ?? DateTime.MinValue;
             DateTime StartDate1 = StartDate ?? DateTime.MinValue;
             DateTime StopDate1 = StopDate ?? DateTime.MinValue;
 
 
-            LoanMaintenanceData.AddLoanTransactions(LoanId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate1, StartDate1,
+            LoanMaintenanceData.AddLoanTransactions(LoanId, TransType, TransDate1, IntRate, Compound, Freq, PayType, MatDate1, StartDate1,
                 Amount, StopDate1, Principal, Interest, Description, TransferTo, ConvertFrom);
 
             return true;
         }
 
-        private bool UpdateLoanTransactions(int LoanTransId, int TransType, DateTime TransDate, decimal? IntRate,
+        private bool UpdateLoanTransactions(int LoanTransId, int TransType, DateTime? TransDate, decimal? IntRate,
             int? Compound, int? Freq, int? PayType, DateTime? MatDate, DateTime? StartDate, decimal? Amount, DateTime? StopDate,
             decimal? Principal, decimal? Interest, string Description, int? TransferTo, int? ConvertFrom, bool RowIsActive)
         {
-            LoanMaintenanceData.UpdateLoanTransactions(LoanTransId, TransType, TransDate, IntRate, Compound, Freq, PayType, MatDate, StartDate,
-                Amount, StopDate, Principal, Interest, Description, TransferTo, ConvertFrom, RowIsActive);
+            DateTime TransDate1 = TransDate ?? DateTime.MinValue;
+            DateTime MatDate1 = MatDate ?? DateTime.MinValue;
+            DateTime StartDate1 = StartDate ?? DateTime.MinValue;
+            DateTime StopDate1 = StopDate ?? DateTime.MinValue;
+
+            LoanMaintenanceData.UpdateLoanTransactions(LoanTransId, TransType, TransDate1, IntRate, Compound, Freq, PayType, MatDate1, StartDate1,
+                Amount, StopDate1, Principal, Interest, Description, TransferTo, ConvertFrom, RowIsActive);
 
             return true;
         }
@@ -1145,8 +854,74 @@ namespace vhcbcloud
                     case "conversion":
                         PopulateConversionForm(dr);
                         break;
+                    case "disbursement":
+                        PopulateDisbursementForm(dr);
+                        break;
+                    case "forgiveness":
+                        PopulateForgivenessForm(dr);
+                        break;
+                    case "note modification":
+                        PopulateNoteModificationForm(dr);
+                        break;
+                    case "transfer":
+                        PopulateTransferForm(dr);
+                        break;
                 }
             }
+        }
+
+        private void PopulateTransferForm(DataRow dr)
+        {
+            tr_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            tr_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            tr_txtTransAmount.Text = dr["Amount"].ToString();
+            tr_txtTransDescription.Text = dr["Description"].ToString();
+            tr_txtTransProjTransfered.Text = dr["TransferTo"].ToString();
+            tr_txtTransProjConverted.Text = dr["ConvertFrom"].ToString();
+
+            tr_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            tr_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateNoteModificationForm(DataRow dr)
+        {
+            nm_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            PopulateDropDown(nm_ddlTransCompounding, dr["Compound"].ToString());
+            PopulateDropDown(nm_ddlTransPaymentType, dr["PayType"].ToString());
+            PopulateDropDown(nm_ddlTransPaymentFreq, dr["Freq"].ToString());
+
+            nm_txtTransIntrestRate.Text = dr["IntRate"].ToString();
+            nm_txtTransMaturityDate.Text = dr["MatDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MatDate"].ToString()).ToShortDateString();
+            nm_txtTransStartDate.Text = dr["StartDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StartDate"].ToString()).ToShortDateString();
+            nm_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            nm_txtTransIntrest.Text = dr["Interest"].ToString();
+            nm_txtTransAmount.Text = dr["Amount"].ToString();
+            nm_txtTransStopDate.Text = dr["StopDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StopDate"].ToString()).ToShortDateString();
+            nm_txtTransDescription.Text = dr["Description"].ToString();
+
+            nm_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            nm_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateForgivenessForm(DataRow dr)
+        {
+            fg_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+            fg_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            fg_txtTransAmount.Text = dr["Amount"].ToString();
+            fg_txtTransDescription.Text = dr["Description"].ToString();
+            
+            fg_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            fg_cbLoanTransActive.Enabled = true;
+        }
+
+        private void PopulateDisbursementForm(DataRow dr)
+        {
+            dis_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            dis_txtTransAmount.Text = dr["Amount"].ToString();
+            dis_txtTransDescription.Text = dr["Description"].ToString();
+
+            dis_cbLoanTransActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString()); ;
+            dis_cbLoanTransActive.Enabled = true;
         }
 
         private void PopulateConversionForm(DataRow dr)
@@ -1269,6 +1044,43 @@ namespace vhcbcloud
                     DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
                     cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text), cv_cbLoanTransActive.Checked);
             }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "disbursement")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    null, null, null,
+                    null, null,
+                    null, null, DataUtils.GetDecimal(dis_txtTransAmount.Text),
+                    null, DataUtils.GetDecimal(dis_txtTransPrinciple.Text), null,
+                    dis_txtTransDescription.Text, null, null, dis_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "forgiveness")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(fg_txtTransDate.Text), null, null,
+                    null, null,
+                    null, null, DataUtils.GetDecimal(fg_txtTransAmount.Text),
+                    null, DataUtils.GetDecimal(fg_txtTransPrinciple.Text), null,
+                    fg_txtTransDescription.Text, null, null, fg_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "transfer")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(tr_txtTransDate.Text), null, null,
+                    null, null,
+                    null, null, DataUtils.GetDecimal(tr_txtTransAmount.Text),
+                    null, DataUtils.GetDecimal(tr_txtTransPrinciple.Text), null,
+                    tr_txtTransDescription.Text, DataUtils.GetInt(tr_txtTransProjTransfered.Text), 
+                    DataUtils.GetInt(tr_txtTransProjConverted.Text), tr_cbLoanTransActive.Checked);
+            }
+            else if (ddlTransType.SelectedItem.Text.ToLower() == "note modification")
+            {
+                UpdateLoanTransactions(DataUtils.GetInt(hfLoanTransID.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                    DataUtils.GetDate(nm_txtTransDate.Text), DataUtils.GetDecimal(nm_txtTransIntrestRate.Text), DataUtils.GetInt(nm_ddlTransCompounding.SelectedValue),
+                    DataUtils.GetInt(nm_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(nm_ddlTransPaymentType.SelectedValue),
+                    DataUtils.GetDate(nm_txtTransMaturityDate.Text), DataUtils.GetDate(nm_txtTransStartDate.Text), DataUtils.GetDecimal(nm_txtTransAmount.Text),
+                    DataUtils.GetDate(nm_txtTransStopDate.Text), DataUtils.GetDecimal(nm_txtTransPrinciple.Text), DataUtils.GetDecimal(nm_txtTransIntrest.Text),
+                    nm_txtTransDescription.Text, null, null, nm_cbLoanTransActive.Checked);
+            }
             LogMessage("Transaction updated successfully");
 
             ddlTransType.SelectedIndex = -1;
@@ -1324,6 +1136,42 @@ namespace vhcbcloud
                         DataUtils.GetDate(cv_txtTransStopDate.Text), DataUtils.GetDecimal(cv_txtTransPrinciple.Text), DataUtils.GetDecimal(cv_txtTransIntrest.Text),
                         cv_txtTransDescription.Text, null, DataUtils.GetInt(cv_txtTransProjConverted.Text));
                 }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "disbursement")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        null, null, null,
+                        null, null,
+                        null, null, DataUtils.GetDecimal(dis_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(dis_txtTransPrinciple.Text), null,
+                        dis_txtTransDescription.Text, null, null);
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "forgiveness")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(fg_txtTransDate.Text), null, null,
+                        null, null,
+                        null, null, DataUtils.GetDecimal(fg_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(fg_txtTransPrinciple.Text), null,
+                        fg_txtTransDescription.Text, null, null);
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "transfer")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(tr_txtTransDate.Text), null, null,
+                        null, null,
+                        null, null, DataUtils.GetDecimal(tr_txtTransAmount.Text),
+                        null, DataUtils.GetDecimal(tr_txtTransPrinciple.Text), null,
+                        tr_txtTransDescription.Text, DataUtils.GetInt(tr_txtTransProjTransfered.Text), DataUtils.GetInt(tr_txtTransProjConverted.Text));
+                }
+                else if (ddlTransType.SelectedItem.Text.ToLower() == "note modification")
+                {
+                    IsSuccess = AddLoanTransactions(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlTransType.SelectedValue),
+                        DataUtils.GetDate(nm_txtTransDate.Text), DataUtils.GetDecimal(nm_txtTransIntrestRate.Text), DataUtils.GetInt(nm_ddlTransCompounding.SelectedValue),
+                        DataUtils.GetInt(nm_ddlTransPaymentFreq.SelectedValue), DataUtils.GetInt(nm_ddlTransPaymentType.SelectedValue),
+                        DataUtils.GetDate(nm_txtTransMaturityDate.Text), DataUtils.GetDate(nm_txtTransStartDate.Text), DataUtils.GetDecimal(nm_txtTransAmount.Text),
+                        DataUtils.GetDate(nm_txtTransStopDate.Text), DataUtils.GetDecimal(nm_txtTransPrinciple.Text), DataUtils.GetDecimal(nm_txtTransIntrest.Text),
+                        nm_txtTransDescription.Text, null, null);
+                }
             }
 
             if (IsSuccess)
@@ -1348,6 +1196,10 @@ namespace vhcbcloud
             dvAdgustment.Visible = false;
             dvCR.Visible = false;
             dvConversion.Visible = false;
+            dvDisbursement.Visible = false;
+            dvForgiveness.Visible = false;
+            dvTransfer.Visible = false;
+            dvNoteModification.Visible = false;
 
             ClearTransForm();
 
@@ -1374,18 +1226,18 @@ namespace vhcbcloud
                         dvConversion.Visible = true;
                         //VisibleConversion();
                         break;
-                        //case "disbursement":
-                        //    VisibleDisbursement();
-                        //    break;
-                        //case "forgiveness":
-                        //    VisibleForgiveness();
-                        //    break;
-                        //case "note modification":
-                        //    VisibleNoteModification();
-                        //    break;
-                        //case "transfer":
-                        //    VisibleTransfer();
-                        //    break;
+                    case "disbursement":
+                        dvDisbursement.Visible=true;
+                        break;
+                    case "forgiveness":
+                        dvForgiveness.Visible = true;
+                        break;
+                    case "note modification":
+                        dvNoteModification.Visible = true;
+                        break;
+                    case "transfer":
+                        dvTransfer.Visible = true;
+                        break;
                 }
             }
         }
@@ -1394,6 +1246,7 @@ namespace vhcbcloud
         {
             //ddlTransType.SelectedIndex = -1;
             btnAddTransaction.Visible = false;
+
             ad_txtTransDate.Text = "";
             ad_txtTransIntrestRate.Text = "";
             ad_ddlTransCompounding.SelectedIndex = -1;
@@ -1442,6 +1295,47 @@ namespace vhcbcloud
             cv_txtTransProjConverted.Text = "";
             cv_cbLoanTransActive.Checked = true;
             cv_cbLoanTransActive.Enabled = false;
+
+            //Disbursement
+            dis_txtTransAmount.Text = "";
+            dis_txtTransPrinciple.Text = "";
+            dis_txtTransDescription.Text = "";
+            dis_cbLoanTransActive.Checked = true;
+            dis_cbLoanTransActive.Enabled = false;
+
+            //forgiveness
+            fg_txtTransDate.Text = "";
+            fg_txtTransAmount.Text = "";
+            fg_txtTransPrinciple.Text = "";
+            fg_txtTransDescription.Text = "";
+            fg_cbLoanTransActive.Checked = true;
+            fg_cbLoanTransActive.Enabled = false;
+
+            //Transfer
+            tr_txtTransDate.Text = "";
+            tr_txtTransAmount.Text = "";
+            tr_txtTransPrinciple.Text = "";
+            tr_txtTransDescription.Text = "";
+            tr_txtTransProjTransfered.Text = "";
+            tr_txtTransProjConverted.Text = "";
+            tr_cbLoanTransActive.Checked = true;
+            tr_cbLoanTransActive.Enabled = false;
+
+            //NoteModification
+            nm_txtTransDate.Text = "";
+            nm_txtTransIntrestRate.Text = "";
+            nm_ddlTransCompounding.SelectedIndex = -1;
+            nm_ddlTransPaymentFreq.SelectedIndex = -1;
+            nm_ddlTransPaymentType.SelectedIndex = -1;
+            nm_txtTransMaturityDate.Text = "";
+            nm_txtTransStartDate.Text = "";
+            nm_txtTransAmount.Text = "";
+            nm_txtTransStopDate.Text = "";
+            nm_txtTransPrinciple.Text = "";
+            nm_txtTransIntrest.Text = "";
+            nm_txtTransDescription.Text = "";
+            nm_cbLoanTransActive.Checked = true;
+            nm_cbLoanTransActive.Enabled = false;
         }
     }
 }
