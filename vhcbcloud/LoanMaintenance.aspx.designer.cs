@@ -157,6 +157,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryApplicant;
         
         /// <summary>
+        /// txtPrimaryApplicant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrimaryApplicant;
+        
+        /// <summary>
+        /// AutoCompleteExtender2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender2;
+        
+        /// <summary>
         /// ddlFund control.
         /// </summary>
         /// <remarks>
@@ -166,13 +184,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlFund;
         
         /// <summary>
-        /// txtTaxCreditPartner control.
+        /// txtNoteAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTaxCreditPartner;
+        protected global::System.Web.UI.WebControls.TextBox txtNoteAmount;
         
         /// <summary>
         /// txtNoteOwner control.
@@ -182,6 +200,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNoteOwner;
+        
+        /// <summary>
+        /// txtTaxCreditPartner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTaxCreditPartner;
         
         /// <summary>
         /// cbLoanMasterActive control.
@@ -310,13 +337,13 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
         
         /// <summary>
-        /// txtNoteAmount control.
+        /// spnNoteAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNoteAmount;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnNoteAmt;
         
         /// <summary>
         /// txtIntrestRate control.
@@ -1793,5 +1820,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfLoanTransID;
+        
+        /// <summary>
+        /// hfSelectedNoteAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSelectedNoteAmt;
     }
 }

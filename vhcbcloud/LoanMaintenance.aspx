@@ -68,7 +68,7 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Project Info</h3>
+                                        <h3 class="panel-title">Loan Master</h3>
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddLoanMaster" runat="server" Text="Add New Loan Master" />
@@ -85,12 +85,18 @@
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtDescriptor" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 107px">
                                             <span class="labelClass">Applicant</span>
                                         </td>
                                         <td style="width: 270px">
                                             <asp:DropDownList ID="ddlPrimaryApplicant" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
+                                            <asp:TextBox ID="txtPrimaryApplicant" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"
+                                                ClientIDMode="Static" Visible="false"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtPrimaryApplicant" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetPrimaryApplicant">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Fund</span></td>
                                         <td>
@@ -102,21 +108,37 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Tax Credit Partnership</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Note Amount $</span></td>
                                         <td style="width: 250px">
-                                            <asp:TextBox ID="txtTaxCreditPartner" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtNoteAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 107px">
                                             <span class="labelClass">Owner of Note</span>
                                         </td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtNoteOwner" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Tax Credit Partnership</span></td>
                                         <td>
-                                            <asp:CheckBox ID="cbLoanMasterActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                            <asp:TextBox ID="txtTaxCreditPartner" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="cbLoanMasterActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 270px"></td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td></td>
+                                    </tr>
+
                                     <tr>
                                         <td>
                                             <asp:Button ID="btnLoanMaster" runat="server" Text="Add" class="btn btn-info"
@@ -157,12 +179,22 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Descriptor">
+                                        <asp:TemplateField HeaderText="Fund">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDescriptor" runat="Server" Text='<%# Eval("Descriptor") %>' />
+                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="NoteOwner">
+                                        <asp:TemplateField HeaderText="Note Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNoteAmt" runat="Server" Text='<%# Eval("NoteAmt", "{0:c2}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Applicant">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("ApplicantName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Note Owner">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNoteOwner" runat="Server" Text='<%# Eval("NoteOwner") %>' />
                                             </ItemTemplate>
@@ -223,9 +255,9 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Note Amount $</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Note Amt</span></td>
                                         <td style="width: 242px">
-                                            <asp:TextBox ID="txtNoteAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <span class="labelClass" runat="server" id="spnNoteAmt"></span>
                                         </td>
                                         <td style="width: 163px">
                                             <span class="labelClass">Interest Rate</span>
@@ -315,9 +347,26 @@
                                                 <asp:Label ID="lblNoteDate" runat="Server" Text='<%# Eval("NoteDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Note Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNoteAmt" runat="Server" Text='<%# Eval("NoteAmt", "{0:c2}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Loan Category">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLoanCategory" runat="Server" Text='<%# Eval("LoanCategory") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="MaturityDate">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblMaturityDate" runat="Server" Text='<%# Eval("MaturityDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Intrest Rate">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblIntRate" runat="Server" Text='<%# Eval("IntRate", "{0:0.00}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -941,12 +990,9 @@
                                                 <asp:CheckBox ID="nm_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
                                             </td>
                                             <td style="width: 344px"><span class="labelClass"></span></td>
-                                            <td style="width: 336px">
-                                                
-                                            </td>
+                                            <td style="width: 336px"></td>
                                             <td style="width: 354px"><span class="labelClass"></span></td>
-                                            <td>
-                                            </td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td colspan="6" style="height: 5px"></td>
@@ -1131,7 +1177,7 @@
             <asp:HiddenField ID="hfLoanDetailID" runat="server" />
             <asp:HiddenField ID="hfLoanNoteID" runat="server" />
             <asp:HiddenField ID="hfLoanTransID" runat="server" />
-
+            <asp:HiddenField ID="hfSelectedNoteAmt" runat="server" />
         </div>
     </div>
     <script language="javascript">

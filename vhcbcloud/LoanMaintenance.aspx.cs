@@ -156,6 +156,7 @@ namespace vhcbcloud
             txtDescriptor.Text = "";
             txtTaxCreditPartner.Text = "";
             txtNoteOwner.Text = "";
+            txtNoteAmount.Text = "";
             ddlFund.SelectedIndex = -1;
             ddlPrimaryApplicant.SelectedIndex = -1;
             cbLoanMasterActive.Checked = true;
@@ -297,13 +298,13 @@ namespace vhcbcloud
             if (btnLoanMaster.Text == "Add")
             {
                 LoanMaintenanceData.AddLoanMaster(DataUtils.GetInt(hfProjectId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
-                    txtNoteOwner.Text, DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    txtNoteOwner.Text, DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()));
             }
             else
             {
                 LoanMaintenanceData.UpdateLoanMaster(DataUtils.GetInt(hfLoanId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
-                    txtNoteOwner.Text, DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    txtNoteOwner.Text, DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), cbLoanMasterActive.Checked);
 
                 LogMessage("Loan Master updated successfully");
@@ -355,7 +356,6 @@ namespace vhcbcloud
             ddlLoanCat.SelectedIndex = -1;
             txtOriginalDateOfNote.Text = "";
             txtMaturityDate.Text = "";
-            txtNoteAmount.Text = "";
             txtIntrestRate.Text = "";
             ddlCompounded.SelectedIndex = -1;
             ddlPaymentFreq.SelectedIndex = -1;
@@ -388,7 +388,6 @@ namespace vhcbcloud
 
                         txtOriginalDateOfNote.Text = dr["NoteDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["NoteDate"].ToString()).ToShortDateString();
                         txtMaturityDate.Text = dr["MaturityDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MaturityDate"].ToString()).ToShortDateString();
-                        txtNoteAmount.Text = dr["NoteAmt"].ToString();
                         txtIntrestRate.Text = dr["IntRate"].ToString();
                         PopulateDropDown(ddlCompounded, dr["Compound"].ToString());
                         PopulateDropDown(ddlPaymentFreq, dr["Frequency"].ToString());
@@ -415,34 +414,60 @@ namespace vhcbcloud
 
         protected void btnAddLoanDetails_Click(object sender, EventArgs e)
         {
-            if (btnAddLoanDetails.Text == "Add")
+            if (IsLoanDetailFormValid())
             {
-                LoanMaintenanceData.AddLoanDetail(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
-                    DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
-                    DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetDecimal(txtIntrestRate.Text),
-                    DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
-                    DataUtils.GetDate(txtWatchDate.Text));
-                LogMessage("Loan details added successfully");
+                if (btnAddLoanDetails.Text == "Add")
+                {
+                    LoanMaintenanceData.AddLoanDetail(DataUtils.GetInt(hfLoanId.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
+                        DataUtils.GetDecimal(txtIntrestRate.Text),
+                        DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtWatchDate.Text));
+                    LogMessage("Loan details added successfully");
+                }
+                else
+                {
+                    LoanMaintenanceData.UpdateLoanDetail(DataUtils.GetInt(hfLoanDetailID.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
+                        DataUtils.GetDecimal(txtIntrestRate.Text),
+                        DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtWatchDate.Text), cbLoanDetailActive.Checked);
+                    LogMessage("Loan details updated successfully");
+                    hfLoanDetailID.Value = "";
+                    btnAddLoanDetails.Text = "Add";
+                    gvProjectLoanDetails.EditIndex = -1;
+                }
+                cbAddNewLoanDetails.Checked = false;
+                ClearLoanDetailsForm();
+                BindLoanMasterDetailsGrid();
             }
-            else
+        }
+
+        protected bool IsLoanDetailFormValid()
+        {
+            if (txtOriginalDateOfNote.Text.Trim() == "")
             {
-                LoanMaintenanceData.UpdateLoanDetail(DataUtils.GetInt(hfLoanDetailID.Value), DataUtils.GetInt(ddlLoanCat.SelectedValue.ToString()),
-                    DataUtils.GetDate(txtOriginalDateOfNote.Text), DataUtils.GetDate(txtMaturityDate.Text),
-                    DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetDecimal(txtIntrestRate.Text),
-                    DataUtils.GetInt(ddlCompounded.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPaymentFreq.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPaymentType.SelectedValue.ToString()),
-                    DataUtils.GetDate(txtWatchDate.Text), cbLoanDetailActive.Checked);
-                LogMessage("Loan details updated successfully");
-                hfLoanDetailID.Value = "";
-                btnAddLoanDetails.Text = "Add";
-                gvProjectLoanDetails.EditIndex = -1;
+                if (!DataUtils.IsDateTime(txtOriginalDateOfNote.Text.Trim()))
+                {
+                    LogMessage("Enter valid Original Date of Note");
+                    txtOriginalDateOfNote.Focus();
+                    return false;
+                }
             }
-            cbAddNewLoanDetails.Checked = false;
-            ClearLoanDetailsForm();
-            BindLoanMasterDetailsGrid();
+            if (txtMaturityDate.Text.Trim() == "")
+            {
+                if (!DataUtils.IsDateTime(txtMaturityDate.Text.Trim()))
+                {
+                    LogMessage("Enter valid Final Maturity Date of Note");
+                    txtMaturityDate.Focus();
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void BindProjectLoanMasterGrid()
@@ -496,7 +521,8 @@ namespace vhcbcloud
                         txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
                         txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
                         txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
-                        PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["ApplicantID"].ToString());
+                        txtNoteAmount.Text = drLoanMasterDetails["NoteAmt"].ToString();
+                        PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["AppNameID"].ToString());
                         PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
                         btnLoanMaster.Text = "Update";
 
@@ -536,7 +562,9 @@ namespace vhcbcloud
             SelectedLoanMasterInfo objSelectedLoanMasterInfo = GetLoanMasterSelectedRecordID(gvLoanMaster);
 
             hfLoanId.Value = objSelectedLoanMasterInfo.LoanID.ToString();
-            //hfSelectedBuilding.Value = objSelectedBldInfo.Building.ToString();
+            spnNoteAmt.InnerText = objSelectedLoanMasterInfo.NoteAmt.ToString();
+            hfSelectedNoteAmt.Value = objSelectedLoanMasterInfo.NoteAmt.ToString();
+
             dvNewLoanDetailInfo.Visible = true;
             dvNewEvent.Visible = true;
             dvTransaction.Visible = true;
@@ -559,12 +587,12 @@ namespace vhcbcloud
                     if (rbLoanMasterInfo.Checked)
                     {
                         HiddenField hf = (HiddenField)gvBldgInfo.Rows[i].Cells[0].FindControl("HiddenLoanID");
-                        //Label lblBuilding = (Label)gvBldgInfo.Rows[i].Cells[1].FindControl("lblBuilding");
+                        Label lblNoteAmt = (Label)gvBldgInfo.Rows[i].Cells[1].FindControl("lblNoteAmt");
 
                         if (hf != null)
                         {
                             objSelectedLoanMasterInfo.LoanID = DataUtils.GetInt(hf.Value);
-                            //objSelectedLoanMasterInfo.Building = DataUtils.GetInt(lblBuilding.Text);
+                            objSelectedLoanMasterInfo.NoteAmt = lblNoteAmt.Text;
                         }
                         break;
                     }
@@ -576,7 +604,7 @@ namespace vhcbcloud
         public class SelectedLoanMasterInfo
         {
             public int LoanID { set; get; }
-            public int Building { set; get; }
+            public string NoteAmt { set; get; }
         }
 
         private void BindLoanEventsGrid()
@@ -1239,8 +1267,9 @@ namespace vhcbcloud
                         dvTransfer.Visible = true;
                         break;
                 }
+
             }
-        }
+    }
 
         private void ClearTransForm()
         {
@@ -1336,6 +1365,21 @@ namespace vhcbcloud
             nm_txtTransDescription.Text = "";
             nm_cbLoanTransActive.Checked = true;
             nm_cbLoanTransActive.Enabled = false;
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetPrimaryApplicant(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetSortedApplicants(prefixText);
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
         }
     }
 }
