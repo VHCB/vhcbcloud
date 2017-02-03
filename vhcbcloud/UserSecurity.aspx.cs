@@ -224,7 +224,7 @@ namespace vhcbcloud
                         {
                             ViewState["SelectedTransId"] = hf.Value;
                             hfUserId.Value = hf.Value;
-                        }                        
+                        }
                         break;
                     }
                 }
@@ -266,12 +266,12 @@ namespace vhcbcloud
         {
             try
             {
-                if(ddlPage.SelectedIndex<=0)
+                if (ddlPage.SelectedIndex <= 0)
                 {
                     lblErrorMsg.Text = "Please select page to add an action";
                     return;
                 }
-                if(ddlAction.SelectedIndex<=0)
+                if (ddlAction.SelectedIndex <= 0)
                 {
                     lblErrorMsg.Text = "Please select Action to the selected page";
                     return;
