@@ -95,14 +95,17 @@ namespace vhcbcloud.Housing
                 hfHousingID.Value = drHousing["HousingID"].ToString();
                 PopulateDropDown(ddlHousingType, drHousing["LkHouseCat"].ToString());
                 HousingTypeModified();
-                txtTotalUnits.Text = drHousing["TotalUnits"].ToString();
+                spnTotalUnits.InnerText = drHousing["TotalUnits"].ToString();
+                //txtTotalUnits.Text = drHousing["TotalUnits"].ToString();
                 hfTotalUnitsFromDB.Value = drHousing["TotalUnits"].ToString();
                 txtGrossLivingSpace.Text = drHousing["Hsqft"].ToString();
                 txtUnitsFromPreProject.Text = drHousing["Previous"].ToString();
                 txtNetNewUnits.Text = drHousing["NewUnits"].ToString();
-                txtUnitsRelFromCov.Text = drHousing["RelCovenant"].ToString();
-                txtRestrictionsReleaseDate.Text = drHousing["ResRelease"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["ResRelease"].ToString()).ToShortDateString();
+                txtUnitsRemoved.Text = drHousing["UnitsRemoved"].ToString();
+                //txtUnitsRelFromCov.Text = drHousing["RelCovenant"].ToString();
+                //txtRestrictionsReleaseDate.Text = drHousing["ResRelease"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["ResRelease"].ToString()).ToShortDateString();
                 chkSash.Checked = DataUtils.GetBool(drHousing["SASH"].ToString());
+                chkVermod.Checked = DataUtils.GetBool(drHousing["Vermod"].ToString());
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
@@ -333,22 +336,22 @@ namespace vhcbcloud.Housing
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtTotalUnits.Text.ToString()) == true)
-            {
-                LogMessage("Enter Total Units");
-                txtTotalUnits.Focus();
-                return;
-            }
-            if (DataUtils.GetDecimal(txtTotalUnits.Text) <= 0)
-            {
-                LogMessage("Enter valid Total Units");
-                txtTotalUnits.Focus();
-                return;
-            }
+            //if (string.IsNullOrWhiteSpace(txtTotalUnits.Text.ToString()) == true)
+            //{
+            //    LogMessage("Enter Total Units");
+            //    txtTotalUnits.Focus();
+            //    return;
+            //}
+            //if (DataUtils.GetDecimal(txtTotalUnits.Text) <= 0)
+            //{
+            //    LogMessage("Enter valid Total Units");
+            //    txtTotalUnits.Focus();
+            //    return;
+            //}
 
-            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), DataUtils.GetInt(txtTotalUnits.Text),
+            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), DataUtils.GetInt(spnTotalUnits.InnerText),
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
-                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRelFromCov.Text), DataUtils.GetDate(txtRestrictionsReleaseDate.Text), 
+                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), chkVermod.Checked, 
                 chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text));
 
             BindHousingUnitsForm();

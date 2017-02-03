@@ -115,7 +115,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddLoanMaster(int ProjectId, string Descriptor, string TaxCreditPartner, string NoteOwner,
-            int FundID, int ApplicantID)
+            decimal NoteAmt, int FundID, int AppNameId)
         {
             try
             {
@@ -133,8 +133,9 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Descriptor", Descriptor));
                         command.Parameters.Add(new SqlParameter("TaxCreditPartner", TaxCreditPartner));
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
+                        command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
-                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -148,7 +149,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateLoanMaster(int LoanId, string Descriptor, string TaxCreditPartner, string NoteOwner,
-            int FundID, int ApplicantID, bool RowIsActive)
+            decimal NoteAmt, int FundID, int AppNameId, bool RowIsActive)
         {
             try
             {
@@ -166,8 +167,9 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Descriptor", Descriptor));
                         command.Parameters.Add(new SqlParameter("TaxCreditPartner", TaxCreditPartner));
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
+                        command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
-                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
+                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -215,7 +217,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static void AddLoanDetail(int LoanId, int LoanCat, DateTime NoteDate, DateTime MaturityDate, decimal NoteAmt,
+        public static void AddLoanDetail(int LoanId, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
             decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate)
         {
             try
@@ -234,7 +236,6 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LoanCat", LoanCat));
                         command.Parameters.Add(new SqlParameter("NoteDate", NoteDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : NoteDate));
                         command.Parameters.Add(new SqlParameter("MaturityDate", MaturityDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MaturityDate));
-                        command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("IntRate", IntRate));
                         command.Parameters.Add(new SqlParameter("Compound", Compound));
                         command.Parameters.Add(new SqlParameter("Frequency", Frequency));
@@ -252,7 +253,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLoanDetail(int LoanDetailID, int LoanCat, DateTime NoteDate, DateTime MaturityDate, decimal NoteAmt,
+        public static void UpdateLoanDetail(int LoanDetailID, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
             decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate, bool RowIsActive)
         {
             try
@@ -271,7 +272,6 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LoanCat", LoanCat));
                         command.Parameters.Add(new SqlParameter("NoteDate", NoteDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : NoteDate));
                         command.Parameters.Add(new SqlParameter("MaturityDate", MaturityDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MaturityDate));
-                        command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("IntRate", IntRate));
                         command.Parameters.Add(new SqlParameter("Compound", Compound));
                         command.Parameters.Add(new SqlParameter("Frequency", Frequency));

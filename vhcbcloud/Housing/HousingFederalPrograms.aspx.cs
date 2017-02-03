@@ -476,6 +476,7 @@ namespace vhcbcloud.Housing
         {
             try
             {
+
                 if (IsDetailFormValid())
                 {
                     if (btnSubmitHomeForm.Text.ToLower() == "submit")
@@ -488,7 +489,7 @@ namespace vhcbcloud.Housing
                             DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()));
                         ClearDetailForm();
                         PopulateDetailsForm();
-                        LogMessage("Project home details added successfully");
+                        LogMessage("Project " + hfProjectFedProgram.Value +" details added successfully");
                         btnSubmitHomeForm.Text = "Update";
                     }
                     else
@@ -501,7 +502,7 @@ namespace vhcbcloud.Housing
 
                         ClearDetailForm();
                         PopulateDetailsForm();
-                        LogMessage("Project home details updated successfully");
+                        LogMessage("Project "+ hfProjectFedProgram.Value +" details updated successfully");
                     }
                 }
             }
@@ -949,7 +950,7 @@ namespace vhcbcloud.Housing
         {
             if (ddlHomeAff.SelectedIndex == 0)
             {
-                LogMessage("Select Home");
+                LogMessage("Select HOME");
                 ddlHomeAff.Focus();
                 return;
             }
@@ -976,11 +977,11 @@ namespace vhcbcloud.Housing
             BindHomeAffordGrid();
 
             if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("Home Affordability Units already exist as in-active");
+                LogMessage("HOME Affordability Units already exist as in-active");
             else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("Home Affordability Units already exist");
+                LogMessage("HOME Affordability Units already exist");
             else
-                LogMessage("New Home Affordability Units added successfully");
+                LogMessage("New HOME Affordability Units added successfully");
         }
 
         private void BindHomeAffordGrid()
@@ -1013,7 +1014,7 @@ namespace vhcbcloud.Housing
                     {
                         hfHomeAffWarning.Value = "1";
                         WarningMessage(dvHomeAffWarning, lblHomeAffWarning,
-                            "The Home Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                            "The HOME Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
                     }
                     else
                     {
@@ -1070,7 +1071,7 @@ namespace vhcbcloud.Housing
             HousingUnitsServicesData.UpdateHousingHomeAffordUnits(ProjectHomeAffordUnitsID, Units, RowIsActive);
             gvNewHomeAff.EditIndex = -1;
 
-            LogMessage("Home Affordability Units updated successfully");
+            LogMessage("HOME Affordability Units updated successfully");
 
             BindHomeAffordGrid();
         }

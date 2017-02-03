@@ -48,11 +48,27 @@
                                     OnSelectedIndexChanged="ddlHousingType_SelectedIndexChanged">
                                 </asp:DropDownList>
                             </td>
-                            <td><span class="labelClass">Total Units</span></td>
-                            <td>
-                                <asp:TextBox ID="txtTotalUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            <td><span class="labelClass">Units from previous project:</span></td>
+                            <td><asp:TextBox ID="txtUnitsFromPreProject" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                
                             </td>
 
+                            <td><span class="labelClass">New Units:</span></td>
+                            <td>
+                                <asp:TextBox ID="txtNetNewUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="labelClass">Units Removed from Inventory</span></td>
+                            <td>
+                                <asp:TextBox ID="txtUnitsRemoved" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            </td>
+                            <td><span class="labelClass">Total Units</span></td>
+                            <td><span class="labelClass" id="spnTotalUnits" runat="server"></span>
+                            </td>
                             <td><span class="labelClass">Gross Living Space:</span></td>
                             <td>
                                 <asp:TextBox ID="txtGrossLivingSpace" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -62,32 +78,13 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass">Units from previous project:</span></td>
+                            <td><span class="labelClass">SASH</span></td>
                             <td>
-                                <asp:TextBox ID="txtUnitsFromPreProject" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                <asp:CheckBox ID="chkSash" runat="server" />
                             </td>
-                            <td><span class="labelClass">Net NEW Units:</span></td>
+                            <td><span class="labelClass">Vermod</span></td>
                             <td>
-                                <asp:TextBox ID="txtNetNewUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                            </td>
-                            <td><span class="labelClass">Units released from Covenant:</span></td>
-                            <td>
-                                <asp:TextBox ID="txtUnitsRelFromCov" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="height: 5px"></td>
-                        </tr>
-                        <tr>
-                            <td><span class="labelClass">Restrictions Release Date</span></td>
-                            <td>
-                                <asp:TextBox ID="txtRestrictionsReleaseDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtGrantExpirationDate" TargetControlID="txtRestrictionsReleaseDate">
-                                </ajaxToolkit:CalendarExtender>
-                            </td>
-                            <td><span class="labelClass">Sash</span></td>
-                            <td>
-                               <asp:CheckBox ID="chkSash" runat="server" />
+                               <asp:CheckBox ID="chkVermod" runat="server" />
                             </td>
                             <td><span class="labelClass">Federal Program Units</span></td>
                             <td>
@@ -971,9 +968,9 @@
 
     <script language="javascript">
         $(document).ready(function () {
-            $('#<%= txtTotalUnits.ClientID%>').blur(function () {
+           <%-- $('#<%= txtTotalUnits.ClientID%>').blur(function () {
                 CalculateNewUnits();
-            });
+            });--%>
             $('#<%= txtUnitsFromPreProject.ClientID%>').blur(function () {
                 CalculateNewUnits();
             });
@@ -1028,7 +1025,7 @@
         });
 
         function CalculateNewUnits() {
-            var TotalUnits = parseInt($('#<%=txtTotalUnits.ClientID%>').val(), 10);
+            var TotalUnits = parseInt($('#<%=spnTotalUnits.ClientID%>').text(), 10);
             var UnitsFromPreProject = parseInt($('#<%=txtUnitsFromPreProject.ClientID%>').val(), 10);
 
             var NewUnits = TotalUnits - UnitsFromPreProject;

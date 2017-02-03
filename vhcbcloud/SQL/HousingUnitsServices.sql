@@ -1,4 +1,4 @@
-use VHCBSandbox 
+use VHCB
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingDetailsById]') and type in (N'P', N'PC'))
@@ -12,8 +12,8 @@ create procedure GetHousingDetailsById
 as
 --exec GetHousingDetailsById 6588
 begin
-	select h.HousingID, h.LkHouseCat, lv.Description as HouseCat, h.Hsqft, h.TotalUnits, h.Previous, h.NewUnits, h.RelCovenant, 
-		h.ResRelease, h.AdaptReuse, h.NewConst, h.Rehab, h.RowIsActive, h.SASH, h.ServSuppUnits
+	select h.HousingID, h.LkHouseCat, lv.Description as HouseCat, h.Hsqft, h.TotalUnits, h.Previous, h.NewUnits,
+		h.RowIsActive, h.SASH, h.ServSuppUnits, UnitsRemoved, Vermod
 	from Housing h(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = h.LkHouseCat
 	where h.ProjectID = @ProjectID  
@@ -32,8 +32,8 @@ create procedure SubmitHousingUnits
 	@Hsqft			int,
 	@Previous		int,
 	@NewUnits		int,
-	@RelCovenant	int,
-	@ResRelease		Date,
+	@UnitsRemoved	int,
+	@IsVermod		bit,
 	@IsSash			bit,
 	@ServSuppUnits	int	
 
@@ -43,7 +43,7 @@ begin transaction
 	begin try
 
 	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @TotalUnits, Hsqft = @Hsqft, 
-	Previous = @Previous, NewUnits = @NewUnits, RelCovenant = @RelCovenant, ResRelease = @ResRelease, Sash = @IsSash, 
+	Previous = @Previous, NewUnits = @NewUnits, UnitsRemoved = @UnitsRemoved, Vermod = @IsVermod, Sash = @IsSash, 
 	ServSuppUnits = @ServSuppUnits
 	
 	from Housing(nolock) 
