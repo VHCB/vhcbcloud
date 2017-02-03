@@ -91,7 +91,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("userid", userId));
                 command.Parameters.Add(new SqlParameter("pageid", pageid));
                 command.Parameters.Add(new SqlParameter("fieldid", fieldid));
-                command.Parameters.Add(new SqlParameter("actionid", actionid));               
+                command.Parameters.Add(new SqlParameter("actionid", actionid));
 
                 using (connection)
                 {
@@ -225,6 +225,16 @@ namespace VHCBCommon.DataAccessLayer
             {
                 connection.Close();
             }
+        }
+
+        public static string GetMasterPageFileFromSession(int userid)
+        {
+            DataTable dt = new DataTable();
+            dt = GetuserPageSecurity(userid);
+            if (dt.Rows.Count > 0)
+                return "~/SiteNonAdmin.master";
+            else
+                return "~/Site.master";
         }
     }
 }
