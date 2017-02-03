@@ -94,24 +94,6 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.DropDownList ddlHousingType;
         
         /// <summary>
-        /// txtTotalUnits control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTotalUnits;
-        
-        /// <summary>
-        /// txtGrossLivingSpace control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrossLivingSpace;
-        
-        /// <summary>
         /// txtUnitsFromPreProject control.
         /// </summary>
         /// <remarks>
@@ -130,31 +112,31 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.TextBox txtNetNewUnits;
         
         /// <summary>
-        /// txtUnitsRelFromCov control.
+        /// txtUnitsRemoved control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUnitsRelFromCov;
+        protected global::System.Web.UI.WebControls.TextBox txtUnitsRemoved;
         
         /// <summary>
-        /// txtRestrictionsReleaseDate control.
+        /// spnTotalUnits control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRestrictionsReleaseDate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalUnits;
         
         /// <summary>
-        /// ce_txtGrantExpirationDate control.
+        /// txtGrossLivingSpace control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtGrantExpirationDate;
+        protected global::System.Web.UI.WebControls.TextBox txtGrossLivingSpace;
         
         /// <summary>
         /// chkSash control.
@@ -164,6 +146,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkSash;
+        
+        /// <summary>
+        /// chkVermod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkVermod;
         
         /// <summary>
         /// snFederalProgramUnits control.
