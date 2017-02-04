@@ -349,7 +349,8 @@ namespace vhcbcloud.Housing
             //    return;
             //}
 
-            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), DataUtils.GetInt(spnTotalUnits.InnerText),
+            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), 
+                DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), 
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
                 DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), chkVermod.Checked, 
                 chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text));

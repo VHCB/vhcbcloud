@@ -67,7 +67,7 @@
                                 <asp:TextBox ID="txtUnitsRemoved" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                             </td>
                             <td><span class="labelClass">Total Units</span></td>
-                            <td><span class="labelClass" id="spnTotalUnits" runat="server"></span>
+                            <td><span class="labelClass" id="spnTotalUnits" runat="server">0</span>
                             </td>
                             <td><span class="labelClass">Gross Living Space:</span></td>
                             <td>
@@ -972,9 +972,14 @@
                 CalculateNewUnits();
             });--%>
             $('#<%= txtUnitsFromPreProject.ClientID%>').blur(function () {
-                CalculateNewUnits();
+                CalculateTotalUnits();
             });
-
+            $('#<%= txtNetNewUnits.ClientID%>').blur(function () {
+                CalculateTotalUnits();
+            });
+            $('#<%= txtUnitsRemoved.ClientID%>').blur(function () {
+                CalculateTotalUnits();
+            });
             $('#<%= dvHousingSubTypeForm.ClientID%>').toggle($('#<%= cbAddHousingSubType.ClientID%>').is(':checked'));
 
             $('#<%= cbAddHousingSubType.ClientID%>').click(function () {
@@ -1024,12 +1029,20 @@
             }).change();--%>
         });
 
-        function CalculateNewUnits() {
-            var TotalUnits = parseInt($('#<%=spnTotalUnits.ClientID%>').text(), 10);
-            var UnitsFromPreProject = parseInt($('#<%=txtUnitsFromPreProject.ClientID%>').val(), 10);
+        function CalculateTotalUnits() {
+            //var TotalUnits = parseInt($('#<%=spnTotalUnits.ClientID%>').text(), 10);
+            var UnitsRemoved = parseInt($('#<%=txtUnitsRemoved.ClientID%>').val(), 10);
+            console.log("UnitsRemoved" + UnitsRemoved);
 
-            var NewUnits = TotalUnits - UnitsFromPreProject;
-            $('#<%= txtNetNewUnits.ClientID%>').val(NewUnits);
+            var UnitsFromPreProject = parseInt($('#<%=txtUnitsFromPreProject.ClientID%>').val(), 10);
+            console.log("UnitsFromPreProject" + UnitsFromPreProject);
+
+            var NewUnits = parseInt($('#<%=txtNetNewUnits.ClientID%>').val(), 10);
+            console.log("NewUnits" + NewUnits);
+
+            var TotalUnits = UnitsFromPreProject + NewUnits - UnitsRemoved;
+            $('#<%= spnTotalUnits.ClientID%>').text(TotalUnits);
+            console.log("TotalUnits:" + TotalUnits);
         };
 
         
