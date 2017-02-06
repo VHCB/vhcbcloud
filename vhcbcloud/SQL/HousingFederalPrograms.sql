@@ -621,6 +621,116 @@ begin transaction
 		commit transaction;
 go
 
+/* Income Restrictions */
+
+ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectFederalIncomeRestList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectFederalIncomeRestList 
+go
+
+create procedure GetProjectFederalIncomeRestList
+(
+	@ProjectFederalID		int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetProjectFederalIncomeRestList 1, 0
+begin
+	select  hs.ProjectFederalIncomeRestID, hs.LkAffordunits, lv.description as Home, hs.Numunits, hs.RowIsActive
+	from ProjectFederalIncomeRest hs(nolock)
+	join LookupValues lv(nolock) on lv.TypeId = hs.LkAffordunits
+	where hs.ProjectFederalID = @ProjectFederalID 
+		and (@IsActiveOnly = 0 or hs.RowIsActive = @IsActiveOnly)
+		order by hs.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddProjectFederalIncomeRest]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddProjectFederalIncomeRest
+go
+
+create procedure dbo.AddProjectFederalIncomeRest
+(
+	@ProjectFederalID		int,
+	@LkAffordunits			int,
+	@Numunits				int,
+	@isDuplicate			bit output,
+	@isActive				bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1
+		from ProjectFederalIncomeRest(nolock)
+		where ProjectFederalID = @ProjectFederalID 
+			and LkAffordunits = @LkAffordunits
+    )
+	begin
+		insert into ProjectFederalIncomeRest(ProjectFederalID, LkAffordunits, Numunits)
+		values(@ProjectFederalID, @LkAffordunits, @Numunits)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ProjectFederalIncomeRest(nolock)
+		where ProjectFederalID = @ProjectFederalID 
+			and LkAffordunits = @LkAffordunits
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectFederalIncomeRest]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectFederalIncomeRest
+go
+
+create procedure dbo.UpdateProjectFederalIncomeRest
+(
+	@ProjectFederalIncomeRestID	int,
+	@Numunits					int,
+	@RowIsActive				bit
+) as
+begin transaction
+
+	begin try
+
+	update ProjectFederalIncomeRest set Numunits = @Numunits, RowIsActive = @RowIsActive, DateModified = getdate()
+	from ProjectFederalIncomeRest
+	where ProjectFederalIncomeRestID = @ProjectFederalIncomeRestID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 /* ProjectHomeAffordUnits */
 
  if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHousingHomeAffordUnitsList]') and type in (N'P', N'PC'))
