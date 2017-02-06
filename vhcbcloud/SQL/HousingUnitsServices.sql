@@ -28,7 +28,7 @@ create procedure SubmitHousingUnits
 (
 	@HousingID		int,
 	@LkHouseCat		int,
-	@TotalUnits		int,
+	--@TotalUnits		int,
 	@Hsqft			int,
 	@Previous		int,
 	@NewUnits		int,
@@ -42,7 +42,7 @@ begin transaction
 
 	begin try
 
-	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @TotalUnits, Hsqft = @Hsqft, 
+	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @Previous + @NewUnits - @UnitsRemoved, Hsqft = @Hsqft, 
 	Previous = @Previous, NewUnits = @NewUnits, UnitsRemoved = @UnitsRemoved, Vermod = @IsVermod, Sash = @IsSash, 
 	ServSuppUnits = @ServSuppUnits
 	

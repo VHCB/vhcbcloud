@@ -115,7 +115,7 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlUnitType, 168);
             BindLookUP(ddlUnitOccupancyUnitType, 166);
             //BindLookUP(ddlMedianIncome, 167);
-            BindLookUP(ddlHomeAff, 109);
+            
         }
 
         private void PopulateInspectorDropDown(DropDownList ddList, string Role)
@@ -215,7 +215,8 @@ namespace vhcbcloud.Housing
 
         protected void AddFederalProgram_Click(object sender, EventArgs e)
         {
-            HousingFederalProgramsResult objHousingFederalProgramsResult = HousingFederalProgramsData.AddProjectFederal(DataUtils.GetInt(hfProjectId.Value),
+            HousingFederalProgramsResult objHousingFederalProgramsResult = 
+                HousingFederalProgramsData.AddProjectFederal(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlFederalProgram.SelectedValue.ToString()), DataUtils.GetInt(txtTotFedProgUnits.Text));
 
             BindGrids();
@@ -275,6 +276,7 @@ namespace vhcbcloud.Housing
                 spnUnitSizes.InnerText = "HOME Unit Sizes";
                 spnRentRest.InnerText = "HOME Rent Restrictions";
                 spnIncomeRest.InnerText = "HOME Income Restrictions";
+                spnIncomeRestrictionsLabel.InnerText = "HOME";
 
                 spnCHDORequest.Visible = true;
                 chkCHDO.Visible = spnCHDORequest.Visible = true;
@@ -282,6 +284,8 @@ namespace vhcbcloud.Housing
                 ddlCHRDoRecert.Visible = true;
                 txtAffPeriod.Visible = false;
                 ddlAffPeriod.Visible = true;
+
+                BindLookUP(ddlHomeAff, 173);
             }
             else if (hfProjectFedProgram.Value.ToLower() == "htf")
             {
@@ -292,6 +296,7 @@ namespace vhcbcloud.Housing
                 spnUnitSizes.InnerText = "HTF Unit Sizes";
                 spnRentRest.InnerText = "HTF Rent Restrictions";
                 spnIncomeRest.InnerText = "HTF Income Restrictions";
+                spnIncomeRestrictionsLabel.InnerText = "HTF";
 
                 spnCHDORequest.Visible = false;
                 chkCHDO.Visible = false;
@@ -299,6 +304,8 @@ namespace vhcbcloud.Housing
                 ddlCHRDoRecert.Visible = false;
                 txtAffPeriod.Visible = true;
                 ddlAffPeriod.Visible = false;
+
+                BindLookUP(ddlHomeAff, 174);
             }
 
             dvFedProgramHome.Visible = true;
@@ -948,9 +955,11 @@ namespace vhcbcloud.Housing
 
         protected void btnAddHomeAff_Click(object sender, EventArgs e)
         {
+            string label = hfProjectFedProgram.Value;
+
             if (ddlHomeAff.SelectedIndex == 0)
             {
-                LogMessage("Select HOME");
+                LogMessage("Select " + label);
                 ddlHomeAff.Focus();
                 return;
             }
@@ -968,7 +977,7 @@ namespace vhcbcloud.Housing
                 return;
             }
 
-            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddHousingHomeAffordUnits(DataUtils.GetInt(hfHousingID.Value),
+            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddProjectFederalIncomeRest(DataUtils.GetInt(hfProjectFederalID.Value),
                 DataUtils.GetInt(ddlHomeAff.SelectedValue.ToString()), DataUtils.GetInt(txtHomeUnits.Text));
             ddlHomeAff.SelectedIndex = -1;
             txtHomeUnits.Text = "";
@@ -977,18 +986,20 @@ namespace vhcbcloud.Housing
             BindHomeAffordGrid();
 
             if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
-                LogMessage("HOME Affordability Units already exist as in-active");
+                LogMessage(label + " Affordability Units already exist as in-active");
             else if (objHousingUnitseResult.IsDuplicate)
-                LogMessage("HOME Affordability Units already exist");
+                LogMessage(label + "Affordability Units already exist");
             else
-                LogMessage("New HOME Affordability Units added successfully");
+                LogMessage("New " + label +" Affordability Units added successfully");
         }
 
         private void BindHomeAffordGrid()
         {
+            string label = hfProjectFedProgram.Value;
             try
             {
-                DataTable dt = HousingUnitsServicesData.GetHousingHomeAffordUnitsList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
+                DataTable dt = HousingUnitsServicesData.GetProjectFederalIncomeRestList(DataUtils.GetInt(hfProjectFederalID.Value), 
+                    cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -1014,7 +1025,7 @@ namespace vhcbcloud.Housing
                     {
                         hfHomeAffWarning.Value = "1";
                         WarningMessage(dvHomeAffWarning, lblHomeAffWarning,
-                            "The HOME Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
+                            "The "+label+" Affordability Units must be equal to Total Program Units " + hfTotalProgramUnits.Value);
                     }
                     else
                     {
@@ -1049,6 +1060,8 @@ namespace vhcbcloud.Housing
 
         protected void gvNewHomeAff_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
+            string label = hfProjectFedProgram.Value;
+
             int rowIndex = e.RowIndex;
 
             string strUnits = ((TextBox)gvNewHomeAff.Rows[rowIndex].FindControl("txtHomeNumunits")).Text;
@@ -1064,14 +1077,14 @@ namespace vhcbcloud.Housing
                 return;
             }
 
-            int ProjectHomeAffordUnitsID = DataUtils.GetInt(((Label)gvNewHomeAff.Rows[rowIndex].FindControl("lblProjectHomeAffordUnitsID")).Text);
+            int ProjectFederalIncomeRestID = DataUtils.GetInt(((Label)gvNewHomeAff.Rows[rowIndex].FindControl("lblProjectFederalIncomeRestID")).Text);
             int Units = DataUtils.GetInt(strUnits);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvNewHomeAff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            HousingUnitsServicesData.UpdateHousingHomeAffordUnits(ProjectHomeAffordUnitsID, Units, RowIsActive);
+            HousingUnitsServicesData.UpdateProjectFederalIncomeRest(ProjectFederalIncomeRestID, Units, RowIsActive);
             gvNewHomeAff.EditIndex = -1;
 
-            LogMessage("HOME Affordability Units updated successfully");
+            LogMessage(label + " Affordability Units updated successfully");
 
             BindHomeAffordGrid();
         }
