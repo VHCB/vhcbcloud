@@ -91,7 +91,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("userid", userId));
                 command.Parameters.Add(new SqlParameter("pageid", pageid));
                 command.Parameters.Add(new SqlParameter("fieldid", fieldid));
-                command.Parameters.Add(new SqlParameter("actionid", actionid));               
+                command.Parameters.Add(new SqlParameter("actionid", actionid));
 
                 using (connection)
                 {
@@ -119,6 +119,41 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetuserPageSecurity";
+                command.Parameters.Add(new SqlParameter("userid", userid));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetMasterPageSecurity(int userid)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetMasterPageSecurity";
                 command.Parameters.Add(new SqlParameter("userid", userid));
                 using (connection)
                 {
@@ -225,6 +260,16 @@ namespace VHCBCommon.DataAccessLayer
             {
                 connection.Close();
             }
+        }
+
+        public static string GetMasterPageFileFromSession(int userid)
+        {
+            DataTable dt = new DataTable();
+            dt = GetuserPageSecurity(userid);
+            if (dt.Rows.Count > 0)
+                return "~/SiteNonAdmin.master";
+            else
+                return "~/Site.master";
         }
     }
 }

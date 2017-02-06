@@ -53,6 +53,7 @@
     <Compile Include="Conservation\ConservationSourcesUsesData.cs" />
     <Compile Include="Conservation\ConservationStewardshipData.cs" />
     <Compile Include="Conservation\ConservationSummaryData.cs" />
+    <Compile Include="ControlUtilities.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="EntityData.cs" />

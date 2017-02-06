@@ -268,6 +268,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
+    <Content Include="SiteLogin.Master" />
+    <Content Include="SiteNonAdmin.Master" />
     <Content Include="SQL\ConservationAct250.sql" />
     <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />
@@ -360,7 +362,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Site.Mobile.Master" />
     <Content Include="SiteWithoutHeader.Master" />
-    <Content Include="SiteLogin.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -863,13 +864,6 @@
     <Compile Include="Reallocations.aspx.designer.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SiteLogin.Master.cs">
-      <DependentUpon>SiteLogin.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SiteLogin.Master.designer.cs">
-      <DependentUpon>SiteLogin.Master</DependentUpon>
-    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -883,6 +877,20 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SiteLogin.Master.cs">
+      <DependentUpon>SiteLogin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteLogin.Master.designer.cs">
+      <DependentUpon>SiteLogin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SiteNonAdmin.Master.cs">
+      <DependentUpon>SiteNonAdmin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteNonAdmin.Master.designer.cs">
+      <DependentUpon>SiteNonAdmin.Master</DependentUpon>
     </Compile>
     <Compile Include="SiteWithoutHeader.Master.cs">
       <DependentUpon>SiteWithoutHeader.Master</DependentUpon>
