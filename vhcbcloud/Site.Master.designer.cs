@@ -13,193 +13,193 @@ namespace vhcbcloud {
     public partial class SiteMaster {
         
         /// <summary>
-        /// idAmericorps control.
+        /// Americorps control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idAmericorps;
+        protected global::System.Web.UI.WebControls.LinkButton Americorps;
         
         /// <summary>
-        /// idBoardDates control.
+        /// BoardDates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idBoardDates;
+        protected global::System.Web.UI.WebControls.LinkButton BoardDates;
         
         /// <summary>
-        /// idCheckRequestDates control.
+        /// CheckRequestDates control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idCheckRequestDates;
+        protected global::System.Web.UI.WebControls.LinkButton CheckRequestDates;
         
         /// <summary>
-        /// idLookupMaintenance control.
+        /// LookupMaintenance control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idLookupMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton LookupMaintenance;
         
         /// <summary>
-        /// idFederalRentalAffordability control.
+        /// FederalRentalAffordability control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idFederalRentalAffordability;
+        protected global::System.Web.UI.WebControls.LinkButton FederalRentalAffordability;
         
         /// <summary>
-        /// idConservationAct250 control.
+        /// ConservationAct250 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idConservationAct250;
+        protected global::System.Web.UI.WebControls.LinkButton ConservationAct250;
         
         /// <summary>
-        /// idCommitments control.
+        /// Commitments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idCommitments;
+        protected global::System.Web.UI.WebControls.LinkButton Commitments;
         
         /// <summary>
-        /// idFinalizeTransactions control.
+        /// FinalizeTransactions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idFinalizeTransactions;
+        protected global::System.Web.UI.WebControls.LinkButton FinalizeTransactions;
         
         /// <summary>
-        /// idProjectCheckRequest control.
+        /// ProjectCheckRequest control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idProjectCheckRequest;
+        protected global::System.Web.UI.WebControls.LinkButton ProjectCheckRequest;
         
         /// <summary>
-        /// idCashRefund control.
+        /// CashRefund control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idCashRefund;
+        protected global::System.Web.UI.WebControls.LinkButton CashRefund;
         
         /// <summary>
-        /// idFundType control.
+        /// FundType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idFundType;
+        protected global::System.Web.UI.WebControls.LinkButton FundType;
         
         /// <summary>
-        /// idFundGrantMaintenance control.
+        /// FundGrantMaintenance control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idFundGrantMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton FundGrantMaintenance;
         
         /// <summary>
-        /// idManageuserInfo control.
+        /// ManageuserInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idManageuserInfo;
+        protected global::System.Web.UI.WebControls.LinkButton ManageuserInfo;
         
         /// <summary>
-        /// idEntityMaintenance control.
+        /// EntityMaintenance control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idEntityMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton EntityMaintenance;
         
         /// <summary>
-        /// idEventMaintenance control.
+        /// EventMaintenance control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idEventMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton EventMaintenance;
         
         /// <summary>
-        /// idUserSecurity control.
+        /// UserSecurity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idUserSecurity;
+        protected global::System.Web.UI.WebControls.LinkButton UserSecurity;
         
         /// <summary>
-        /// idLoandMaintenance control.
+        /// LoandMaintenance control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idLoandMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton LoandMaintenance;
         
         /// <summary>
-        /// idFileHold control.
+        /// FileHold control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idFileHold;
+        protected global::System.Web.UI.WebControls.LinkButton FileHold;
         
         /// <summary>
-        /// idExago control.
+        /// Exago control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idExago;
+        protected global::System.Web.UI.WebControls.LinkButton Exago;
         
         /// <summary>
-        /// idAbout control.
+        /// About control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idAbout;
+        protected global::System.Web.UI.WebControls.LinkButton About;
         
         /// <summary>
-        /// idContact control.
+        /// Contact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor idContact;
+        protected global::System.Web.UI.WebControls.LinkButton Contact;
         
         /// <summary>
         /// MainContent control.

@@ -8,6 +8,7 @@ using vhcbcloud.Models;
 using VHCBCommon.DataAccessLayer;
 using System.Configuration;
 using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace vhcbcloud.Account
 {
@@ -16,6 +17,7 @@ namespace vhcbcloud.Account
         private bool IsValidUser;
         private bool IsFirstTimeUser;
         private string adPath, domainName;
+        private int LoginUserId;
         private string _UserName;
         private LdapAuthentication adAuth;
 
@@ -104,6 +106,18 @@ namespace vhcbcloud.Account
             string[] UserAccountData = AccountData.CheckUserLogin(UserName, Password).Split('|');
             IsValidUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[0]));
             IsFirstTimeUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[1]));
+            LoginUserId = Convert.ToInt32(UserAccountData[1]);
+
+            MasterPage mPage;
+            mPage = Page.Master;
+
+            LinkButton mpMenuLinks;
+            mpMenuLinks = (LinkButton)this.Master.FindControl("idAmericorps");
+            if (mpMenuLinks != null)
+            {
+                mpMenuLinks.Visible = false;
+                mpMenuLinks.Text = "";
+            }
         }
     }
 }

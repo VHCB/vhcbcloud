@@ -73,19 +73,17 @@
                         </ul>--%>
 
                         <ul class="nav navbar-nav">
-
-
                             <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File Maintenance</a>
                                         <ul class="dropdown-menu">
                                             <%--<li class="menu-item "><a runat="server" href="~/Applicant.aspx">Applicant</a></li>
                                             <li class="menu-item "><a runat="server" href="~/default.aspx">Project</a></li>--%>
-                                            <li class="menu-item "><a id="idAmericorps" runat="server" href="~/Americorps.aspx">Americorps</a></li>
-                                            <li class="menu-item "><a id="idBoardDates" runat="server" href="~/BoardDates.aspx">Board Dates</a></li>
+                                            <li class="menu-item "><asp:LinkButton id="Americorps" runat="server" href="Americorps.aspx">Americorps</asp:LinkButton></li>
+                                            <li class="menu-item "><asp:LinkButton id="BoardDates" runat="server" href="Boarddates.aspx">Board Dates</asp:LinkButton></li>
                                             <%--<li class="menu-item "><a runat="server" href="~/FundingSource">Funding Source</a></li>--%>
-                                            <li class="menu-item "><a id="idCheckRequestDates" runat="server" href="~/CheckRequestdates.aspx">Check Request</a></li>
-                                            <li class="menu-item "><a id="idLookupMaintenance" runat="server" href="~/LookupMaintenance.aspx">Lookup Maintenance</a></li>
+                                            <li class="menu-item "><asp:LinkButton id="CheckRequestDates" runat="server" href="CheckRequestdates.aspx">Check Request</asp:LinkButton></li>
+                                            <li class="menu-item "><asp:LinkButton id="LookupMaintenance" runat="server" href="LookupMaintenance.aspx">Lookup Maintenance</asp:LinkButton></li>
                                             
                                             <%--<li class="menu-item "><a runat="server" href="~/ProjectMaintenance.aspx">Project Maintenance</a></li>--%>
                                             <%--<li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>--%>
@@ -95,13 +93,13 @@
                                             <li class="menu-item dropdown dropdown-submenu">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Housing</a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a runat="server" id="idFederalRentalAffordability" href="~/FederalRentalAffordability.aspx">Rental Affordability</a></li>
+                                                    <li><asp:LinkButton runat="server" id="FederalRentalAffordability" href="FederalRentalAffordability.aspx">Rental Affordability</asp:LinkButton></li>
                                                 </ul>
                                             </li>
                                             <li class="menu-item dropdown dropdown-submenu">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Conservation</a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a runat="server" id="idConservationAct250" href="~/ConservationAct250.aspx">Act 250</a></li>
+                                                    <li><asp:LinkButton runat="server" id="ConservationAct250" href="ConservationAct250.aspx">Act 250</asp:LinkButton></li>
                                                 </ul>
                                             </li>
                                             <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>
@@ -114,33 +112,33 @@
                                     </li>
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Financial Transactions</a>
                                         <ul class="dropdown-menu">
-                                            <li class="menu-item "><a id="idCommitments" runat="server" href="~/Commitments.aspx">Board Transactions</a></li>
-                                            <li class="menu-item "><a id="idFinalizeTransactions" runat="server" href="~/FinalizeTransactions.aspx">Finalize Transactions</a></li>
+                                            <li class="menu-item "><asp:LinkButton id="Commitments" runat="server" href="Commitments.aspx">Board Transactions</asp:LinkButton></li>
+                                            <li class="menu-item "><asp:LinkButton id="FinalizeTransactions" runat="server" href="FinalizeTransactions.aspx">Finalize Transactions</asp:LinkButton></li>
                                             <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Cash Transactions</a>
                                                 <ul class="dropdown-menu">
-                                                    <li class="menu-item "><a id="idProjectCheckRequest" runat="server" href="~/ProjectCheckRequest.aspx">Check Request</a></li>
-                                                    <li class="menu-item "><a id="idCashRefund" runat="server" href="~/cashrefund.aspx">Cash Refund</a></li>
+                                                    <li class="menu-item "><asp:LinkButton id="ProjectCheckRequest" runat="server" href="ProjectCheckRequest.aspx">Check Request</asp:LinkButton></li>
+                                                    <li class="menu-item "><asp:LinkButton id="CashRefund" runat="server" href="cashrefund.aspx">Cash Refund</asp:LinkButton></li>
                                                 </ul>
                                             </li>
-                                            <li class="menu-item "><a id="idFundType" runat="server" href="~/FundType.aspx">Fund Type</a></li>
-                                            <li class="menu-item "><a id="idFundGrantMaintenance" runat="server" href="~/FundGrantMaintenance.aspx">Fund/Grant Maintenance</a></li>
+                                            <li class="menu-item "><asp:LinkButton id="FundType" runat="server" href="FundType.aspx">Fund Type</asp:LinkButton></li>
+                                            <li class="menu-item "><asp:LinkButton id="FundGrantMaintenance" runat="server" href="FundGrantMaintenance.aspx">Fund/Grant Maintenance</asp:LinkButton></li>
                                         </ul>
                                     </li>
                                     <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Users</a>
                                         <ul class="dropdown-menu">
-                                            <li class="menu-item "><a id="idManageuserInfo" runat="server" href="~/Account/ManageUserInfo.aspx">Manage Users</a></li>
+                                            <li class="menu-item "><asp:LinkButton id="ManageuserInfo" runat="server" href="Account/ManageUserInfo.aspx">Manage Users</asp:LinkButton></li>
                                         </ul>
                                     </li>
-                                     <li class="menu-item "><a id="idEntityMaintenance" runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>
-                                    <li class="menu-item "><a id="idEventMaintenance" runat="server" href="~/EventMaintenance.aspx">Event Maintenance</a></li>
-                                    <li class="menu-item "><a id="idUserSecurity" runat="server" href="~/UserSecurity.aspx">User Security</a></li>
+                                     <li class="menu-item "><asp:LinkButton id="EntityMaintenance" runat="server" href= "EntityMaintenance.aspx">Entity Maintenance</asp:LinkButton></li>
+                                    <li class="menu-item "><asp:LinkButton id="EventMaintenance" runat="server" href="EventMaintenance.aspx">Event Maintenance</asp:LinkButton></li>
+                                    <li class="menu-item "><asp:LinkButton id="UserSecurity" runat="server" href="UserSecurity.aspx">User Security</asp:LinkButton></li>
                                 </ul>
                             </li>
-                             <li><a id="idLoandMaintenance" runat="server" href="~/LoanMaintenance.aspx">Loans</a></li>
-                            <li><a id="idFileHold" runat="server" href="~/FileHold">FileHold</a></li>
-                            <li><a id="idExago" runat="server" href="~/Exago">Exago</a></li>
-                            <li><a id="idAbout" runat="server" href="~/About">About</a></li>
-                            <li><a id="idContact" runat="server" href="~/Contact">Contact</a></li>
+                             <li><asp:LinkButton id="LoandMaintenance" runat="server" href="LoanMaintenance.aspx">Loans</asp:LinkButton></li>
+                            <li><asp:LinkButton id="FileHold" runat="server" href="FileHold">FileHold</asp:LinkButton></li>
+                            <li><asp:LinkButton id="Exago" runat="server" href="Exago">Exago</asp:LinkButton></li>
+                            <li><asp:LinkButton id="About" runat="server" href="About">About</asp:LinkButton></li>
+                            <li><asp:LinkButton id="Contact" runat="server" href="Contact">Contact</asp:LinkButton></li>
                         </ul>
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
@@ -64,12 +66,44 @@ namespace vhcbcloud
                     throw new InvalidOperationException("Validation of Anti-XSRF token failed.");
                 }
             }
+        }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            int userid = GetUserId();
+            DataTable dt = UserSecurityData.GetMasterPageSecurity(userid);
+            foreach (var link in this.Master.FindDescendants<LinkButton>())
+            {
+                string linkId = link.ID;
+                foreach (DataRow dRow in dt.Rows)
+                {
+                    if(dRow["PageDescription"].ToString().ToLower() == linkId.ToLower())
+                    {
+                        ((LinkButton)Master.FindControl(linkId)).Visible = false;
+                    }
+                }
+            }
+
+            ((Panel)Master.FindControl("AccountUserInfo")).Visible = true;
+            base.OnPreRender(e);
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+           
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.Name);
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
