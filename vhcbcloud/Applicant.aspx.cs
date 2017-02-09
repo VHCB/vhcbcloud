@@ -41,7 +41,14 @@ namespace vhcbcloud
             }
             return applicantLastNames.ToArray();
         }
-
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.Page.User.Identity.IsAuthenticated)

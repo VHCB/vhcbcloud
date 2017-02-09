@@ -9,6 +9,7 @@ using VHCBCommon.DataAccessLayer;
 using System.Configuration;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using System.Data;
 
 namespace vhcbcloud.Account
 {
@@ -73,6 +74,30 @@ namespace vhcbcloud.Account
             return false;
         }
 
+
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            int userid = GetUserId();
+            DataTable dt = UserSecurityData.GetMasterPageSecurity(userid);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
+
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.Name);
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
 
         private void GeneralLogin()
         {

@@ -24,7 +24,14 @@ namespace vhcbcloud
             GetGrantInfoSelectedRecord(gvGranInfo);
             lblErrorMsg.Text = "";
         }
-
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
         protected void BindLookups()
         {
             try

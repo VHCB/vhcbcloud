@@ -35,6 +35,14 @@ namespace vhcbcloud
                 ddlProj.Visible = false;
             }
         }
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]

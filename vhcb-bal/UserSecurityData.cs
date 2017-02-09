@@ -262,6 +262,19 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataTable GetUserId(string username)
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(username);                
+                return dtUser != null ? GetMasterPageSecurity(Convert.ToInt32(dtUser.Rows[0][0].ToString())) : null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public static string GetMasterPageFileFromSession(int userid)
         {
             DataTable dt = new DataTable();
