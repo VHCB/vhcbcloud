@@ -222,8 +222,16 @@ namespace vhcbcloud
         {
             try
             {
-                LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()), txtDescription.Text);
-                lblErrorMsg.Text = "View name details saved successfully";
+                if (txtDescription.Text != "")
+                {
+                    LookupMaintenanceData.AddLookups(Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString()), txtDescription.Text);
+                    lblErrorMsg.Text = "View name details saved successfully";
+                }
+                else
+                {
+                    lblErrorMsg.Text = "Please enter description";
+                    return;
+                }
                 gvLookup.PageIndex = 0;
                 BindLookupMaintenance();
             }

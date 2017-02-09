@@ -44,7 +44,14 @@ namespace vhcbcloud
                 BudgetPeriodSelectionChanged();
             }
         }
-
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
         private void PopulateProjectDetails()
         {
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));

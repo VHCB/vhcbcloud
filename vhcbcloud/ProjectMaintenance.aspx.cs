@@ -53,7 +53,14 @@ namespace vhcbcloud
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
         }
-
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
         private void ProjectNotesSetUp(string ProjectId)
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));

@@ -32,7 +32,14 @@ namespace vhcbcloud
             }
         }
 
-      
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
 
         protected void gvCheckReq_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {

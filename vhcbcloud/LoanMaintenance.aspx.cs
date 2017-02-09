@@ -35,7 +35,14 @@ namespace vhcbcloud
                 BindControls();
             }
         }
-
+        protected void Page_PreInit(Object sender, EventArgs e)
+        {
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt.Rows.Count > 0)
+            {
+                this.MasterPageFile = "SiteNonAdmin.Master";
+            }
+        }
         private void BindControls()
         {
             BindLookUP(ddlLoanCat, 179);
