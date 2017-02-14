@@ -121,13 +121,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtProjectName;
         
         /// <summary>
-        /// ddlPrimaryApplicant control.
+        /// txtPrimaryApplicant control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryApplicant;
+        protected global::System.Web.UI.WebControls.TextBox txtPrimaryApplicant;
+        
+        /// <summary>
+        /// AutoCompleteExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender1;
         
         /// <summary>
         /// cbPrimaryApplicant control.
