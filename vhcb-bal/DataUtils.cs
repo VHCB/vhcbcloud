@@ -1,5 +1,5 @@
 ﻿using System;
-
+ 
 namespace VHCBCommon.DataAccessLayer
 {
     public static class DataUtils

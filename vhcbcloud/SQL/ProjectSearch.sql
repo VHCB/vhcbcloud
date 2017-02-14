@@ -95,7 +95,7 @@ create procedure dbo.ProjectSearch
 (
 	@ProjNum				nvarchar(24) = null,
 	@ProjectName			nvarchar(200) = null,
-	@AppNameID				int = null,
+	@AppName				varchar(150) = null,
 	@LKProgram				int = null,
 	@Town					nvarchar(100) = null,
 	@County					nvarchar(40) = null,
@@ -108,11 +108,15 @@ begin transaction
 -- exec ProjectSearch  null, null, null, 145, null, 'Windsor ', null, null
 -- exec ProjectSearch  null, null, null, 145, null, null, 133, null
 -- exec ProjectSearch  null, null, 1015, 145, null, null, 133, null
+-- exec ProjectSearch  null, null, '0TBD', 145, null, null, 133, null
 -- exec ProjectSearch  '0000-000', null, null, null, null, null, null, null
 --select * from projects_v
 	begin try
 	declare @ProjNum1 varchar(50)
+	declare @AppNameID int
 	select @ProjNum1 = dbo.GetHyphenProjectNumber(@ProjNum);
+
+	select @AppNameID = appnameid from Appname(nolock) where ApplicantName = @AppName
 
 	if(isnull(@IsPrimaryApplicant, 0) = 0)
 	begin
@@ -220,4 +224,74 @@ begin
 end
 return  @FinalNum
 end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetPrimaryApplicantsAutoEx]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetPrimaryApplicantsAutoEx
+go
+
+create procedure dbo.GetPrimaryApplicantsAutoEx
+(
+	@Prefix varchar(25)
+)
+--exec GetPrimaryApplicantsAutoEx 'ad'
+--exec GetApplicant
+--exec GetPrimaryApplicants
+as
+begin transaction
+	begin try
+	
+		select distinct an.appnameid, an.ApplicantName
+		from Appname an
+		join ApplicantAppName aan on aan.appnameid = an.appnameid
+		join ProjectApplicant pa(nolock) on aan.ApplicantID = pa.ApplicantId
+		where pa.LkApplicantRole = 358 and an.ApplicantName like @Prefix + '%'
+			and pa.RowIsActive = 1
+			and aan.DefName = 1
+		order by an.ApplicantName asc
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetApplicantAutoEx]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetApplicantAutoEx
+go
+
+create procedure dbo.GetApplicantAutoEx
+(
+	@Prefix varchar(25)
+)
+--exec GetApplicantAutoEx 'ad'
+as
+begin transaction
+	begin try
+		select distinct an.appnameid, an.ApplicantName
+		from Appname an
+		join ApplicantAppName aan on aan.appnameid = an.appnameid
+		--join ProjectApplicant pa(nolock) on aan.ApplicantID = pa.ApplicantId
+		where an.ApplicantName like @Prefix + '%'
+		order by an.ApplicantName asc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
 go

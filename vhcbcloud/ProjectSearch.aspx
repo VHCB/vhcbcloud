@@ -78,14 +78,15 @@
                                 <td><span class="labelClass">Number</span></td>
                                 <td>
                                     <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
-                                  <%--  <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
+                                    <%--  <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                                         MaskType="Number" TargetControlID="txtProjNum">
                                     </ajaxToolkit:MaskedEditExtender>--%>
-                                    <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1"
+                                    <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum"
+                                        MinimumPrefixLength="1" UseContextKey="true"
                                         EnableCaching="true" CompletionSetCount="1"
                                         CompletionInterval="100" ServiceMethod="GetProjectNumber">
                                     </ajaxToolkit:AutoCompleteExtender>
-                                    
+
                                     <%--<asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server" ToolTip="Enter Project Number"></asp:TextBox>
                                     
                                      <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="4"
@@ -101,9 +102,16 @@
                                 </td>
                                 <td><span class="labelClass">Entity</span></td>
                                 <td>
-                                    <asp:DropDownList ID="ddlPrimaryApplicant" CssClass="clsDropDown" runat="server">
-                                    </asp:DropDownList>
-                                    &nbsp;&nbsp;<asp:CheckBox ID="cbPrimaryApplicant" Text="Primary" Checked="true" runat="server" AutoPostBack="true" OnCheckedChanged="cbPrimaryApplicant_CheckedChanged" />
+                                    <%--<asp:DropDownList ID="ddlPrimaryApplicant" CssClass="clsDropDown" runat="server">
+                                    </asp:DropDownList>--%>
+                                    <asp:TextBox ID="txtPrimaryApplicant" CssClass="clsTextBoxBlue1" Width="100px" Height="22px" runat="server"
+                                        ClientIDMode="Static" onkeyup="SetContextKey()"></asp:TextBox>
+                                    <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtPrimaryApplicant"
+                                        MinimumPrefixLength="1" UseContextKey="true"
+                                        EnableCaching="true" CompletionSetCount="1"
+                                        CompletionInterval="100" ServiceMethod="GetApplicants" OnClientPopulated="onListPopulated">
+                                    </ajaxToolkit:AutoCompleteExtender>
+                                    &nbsp;&nbsp;<asp:CheckBox ID="cbPrimaryApplicant" Text="Primary" Checked="true" runat="server" />
                                 </td>
                             </tr>
                             <tr>
@@ -230,4 +238,21 @@
             </div>
         </div>
     </div>
+    <script language="javascript">
+        $(document).ready(function () {
+
+            $('#<%= cbPrimaryApplicant.ClientID%>').click(function () {
+                $('#<%=txtPrimaryApplicant.ClientID%>').val('');
+            }).change();
+        });
+
+        function SetContextKey() {
+            $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=cbPrimaryApplicant.ClientID %>").checked);
+        }
+        function onListPopulated() {
+            var completionList = $find('<%=AutoCompleteExtender1.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+    </script>
 </asp:Content>

@@ -723,7 +723,4 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
-=======
-
->>>>>>> f6e5e26ca9c53ab47c7e6651127fec38ff46dbbd
 go

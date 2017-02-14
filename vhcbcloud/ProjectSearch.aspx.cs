@@ -47,7 +47,7 @@ namespace vhcbcloud
         {
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlProjectType, 119);
-            BindPrimaryApplicants();
+            //BindPrimaryApplicants();
             BindProjectTowns();
             BindCounties();
         }
@@ -78,27 +78,27 @@ namespace vhcbcloud
             }
         }
 
-        private void BindPrimaryApplicants()
-        {
-            try
-            {
-                ddlPrimaryApplicant.Items.Clear();
+        //private void BindPrimaryApplicants()
+        //{
+        //    try
+        //    {
+        //        ddlPrimaryApplicant.Items.Clear();
 
-                if (cbPrimaryApplicant.Checked)
-                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetPrimaryApplicants");
-                else
-                    ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetApplicant");
+        //        if (cbPrimaryApplicant.Checked)
+        //            ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetPrimaryApplicants");
+        //        else
+        //            ddlPrimaryApplicant.DataSource = EntityData.GetApplicants("GetApplicant");
 
-                ddlPrimaryApplicant.DataValueField = "appnameid";
-                ddlPrimaryApplicant.DataTextField = "Applicantname";
-                ddlPrimaryApplicant.DataBind();
-                ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
-            }
-        }
+        //        ddlPrimaryApplicant.DataValueField = "appnameid";
+        //        ddlPrimaryApplicant.DataTextField = "Applicantname";
+        //        ddlPrimaryApplicant.DataBind();
+        //        ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
+        //    }
+        //}
 
         private void BindProjectTowns()
         {
@@ -170,15 +170,15 @@ namespace vhcbcloud
             gvSearchresults.PageIndex = pageIndex;
         }
 
-        protected void cbPrimaryApplicant_CheckedChanged(object sender, EventArgs e)
-        {
-            BindPrimaryApplicants();
-        }
+        //protected void cbPrimaryApplicant_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    BindPrimaryApplicants();
+        //}
 
         protected void btnProjectSearch_Click(object sender, EventArgs e)
         {
             dvSearchResults.Visible = true;
-            DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, ddlPrimaryApplicant.SelectedValue.ToString(),
+            DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
                 ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
 
@@ -261,7 +261,8 @@ namespace vhcbcloud
             dvSearchResults.Visible = false;
             txtProjNum.Text = "";
             txtProjectName.Text = "";
-            ddlPrimaryApplicant.SelectedIndex = -1;
+            txtPrimaryApplicant.Text = "";
+            //ddlPrimaryApplicant.SelectedIndex = -1;
             cbPrimaryApplicant.Checked = true;
             ddlProgram.SelectedIndex = -1;
             ddlTown.SelectedIndex = -1;
@@ -287,7 +288,7 @@ namespace vhcbcloud
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
-        public static string[] GetProjectNumber(string prefixText, int count)
+        public static string[] GetProjectNumber(string prefixText, int count, string contextKey)
         {
             DataTable dt = new DataTable();
             dt = ProjectSearchData.GetProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
@@ -298,6 +299,31 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString()+"'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetApplicants(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbers(prefixText);
+
+            if (bool.Parse(contextKey))
+                dt = EntityData.GetApplicantsEx("GetPrimaryApplicantsAutoEx", prefixText);
+            else
+                dt = EntityData.GetApplicantsEx("GetApplicantAutoEx", prefixText);
+
+            List<string> Applicants = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+            }
+            return Applicants.ToArray();
+
+            //ddlPrimaryApplicant.DataValueField = "appnameid";
+            //ddlPrimaryApplicant.DataTextField = "Applicantname";
+            //ddlPrimaryApplicant.DataBind();
+            //ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
         }
     }
 }
