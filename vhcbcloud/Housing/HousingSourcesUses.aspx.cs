@@ -421,7 +421,7 @@ namespace vhcbcloud.Housing
                     return;
                 }
 
-                if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) <= 0)
+                if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) < 0)
                 {
                     LogMessage("Enter Valid VHCB Use Total");
                     txtVHCBUseAmount.Focus();
@@ -442,7 +442,7 @@ namespace vhcbcloud.Housing
                     return;
                 }
 
-                if (DataUtils.GetDecimal(txtOtherUseAmount.Text) <= 0)
+                if (DataUtils.GetDecimal(txtOtherUseAmount.Text) < 0)
                 {
                     LogMessage("Enter Valid Other Use total");
                     txtOtherUseAmount.Focus();

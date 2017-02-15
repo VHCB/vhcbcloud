@@ -54,7 +54,7 @@ create procedure dbo.AddConservationSource
 	@ProjectId		int,
 	@LKBudgetPeriod int,
 	@LkConSource	int,
-	@Total			decimal,
+	@Total			decimal(18,2),
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -153,7 +153,7 @@ create procedure dbo.UpdateConservationSource
 (
 	@ConserveSourcesID	int,
 	--@LkConSource		int,
-	@Total				decimal,
+	@Total				decimal(18, 2),
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -218,9 +218,9 @@ create procedure dbo.AddConservationUse
 	@ProjectId		int,
 	@LKBudgetPeriod int,
 	@LkConUseVHCB	int,
-	@VHCBTotal		decimal,
+	@VHCBTotal		decimal(18, 2),
 	@LkConUseOther	int,
-	@OtherTotal		decimal,
+	@OtherTotal		decimal(18, 2),
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -318,8 +318,8 @@ go
 create procedure dbo.UpdateConservationUse
 (
 	@ConserveUsesID	int,
-	@VHCBTotal			decimal,
-	@OtherTotal			decimal,
+	@VHCBTotal			decimal(18, 2),
+	@OtherTotal			decimal(18, 2),
 	@RowIsActive		bit
 ) as
 begin transaction

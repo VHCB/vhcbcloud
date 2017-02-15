@@ -158,7 +158,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                              <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
@@ -274,7 +274,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
@@ -290,7 +290,7 @@
                                                 <asp:Label ID="lblOtherTotal" runat="Server" Text='<%# Eval("OtherTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("OtherTotal") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("OtherTotal", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterOtherTotalAmount" Text=""></asp:Label>
