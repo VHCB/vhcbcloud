@@ -186,7 +186,7 @@ begin transaction
 	
 	update HouseSource set 
 		Total = @Total, RowIsActive = @RowIsActive, DateModified = getdate()
-	from HouseSource where @HouseSourceID = @HouseSourceID
+	from HouseSource where HouseSourceID = @HouseSourceID
 
 	end try
 	begin catch
