@@ -100,7 +100,7 @@ create procedure dbo.AddHouseSource
 	@HousingID		int,
 	@LKBudgetPeriod int,
 	@LkHouseSource	int,
-	@Total			decimal,
+	@Total			decimal(18, 2),
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -177,7 +177,7 @@ go
 create procedure dbo.UpdateHouseSource
 (
 	@HouseSourceID		int,
-	@Total				decimal,
+	@Total				decimal(18, 2),
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -242,7 +242,7 @@ create procedure dbo.AddHouseUse
 	@HousingID			int,
 	@LKBudgetPeriod		int,
 	@LkHouseUseVHCB		int,
-	@VHCBTotal			decimal,
+	@VHCBTotal			decimal(8, 2),
 	@LKHouseUseOther	int,
 	@OtherTotal			decimal,
 	@isDuplicate		bit output,
@@ -321,8 +321,8 @@ go
 create procedure dbo.UpdateHouseUse
 (
 	@HouseUseID			int,
-	@VHCBTotal			decimal,
-	@OtherTotal			decimal,
+	@VHCBTotal			decimal(18, 2),
+	@OtherTotal			decimal(18, 2),
 	@RowIsActive		bit
 ) as
 begin transaction
