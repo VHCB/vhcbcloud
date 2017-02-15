@@ -13,7 +13,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
     {
         #region Housing
         public static void SubmitHousingUnits(int HousingID, int LkHouseCat, int Hsqft, int Previous, 
-            int NewUnits, int UnitsRemoved, bool IsVermod, bool IsSash, int ServSuppUnits)
+            int NewUnits, int UnitsRemoved, int MHIP, bool IsSash, int ServSuppUnits)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("Previous", Previous));
                         command.Parameters.Add(new SqlParameter("NewUnits", NewUnits));
                         command.Parameters.Add(new SqlParameter("UnitsRemoved", UnitsRemoved));
-                        command.Parameters.Add(new SqlParameter("IsVermod", IsVermod));
+                        command.Parameters.Add(new SqlParameter("MHIP", MHIP));
                         command.Parameters.Add(new SqlParameter("IsSash", IsSash));
                         command.Parameters.Add(new SqlParameter("ServSuppUnits", ServSuppUnits));
 
