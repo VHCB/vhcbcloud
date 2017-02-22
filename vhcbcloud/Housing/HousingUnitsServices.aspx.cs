@@ -112,7 +112,8 @@ namespace vhcbcloud.Housing
                 //txtUnitsRelFromCov.Text = drHousing["RelCovenant"].ToString();
                 //txtRestrictionsReleaseDate.Text = drHousing["ResRelease"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["ResRelease"].ToString()).ToShortDateString();
                 chkSash.Checked = DataUtils.GetBool(drHousing["SASH"].ToString());
-                chkVermod.Checked = DataUtils.GetBool(drHousing["Vermod"].ToString());
+                //chkVermod.Checked = DataUtils.GetBool(drHousing["Vermod"].ToString());
+                txtMHIP.Text = drHousing["Vermod"].ToString();
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
@@ -359,7 +360,7 @@ namespace vhcbcloud.Housing
             HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), 
                 DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), 
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
-                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), chkVermod.Checked, 
+                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text), 
                 chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text));
 
             BindHousingUnitsForm();

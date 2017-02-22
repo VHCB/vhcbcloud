@@ -82,9 +82,9 @@
                             <td>
                                 <asp:CheckBox ID="chkSash" runat="server" />
                             </td>
-                            <td><span class="labelClass">Vermod</span></td>
+                            <td><span class="labelClass">MHIP</span></td>
                             <td>
-                               <asp:CheckBox ID="chkVermod" runat="server" />
+                               <asp:TextBox ID="txtMHIP" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                             </td>
                             <td><span class="labelClass">Federal Program Units</span></td>
                             <td>

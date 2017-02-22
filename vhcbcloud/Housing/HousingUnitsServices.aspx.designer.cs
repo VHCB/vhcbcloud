@@ -148,13 +148,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox chkSash;
         
         /// <summary>
-        /// chkVermod control.
+        /// txtMHIP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkVermod;
+        protected global::System.Web.UI.WebControls.TextBox txtMHIP;
         
         /// <summary>
         /// snFederalProgramUnits control.

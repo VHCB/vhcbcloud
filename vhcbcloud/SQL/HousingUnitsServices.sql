@@ -33,7 +33,7 @@ create procedure SubmitHousingUnits
 	@Previous		int,
 	@NewUnits		int,
 	@UnitsRemoved	int,
-	@IsVermod		bit,
+	@MHIP			int,
 	@IsSash			bit,
 	@ServSuppUnits	int	
 
@@ -43,7 +43,7 @@ begin transaction
 	begin try
 
 	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @Previous + @NewUnits - @UnitsRemoved, Hsqft = @Hsqft, 
-	Previous = @Previous, NewUnits = @NewUnits, UnitsRemoved = @UnitsRemoved, Vermod = @IsVermod, Sash = @IsSash, 
+	Previous = @Previous, NewUnits = @NewUnits, UnitsRemoved = @UnitsRemoved, Vermod = @MHIP, Sash = @IsSash, 
 	ServSuppUnits = @ServSuppUnits
 	
 	from Housing(nolock) 
