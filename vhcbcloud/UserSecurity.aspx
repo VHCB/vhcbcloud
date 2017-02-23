@@ -164,19 +164,19 @@
                                                                 <asp:Label ID="lblUser" runat="Server" Text='<%# Eval("username") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Page" SortExpression="PageDescription">
+                                                        <asp:TemplateField HeaderText="Page" SortExpression="PageDesc">
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblPage" runat="Server" Text='<%# Eval("PageDescription") %>' />
+                                                                <asp:Label ID="lblPage" runat="Server" Text='<%# Eval("pagedesc") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField  HeaderText="Field" SortExpression="FieldDescription">
+                                                        <asp:TemplateField  HeaderText="Field" SortExpression="FieldDesc">
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblField" runat="Server" Text='<%# Eval("FieldDescription") %>' />
+                                                                <asp:Label ID="lblField" runat="Server" Text='<%# Eval("FieldDesc") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Action" SortExpression="ActionDescription">
+                                                        <asp:TemplateField HeaderText="Action" SortExpression="ActionDesc">
                                                              <ItemTemplate>
-                                                                <asp:Label ID="lblAction" runat="Server" Text='<%# Eval("ActionDescription") %>' />
+                                                                <asp:Label ID="lblAction" runat="Server" Text='<%# Eval("ActionDesc") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:CommandField ShowDeleteButton="True" />
