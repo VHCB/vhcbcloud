@@ -111,14 +111,14 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[add_n
 drop procedure [dbo].add_new_project
 go
 
-alter procedure dbo.add_new_project
+create procedure dbo.add_new_project
 (
 	@projNum			nvarchar(12),
 	@LkProjectType		int,
 	@LkProgram			int,
 	@Manager			int,
 	--@verified			bit,
-	@appNameId			int,
+	@appName			varchar(150),
 	@projName			varchar(75),
 	@isDuplicate		bit output,
 	@ProjectId			int output
@@ -162,7 +162,7 @@ begin transaction
 			from AppName an(nolock)
 			join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
 			join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
-			where an.AppNameID = @appNameId
+			where an.Applicantname = @appName
 
 			insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
 			values (@ProjectId, @applicantId, 358, 1)
@@ -182,6 +182,7 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectInfo]') and type in (N'P', N'PC'))
 drop procedure [dbo].UpdateProjectInfo
@@ -263,9 +264,10 @@ begin transaction
 
 	begin try
 	declare @AppNameID int
+	declare @AppName varchar(150)
 	declare @projectName varchar(75)
 
-	Select @AppNameID =  an.AppNameID 
+	Select @AppNameID =  an.AppNameID, @AppName = an.Applicantname
 	from AppName an(nolock)
 	join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
 	join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
@@ -279,7 +281,7 @@ begin transaction
 	where p.ProjectId = @ProjectId and pn.DefName = 1
 
 	select p.Proj_num, @projectName as projectName, p.LkProjectType, p.LkProgram,p.AppRec, p.LkAppStatus, p.Manager, p.LkBoardDate, p.ClosingDate, p.ExpireDate, p.verified,  p.userid, 
-		@AppNameID as AppNameId
+		@AppNameID as AppNameId, @AppName AppName
 	from project p(nolock) 
 	left join projectname pn(nolock) on p.projectid = pn.projectid
 	where pn.defname = 1 and p.ProjectId = @ProjectId

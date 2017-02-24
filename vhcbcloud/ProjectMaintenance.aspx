@@ -107,8 +107,14 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Primary Applicant</span></td>
                                         <td>
-                                            <asp:DropDownList ID="ddlPrimaryApplicant" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                            <%--<asp:DropDownList ID="ddlPrimaryApplicant" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
+                                            <asp:TextBox ID="txtPrimaryApplicant" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
+                                                ClientIDMode="Static" Visible="true"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="PrimaryApplicantAE" runat="server" TargetControlID="txtPrimaryApplicant" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onApplicantListPopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                     </tr>
                                     <tr>
@@ -846,6 +852,12 @@
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
         }
 
+        function onApplicantListPopulated() {
+            var completionList = $find('<%=PrimaryApplicantAE.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+
         function onListPopulated() {
             var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
             completionList.style.width = 'auto';
@@ -928,9 +940,9 @@
             });--%>
         });
 
-        <%--function PopupAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= ddlProject.ClientID%>  option:selected").val())
-        };--%>
+        function PopupAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjectId.ClientID%>").val())
+        };
 
         function IsProjectNumberExist() {
             $.ajax({

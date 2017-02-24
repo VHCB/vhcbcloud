@@ -13,7 +13,7 @@ namespace DataAccessLayer
     public class ProjectMaintenanceData
     {
         public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, //DateTime ClosingDate, 
-            int appNameId, string projName)
+            string appName, string projName)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace DataAccessLayer
                         //command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClosingDate));
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", GrantClosingDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : GrantClosingDate));
                         //command.Parameters.Add(new SqlParameter("verified", verified));
-                        command.Parameters.Add(new SqlParameter("appNameId", appNameId));
+                        command.Parameters.Add(new SqlParameter("appName", appName));
                         command.Parameters.Add(new SqlParameter("projName", projName));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
@@ -68,7 +68,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, int appNameId, string projName)
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace DataAccessLayer
                         //command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ClosingDate)));
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
                         //command.Parameters.Add(new SqlParameter("verified", verified));
-                        command.Parameters.Add(new SqlParameter("appNameId", appNameId));
+                        command.Parameters.Add(new SqlParameter("appName", appName));
                         // command.Parameters.Add(new SqlParameter("projName", projName));
 
                         command.CommandTimeout = 60 * 5;

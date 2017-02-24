@@ -92,7 +92,7 @@ namespace vhcbcloud
             BindLookUP(ddlEventProgram, 34);
             BindLookUP(ddlProjectType, 119);
             BindManagers();
-            BindPrimaryApplicants();
+            //BindPrimaryApplicants();
             //BindProjects(ddlProject);
             //BindProjects(ddlEventProject);
             BindApplicants(ddlApplicantName);
@@ -153,22 +153,22 @@ namespace vhcbcloud
             }
         }
 
-        private void BindPrimaryApplicants()
-        {
-            try
-            {
-                ddlPrimaryApplicant.Items.Clear();
-                ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
-                ddlPrimaryApplicant.DataValueField = "appnameid";
-                ddlPrimaryApplicant.DataTextField = "Applicantname";
-                ddlPrimaryApplicant.DataBind();
-                ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
-            }
-        }
+        //private void BindPrimaryApplicants()
+        //{
+        //    try
+        //    {
+        //        ddlPrimaryApplicant.Items.Clear();
+        //        ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
+        //        ddlPrimaryApplicant.DataValueField = "appnameid";
+        //        ddlPrimaryApplicant.DataTextField = "Applicantname";
+        //        ddlPrimaryApplicant.DataBind();
+        //        ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
+        //    }
+        //}
 
         protected void BindManagers()
         {
@@ -250,7 +250,8 @@ namespace vhcbcloud
             ddlManager.SelectedIndex = -1;
             //txtClosingDate.Text = "";
             //cbVerified.Checked = false;
-            ddlPrimaryApplicant.SelectedIndex = -1;
+            //ddlPrimaryApplicant.SelectedIndex = -1;
+            txtPrimaryApplicant.Text = "";
             txtProjectName.Text = "";
         }
 
@@ -423,7 +424,8 @@ namespace vhcbcloud
             GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
             //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
             PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
-            PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
+            txtPrimaryApplicant.Text = drProjectDetails["AppName"].ToString();
+            //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
 
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
@@ -577,8 +579,7 @@ namespace vhcbcloud
                 {
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
-                        txtProjectName.Text);
+                        txtPrimaryApplicant.Text, txtProjectName.Text);
 
                     if (ap.IsDuplicate)
                         LogMessage("Project already exist");
@@ -620,8 +621,7 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()),
-                        txtProjectName.Text);
+                        txtPrimaryApplicant.Text, txtProjectName.Text);
 
                     this.BindProjectEntityGrid();
 
@@ -1080,10 +1080,10 @@ namespace vhcbcloud
                 return false;
             }
 
-            if (ddlPrimaryApplicant.Items.Count > 1 && ddlPrimaryApplicant.SelectedIndex == 0)
+            if (txtPrimaryApplicant.Text == "")
             {
                 LogMessage("Select Primary Applicant");
-                ddlPrimaryApplicant.Focus();
+                txtPrimaryApplicant.Focus();
                 return false;
             }
 
@@ -1779,6 +1779,21 @@ namespace vhcbcloud
                     dt.Rows[i]["project_name"].ToString());
                 ProjNumbers.Add(str);
                 //ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetPrimaryApplicant(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetSortedApplicants(prefixText);
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
         }
