@@ -33,6 +33,7 @@ begin transaction
 		commit transaction;
 go
 
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetLoanMasterDetailsByLoanID]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetLoanMasterDetailsByLoanID
 go
@@ -41,13 +42,14 @@ create procedure dbo.GetLoanMasterDetailsByLoanID
 (
 	@LoanID int
 ) as
---GetLoanMasterDetailsByLoanID 1
+--GetLoanMasterDetailsByLoanID 20
 begin transaction
 
 	begin try
 	
-	select LoanID, ProjectID, Descriptor, TaxCreditPartner, ApplicantID, DetailID, NoteOwner, FundID, ImportDate, RowIsActive
+	select LoanID, ProjectID, Convert(varchar(10), isnull(NoteAmt, 0)) NoteAmt, Descriptor, TaxCreditPartner, ApplicantID, an.Applicantname, DetailID, NoteOwner, FundID, ImportDate, lm.RowIsActive
 	from LoanMaster lm(nolock) 
+	left join Appname an(nolock) on lm.ApplicantID = an.AppNameID
 	where lm.LoanID = @LoanID
 
 	end try
@@ -72,8 +74,9 @@ create procedure dbo.AddLoanMaster
 (
 	@ProjectID			int, 
 	@Descriptor			nvarchar(75), 
+	@NoteAmt			decimal(18, 2),
 	@TaxCreditPartner	nvarchar(75), 
-	@ApplicantID		int,
+	@AppName			varchar(150),
 	@NoteOwner			nvarchar(75), 
 	@FundID				int
 ) as
@@ -81,8 +84,11 @@ begin transaction
 
 	begin try
 
-	insert into LoanMaster(ProjectID, Descriptor, TaxCreditPartner, ApplicantID, NoteOwner, FundID)
-	values(@ProjectID, @Descriptor, @TaxCreditPartner, @ApplicantID, @NoteOwner, @FundID)
+	declare @AppNameID int
+	select @AppNameID = appnameid from Appname(nolock) where ApplicantName = @AppName
+
+	insert into LoanMaster(ProjectID, NoteAmt, Descriptor, TaxCreditPartner, ApplicantID, NoteOwner, FundID)
+	values(@ProjectID, @NoteAmt, @Descriptor, @TaxCreditPartner, @AppNameID, @NoteOwner, @FundID)
 
 	end try
 	begin catch
@@ -107,16 +113,20 @@ create procedure dbo.UpdateLoanMaster
 	@LoanID				int, 
 	@Descriptor			nvarchar(75), 
 	@TaxCreditPartner	nvarchar(75), 
-	@ApplicantID		int,
+	@AppName			varchar(150),
+	@NoteAmt			decimal(18, 2),
 	@NoteOwner			nvarchar(75), 
 	@FundID				int,
-	@RowIsActive	bit
+	@RowIsActive		bit
 ) as
 begin transaction
 
 	begin try
 
-	update LoanMaster set Descriptor = @Descriptor, TaxCreditPartner = @TaxCreditPartner, ApplicantID = @ApplicantID, 
+	declare @AppNameID int
+	select @AppNameID = appnameid from Appname(nolock) where ApplicantName = @AppName
+
+	update LoanMaster set Descriptor = @Descriptor, NoteAmt = @NoteAmt, TaxCreditPartner = @TaxCreditPartner, ApplicantID = @AppNameID, 
 		NoteOwner = @NoteOwner, FundID = @FundID, RowIsActive = @RowIsActive
 	from LoanMaster
 	where LoanID = @LoanID

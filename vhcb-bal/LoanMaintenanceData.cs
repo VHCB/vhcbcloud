@@ -115,7 +115,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddLoanMaster(int ProjectId, string Descriptor, string TaxCreditPartner, string NoteOwner,
-            decimal NoteAmt, int FundID, int AppNameId)
+            decimal NoteAmt, int FundID, string AppName)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
                         command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
-                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                        command.Parameters.Add(new SqlParameter("AppName", AppName));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -149,7 +149,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateLoanMaster(int LoanId, string Descriptor, string TaxCreditPartner, string NoteOwner,
-            decimal NoteAmt, int FundID, int AppNameId, bool RowIsActive)
+            decimal NoteAmt, int FundID, string AppName, bool RowIsActive)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
                         command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
-                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                        command.Parameters.Add(new SqlParameter("AppName", AppName));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

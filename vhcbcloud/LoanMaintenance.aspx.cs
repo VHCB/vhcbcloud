@@ -66,26 +66,26 @@ namespace vhcbcloud
             BindLookUP(cv_ddlTransPaymentFreq, 191);
             BindLookUP(cv_ddlTransPaymentType, 192);
 
-            BindPrimaryApplicants();
+            //BindPrimaryApplicants();
             BindFund(ddlFund);
             //BindFund(ddlNotesFund);
         }
-        private void BindPrimaryApplicants()
-        {
-            try
-            {
-                ddlPrimaryApplicant.Items.Clear();
-                ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
-                ddlPrimaryApplicant.DataValueField = "appnameid";
-                ddlPrimaryApplicant.DataTextField = "Applicantname";
-                ddlPrimaryApplicant.DataBind();
-                ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
-            }
-        }
+        //private void BindPrimaryApplicants()
+        //{
+        //    try
+        //    {
+        //        ddlPrimaryApplicant.Items.Clear();
+        //        ddlPrimaryApplicant.DataSource = ApplicantData.GetSortedApplicants();
+        //        ddlPrimaryApplicant.DataValueField = "appnameid";
+        //        ddlPrimaryApplicant.DataTextField = "Applicantname";
+        //        ddlPrimaryApplicant.DataBind();
+        //        ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindPrimaryApplicants", "", ex.Message);
+        //    }
+        //}
 
         private void BindFund(DropDownList ddList)
         {
@@ -165,7 +165,8 @@ namespace vhcbcloud
             txtNoteOwner.Text = "";
             txtNoteAmount.Text = "";
             ddlFund.SelectedIndex = -1;
-            ddlPrimaryApplicant.SelectedIndex = -1;
+            //ddlPrimaryApplicant.SelectedIndex = -1;
+            txtPrimaryApplicant.Text = "";
             cbLoanMasterActive.Checked = true;
             cbLoanMasterActive.Enabled = false;
         }
@@ -184,7 +185,8 @@ namespace vhcbcloud
                 txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
                 txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
                 txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
-                PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["ApplicantID"].ToString());
+                txtPrimaryApplicant.Text = drLoanMasterDetails["ApplicantID"].ToString();
+                //PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["ApplicantID"].ToString());
                 PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
                 btnLoanMaster.Text = "Update";
             }
@@ -306,13 +308,13 @@ namespace vhcbcloud
             {
                 LoanMaintenanceData.AddLoanMaster(DataUtils.GetInt(hfProjectId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
                     txtNoteOwner.Text, DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()));
+                    txtPrimaryApplicant.Text);
             }
             else
             {
                 LoanMaintenanceData.UpdateLoanMaster(DataUtils.GetInt(hfLoanId.Value), txtDescriptor.Text, txtTaxCreditPartner.Text,
                     txtNoteOwner.Text, DataUtils.GetDecimal(txtNoteAmount.Text), DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), cbLoanMasterActive.Checked);
+                    txtPrimaryApplicant.Text, cbLoanMasterActive.Checked);
 
                 LogMessage("Loan Master updated successfully");
 
@@ -529,7 +531,9 @@ namespace vhcbcloud
                         txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
                         txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
                         txtNoteAmount.Text = drLoanMasterDetails["NoteAmt"].ToString();
-                        PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["AppNameID"].ToString());
+                        
+                        txtPrimaryApplicant.Text = drLoanMasterDetails["Applicantname"].ToString();
+                        //PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["AppNameID"].ToString());
                         PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
                         btnLoanMaster.Text = "Update";
 
