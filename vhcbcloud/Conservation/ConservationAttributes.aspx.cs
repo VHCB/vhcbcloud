@@ -334,11 +334,11 @@ namespace vhcbcloud.Conservation
             BindPAGrid();
 
             if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
-                LogMessage("Public Access already exist as in-active");
+                LogMessage("Type of Public Access already exist as in-active");
             else if (obAttributeResult.IsDuplicate)
-                LogMessage("Public Access already exist");
+                LogMessage("Type of Public Access already exist");
             else
-                LogMessage("New Public Access added successfully");
+                LogMessage("New Type of Public Access added successfully");
         }
 
         private void BindPAGrid()

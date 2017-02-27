@@ -120,6 +120,7 @@ create procedure dbo.add_new_project
 	--@verified			bit,
 	@appName			varchar(150),
 	@projName			varchar(75),
+	@goal				int,
 	@isDuplicate		bit output,
 	@ProjectId			int output
 ) as
@@ -149,8 +150,8 @@ begin transaction
 
 			set @nameId = @@IDENTITY
 
-			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, userid)
-			values (@projNum, @LkProjectType, @LkProgram, @Manager, 123)
+			insert into Project (Proj_num, LkProjectType, LkProgram, Manager, userid, Goal)
+			values (@projNum, @LkProjectType, @LkProgram, @Manager, 123, @Goal)
 	
 			set @ProjectId = @@IDENTITY
 
@@ -196,7 +197,8 @@ create procedure dbo.UpdateProjectInfo
 	@Manager			int,
 	--@ClosingDate		datetime,
 	--@verified			bit,
-	@appNameId			int
+	@appNameId			int,
+	@Goal				int
 	--@projName			varchar(75)
 ) as
 begin transaction
@@ -207,7 +209,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager--, ClosingDate = @ClosingDate--, verified = @verified
+		Manager = @Manager, Goal = @Goal --ClosingDate = @ClosingDate--, verified = @verified
 	from Project
 	where ProjectId = @ProjectId
 
@@ -281,7 +283,7 @@ begin transaction
 	where p.ProjectId = @ProjectId and pn.DefName = 1
 
 	select p.Proj_num, @projectName as projectName, p.LkProjectType, p.LkProgram,p.AppRec, p.LkAppStatus, p.Manager, p.LkBoardDate, p.ClosingDate, p.ExpireDate, p.verified,  p.userid, 
-		@AppNameID as AppNameId, @AppName AppName
+		@AppNameID as AppNameId, @AppName AppName, Goal
 	from project p(nolock) 
 	left join projectname pn(nolock) on p.projectid = pn.projectid
 	where pn.defname = 1 and p.ProjectId = @ProjectId

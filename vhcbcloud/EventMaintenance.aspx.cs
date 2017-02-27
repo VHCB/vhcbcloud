@@ -430,6 +430,21 @@ namespace vhcbcloud
         }
 
         //===========================SORTING PROPERTIES END
-#endregion
+        #endregion
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetPrimaryApplicant(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetSortedApplicants(prefixText);
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
     }
 }

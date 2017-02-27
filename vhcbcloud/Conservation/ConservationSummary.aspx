@@ -179,10 +179,10 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="labelClass">Total Project:</span></td>
+                                    <td><span class="labelClass">Natural/Rec</span></td>
+                                    <td><asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td><span class="labelClass" id="spnTotalProject" runat="server"></span></td>
-                                    <td><span class="labelClass"></span></td>
-                                    <td><span class="labelClass" id="Span1" runat="server"></span></td>
                                     <td><span class="labelClass"></span></td>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
@@ -511,7 +511,7 @@
                 $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>');
+            var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>, #<%= txtNaturalRec.ClientID%>');
             $.each(txtboxs, function() {
                 $(this).blur(function() {
                     CalculatePercentages();
@@ -525,8 +525,9 @@
                 var totWooded = (isNaN(parseInt($('#<%=txtWooded.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtWooded.ClientID%>').val(), 10));
                 var totUnManaged = (isNaN(parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10));
                 var totFarmResident = (isNaN(parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10));
+                var totNaturalRec = (isNaN(parseInt($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtNaturalRec.ClientID%>').val(), 10));
                 
-                var Total = totTillable + totPasture + totWooded + totUnManaged +  totFarmResident;
+                var Total = totTillable + totPasture + totWooded + totUnManaged + totFarmResident + totNaturalRec;
                 $('#<%=spnTotalProject.ClientID%>').text(Total);
 
                 $('#<%=pctPrimeStateWide.ClientID%>').text('-');

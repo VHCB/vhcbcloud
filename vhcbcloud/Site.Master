@@ -131,7 +131,7 @@
                                         </ul>
                                     </li>
                                     <li class="menu-item "><a runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>
-                                    <li class="menu-item "><a runat="server" href="~/EventMaintenance.aspx">Event Maintenance</a></li>
+                                    <li class="menu-item "><a runat="server" href="~/EventMaintenance.aspx">Milestone Maintenance</a></li>
                                      <li class="menu-item "><a runat="server" href="~/UserSecurity.aspx">User Security</a></li>
                                 </ul>
                             </li>

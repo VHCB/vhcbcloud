@@ -256,6 +256,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pctPrimeStateWide;
         
         /// <summary>
+        /// txtNaturalRec control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNaturalRec;
+        
+        /// <summary>
         /// spnTotalProject control.
         /// </summary>
         /// <remarks>
@@ -263,15 +272,6 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalProject;
-        
-        /// <summary>
-        /// Span1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Span1;
         
         /// <summary>
         /// btnSubmit control.
