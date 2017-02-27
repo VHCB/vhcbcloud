@@ -123,7 +123,8 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Program</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
+                                                OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 100px">
@@ -142,24 +143,19 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                   <%-- <tr>
-                                        <td style="width: 150px"><span class="labelClass">Closing Date</span></td>
-                                        <td style="width: 250px">
-                                            <%-- <asp:CheckBox ID="cbVerified" CssClass="ChkBox" runat="server" Text="Yes" />
-                                            <asp:TextBox ID="txtClosingDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtClosingDate" TargetControlID="txtClosingDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <span class="labelClass"></span>
-                                        </td>
-                                        <td style="width: 270px"></td>
-                                        <td style="width: 170px"><span class="labelClass"></span></td>
-                                        <td></td>
-                                    </tr>
                                     <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>--%>
+                                    <div id="dvConserOnly" runat="server" visible="false">
+                                        <table>
+                                            <tr>
+                                        <td style="width: 115px"><span class="labelClass">Project Goal</span></td>
+                                        <td style="width: 100px" colspan="4">
+                                            <asp:DropDownList ID="ddlProjectGoal" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                        </table>
+                                    </div>
+                                   </tr>
                                 </table>
                                 <div id="dvUpdate" runat="server" visible="false">
                                     <table>

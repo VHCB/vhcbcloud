@@ -59,6 +59,12 @@
                                         <td>
                                             <asp:DropDownList ID="ddlEventEntity" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
+                                            <%--<asp:TextBox ID="txtEventEntity" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
+                                                ClientIDMode="Static" Visible="true"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtEventEntity" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onListPopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>--%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -179,6 +185,11 @@
              $('#<%= cbAddProjectEvent.ClientID%>').click(function () {
                  $('#<%= dvProjectEventForm.ClientID%>').toggle(this.checked);
             }).change();
-         });
+        });
+
+        <%--function onListPopulated() {
+            var completionList = $find('<%=AutoCompleteExtender2.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+        }--%>
     </script>
 </asp:Content>

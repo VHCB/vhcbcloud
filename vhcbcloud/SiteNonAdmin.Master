@@ -97,7 +97,7 @@
                                         </ul>
                                     </li>--%>
                                      <li class="menu-item "><a id="idEntityMaintenance" runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>
-                                    <li class="menu-item "><a id="idEventMaintenance" runat="server" href="~/EventMaintenance.aspx">Event Maintenance</a></li>                                    
+                                    <li class="menu-item "><a id="idEventMaintenance" runat="server" href="~/EventMaintenance.aspx">Milestone Maintenance</a></li>                                    
                                 </ul>
                             </li>
                              <li><a id="idLoandMaintenance" runat="server" href="~/LoanMaintenance.aspx">Loans</a></li>

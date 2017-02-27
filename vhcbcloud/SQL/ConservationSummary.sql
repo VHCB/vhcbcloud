@@ -31,7 +31,7 @@ as
 --exec GetConserveDetailsById 1
 begin
 	select  c.ConserveID, c.LkConsTrack, lv.Description as ConservationTrack, c.PrimStew, c.NumEase, c.TotalAcres, 
-	c.Wooded, c.Prime, c.Statewide, c.Tillable, c.Pasture, c.Unmanaged, c.FarmResident,
+	c.Wooded, c.Prime, c.Statewide, c.Tillable, c.Pasture, c.Unmanaged, c.FarmResident, Naturalrec,
 	c.UserID
 	from Conserve c(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = c.LkConsTrack
@@ -57,6 +57,7 @@ create procedure SubmitConserve
 	@Pasture		int, 
 	@Unmanaged		int,
 	@FarmResident	int,
+	@NaturalRec		int,
 	@UserID			int
 )
 as
@@ -74,9 +75,9 @@ begin
     )
 	begin
 		insert into Conserve(ProjectID, LkConsTrack, PrimStew, NumEase, TotalAcres, Wooded, Prime, Statewide, 
-		Tillable, Pasture, Unmanaged, FarmResident, UserID, DateModified)
+		Tillable, Pasture, Unmanaged, FarmResident, NaturalRec, UserID, DateModified)
 		values(@ProjectID, @LkConsTrack, @PrimStew, @NumEase, @TotalAcres, @Wooded, @Prime, @Statewide, 
-		@Tillable, @Pasture, @Unmanaged, @FarmResident, @UserID, getdate())
+		@Tillable, @Pasture, @Unmanaged, @FarmResident, @NaturalRec, @UserID, getdate())
 
 		set @ConserveID = @@IDENTITY
 
@@ -86,7 +87,7 @@ begin
 	begin
 		update Conserve set LkConsTrack = @LkConsTrack, PrimStew = @PrimStew, NumEase = @NumEase, TotalAcres = @TotalAcres, 
 			Wooded = @Wooded, Prime = @Prime, Statewide = @Statewide, 
-			Tillable = @Tillable, Pasture = @Pasture, Unmanaged = @Unmanaged, FarmResident = @FarmResident, 
+			Tillable = @Tillable, Pasture = @Pasture, Unmanaged = @Unmanaged, FarmResident = @FarmResident, NaturalRec = @NaturalRec,
 			UserID = @UserID, DateModified = getdate()
 		from Conserve
 		where ProjectID = @ProjectId 

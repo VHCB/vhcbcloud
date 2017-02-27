@@ -230,10 +230,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Public Access</h3>
+                                        <h3 class="panel-title">Type of Public Access</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddPA" runat="server" Text="Add New Public Access" />
+                                        <asp:CheckBox ID="cbAddPA" runat="server" Text="Add New Type of Public Access" />
                                     </td>
                                 </tr>
                             </table>
@@ -243,7 +243,7 @@
                             <asp:Panel runat="server" ID="Panel3">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Public Access:</span></td>
+                                        <td style="width: 140px"><span class="labelClass">Type of Public Access:</span></td>
                                         <td style="width: 215px">
                                             <asp:DropDownList ID="ddlPA" CssClass="clsDropDownLong" runat="server">
                                             </asp:DropDownList>
@@ -279,7 +279,7 @@
                                                 <asp:Label ID="lblConservePAcessID" runat="Server" Text='<%# Eval("ConservePAcessID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Public Access">
+                                        <asp:TemplateField HeaderText="Type of Public Access">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPublicAccess" runat="Server" Text='<%# Eval("PublicAccess") %>' />
                                             </ItemTemplate>

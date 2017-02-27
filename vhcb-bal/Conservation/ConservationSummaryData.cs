@@ -9,7 +9,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     {
         #region Conserve
         public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, int TotalAcres, int Wooded, 
-            int Prime, int Statewide, int Tillable, int Pasture, int Unmanaged, int FarmResident, int UserID)
+            int Prime, int Statewide, int Tillable, int Pasture, int Unmanaged, int FarmResident, int NaturalRec, int UserID)
         {
             try
             {
@@ -35,6 +35,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("Pasture", Pasture));
                         command.Parameters.Add(new SqlParameter("Unmanaged", Unmanaged));
                         command.Parameters.Add(new SqlParameter("FarmResident", FarmResident));
+                        command.Parameters.Add(new SqlParameter("NaturalRec", NaturalRec));
+                        
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
 
                         command.CommandTimeout = 60 * 5;

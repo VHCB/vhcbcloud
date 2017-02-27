@@ -73,6 +73,7 @@ namespace vhcbcloud.Conservation
                 txtUnManaged.Text = drConserve["Unmanaged"].ToString();
                 txtPasture.Text = drConserve["Pasture"].ToString();
                 txtFarmResident.Text= drConserve["FarmResident"].ToString();
+                txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
                 pctWooded.InnerText = "0";
                 //pctPrime.InnerText = "0";
                 //pctState.InnerText = "0";
@@ -87,8 +88,8 @@ namespace vhcbcloud.Conservation
                 //    otherAcres.InnerText = (DataUtils.GetInt(txtTotProjAcres.Text) - (DataUtils.GetDecimal(txtWooded.Text) + DataUtils.GetDecimal(txtPrime.Text)
                 //    + DataUtils.GetDecimal(txtStateWide.Text))).ToString();
                 //}
-                var Total = DataUtils.GetDecimal(txtTillable.Text) + DataUtils.GetDecimal(txtPasture.Text) + DataUtils.GetDecimal(txtWooded.Text) 
-                    + DataUtils.GetDecimal(txtUnManaged.Text) + DataUtils.GetDecimal(txtFarmResident.Text);
+                var Total = DataUtils.GetDecimal(txtTillable.Text) + DataUtils.GetDecimal(txtPasture.Text) + DataUtils.GetDecimal(txtWooded.Text)
+                    + DataUtils.GetDecimal(txtUnManaged.Text) + DataUtils.GetDecimal(txtFarmResident.Text) + DataUtils.GetDecimal(txtNaturalRec.Text);
                 spnTotalProject.InnerText = Total.ToString();
 
                 var TotalPS = DataUtils.GetDecimal(txtPrime.Text) + DataUtils.GetDecimal(txtStateWide.Text);
@@ -260,7 +261,7 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetInt(txtWooded.Text), DataUtils.GetInt(txtPrime.Text), DataUtils.GetInt(txtStateWide.Text),
                 DataUtils.GetInt(txtTillable.Text), DataUtils.GetInt(txtPasture.Text), DataUtils.GetInt(txtUnManaged.Text), 
-                DataUtils.GetInt(txtFarmResident.Text), GetUserId());
+                DataUtils.GetInt(txtFarmResident.Text), DataUtils.GetInt(txtNaturalRec.Text), GetUserId());
 
             BindConConserveForm();
 

@@ -13,7 +13,7 @@ namespace DataAccessLayer
     public class ProjectMaintenanceData
     {
         public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, //DateTime ClosingDate, 
-            string appName, string projName)
+            string appName, string projName, int Goal)
         {
             try
             {
@@ -39,6 +39,7 @@ namespace DataAccessLayer
                         //command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appName", appName));
                         command.Parameters.Add(new SqlParameter("projName", projName));
+                        command.Parameters.Add(new SqlParameter("Goal", Goal));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -68,7 +69,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName)
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName, int Goal)
         {
             try
             {
@@ -91,6 +92,7 @@ namespace DataAccessLayer
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
                         //command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appName", appName));
+                        command.Parameters.Add(new SqlParameter("Goal", Goal));
                         // command.Parameters.Add(new SqlParameter("projName", projName));
 
                         command.CommandTimeout = 60 * 5;

@@ -100,6 +100,7 @@ namespace vhcbcloud
             BindLookUP(ddlApplicantRole, 56);
             ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
             BindLookUP(ddlAddressType, 1);
+            BindLookUP(ddlProjectGoal, 201);
         }
 
         private void BindApplicantsForCurrentProject(DropDownList ddlEventEntity)
@@ -253,6 +254,7 @@ namespace vhcbcloud
             //ddlPrimaryApplicant.SelectedIndex = -1;
             txtPrimaryApplicant.Text = "";
             txtProjectName.Text = "";
+            ddlProjectGoal.SelectedIndex = -1;
         }
 
         protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
@@ -433,6 +435,8 @@ namespace vhcbcloud
             //txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
             //cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
 
+            PopulateDropDown(ddlProjectGoal, drProjectDetails["Goal"].ToString());
+            ShowConservationOnly();
             //Event Form
             SetEventProjectandProgram();
         }
@@ -519,6 +523,7 @@ namespace vhcbcloud
         private void DisplayControlsbasedOnSelection()
         {
             ClearForm();
+            ShowConservationOnly();
             if (rdBtnSelection.SelectedValue.ToLower().Trim() == "new")
             {
                 ibAwardSummary.Visible = false;
@@ -579,7 +584,7 @@ namespace vhcbcloud
                 {
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text);
+                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()));
 
                     if (ap.IsDuplicate)
                         LogMessage("Project already exist");
@@ -621,7 +626,7 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text);
+                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()));
 
                     this.BindProjectEntityGrid();
 
@@ -1796,6 +1801,22 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowConservationOnly();
+        }
+
+        private void ShowConservationOnly()
+        {
+            if (ddlProgram.SelectedItem != null)
+            {
+                if (ddlProgram.SelectedItem.Text.ToLower() == "conservation")
+                    dvConserOnly.Visible = true;
+                else
+                    dvConserOnly.Visible = false;
+            }
         }
     }
 
