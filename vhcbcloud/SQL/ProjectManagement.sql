@@ -189,7 +189,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[Updat
 drop procedure [dbo].UpdateProjectInfo
 go
 
-create procedure dbo.UpdateProjectInfo
+create procedure UpdateProjectInfo
 (
 	@ProjectId			int,
 	@LkProjectType		int,
@@ -197,8 +197,8 @@ create procedure dbo.UpdateProjectInfo
 	@Manager			int,
 	--@ClosingDate		datetime,
 	--@verified			bit,
-	@appNameId			int,
-	@Goal				int
+	@appName			varchar(150),
+	@goal				int
 	--@projName			varchar(75)
 ) as
 begin transaction
@@ -209,7 +209,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager, Goal = @Goal --ClosingDate = @ClosingDate--, verified = @verified
+		Manager = @Manager, Goal = @goal --ClosingDate = @ClosingDate, verified = @verified
 	from Project
 	where ProjectId = @ProjectId
 
@@ -217,7 +217,13 @@ begin transaction
 	from AppName an(nolock)
 	join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
 	join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
-	where an.AppNameID = @appNameId
+	where an.Applicantname = @appName
+
+	--Select @applicantId = a.ApplicantId 
+	--from AppName an(nolock)
+	--join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
+	--join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
+	--where an.AppNameID = @appNameId
 
 	select @CurrentApplicantId = pa.ApplicantId
 	from ProjectApplicant pa
@@ -251,7 +257,8 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
-go
+
+GO
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getProjectDetails]') and type in (N'P', N'PC'))
 drop procedure [dbo].getProjectDetails

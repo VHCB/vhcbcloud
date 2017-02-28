@@ -241,9 +241,9 @@
     <script language="javascript">
         $(document).ready(function () {
 
-            $('#<%= cbPrimaryApplicant.ClientID%>').click(function () {
+           <%-- $('#<%= cbPrimaryApplicant.ClientID%>').click(function () {
                 $('#<%=txtPrimaryApplicant.ClientID%>').val('');
-            }).change();
+            }).change();--%>
         });
 
         function SetContextKey() {
