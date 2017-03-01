@@ -34,6 +34,8 @@
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     ToolTip="Project Notes" Style="border: none; vertical-align: middle;" Visible="false" />
+                                <asp:ImageButton ID="btnProjectDesc" runat="server" ImageUrl="~/Images/notes.png" Text="Project Description"
+                                    ToolTip="Project Description" Style="border: none; vertical-align: middle;" Visible="true" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -47,6 +49,16 @@
                     <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="ProjectNotes.aspx" runat="server"></iframe>
                     <br />
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
+                </asp:Panel>
+
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender1" runat="server" PopupControlID="pnlProjectDesc" TargetControlID="btnProjectDesc" 
+                    CancelControlID="btnClose1"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlProjectDesc" runat="server" CssClass="MEPopup1" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 350px;" id="ifProjectDesc" src="ProjectDesc.aspx" runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnClose1" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
 
                 <div id="dvMessage" runat="server">

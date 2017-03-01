@@ -12,6 +12,69 @@ namespace DataAccessLayer
 {
     public class ProjectMaintenanceData
     {
+        public static string GetProjectDesc(int ProjectId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectDesc";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+
+                        SqlParameter parmMessage = new SqlParameter("@ProjectDesc", SqlDbType.NVarChar, -1);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                        return command.Parameters["@ProjectDesc"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateProjectDesc(int ProjectId, string Desc)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectDesc";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("Desc", Desc));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, //DateTime ClosingDate, 
             string appName, string projName, int Goal)
         {

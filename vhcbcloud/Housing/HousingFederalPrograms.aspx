@@ -932,6 +932,10 @@
                 PopupAffrdEndDate();
             });
 
+             $('#<%= txtAffPeriod.ClientID%>').change(function () {
+                PopupAffrdEndDate();
+             });
+
             <%--$('#<%= txtFreq.ClientID%>').blur(function () {
                 PopupNextInspectionYear();
             });--%>
@@ -1010,6 +1014,9 @@
                     default:
                         noYears = 0;
                 }
+             
+                if ($('#<%=hfProjectFedProgram.ClientID%>').val() == 'HTF')
+                    noYears = parseInt($('#<%=txtAffPeriod.ClientID%>').val(), 10);
 
                 var startDate = new Date($('#<%=txtAffrdStartDate.ClientID%>').val());
                 var endDate = new Date(startDate.getFullYear() + noYears, startDate.getMonth(), startDate.getDate())

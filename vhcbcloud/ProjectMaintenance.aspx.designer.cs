@@ -67,6 +67,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes1;
         
         /// <summary>
+        /// btnProjectDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnProjectDesc;
+        
+        /// <summary>
         /// cbActiveOnly control.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,42 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnClose;
+        
+        /// <summary>
+        /// mpExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender mpExtender1;
+        
+        /// <summary>
+        /// pnlProjectDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlProjectDesc;
+        
+        /// <summary>
+        /// ifProjectDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlIframe ifProjectDesc;
+        
+        /// <summary>
+        /// btnClose1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClose1;
         
         /// <summary>
         /// dvMessage control.

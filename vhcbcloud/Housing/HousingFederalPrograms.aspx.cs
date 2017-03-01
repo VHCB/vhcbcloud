@@ -119,7 +119,7 @@ namespace vhcbcloud.Housing
             //BindStaff(ddlStaff);
             //BindLookUP(ddlStaff, 117);
             PopulateInspectorDropDown(ddlStaff, "Home Inspector");
-            BindLookUP(ddlUnitType, 168);
+            //BindLookUP(ddlUnitType, 168);
             BindLookUP(ddlUnitOccupancyUnitType, 166);
             //BindLookUP(ddlMedianIncome, 167);
             
@@ -293,6 +293,7 @@ namespace vhcbcloud.Housing
                 ddlAffPeriod.Visible = true;
 
                 BindLookUP(ddlHomeAff, 173);
+                BindLookUP(ddlUnitType, 168);
             }
             else if (hfProjectFedProgram.Value.ToLower() == "htf")
             {
@@ -313,6 +314,7 @@ namespace vhcbcloud.Housing
                 ddlAffPeriod.Visible = false;
 
                 BindLookUP(ddlHomeAff, 174);
+                BindLookUP(ddlUnitType, 175);
             }
 
             dvFedProgramHome.Visible = true;

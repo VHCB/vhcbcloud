@@ -31,6 +31,17 @@ blue: #3589a4;
     width: 750px;
     height: 600px;
 }
+
+.MEPopup1 {
+    background-color: #FFFFFF;
+    border-width: 0px;
+    border-style: solid;
+    border-color: black;
+    padding-top: 0px;
+    padding-left: 0px;
+    width: 850px;
+    height: 350px;
+}
  /*.legend {
     display: block;
     -webkit-padding-start: 2px;

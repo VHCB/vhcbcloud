@@ -43,6 +43,7 @@ namespace vhcbcloud
                 if (Request.QueryString["ProjectId"] != null)
                 {
                     //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
+                    ifProjectDesc.Src = "ProjectDesc.aspx?ProjectId=" + Request.QueryString["ProjectId"];
                     ProjectNotesSetUp(Request.QueryString["ProjectId"]);
 
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
@@ -1747,12 +1748,43 @@ namespace vhcbcloud
 
         protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 1));
+            int nextIndex;
+            List<int> lstProjectId = Session["lstSearchResultProjectId"] as List<int>;
+
+            if (lstProjectId != null)
+            {
+                int index = lstProjectId.FindIndex(a => a == DataUtils.GetInt(hfProjectId.Value));
+
+                if (index == -1)
+                    nextIndex = 0;
+                if (index == lstProjectId.Count - 1)
+                    nextIndex = index;
+                else
+                    nextIndex = index + 1;
+                Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + lstProjectId[nextIndex]);
+            }
+            //Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 1));
         }
 
         protected void ImgPreviousProject_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 2));
+            int nextIndex;
+            List<int> lstProjectId = Session["lstSearchResultProjectId"] as List<int>;
+
+            if (lstProjectId != null)
+            {
+                int index = lstProjectId.FindIndex(a => a == DataUtils.GetInt(hfProjectId.Value));
+
+                if (index == -1)
+                    nextIndex = 0;
+                else if (index == 0)
+                    nextIndex = index;
+                else
+                    nextIndex = index - 1;
+                Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + lstProjectId[nextIndex]);
+            }
+
+            //Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + ProjectMaintenanceData.GetNextProjectId(txtProjectNumDDL.Text, 2));
         }
 
         [System.Web.Services.WebMethod()]
