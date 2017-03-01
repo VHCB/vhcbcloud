@@ -182,7 +182,16 @@ namespace vhcbcloud
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
                 ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
 
-            if(dtSearchResults.Rows.Count > 0 && 
+            List<int> lstProjectId = new List<int>();
+            Session["lstSearchResultProjectId"] = lstProjectId;
+            foreach (DataRow dr in dtSearchResults.Rows)
+            {
+                lstProjectId.Add(DataUtils.GetInt(dr["ProjectId"].ToString()));
+            }
+
+            Session["lstSearchResultProjectId"] = lstProjectId;
+
+            if (dtSearchResults.Rows.Count > 0 && 
                 ((txtProjNum.Text.IndexOf('-', 0) > -1 && txtProjNum.Text.Length == 12) ||
                 (txtProjNum.Text.IndexOf('-', 0) == -1 && txtProjNum.Text.Length == 10)))
                 Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + dtSearchResults.Rows[0]["ProjectId"].ToString());
