@@ -250,6 +250,8 @@
     <Content Include="Images\notebook.png" />
     <Content Include="Images\notes.png" />
     <Content Include="Images\notes_1.png" />
+    <Content Include="Images\pen.png" />
+    <Content Include="Images\print.png" />
     <Content Include="Images\Right.png" />
     <Content Include="Images\Search.png" />
     <Content Include="Lead\ProjectLeadBuildings.aspx" />

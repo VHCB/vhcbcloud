@@ -34,7 +34,7 @@
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     ToolTip="Project Notes" Style="border: none; vertical-align: middle;" Visible="false" />
-                                <asp:ImageButton ID="btnProjectDesc" runat="server" ImageUrl="~/Images/notes.png" Text="Project Description"
+                                <asp:ImageButton ID="btnProjectDesc" runat="server" ImageUrl="~/Images/pen.png" Text="Project Description"
                                     ToolTip="Project Description" Style="border: none; vertical-align: middle;" Visible="true" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -444,7 +444,7 @@
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
                                     </td>
                                     <td style="text-align: right; width: 25px;">
-                                        <asp:ImageButton ID="ImgButtonAddressReport" ImageUrl="~/Images/search.png" ToolTip="Address Report"
+                                        <asp:ImageButton ID="ImgButtonAddressReport" ImageUrl="~/Images/print.png" ToolTip="Address Report"
                                             Style="border: none; vertical-align: middle;" runat="server" Text="Project Search" OnClick="ImgButtonAddressReport_Click" />
                                     </td>
                                 </tr>
