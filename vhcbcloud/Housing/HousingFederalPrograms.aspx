@@ -979,6 +979,22 @@
                 $('#<%= dvMedianIncomeForm.ClientID%>').toggle(this.checked);
             }).change();--%>
 
+            
+            var txtboxs = $('#<%= txtInspectDate.ClientID%>,#<%= txtFreq.ClientID%>');
+            $.each(txtboxs, function() {
+                $(this).change(function() {
+                    CalculateNextInspectionYear();
+                });
+            });
+            
+            function CalculateNextInspectionYear() {
+                var noYears = parseInt($('#<%=txtFreq.ClientID%>').val(), 10);
+                var nextInspectDate = new Date($('#<%=txtInspectDate.ClientID%>').val());
+
+                var year = nextInspectDate.getFullYear();
+                $('#<%=txtNextInspect.ClientID%>').val(year + noYears);
+            }
+
             $('#<%= ddlUnitType.ClientID%>').each(function () {
                 var i = 0;
                 var sel = this;
