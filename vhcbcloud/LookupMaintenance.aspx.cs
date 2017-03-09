@@ -27,13 +27,26 @@ namespace vhcbcloud
         {
             try
             {
+                DataTable dt = new DataTable();
                 recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
                 if (ddlLkLookupViewname.SelectedIndex == 0 || recordId == 0)
-                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
+                {
+                    dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
+                }
                 else
-                    gvLookup.DataSource = LookupMaintenanceData.GetLkLookupDetails(recordId, cbActiveOnly.Checked);
-
+                {
+                    dt = LookupMaintenanceData.GetLkLookupDetails(recordId, cbActiveOnly.Checked);
+                }
+                gvLookup.DataSource = dt;
                 gvLookup.DataBind();
+                if (dt.Rows[0]["ordered"].ToString()=="true")
+                {
+                    gvLookup.Columns[0].Visible = true;
+                }
+                else
+                {
+                    gvLookup.Columns[0].Visible = true;
+                }
             }
             catch (Exception ex)
             {
@@ -97,7 +110,7 @@ namespace vhcbcloud
         {
             try
             {
-                ddlLkLookupViewname.DataSource = LookupMaintenanceData.GetLookupsViewName();
+                ddlLkLookupViewname.DataSource = LookupMaintenanceData.GetLookupsViewName(cbActiveOnly.Checked);
                 ddlLkLookupViewname.DataValueField = "RecordId";
                 ddlLkLookupViewname.DataTextField = "Viewname";
                 ddlLkLookupViewname.DataBind();
@@ -142,7 +155,7 @@ namespace vhcbcloud
         protected void BindGridWithSort()
         {
             recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
-               
+
             DataTable dt = new DataTable();
             if (ddlLkLookupViewname.SelectedIndex == 0)
                 dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
@@ -200,15 +213,26 @@ namespace vhcbcloud
 
         protected void gvLkDescription_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            int rowIndex = e.RowIndex;
-            string lkDescription = ((TextBox)gvLkDescription.Rows[rowIndex].FindControl("txtlkDesc")).Text;
-            int recordId = Convert.ToInt32(((Label)gvLkDescription.Rows[rowIndex].FindControl("lblRecordId")).Text);
-            LookupMaintenanceData.UpdateLkDescription(recordId, lkDescription);
-            gvLkDescription.EditIndex = -1;
-            BindLookupMaintenance();
-            BindLKDescription();
-            lblErrorMsg.Text = "Lookup description updated successfully";
-            txtDescription.Text = "";
+            try
+            {
+                int rowIndex = e.RowIndex;
+                string lkDescription = ((TextBox)gvLkDescription.Rows[rowIndex].FindControl("txtlkDesc")).Text;
+                int recordId = Convert.ToInt32(((Label)gvLkDescription.Rows[rowIndex].FindControl("lblRecordId")).Text);
+                bool isActive = Convert.ToBoolean(((CheckBox)gvLkDescription.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
+                bool isTiered = Convert.ToBoolean(((CheckBox)gvLkDescription.Rows[rowIndex].FindControl("chkStandardEdit")).Checked);
+
+                LookupMaintenanceData.UpdateLkDescription(recordId, lkDescription, isActive, isTiered);
+                gvLkDescription.EditIndex = -1;
+
+                BindViewName(); BindLookupMaintenance();
+                BindLKDescription();
+                lblErrorMsg.Text = "Lookup description updated successfully";
+                txtDescription.Text = "";
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "Error while updating Lookup data: " + ex.Message;
+            }
         }
 
         protected void ddlLkLookupViewname_SelectedIndexChanged(object sender, EventArgs e)
@@ -247,6 +271,7 @@ namespace vhcbcloud
         }
         private void BindGrids()
         {
+            BindViewName();
             BindLookupMaintenance();
         }
     }
