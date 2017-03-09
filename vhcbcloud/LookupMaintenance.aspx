@@ -25,43 +25,61 @@
                                     </td>
                                 </tr>
                             </table>
-                            <p>
-                                <%--&nbsp;<asp:ImageButton ID="imgSearch" runat="server" Height="25px" ImageUrl="~/Images/image004.png" Width="25px" OnClick="imgSearch_Click" />--%>
 
-                                <br />
-                                <asp:GridView ID="gvLkDescription" runat="server" AutoGenerateColumns="False"
-                                    Width="90%" CssClass="gridView"
-                                    GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvLkDescription_RowCancelingEdit"
-                                    OnRowEditing="gvLkDescription_RowEditing" OnRowUpdating="gvLkDescription_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="RecordID">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblRecordId" runat="Server" Text='<%# Eval("RecordID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Description">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lbllkDesc" runat="Server" Text='<%# Eval("LKDescription") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtlkDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LKDescription") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
-                                <%--<asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="Description is required" CssClass="lblErrMsg" ControlToValidate="txtDescription"></asp:RequiredFieldValidator>--%>
-                                <br />
-                                <%--<asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />--%>
-                                <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
-                            </p>
-                            <p class="lblErrMsg">
-                                <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
-                            </p>
+                            <%--&nbsp;<asp:ImageButton ID="imgSearch" runat="server" Height="25px" ImageUrl="~/Images/image004.png" Width="25px" OnClick="imgSearch_Click" />--%>
+                            <div class="panel-body">
+                                <p>
+                                    <br />
+                                    <asp:GridView ID="gvLkDescription" runat="server" AutoGenerateColumns="False"
+                                        Width="90%" CssClass="gridView"
+                                        GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvLkDescription_RowCancelingEdit"
+                                        OnRowEditing="gvLkDescription_RowEditing" OnRowUpdating="gvLkDescription_RowUpdating">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="RecordID">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblRecordId" runat="Server" Text='<%# Eval("RecordID") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Description">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lbllkDesc" runat="Server" Text='<%# Eval("LKDescription") %>' />
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="txtlkDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LKDescription") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Tiered" SortExpression="standard">
+                                                <ItemTemplate>
+                                                    <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("ordered") %>' />
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:CheckBox ID="chkStandardEdit" runat="server" Checked='<%# Eval("ordered") %>' />
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
+                                                <ItemTemplate>
+                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                </ItemTemplate>
+                                                <EditItemTemplate>
+                                                    <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                </EditItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:CommandField ShowEditButton="True" />
+                                        </Columns>
+                                    </asp:GridView>
+                                    <%--<asp:RequiredFieldValidator ID="rfvFname" runat="server" ErrorMessage="Description is required" CssClass="lblErrMsg" ControlToValidate="txtDescription"></asp:RequiredFieldValidator>--%>
+                                    <br />
+                                    <%--<asp:ImageButton ID="btnSubmit" runat="server" ImageUrl="~/Images/BtnSubmit.gif" TabIndex="3" OnClick="btnSubmit_Click" />--%>
+                                    <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                </p>
+                                <p class="lblErrMsg">
+                                    <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
+                                </p>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <p>
@@ -77,6 +95,13 @@
                                         <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                         <RowStyle CssClass="rowStyle" />
                                         <Columns>
+                                             <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                                    <ItemTemplate>
+                                                        <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
+                                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("typeid")%>' />
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Type ID" SortExpression="typeid">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lbltypeid" runat="Server" Text='<%# Eval("typeid") %>' />
@@ -121,8 +146,10 @@
                                         </Columns>
                                     </asp:GridView>
                                 </asp:Panel>
+                               
                                 <p>
                                 </p>
+                               
                             </p>
                         </div>
                     </div>
@@ -130,4 +157,21 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <script type="text/javascript">
+
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvLookup.ClientID%>");
+            var rbs = gv.getElementsByTagName("input");
+
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
 </asp:Content>

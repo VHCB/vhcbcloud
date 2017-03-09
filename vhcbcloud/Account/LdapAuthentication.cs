@@ -22,7 +22,7 @@ public class LdapAuthentication
         DirectoryEntry entry = new DirectoryEntry(_path, domainAndUsername, pwd);
         try
         {
-            //bool isExist = DirectoryEntry.Exists(path);
+            //bool isexist = DirectoryEntry.Exists(_path);
             // Bind to the native AdsObject to force authentication.
             // if username/password is incorrect, then this will throw an exception.
             Object obj = entry.NativeObject;

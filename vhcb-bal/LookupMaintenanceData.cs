@@ -69,7 +69,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLkDescription(int recordId, string lkDescription)
+        public static void UpdateLkDescription(int recordId, string lkDescription, bool isActive, bool isTiered)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -79,6 +79,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "UpdateLkDescription";
                 command.Parameters.Add(new SqlParameter("recordId", recordId));
                 command.Parameters.Add(new SqlParameter("lkDescription", lkDescription));
+                command.Parameters.Add(new SqlParameter("isActive", isActive));
+                command.Parameters.Add(new SqlParameter("isTiered", isTiered));
                 using (connection)
                 {
                     connection.Open();
@@ -130,7 +132,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtLks;
         }
 
-        public static DataTable GetLookupsViewName()
+        public static DataTable GetLookupsViewName(bool flagActive)
         {
             DataTable dtlkVname = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -139,6 +141,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetLookupsViewName";
+                command.Parameters.Add(new SqlParameter("flagActive", flagActive));
                 using (connection)
                 {
                     connection.Open();
