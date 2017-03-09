@@ -1,20 +1,16 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TestCurrencyController.aspx.cs" Inherits="vhcbcloud.Test" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="TestCurrencyController.aspx.cs"
+    Inherits="vhcbcloud.Test" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <br /><br /><br />
-            <asp:TextBox ID="txtAmount" runat="server" onkeyup='toCurrencyRama(value)' Width="107px"></asp:TextBox>
+<asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div>
+        <br />
+        <br />
+        <br />
+        <asp:TextBox ID="txtAmount" runat="server" onkeyup='toCurrencyRama(value)' Width="107px"></asp:TextBox>
         &nbsp;&nbsp;
             <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
-        </div>
-    </form>
+    </div>
+
     <script>
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -29,7 +25,8 @@
 
             var inputElement = document.getElementById("txtAmount");
 
-            inputElement.value = formatter.format(result);
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtAmount.ClientID%>').val(formatter.format(result));
         };
 
         showCurrency = () => {
@@ -72,5 +69,11 @@
         removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
     </script>
-</body>
-</html>
+
+   <script language="javascript">
+       $(document).ready(function () {
+           console.log($('#<%= txtAmount.ClientID%>').val());
+            toCurrencyRama($('#<%= txtAmount.ClientID%>').val());
+        });
+    </script>
+</asp:Content>

@@ -12,6 +12,10 @@ namespace vhcbcloud
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(!IsPostBack)
+            {
+                txtAmount.Text = "12345.67";
+            }
 
         }
 
