@@ -353,6 +353,7 @@
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
+    <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability.aspx" />
@@ -910,6 +911,13 @@
       <DependentUpon>SiteWithoutHeader.Master</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="TestCurrencyController.aspx.cs">
+      <DependentUpon>TestCurrencyController.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestCurrencyController.aspx.designer.cs">
+      <DependentUpon>TestCurrencyController.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TestExago.aspx.cs">
       <DependentUpon>TestExago.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
