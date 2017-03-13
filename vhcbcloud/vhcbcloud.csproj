@@ -285,6 +285,7 @@
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
+    <Content Include="SQL\FundMaintenance.sql" />
     <Content Include="SQL\HomeOwnerShip.sql" />
     <Content Include="SQL\HousingAttributes.sql" />
     <Content Include="SQL\HousingFederalPrograms.sql" />

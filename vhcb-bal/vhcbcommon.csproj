@@ -61,6 +61,7 @@
     <Compile Include="EntityNotesData.cs" />
     <Compile Include="FederalRentalAffordabilityData.cs" />
     <Compile Include="FinancialTransactions.cs" />
+    <Compile Include="FundMaintenanceData.cs" />
     <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
     <Compile Include="Housing\HomeOwnershipData.cs" />
