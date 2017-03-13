@@ -233,6 +233,8 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="FundMaintenance.aspx" />
+    <Content Include="GrantMaintenance.aspx" />
     <Content Include="Housing\HomeOwnership.aspx" />
     <Content Include="Housing\HousingAttributes.aspx" />
     <Content Include="Housing\HousingFederalPrograms.aspx" />
@@ -283,6 +285,7 @@
     <Content Include="SQL\Financialfunddetails.sql" />
     <Content Include="SQL\FinancialTransactionDetails.sql" />
     <Content Include="SQL\ConservationStewardship.sql" />
+    <Content Include="SQL\FundMaintenance.sql" />
     <Content Include="SQL\HomeOwnerShip.sql" />
     <Content Include="SQL\HousingAttributes.sql" />
     <Content Include="SQL\HousingFederalPrograms.sql" />
@@ -729,12 +732,26 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FundMaintenance.aspx.cs">
+      <DependentUpon>FundMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FundMaintenance.aspx.designer.cs">
+      <DependentUpon>FundMaintenance.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FundType.aspx.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GrantMaintenance.aspx.cs">
+      <DependentUpon>GrantMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GrantMaintenance.aspx.designer.cs">
+      <DependentUpon>GrantMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="Housing\HomeOwnership.aspx.cs">
