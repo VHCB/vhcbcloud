@@ -39,9 +39,9 @@ namespace vhcbcloud
                 }
                 gvLookup.DataSource = dt;
                 gvLookup.DataBind();
-                if (dt.Rows[0]["tiered"].ToString()!="")
+                if (dt.Rows[0]["tiered"].ToString()=="0")
                 {
-                    gvLookup.Columns[0].Visible = true;
+                    gvLookup.Columns[0].Visible = false;
                 }
                 else
                 {
