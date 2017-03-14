@@ -33,12 +33,12 @@
                             <td style="width: 10px"></td>
                             <td style="width: 100px"><span class="labelClass">Fund Name</span></td>
                             <td style="width: 200px">
-                                <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged">
                                 </asp:DropDownList>
                             </td>
                             <td style="width: 90px"><span class="labelClass">Fund #</span></td>
                             <td style="width: 200px">
-                                <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged">
                                 </asp:DropDownList>
                             </td>
                             <td style="width: 1px"></td>

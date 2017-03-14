@@ -30,9 +30,9 @@ namespace vhcbcloud
             LoadFundNames();
             LoadFundNumbers();
 
-            BindLookUP(ddlSOVFundCode, 129); //207
+            BindLookUP(ddlSOVFundCode, 207); 
             BindLookUP(ddlAcctMethod, 129);
-            BindLookUP(ddlSOVDeptId, 129); //209
+            BindLookUP(ddlSOVDeptId, 209); 
 
             BindFundType();
         }
@@ -201,22 +201,34 @@ namespace vhcbcloud
                 txtFundName.Focus();
                 return;
             }
+            if (ddlFundType.SelectedIndex == 0)
+            {
+                LogMessage("Please Select Fund Type");
+                ddlFundType.Focus();
+                return;
+            }
+            if (txtFundNum.Text == "")
+            {
+                LogMessage("Please Enter Fund Number");
+                txtFundNum.Focus();
+                return;
+            }
 
             if (btnSubmitFund.Text.ToLower() == "update")
             {
                 FundMaintenanceData.UpdateFund(Convert.ToInt32(ddlFundName.SelectedValue.ToString()), txtAbbrev.Text,
                     Convert.ToInt32(ddlFundType.SelectedValue.ToString()),
-                    txtFundNum.Text, Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue.ToString(), cbFundActive.Checked);
+                    txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked);
 
                 LogMessage("Fund updated successfully");
             }
             else
             {
                 AddFund objAddFund = FundMaintenanceData.AddFund(txtFundName.Text, txtAbbrev.Text,
-                    Convert.ToInt32(ddlFundType.SelectedValue.ToString()),
-                    txtFundNum.Text, Convert.ToInt32(ddlAcctMethod.SelectedValue.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue.ToString());
+                    Convert.ToInt32(ddlFundType.SelectedValue?.ToString()),
+                    txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString());
 
                 if (objAddFund.IsDuplicate && !objAddFund.IsActive)
                     LogMessage("Fund already exist as in-active");
@@ -227,7 +239,9 @@ namespace vhcbcloud
 
                 ClearForm();
                 btnSubmitFund.Text = "Add";
-            } 
+            }
+            BindControls();
+            cbAddFund.Checked = false;
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -236,6 +250,22 @@ namespace vhcbcloud
             ddlAcctNum.SelectedIndex = -1;
             btnSubmitFund.Text = "Add";
             ClearForm();
+            BindControls();
+            cbAddFund.Checked = false;
+        }
+
+        protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateDropDown(ddlAcctNum, ddlFundName.SelectedValue);
+            ClearForm();
+            cbAddFund.Checked = false;
+        }
+
+        protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateDropDown(ddlFundName, ddlAcctNum.SelectedValue);
+            ClearForm();
+            cbAddFund.Checked = false;
         }
     }
 }

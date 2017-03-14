@@ -34,9 +34,6 @@ Begin
 	where  (@RowIsActive = 0 or RowIsActive = @RowIsActive)
 	order by account asc
 End
-
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddFund]') and type in (N'P', N'PC'))
-drop procedure [dbo].AddFund
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddFund]') and type in (N'P', N'PC'))
@@ -50,8 +47,8 @@ create procedure dbo.AddFund
 	@LkFundType		int, 
 	@account		nvarchar(4),
 	@LkAcctMethod	int, 
-	@DeptID			nvarchar(12),
-	@VHCBCode		nvarchar(25),
+	@DeptID			nvarchar(12) = null,
+	@VHCBCode		nvarchar(25) = null,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as

@@ -138,8 +138,10 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkFundType", LkFundType));
                         command.Parameters.Add(new SqlParameter("account", account));
                         command.Parameters.Add(new SqlParameter("LkAcctMethod", LkAcctMethod));
-                        command.Parameters.Add(new SqlParameter("DeptID", DeptID));
-                        command.Parameters.Add(new SqlParameter("VHCBCode", VHCBCode));
+                        if (DeptID != "NA")
+                            command.Parameters.Add(new SqlParameter("DeptID", DeptID));
+                        if (VHCBCode != "NA")
+                            command.Parameters.Add(new SqlParameter("VHCBCode", VHCBCode));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
