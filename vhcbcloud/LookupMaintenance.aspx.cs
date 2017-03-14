@@ -39,7 +39,7 @@ namespace vhcbcloud
                 }
                 gvLookup.DataSource = dt;
                 gvLookup.DataBind();
-                if (dt.Rows[0]["ordered"].ToString()=="true")
+                if (dt.Rows[0]["tiered"].ToString()!="")
                 {
                     gvLookup.Columns[0].Visible = true;
                 }
@@ -273,6 +273,11 @@ namespace vhcbcloud
         {
             BindViewName();
             BindLookupMaintenance();
+        }
+
+        protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

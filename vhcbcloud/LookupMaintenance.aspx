@@ -52,12 +52,12 @@
                                                     <asp:TextBox ID="txtlkDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LKDescription") %>'></asp:TextBox>
                                                 </EditItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Tiered" SortExpression="standard">
+                                            <asp:TemplateField HeaderText="Tiered" SortExpression="tiered">
                                                 <ItemTemplate>
-                                                    <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("ordered") %>' />
+                                                    <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("tiered") %>' />
                                                 </ItemTemplate>
                                                 <EditItemTemplate>
-                                                    <asp:CheckBox ID="chkStandardEdit" runat="server" Checked='<%# Eval("ordered") %>' />
+                                                    <asp:CheckBox ID="chkStandardEdit" runat="server" Checked='<%# Eval("tiered") %>' />
                                                 </EditItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
@@ -146,6 +146,9 @@
                                         </Columns>
                                     </asp:GridView>
                                 </asp:Panel>
+                               
+                                <p>
+                                </p>
                                
                                 <p>
                                 </p>
