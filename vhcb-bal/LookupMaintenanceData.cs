@@ -40,6 +40,37 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+
+        public static void AddLookupSubValue(int typeId, string subDescription)
+        {
+
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddLookupSubValues";
+                command.Parameters.Add(new SqlParameter("TypeId", typeId));
+                command.Parameters.Add(new SqlParameter("SubDescription", subDescription));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
         public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -177,6 +208,42 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetLkLookupDetails";
                 command.Parameters.Add(new SqlParameter("recordId", recordId));
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetLkLookupSubValues(int typeId, bool IsActiveOnly)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLkLookupSubValues";
+                command.Parameters.Add(new SqlParameter("typeId", typeId));
                 command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
                 using (connection)
                 {

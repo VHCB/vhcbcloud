@@ -70,3 +70,30 @@ begin
 	end
 end
 go
+
+alter procedure AddLookupSubValues
+(
+	@typeId int,
+	@subDescription varchar (100)
+)
+as
+Begin
+	insert into LookupSubValues(typeid,SubDescription)
+	values (@typeId, @subDescription)
+End
+go
+
+alter procedure [dbo].GetLkLookupSubValues
+(
+	 @typeId int,
+	 @IsActiveOnly	bit
+ )
+as
+begin
+		select lv.TypeID,  lv.Description,lv.RowIsActive, lsv.SubDescription
+		from LookupValues lv join LookupSubValues lsv on lv.TypeID = lsv.TypeID	
+		where (lsv.RowIsActive = @IsActiveOnly)
+		order by lsv.SubDescription asc, lv.Description asc
+	
+End
+go
