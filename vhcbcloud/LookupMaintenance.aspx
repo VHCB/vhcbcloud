@@ -94,6 +94,7 @@
                                             <ItemTemplate>
                                                 <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" OnCheckedChanged="rdBtnSelect_CheckedChanged" onclick="RadioCheck(this);" />
                                                 <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("typeid")%>' />
+                                                <asp:HiddenField ID="hfTier1Desc" runat="server" Value='<%#Eval("description")%>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" />
                                         </asp:TemplateField>
@@ -114,7 +115,7 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                        </asp:TemplateField>                                         
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' Enabled="false" />
@@ -133,86 +134,83 @@
                                 </asp:GridView>
                             </asp:Panel>
                         </div>
-                        <div class="panel-body">
-                            <asp:Panel ID="pnlAddSubTier" Visible="false" runat="server">  
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td style="width: 136px"><span class="labelClass">Tier1 Description :</span></td>
-                                    <td style="width: 233px">
-                                          <asp:TextBox ID="txtTier1Desc" CssClass="clsTextBoxBlueSMDL" runat="server" Enabled="False"></asp:TextBox></td>
-                                    <td style="width: 120px"><span class="labelClass">New description :</span></td>
-                                    <td style="width: 150px">
-                                        <asp:TextBox ID="txtTier2Desc" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
-                                    
-                                </tr>
-                            </table>
-                            <asp:Button ID="btnAddSubTier" runat="server" Text="Submit" class="btn btn-info" OnClick="btnAddSubTier_Click" />
-                            <p>
-                                <asp:Panel runat="server" ID="Panel2" Width="100%" Height="350px" ScrollBars="Vertical">
-                                    <asp:GridView ID="gvTier" runat="server" AutoGenerateColumns="False"
-                                        Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                        GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true">
-                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                        <HeaderStyle CssClass="headerStyle" />
-                                        <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                        <RowStyle CssClass="rowStyle" />
-                                        <Columns>
+                        <div class="panel-heading">
+                            <asp:Panel ID="pnlAddSubTier" Visible="false" runat="server">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 136px"><span class="labelClass">Tier1 Description :</span></td>
+                                        <td style="width: 233px">
+                                            <asp:TextBox ID="txtTier1Desc" CssClass="clsTextBoxBlueSMDL" runat="server" Enabled="False"></asp:TextBox></td>
+                                        <td style="width: 120px"><span class="labelClass">New description :</span></td>
+                                        <td style="width: 150px">
+                                            <asp:TextBox ID="txtTier2Desc" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
+                                    </tr>
+                                </table>
+                                <asp:Button ID="btnAddSubTier" runat="server" Text="Submit" class="btn btn-info" OnClick="btnAddSubTier_Click" />
+                                <div class="panel-body">
+                                    <asp:Panel runat="server" ID="Panel2" Width="100%" Height="350px" ScrollBars="Vertical">
+                                        <asp:GridView ID="gvTier" runat="server" AutoGenerateColumns="False"
+                                            Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true">
+                                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                            <HeaderStyle CssClass="headerStyle" />
+                                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                            <RowStyle CssClass="rowStyle" />
+                                            <Columns>
 
-                                            <asp:TemplateField HeaderText="Sub Type ID" SortExpression="subtypeid">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblsubtypeid" runat="Server" Text='<%# Eval("subtypeid") %>' />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Type ID" SortExpression="typeid">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lbltypeid" runat="Server" Text='<%# Eval("typeid") %>' />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Tier1 Description" SortExpression="description">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lbldesc" runat="Server" Text='<%# Eval("description") %>' />
-                                                </ItemTemplate>
-                                                <EditItemTemplate>
-                                                    <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
-                                                </EditItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Tier2 Description" SortExpression="subdescription">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lbldesc" runat="Server" Text='<%# Eval("subdescription") %>' />
-                                                </ItemTemplate>
-                                                <EditItemTemplate>
-                                                    <asp:TextBox ID="txtSubDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("subdescription") %>'></asp:TextBox>
-                                                </EditItemTemplate>
-                                            </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Sub Type ID" SortExpression="subtypeid">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblsubtypeid" runat="Server" Text='<%# Eval("subtypeid") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Type ID" SortExpression="typeid">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lbltypeid" runat="Server" Text='<%# Eval("typeid") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Tier1 Description" SortExpression="description">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lbldesc" runat="Server" Text='<%# Eval("description") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
+                                                    </EditItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Tier2 Description" SortExpression="subdescription">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lbldesc" runat="Server" Text='<%# Eval("subdescription") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:TextBox ID="txtSubDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("subdescription") %>'></asp:TextBox>
+                                                    </EditItemTemplate>
+                                                </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
-                                                <ItemTemplate>
-                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                                </ItemTemplate>
-                                                <EditItemTemplate>
-                                                    <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                                </EditItemTemplate>
-                                            </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </EditItemTemplate>
+                                                </asp:TemplateField>
 
-                                            <asp:CommandField ShowEditButton="True" />
-                                        </Columns>
-                                    </asp:GridView>
-                                </asp:Panel>
+                                                <asp:CommandField ShowEditButton="True" />
+                                            </Columns>
+                                        </asp:GridView>
+                                    </asp:Panel>
+                                </div>
                                 <p>
                                 </p>
                                 <p>
                                 </p>
-                                <p>
                                 </p>
-                                <p>
-                                </p>
-                            </p>
                             </asp:Panel>
                         </div>
                     </div>
                 </div>
                 <asp:HiddenField ID="hfLkpId" runat="server" />
+                <asp:HiddenField ID="hfTier1Desc" runat="server" />
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
