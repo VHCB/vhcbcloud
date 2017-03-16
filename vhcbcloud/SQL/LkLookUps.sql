@@ -1,13 +1,15 @@
 
 alter procedure [dbo].[GetLookupsViewname]
+(
+ @flagActive bit
+)
 as
 begin
 	select RecordID, Viewname from lklookups
-	where Standard = 1 and RowIsActive = 1
+	where Standard = 1 and RowIsActive = @flagActive
 	order by Viewname asc
 end
 go
-
 
 alter procedure [dbo].[UpdateLkDescription]
 (
@@ -90,7 +92,7 @@ alter procedure [dbo].GetLkLookupSubValues
  )
 as
 begin
-		select lv.TypeID,  lv.Description,lv.RowIsActive, lsv.SubDescription
+		select lv.TypeID, lsv.subtypeid, lv.Description,lv.RowIsActive, lsv.SubDescription
 		from LookupValues lv join LookupSubValues lsv on lv.TypeID = lsv.TypeID	
 		where (lsv.RowIsActive = @IsActiveOnly)
 		order by lsv.SubDescription asc, lv.Description asc

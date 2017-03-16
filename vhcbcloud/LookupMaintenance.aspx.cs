@@ -39,14 +39,15 @@ namespace vhcbcloud
                 }
                 gvLookup.DataSource = dt;
                 gvLookup.DataBind();
-                if (dt.Rows[0]["tiered"].ToString().ToLower()=="false")
-                {
-                    gvLookup.Columns[0].Visible = false;
-                }
-                else
-                {
-                    gvLookup.Columns[0].Visible = true;
-                }
+                if (dt.Rows.Count > 0)
+                    if (dt.Rows[0]["tiered"].ToString().ToLower() == "false")
+                    {
+                        gvLookup.Columns[0].Visible = false;
+                    }
+                    else
+                    {
+                        gvLookup.Columns[0].Visible = true;
+                    }
             }
             catch (Exception ex)
             {
@@ -240,6 +241,7 @@ namespace vhcbcloud
             lblErrorMsg.Text = "";
             BindLookupMaintenance();
             BindLKDescription();
+            pnlAddSubTier.Visible = false;
         }
 
         /// <summary>
@@ -282,9 +284,11 @@ namespace vhcbcloud
 
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
+            lblErrorMsg.Text = "";
             GetSelectedTransId(gvLookup);
             pnlAddSubTier.Visible = true;
             BindLookupSubValues();
+            txtTier1Desc.Text = hfTier1Desc.Value.ToString();
         }
 
         private void GetSelectedTransId(GridView gvFGM)
@@ -297,11 +301,13 @@ namespace vhcbcloud
                     if (rbGInfo.Checked)
                     {
                         HiddenField hf = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("HiddenField1");
+                        HiddenField hfT1Desc = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("hfTier1Desc");
                         if (hf != null)
                         {
                             ViewState["SelectedTransId"] = hf.Value;
                             hfLkpId.Value = hf.Value;
-                        }                        
+                            hfTier1Desc.Value = hfT1Desc.Value;
+                        }
                         break;
                     }
                 }
@@ -322,7 +328,7 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Please enter tier 2 description";
                     return;
                 }
-                
+
                 BindLookupSubValues();
             }
             catch (Exception ex)
@@ -336,12 +342,12 @@ namespace vhcbcloud
             {
                 DataTable dt = new DataTable();
                 int typeid = Convert.ToInt32(hfLkpId.Value);
-                if (hfLkpId.Value!=null)
+                if (hfLkpId.Value != null)
                 {
                     dt = LookupMaintenanceData.GetLkLookupSubValues(typeid, cbActiveOnly.Checked);
                 }
-                gvLookup.DataSource = dt;
-                gvLookup.DataBind();
+                gvTier.DataSource = dt;
+                gvTier.DataBind();
             }
             catch (Exception ex)
             {
