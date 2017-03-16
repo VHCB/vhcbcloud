@@ -39,9 +39,9 @@ namespace vhcbcloud
                 }
                 gvLookup.DataSource = dt;
                 gvLookup.DataBind();
-                if (dt.Rows[0]["ordered"].ToString()=="true")
+                if (dt.Rows[0]["tiered"].ToString().ToLower()=="false")
                 {
-                    gvLookup.Columns[0].Visible = true;
+                    gvLookup.Columns[0].Visible = false;
                 }
                 else
                 {
@@ -242,6 +242,11 @@ namespace vhcbcloud
             BindLKDescription();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -273,6 +278,75 @@ namespace vhcbcloud
         {
             BindViewName();
             BindLookupMaintenance();
+        }
+
+        protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
+        {
+            GetSelectedTransId(gvLookup);
+            pnlAddSubTier.Visible = true;
+            BindLookupSubValues();
+        }
+
+        private void GetSelectedTransId(GridView gvFGM)
+        {
+            for (int i = 0; i < gvFGM.Rows.Count; i++)
+            {
+                RadioButton rbGInfo = (RadioButton)gvFGM.Rows[i].Cells[0].FindControl("rdBtnSelect");
+                if (rbGInfo != null)
+                {
+                    if (rbGInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("HiddenField1");
+                        if (hf != null)
+                        {
+                            ViewState["SelectedTransId"] = hf.Value;
+                            hfLkpId.Value = hf.Value;
+                        }                        
+                        break;
+                    }
+                }
+            }
+        }
+
+        protected void btnAddSubTier_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtTier2Desc.Text != "")
+                {
+                    LookupMaintenanceData.AddLookupSubValue(Convert.ToInt32(hfLkpId.Value), txtTier2Desc.Text);
+                    lblErrorMsg.Text = "Tier2 desription saved successfully";
+                }
+                else
+                {
+                    lblErrorMsg.Text = "Please enter tier 2 description";
+                    return;
+                }
+                
+                BindLookupSubValues();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+        private void BindLookupSubValues()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int typeid = Convert.ToInt32(hfLkpId.Value);
+                if (hfLkpId.Value!=null)
+                {
+                    dt = LookupMaintenanceData.GetLkLookupSubValues(typeid, cbActiveOnly.Checked);
+                }
+                gvLookup.DataSource = dt;
+                gvLookup.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
     }
 }
