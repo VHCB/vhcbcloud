@@ -106,7 +106,7 @@
                                                     </td>
                                                     <td style="width: 20%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
-                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" class="totMoney" runat="server" TabIndex="4"></asp:TextBox></td>
+                                                        <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" class="totMoney" onkeyup='toTotAmtFormatter(value)' runat="server" TabIndex="4"></asp:TextBox></td>
                                                     <td style="width: 10%; float: left"></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
@@ -251,7 +251,7 @@
                                                     <tr>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                                         <td style="width: 20%; float: left">
-                                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
+                                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" onkeyup='toAmtFormatter(value)' TabIndex="10"></asp:TextBox></td>
                                                         <td style="width: 10%; float: left">
                                                             <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                         </td>
@@ -458,7 +458,7 @@
             $('#totMoney').focus();
         }
 
-        
+
         function OnFundAcctSelected(source, eventArgs) {
 
             var hdnfundAcct = "<%= hdnCommitedProjValue.ClientID %>";
@@ -475,12 +475,68 @@
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
         }
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#<%=txtProjNum.ClientID%>').blur(function () {
-            });
+
+        //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
         });
+        toTotAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtTotAmt");
+
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
+            };
+
+        toAmtFormatter = value => {
+                const digits = this.getDigitsFromValue(value);
+                const digitsWithPadding = this.padDigits(digits);
+
+                let result = this.addDecimalToNumber(digitsWithPadding);
+
+                var inputElement = document.getElementById("txtAmt");
+
+                //inputElement.value = "$" + result;
+                $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
+        };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
+
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
+
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
+
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
+
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+
+
+    </script>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            console.log($('#<%= txtTotAmt.ClientID%>').val());
+           toCurrencyControl($('#<%= txtTotAmt.ClientID%>').val());
+       });
     </script>
 </asp:Content>

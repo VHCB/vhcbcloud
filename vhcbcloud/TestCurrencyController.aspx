@@ -6,7 +6,7 @@
         <br />
         <br />
         <br />
-        <asp:TextBox ID="txtAmount" runat="server" onkeyup='toCurrencyRama(value)' Width="107px"></asp:TextBox>
+        <asp:TextBox ID="txtAmount" runat="server" onkeyup='toCurrencyControl(value)' Width="107px"></asp:TextBox>
         &nbsp;&nbsp;
             <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
     </div>
@@ -17,7 +17,7 @@
             currency: 'USD',
             minimumFractionDigits: 2,
         });
-        toCurrencyRama = value => {
+        toCurrencyControl = value => {
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);
 
@@ -73,7 +73,7 @@
    <script language="javascript">
        $(document).ready(function () {
            console.log($('#<%= txtAmount.ClientID%>').val());
-            toCurrencyRama($('#<%= txtAmount.ClientID%>').val());
+           toCurrencyControl($('#<%= txtAmount.ClientID%>').val());
         });
     </script>
 </asp:Content>
