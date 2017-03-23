@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -890,6 +891,14 @@ namespace vhcbcloud
             int? nullable = null;
             try
             {
+                string str_F = txtRfromAmt.Text;
+                string tmp_F = Regex.Replace(str_F, "[^0-9a-zA-Z.]+", "");
+                txtRfromAmt.Text = tmp_F.ToString();
+
+                string str_T = txtRfromAmt.Text;
+                string tmp_T = Regex.Replace(str_T, "[^0-9a-zA-Z.]+", "");
+                txtRToAmt.Text = tmp_T.ToString();
+
                 btnNewTransaction.Visible = false;
                 #region validations
                 //if (ddlRFromProj.SelectedIndex == 0)
