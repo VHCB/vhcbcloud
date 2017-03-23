@@ -119,7 +119,7 @@
                                             </asp:DropDownList></td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxBlueSm"></asp:TextBox>
+                                            <asp:TextBox ID="txtRfromAmt" runat="server" onkeyup='toRFromAmtFormatter(value)' CssClass="clsTextBoxMoney"></asp:TextBox>
                                         </td>
                                         <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:</span></td>
                                         <td style="width: 20%; float: left">
@@ -171,7 +171,7 @@
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
-                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney"  onkeyup='toRToAmtFormatter(value)'  runat="server"></asp:TextBox></td>
 
                                     </tr>
 
@@ -359,6 +359,60 @@
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
         }
+
+        //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        toRFromAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtRfromAmt");
+
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtRfromAmt.ClientID%>').val(formatter.format(result));
+            };
+
+        toRToAmtFormatter = value => {
+                const digits = this.getDigitsFromValue(value);
+                const digitsWithPadding = this.padDigits(digits);
+
+                let result = this.addDecimalToNumber(digitsWithPadding);
+
+                var inputElement = document.getElementById("txtRToAmt");
+
+                //inputElement.value = "$" + result;
+                $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
+        };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
+
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
+
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
+
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
+
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
     </script>
 </asp:Content>
