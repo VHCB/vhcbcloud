@@ -99,3 +99,14 @@ begin
 	
 End
 go
+
+
+alter procedure DeleteLkSubValues
+(
+	@subtypeid int
+)
+as
+Begin
+	Delete from lookupsubvalues  where subtypeid = @subtypeid
+end
+go
