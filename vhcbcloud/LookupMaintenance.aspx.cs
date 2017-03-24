@@ -278,8 +278,10 @@ namespace vhcbcloud
         }
         private void BindGrids()
         {
-            BindViewName();
+            //BindViewName();
+            BindLKDescription();
             BindLookupMaintenance();
+            //BindLookupSubValues();
         }
 
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
@@ -348,6 +350,21 @@ namespace vhcbcloud
                 }
                 gvTier.DataSource = dt;
                 gvTier.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvTier_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;                
+                int subtypeid = Convert.ToInt32(((Label)gvTier.Rows[rowIndex].FindControl("lblsubtypeid")).Text);
+                LookupMaintenanceData.DeleteLkSubValues(subtypeid);
+                BindLookupSubValues();
             }
             catch (Exception ex)
             {

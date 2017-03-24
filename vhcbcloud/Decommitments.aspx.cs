@@ -299,10 +299,10 @@ namespace vhcbcloud
                 }
                 else if (txtAmt.Text.Trim() != "")
                 {
-                    int n;
-                    bool isNumeric = int.TryParse(txtAmt.Text.Trim(), out n);
+                    decimal n;
+                    bool IsDecimal = decimal.TryParse(txtAmt.Text.Trim(), out n);
 
-                    if (!isNumeric || Convert.ToDecimal(txtAmt.Text) <= 0)
+                    if (!IsDecimal || Convert.ToDecimal(txtAmt.Text) <= 0)                    
                     {
                         lblErrorMsg.Text = "Select a valid transaction amount";
                         txtAmt.Focus();

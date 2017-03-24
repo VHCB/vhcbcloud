@@ -895,7 +895,7 @@ namespace vhcbcloud
                 string tmp_F = Regex.Replace(str_F, "[^0-9a-zA-Z.]+", "");
                 txtRfromAmt.Text = tmp_F.ToString();
 
-                string str_T = txtRfromAmt.Text;
+                string str_T = txtRToAmt.Text;
                 string tmp_T = Regex.Replace(str_T, "[^0-9a-zA-Z.]+", "");
                 txtRToAmt.Text = tmp_T.ToString();
 
@@ -949,7 +949,7 @@ namespace vhcbcloud
                     ddlRtoFundType.Focus();
                     return;
                 }
-                if (Convert.ToInt32(txtRfromAmt.Text) < Convert.ToInt32(txtRToAmt.Text))
+                if (Convert.ToDecimal(txtRfromAmt.Text) < Convert.ToDecimal(txtRToAmt.Text))
                 {
                     lblRErrorMsg.Text = "Reallocate to amount can't be more than available reallocation from amount";
                     txtRToAmt.Focus();

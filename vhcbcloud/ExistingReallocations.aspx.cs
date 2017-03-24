@@ -441,7 +441,7 @@ namespace vhcbcloud
                 gvReallocate.DataBind();
 
             }
-            catch (Exception ex)
+            catch (Exception ex)  
             {
                 lblRErrorMsg.Text = ex.Message;
                 throw;
@@ -588,6 +588,7 @@ namespace vhcbcloud
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             if (rdBtnSelection.SelectedIndex > 0)
+
                 BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
         }
 

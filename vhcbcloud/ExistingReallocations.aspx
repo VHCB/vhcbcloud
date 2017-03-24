@@ -121,7 +121,7 @@
                                             <asp:Button ID="btnSearch" runat="server" class="btn btn-info" Enabled="true" Text="Search" OnClick="btnSearch_Click" />
                                         </td>
                                         <td style="width: 20%; float: left">
-                                            <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxBlueSm" Visible="False"></asp:TextBox>
+                                            <asp:TextBox ID="txtRfromAmt" runat="server" CssClass="clsTextBoxMoney"   onkeyup='toRFromAmtFormatter(value)'  Visible="False"></asp:TextBox>
                                         </td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">
@@ -305,6 +305,49 @@
             document.getElementById(hdnValueID).value = eventArgs.get_value();
             __doPostBack(hdnValueID, "");
         }
+         //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        toRFromAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtRfromAmt");
+
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtRfromAmt.ClientID%>').val(formatter.format(result));
+            };
+      
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
+
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
+
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
+
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
+
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+
 
     </script>
 </asp:Content>
