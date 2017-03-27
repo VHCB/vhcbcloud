@@ -51,7 +51,7 @@
                         </tr>
                     </table>
                 </div>
-
+                <div id="dvfundf" runat="server" visible="false">
                 <div class="panel-width" runat="server" id="dvNewFund">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -139,17 +139,19 @@
                         </table>
                     </asp:Panel>
                 </div>
+
+                </div>
             </div>
         </div>
     </div>
     <script language="javascript">
         $(document).ready(function () {
-         $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
+        <%-- $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
          
 
          $('#<%= cbAddFund.ClientID%>').click(function () {
              $('#<%= dvFundForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
      });
     </script>
 </asp:Content>
