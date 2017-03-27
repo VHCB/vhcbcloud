@@ -133,7 +133,8 @@ namespace vhcbcloud
             {
                 ClearForm();
 
-                cbAddFund.Checked = true;
+                //cbAddFund.Checked = true;
+                dvfundf.Visible = true;
                 txtFundName.Text = dr["name"].ToString();
                 txtAbbrev.Text = dr["abbrv"].ToString();
                 PopulateDropDown(ddlFundType, dr["LkFundType"].ToString());
@@ -259,6 +260,7 @@ namespace vhcbcloud
             PopulateDropDown(ddlAcctNum, ddlFundName.SelectedValue);
             ClearForm();
             cbAddFund.Checked = false;
+            dvfundf.Visible = false;
         }
 
         protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
@@ -266,6 +268,7 @@ namespace vhcbcloud
             PopulateDropDown(ddlFundName, ddlAcctNum.SelectedValue);
             ClearForm();
             cbAddFund.Checked = false;
+            dvfundf.Visible = false;
         }
     }
 }
