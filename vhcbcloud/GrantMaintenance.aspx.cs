@@ -37,6 +37,7 @@ namespace vhcbcloud
             LoadFundNames();
             LoadFundNumbers();
             BindLookUP(ddlYear, 136);
+            BindLookUP(ddlMilestone, 208);
         }
 
         private void LoadGrantorContact()
@@ -115,6 +116,7 @@ namespace vhcbcloud
         {
             BindGrantInfoGrid();
         }
+
         private void LogError(string pagename, string method, string message, string error)
         {
             dvMessage.Visible = true;
@@ -134,12 +136,14 @@ namespace vhcbcloud
 
         private void BindGrantInfoGrid()
         {
-            dvGrantInfoGrid.Visible = false;
+            dvNewAttachedFunds.Visible = false;
+            dvNewFyAmounts.Visible = false;
+            dvNewMilestones.Visible = false;
 
             try
             {
-                DataTable dt = GrantMaintenanceData.SearchGrantInfo(txtVHCBNameSearch.Text, ddlProgramSearch.SelectedValue.ToString(), 
-                    ddlGrantAgencySearch.SelectedValue.ToString(), ddlGrantor.SelectedValue.ToString(), cbActiveOnly.Checked);
+                DataTable dt = GrantMaintenanceData.SearchGrantInfo(txtVHCBNameSearch.Text, DataUtils.GetInt(ddlProgramSearch.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlGrantAgencySearch.SelectedValue.ToString()), DataUtils.GetInt(ddlGrantor.SelectedValue.ToString()), cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -267,6 +271,8 @@ namespace vhcbcloud
             BindAttachFundGrid();
             dvNewFyAmounts.Visible = true;
             BindFYAmt();
+            dvNewMilestones.Visible = true;
+            BindMilestones();
         }
 
         private int GetGrantInfoSelectedRecordID(GridView gvGrantInfo)
@@ -423,6 +429,144 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 LogError(Pagename, "BindFYAmt", "", ex.Message);
+            }
+        }
+
+        protected void btnGrantInfo_Click(object sender, EventArgs e)
+        {
+            if (txtVHCBName.Text.Trim() == "")
+            {
+                LogMessage("Enter VHCB Name");
+                txtVHCBName.Focus();
+                return;
+            }
+
+            if (txtGrantName.Text.Trim() == "")
+            {
+                LogMessage("Enter Grant Name");
+                txtGrantName.Focus();
+                return;
+            }
+
+            if (btnGrantInfo.Text == "Add")
+            {
+                DBResult objResult = GrantMaintenanceData.AddGrantInfo(txtVHCBName.Text, DataUtils.GetDecimal(txtAwardAmt.Text),
+                    DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
+                    txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
+                    DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), cbFederalFunds.Checked, cbAdmin.Checked, cbMatch.Checked,
+                    cbFundsReceived.Checked);
+
+                ClearGrantInfoForm();
+                BindGrantInfoGrid();
+
+                if (objResult.IsDuplicate && !objResult.IsActive)
+                    LogMessage("Grant Info already exist as in-active");
+                else if (objResult.IsDuplicate)
+                    LogMessage("Grant Info already exist");
+                else
+                    LogMessage("Grant Info Added Successfully");
+            }
+            else
+            {
+                GrantMaintenanceData.UpdateGrantInfo((DataUtils.GetInt(hfGrantinfoID.Value)),
+                    txtVHCBName.Text, DataUtils.GetDecimal(txtAwardAmt.Text),
+                    DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
+                    txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
+                    DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), cbFederalFunds.Checked, cbAdmin.Checked, cbMatch.Checked,
+                    cbFundsReceived.Checked, cbFundActive.Checked);
+
+                gvGrantInfo.EditIndex = -1;
+                BindGrantInfoGrid();
+                hfGrantinfoID.Value = "";
+                ClearGrantInfoForm();
+                btnGrantInfo.Text = "Add";
+
+                LogMessage("Grant Info Updated Successfully");
+            }
+        }
+
+        protected void gvMilestones_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvMilestones.EditIndex = e.NewEditIndex;
+            BindMilestones();
+        }
+
+        protected void gvMilestones_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvMilestones.EditIndex = -1;
+            BindMilestones();
+        }
+
+        protected void gvMilestones_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+
+        }
+
+        protected void btnAddMileStone_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BindMilestones()
+        {
+            try
+            {
+                DataTable dt = GrantMaintenanceData.GetGrantMilestonesList(DataUtils.GetInt(hfGrantinfoID.Value),
+                    cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvMilestonesGrid.Visible = true;
+                    gvMilestones.DataSource = dt;
+                    gvMilestones.DataBind();
+                }
+                else
+                {
+                    dvMilestonesGrid.Visible = false;
+                    gvMilestones.DataSource = null;
+                    gvMilestones.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindMilestones", "", ex.Message);
+            }
+        }
+
+        protected void gvMilestones_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMileStone.Text = "Update";
+                    cbAddMilestone.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[6].Controls[0].Visible = false;
+
+                        Label lblMilestoneGrantID = e.Row.FindControl("lblMilestoneGrantID") as Label;
+                        DataRow dr = GrantMaintenanceData.GetGrantInfo(DataUtils.GetInt(lblMilestoneGrantID.Text));
+
+                        hfMilestoneID.Value = lblMilestoneGrantID.Text;
+
+                        PopulateDropDown(ddlMilestone, dr["MilestoneID"].ToString());
+                        txtMilestoneDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                        txtURL.Text = dr["URL"].ToString() ?? "";
+                        txtNote.Text = dr["Note"].ToString() ?? "";
+                        cbMilestoneActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbMilestoneActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvMilestones_RowDataBound", "", ex.Message);
             }
         }
     }
