@@ -203,7 +203,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="height: 5px">
-                                            <asp:Button ID="btnGrantInfo" runat="server" Text="Add" class="btn btn-info" />
+                                            <asp:Button ID="btnGrantInfo" runat="server" Text="Add" class="btn btn-info" OnClick="btnGrantInfo_Click" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -361,7 +361,7 @@
                     </div>
                 </div>
 
-                 <div class="panel-width" runat="server" id="dvNewFyAmounts" visible="false">
+                <div class="panel-width" runat="server" id="dvNewFyAmounts" visible="false">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -454,9 +454,134 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="dvNewMilestones" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Milestones</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvMilestonesForm">
+                            <asp:Panel runat="server" ID="Panel6">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 96px"><span class="labelClass">Grant Milestone</span></td>
+                                        <td style="width: 214px">
+                                            <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 63px">
+                                            <span class="labelClass">Date</span>
+                                        </td>
+                                        <td style="width: 239px">
+                                            <asp:TextBox ID="txtMilestoneDate" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                        </td>
+                                         <td style="width: 44px">
+                                           <span class="labelClass">URL</span>
+                                         </td>
+                                        <td>
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" Width="170px" Height="22px" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 96px"><span class="labelClass">Note</span></td>
+                                        <td colspan="3">
+                                            <asp:TextBox ID="txtNote" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                        </td>
+                                         <td style="width: 44px"><span class="labelClass">Active</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbMilestoneActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                         <td style="width: 96px">
+                                            <asp:Button ID="btnAddMileStone" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddMileStone_Click" Style="margin-left: 0" /></td>
+                                        <td style="width: 214px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvMilestonesGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="200px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvMilestones" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="false"
+                                    OnRowEditing="gvMilestones_RowEditing" OnRowCancelingEdit="gvMilestones_RowCancelingEdit"
+                                    OnRowUpdating="gvMilestones_RowUpdating" OnRowDataBound="gvMilestones_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="MilestoneGrantID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMilestoneGrantID" runat="Server" Text='<%# Eval("MilestoneGrantID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Milestone">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("MilestoneID") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotes" runat="Server" Text='<%# Eval("Note") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active" ItemStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="50px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <asp:HiddenField ID="hfGrantinfoID" runat="server" />
+        <asp:HiddenField ID="hfMilestoneID" runat="server" />
     </div>
     <script language="javascript">
         $(document).ready(function () {
@@ -473,6 +598,11 @@
             $('#<%= dvFyAmountsForm.ClientID%>').toggle($('#<%= cbAddFyAmounts.ClientID%>').is(':checked'));
             $('#<%= cbAddFyAmounts.ClientID%>').click(function () {
                 $('#<%= dvFyAmountsForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvMilestonesForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
+            $('#<%= cbAddMilestone.ClientID%>').click(function () {
+                $('#<%= dvMilestonesForm.ClientID%>').toggle(this.checked);
             }).change();
         });
 
