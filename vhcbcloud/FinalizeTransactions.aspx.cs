@@ -257,11 +257,9 @@ namespace vhcbcloud
                     {
                         totFundAmt += Convert.ToDecimal(dtDetails.Rows[i]["Amount"].ToString());
                     }
+                    Label lblTotAmt = (Label)gvDetails.FooterRow.FindControl("lblFooterAmount");
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
                 }
-
-                Label lblTotAmt = (Label)gvDetails.FooterRow.FindControl("lblFooterAmount");
-                lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
-
             }
         }
 
