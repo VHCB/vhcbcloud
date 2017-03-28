@@ -193,6 +193,18 @@
                                                 <asp:Label ID="lblProjId" runat="Server" Text='<%# Eval("projectid") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="TransId" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("transid") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <ItemTemplate>
+                                                <%--<asp:LinkButton ID="LinkButton3" runat="server" CausesValidation="False" CommandName="Update" Text="activate" OnClientClick="return confirm('Are you sure you want to activate this transaction?');"></asp:LinkButton>--%>
+                                                &nbsp;
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" Text="delete" OnClientClick="return confirm('Are you sure you want to delete this transaction?');"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                     <FooterStyle CssClass="footerStyle" />
                                 </asp:GridView>
@@ -407,70 +419,70 @@
 
             var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
 
-             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
-             __doPostBack(hdnCommitedProjValueID, "");
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+        }
+
+        function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+             document.getElementById(hdnValueID).value = eventArgs.get_value();
+             __doPostBack(hdnValueID, "");
          }
+         //Currency formatter code starts below
+         var formatter = new Intl.NumberFormat('en-US', {
+             style: 'currency',
+             currency: 'USD',
+             minimumFractionDigits: 2,
+         });
+         toTotAmtFormatter = value => {
+             const digits = this.getDigitsFromValue(value);
+             const digitsWithPadding = this.padDigits(digits);
 
-         function OnContactSelected(source, eventArgs) {
+             let result = this.addDecimalToNumber(digitsWithPadding);
 
-             var hdnValueID = "<%= hdnValue.ClientID %>";
+             var inputElement = document.getElementById("txtTotAmt");
 
-            document.getElementById(hdnValueID).value = eventArgs.get_value();
-            __doPostBack(hdnValueID, "");
-         }
-          //Currency formatter code starts below
-        var formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-        });
-        toTotAmtFormatter = value => {
+             //inputElement.value = formatter.format(result);
+             $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
+        };
+
+        toAmtFormatter = value => {
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);
 
             let result = this.addDecimalToNumber(digitsWithPadding);
 
-            var inputElement = document.getElementById("txtTotAmt");
+            var inputElement = document.getElementById("txtAmt");
 
-            //inputElement.value = formatter.format(result);
-            $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
+            //inputElement.value = "$" + result;
+            $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
+        };
+            getDigitsFromValue = (value) => {
+                return value.toString().replace(/\D/g, '');
             };
 
-        toAmtFormatter = value => {
-                const digits = this.getDigitsFromValue(value);
-                const digitsWithPadding = this.padDigits(digits);
+            padDigits = digits => {
+                const desiredLength = 3;
+                const actualLength = digits.length;
 
-                let result = this.addDecimalToNumber(digitsWithPadding);
+                if (actualLength >= desiredLength) {
+                    return digits;
+                }
 
-                var inputElement = document.getElementById("txtAmt");
+                const amountToAdd = desiredLength - actualLength;
+                const padding = '0'.repeat(amountToAdd);
 
-                //inputElement.value = "$" + result;
-                $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
-        };
-        getDigitsFromValue = (value) => {
-            return value.toString().replace(/\D/g, '');
-        };
-
-        padDigits = digits => {
-            const desiredLength = 3;
-            const actualLength = digits.length;
-
-            if (actualLength >= desiredLength) {
-                return digits;
-            }
-
-            const amountToAdd = desiredLength - actualLength;
-            const padding = '0'.repeat(amountToAdd);
-
-            return padding + digits;
-        };
-        addDecimalToNumber = number => {
-            const centsStartingPosition = number.length - 2;
-            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-            const cents = number.substring(centsStartingPosition);
-            return `${dollars}.${cents}`;
-        };
-        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+                return padding + digits;
+            };
+            addDecimalToNumber = number => {
+                const centsStartingPosition = number.length - 2;
+                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+                const cents = number.substring(centsStartingPosition);
+                return `${dollars}.${cents}`;
+            };
+            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
 
     </script>
