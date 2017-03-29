@@ -71,7 +71,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
-        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive)
+        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive, int ordering)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -83,6 +83,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("description", description));
                 command.Parameters.Add(new SqlParameter("lookupTypeid", lookupTypeId));
                 command.Parameters.Add(new SqlParameter("isActive", isActive));
+                command.Parameters.Add(new SqlParameter("Ordering", ordering));
                 using (connection)
                 {
                     connection.Open();
@@ -100,7 +101,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateLkDescription(int recordId, string lkDescription, bool isActive, bool isTiered)
+        public static void UpdateLkDescription(int recordId, string lkDescription, bool isActive, bool isTiered, bool isOrdered)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -112,6 +113,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("lkDescription", lkDescription));
                 command.Parameters.Add(new SqlParameter("isActive", isActive));
                 command.Parameters.Add(new SqlParameter("isTiered", isTiered));
+                command.Parameters.Add(new SqlParameter("isOrdered", isOrdered));
                 using (connection)
                 {
                     connection.Open();

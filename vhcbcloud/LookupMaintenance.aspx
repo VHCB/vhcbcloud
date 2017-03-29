@@ -50,6 +50,14 @@
                                         <asp:TextBox ID="txtlkDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("LKDescription") %>'></asp:TextBox>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="Ordered" SortExpression="Ordered">
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkOrdered" Enabled="false" runat="server" Checked='<%# Eval("Ordered") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="chkOrderedEdit" runat="server" Checked='<%# Eval("Ordered") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tiered" SortExpression="tiered">
                                     <ItemTemplate>
                                         <asp:CheckBox ID="chkStandard" Enabled="false" runat="server" Checked='<%# Eval("tiered") %>' />
@@ -113,6 +121,15 @@
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtDesc" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("description") %>'></asp:TextBox>
                                 </EditItemTemplate>
+                            </asp:TemplateField>
+                              <asp:TemplateField HeaderText="Ordering" SortExpression="Ordering">
+                                   <ItemTemplate>
+                                    <asp:Label ID="lblOrdering" runat="Server" Text='<%# Eval("Ordering") %>' />
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="txtOrdering" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("Ordering") %>'></asp:TextBox>
+                                </EditItemTemplate>
+
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
                                 <ItemTemplate>
@@ -209,6 +226,7 @@
     </div>
     <asp:HiddenField ID="hfLkpId" runat="server" />
     <asp:HiddenField ID="hfTier1Desc" runat="server" />
+    <asp:HiddenField ID="IsOrdered" runat="server" />
 </div>
 
 <script type="text/javascript">

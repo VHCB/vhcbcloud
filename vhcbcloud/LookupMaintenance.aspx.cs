@@ -12,6 +12,7 @@ namespace vhcbcloud
     public partial class LookupMaintenance : System.Web.UI.Page
     {
         private int _recordId = 0;
+        
         public int recordId { get { return _recordId; } set { _recordId = value; } }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -40,6 +41,7 @@ namespace vhcbcloud
                 gvLookup.DataSource = dt;
                 gvLookup.DataBind();
                 if (dt.Rows.Count > 0)
+                {
                     if (dt.Rows[0]["tiered"].ToString().ToLower() == "false")
                     {
                         gvLookup.Columns[0].Visible = false;
@@ -48,6 +50,16 @@ namespace vhcbcloud
                     {
                         gvLookup.Columns[0].Visible = true;
                     }
+                    //write code to show the visibility fo the ordering column
+                    if (IsOrdered.Value == "true")
+                    {
+                        gvLookup.Columns[4].Visible = true;
+                    }
+                    else
+                    {
+                        gvLookup.Columns[4].Visible = false;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -59,12 +71,22 @@ namespace vhcbcloud
         {
             try
             {
+                DataTable dt = new DataTable();
+
                 recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
                 if (recordId == 0)
-                    gvLkDescription.DataSource = null;
+
+                    dt = null;
                 else
-                    gvLkDescription.DataSource = LookupMaintenanceData.GetLookupsById(recordId);
+                    dt = LookupMaintenanceData.GetLookupsById(recordId);
+
+                gvLkDescription.DataSource = dt;
                 gvLkDescription.DataBind();
+
+                if (dt.Rows[0]["ordered"].ToString().ToLower() == "true")
+                {
+                    IsOrdered.Value = "true";
+                }
             }
             catch (Exception ex)
             {
@@ -89,12 +111,23 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
+                string strOrder = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtOrdering")).Text;
+                int n;
+                bool isInt = int.TryParse(strOrder.Trim(), out n);
+
+                if (!isInt || Convert.ToInt32(strOrder) <= 0)
+                {
+                    lblErrorMsg.Text = "Please enter numerical values only for ordering";
+                }
+
+                  
                 int typeId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lbltypeid")).Text);
                 string lkDescription = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtDesc")).Text;
                 int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lblrecordId")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
+                int Ordering = Convert.ToInt32(strOrder);
 
-                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive);
+                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, Ordering);
                 gvLookup.EditIndex = -1;
                 //BindLookupMaintenance();
                 BindGrids();
@@ -221,12 +254,14 @@ namespace vhcbcloud
                 int recordId = Convert.ToInt32(((Label)gvLkDescription.Rows[rowIndex].FindControl("lblRecordId")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvLkDescription.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
                 bool isTiered = Convert.ToBoolean(((CheckBox)gvLkDescription.Rows[rowIndex].FindControl("chkStandardEdit")).Checked);
+                bool isOrdered = Convert.ToBoolean(((CheckBox)gvLkDescription.Rows[rowIndex].FindControl("chkOrderedEdit")).Checked);
 
-                LookupMaintenanceData.UpdateLkDescription(recordId, lkDescription, isActive, isTiered);
+                LookupMaintenanceData.UpdateLkDescription(recordId, lkDescription, isActive, isTiered, isOrdered);
                 gvLkDescription.EditIndex = -1;
 
-                BindViewName(); BindLookupMaintenance();
+                //BindViewName(); 
                 BindLKDescription();
+                BindLookupMaintenance();
                 lblErrorMsg.Text = "Lookup description updated successfully";
                 txtDescription.Text = "";
             }
@@ -239,8 +274,9 @@ namespace vhcbcloud
         protected void ddlLkLookupViewname_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
-            BindLookupMaintenance();
             BindLKDescription();
+            BindLookupMaintenance();
+            
             pnlAddSubTier.Visible = false;
         }
 
