@@ -62,7 +62,7 @@ begin
 		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered
 		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
 		where (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)
-		order by lk.Ordered desc, lk.Viewname asc
+		order by lv.Ordering desc, lk.Viewname asc
 	end
 	else
 	Begin
@@ -70,7 +70,7 @@ begin
 		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
 		where lk.RecordID = @recordId 
 		and (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)
-		order by lk.Ordered desc, lk.Viewname asc
+		order by lv.Ordering desc, lk.Viewname asc
 	end
 end
 go
@@ -119,14 +119,14 @@ alter  procedure [dbo].[updateLookups]
 	@description varchar(50),
 	@lookupTypeid int,	
 	@isActive bit,
-	@isOrdering int
+	@Ordering int
 )
 as
 --exec updatelookups 97, 'Prime soils', 272, 1, 1
 begin transaction
 
 	begin try
-		update LookupValues set Description = @description, ordering = @isOrdering, RowIsActive=@isActive where TypeID = @typeId;
+		update LookupValues set Description = @description, ordering = @Ordering, RowIsActive=@isActive where TypeID = @typeId;
 		--update LkLookups set  RowIsActive=@isActive, Ordered = @isOrdered  where RecordID = @lookupTypeid;
 	end try
 	begin catch
