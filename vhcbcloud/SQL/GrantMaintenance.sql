@@ -23,6 +23,7 @@ print @VHCBName
 		where (@VHCBName is null or VHCBName like '%'+ @VHCBName + '%')
 			and (@Program is null or Program = @Program)
 			and (@LkGrantAgency is null or LkGrantAgency = @LkGrantAgency)
+			and (@Grantor is null or ContactID = @Grantor)
 			and (@IsActiveOnly = 0 or RowIsActive = @IsActiveOnly) 
 		order by VHCBName
 	
@@ -327,14 +328,14 @@ create procedure GetGrantinfoFYAmtList
 )
 as
 begin
---exec GetGrantinfoFYAmtList 31, 1
+--exec GetGrantinfoFYAmtList 62, 1
 	begin try
 
-		select GrantInfoFY, GrantinfoID, LkYear, Amount, RowIsActive
-		from GrantinfoFYAmt (nolock)
+		select GrantInfoFY, GrantinfoID, LkYear, lpn.description as Year, Amount, fy.RowIsActive
+		from GrantinfoFYAmt fy(nolock)
+		join lookupvalues lpn on lpn.typeid = fy.LkYear
 		where GrantinfoID = @GrantInfoId 
-			and (@IsActiveOnly = 0 or RowIsActive = @IsActiveOnly)
-	
+			and (@IsActiveOnly = 0 or fy.RowIsActive = @IsActiveOnly)
 	end try
 	begin catch
 		if @@trancount > 0
@@ -440,7 +441,6 @@ end
 go
 
 /* GrantMilestones */
-
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetGrantMilestonesList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetGrantMilestonesList
 go
@@ -452,13 +452,16 @@ create procedure GetGrantMilestonesList
 )
 as
 begin
---exec GetGrantMilestonesList 1, 1
+--exec GetGrantMilestonesList 62, 0
 	begin try
 
-		select MilestoneGrantID, GrantInfoID, MilestoneID, Date, Note, URL, RowIsActive
-		from GrantMilestones (nolock)
+		select MilestoneGrantID, GrantInfoID, MilestoneID, lpn.description as Milestone, Date, 
+			Note as FullNotes, substring(Note, 0, 25) Note, 
+			URL, CASE when isnull(m.URL, '') = '' then '' else 'Click here' end as URLText, m.RowIsActive
+		from GrantMilestones m(nolock)
+		join lookupvalues lpn on lpn.typeid = m.MilestoneID
 		where GrantinfoID = @GrantInfoId 
-			and (@IsActiveOnly = 0 or RowIsActive = @IsActiveOnly)
+			and (@IsActiveOnly = 0 or m.RowIsActive = @IsActiveOnly)
 	
 	end try
 	begin catch
@@ -543,3 +546,36 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetGrantMilestone]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetGrantMilestone
+go
+
+create procedure GetGrantMilestone  
+(
+	@MilestoneGrantID	int
+)
+as
+begin
+--exec GetGrantMilestone 1
+	begin try
+
+		select MilestoneGrantID, GrantInfoID, MilestoneID, Date, Note, URL, RowIsActive
+		from GrantMilestones
+		where MilestoneGrantID = @MilestoneGrantID
+	
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
+go
+

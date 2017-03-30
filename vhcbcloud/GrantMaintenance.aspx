@@ -382,7 +382,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Fiscal Year</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlYear" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlFyYear" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
                                         </td>
                                         <td style="width: 63px">
                                             <span class="labelClass">Amount</span>
@@ -391,8 +391,8 @@
                                             <asp:TextBox ID="txtFyAmt" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
-                                            <asp:Button ID="Button1" runat="server" Text="Add" class="btn btn-info"
-                                                OnClick="btnAddAttachFund_Click" Style="margin-left: 0" /></td>
+                                            <asp:Button ID="btnFyAmt" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnFyAmt_Click" Style="margin-left: 0" /></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -423,7 +423,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Year">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblLkYear" runat="Server" Text='<%# Eval("LkYear") %>' />
+                                                <asp:Label ID="lblLkYear" runat="Server" Text='<%# Eval("Year") %>' />
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
@@ -431,6 +431,10 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtFyAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'>
+                                                </asp:TextBox>
+                                            </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active" ItemStyle-HorizontalAlign="Center">
@@ -482,7 +486,9 @@
                                             <span class="labelClass">Date</span>
                                         </td>
                                         <td style="width: 239px">
-                                            <asp:TextBox ID="txtMilestoneDate" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtMilestoneDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtMilestoneDate">
+                                            </ajaxToolkit:CalendarExtender>
                                         </td>
                                          <td style="width: 44px">
                                            <span class="labelClass">URL</span>
@@ -538,25 +544,25 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Milestone">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("MilestoneID") %>' />
+                                                <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("Milestone") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
+                                            <ItemStyle Width="150px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date") %>' />
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                          <asp:TemplateField HeaderText="Notes">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblNotes" runat="Server" Text='<%# Eval("Note") %>' />
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Note") %>' />
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                          <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
@@ -581,6 +587,7 @@
             </div>
         </div>
         <asp:HiddenField ID="hfGrantinfoID" runat="server" />
+        <asp:HiddenField ID="hfGrantInfoFYID" runat="server" />
         <asp:HiddenField ID="hfMilestoneID" runat="server" />
     </div>
     <script language="javascript">

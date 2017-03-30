@@ -463,13 +463,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
-        /// ddlYear control.
+        /// ddlFyYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlYear;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFyYear;
         
         /// <summary>
         /// txtFyAmt control.
@@ -481,13 +481,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtFyAmt;
         
         /// <summary>
-        /// Button1 control.
+        /// btnFyAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btnFyAmt;
         
         /// <summary>
         /// dvFyAmountsGrid control.
@@ -571,6 +571,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtMilestoneDate;
         
         /// <summary>
+        /// CalendarExtender2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
+        
+        /// <summary>
         /// txtURL control.
         /// </summary>
         /// <remarks>
@@ -641,6 +650,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfGrantinfoID;
+        
+        /// <summary>
+        /// hfGrantInfoFYID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfGrantInfoFYID;
         
         /// <summary>
         /// hfMilestoneID control.
