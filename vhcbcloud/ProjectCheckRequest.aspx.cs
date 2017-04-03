@@ -6,6 +6,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -531,7 +532,8 @@ namespace vhcbcloud
                         ClearPCRForm();
                         EnablePCR();
 
-                        lblProjName.Text = dt.Rows[0][1].ToString(); ;
+                        lblProjName.Text = dt.Rows[0][1].ToString(); 
+                        lblProjectType.Text = dt.Rows[0][2].ToString();
                         BindApplicantName(int.Parse(hfProjId.Value));
                         ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
 
@@ -874,6 +876,14 @@ namespace vhcbcloud
         {
             string PCRID = this.hfEditPCRId.Value;
 
+            string strEAmt = txtEligibleAmt.Text;
+            string tmpE = Regex.Replace(strEAmt, "[^0-9a-zA-Z.]+", "");
+            txtEligibleAmt.Text = tmpE.ToString();
+
+            string strDAmt = txtDisbursementAmt.Text;
+            string tmpD = Regex.Replace(strDAmt, "[^0-9a-zA-Z.]+", "");
+            txtDisbursementAmt.Text = tmpD.ToString();
+
             #region Validations
             //if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
             //{
@@ -881,7 +891,7 @@ namespace vhcbcloud
             //    ddlProjFilter.Focus();
             //    return;
             //}
-            if(txtProjNum.Text=="")
+            if (txtProjNum.Text=="")
             {
                 lblErrorMsg.Text = "Select Project#";
                 return;
@@ -1001,8 +1011,10 @@ namespace vhcbcloud
             #endregion
 
             try
-            {
-               // string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
+            {          
+
+
+                // string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 string lbNODS = string.Empty;
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);
 
@@ -1101,7 +1113,11 @@ namespace vhcbcloud
         {
             try
             {
+                string str = txtTransDetailAmt.Text;
+                string tmp = Regex.Replace(str, "[^0-9a-zA-Z.]+", "");
+                txtTransDetailAmt.Text = tmp.ToString();
 
+               
                 #region Validations
                 if (ddlFundTypeCommitments.Items.Count > 1 && ddlFundTypeCommitments.SelectedIndex == 0)
                 {
@@ -1935,6 +1951,14 @@ namespace vhcbcloud
             {
                 string PCRID = this.hfEditPCRId.Value;
 
+                string strEAmt = txtEligibleAmt.Text;
+                string tmpE = Regex.Replace(strEAmt, "[^0-9a-zA-Z.]+", "");
+                txtEligibleAmt.Text = tmpE.ToString();
+
+                string strDAmt = txtDisbursementAmt.Text;
+                string tmpD = Regex.Replace(strDAmt, "[^0-9a-zA-Z.]+", "");
+                txtDisbursementAmt.Text = tmpD.ToString();
+
                 #region Validations
                 if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
                 {
@@ -2051,6 +2075,7 @@ namespace vhcbcloud
                     //}
                 }
                 #endregion
+
                 string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 string lbNODS = string.Empty;
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);

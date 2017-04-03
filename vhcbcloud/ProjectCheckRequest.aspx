@@ -135,15 +135,16 @@
                                         <span class="labelClass" id="lblAmtEligibleForMatch" visible="false" runat="server">Amount Eligible For Match $ :</span>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxBlue1" Visible="false" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxMoney" onkeyup='toEligibleAmtFormatter(value)' Visible="false" runat="server"></asp:TextBox>
                                     </td>
                                     <td><span class="labelClass" id="lblMatchingGrant" visible="false" runat="server">Matching Grant :</span></td>
                                     <td>
                                         <asp:DropDownList ID="ddlMatchingGrant" Visible="false" CssClass="clsDropDown" runat="server">
                                         </asp:DropDownList>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><span class="labelClass">Project Type :</span></td>
+                                    <td>
+                                        <asp:Label ID="lblProjectType" class="labelClass" Text="--" runat="server"></asp:Label></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -152,7 +153,7 @@
                                 <tr>
                                     <td><span class="labelClass">Disbursement $:</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxMoney" onkeyup='toDisburAmtFormatter(value)' runat="server"></asp:TextBox>
                                     </td>
                                     <td><span class="labelClass">Available Funds $:</span></td>
                                     <td colspan="5">
@@ -330,7 +331,7 @@
                                 <tr>
                                     <td><span class="labelClass">Amount $:</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtTransDetailAmt" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtTransDetailAmt" CssClass="clsTextBoxMoney" onkeyup='toTransDetailAmtFormatter(value)' runat="server"></asp:TextBox>
                                     </td>
                                     <td>
                                         <%-- <span class="labelClass">State/VHCB #s:</span>--%>
@@ -597,21 +598,89 @@
 
             var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
 
-             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
-             __doPostBack(hdnCommitedProjValueID, "");
-             $('#totMoney').focus();
-         }
-         function PopupNewAwardSummary() {
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+            $('#totMoney').focus();
+        }
+        function PopupNewAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+         };
+
+         function PopupProjectSearch() {
+             window.open('./projectsearch.aspx')
+         };
+
+         function PopupExistingAwardSummary() {
              window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
-        function PopupProjectSearch() {
-            window.open('./projectsearch.aspx')
+        //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        toDisburAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtDisbursementAmt");
+
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtDisbursementAmt.ClientID%>').val(formatter.format(result));
         };
 
-        function PopupExistingAwardSummary() {
-            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        toTransDetailAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtTransDetailAmt");
+
+            //inputElement.value = "$" + result;
+            $('#<%= txtTransDetailAmt.ClientID%>').val(formatter.format(result));
         };
+
+            toEligibleAmtFormatter = value => {
+                const digits = this.getDigitsFromValue(value);
+                const digitsWithPadding = this.padDigits(digits);
+
+                let result = this.addDecimalToNumber(digitsWithPadding);
+
+                var inputElement = document.getElementById("txtEligibleAmt");
+
+                //inputElement.value = "$" + result;
+                $('#<%= txtEligibleAmt.ClientID%>').val(formatter.format(result));
+        };
+
+            getDigitsFromValue = (value) => {
+                return value.toString().replace(/\D/g, '');
+            };
+
+            padDigits = digits => {
+                const desiredLength = 3;
+                const actualLength = digits.length;
+
+                if (actualLength >= desiredLength) {
+                    return digits;
+                }
+
+                const amountToAdd = desiredLength - actualLength;
+                const padding = '0'.repeat(amountToAdd);
+
+                return padding + digits;
+            };
+            addDecimalToNumber = number => {
+                const centsStartingPosition = number.length - 2;
+                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+                const cents = number.substring(centsStartingPosition);
+                return `${dollars}.${cents}`;
+            };
+            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+
 
 
     </script>
