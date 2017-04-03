@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -334,6 +335,10 @@ namespace vhcbcloud
         {
             try
             {
+                string str = txtAmt.Text;
+                string tmp = Regex.Replace(str, "[^0-9a-zA-Z.]+", "");
+                txtAmt.Text = tmp.ToString();
+
                 btnNewTransaction.Visible = false;
                 lblErrorMsg.Text = "";
 
@@ -444,6 +449,10 @@ namespace vhcbcloud
         {
             try
             {
+                string str = txtTotAmt.Text;
+                string tmp = Regex.Replace(str, "[^0-9a-zA-Z.]+", "");
+                txtTotAmt.Text = tmp.ToString();
+
                 if (txtProjNum.Text == "")
                 {
                     lblErrorMsg.Text = "Select Project to add new transaction";
