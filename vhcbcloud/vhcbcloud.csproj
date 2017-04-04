@@ -273,6 +273,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
     <Content Include="ProjectDesc.aspx" />
+    <Content Include="Scripts\CurrencyController.js" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
     <Content Include="SQL\ConservationAct250.sql" />

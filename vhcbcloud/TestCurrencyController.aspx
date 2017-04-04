@@ -6,7 +6,7 @@
         <br />
         <br />
         <br />
-        <asp:TextBox ID="txtAmount" runat="server" onkeyup='toCurrencyControl(value)' Width="107px"></asp:TextBox>
+        <asp:TextBox ID="txtAwardAmt" runat="server" onkeyup='toCurrencyControl(value)' Width="107px"></asp:TextBox>
         &nbsp;&nbsp;
             <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
     </div>
@@ -23,14 +23,14 @@
 
             let result = this.addDecimalToNumber(digitsWithPadding);
 
-            var inputElement = document.getElementById("txtAmount");
+            var inputElement = document.getElementById("txtAwardAmt");
 
             //inputElement.value = formatter.format(result);
-            $('#<%= txtAmount.ClientID%>').val(formatter.format(result));
+            $('#<%= txtAwardAmt.ClientID%>').val(formatter.format(result));
         };
 
         showCurrency = () => {
-            var inputElement = document.getElementById("txtAmount");
+            var inputElement = document.getElementById("txtAwardAmt");
             alert(inputElement.value);
         }
         toCurrency = value => {
@@ -39,7 +39,7 @@
 
             let result = this.addDecimalToNumber(digitsWithPadding);
 
-            var inputElement = document.getElementById("txtAmount");
+            var inputElement = document.getElementById("txtAwardAmt");
 
             inputElement.value = "$" + result;
         };
@@ -72,8 +72,8 @@
 
    <script language="javascript">
        $(document).ready(function () {
-           console.log($('#<%= txtAmount.ClientID%>').val());
-           toCurrencyControl($('#<%= txtAmount.ClientID%>').val());
+           console.log($('#<%= txtAwardAmt.ClientID%>').val());
+           toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val());
         });
     </script>
 </asp:Content>

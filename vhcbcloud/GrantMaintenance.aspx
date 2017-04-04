@@ -429,10 +429,10 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Amount">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount") %>' />
+                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:c2}") %>'/>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtFyAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'>
+                                                <asp:TextBox ID="txtFyAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'>
                                                 </asp:TextBox>
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
@@ -490,9 +490,9 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtMilestoneDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                         <td style="width: 44px">
-                                           <span class="labelClass">URL</span>
-                                         </td>
+                                        <td style="width: 44px">
+                                            <span class="labelClass">URL</span>
+                                        </td>
                                         <td>
                                             <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" Width="170px" Height="22px" runat="server"></asp:TextBox>
                                         </td>
@@ -505,7 +505,7 @@
                                         <td colspan="3">
                                             <asp:TextBox ID="txtNote" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
                                         </td>
-                                         <td style="width: 44px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 44px"><span class="labelClass">Active</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbMilestoneActive" Enabled="false" runat="server" Checked="true" />
                                         </td>
@@ -514,7 +514,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 96px">
+                                        <td style="width: 96px">
                                             <asp:Button ID="btnAddMileStone" runat="server" Text="Add" class="btn btn-info"
                                                 OnClick="btnAddMileStone_Click" Style="margin-left: 0" /></td>
                                         <td style="width: 214px"></td>
@@ -554,13 +554,13 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Notes">
+                                        <asp:TemplateField HeaderText="Notes">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Note") %>' />
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
+                                        <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
@@ -590,8 +590,27 @@
         <asp:HiddenField ID="hfGrantInfoFYID" runat="server" />
         <asp:HiddenField ID="hfMilestoneID" runat="server" />
     </div>
+    
     <script language="javascript">
         $(document).ready(function () {
+            toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val(), $('#<%= txtAwardAmt.ClientID%>'));
+            
+            $('#<%= txtFyAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtFyAmt.ClientID%>').val(), $('#<%= txtFyAmt.ClientID%>'));
+            });
+
+             $('#<%= txtAwardAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val(), $('#<%= txtAwardAmt.ClientID%>'));
+            });
+
+            $("input[id*=txtFyAmount]").keyup(function () {
+                toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
+            });
+            
+            if ($('input[id*=txtFyAmount]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
+            }
+
             $('#<%= dvGrantInfoForm.ClientID%>').toggle($('#<%= cbAddGrantInfo.ClientID%>').is(':checked'));
             $('#<%= cbAddGrantInfo.ClientID%>').click(function () {
                 $('#<%= dvGrantInfoForm.ClientID%>').toggle(this.checked);

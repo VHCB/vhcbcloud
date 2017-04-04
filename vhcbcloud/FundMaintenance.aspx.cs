@@ -30,9 +30,9 @@ namespace vhcbcloud
             LoadFundNames();
             LoadFundNumbers();
 
-            BindLookUP(ddlSOVFundCode, 207); 
+            BindLookUP(ddlSOVFundCode, 207);
             BindLookUP(ddlAcctMethod, 129);
-            BindLookUP(ddlSOVDeptId, 209); 
+            BindLookUP(ddlSOVDeptId, 209);
 
             BindFundType();
         }
@@ -109,27 +109,9 @@ namespace vhcbcloud
             cbAddFund.Checked = false;
         }
 
-        protected void btnFundSearch_Click(object sender, EventArgs e)
-        {
-            if (ddlFundName.SelectedIndex == 0 && ddlAcctNum.SelectedIndex == 0)
-            {
-                LogMessage("Please select Fund name or Fund Number");
-            }
-            else
-            {
-                DataRow dt = null;
-                ClearForm();
-
-                if (ddlFundName.SelectedIndex != 0)
-                    PopulateForm(FundMaintenanceData.SearchFund(Convert.ToInt32(ddlFundName.SelectedValue.ToString())));
-                else if (ddlAcctNum.SelectedIndex != 0)
-                    PopulateForm(FundMaintenanceData.SearchFund(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString())));
-            }
-        }
-
         private void PopulateForm(DataRow dr)
         {
-            if(dr != null)
+            if (dr != null)
             {
                 ClearForm();
 
@@ -261,6 +243,7 @@ namespace vhcbcloud
             ClearForm();
             cbAddFund.Checked = false;
             dvfundf.Visible = false;
+            SearchFund();
         }
 
         protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
@@ -269,6 +252,17 @@ namespace vhcbcloud
             ClearForm();
             cbAddFund.Checked = false;
             dvfundf.Visible = false;
+            SearchFund();
+        }
+
+        private void SearchFund()
+        {
+            cbAddFund.Checked = true;
+
+            if (ddlFundName.SelectedIndex != 0)
+                PopulateForm(FundMaintenanceData.SearchFund(Convert.ToInt32(ddlFundName.SelectedValue.ToString())));
+            else if (ddlAcctNum.SelectedIndex != 0)
+                PopulateForm(FundMaintenanceData.SearchFund(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString())));
         }
     }
 }

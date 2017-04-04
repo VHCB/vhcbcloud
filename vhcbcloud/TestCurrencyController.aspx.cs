@@ -14,14 +14,14 @@ namespace vhcbcloud
         {
             if(!IsPostBack)
             {
-                txtAmount.Text = "12345.67";
+                txtAwardAmt.Text = "12343345.67";
             }
 
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string str = txtAmount.Text;
+            string str = txtAwardAmt.Text;
             string tmp = Regex.Replace(str, "[^0-9a-zA-Z.]+", "");
             Response.Write("Value store in database is: " + tmp);
         }

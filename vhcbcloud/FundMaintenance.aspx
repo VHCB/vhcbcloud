@@ -43,15 +43,17 @@
                             </td>
                             <td style="width: 1px"></td>
                             <td>
-                                <asp:Button ID="btnFundSearch" runat="server" Text="Search" class="btn btn-info"
-                                    OnClick="btnFundSearch_Click" /></td>
+                               <%-- <asp:Button ID="btnFundSearch" runat="server" Text="Search" class="btn btn-info"
+                                    OnClick="btnFundSearch_Click" />--%>
+
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 10px"></td>
                         </tr>
                     </table>
                 </div>
-                <div id="dvfundf" runat="server" visible="false">
+                <div id="dvfundf" runat="server">
                 <div class="panel-width" runat="server" id="dvNewFund">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -146,12 +148,12 @@
     </div>
     <script language="javascript">
         $(document).ready(function () {
-        <%-- $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
+         $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
          
 
          $('#<%= cbAddFund.ClientID%>').click(function () {
              $('#<%= dvFundForm.ClientID%>').toggle(this.checked);
-            }).change();--%>
+            }).change();
      });
     </script>
 </asp:Content>
