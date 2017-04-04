@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -409,8 +410,8 @@ namespace vhcbcloud
             int rowIndex = e.RowIndex;
 
             int GrantInfoFYId = DataUtils.GetInt(((Label)gvFyAmounts.Rows[rowIndex].FindControl("lblGrantInfoFY")).Text);
-            decimal fyAmount = DataUtils.GetDecimal(((TextBox)gvFyAmounts.Rows[rowIndex].FindControl("txtFyAmount")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvFyAmounts.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+            decimal fyAmount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvFyAmounts.Rows[rowIndex].FindControl("txtFyAmount")).Text, "[^0-9a-zA-Z.]+", ""));
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvFyAmounts.Rows[rowIndex].FindControl("chkActive")).Checked);
 
             GrantMaintenanceData.UpdateGrantinfoFYAmt(GrantInfoFYId, fyAmount, RowIsActive);
             gvFyAmounts.EditIndex = -1;
@@ -464,7 +465,7 @@ namespace vhcbcloud
 
             if (btnGrantInfo.Text == "Add")
             {
-                DBResult objResult = GrantMaintenanceData.AddGrantInfo(txtVHCBName.Text, DataUtils.GetDecimal(txtAwardAmt.Text),
+                DBResult objResult = GrantMaintenanceData.AddGrantInfo(txtVHCBName.Text, DataUtils.GetDecimal(Regex.Replace(txtAwardAmt.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
                     txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
                     DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
@@ -484,7 +485,7 @@ namespace vhcbcloud
             else
             {
                 GrantMaintenanceData.UpdateGrantInfo((DataUtils.GetInt(hfGrantinfoID.Value)),
-                    txtVHCBName.Text, DataUtils.GetDecimal(txtAwardAmt.Text),
+                    txtVHCBName.Text, DataUtils.GetDecimal(Regex.Replace(txtAwardAmt.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
                     txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
                     DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
@@ -643,8 +644,8 @@ namespace vhcbcloud
         protected void btnFyAmt_Click(object sender, EventArgs e)
         {
             DBResult objDBResult = GrantMaintenanceData.AddGrantinfoFYAmt((DataUtils.GetInt(hfGrantinfoID.Value)),
-                   DataUtils.GetInt(ddlFyYear.SelectedValue.ToString()), DataUtils.GetDecimal(txtFyAmt.Text));
-
+                   DataUtils.GetInt(ddlFyYear.SelectedValue.ToString()), DataUtils.GetDecimal(Regex.Replace(txtFyAmt.Text, "[^0-9a-zA-Z.]+", "")));
+            
             ddlFyYear.SelectedIndex = -1;
             txtFyAmt.Text="";
             cbAddFyAmounts.Checked = false;

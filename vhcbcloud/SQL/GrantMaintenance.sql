@@ -53,10 +53,12 @@ create procedure GetGrantInfo
 )
 as
 begin
---exec GetGrantInfo 33
+--exec GetGrantInfo 70
 	begin try
 
-		select GrantName, VHCBName, LkGrantAgency, LkGrantSource, Grantor, AwardNum, AwardAmt, BeginDate, EndDate, Staff, ContactID, CFDA, Program, SignAgree, FedFunds, FedSignDate, Fundsrec, Match, Admin, Notes, RowIsActive, DateModified
+		select GrantName, VHCBName, LkGrantAgency, LkGrantSource, Grantor, AwardNum, 
+		convert(varchar(10), AwardAmt) AwardAmt, BeginDate, EndDate, Staff, ContactID, CFDA, Program, SignAgree, FedFunds, FedSignDate, Fundsrec, Match, 
+		Admin, Notes, RowIsActive, DateModified
 		from GrantInfo
 		where GrantinfoID = @GrantInfoId
 	
@@ -331,7 +333,8 @@ begin
 --exec GetGrantinfoFYAmtList 62, 1
 	begin try
 
-		select GrantInfoFY, GrantinfoID, LkYear, lpn.description as Year, Amount, fy.RowIsActive
+		select GrantInfoFY, GrantinfoID, LkYear, lpn.description as Year, 
+		Amount, fy.RowIsActive
 		from GrantinfoFYAmt fy(nolock)
 		join lookupvalues lpn on lpn.typeid = fy.LkYear
 		where GrantinfoID = @GrantInfoId 
