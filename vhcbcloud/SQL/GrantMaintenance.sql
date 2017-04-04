@@ -334,7 +334,7 @@ begin
 	begin try
 
 		select GrantInfoFY, GrantinfoID, LkYear, lpn.description as Year, 
-		convert(varchar(10), Amount) Amount, fy.RowIsActive
+		Amount, fy.RowIsActive
 		from GrantinfoFYAmt fy(nolock)
 		join lookupvalues lpn on lpn.typeid = fy.LkYear
 		where GrantinfoID = @GrantInfoId 
