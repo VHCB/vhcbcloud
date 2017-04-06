@@ -361,7 +361,7 @@ Begin
 	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
 	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
+	f.abbrv, tr.lkstatus, ttv.description, f.account, det.DetailID, det.Amount
 	order by p.Proj_num
 	end
 	else
@@ -401,7 +401,7 @@ Begin
 		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
 		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description, f.account
+		f.abbrv, tr.lkstatus, ttv.description, det.DetailID, f.account
 		order by p.Proj_num
 	End
 
@@ -436,7 +436,7 @@ Begin
 		where tr.LkTransaction in (236, 237) 
 		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1 and p.ProjectId = @projectid
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
-		f.abbrv, tr.lkstatus, ttv.description, f.account
+		f.abbrv, tr.lkstatus, ttv.description, det.DetailID, f.account
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
