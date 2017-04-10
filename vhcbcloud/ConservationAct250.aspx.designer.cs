@@ -130,6 +130,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
+        /// ddlFarmType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFarmType;
+        
+        /// <summary>
         /// txtLandUsePermit control.
         /// </summary>
         /// <remarks>
@@ -146,15 +155,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTown;
-        
-        /// <summary>
-        /// ddlFarmType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFarmType;
         
         /// <summary>
         /// ddlDeveloper control.
