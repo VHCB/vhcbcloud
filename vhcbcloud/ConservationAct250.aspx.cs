@@ -253,26 +253,8 @@ namespace vhcbcloud
                         e.Row.Cells[6].Controls[0].Visible = false;
 
                         Label lblAct250FarmID = e.Row.FindControl("lblAct250FarmID") as Label;
-                        DataRow dr = ConservationAct250Data.GetAct250FarmById(DataUtils.GetInt(lblAct250FarmID.Text));
-
                         hfAct250FarmID.Value = lblAct250FarmID.Text;
-
-                        txtLandUsePermit.Text = dr["UsePermit"].ToString();
-                        PopulateDropDown(ddlTown, dr["LkTownDev"].ToString());
-                        PopulateDropDown(ddlFarmType, dr["Type"].ToString());
-                        PopulateDropDown(ddlDeveloper, dr["Developer"].ToString());
-                        txtDevname.Text = dr["DevName"].ToString();
-                        txtDistrictNo.Text = dr["CDist"].ToString();
-                        txtPrimeSoilsAcresLost.Text = dr["Primelost"].ToString();
-                        txtStateSoilsAcresLost.Text = dr["Statelost"].ToString();
-                        txtTotAcresLost.Text = dr["TotalAcreslost"].ToString();
-                        txtAcresDeveloped.Text = dr["AcresDevelop"].ToString();
-                        txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
-                        txtMitigationDate.Text = dr["MitDate"].ToString();
-                        chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
-
-                        txtLandUsePermit.Enabled = false;
-                        chkAct250Active.Enabled = true;
+                        PopulateAct250Form(DataUtils.GetInt(lblAct250FarmID.Text));
                     }
                 }
             }
@@ -280,6 +262,27 @@ namespace vhcbcloud
             {
                 LogError(Pagename, "gvBldgInfo_RowDataBound", "", ex.Message);
             }
+        }
+
+        private void PopulateAct250Form(int FarmId)
+        {
+            DataRow dr = ConservationAct250Data.GetAct250FarmById(FarmId);
+            txtLandUsePermit.Text = dr["UsePermit"].ToString();
+            PopulateDropDown(ddlTown, dr["LkTownDev"].ToString());
+            PopulateDropDown(ddlFarmType, dr["Type"].ToString());
+            PopulateDropDown(ddlDeveloper, dr["Developer"].ToString());
+            txtDevname.Text = dr["DevName"].ToString();
+            txtDistrictNo.Text = dr["CDist"].ToString();
+            txtPrimeSoilsAcresLost.Text = dr["Primelost"].ToString();
+            txtStateSoilsAcresLost.Text = dr["Statelost"].ToString();
+            txtTotAcresLost.Text = dr["TotalAcreslost"].ToString();
+            txtAcresDeveloped.Text = dr["AcresDevelop"].ToString();
+            txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
+            txtMitigationDate.Text = dr["MitDate"].ToString();
+            chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+
+            txtLandUsePermit.Enabled = false;
+            chkAct250Active.Enabled = true;
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -297,6 +300,13 @@ namespace vhcbcloud
         protected void rdBtnSelectAct250Info_CheckedChanged(object sender, EventArgs e)
         {
             hfAct250FarmID.Value = GetAct250InfoSelectedRecordID(gvAct250Info);
+
+            //Act250Info Form Also Populate
+            btnAddAct250Info.Text = "Update";
+            cbAddAct250Info.Checked = true;
+            PopulateAct250Form(DataUtils.GetInt(hfAct250FarmID.Value));
+            ////////////////////////
+
             dvNewDeveloperPayments.Visible = true;
             BindDeveloperPaymentsGrid();
 

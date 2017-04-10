@@ -61,19 +61,19 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 117px"><span class="labelClass">Land Use Permit</span></td>
+                                        <td style="width: 117px"><span class="labelClass">Type</span></td>
                                         <td style="width: 194px">
-                                            <asp:TextBox ID="txtLandUsePermit" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                             <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                         <td style="width: 149px">
-                                            <span class="labelClass">Town of Development</span>
+                                            <span class="labelClass">Land Use Permit</span>
                                         </td>
                                         <td style="width: 176px">
-                                            <asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:TextBox ID="txtLandUsePermit" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 134px"><span class="labelClass">Type</span></td>
+                                        <td style="width: 134px"><span class="labelClass">Town of Development</span></td>
                                         <td class="modal-sm" style="width: 115px">
-                                            <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                           <asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
