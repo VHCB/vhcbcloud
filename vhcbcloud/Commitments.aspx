@@ -2,7 +2,7 @@
     CodeBehind="Commitments.aspx.cs" Inherits="vhcbcloud.Commitments" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    look<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
                 <p class="lead">Board Commitments</p>

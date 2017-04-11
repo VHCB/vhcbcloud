@@ -1,3 +1,29 @@
+
+alter procedure [dbo].[GetProjects]
+
+as
+Begin
+	declare @recordId int
+	select @recordId = RecordID from LkLookups where Tablename = 'LkProjectName' 
+	
+	select	distinct
+			lpn.TypeID, 
+			p.projectid, 
+			lpn.Description,
+			pn.DefName, 
+			p.Proj_num, 
+			pn.LkProjectname
+	from Project p 
+			join ProjectName pn on p.ProjectId = pn.ProjectID
+			join ProjectApplicant pa on pa.ProjectId = p.ProjectId
+			join LookupValues lpn on lpn.TypeID = pn.LkProjectname
+			join ApplicantAppName aan on aan.ApplicantId = pa.ApplicantId
+			join AppName an on aan.AppNameID = an.appnameid
+	where pn.DefName = 1 and p.RowIsActive=1 and lpn.LookupType = @recordId
+	order by  p.Proj_num asc
+end
+go
+
 alter procedure getCommittedProjectslist  
 as
 begin
@@ -335,7 +361,7 @@ Begin
 	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
 	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-	f.abbrv, tr.lkstatus, ttv.description, f.account, det.Amount
+	f.abbrv, tr.lkstatus, ttv.description, f.account, det.DetailID, det.Amount
 	order by p.Proj_num
 	end
 	else
@@ -375,7 +401,7 @@ Begin
 		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
 		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
-		f.abbrv, tr.lkstatus, ttv.description, f.account
+		f.abbrv, tr.lkstatus, ttv.description, det.DetailID, f.account
 		order by p.Proj_num
 	End
 
@@ -410,7 +436,7 @@ Begin
 		where tr.LkTransaction in (236, 237) 
 		and tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1 and p.ProjectId = @projectid
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, tr.ProjectCheckReqID, f.name,
-		f.abbrv, tr.lkstatus, ttv.description, f.account
+		f.abbrv, tr.lkstatus, ttv.description, det.DetailID, f.account
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
@@ -432,7 +458,7 @@ Begin
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName
 
 
-		select distinct p.projectid, 
+		select p.projectid, 
 				det.FundId, f.account,
 				det.lktranstype, 
 				
@@ -975,11 +1001,11 @@ begin
 				join detail det(nolock) on trans.TransId = det.TransId
 			where trans.Date >= @tran_start_date 
 				and trans. Date <= @tran_end_date 
-				and trans.LKStatus = 261
-				and (trans.projectid = @project_id or (@project_id = -1 and trans.projectid is not null))
+				and trans.LKStatus = 261 and trans.RowIsActive=1  
+								and (trans.projectid = @project_id or (@project_id = -1 and trans.projectid is not null))
 				and (trans.LkTransaction = @financial_transaction_action_id or (@financial_transaction_action_id = -1 and trans.LkTransaction is not null))
 		group by trans.TransId, trans.TransAmt)t
-		where t.bal = 0 and pv.defname = 1
+		where t.bal = 0 and pv.defname = 1  
 	) order by pv.proj_num
 
 	--select t.TransId from (
@@ -1085,7 +1111,7 @@ begin
 	select distinct  top 35 p.Proj_num
 	from project p(nolock)
 	join trans tr on tr.projectid = p.projectid
-	where  tr.lkstatus = 261 and tr.LkTransaction = 240 --and pn.defname = 1 and
+	where  tr.lkstatus = 261 and tr.LkTransaction = 238 --and pn.defname = 1 and
 		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
 	order by p.proj_num 
 end
@@ -1115,11 +1141,9 @@ as
 begin
 
 	select distinct  top 35 p.Proj_num
-	from project p(nolock)
-	join projectname pn(nolock) on p.projectid = pn.projectid
-	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+	from project p(nolock)	
 	join trans tr on tr.projectid = p.projectid
-	where pn.defname = 1 and tr.lkstatus = 261 and tr.LkTransaction = 240
+	where tr.lkstatus = 261 and tr.LkTransaction = 240
 		and tr.RowIsActive=1 and p.Proj_num like @filter +'%'	
 	order by p.proj_num 
 end
@@ -3125,3 +3149,60 @@ End
 
 go
 
+alter procedure [dbo].[GetFinancialFundDetailsByDateRange]
+(
+	@startDate datetime,
+	@endDate datetime
+)
+as
+Begin
+	
+	create table #temp
+	(
+		ProjectId int,
+		FundType varchar(50),
+		Amount money
+	)
+	insert into #temp (ProjectId, fundType, amount)
+	SELECT   dbo.Project.ProjectId,  dbo.LkFundType.Description AS FundType, sum(dbo.Detail.Amount) as Tot_Amt
+                      
+	FROM         dbo.LkFundType INNER JOIN
+						  dbo.Detail INNER JOIN
+						  dbo.Trans ON dbo.Detail.TransId = dbo.Trans.TransId INNER JOIN
+						  dbo.Fund ON dbo.Detail.FundId = dbo.Fund.FundId INNER JOIN
+						  dbo.Project ON dbo.Trans.ProjectID = dbo.Project.ProjectId ON dbo.LkFundType.TypeId = dbo.Fund.LkFundType INNER JOIN
+						  dbo.LookupValues ON dbo.Trans.LkTransaction = dbo.LookupValues.TypeID
+	WHERE     dbo.Trans.LkTransaction IN (238, 239, 240) AND (trans.Date between @startDate and @endDate) AND Trans.rowisactive=1
+			 and LkFundType.rowisactive = 1
+	GROUP BY  dbo.Project.ProjectId, dbo.LkFundType.Description
+	ORDER BY dbo.Project.ProjectId, FundType
+
+	DECLARE @cols AS NVARCHAR(MAX),
+		@query  AS NVARCHAR(MAX);
+
+	SET @cols = STUFF((SELECT distinct ',' + QUOTENAME(c.fundType) 
+				FROM #temp c
+				FOR XML PATH(''), TYPE
+				).value('.', 'NVARCHAR(MAX)') 
+			,1,1,'')
+
+	set @query = 'SELECT ProjectId, ' + @cols + ' from 
+				(
+					select ProjectId
+						, FundType
+						, Amount
+					from #temp
+			   ) x
+				pivot 
+				(
+					 max(amount)
+					for fundtype in (' + @cols + ')
+				) p '
+
+
+	execute(@query)
+	drop table #temp
+	
+End
+
+go
