@@ -168,7 +168,10 @@
                                 <tr>
                                     <td style="vertical-align: top"><span class="labelClass">Nature of Disbursements :</span></td>
                                     <td>
-                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="294px"></asp:ListBox></td>
+                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="230px"></asp:ListBox></td>
+                                    <td style="vertical-align: top"><span class="labelClass">Items :</span></td>
+                                    <td>
+                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbItems" Height="80px" Width="230px"></asp:ListBox></td>
                                     <td style="vertical-align: top"><span class="labelClass">Notes :</span></td>
                                     <td colspan="3">
                                         <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="294px" Height="80px" />
