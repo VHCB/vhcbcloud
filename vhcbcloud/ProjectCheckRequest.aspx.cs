@@ -65,6 +65,7 @@ namespace vhcbcloud
                 BindStatus();
                 BindMatchingGrant();
                 BindNODData();
+                BindPCRItemsData();
                 BindPCRQuestions(false);
 
                 pnlFund.Visible = false;
@@ -410,6 +411,24 @@ namespace vhcbcloud
                 lbNOD.DataTextField = "Description";
                 lbNOD.DataBind();
                 //ddlMatchingGrant.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+        protected void BindPCRItemsData()
+        {
+            try
+            {
+                DataTable dtItems;
+                dtItems = new DataTable();
+                dtItems = ProjectCheckRequestData.GetData("PCR_Items_Load");
+
+                lbItems.DataSource = dtItems;
+                lbItems.DataValueField = "typeid";
+                lbItems.DataTextField = "Description";
+                lbItems.DataBind();                
             }
             catch (Exception ex)
             {

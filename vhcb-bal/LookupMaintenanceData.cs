@@ -22,7 +22,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddLookups";
                 command.Parameters.Add(new SqlParameter("recordId", recordId));
                 command.Parameters.Add(new SqlParameter("description", description));
-              
+
                 using (connection)
                 {
                     connection.Open();
@@ -157,6 +157,34 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+
+        public static void UpdateLookupOrdering(int typeid, int ordering)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateLookupOrdering";
+                command.Parameters.Add(new SqlParameter("typeid", typeid));
+                command.Parameters.Add(new SqlParameter("ordering", ordering));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable GetLookupsById(int recordId)
         {
             DataTable dtLks = null;
@@ -238,6 +266,44 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "GetLkLookupDetails";
                 command.Parameters.Add(new SqlParameter("recordId", recordId));
                 command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+
+        public static DataTable GetLkLookupDetailsByOrder(int recordId, bool IsActiveOnly, int order)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLkLookupDetailsByOrder";
+                command.Parameters.Add(new SqlParameter("recordId", recordId));
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+                command.Parameters.Add(new SqlParameter("order", order));
                 using (connection)
                 {
                     connection.Open();

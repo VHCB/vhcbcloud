@@ -130,6 +130,32 @@ namespace vhcbcloud
                 LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, Ordering);
                 gvLookup.EditIndex = -1;
                 //BindLookupMaintenance();
+
+
+                DataTable dt = new DataTable();
+                recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+                if (ddlLkLookupViewname.SelectedIndex == 0 || recordId == 0)
+                {
+                    dt = null;
+                   // dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
+                }
+                else
+                {
+                    dt = LookupMaintenanceData.GetLkLookupDetailsByOrder(recordId, cbActiveOnly.Checked, Ordering);
+                }
+
+                int incrementOrder = Ordering;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int dtTypeId = Convert.ToInt32(dr["typeid"].ToString());
+                    if (dtTypeId != typeId)
+                    {
+                        incrementOrder++;
+                        LookupMaintenanceData.UpdateLookupOrdering(dtTypeId, incrementOrder);
+                    }
+                    
+                }
+
                 BindGrids();
                 lblErrorMsg.Text = "Lookup details updated successfully";
                 txtDescription.Text = "";
