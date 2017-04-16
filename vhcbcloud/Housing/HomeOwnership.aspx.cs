@@ -470,6 +470,7 @@ namespace vhcbcloud.Housing
                         txtStewardCont.Text = dr["StewFee"].ToString() == "0.0000" ? "" : DataUtils.GetDecimal(dr["StewFee"].ToString()).ToString("#.00");
                         txtVHCBAsstLoan.Text = dr["AssistLoan"].ToString() == "0.0000" ? "" : DataUtils.GetDecimal(dr["AssistLoan"].ToString()).ToString("#.00");
                         txtVHCBRehabLoan.Text = dr["RehabLoan"].ToString() == "0.0000" ? "" : DataUtils.GetDecimal(dr["RehabLoan"].ToString()).ToString("#.00");
+                        txtPurchaseDate.Text = dr["PurchaseDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["PurchaseDate"].ToString()).ToShortDateString();
 
                         chkOwnerActive.Enabled = true;
                     }
@@ -490,7 +491,7 @@ namespace vhcbcloud.Housing
                     HomeOwnershipResult objHomeOwnershipResult = HomeOwnershipData.AddProjectHomeOwnership(DataUtils.GetInt(hfHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
                         DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text));
+                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text));
 
                     ClearOwnerForm();
                     BindHomeOwnersGrid();
@@ -507,7 +508,7 @@ namespace vhcbcloud.Housing
                     HomeOwnershipData.UpdateProjectHomeOwnership(DataUtils.GetInt(hfProjectHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
                         DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), chkOwnerActive.Checked);
+                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text),chkOwnerActive.Checked);
 
                     gvOwner.EditIndex = -1;
                     BindHomeOwnersGrid();
@@ -547,6 +548,7 @@ namespace vhcbcloud.Housing
             txtStewardCont.Text = "";
             txtVHCBAsstLoan.Text = "";
             txtVHCBRehabLoan.Text = "";
+            txtPurchaseDate.Text = "";
 
             chkOwnerActive.Enabled = false;
         }

@@ -1140,16 +1140,16 @@ namespace vhcbcloud.Housing
                     int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
 
                     hfAgeRestrWarning.Value = "0";
-                    if (TotalUnits - totAgeRestrUnits != 0)
-                    {
-                        hfAgeRestrWarning.Value = "1";
-                        WarningMessage(dvAgeRestrWarning, lblAgeRestrWarning, "Age restrictions Units must be equal to Total Units.");
-                    }
-                    else
-                    {
+                    //if (TotalUnits - totAgeRestrUnits != 0)
+                    //{
+                    //    hfAgeRestrWarning.Value = "1";
+                    //    WarningMessage(dvAgeRestrWarning, lblAgeRestrWarning, "Age restrictions Units must be equal to Total Units.");
+                    //}
+                    //else
+                    //{
                         dvAgeRestrWarning.Visible = false;
                         lblAgeRestrWarning.Text = "";
-                    }
+                    //}
                 }
                 else
                 {

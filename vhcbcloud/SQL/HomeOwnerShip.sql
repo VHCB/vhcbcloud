@@ -196,6 +196,7 @@ create procedure dbo.AddProjectHomeOwnership
 	@StewFee		money, 
 	@AssistLoan		money, 
 	@RehabLoan		money, 
+	@PurchaseDate	date,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -215,9 +216,9 @@ begin transaction
 	begin
 
 		insert into ProjectHomeOwnership(HomeOwnershipID, Owner, LkLender, vhfa, RDLoan, VHCBGrant, OwnerApprec, CapImprove, 
-			InitFee, ResaleFee, StewFee, AssistLoan, RehabLoan)
+			InitFee, ResaleFee, StewFee, AssistLoan, RehabLoan, PurchaseDate)
 		values(@HomeOwnershipID, @Owner, @LkLender, @vhfa, @RDLoan, @VHCBGrant, @OwnerApprec, @CapImprove, 
-			@InitFee, @ResaleFee, @StewFee, @AssistLoan, @RehabLoan)
+			@InitFee, @ResaleFee, @StewFee, @AssistLoan, @RehabLoan, @PurchaseDate)
 
 		set @isDuplicate = 0
 	end
@@ -262,6 +263,7 @@ create procedure dbo.UpdateProjectHomeOwnership
 	@StewFee		money, 
 	@AssistLoan		money, 
 	@RehabLoan		money,
+	@PurchaseDate	date,
 	@IsRowIsActive	bit
 ) as
 begin transaction
@@ -271,7 +273,7 @@ begin transaction
 	update ProjectHomeOwnership set  Owner = @Owner, LkLender = @LkLender, vhfa = @vhfa, RDLoan = @RDLoan, 
 		VHCBGrant = @VHCBGrant, OwnerApprec = @OwnerApprec, CapImprove = @CapImprove, InitFee = @InitFee, 
 		ResaleFee = @ResaleFee, StewFee = @StewFee, AssistLoan = @AssistLoan, RehabLoan = @RehabLoan, 
-		RowIsActive = @IsRowIsActive, DateModified = getdate()
+		RowIsActive = @IsRowIsActive, DateModified = getdate(), PurchaseDate = @PurchaseDate
 	from ProjectHomeOwnership
 	where ProjectHomeOwnershipID = @ProjectHomeOwnershipID
 	
@@ -302,7 +304,7 @@ begin transaction
 	begin try
 
 	select ProjectHomeOwnershipID, HomeOwnershipID, Owner, LkLender, vhfa, RDLoan, VHCBGrant, OwnerApprec, CapImprove, 
-		InitFee, ResaleFee, StewFee, AssistLoan, RehabLoan, RowIsActive, DateModified
+		InitFee, ResaleFee, StewFee, AssistLoan, RehabLoan, RowIsActive, DateModified, PurchaseDate
 	from ProjectHomeOwnership(nolock)
 	where ProjectHomeOwnershipID = @ProjectHomeOwnershipID
 	end try
