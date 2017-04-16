@@ -166,6 +166,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddFedProgram;
         
         /// <summary>
+        /// ImgFrderalData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgFrderalData;
+        
+        /// <summary>
         /// dvProgramSetupForm control.
         /// </summary>
         /// <remarks>
@@ -526,6 +535,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddHomeAff;
         
         /// <summary>
+        /// ImgIncomeRes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgIncomeRes;
+        
+        /// <summary>
         /// dvHomeAffForm control.
         /// </summary>
         /// <remarks>
@@ -652,6 +670,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddRentalAffordability;
         
         /// <summary>
+        /// ImgRentalAff control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgRentalAff;
+        
+        /// <summary>
         /// dvRentalAffordabilityForm control.
         /// </summary>
         /// <remarks>
@@ -769,6 +796,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddUnitOccupancy;
         
         /// <summary>
+        /// ImgrentalUnitSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgrentalUnitSize;
+        
+        /// <summary>
         /// dvUnitOccupancyForm control.
         /// </summary>
         /// <remarks>
@@ -875,6 +911,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddNewInspections;
+        
+        /// <summary>
+        /// ImgHousingInspections control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgHousingInspections;
         
         /// <summary>
         /// dvInspectionsForm control.

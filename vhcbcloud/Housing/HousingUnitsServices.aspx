@@ -127,6 +127,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddHousingSubType" runat="server" Text="Add New Housing SubType" />
+                                        <asp:ImageButton ID="ImgHousingSubType" ImageUrl="~/Images/print.png" ToolTip="Housing Subtypes Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgHousingSubType_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -232,6 +234,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSingleUnit" runat="server" Text="Add New Construction/Reuse/Rehab" />
+                                        <asp:ImageButton ID="ImgNewConst" ImageUrl="~/Images/print.png" ToolTip="New Construction/Reuse/Rehab Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgNewConst_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -338,6 +342,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddMultiUnit" runat="server" Text="Add New Accessible/Adaptable" />
+                                        <asp:ImageButton ID="ImgAccessible" ImageUrl="~/Images/print.png" ToolTip="Accessible/Adaptable Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAccessible_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -444,6 +450,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSuppService" runat="server" Text="Add New Primary Service Support" />
+                                        <asp:ImageButton ID="ImgPrimary" ImageUrl="~/Images/print.png" ToolTip="Primary Service Support"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgPrimary_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -550,6 +558,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSecService" runat="server" Text="Add New Secondary Service Support" />
+                                        <asp:ImageButton ID="ImgSecondary" ImageUrl="~/Images/print.png" ToolTip="Secondary Service Support"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgSecondary_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -651,6 +661,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAgeRes" runat="server" Text="Add New Age Restrictions" />
+                                         <asp:ImageButton ID="ImgAge" ImageUrl="~/Images/print.png" ToolTip="Age Restrictions Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAge_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -758,6 +770,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddVHCBAff" runat="server" Text="Add New VHCB Affordability" />
+                                        <asp:ImageButton ID="ImgVHCBAff" ImageUrl="~/Images/print.png" ToolTip="VHCB Affordability"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgVHCBAff_Click" />
                                     </td>
                                 </tr>
                             </table>

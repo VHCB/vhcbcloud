@@ -71,6 +71,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddFedProgram" runat="server" Text="Add New Federal Program" />
+                                        <asp:ImageButton ID="ImgFrderalData" ImageUrl="~/Images/print.png" ToolTip="Housing Federal Data"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgFrderalData_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -342,6 +344,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddHomeAff" runat="server" Text="Add New HOME Income Restriction" />
+                                        <asp:ImageButton ID="ImgIncomeRes" ImageUrl="~/Images/print.png" ToolTip="Income Restricted Units Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgIncomeRes_Click"/>
                                     </td>
                                 </tr>
                             </table>
@@ -450,6 +454,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddRentalAffordability" runat="server" Text="Add New HOME Rent Restriction" />
+                                        <asp:ImageButton ID="ImgRentalAff" ImageUrl="~/Images/print.png" ToolTip="Rental Affordability Units Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgRentalAff_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -559,6 +565,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddUnitOccupancy" runat="server" Text="Add New HOME Unit Sizes" />
+                                        <asp:ImageButton ID="ImgrentalUnitSize" ImageUrl="~/Images/print.png" ToolTip="Rental Unit Size Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgrentalUnitSize_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -666,6 +674,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddNewInspections" runat="server" Text="Add New Inspection" />
+                                        <asp:ImageButton ID="ImgHousingInspections" ImageUrl="~/Images/print.png" ToolTip="Housing Inspections Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgHousingInspections_Click" />
                                     </td>
                                 </tr>
                             </table>

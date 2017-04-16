@@ -1740,12 +1740,6 @@ namespace vhcbcloud
             PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString())));
         }
 
-        protected void ImgButtonAddressReport_Click(object sender, ImageClickEventArgs e)
-        {
-            ClientScript.RegisterStartupScript(this.GetType(),
-                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Address"));
-        }
-
         protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)
         {
             int nextIndex;
@@ -1849,6 +1843,36 @@ namespace vhcbcloud
                 else
                     dvConserOnly.Visible = false;
             }
+        }
+
+        protected void ImgButtonAddressReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Address"));
+        }
+
+        protected void ImgMilestoneReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Milestones"));
+        }
+
+        protected void ImgNames_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Names"));
+        }
+
+        protected void ImgEntity_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Entities"));
+        }
+
+        protected void ImgRelatedProjests_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                  "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Related"));
         }
     }
 

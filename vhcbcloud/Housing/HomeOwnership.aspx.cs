@@ -550,6 +550,12 @@ namespace vhcbcloud.Housing
 
             chkOwnerActive.Enabled = false;
         }
+
+        protected void ImgHomeOwnership_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project HomeOwnerShip"));
+        }
     }
 
     public class SelectedAddressRecordInfo

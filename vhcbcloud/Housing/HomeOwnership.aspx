@@ -69,6 +69,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
+                                        <asp:ImageButton ID="ImgHomeOwnership" ImageUrl="~/Images/print.png" ToolTip="Housing HomeOwnership Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgHomeOwnership_Click" />
                                     </td>
                                 </tr>
                             </table>

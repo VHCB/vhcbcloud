@@ -1203,6 +1203,48 @@ namespace vhcbcloud.Housing
             BindAgeRestrictionGrid();
         }
 
+        protected void ImgHousingSubType_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                 "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing SubType Units"));
+        }
+
+        protected void ImgNewConst_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Construction Rehab Units"));
+        }
+
+        protected void ImgAccessible_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Accessible Adaptable Units"));
+        }
+
+        protected void ImgPrimary_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Primary Services Support Units"));
+        }
+
+        protected void ImgSecondary_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Secondary Services Support Units"));
+        }
+
+        protected void ImgAge_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Age Restricted Units"));
+        }
+
+        protected void ImgVHCBAff_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB Affordable Units"));
+        }
+
         //protected void btnAddHomeAff_Click(object sender, EventArgs e)
         //{
         //    if (ddlHomeAff.SelectedIndex == 0)

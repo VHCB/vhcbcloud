@@ -157,6 +157,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddCPP;
         
         /// <summary>
+        /// ImgConsolidated control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgConsolidated;
+        
+        /// <summary>
         /// dvCPPForm control.
         /// </summary>
         /// <remarks>
@@ -238,6 +247,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddInterAgency;
         
         /// <summary>
+        /// ImgInteragency control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgInteragency;
+        
+        /// <summary>
         /// dvInterAgencyForm control.
         /// </summary>
         /// <remarks>
@@ -317,6 +335,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddVHCB;
+        
+        /// <summary>
+        /// ImgVHCBpriorities control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgVHCBpriorities;
         
         /// <summary>
         /// dvVHCBForm control.

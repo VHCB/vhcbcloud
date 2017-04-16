@@ -69,6 +69,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddCPP" runat="server" Text="Add New Consolidated Plan Priorities" />
+                                        <asp:ImageButton ID="ImgConsolidated" ImageUrl="~/Images/print.png" ToolTip="Housing Consolidated Plan Priorities"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConsolidated_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -148,6 +150,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddInterAgency" runat="server" Text="Add New Interagency Priorities" />
+                                        <asp:ImageButton ID="ImgInteragency" ImageUrl="~/Images/print.png" ToolTip="Housing Interagency Priorities"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgInteragency_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -227,6 +231,9 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddVHCB" runat="server" Text="Add New VHCB Priorities/Outcomes" />
+                                        
+                                        <asp:ImageButton ID="ImgVHCBpriorities" ImageUrl="~/Images/print.png" ToolTip="Housing VHCB Priorities/Outcomes"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgVHCBpriorities_Click" />
                                     </td>
                                 </tr>
                             </table>

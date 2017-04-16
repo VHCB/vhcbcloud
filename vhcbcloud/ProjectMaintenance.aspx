@@ -197,6 +197,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Milestone" />
+                                         <asp:ImageButton ID="ImgMilestoneReport" ImageUrl="~/Images/print.png" ToolTip="Milestones Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgMilestoneReport_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -352,6 +354,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddProjectName" runat="server" Text="Add New Name" />
+                                        <asp:ImageButton ID="ImgNames" ImageUrl="~/Images/print.png" ToolTip="Names Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgNames_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -636,6 +640,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAttachNewEntity" runat="server" Text="Add New Entity" />
+                                         <asp:ImageButton ID="ImgEntity" ImageUrl="~/Images/print.png" ToolTip="Entities Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgEntity_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -747,6 +753,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbRelatedProjects" runat="server" Text="Add Related Projects" />
+                                        <asp:ImageButton ID="ImgRelatedProjests" ImageUrl="~/Images/print.png" ToolTip="Related Projects Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgRelatedProjests_Click" />
                                     </td>
                                 </tr>
                             </table>
