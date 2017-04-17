@@ -11,7 +11,7 @@ using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
-    public partial class Reallocations : System.Web.UI.Page
+    public partial class Allocations : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
