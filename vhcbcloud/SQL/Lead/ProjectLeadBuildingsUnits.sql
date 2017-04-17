@@ -216,6 +216,8 @@ create procedure dbo.AddProjectLeadUnit
 	@ClearDate		Datetime, 
 	@CertDate		Datetime, 
 	@ReCertDate		Datetime,
+	@RelocationAmt	decimal(10, 2),
+	@StartDate		DateTime,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -234,9 +236,9 @@ begin transaction
 	)
 	begin
 		insert into ProjectLeadUnit(LeadBldgID, Unit, EBLStatus, HHCount, Rooms, HHIncome, PartyVerified, IncomeStatus, MatchFunds, 
-			ClearDate, CertDate, ReCertDate)
+			ClearDate, CertDate, ReCertDate, RelocationAmt, StartDate)
 		values(@LeadBldgID, @Unit, @EBLStatus, @HHCount, @Rooms, @HHIncome, @PartyVerified, @IncomeStatus, @MatchFunds, 
-			@ClearDate, @CertDate, @ReCertDate)
+			@ClearDate, @CertDate, @ReCertDate, @RelocationAmt, @StartDate)
 		set @isDuplicate = 0
 	end
 
@@ -259,6 +261,10 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectLeadUnit]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateProjectLeadUnit
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectLeadUnit]') and type in (N'P', N'PC'))
@@ -278,6 +284,8 @@ create procedure dbo.UpdateProjectLeadUnit
 	@ClearDate		Datetime, 
 	@CertDate		Datetime, 
 	@ReCertDate		Datetime,
+	@RelocationAmt	decimal(10, 2),
+	@StartDate		DateTime,
 	@IsRowIsActive	bit
 ) as
 begin transaction
@@ -286,7 +294,8 @@ begin transaction
 
 	update ProjectLeadUnit set	EBLStatus = @EBLStatus, HHCount = @HHCount, Rooms = @Rooms, HHIncome = @HHIncome, 
 		PartyVerified = @PartyVerified, IncomeStatus = @IncomeStatus, MatchFunds = @MatchFunds, ClearDate = @ClearDate,
-		CertDate = @CertDate, ReCertDate = @ReCertDate, RowIsActive = @IsRowIsActive, DateModified = getdate()
+		CertDate = @CertDate, ReCertDate = @ReCertDate, RowIsActive = @IsRowIsActive, DateModified = getdate(), RelocationAmt = @RelocationAmt,
+		StartDate = @StartDate
 	from ProjectLeadUnit
 	where LeadUnitID = @LeadUnitID
 	
@@ -317,7 +326,7 @@ as
 begin
 
 	select LeadUnitID, Unit, EBLStatus, HHCount, Rooms, HHIncome, PartyVerified, IncomeStatus, MatchFunds, convert(varchar(10), ClearDate, 101) as ClearDate, 
-		CertDate, ReCertDate, plu.RowIsActive
+		CertDate, ReCertDate, StartDate, convert(varchar(10), RelocationAmt) RelocationAmt, plu.RowIsActive
 	from ProjectLeadUnit plu(nolock)
 	where plu.LeadUnitID = @LeadUnitID
 end

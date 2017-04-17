@@ -12,7 +12,7 @@ create procedure GetProjectLeadMilestoneById
 as
 begin
 --exec GetProjectLeadMilestoneById 1
-	select LeadMilestoneID, ProjectID, LKMilestone, LeadBldgID, LeadUnitID, MSDate, RowIsActive
+	select LeadMilestoneID, ProjectID, LKMilestone, LeadBldgID, LeadUnitID, MSDate, URL, RowIsActive
 	from ProjectLeadMilestone(nolock)
 	where LeadMilestoneID = @LeadMilestoneID
 end
@@ -30,7 +30,8 @@ create procedure GetProjectLeadMilestoneList
 as
 begin
 --exec GetProjectLeadMilestoneList 6625, 1
-	select LeadMilestoneID, LKMilestone, lv.Description as Milestone, plm.LeadBldgID, plb.Building, plm.LeadUnitID, plu.Unit, MSDate, plm.RowIsActive
+	select LeadMilestoneID, LKMilestone, lv.Description as Milestone, plm.LeadBldgID, plb.Building, plm.LeadUnitID, plu.Unit, MSDate, 
+	URL, CASE when isnull(URL, '') = '' then '' else 'Click here' end as URLText, plm.RowIsActive
 	from ProjectLeadMilestone plm(nolock)
 	join ProjectLeadBldg plb(nolock) on plb.LeadBldgID = plm.LeadBldgID
 	left join ProjectLeadUnit plu(nolock) on plu.LeadUnitID = plm.LeadUnitID
@@ -52,6 +53,7 @@ create procedure dbo.AddProjectLeadMilestone
 	@LeadBldgID		int, 
 	@LeadUnitID		int, 
 	@MSDate			datetime,
+	@URL			nvarchar(1500),
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -69,8 +71,8 @@ begin transaction
 		where ProjectID = @ProjectID and LKMilestone = @LKMilestone
 	)
 	begin
-		insert into ProjectLeadMilestone(ProjectID, LKMilestone, LeadBldgID, LeadUnitID, MSDate)
-		values(@ProjectID, @LKMilestone, @LeadBldgID, @LeadUnitID, @MSDate)
+		insert into ProjectLeadMilestone(ProjectID, LKMilestone, LeadBldgID, LeadUnitID, MSDate, URL)
+		values(@ProjectID, @LKMilestone, @LeadBldgID, @LeadUnitID, @MSDate, @URL)
 
 		set @isDuplicate = 0
 	end
@@ -106,6 +108,7 @@ create procedure dbo.UpdateProjectLeadMilestone
 	@LKMilestone		int, 
 	@LeadBldgID			int, 
 	@LeadUnitID			int, 
+	@URL				nvarchar(1500),
 	@MSDate				datetime,
 	@IsRowIsActive		bit
 ) as
@@ -113,7 +116,7 @@ begin transaction
 
 	begin try
 
-	update ProjectLeadMilestone set LKMilestone = LKMilestone, LeadBldgID = @LeadBldgID, LeadUnitID = @LeadUnitID, MSDate = @MSDate,
+	update ProjectLeadMilestone set LKMilestone = LKMilestone, LeadBldgID = @LeadBldgID, LeadUnitID = @LeadUnitID, MSDate = @MSDate, URL = @URL,
 		RowIsActive = @IsRowIsActive
 	where LeadMilestoneID = @LeadMilestoneID
 

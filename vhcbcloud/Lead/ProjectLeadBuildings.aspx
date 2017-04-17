@@ -23,7 +23,7 @@
                             <td><span class="labelClass">Name:</span></td>
                             <td style="text-align: left"><span class="labelClass" id="ProjName" runat="server"></span></td>
                             <td style="text-align: right">
-                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
@@ -307,11 +307,20 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Relocation Amt</span></td>
                                         <td style="width: 250px">
+                                            <asp:TextBox ID="txtRelocAmt" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 185px"><span class="labelClass">Start Date</span></td>
+                                        <td style="width: 270px">
+                                            <asp:TextBox ID="txtStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtStartDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Active</span></td>
+                                        <td>
                                             <asp:CheckBox ID="chkUnitActive" Enabled="false" runat="server" Checked="true" />
                                         </td>
-                                        <td colspan="4" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -392,6 +401,14 @@
 
     <script language="javascript">
         $(document).ready(function () {
+           
+            if ($('#<%= txtRelocAmt.ClientID%>').val() >= 0) {
+                toCurrencyControl($('#<%= txtRelocAmt.ClientID%>').val(), $('#<%= txtRelocAmt.ClientID%>'));
+            }
+            $('#<%= txtRelocAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtRelocAmt.ClientID%>').val(), $('#<%= txtRelocAmt.ClientID%>'));
+            });
+
             $('#<%= dvBldgInfoForm.ClientID%>').toggle($('#<%= cbAddBldgInfo.ClientID%>').is(':checked'));
             $('#<%= cbAddBldgInfo.ClientID%>').click(function () {
                 $('#<%= dvBldgInfoForm.ClientID%>').toggle(this.checked);
@@ -422,24 +439,24 @@
                     type: "POST",
                     url: "ProjectLeadBuildings.aspx/GetRecertifyDate",
                     data: '{CertifiedDate: "' + $("#<%= txtCertifiedBy.ClientID%>").val() + '" }',
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    var RecertifyDate = JSON.stringify(data.d);
-                    console.log('RecertifyDate :' + RecertifyDate);
-                    $('#<%=labelRectDate.ClientID%>').html(RecertifyDate.replace('"', '').replace('"', ''));
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var RecertifyDate = JSON.stringify(data.d);
+                        console.log('RecertifyDate :' + RecertifyDate);
+                        $('#<%=labelRectDate.ClientID%>').html(RecertifyDate.replace('"', '').replace('"', ''));
 
                 },
-                error: function (data) {
-                    alert("error found");
-                }
-            });
+                    error: function (data) {
+                        alert("error found");
+                    }
+                });
         }
 
         });
 
-        function PopupAwardSummary() {
-            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+    function PopupAwardSummary() {
+        window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
 
         function RadioCheck(rb) {
@@ -455,6 +472,6 @@
                     }
                 }
             }
-    }
+        }
     </script>
 </asp:Content>

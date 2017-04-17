@@ -250,7 +250,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
         }
 
         public static LeadBuildResult AddProjectLeadUnit(int LeadBldgID, int Unit, int EBLStatus, int HHCount, int Rooms, decimal HHIncome, bool PartyVerified, int IncomeStatus, decimal MatchFunds,
-        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate)
+        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate, decimal RelocationAmt, DateTime StartDate)
         {
             try
             {
@@ -276,6 +276,8 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("ClearDate", ClearDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClearDate));
                         command.Parameters.Add(new SqlParameter("CertDate", CertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : CertDate));
                         command.Parameters.Add(new SqlParameter("ReCertDate", ReCertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReCertDate));
+                        command.Parameters.Add(new SqlParameter("RelocationAmt", RelocationAmt));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -305,7 +307,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
         }
 
         public static void UpdateProjectLeadUnit(int LeadUnitID, int EBLStatus, int HHCount, int Rooms, decimal HHIncome, bool PartyVerified, int IncomeStatus, decimal MatchFunds,
-        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate, bool IsRowIsActive)
+        DateTime ClearDate, DateTime CertDate, DateTime ReCertDate, decimal RelocationAmt, DateTime StartDate, bool IsRowIsActive)
         {
             try
             {
@@ -330,6 +332,8 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("ClearDate", ClearDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ClearDate));
                         command.Parameters.Add(new SqlParameter("CertDate", CertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : CertDate));
                         command.Parameters.Add(new SqlParameter("ReCertDate", ReCertDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReCertDate));
+                        command.Parameters.Add(new SqlParameter("RelocationAmt", RelocationAmt));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive)); 
                         command.CommandTimeout = 60 * 5;
 

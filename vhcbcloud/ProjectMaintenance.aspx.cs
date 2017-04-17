@@ -527,6 +527,7 @@ namespace vhcbcloud
             ShowConservationOnly();
             if (rdBtnSelection.SelectedValue.ToLower().Trim() == "new")
             {
+                cbAddTBDAddress.Visible = true;
                 ibAwardSummary.Visible = false;
                 btnProjectNotes1.Visible = false;
                 ImgPreviousProject.Visible = false;
@@ -543,6 +544,8 @@ namespace vhcbcloud
             }
             else
             {
+                cbAddTBDAddress.Visible = false;
+
                 txtProjNum.Visible = false;
                 //ddlProject.Visible = true;
                 txtProjectNumDDL.Visible = true;
@@ -585,7 +588,8 @@ namespace vhcbcloud
                 {
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()));
+                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()), 
+                        cbAddTBDAddress.Checked);
 
                     if (ap.IsDuplicate)
                         LogMessage("Project already exist");

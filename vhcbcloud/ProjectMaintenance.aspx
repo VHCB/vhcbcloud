@@ -156,6 +156,11 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
+                                        <td colspan="6" style="height: 5px">
+                                            <asp:CheckBox ID="cbAddTBDAddress" runat="server" Checked="true" Text="Add default TBD address record" />
+                                        </td>
+                                    </tr>
+                                    <tr>
                                     <div id="dvConserOnly" runat="server" visible="false">
                                         <table>
                                             <tr>

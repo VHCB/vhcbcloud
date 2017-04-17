@@ -95,10 +95,14 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
+                                     <td><span class="labelClass">URL</span></td>
+                                    <td>
+                                         <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" Width="170px" Height="22px" runat="server"></asp:TextBox>
+                                    </td>
                                     <td><span class="labelClass">Active:</span></td>
                                     <td>
                                         <asp:CheckBox ID="chkMilestoneActive" Enabled="false" runat="server" Checked="true" /></td>
-                                    <td colspan="4"></td>
+                                    <td colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -153,6 +157,11 @@
                                         <asp:TemplateField HeaderText="Unit #">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnit" runat="Server" Text='<%# Eval("Unit") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">

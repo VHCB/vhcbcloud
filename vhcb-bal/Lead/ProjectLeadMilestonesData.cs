@@ -81,7 +81,8 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
-        public static LeadMilestoneResult AddProjectLeadMilestone(int ProjectID, int LKMilestone, int LeadBldgID, int LeadUnitID, DateTime MSDate)
+        public static LeadMilestoneResult AddProjectLeadMilestone(int ProjectID, int LKMilestone, int LeadBldgID, int LeadUnitID, 
+            DateTime MSDate, string URL)
         {
             try
             {
@@ -100,6 +101,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
                         command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
                         command.Parameters.Add(new SqlParameter("MSDate", MSDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MSDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -129,7 +131,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
         }
 
         public static void UpdateProjectLeadMilestone(int LeadMilestoneID, int LKMilestone, int LeadBldgID, int LeadUnitID, 
-            DateTime MSDate, bool IsRowIsActive)
+            DateTime MSDate, string URL, bool IsRowIsActive)
         {
             try
             {
@@ -148,6 +150,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
                         command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
                         command.Parameters.Add(new SqlParameter("MSDate", MSDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MSDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         
                         command.CommandTimeout = 60 * 5;
