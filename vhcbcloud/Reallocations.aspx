@@ -16,7 +16,7 @@
                                 <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem Selected="true"> Reallocation &nbsp;</asp:ListItem>
-                                <%-- <asp:ListItem> Cash Refund &nbsp;</asp:ListItem>--%>
+                                <asp:ListItem> Allocations &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                                             <asp:DropDownList ID="ddlRToProj" CssClass="clsDropDown" AutoPostBack="true" Visible="false" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlRToProj_SelectedIndexChanged">
                                             </asp:DropDownList>
-                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1" ReadOnly="True"></asp:TextBox>
                                             <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
