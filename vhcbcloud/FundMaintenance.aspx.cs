@@ -264,5 +264,12 @@ namespace vhcbcloud
             else if (ddlAcctNum.SelectedIndex != 0)
                 PopulateForm(FundMaintenanceData.SearchFund(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString())));
         }
+
+        protected void ImgFundDataReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL("6588", "Fund Data"));
+            
+        }
     }
 }

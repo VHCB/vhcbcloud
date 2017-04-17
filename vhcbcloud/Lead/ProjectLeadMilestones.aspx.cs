@@ -190,11 +190,19 @@ namespace vhcbcloud.Lead
                 }
             }
 
+            string URL = txtURL.Text;
+
+            if (URL != "")
+            {
+                if (!URL.Contains("http"))
+                    URL = "http://" + URL;
+            }
+
             if (btnSubmit.Text == "Submit")
             {
                 LeadMilestoneResult objLeadMilestoneResult = ProjectLeadMilestonesData.AddProjectLeadMilestone((DataUtils.GetInt(hfProjectId.Value)),
                     DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text));
+                    DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text), URL);
 
                 ClearMilestonesForm();
                 BindGrids();
@@ -210,7 +218,7 @@ namespace vhcbcloud.Lead
             {
                 ProjectLeadMilestonesData.UpdateProjectLeadMilestone(DataUtils.GetInt(hfLeadMilestoneID.Value), DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlBldgNumber.SelectedValue.ToString()), DataUtils.GetInt(ddlUnitNumber.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text),
-                    chkMilestoneActive.Checked);
+                    URL, chkMilestoneActive.Checked);
 
                 gvMilestone.EditIndex = -1;
                 BindGrids();
@@ -294,6 +302,7 @@ namespace vhcbcloud.Lead
                         BindBuildingUnitNumbers(DataUtils.GetInt(dr["LeadBldgID"].ToString()));
                         PopulateDropDown(ddlUnitNumber, dr["LeadUnitID"].ToString());
                         txtDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
+                        txtURL.Text = dr["URL"].ToString() ?? "";
                         chkMilestoneActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         chkMilestoneActive.Enabled = true;
                         //ddlBldgNumber.Enabled = false;
@@ -351,7 +360,7 @@ namespace vhcbcloud.Lead
             //ddlUnitNumber.SelectedIndex = -1;
             ddlMilestone.SelectedIndex = -1;
             txtDate.Text = "";
-
+            txtURL.Text = "";
             //ddlBldgNumber.Enabled = true;
             //ddlUnitNumber.Enabled = true;
 

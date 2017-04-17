@@ -402,84 +402,102 @@ namespace vhcbcloud.Housing
 
             LogMessage("VHCB Priority updated successfully");
         }
-/*
-        protected void btnAddOutcomes_Click(object sender, EventArgs e)
+
+        protected void ImgConsolidated_Click(object sender, ImageClickEventArgs e)
         {
-            if (ddlOutcomes.SelectedIndex == 0)
-            {
-                LogMessage("Select Outcomes");
-                ddlOutcomes.Focus();
-                return;
-            }
-
-            HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectOtherOutcomes(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlOutcomes.SelectedValue.ToString()), 0);
-
-            ddlOutcomes.SelectedIndex = -1;
-            cbAddOther.Checked = false;
-
-            BindOtherGrid();
-
-            if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("Other Outcome already exist as in-active");
-            else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("Other Outcome already exist");
-            else
-                LogMessage("New Other Outcome added successfully");
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Consolidated Plan Priorities"));
         }
 
-        protected void gvOther_RowEditing(object sender, GridViewEditEventArgs e)
+        protected void ImgInteragency_Click(object sender, ImageClickEventArgs e)
         {
-            gvOther.EditIndex = e.NewEditIndex;
-            BindOtherGrid();
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing InterAgency Priorities"));
         }
 
-        protected void gvOther_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        protected void ImgVHCBpriorities_Click(object sender, ImageClickEventArgs e)
         {
-            gvOther.EditIndex = -1;
-            BindOtherGrid();
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB Priorities"));
         }
+        /*
+protected void btnAddOutcomes_Click(object sender, EventArgs e)
+{
+if (ddlOutcomes.SelectedIndex == 0)
+{
+LogMessage("Select Outcomes");
+ddlOutcomes.Focus();
+return;
+}
 
-        protected void gvOther_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
+HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectOtherOutcomes(DataUtils.GetInt(hfProjectId.Value),
+DataUtils.GetInt(ddlOutcomes.SelectedValue.ToString()), 0);
 
-            int ProjectOtherOutcomesID = DataUtils.GetInt(((Label)gvOther.Rows[rowIndex].FindControl("lblProjectOtherOutcomesID")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvOther.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+ddlOutcomes.SelectedIndex = -1;
+cbAddOther.Checked = false;
 
-            HousingAttributesData.UpdateProjectOtherOutcomes(ProjectOtherOutcomesID, 0, RowIsActive);
-            gvOther.EditIndex = -1;
+BindOtherGrid();
 
-            BindOtherGrid();
+if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
+LogMessage("Other Outcome already exist as in-active");
+else if (objHousingAttributesResult.IsDuplicate)
+LogMessage("Other Outcome already exist");
+else
+LogMessage("New Other Outcome added successfully");
+}
 
-            LogMessage("Other Outcome updated successfully");
+protected void gvOther_RowEditing(object sender, GridViewEditEventArgs e)
+{
+gvOther.EditIndex = e.NewEditIndex;
+BindOtherGrid();
+}
 
-        }
+protected void gvOther_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+{
+gvOther.EditIndex = -1;
+BindOtherGrid();
+}
 
-        private void BindOtherGrid()
-        {
-            try
-            {
-                DataTable dt = HousingAttributesData.GetProjectOtherOutcomesList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+protected void gvOther_RowUpdating(object sender, GridViewUpdateEventArgs e)
+{
+int rowIndex = e.RowIndex;
 
-                if (dt.Rows.Count > 0)
-                {
-                    dvOtherGrid.Visible = true;
-                    gvOther.DataSource = dt;
-                    gvOther.DataBind();
-                }
-                else
-                {
-                    dvOtherGrid.Visible = false;
-                    gvOther.DataSource = null;
-                    gvOther.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindOtherGrid", "", ex.Message);
-            }
-        }
-        */
+int ProjectOtherOutcomesID = DataUtils.GetInt(((Label)gvOther.Rows[rowIndex].FindControl("lblProjectOtherOutcomesID")).Text);
+bool RowIsActive = Convert.ToBoolean(((CheckBox)gvOther.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+HousingAttributesData.UpdateProjectOtherOutcomes(ProjectOtherOutcomesID, 0, RowIsActive);
+gvOther.EditIndex = -1;
+
+BindOtherGrid();
+
+LogMessage("Other Outcome updated successfully");
+
+}
+
+private void BindOtherGrid()
+{
+try
+{
+DataTable dt = HousingAttributesData.GetProjectOtherOutcomesList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+if (dt.Rows.Count > 0)
+{
+ dvOtherGrid.Visible = true;
+ gvOther.DataSource = dt;
+ gvOther.DataBind();
+}
+else
+{
+ dvOtherGrid.Visible = false;
+ gvOther.DataSource = null;
+ gvOther.DataBind();
+}
+}
+catch (Exception ex)
+{
+LogError(Pagename, "BindOtherGrid", "", ex.Message);
+}
+}
+*/
     }
 }

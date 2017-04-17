@@ -1140,16 +1140,16 @@ namespace vhcbcloud.Housing
                     int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
 
                     hfAgeRestrWarning.Value = "0";
-                    if (TotalUnits - totAgeRestrUnits != 0)
-                    {
-                        hfAgeRestrWarning.Value = "1";
-                        WarningMessage(dvAgeRestrWarning, lblAgeRestrWarning, "Age restrictions Units must be equal to Total Units.");
-                    }
-                    else
-                    {
+                    //if (TotalUnits - totAgeRestrUnits != 0)
+                    //{
+                    //    hfAgeRestrWarning.Value = "1";
+                    //    WarningMessage(dvAgeRestrWarning, lblAgeRestrWarning, "Age restrictions Units must be equal to Total Units.");
+                    //}
+                    //else
+                    //{
                         dvAgeRestrWarning.Visible = false;
                         lblAgeRestrWarning.Text = "";
-                    }
+                    //}
                 }
                 else
                 {
@@ -1201,6 +1201,48 @@ namespace vhcbcloud.Housing
             LogMessage("Age restrictions updated successfully");
 
             BindAgeRestrictionGrid();
+        }
+
+        protected void ImgHousingSubType_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                 "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing SubType Units"));
+        }
+
+        protected void ImgNewConst_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Construction Rehab Units"));
+        }
+
+        protected void ImgAccessible_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Accessible Adaptable Units"));
+        }
+
+        protected void ImgPrimary_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Primary Services Support Units"));
+        }
+
+        protected void ImgSecondary_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Secondary Services Support Units"));
+        }
+
+        protected void ImgAge_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Age Restricted Units"));
+        }
+
+        protected void ImgVHCBAff_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB Affordable Units"));
         }
 
         //protected void btnAddHomeAff_Click(object sender, EventArgs e)

@@ -69,6 +69,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
+                                        <asp:ImageButton ID="ImgHomeOwnership" ImageUrl="~/Images/print.png" ToolTip="Housing HomeOwnership Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgHomeOwnership_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -280,11 +282,18 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                    <td style="width: 390px"><span class="labelClass">Active</span></td>
+                                    <td style="width: 390px"><span class="labelClass">Purchase Date</span></td>
                                         <td style="width: 250px">
+                                            <asp:TextBox ID="txtPurchaseDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtPurchaseDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                         <td style="width: 300px"><span class="labelClass">Active</span></td>
+                                        <td>
                                             <asp:CheckBox ID="chkOwnerActive" Enabled="false" runat="server" Checked="true" />
                                         </td>
-                                        <td colspan="4" style="height: 5px"></td>
+
+                                        <td colspan="2" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 390px">

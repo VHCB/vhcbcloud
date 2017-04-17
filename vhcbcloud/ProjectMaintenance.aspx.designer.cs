@@ -310,6 +310,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlManager;
         
         /// <summary>
+        /// cbAddTBDAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddTBDAddress;
+        
+        /// <summary>
         /// dvConserOnly control.
         /// </summary>
         /// <remarks>
@@ -362,6 +371,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddProjectEvent;
+        
+        /// <summary>
+        /// ImgMilestoneReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgMilestoneReport;
         
         /// <summary>
         /// dvProjectEventForm control.
@@ -524,6 +542,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddProjectName;
+        
+        /// <summary>
+        /// ImgNames control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgNames;
         
         /// <summary>
         /// dvProjectNameForm control.
@@ -823,6 +850,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbAttachNewEntity;
         
         /// <summary>
+        /// ImgEntity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgEntity;
+        
+        /// <summary>
         /// dvProjectEntityForm control.
         /// </summary>
         /// <remarks>
@@ -911,6 +947,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbRelatedProjects;
+        
+        /// <summary>
+        /// ImgRelatedProjests control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgRelatedProjests;
         
         /// <summary>
         /// dvRelatedProjectsForm control.

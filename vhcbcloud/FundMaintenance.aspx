@@ -64,6 +64,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddFund" runat="server" Text="Add New Fund" />
+                                         <asp:ImageButton ID="ImgFundDataReport" ImageUrl="~/Images/print.png" ToolTip="Fund Data Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgFundDataReport_Click" />
                                     </td>
                                 </tr>
                             </table>

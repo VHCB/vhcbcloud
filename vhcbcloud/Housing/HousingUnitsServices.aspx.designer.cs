@@ -256,6 +256,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddHousingSubType;
         
         /// <summary>
+        /// ImgHousingSubType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgHousingSubType;
+        
+        /// <summary>
         /// dvHousingSubTypeForm control.
         /// </summary>
         /// <remarks>
@@ -362,6 +371,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSingleUnit;
+        
+        /// <summary>
+        /// ImgNewConst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgNewConst;
         
         /// <summary>
         /// dvSingleForm control.
@@ -472,6 +490,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddMultiUnit;
         
         /// <summary>
+        /// ImgAccessible control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgAccessible;
+        
+        /// <summary>
         /// dvMultipleForm control.
         /// </summary>
         /// <remarks>
@@ -560,6 +587,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSuppService;
+        
+        /// <summary>
+        /// ImgPrimary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgPrimary;
         
         /// <summary>
         /// dvSuppServiceForm control.
@@ -670,6 +706,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbAddSecService;
         
         /// <summary>
+        /// ImgSecondary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgSecondary;
+        
+        /// <summary>
         /// dvSecServiceForm control.
         /// </summary>
         /// <remarks>
@@ -758,6 +803,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddAgeRes;
+        
+        /// <summary>
+        /// ImgAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgAge;
         
         /// <summary>
         /// dvAgeRestForm control.
@@ -866,6 +920,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddVHCBAff;
+        
+        /// <summary>
+        /// ImgVHCBAff control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgVHCBAff;
         
         /// <summary>
         /// dvVHCBAffForm control.

@@ -121,6 +121,7 @@ create procedure dbo.add_new_project
 	@appName			varchar(150),
 	@projName			varchar(75),
 	@goal				int,
+	@IsTBDAddress		bit,
 	@isDuplicate		bit output,
 	@ProjectId			int output
 ) as
@@ -167,6 +168,12 @@ begin transaction
 
 			insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
 			values (@ProjectId, @applicantId, 358, 1)
+
+			if(@IsTBDAddress = 1)
+			begin
+				insert into ProjectAddress(ProjectId, AddressId, PrimaryAdd)
+				values(@ProjectId, 171, 1)
+			end
 
 			set @isDuplicate = 0
 		end

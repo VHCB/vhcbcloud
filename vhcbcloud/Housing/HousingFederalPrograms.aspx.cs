@@ -1222,5 +1222,35 @@ namespace vhcbcloud.Housing
                 LogError(Pagename, "gvInspection_RowDataBound", "", ex.Message);
             }
         }
+
+        protected void ImgFrderalData_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+              "script", Helper.GetExagoURL(hfProjectId.Value, "Housing Federal Data"));
+        }
+
+        protected void ImgIncomeRes_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+              "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Federal Income Restricted Units"));
+        }
+
+        protected void ImgRentalAff_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Federal Rental Affordability Units"));
+        }
+
+        protected void ImgrentalUnitSize_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Federal Rental Unit Size"));
+        }
+
+        protected void ImgHousingInspections_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Federal Inspections"));
+        }
     }
 }

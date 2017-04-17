@@ -5,6 +5,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -422,7 +423,9 @@ namespace vhcbcloud.Lead
                 LeadBuildResult objLeadBuildResult =  ProjectLeadBuildingsData.AddProjectLeadUnit((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtUnitNumber.Text),
                     DataUtils.GetInt(ddlEBlStatus.SelectedValue.ToString()), DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), 
                     DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()), 
-                    DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtCertifiedBy.Text));
+                    DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), DataUtils.GetDate(txtCertifiedBy.Text), 
+                    DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDecimal(Regex.Replace(txtRelocAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDate(txtStartDate.Text));
 
                 ClearUnitInfoForm();
                 BindUnitsGrid();
@@ -439,7 +442,8 @@ namespace vhcbcloud.Lead
                 ProjectLeadBuildingsData.UpdateProjectLeadUnit((DataUtils.GetInt(hfLeadUnitID.Value)), DataUtils.GetInt(ddlEBlStatus.SelectedValue.ToString()),
                   DataUtils.GetInt(txtHouseholdCount.Text), DataUtils.GetInt(txtRooms.Text), DataUtils.GetDecimal(txtHouseholdIncome.Text), cbThirdPartyVerified.Checked, 
                   DataUtils.GetInt(ddlIncomeStatus.SelectedValue.ToString()), DataUtils.GetDecimal(txtMatchingFund.Text), DataUtils.GetDate(txtClearanceDate.Text), 
-                  DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtCertifiedBy.Text), chkUnitActive.Checked);
+                  DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDate(txtCertifiedBy.Text), DataUtils.GetDecimal(Regex.Replace(txtRelocAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDate(txtStartDate.Text), chkUnitActive.Checked);
 
                 ClearUnitInfoForm();
                 BindUnitsGrid();
@@ -470,7 +474,8 @@ namespace vhcbcloud.Lead
             txtCertifiedBy.Text = "";
             //txtRectDate.Text = "";
             labelRectDate.InnerText = "";
-
+            txtRelocAmt.Text = "";
+            txtStartDate.Text = "";
             txtUnitNumber.Enabled = true;
             chkUnitActive.Enabled = false;
 
@@ -524,6 +529,8 @@ namespace vhcbcloud.Lead
                         txtMatchingFund.Text = Decimal.Parse(dr["MatchFunds"].ToString()).ToString("#.00");
                         txtClearanceDate.Text = dr["ClearDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ClearDate"].ToString()).ToShortDateString();
                         txtCertifiedBy.Text = dr["CertDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["CertDate"].ToString()).ToShortDateString();
+                        txtRelocAmt.Text = dr["RelocationAmt"].ToString() ?? "";
+                        txtStartDate.Text = dr["StartDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["StartDate"].ToString()).ToShortDateString();
 
                         if (dr["CertDate"].ToString() != "")
                             labelRectDate.InnerText = Get6MonthsPlusDate(dr["CertDate"].ToString());

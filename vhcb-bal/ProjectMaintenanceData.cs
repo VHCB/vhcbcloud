@@ -76,7 +76,7 @@ namespace DataAccessLayer
         }
 
         public static AddProject AddProject(string ProjNum, int LkProjectType, int LkProgram, int Manager, //DateTime ClosingDate, 
-            string appName, string projName, int Goal)
+            string appName, string projName, int Goal, bool IsTBDAddress)
         {
             try
             {
@@ -103,7 +103,8 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("appName", appName));
                         command.Parameters.Add(new SqlParameter("projName", projName));
                         command.Parameters.Add(new SqlParameter("Goal", Goal));
-
+                        command.Parameters.Add(new SqlParameter("IsTBDAddress", IsTBDAddress));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);

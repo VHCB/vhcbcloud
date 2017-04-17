@@ -197,7 +197,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static HomeOwnershipResult AddProjectHomeOwnership(int HomeOwnershipID, int Owner, int LkLender, bool vhfa, bool RDLoan, decimal VHCBGrant, decimal OwnerApprec, decimal CapImprove,
-            decimal InitFee, decimal ResaleFee, decimal StewFee, decimal AssistLoan, decimal RehabLoan)
+            decimal InitFee, decimal ResaleFee, decimal StewFee, decimal AssistLoan, decimal RehabLoan, DateTime PurchaseDate)
         {
             try
             {
@@ -224,6 +224,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("StewFee", StewFee));
                         command.Parameters.Add(new SqlParameter("AssistLoan", AssistLoan));
                         command.Parameters.Add(new SqlParameter("RehabLoan", RehabLoan));
+                        command.Parameters.Add(new SqlParameter("PurchaseDate", PurchaseDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : PurchaseDate));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -254,7 +255,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static void UpdateProjectHomeOwnership(int ProjectHomeOwnershipID, int Owner, int LkLender, bool vhfa, bool RDLoan, decimal VHCBGrant, decimal OwnerApprec, decimal CapImprove,
-           decimal InitFee, decimal ResaleFee, decimal StewFee, decimal AssistLoan, decimal RehabLoan, bool IsRowIsActive)
+           decimal InitFee, decimal ResaleFee, decimal StewFee, decimal AssistLoan, decimal RehabLoan, DateTime PurchaseDate, bool IsRowIsActive)
         {
             try
             {
@@ -280,6 +281,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("StewFee", StewFee));
                         command.Parameters.Add(new SqlParameter("AssistLoan", AssistLoan));
                         command.Parameters.Add(new SqlParameter("RehabLoan", RehabLoan));
+                        command.Parameters.Add(new SqlParameter("PurchaseDate", PurchaseDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : PurchaseDate));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
 
                         command.CommandTimeout = 60 * 5;
