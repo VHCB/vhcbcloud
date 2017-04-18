@@ -101,6 +101,7 @@ create procedure dbo.AddHouseSource
 	@LKBudgetPeriod int,
 	@LkHouseSource	int,
 	@Total			decimal(18, 2),
+	@IsMostCurrent	bit,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -118,8 +119,11 @@ begin transaction
 			and LKBudgetPeriod = @LKBudgetPeriod
     )
 	begin
-		insert into HouseSU(HousingID, LKBudgetPeriod, DateModified)
-		values(@HousingID, @LKBudgetPeriod, getdate())
+
+		update HouseSU set MostCurrent = 0 where HousingId = @HousingID and @IsMostCurrent = 1
+
+		insert into HouseSU(HousingID, LKBudgetPeriod, DateModified, MostCurrent)
+		values(@HousingID, @LKBudgetPeriod, getdate(), @IsMostCurrent)
 
 		set @HouseSUID = @@IDENTITY
 	end
@@ -450,7 +454,8 @@ create procedure ImportHousingBudgetPeriodData
 (
 	@ProjectID				int,
 	@ImportLKBudgetPeriod	int,
-	@LKBudgetPeriod			int
+	@LKBudgetPeriod			int,
+	@IsMostCurrent			bit
 )  
 as
 /*
@@ -492,8 +497,10 @@ begin
 				and LKBudgetPeriod = @LKBudgetPeriod
 		)
 		begin
-			insert into HouseSU(HousingID, LKBudgetPeriod, DateModified)
-			values(@HousingID, @LKBudgetPeriod, getdate())
+			update HouseSU set MostCurrent = 0 where HousingId = @HousingID and @IsMostCurrent = 1
+
+			insert into HouseSU(HousingID, LKBudgetPeriod, DateModified, MostCurrent)
+			values(@HousingID, @LKBudgetPeriod, getdate(), @IsMostCurrent)
 
 			set @HouseSUID = @@IDENTITY
 		end

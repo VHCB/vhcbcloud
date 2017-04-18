@@ -45,7 +45,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static HouseResult AddHouseSource(int HousingID, int LKBudgetPeriod, int LkHouseSource, decimal Total)
+        public static HouseResult AddHouseSource(int HousingID, int LKBudgetPeriod, int LkHouseSource, decimal Total, bool IsMostCurrent)
         {
             try
             {
@@ -63,6 +63,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("LKBudgetPeriod", LKBudgetPeriod));
                         command.Parameters.Add(new SqlParameter("LkHouseSource", LkHouseSource));
                         command.Parameters.Add(new SqlParameter("Total", Total));
+                        command.Parameters.Add(new SqlParameter("IsMostCurrent", IsMostCurrent));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -305,7 +306,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return dt;
         }
 
-        public static void ImportHousingBudgetPeriodData(int ProjectId, int ImportLKBudgetPeriod, int LKBudgetPeriod)
+        public static void ImportHousingBudgetPeriodData(int ProjectId, int ImportLKBudgetPeriod, int LKBudgetPeriod, bool IsMostCurrent)
         {
             try
             {
@@ -322,7 +323,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("ImportLKBudgetPeriod", ImportLKBudgetPeriod));
                         command.Parameters.Add(new SqlParameter("LKBudgetPeriod", LKBudgetPeriod));
-
+                        command.Parameters.Add(new SqlParameter("IsMostCurrent", IsMostCurrent));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
