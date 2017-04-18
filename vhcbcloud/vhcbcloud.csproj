@@ -273,7 +273,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
     <Content Include="ProjectDesc.aspx" />
-    <Content Include="Allocations.aspx" />
+    <Content Include="Assignments.aspx" />
     <Content Include="Scripts\CurrencyController.js" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
@@ -888,12 +888,12 @@
     <Compile Include="ExistingReallocations.aspx.designer.cs">
       <DependentUpon>ExistingReallocations.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Allocations.aspx.cs">
-      <DependentUpon>Allocations.aspx</DependentUpon>
+    <Compile Include="Assignments.aspx.cs">
+      <DependentUpon>Assignments.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Allocations.aspx.designer.cs">
-      <DependentUpon>Allocations.aspx</DependentUpon>
+    <Compile Include="Assignments.aspx.designer.cs">
+      <DependentUpon>Assignments.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reallocations.aspx.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>

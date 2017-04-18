@@ -15,7 +15,7 @@
                                 <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                                <asp:ListItem> Allocations &nbsp;</asp:ListItem>
+                                <asp:ListItem> Assignments &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -323,7 +323,7 @@
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                                         </EditItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
