@@ -26,6 +26,9 @@
                             <td style="text-align: left">
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
+                            <td>
+                                <asp:CheckBox ID="cbLatestBudget" runat="server" Checked="true" Text=" Is Latest Budget" />
+                            </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
@@ -38,7 +41,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5" style="height: 5px"></td>
+                            <td colspan="6" style="height: 5px"></td>
                         </tr>
 
                         <tr>
@@ -62,6 +65,7 @@
                                 </div>
                             </td>
 
+                            <td style="height: 5px"></td>
                             <td style="height: 5px"></td>
                         </tr>
                     </table>
@@ -206,17 +210,20 @@
                                         <td style="width: 180px">
                                             <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 140px"><span class="labelClass">Other</span></td>
+                                        <td style="width: 140px">
+                                           <%-- <span class="labelClass">Other</span>--%>
+
+                                        </td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlOtherUses" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlOtherUses" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
                                         </td>
                                         <td style="width: 100px">
-                                            <span class="labelClass">Amount $
-                                            </span>
+                                           <%-- <span class="labelClass">Amount $
+                                            </span>--%>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>--%>
                                         </td>
                                         <%--<td style="width: 100px">
                                             <span class="labelClass">Total $
@@ -263,7 +270,7 @@
                                                 Grand Total :
                                             </FooterTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="VHCB Total">
+                                        <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
@@ -274,7 +281,7 @@
                                             <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
                                         </FooterTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Other Use">
+                                       <%-- <asp:TemplateField HeaderText="Other Use">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblOtherUseName" runat="Server" Text='<%# Eval("OtherUseName") %>' />
                                             </ItemTemplate>
@@ -297,7 +304,7 @@
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterGrandTotalAmount" Text=""></asp:Label>
                                         </FooterTemplate>
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
