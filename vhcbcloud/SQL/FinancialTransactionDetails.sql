@@ -3149,6 +3149,125 @@ End
 
 go
 
+
+alter procedure [dbo].[AddStaffAssignment]
+(
+	@FromProjectId int,
+	@ToProjectId int,
+	@transDate datetime,		
+
+	@Fromfundid int,	
+	@Fromfundtranstype int,
+	@Fromfundamount money,
+
+	@Tofundid int,	
+	@Tofundtranstype int,
+	@Tofundamount money,
+	@fromTransId int = null,
+	@toTransId int = null, 
+	@transGuid varchar(50) = null
+)
+as
+Begin	
+	--declare @fromPayeeapplicant int 
+	--declare @ToPayeeApplicant int
+
+	--select @fromPayeeapplicant = a.applicantid from Project p 
+	--	join ProjectName pn on pn.ProjectID = p.ProjectId
+	--	join ProjectApplicant pa on pa.ProjectId = p.ProjectID	
+	--	join Applicant a on a.ApplicantId = pa.ApplicantId	
+	--	join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
+	--	join AppName an on an.AppNameID = aan.AppNameID 
+	--	join LookupValues lv on lv.TypeID = pn.LkProjectname
+	--Where  a.finlegal=1 and p.ProjectId = @FromProjectId
+
+	--select @ToPayeeApplicant = a.applicantid from Project p 
+	--	join ProjectName pn on pn.ProjectID = p.ProjectId
+	--	join ProjectApplicant pa on pa.ProjectId = p.ProjectID	
+	--	join Applicant a on a.ApplicantId = pa.ApplicantId	
+	--	join ApplicantAppName aan on aan.ApplicantID = pa.ApplicantId
+	--	join AppName an on an.AppNameID = aan.AppNameID 
+	--	join LookupValues lv on lv.TypeID = pn.LkProjectname		
+	--Where  a.finlegal=1 and p.ProjectId = @ToProjectId
+
+	--if(@toTransId >0)
+	--	Begin
+	--		insert into Detail (TransId, FundId, LkTransType, Amount)	values
+	--				(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+	--		insert into ReallocateLink(fromprojectid, fromtransid, totransid) values
+	--				(@FromProjectId, @fromTransId,@toTransId)
+	--	End
+	--Else
+		
+
+		if (@FromProjectId != @ToProjectId)
+		Begin
+			
+			if(@toTransId >0)
+			Begin
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+			else
+			begin
+
+				--set @Fromfundamount = @Fromfundamount -@Tofundamount
+
+				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus)
+					values (@FromProjectId, @transDate, 0, 26552, 261) -- 26552 Board Assignment, 261 Pending
+				set @fromTransId = @@IDENTITY;
+	
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
+					values (@ToProjectId, @transDate, 0, 26552, 261)
+				set @toTransId = @@IDENTITY;
+				
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)			
+				
+			end
+		end
+		else
+		Begin
+
+			if(@toTransId >0)
+			Begin
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+			else
+			begin			
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
+					values (@FromProjectId, @transDate, 0, 26552, 261) -- 26552 Board Assignment, 261 Pending
+				set @fromTransId = @@IDENTITY;
+				set @toTransId = @@IDENTITY;
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+
+				insert into Detail (TransId, FundId, LkTransType, Amount)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+			end
+
+		End
+
+		insert into ReallocateLink(fromprojectid, fromtransid, ToProjectId, totransid, ReallocateGUID) values
+				(@FromProjectId, @fromTransId, @ToProjectId, @toTransId, @transGuid)
+		
+
+		Select @fromTransId as FromTransId, @toTransId as ToTransId
+end
+
+go
+
 alter procedure [dbo].[GetFinancialFundDetailsByDateRange]
 (
 	@startDate datetime,
@@ -3173,7 +3292,7 @@ Begin
 						  dbo.Project ON dbo.Trans.ProjectID = dbo.Project.ProjectId ON dbo.LkFundType.TypeId = dbo.Fund.LkFundType INNER JOIN
 						  dbo.LookupValues ON dbo.Trans.LkTransaction = dbo.LookupValues.TypeID
 	WHERE     dbo.Trans.LkTransaction IN (238, 239, 240) AND (trans.Date between @startDate and @endDate) AND Trans.rowisactive=1
-			 and LkFundType.rowisactive = 1
+			 and LkFundType.rowisactive = 1 and Trans.LkStatus = 262
 	GROUP BY  dbo.Project.ProjectId, dbo.LkFundType.Description
 	ORDER BY dbo.Project.ProjectId, FundType
 

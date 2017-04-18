@@ -10,7 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class Allocations {
+    public partial class Assignments {
         
         /// <summary>
         /// UpdatePanel1 control.
@@ -38,6 +38,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlReallocations;
+        
+        /// <summary>
+        /// rdBtnSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
         
         /// <summary>
         /// imgSearch control.

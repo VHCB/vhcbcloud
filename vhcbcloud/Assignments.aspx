@@ -1,12 +1,12 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Allocations.aspx.cs" Inherits="vhcbcloud.Allocations" %>
+    CodeBehind="Assignments.aspx.cs" Inherits="vhcbcloud.Assignments" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
 
-                <p class="lead">Board Allocations</p>
+                <p class="lead">Board Assignment</p>
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -16,7 +16,7 @@
                                 <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                                <asp:ListItem Selected="true"> Allocations &nbsp;</asp:ListItem>
+                                <asp:ListItem Selected="true"> Assignments &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -29,11 +29,11 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                      <%--      <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
+                                            <asp:RadioButtonList ID="rdBtnSelection" Visible="false" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
                                                 OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                                 <asp:ListItem Selected="True">New    </asp:ListItem>
                                                 <asp:ListItem>Existing</asp:ListItem>
-                                            </asp:RadioButtonList></td>--%>
+                                            </asp:RadioButtonList></td>
                                         <td style="text-align: right">
                                             <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
                                                 OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
@@ -60,7 +60,7 @@
                                 <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
 
                             </asp:Panel>
-                            <div class="panel-heading">Allocate from</div>
+                            <div class="panel-heading">Assign from</div>
                             <div class="panel-body" id="pnlReallocateFrom" runat="server">
                                 <table style="width: 100%" class="">
                                     <tr>
@@ -139,7 +139,7 @@
                     </div>
                     <div class="container" id="divReallocateTo" runat="server">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Allocate To</div>
+                            <div class="panel-heading">Assign To</div>
                             <div class="panel-body">
                                 <table style="width: 100%" runat="server" id="tblReallocateTo">
                                     <tr>
@@ -244,7 +244,7 @@
                                                 <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
@@ -278,7 +278,7 @@
                                 </asp:GridView>
 
                                 <br />
-                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Reallocation" Visible="False" />
+                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Assignment" Visible="False" />
                                 <br />
 
                                 <br />

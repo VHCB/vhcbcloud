@@ -16,7 +16,7 @@
                                 <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem Selected="true"> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                                <asp:ListItem> Allocations &nbsp;</asp:ListItem>
+                                <asp:ListItem> Assignments &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                                                 <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("TransAmt")%>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtTransAmt" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TransAmt", "{0:0.00}") %>'></asp:TextBox>
 
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -328,7 +328,7 @@
                                                     <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                 </ItemTemplate>
                                                 <EditItemTemplate>
-                                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                                 </EditItemTemplate>
                                                 <FooterTemplate>
                                                     <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
