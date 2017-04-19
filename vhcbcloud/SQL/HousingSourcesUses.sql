@@ -59,10 +59,10 @@ create procedure GetLatestHousingBudgetPeriod
 as
 --exec GetLatestHousingBudgetPeriod 66251, null
 begin
-	select  @LKBudgetPeriod = isnull(max(hsu.LkBudgetPeriod), 0)
+	select  @LKBudgetPeriod = isnull(hsu.LkBudgetPeriod, 0) --isnull(max(hsu.LkBudgetPeriod), 0)
 	from Housing h(nolock)
 	join HouseSU hsu(nolock) on h.HousingID  = hsu.HousingId 
-	where h.ProjectID = @ProjectID 
+	where h.ProjectID = @ProjectID and MostCurrent = 1
 end
 go
 
@@ -101,7 +101,6 @@ create procedure dbo.AddHouseSource
 	@LKBudgetPeriod int,
 	@LkHouseSource	int,
 	@Total			decimal(18, 2),
-	@IsMostCurrent	bit,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -120,10 +119,10 @@ begin transaction
     )
 	begin
 
-		update HouseSU set MostCurrent = 0 where HousingId = @HousingID and @IsMostCurrent = 1
+		update HouseSU set MostCurrent = 0 where HousingId = @HousingID and MostCurrent = 1
 
 		insert into HouseSU(HousingID, LKBudgetPeriod, DateModified, MostCurrent)
-		values(@HousingID, @LKBudgetPeriod, getdate(), @IsMostCurrent)
+		values(@HousingID, @LKBudgetPeriod, getdate(), 1)
 
 		set @HouseSUID = @@IDENTITY
 	end
@@ -266,8 +265,11 @@ begin transaction
 			and LKBudgetPeriod = @LKBudgetPeriod
     )
 	begin
-		insert into HouseSU(HousingID, LKBudgetPeriod, DateModified)
-		values(@HousingID, @LKBudgetPeriod, getdate())
+
+		update HouseSU set MostCurrent = 0 where HousingId = @HousingID and MostCurrent = 1
+
+		insert into HouseSU(HousingID, LKBudgetPeriod, DateModified, MostCurrent)
+		values(@HousingID, @LKBudgetPeriod, getdate(), 1)
 
 		set @HouseSUID = @@IDENTITY
 	end
@@ -454,8 +456,7 @@ create procedure ImportHousingBudgetPeriodData
 (
 	@ProjectID				int,
 	@ImportLKBudgetPeriod	int,
-	@LKBudgetPeriod			int,
-	@IsMostCurrent			bit
+	@LKBudgetPeriod			int
 )  
 as
 /*
@@ -497,10 +498,10 @@ begin
 				and LKBudgetPeriod = @LKBudgetPeriod
 		)
 		begin
-			update HouseSU set MostCurrent = 0 where HousingId = @HousingID and @IsMostCurrent = 1
+			update HouseSU set MostCurrent = 0 where HousingId = @HousingID and MostCurrent = 1
 
 			insert into HouseSU(HousingID, LKBudgetPeriod, DateModified, MostCurrent)
-			values(@HousingID, @LKBudgetPeriod, getdate(), @IsMostCurrent)
+			values(@HousingID, @LKBudgetPeriod, getdate(), 1)
 
 			set @HouseSUID = @@IDENTITY
 		end

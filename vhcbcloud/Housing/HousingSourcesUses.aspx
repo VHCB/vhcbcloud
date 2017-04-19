@@ -27,7 +27,7 @@
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                             <td>
-                                <asp:CheckBox ID="cbLatestBudget" runat="server" Checked="true" Text=" Is Latest Budget" />
+                                <%--<asp:CheckBox ID="cbLatestBudget" runat="server" Checked="true" Text=" Is Latest Budget" />--%>
                             </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
@@ -127,6 +127,12 @@
                         </div>
 
                         <div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
+                            <div id="dvWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
                             <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvHousingSources" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -151,6 +157,7 @@
                                             <FooterTemplate>
                                                 Grand Total :
                                             </FooterTemplate>
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
@@ -162,6 +169,7 @@
                                              <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
                                         </FooterTemplate>
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -269,6 +277,7 @@
                                              <FooterTemplate>
                                                 Grand Total :
                                             </FooterTemplate>
+                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
@@ -280,6 +289,7 @@
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
                                         </FooterTemplate>
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                        <%-- <asp:TemplateField HeaderText="Other Use">
                                             <ItemTemplate>
@@ -327,9 +337,37 @@
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfNavigatedProjectId" runat="server" />
     <asp:HiddenField ID="hfHousingId" runat="server" />
-    
+    <asp:HiddenField ID="hfSourcesTotal" runat="server" />
+    <asp:HiddenField ID="hfUsesTotal" runat="server" />
+    <asp:HiddenField ID="hfWarning" runat="server" />
+
     <script language="javascript">
         $(document).ready(function () {
+
+            $('#<%= txtSourceTotal.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtSourceTotal.ClientID%>').val(), $('#<%= txtSourceTotal.ClientID%>'));
+            });
+
+            $('#<%= txtVHCBUseAmount.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtVHCBUseAmount.ClientID%>').val(), $('#<%= txtVHCBUseAmount.ClientID%>'));
+            });
+
+            $("input[id*=txtTotal]").keyup(function () {
+                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            });
+            
+            if ($('input[id*=txtTotal]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            }
+
+            $("input[id*=txtVHCBTotal]").keyup(function () {
+                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            });
+
+            if ($('input[id*=txtVHCBTotal]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            }
+
             $('#<%= dvSourceForm.ClientID%>').toggle($('#<%= cbAddSource.ClientID%>').is(':checked'));
             $('#<%= dvUseForm.ClientID%>').toggle($('#<%= cbAddUse.ClientID%>').is(':checked'));
 
