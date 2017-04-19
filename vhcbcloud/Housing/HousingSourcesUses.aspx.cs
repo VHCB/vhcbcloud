@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -21,6 +22,8 @@ namespace vhcbcloud.Housing
         {
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
+
+            ShowWarnings();
 
             hfProjectId.Value = "0";
             ProjectNotesSetUp();
@@ -107,6 +110,15 @@ namespace vhcbcloud.Housing
             catch (Exception ex)
             {
                 LogError(Pagename, "BindUsesLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        private void ShowWarnings()
+        {
+            if (hfWarning.Value != "1")
+            {
+                dvWarning.Visible = false;
+                lblWarning.Text = "";
             }
         }
 
@@ -240,6 +252,22 @@ namespace vhcbcloud.Housing
                     }
 
                     lblFooterTotalAmt.Text = CommonHelper.myDollarFormat(totAmt);
+
+                    hfSourcesTotal.Value = totAmt.ToString();
+
+                    decimal UsesTotal = DataUtils.GetDecimal(hfUsesTotal.Value);
+
+                    hfWarning.Value = "0";
+                    if (UsesTotal - totAmt != 0)
+                    {
+                        hfWarning.Value = "1";
+                        WarningMessage(dvWarning, lblWarning, "Sources Total must be equal to Uses Total.");
+                    }
+                    else
+                    {
+                        dvWarning.Visible = false;
+                        lblWarning.Text = "";
+                    }
                 }
                 else
                 {
@@ -272,8 +300,8 @@ namespace vhcbcloud.Housing
                     //Label lblFooterGrandTotalAmt = (Label)gvHousingUsesGrid.FooterRow.FindControl("lblFooterGrandTotalAmount");
 
                     decimal totVHCBAmt = 0;
-                    decimal totOtherAmt = 0;
-                    decimal totGrantAmt = 0;
+                    //decimal totOtherAmt = 0;
+                    //decimal totGrantAmt = 0;
 
                     for (int i = 0; i < dtSources.Rows.Count; i++)
                     {
@@ -288,6 +316,22 @@ namespace vhcbcloud.Housing
                     lblFooterVHCBTotalAmt.Text = CommonHelper.myDollarFormat(totVHCBAmt);
                     //lblFooterOtherTotalAmt.Text = CommonHelper.myDollarFormat(totOtherAmt);
                     //lblFooterGrandTotalAmt.Text = CommonHelper.myDollarFormat(totGrantAmt);
+
+                    hfUsesTotal.Value = totVHCBAmt.ToString();
+
+                    decimal SourceTotal = DataUtils.GetDecimal(hfSourcesTotal.Value);
+
+                    hfWarning.Value = "0";
+                    if (SourceTotal - totVHCBAmt != 0)
+                    {
+                        hfWarning.Value = "1";
+                        WarningMessage(dvWarning, lblWarning, "Sources Total must be equal to Uses Total.");
+                    }
+                    else
+                    {
+                        dvWarning.Visible = false;
+                        lblWarning.Text = "";
+                    }
                 }
                 else
                 {
@@ -300,6 +344,12 @@ namespace vhcbcloud.Housing
             {
                 LogError(Pagename, "BindUsesgrid", "", ex.Message);
             }
+        }
+
+        private void WarningMessage(HtmlGenericControl div, Label label, string message)
+        {
+            div.Visible = true;
+            label.Text = message;
         }
 
         private void ClearAddSourceForm()
@@ -335,7 +385,7 @@ namespace vhcbcloud.Housing
             try
             {
                 HousingSourcesUsesData.ImportHousingBudgetPeriodData(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlImportFrom.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()), cbLatestBudget.Checked);
+                    DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()));
 
                 //Sources
                 ClearAddSourceForm();
@@ -378,16 +428,16 @@ namespace vhcbcloud.Housing
                     txtSourceTotal.Focus();
                     return;
                 }
-                if (DataUtils.GetDecimal(txtSourceTotal.Text) <= 0)
-                {
-                    LogMessage("Enter valid source total");
-                    txtSourceTotal.Focus();
-                    return;
-                }
+                //if (DataUtils.GetDecimal(txtSourceTotal.Text) <= 0)
+                //{
+                //    LogMessage("Enter valid source total");
+                //    txtSourceTotal.Focus();
+                //    return;
+                //}
 
                 HousingSourcesUsesData.HouseResult objHouseResult = HousingSourcesUsesData.AddHouseSource(DataUtils.GetInt(hfHousingId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlSource.SelectedValue.ToString()), DataUtils.GetDecimal(txtSourceTotal.Text), cbLatestBudget.Checked);
+                    DataUtils.GetInt(ddlSource.SelectedValue.ToString()), DataUtils.GetDecimal(Regex.Replace(txtSourceTotal.Text, "[^0-9a-zA-Z.]+", "")));
 
                 ClearAddSourceForm();
                 BindSourcegrid();
@@ -423,12 +473,12 @@ namespace vhcbcloud.Housing
                     return;
                 }
 
-                if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) < 0)
-                {
-                    LogMessage("Enter Valid VHCB Use Total");
-                    txtVHCBUseAmount.Focus();
-                    return;
-                }
+                //if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) < 0)
+                //{
+                //    LogMessage("Enter Valid VHCB Use Total");
+                //    txtVHCBUseAmount.Focus();
+                //    return;
+                //}
 
                 //if (ddlOtherUses.SelectedIndex == 0)
                 //{
@@ -453,7 +503,8 @@ namespace vhcbcloud.Housing
 
                 HousingSourcesUsesData.HouseResult objHouseResult = HousingSourcesUsesData.AddHouseUse(DataUtils.GetInt(hfHousingId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlVHCBUses.SelectedValue.ToString()), DataUtils.GetDecimal(txtVHCBUseAmount.Text),
+                    DataUtils.GetInt(ddlVHCBUses.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtVHCBUseAmount.Text, "[^0-9a-zA-Z.]+", "")),
                     0, 0);
 
                 ClearAddUsesForm();
@@ -491,7 +542,7 @@ namespace vhcbcloud.Housing
             try
             {
                 int rowIndex = e.RowIndex;
-
+                
                 string strVHCBTotal = ((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text;
                 //string strOtherTotal = ((TextBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text;
 
@@ -501,11 +552,11 @@ namespace vhcbcloud.Housing
                     return;
                 }
 
-                if (DataUtils.GetDecimal(strVHCBTotal) <= 0)
-                {
-                    LogMessage("Enter valid VHCB Total");
-                    return;
-                }
+                //if (DataUtils.GetDecimal(strVHCBTotal) <= 0)
+                //{
+                //    LogMessage("Enter valid VHCB Total");
+                //    return;
+                //}
 
                 //if (string.IsNullOrWhiteSpace(strOtherTotal) == true)
                 //{
@@ -520,7 +571,7 @@ namespace vhcbcloud.Housing
                 //}
 
                 int HouseUseID = DataUtils.GetInt(((Label)gvHousingUsesGrid.Rows[rowIndex].FindControl("lblHouseUseID")).Text);
-                decimal VHCBTotal = DataUtils.GetDecimal(strVHCBTotal);
+                decimal VHCBTotal = DataUtils.GetDecimal(Regex.Replace(strVHCBTotal, "[^0-9a-zA-Z.]+", ""));
                 //decimal OtherTotal = DataUtils.GetDecimal(strOtherTotal);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvHousingUsesGrid.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
@@ -563,14 +614,14 @@ namespace vhcbcloud.Housing
                     return;
                 }
 
-                if (DataUtils.GetDecimal(strTotal) <= 0)
-                {
-                    LogMessage("Enter valid Total");
-                    return;
-                }
+                //if (DataUtils.GetDecimal(strTotal) <= 0)
+                //{
+                //    LogMessage("Enter valid Total");
+                //    return;
+                //}
 
                 int HouseSourceID = DataUtils.GetInt(((Label)gvHousingSources.Rows[rowIndex].FindControl("lblHouseSourceID")).Text);
-                decimal Total = DataUtils.GetDecimal(strTotal);
+                decimal Total = DataUtils.GetDecimal(Regex.Replace(strTotal, "[^0-9a-zA-Z.]+", ""));
                 bool isActive = Convert.ToBoolean(((CheckBox)gvHousingSources.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
                 HousingSourcesUsesData.UpdateHouseSource(HouseSourceID, Total, isActive);
