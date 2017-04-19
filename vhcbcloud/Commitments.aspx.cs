@@ -609,7 +609,9 @@ namespace vhcbcloud
                     }
                 }
 
-                decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
+                 decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
+               // decimal amount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text, "[^0-9a-zA-Z.]+", ""));
+
                 int transType = Convert.ToInt32(((DropDownList)gvBCommit.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
                 int fundId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblFundId")).Text);
@@ -719,7 +721,7 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
+                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();               
                 if (lblDetId.ToString() != "")
                 {
                     FinancialTransactions.ActivateFinancialTransByTransId(Convert.ToInt32(lblDetId));
