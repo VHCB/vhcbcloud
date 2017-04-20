@@ -13,10 +13,11 @@ create procedure GetLatestBudgetPeriod
 as
 --exec GetLatestBudgetPeriod 66251, null
 begin
-	select  @LKBudgetPeriod = isnull(max(csu.LKBudgetPeriod), 0)
+	--select  @LKBudgetPeriod = isnull(max(csu.LKBudgetPeriod), 0)
+	select  @LKBudgetPeriod = isnull(csu.LKBudgetPeriod, 0)
 	from Conserve c(nolock)
 	join ConserveSU csu(nolock) on c.ConserveID = csu.ConserveID 
-	where c.ProjectID = @ProjectID 
+	where c.ProjectID = @ProjectID  and csu.MostCurrent = 1
 end
 go
 
@@ -93,8 +94,10 @@ begin transaction
 			and LKBudgetPeriod = @LKBudgetPeriod
     )
 	begin
-		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
-		values(@ConserveID, @LKBudgetPeriod, getdate())
+		update ConserveSU set MostCurrent = 0 where ConserveID = @ConserveID and MostCurrent = 1
+
+		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified, MostCurrent)
+		values(@ConserveID, @LKBudgetPeriod, getdate(), 1)
 
 		set @ConserveSUID = @@IDENTITY
 	end
@@ -259,8 +262,10 @@ begin transaction
 			and LKBudgetPeriod = @LKBudgetPeriod
     )
 	begin
-		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
-		values(@ConserveID, @LKBudgetPeriod, getdate())
+		update ConserveSU set MostCurrent = 0 where ConserveID = @ConserveID and MostCurrent = 1
+
+		insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified, MostCurrent)
+		values(@ConserveID, @LKBudgetPeriod, getdate(), 1)
 
 		set @ConserveSUID = @@IDENTITY
 	end
@@ -492,8 +497,10 @@ begin
 				and LKBudgetPeriod = @LKBudgetPeriod
 		)
 		begin
-			insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified)
-			values(@ConserveID, @LKBudgetPeriod, getdate())
+			update ConserveSU set MostCurrent = 0 where ConserveID = @ConserveID and MostCurrent = 1
+
+			insert into ConserveSU(ConserveID, LKBudgetPeriod, DateModified, MostCurrent)
+			values(@ConserveID, @LKBudgetPeriod, getdate(), 1)
 
 			set @ConserveSUID = @@IDENTITY
 		end

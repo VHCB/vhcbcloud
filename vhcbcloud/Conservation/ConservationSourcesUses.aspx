@@ -20,8 +20,8 @@
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td><span class="labelClass">Project #</span></td>
-                            <td>
+                            <td style="width: 123px"><span class="labelClass">Project #</span></td>
+                            <td style="width: 258px">
                                 <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                 </asp:DropDownList>--%>
                                 <span class="labelClass" id="ProjectNum" runat="server"></span>
@@ -47,8 +47,8 @@
                         </tr>
 
                         <tr>
-                            <td><span class="labelClass">Budget Period</span></td>
-                            <td>
+                            <td style="width: 123px"><span class="labelClass">Budget Period</span></td>
+                            <td style="width: 258px">
                                 <asp:DropDownList ID="ddlBudgetPeriod" CssClass="clsDropDown" runat="server" AutoPostBack="true"
                                     OnSelectedIndexChanged="ddlBudgetPeriod_SelectedIndexChanged">
                                 </asp:DropDownList>
@@ -103,17 +103,17 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Sources</span></td>
+                                        <td style="width: 87px"><span class="labelClass">Sources</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server">
+                                            <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server" style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 66px">
                                             <span class="labelClass">Total
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtSourceTotal" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtSourceTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
                                             <asp:Button ID="btnAddSources" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSources_Click" /></td>
@@ -158,7 +158,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                              <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
@@ -209,7 +209,7 @@
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px"></asp:TextBox>
                                         </td>
                                         <td style="width: 140px"><span class="labelClass">Other</span></td>
                                         <td style="width: 215px">
@@ -221,7 +221,7 @@
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                                            <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px"></asp:TextBox>
                                         </td>
                                         <%--<td style="width: 100px">
                                             <span class="labelClass">Total $
@@ -274,7 +274,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
@@ -290,7 +290,7 @@
                                                 <asp:Label ID="lblOtherTotal" runat="Server" Text='<%# Eval("OtherTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("OtherTotal", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtOtherTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("OtherTotal", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterOtherTotalAmount" Text=""></asp:Label>
@@ -327,6 +327,43 @@
 
     <script language="javascript">
         $(document).ready(function () {
+            $('#<%= txtSourceTotal.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtSourceTotal.ClientID%>').val(), $('#<%= txtSourceTotal.ClientID%>'));
+             });
+            $('#<%= txtVHCBUseAmount.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtVHCBUseAmount.ClientID%>').val(), $('#<%= txtVHCBUseAmount.ClientID%>'));
+            });
+            $('#<%= txtOtherUseAmount.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtOtherUseAmount.ClientID%>').val(), $('#<%= txtOtherUseAmount.ClientID%>'));
+            });
+
+            
+            $("input[id*=txtTotal]").keyup(function () {
+                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            });
+
+            if ($('input[id*=txtTotal]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            }
+
+            $("input[id*=txtVHCBTotal]").keyup(function () {
+                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            });
+
+            if ($('input[id*=txtVHCBTotal]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            }
+
+            $("input[id*=txtOtherTotal]").keyup(function () {
+                toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
+            });
+
+            if ($('input[id*=txtOtherTotal]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
+            }
+
+            
+
             $('#<%= dvSourceForm.ClientID%>').toggle($('#<%= cbAddSource.ClientID%>').is(':checked'));
             $('#<%= dvUseForm.ClientID%>').toggle($('#<%= cbAddUse.ClientID%>').is(':checked'));
 

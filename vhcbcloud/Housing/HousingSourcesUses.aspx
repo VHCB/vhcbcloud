@@ -94,6 +94,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSource" runat="server" Text="Add New Source" />
+                                        <asp:ImageButton ID="ImgSourcesUses" ImageUrl="~/Images/print.png" ToolTip="Grid Housing Sources and Uses Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgSourcesUses_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -103,17 +105,17 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Sources</span></td>
+                                        <td style="width: 87px"><span class="labelClass">Sources</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server">
+                                            <asp:DropDownList ID="ddlSource" CssClass="clsDropDownLong" runat="server" style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 100px">
+                                        <td style="width: 70px">
                                             <span class="labelClass">Total
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtSourceTotal" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtSourceTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
                                             <asp:Button ID="btnAddSources" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSources_Click" /></td>
@@ -164,7 +166,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                              <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
@@ -216,7 +218,7 @@
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 140px">
                                            <%-- <span class="labelClass">Other</span>--%>
@@ -284,7 +286,7 @@
                                                 <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterVHCBTotalAmount" Text=""></asp:Label>
