@@ -261,7 +261,7 @@ namespace vhcbcloud.Housing
                     if (UsesTotal - totAmt != 0)
                     {
                         hfWarning.Value = "1";
-                        WarningMessage(dvWarning, lblWarning, "Sources Total must be equal to Uses Total.");
+                        WarningMessage(dvWarning, lblWarning, $"Sources Total must be equal to Uses Total, add - {CommonHelper.myDollarFormat(Math.Abs(UsesTotal - totAmt))} difference”");
                     }
                     else
                     {
@@ -325,7 +325,7 @@ namespace vhcbcloud.Housing
                     if (SourceTotal - totVHCBAmt != 0)
                     {
                         hfWarning.Value = "1";
-                        WarningMessage(dvWarning, lblWarning, "Sources Total must be equal to Uses Total.");
+                        WarningMessage(dvWarning, lblWarning, $"Sources Total must be equal to Uses Total, add - {CommonHelper.myDollarFormat(Math.Abs(SourceTotal - totVHCBAmt))} difference”");
                     }
                     else
                     {
@@ -635,6 +635,12 @@ namespace vhcbcloud.Housing
             {
                 LogError(Pagename, "gvHousingSources_RowUpdating", "", ex.Message);
             }
+        }
+
+        protected void ImgSourcesUses_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Sources and Uses.wrc"));
         }
     }
 }
