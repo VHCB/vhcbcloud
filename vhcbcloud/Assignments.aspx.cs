@@ -11,7 +11,7 @@ using VHCBCommon.DataAccessLayer;
 
 namespace vhcbcloud
 {
-    public partial class Reallocations : System.Web.UI.Page
+    public partial class Assignments : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -238,7 +238,7 @@ namespace vhcbcloud
             ddlRFromFund.Items.Insert(0, new ListItem("Select", "NA"));
             txtRfromDate.Text = DateTime.Now.ToShortDateString();
             //ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
-            txtToProjNum.Text = txtFromProjNum.Text;
+            //txtToProjNum.Text = txtFromProjNum.Text;
             BindAllFunds();
 
             ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
@@ -573,11 +573,11 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
+                    dtFundDet = FinancialTransactions.GetAssignmentByTransId(fromProjId);
                 }
                 else
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                    dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, hfReallocateGuid.Value);
                 }
 
                 gvReallocate.DataSource = dtFundDet;
@@ -641,7 +641,7 @@ namespace vhcbcloud
             {
                 DataTable dtFundDet = new DataTable();
 
-                dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, reallocateGuid);
+                dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, reallocateGuid);
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
@@ -708,11 +708,11 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFund(fromProjId, fundId);
+                    dtFundDet = FinancialTransactions.GetAssignmentDetailsNewProjFund(fromProjId, fundId);
                 }
                 else
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                    dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, hfReallocateGuid.Value);
                 }
 
                 gvReallocate.DataSource = dtFundDet;
@@ -780,11 +780,11 @@ namespace vhcbcloud
 
                 if (rdBtnSelection.SelectedIndex > 0)
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsNewProjFundTransType(fromProjId, fundId, transTypeId);
+                    dtFundDet = FinancialTransactions.GetAssignmentDetailsNewProjFundTransType(fromProjId, fundId, transTypeId);
                 }
                 else
                 {
-                    dtFundDet = FinancialTransactions.GetReallocationDetailsByGuid(fromProjId, hfReallocateGuid.Value);
+                    dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, hfReallocateGuid.Value);
                 }
 
                 gvReallocate.DataSource = dtFundDet;
@@ -911,19 +911,19 @@ namespace vhcbcloud
                 //}
                 if (txtFromProjNum.Text == "")
                 {
-                    lblRErrorMsg.Text = "Select reallocate from project";
+                    lblRErrorMsg.Text = "Select assignment from project";
                     txtFromProjNum.Focus();
                     return;
                 }
                 if (ddlRFromFund.Items.Count > 1 && ddlRFromFund.SelectedIndex == 0)
                 {
-                    lblRErrorMsg.Text = "Select fund from reallocate from project";
+                    lblRErrorMsg.Text = "Select fund from assignment from project";
                     ddlRFromFund.Focus();
                     return;
                 }
                 if (ddlRFromFundType.Items.Count > 1 && ddlRFromFundType.SelectedIndex == 0)
                 {
-                    lblRErrorMsg.Text = "Select fund type from reallocate from project";
+                    lblRErrorMsg.Text = "Select fund type from assignment from project";
                     ddlRFromFundType.Focus();
                     return;
                 }
@@ -935,39 +935,50 @@ namespace vhcbcloud
 
                 //if (ddlRToProj.Items.Count > 1 && ddlRToProj.SelectedIndex == 0)
                 //{
-                //    lblRErrorMsg.Text = "Select reallocate to project";
+                //    lblRErrorMsg.Text = "Select assignment to project";
                 //    ddlRToProj.Focus();
                 //    return;
                 //}
                 if (ddlRToFund.Items.Count > 1 && ddlRToFund.SelectedIndex == 0)
                 {
-                    lblRErrorMsg.Text = "Select fund from reallocate to project";
+                    lblRErrorMsg.Text = "Select fund from assignment to project";
                     ddlRToFund.Focus();
                     return;
                 }
                 if (ddlRtoFundType.Items.Count > 1 && ddlRtoFundType.SelectedIndex == 0)
                 {
-                    lblRErrorMsg.Text = "Select fund type from reallocate to project";
+                    lblRErrorMsg.Text = "Select fund type from assignment to project";
                     ddlRtoFundType.Focus();
                     return;
                 }
                 if (Convert.ToDecimal(txtRfromAmt.Text) < Convert.ToDecimal(txtRToAmt.Text))
                 {
-                    lblRErrorMsg.Text = "Reallocate to amount can't be more than available reallocation from amount";
+                    lblRErrorMsg.Text = "Assign to amount can't be more than available Assign from amount";
                     txtRToAmt.Focus();
                     return;
                 }
+                //if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
+                //{
+                //    lblRErrorMsg.Text = "Please select different project with funds assignment.";
+                //    return;
+                //}
                 //if (ddlRFromProj.SelectedValue == ddlRToProj.SelectedValue)
                 if (txtFromProjNum.Text == txtToProjNum.Text)
-                    if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
-                    {
-                        if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
-                        {
-                            lblRErrorMsg.Text = "Fund cannot be reallocated to same fund type. Reallocate to different fund type.";
-                            ddlRtoFundType.Focus();
-                            return;
-                        }
-                    }
+                {
+                    lblRErrorMsg.Text = "Please select different assign to project with funds assignment.";
+                    return;
+                }
+                //if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
+                //{
+                //    lblRErrorMsg.Text = "Please select different project with funds assignment.";
+                //    return;
+                //if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
+                //{
+                //    lblRErrorMsg.Text = "Fund cannot be assignmentd to same fund type. Reallocate to different fund type.";
+                //    ddlRtoFundType.Focus();
+                //    return;
+                //}
+                //}
                 //if (hfTransId.Value != "" && hfRFromTransId.Value !="")
                 //{
                 //    DataTable dtIsDuplicate = new DataTable();
@@ -975,7 +986,7 @@ namespace vhcbcloud
 
                 //    if (dtIsDuplicate.Rows.Count > 0)
                 //    {
-                //        lblRErrorMsg.Text = "A reallocation was already made to this Fund and can not be reallocated to same fund. Reallocate to different fund";
+                //        lblRErrorMsg.Text = "A reallocation was already made to this Fund and can not be assignmentd to same fund. Reallocate to different fund";
                 //        ddlRToFund.Focus();
                 //        return;
                 //    }
@@ -1000,9 +1011,9 @@ namespace vhcbcloud
                 if (!availFunds || Convert.ToDecimal(txtRfromAmt.Text) > Convert.ToDecimal(lblAvailFund.Text))
                 {
                     if (!availFunds)
-                        lblRErrorMsg.Text = "Amount can't be more than available reallocate funds (" + CommonHelper.myDollarFormat(0) + ") for the selected from project";
+                        lblRErrorMsg.Text = "Amount can't be more than available assignment funds (" + CommonHelper.myDollarFormat(0) + ") for the selected from project";
                     else
-                        lblRErrorMsg.Text = "Amount can't be more than available reallocate from funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected from project";
+                        lblRErrorMsg.Text = "Amount can't be more than available assignment from funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected from project";
 
                     txtRfromAmt.Focus();
                     return;
@@ -1016,7 +1027,7 @@ namespace vhcbcloud
                 }
 
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.AddBoardReallocationTransaction(Convert.ToInt32(hfProjId.Value.ToString()),
+                dtable = FinancialTransactions.AddStaffAssignment(Convert.ToInt32(hfProjId.Value.ToString()),
                                                                       txtFromProjNum.Text == txtToProjNum.Text ? Convert.ToInt32(hfProjId.Value.ToString()) : Convert.ToInt32(hfToProjId.Value.ToString()),
                                                                       Convert.ToDateTime(txtRfromDate.Text),
                                                                       Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()),
@@ -1043,7 +1054,7 @@ namespace vhcbcloud
 
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
-            Response.Redirect("reallocations.aspx");
+            Response.Redirect("assignments.aspx");
         }
 
         protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)

@@ -1,12 +1,12 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Reallocations.aspx.cs" Inherits="vhcbcloud.Reallocations" %>
+    CodeBehind="Assignments.aspx.cs" Inherits="vhcbcloud.Assignments" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <div class="jumbotron clearfix" id="vhcb">
 
-                <p class="lead">Board Reallocations</p>
+                <p class="lead">Board Assignment</p>
                 <div class="container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -15,8 +15,8 @@
                                 OnSelectedIndexChanged="rdBtnFinancial_SelectedIndexChanged">
                                 <asp:ListItem> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
-                                <asp:ListItem Selected="true"> Reallocation &nbsp;</asp:ListItem>
-                                <asp:ListItem> Assignments &nbsp;</asp:ListItem>
+                                <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
+                                <asp:ListItem Selected="true"> Assignments &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                            <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
+                                            <asp:RadioButtonList ID="rdBtnSelection" Visible="false" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
                                                 OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                                 <asp:ListItem Selected="True">New    </asp:ListItem>
                                                 <asp:ListItem>Existing</asp:ListItem>
@@ -60,7 +60,7 @@
                                 <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
 
                             </asp:Panel>
-                            <div class="panel-heading">Reallocate from</div>
+                            <div class="panel-heading">Assign from</div>
                             <div class="panel-body" id="pnlReallocateFrom" runat="server">
                                 <table style="width: 100%" class="">
                                     <tr>
@@ -139,7 +139,7 @@
                     </div>
                     <div class="container" id="divReallocateTo" runat="server">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Reallocate To</div>
+                            <div class="panel-heading">Assign To</div>
                             <div class="panel-body">
                                 <table style="width: 100%" runat="server" id="tblReallocateTo">
                                     <tr>
@@ -148,7 +148,7 @@
                                             <asp:DropDownList ID="ddlRToProj" CssClass="clsDropDown" AutoPostBack="true" Visible="false" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlRToProj_SelectedIndexChanged">
                                             </asp:DropDownList>
-                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1" ReadOnly="True"></asp:TextBox>
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
                                             <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
@@ -171,7 +171,7 @@
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
-                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney"  onkeyup='toRToAmtFormatter(value)'  runat="server"></asp:TextBox></td>
+                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney" onkeyup='toRToAmtFormatter(value)' runat="server"></asp:TextBox></td>
 
                                     </tr>
 
@@ -183,7 +183,7 @@
 
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
-                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit" 
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit"
                                     OnRowEditing="gvReallocate_RowEditing" OnRowDeleting="gvReallocate_RowDeleting" OnRowDataBound="gvReallocate_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -244,7 +244,7 @@
                                                 <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm"  Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
@@ -278,7 +278,7 @@
                                 </asp:GridView>
 
                                 <br />
-                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Reallocation" Visible="False" />
+                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Assignment" Visible="False" />
                                 <br />
 
                                 <br />
@@ -376,43 +376,43 @@
 
             //inputElement.value = formatter.format(result);
             $('#<%= txtRfromAmt.ClientID%>').val(formatter.format(result));
-            };
+        };
 
         toRToAmtFormatter = value => {
-                const digits = this.getDigitsFromValue(value);
-                const digitsWithPadding = this.padDigits(digits);
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
 
-                let result = this.addDecimalToNumber(digitsWithPadding);
+            let result = this.addDecimalToNumber(digitsWithPadding);
 
-                var inputElement = document.getElementById("txtRToAmt");
+            var inputElement = document.getElementById("txtRToAmt");
 
-                //inputElement.value = "$" + result;
-                $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
+            //inputElement.value = "$" + result;
+            $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
         };
-        getDigitsFromValue = (value) => {
-            return value.toString().replace(/\D/g, '');
-        };
+            getDigitsFromValue = (value) => {
+                return value.toString().replace(/\D/g, '');
+            };
 
-        padDigits = digits => {
-            const desiredLength = 3;
-            const actualLength = digits.length;
+            padDigits = digits => {
+                const desiredLength = 3;
+                const actualLength = digits.length;
 
-            if (actualLength >= desiredLength) {
-                return digits;
-            }
+                if (actualLength >= desiredLength) {
+                    return digits;
+                }
 
-            const amountToAdd = desiredLength - actualLength;
-            const padding = '0'.repeat(amountToAdd);
+                const amountToAdd = desiredLength - actualLength;
+                const padding = '0'.repeat(amountToAdd);
 
-            return padding + digits;
-        };
-        addDecimalToNumber = number => {
-            const centsStartingPosition = number.length - 2;
-            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-            const cents = number.substring(centsStartingPosition);
-            return `${dollars}.${cents}`;
-        };
-        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+                return padding + digits;
+            };
+            addDecimalToNumber = number => {
+                const centsStartingPosition = number.length - 2;
+                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+                const cents = number.substring(centsStartingPosition);
+                return `${dollars}.${cents}`;
+            };
+            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
     </script>
 </asp:Content>

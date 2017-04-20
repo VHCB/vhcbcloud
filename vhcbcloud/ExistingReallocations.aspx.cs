@@ -63,6 +63,8 @@ namespace vhcbcloud
                 Response.Redirect("Decommitments.aspx");
             else if (rdBtnFinancial.SelectedIndex == 2)
                 Response.Redirect("Reallocations.aspx");
+            else if (rdBtnFinancial.SelectedIndex == 3)
+                Response.Redirect("Assignments.aspx");
             else
                 Response.Redirect("CashRefund.aspx");
         }

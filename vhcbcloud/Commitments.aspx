@@ -15,7 +15,7 @@
                                 <asp:ListItem Selected="true"> Commitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> DeCommitment &nbsp;</asp:ListItem>
                                 <asp:ListItem> Reallocation &nbsp;</asp:ListItem>
-                                <%--<asp:ListItem> Cash Refund &nbsp;</asp:ListItem>--%>
+                                <asp:ListItem> Assignments &nbsp;</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
                     </div>
@@ -323,7 +323,7 @@
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                                         </EditItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
@@ -387,6 +387,17 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 
+    <script language="javascript">
+        $(document).ready(function () {
+            $("input[id*=txtAmount]").keyup(function () {
+                toCurrencyControl($('input[id*=txtAmount]').val(), $('input[id*=txtAmount]'));
+            });
+
+            if ($('input[id*=txtAmount]').val() >= 0) {
+                toCurrencyControl($('input[id*=txtAmount]').val(), $('input[id*=txtAmount]'));
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         window.onbeforeunload = confirmExit;
@@ -400,26 +411,7 @@
             }
         }
 
-        jQuery(document).ready(function ($) {
-            var index = $('#mySelect').prop('selectedIndex');
-            var select = $('#mySelect');
-            select.change(function (e) {
-                // alert(index)
-                var conf = confirm('Are You Sure?');
-                if (!conf) {
-                    $('#mySelect').prop('selectedIndex', index);
-                    // reset the select back to previous
-                    return false;
-                }
-                else {
-                    index = $('#mySelect').prop('selectedIndex');
-                }
-
-                // do stuff
-
-            });
-        });
-
+      
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvPTrans.ClientID%>");
@@ -531,12 +523,8 @@
         removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
 
-    </script>
-
-    <script language="javascript">
-        $(document).ready(function () {
-            console.log($('#<%= txtTotAmt.ClientID%>').val());
-           toCurrencyControl($('#<%= txtTotAmt.ClientID%>').val());
-       });
+    
+       
     </script>
 </asp:Content>
+
