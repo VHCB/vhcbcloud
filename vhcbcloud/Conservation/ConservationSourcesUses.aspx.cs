@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 using DataAccessLayer;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace vhcbcloud.Conservation
 {
@@ -175,16 +176,17 @@ namespace vhcbcloud.Conservation
                     txtSourceTotal.Focus();
                     return;
                 }
-                if (DataUtils.GetDecimal(txtSourceTotal.Text) <= 0)
-                {
-                    LogMessage("Enter valid source total");
-                    txtSourceTotal.Focus();
-                    return;
-                }
+                //if (DataUtils.GetDecimal(txtSourceTotal.Text) <= 0)
+                //{
+                //    LogMessage("Enter valid source total");
+                //    txtSourceTotal.Focus();
+                //    return;
+                //}
 
                 ConservationSourcesUsesData.AddConSource objAddConSource = ConservationSourcesUsesData.AddConservationSource(DataUtils.GetInt(hfProjectId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlSource.SelectedValue.ToString()), DataUtils.GetDecimal(txtSourceTotal.Text));
+                    DataUtils.GetInt(ddlSource.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtSourceTotal.Text, "[^0-9a-zA-Z.]+", "")));
 
                 ClearAddSourceForm();
                 BindSourcegrid();
@@ -390,12 +392,12 @@ namespace vhcbcloud.Conservation
                     return;
                 }
 
-                if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) < 0)
-                {
-                    LogMessage("Enter Valid VHCB Use Total");
-                    txtVHCBUseAmount.Focus();
-                    return;
-                }
+                //if (DataUtils.GetDecimal(txtVHCBUseAmount.Text) < 0)
+                //{
+                //    LogMessage("Enter Valid VHCB Use Total");
+                //    txtVHCBUseAmount.Focus();
+                //    return;
+                //}
 
                 if (ddlOtherUses.SelectedIndex == 0)
                 {
@@ -411,17 +413,19 @@ namespace vhcbcloud.Conservation
                     return;
                 }
 
-                if (DataUtils.GetDecimal(txtOtherUseAmount.Text) < 0)
-                {
-                    LogMessage("Enter Valid Other Use total");
-                    txtOtherUseAmount.Focus();
-                    return;
-                }
+                //if (DataUtils.GetDecimal(txtOtherUseAmount.Text) < 0)
+                //{
+                //    LogMessage("Enter Valid Other Use total");
+                //    txtOtherUseAmount.Focus();
+                //    return;
+                //}
 
                 ConservationSourcesUsesData.AddConUse objAddConUse = ConservationSourcesUsesData.AddConservationUse(DataUtils.GetInt(hfProjectId.Value),
                     DataUtils.GetInt(ddlBudgetPeriod.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlVHCBUses.SelectedValue.ToString()), DataUtils.GetDecimal(txtVHCBUseAmount.Text),
-                    DataUtils.GetInt(ddlOtherUses.SelectedValue.ToString()), DataUtils.GetDecimal(txtOtherUseAmount.Text));
+                    DataUtils.GetInt(ddlVHCBUses.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtVHCBUseAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetInt(ddlOtherUses.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtOtherUseAmount.Text, "[^0-9a-zA-Z.]+", "")));
 
                 ClearAddUsesForm();
                 BindUsesgrid();
@@ -470,7 +474,11 @@ namespace vhcbcloud.Conservation
 
                 int ConserveSourcesID = DataUtils.GetInt(((Label)gvConsevationSources.Rows[rowIndex].FindControl("lblConserveSourcesID")).Text);
                 //int LkConSource = DataUtils.GetInt(((DropDownList)gvConsevationSources.Rows[rowIndex].FindControl("ddlSource")).SelectedValue.ToString());
-                decimal Total = DataUtils.GetDecimal(((TextBox)gvConsevationSources.Rows[rowIndex].FindControl("txtTotal")).Text);
+                //decimal Total = DataUtils.GetDecimal(((TextBox)gvConsevationSources.Rows[rowIndex].FindControl("txtTotal")).Text);
+
+                string strTotal = ((TextBox)gvConsevationSources.Rows[rowIndex].FindControl("txtTotal")).Text;
+                decimal Total = DataUtils.GetDecimal(Regex.Replace(strTotal, "[^0-9a-zA-Z.]+", ""));
+
                 bool isActive = Convert.ToBoolean(((CheckBox)gvConsevationSources.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
                 ConservationSourcesUsesData.UpdateConservationSource(ConserveSourcesID, Total, isActive);
@@ -589,8 +597,13 @@ namespace vhcbcloud.Conservation
 
                 int ConserveUsesID = DataUtils.GetInt(((Label)gvConservationUsesGrid.Rows[rowIndex].FindControl("lblConserveUsesID")).Text);
                 //int LkConSource = DataUtils.GetInt(((DropDownList)gvConservationUsesGrid.Rows[rowIndex].FindControl("ddlSource")).SelectedValue.ToString());
-                decimal VHCBTotal = DataUtils.GetDecimal(((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text);
-                decimal OtherTotal = DataUtils.GetDecimal(((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text);
+
+                string strVHCBTotal = ((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtVHCBTotal")).Text;
+                decimal VHCBTotal = DataUtils.GetDecimal(Regex.Replace(strVHCBTotal, "[^0-9a-zA-Z.]+", ""));
+
+                string strOtherTotal = ((TextBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("txtOtherTotal")).Text;
+                decimal OtherTotal = DataUtils.GetDecimal(Regex.Replace(strOtherTotal, "[^0-9a-zA-Z.]+", ""));
+                
                 bool isActive = Convert.ToBoolean(((CheckBox)gvConservationUsesGrid.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
 
                 ConservationSourcesUsesData.UpdateConservationUse(ConserveUsesID, VHCBTotal, OtherTotal, isActive);
