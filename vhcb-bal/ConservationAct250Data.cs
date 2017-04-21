@@ -357,7 +357,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static ConservationAct250Result AddAct250Projects(int Act250FarmID, int ProjectID, int LKTownConserve, 
-            decimal AmtFunds, DateTime DateClosed)
+            decimal AmtFunds)
         {
             try
             {
@@ -375,7 +375,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                         command.Parameters.Add(new SqlParameter("LKTownConserve", LKTownConserve));
                         command.Parameters.Add(new SqlParameter("AmtFunds", AmtFunds));
-                        command.Parameters.Add(new SqlParameter("DateClosed", DateClosed.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateClosed));
+                        //command.Parameters.Add(new SqlParameter("DateClosed", DateClosed.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateClosed));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;

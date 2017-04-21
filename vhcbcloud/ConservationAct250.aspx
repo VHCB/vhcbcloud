@@ -124,7 +124,7 @@
                                         </td>
                                         <td style="width: 134px"><span class="labelClass">Anticipated Funds</span></td>
                                         <td class="modal-sm" style="width: 115px">
-                                            <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 163px"><span class="labelClass">Mitigation Date</span></td>
                                         <td>
@@ -243,7 +243,7 @@
                             <asp:Panel runat="server" ID="Panel1">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 70px"><span class="labelClass">Amount $</span></td>
+                                        <td style="width: 70px"><span class="labelClass">Amount</span></td>
                                         <td style="width: 100px">
                                             <asp:TextBox ID="txtDevPaymentAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
@@ -437,8 +437,15 @@
                                     <tr>
                                         <td style="width: 70px"><span class="labelClass">Project #</span></td>
                                         <td style="width: 83px">
-                                            <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server" 
-                                                AutoPostBack="true" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged"></asp:DropDownList>
+                                           <%-- <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server" 
+                                                AutoPostBack="true" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged"></asp:DropDownList>--%>
+
+                                            <asp:TextBox ID="txtPotentialProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"
+                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtPotentialProjNum" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 78px">
                                             <span class="labelClass">Conservation Town</span>
@@ -452,15 +459,13 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 70px"><span class="labelClass">Date Closed</span></td>
+                                         <td style="width: 70px"><span class="labelClass">Active</span></td>
                                         <td style="width: 83px">
-                                            <asp:TextBox ID="txtDateClosed" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDateClosed" TargetControlID="txtDateClosed">
-                                            </ajaxToolkit:CalendarExtender>
+                                            <asp:CheckBox ID="cbActiveProjects" runat="server" Enabled="false" Checked="true" />
                                         </td>
                                         <td style="width: 70px"><span class="labelClass">Active</span></td>
                                         <td class="modal-sm" style="width: 70px">
-                                            <asp:CheckBox ID="cbActiveProjects" runat="server" Enabled="false" Checked="true" />
+                                            
                                         </td>
                                         <td style="width: 40px">
                                             <asp:Button ID="btnAddVHCBProject" runat="server" Text="Submit" class="btn btn-info"
@@ -521,7 +526,7 @@
                                                 <asp:Label ID="lblAnticipatedFunds" runat="Server" Text='<%# Eval("AmtFunds", "{0:C2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" runat="server" 
+                                                <asp:TextBox ID="txtAnticipatedFunds1" CssClass="clsTextBoxBlueSm" runat="server" 
                                                     Text='<%# Eval("AmtFunds", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
@@ -580,6 +585,36 @@
         
         <script language="javascript">
             $(document).ready(function () {
+                toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
+                
+                $('#<%= txtAnticipatedFunds.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
+                 });
+
+                $('#<%= txtDevPaymentAmount.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtDevPaymentAmount.ClientID%>').val(), $('#<%= txtDevPaymentAmount.ClientID%>'));
+                });
+
+                $("input[id*=txtpaymentAmount]").keyup(function () {
+                    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
+                });
+
+                if ($('input[id*=txtpaymentAmount]').val() >= 0) {
+                    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
+                }
+                
+                 $('#<%= txtAntFunds.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtAntFunds.ClientID%>').val(), $('#<%= txtAntFunds.ClientID%>'));
+                 });
+                
+                $("input[id*=txtAnticipatedFunds1]").keyup(function () {
+                    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
+                });
+
+                if ($('input[id*=txtAnticipatedFunds1]').val() >= 0) {
+                    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
+                }
+
                 $('#<%= dvAct250InfoForm.ClientID%>').toggle($('#<%= cbAddAct250Info.ClientID%>').is(':checked'));
                 $('#<%= cbAddAct250Info.ClientID%>').click(function () {
                     $('#<%= dvAct250InfoForm.ClientID%>').toggle(this.checked);

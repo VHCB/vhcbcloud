@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -21,6 +22,10 @@ namespace vhcbcloud
 
             ifProjectNotes.Src = "ProjectNotes.aspx";
 
+            var ctrlName = Request.Params[Page.postEventSourceID];
+            var args = Request.Params[Page.postEventArgumentID];
+
+            HandleCustomPostbackEvent(ctrlName, args);
 
             if (!IsPostBack)
             {
@@ -36,12 +41,17 @@ namespace vhcbcloud
                 this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            var onBlurScript = Page.ClientScript.GetPostBackEventReference(txtPotentialProjNum, "OnBlur");
+            txtPotentialProjNum.Attributes.Add("onblur", onBlurScript);
+        }
         private void BindControls()
         {
             BindLookUP(ddlFarmType, 164);
             BindLookUP(ddlTown, 89);
             BindApplicants(ddlDeveloper);
-            BindProjects(ddlProjects);
+            //BindProjects(ddlProjects);
             //BindLookUP(ddlConservationTown, 89);
         }
 
@@ -154,7 +164,8 @@ namespace vhcbcloud
                     DataUtils.GetInt(ddlTown.SelectedValue.ToString()), DataUtils.GetInt(txtDistrictNo.Text),
                     DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text, DataUtils.GetInt(txtPrimeSoilsAcresLost.Text),
                     DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text), DataUtils.GetInt(txtAcresDeveloped.Text),
-                    DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()), DataUtils.GetDecimal(txtAnticipatedFunds.Text),
+                    DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text));
 
                 BindGrids();
@@ -172,7 +183,8 @@ namespace vhcbcloud
                 ConservationAct250Data.UpdateAct250Farm(DataUtils.GetInt(hfAct250FarmID.Value), DataUtils.GetInt(ddlTown.SelectedValue.ToString()),
                     DataUtils.GetInt(txtDistrictNo.Text), DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text,
                     DataUtils.GetInt(txtPrimeSoilsAcresLost.Text), DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text),
-                    DataUtils.GetInt(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()), DataUtils.GetDecimal(txtAnticipatedFunds.Text),
+                    DataUtils.GetInt(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), chkAct250Active.Checked);
 
                 gvAct250Info.EditIndex = -1;
@@ -278,7 +290,7 @@ namespace vhcbcloud
             txtTotAcresLost.Text = dr["TotalAcreslost"].ToString();
             txtAcresDeveloped.Text = dr["AcresDevelop"].ToString();
             txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
-            txtMitigationDate.Text = dr["MitDate"].ToString();
+            txtMitigationDate.Text = dr["MitDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MitDate"].ToString()).ToShortDateString();
             chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
 
             txtLandUsePermit.Enabled = false;
@@ -466,7 +478,8 @@ namespace vhcbcloud
         protected void btnAddDevPayments_Click(object sender, EventArgs e)
         {
             ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250DevPay(DataUtils.GetInt(hfAct250FarmID.Value),
-                DataUtils.GetDecimal(txtDevPaymentAmount.Text), DataUtils.GetDate(txtDevPaymentReceived.Text));
+                DataUtils.GetDecimal(Regex.Replace(txtDevPaymentAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                DataUtils.GetDate(txtDevPaymentReceived.Text));
 
             ClearDeveloperPaymentsForm();
             BindDeveloperPaymentsGrid();
@@ -491,7 +504,7 @@ namespace vhcbcloud
             int rowIndex = e.RowIndex;
 
             int Act250PayID = DataUtils.GetInt(((Label)gvDeveloperPayments.Rows[rowIndex].FindControl("lblAct250PayID")).Text);
-            decimal PaymentAmount = DataUtils.GetDecimal(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtpaymentAmount")).Text);
+            decimal PaymentAmount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtpaymentAmount")).Text, "[^0-9a-zA-Z.]+", ""));
             DateTime PayReceivedDate = DataUtils.GetDate(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtDevPayReceived")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvDeveloperPayments.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
@@ -507,8 +520,8 @@ namespace vhcbcloud
         protected void btnAddVHCBProject_Click(object sender, EventArgs e)
         {
             ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250Projects(DataUtils.GetInt(hfAct250FarmID.Value),
-                DataUtils.GetInt(ddlProjects.SelectedValue.ToString()), DataUtils.GetInt(ddlConservationTown.SelectedValue.ToString()),
-                DataUtils.GetDecimal(txtAntFunds.Text), DataUtils.GetDate(txtDateClosed.Text));
+                GetProjectID(txtPotentialProjNum.Text), DataUtils.GetInt(ddlConservationTown.SelectedValue.ToString()),
+                DataUtils.GetDecimal(Regex.Replace(txtAntFunds.Text, "[^0-9a-zA-Z.]+", "")));
 
             ClearVHCBProjectsForm();
             BindVHCBProjectsGrid();
@@ -590,10 +603,10 @@ namespace vhcbcloud
 
         private void ClearVHCBProjectsForm()
         {
-            ddlProjects.SelectedIndex = -1;
+            //ddlProjects.SelectedIndex = -1;
             ddlConservationTown.SelectedIndex = -1;
             txtAntFunds.Text = "";
-            txtDateClosed.Text = "";
+            //txtDateClosed.Text = "";
         }
 
         protected void gvVHCBProjects_RowEditing(object sender, GridViewEditEventArgs e)
@@ -613,7 +626,8 @@ namespace vhcbcloud
             int rowIndex = e.RowIndex;
 
             int Act250ProjectID = DataUtils.GetInt(((Label)gvVHCBProjects.Rows[rowIndex].FindControl("lblAct250ProjectID")).Text);
-            decimal AnticipatedFunds = DataUtils.GetDecimal(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtAnticipatedFunds")).Text);
+            decimal AnticipatedFunds = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtAnticipatedFunds1")).Text, "[^0-9a-zA-Z.]+", ""));
+
             //DateTime ProjectDateClosed = DataUtils.GetDate(((TextBox)gvVHCBProjects.Rows[rowIndex].FindControl("txtProjectDateClosed")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvVHCBProjects.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
@@ -626,16 +640,21 @@ namespace vhcbcloud
             LogMessage("Potential VHCB Project updated successfully");
         }
 
-        protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
+        //protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    LoadConservationTown(ddlProjects.SelectedValue.ToString());
+        //}
+
+        private int GetProjectID(string ProjectNum)
         {
-            LoadConservationTown(ddlProjects.SelectedValue.ToString());
+            return ProjectMaintenanceData.GetProjectId(ProjectNum);
         }
 
         private void LoadConservationTown(string ProjectId)
         {
             try
             {
-                DataTable dt = ConservationAct250Data.GetConservationTownList(DataUtils.GetInt(ProjectId));
+                DataTable dt = ConservationAct250Data.GetConservationTownList(GetProjectID(txtPotentialProjNum.Text));
                 ddlConservationTown.Items.Clear();
                 ddlConservationTown.DataSource = dt;
                 ddlConservationTown.DataValueField = "TypeID";
@@ -648,6 +667,29 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 LogError(Pagename, "LoadConservationTown", "", ex.Message);
+            }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumber(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
+
+        private void HandleCustomPostbackEvent(string ctrlName, string args)
+        {
+            if (ctrlName == txtPotentialProjNum.UniqueID && args == "OnBlur")
+            {
+                LoadConservationTown(GetProjectID(txtPotentialProjNum.Text).ToString());
             }
         }
     }

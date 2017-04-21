@@ -148,7 +148,7 @@ as
 begin
 --exec GetAct250FarmsList 1
 	select UsePermit, LkTownDev, CDist, Type, DevName, Primelost, Statelost, TotalAcreslost, 
-		AcresDevelop, Developer, AntFunds, MitDate, RowIsActive
+		AcresDevelop, Developer, convert(varchar(10), AntFunds) AntFunds, MitDate, RowIsActive
 	from  Act250Farm act250(nolock)
 	where Act250FarmID = @Act250FarmID
 	order by act250.DateModified desc
@@ -321,7 +321,6 @@ create procedure dbo.AddAct250Projects
 	@ProjectID		int, 
 	@LKTownConserve	int, 
 	@AmtFunds		money, 
-	@DateClosed		datetime, 
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -338,13 +337,12 @@ begin transaction
 		from Act250Projects(nolock)
 		where ProjectID = @ProjectID 
 			and LKTownConserve = @LKTownConserve 
-			and AmtFunds = @AmtFunds 
-			and DateClosed = @DateClosed
+			and AmtFunds = @AmtFunds
 	)
 	begin
 
-		insert into Act250Projects(Act250FarmID, ProjectID, LKTownConserve, AmtFunds, DateClosed)
-		values(@Act250FarmID, @ProjectID, @LKTownConserve, @AmtFunds, @DateClosed)
+		insert into Act250Projects(Act250FarmID, ProjectID, LKTownConserve, AmtFunds)
+		values(@Act250FarmID, @ProjectID, @LKTownConserve, @AmtFunds)
 
 		set @isDuplicate = 0
 	end
@@ -355,8 +353,7 @@ begin transaction
 		from Act250Projects(nolock)
 		where ProjectID = @ProjectID 
 			and LKTownConserve = @LKTownConserve 
-			and AmtFunds = @AmtFunds 
-			and DateClosed = @DateClosed
+			and AmtFunds = @AmtFunds
 	end
 
 	end try
