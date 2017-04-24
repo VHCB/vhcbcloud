@@ -481,13 +481,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel6;
         
         /// <summary>
-        /// ddlProjects control.
+        /// txtPotentialProjNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProjects;
+        protected global::System.Web.UI.WebControls.TextBox txtPotentialProjNum;
+        
+        /// <summary>
+        /// ae_txtProjNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender ae_txtProjNum;
         
         /// <summary>
         /// ddlConservationTown control.
@@ -506,24 +515,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAntFunds;
-        
-        /// <summary>
-        /// txtDateClosed control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDateClosed;
-        
-        /// <summary>
-        /// ce_txtDateClosed control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtDateClosed;
         
         /// <summary>
         /// cbActiveProjects control.
