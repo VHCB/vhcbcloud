@@ -998,7 +998,7 @@ namespace vhcbcloud
                     {
                         if (Convert.ToDecimal(hfBalAmt.Value) == 0)
                         {
-                            lblRErrorMsg.Text = "Reallocation is complete, more funds not allowed";
+                            lblRErrorMsg.Text = "Assignment is complete, more funds not allowed";
                             return;
                         }
                         // txtRToAmt.Text = hfBalAmt.Value;
@@ -1042,7 +1042,7 @@ namespace vhcbcloud
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][1].ToString();
 
-                lblRErrorMsg.Text = "Reallocation was added successfully";
+                lblRErrorMsg.Text = "Assignment was added successfully";
                 BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
                 ClearReallocationToPanel();
             }

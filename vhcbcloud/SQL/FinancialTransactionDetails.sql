@@ -358,7 +358,7 @@ Begin
 	join fund f on f.FundId = det.FundId
 	left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 	left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-	where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+	where tr.LkTransaction in (238,239,240,26552) and tr.ProjectID = @projectid and
 	tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 	group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
 	f.abbrv, tr.lkstatus, ttv.description, f.account, det.DetailID, det.Amount
@@ -398,7 +398,7 @@ Begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId		
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240) and tr.ProjectID = @projectid and
+		where tr.LkTransaction in (238,239,240,26552) and tr.ProjectID = @projectid and
 		tr.RowIsActive=1 and pn.DefName =1 and det.rowisactive = 1
 		group by det.FundId, det.LkTransType ,  p.ProjectId, p.Proj_num, lv.Description, ProjectCheckReqID, f.name, 
 		f.abbrv, tr.lkstatus, ttv.description, det.DetailID, f.account
@@ -469,6 +469,7 @@ Begin
 					when tr.LkTransaction = 238 then 'Board Commitment'
 					when tr.LkTransaction = 239 then 'Board Decommitment'
 					when tr.LkTransaction = 240 then 'Board Reallocation'
+					when tr.LkTransaction = 26552 then 'Staff Assignment'
 				end as 'Transaction',
 				f.name,
 				p.proj_num, 
@@ -488,7 +489,7 @@ Begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240, 236, 237)and pn.DefName =1 
+		where tr.LkTransaction in (238,239,240,26552)and pn.DefName =1 
 		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
 
