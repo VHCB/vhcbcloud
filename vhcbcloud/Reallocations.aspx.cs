@@ -522,7 +522,8 @@ namespace vhcbcloud
 
         private void ClearReallocationToPanel()
         {
-            txtToProjNum.Text = "";
+            //txtToProjNum.Text = "";
+            txtToProjNum.Text = txtFromProjNum.Text;
             ddlRToProj.SelectedIndex = 0;
             ddlRToFund.DataSource = null;
             ddlRToFund.DataBind();

@@ -112,6 +112,8 @@ namespace vhcbcloud
             {
                 int rowIndex = e.RowIndex;
                 string strOrder = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtOrdering")).Text;
+                if (strOrder == "")
+                    strOrder = "0";
                 int n;
                 bool isInt = int.TryParse(strOrder.Trim(), out n);
 
