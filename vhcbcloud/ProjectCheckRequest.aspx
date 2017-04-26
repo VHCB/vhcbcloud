@@ -142,9 +142,9 @@
                                         <asp:DropDownList ID="ddlMatchingGrant" Visible="false" CssClass="clsDropDown" runat="server">
                                         </asp:DropDownList>
                                     </td>
-                                    <td><span class="labelClass">Project Type :</span></td>
+                                    <td>&nbsp;</td>
                                     <td>
-                                        <asp:Label ID="lblProjectType" class="labelClass" Text="--" runat="server"></asp:Label></td>
+                                        &nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -155,8 +155,8 @@
                                     <td>
                                         <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxMoney" onkeyup='toDisburAmtFormatter(value)' runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Available Funds $:</span></td>
-                                    <td colspan="5">
+                                    <td><span class="labelClass">Available Funds:</span></td>
+                                    <td colspan="3">
                                         <asp:Label ID="lblAvailFund" class="labelClass" Visible="false" Text="" runat="server"></asp:Label>
                                         <asp:Label ID="lblAvailVisibleFund" class="labelClass" Text="" runat="server"></asp:Label>
                                     </td>
@@ -168,17 +168,36 @@
                                 <tr>
                                     <td style="vertical-align: top"><span class="labelClass">Nature of Disbursements :</span></td>
                                     <td>
-                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="230px"></asp:ListBox></td>
+                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="200px"></asp:ListBox></td>
                                     <td style="vertical-align: top"><span class="labelClass">Items :</span></td>
                                     <td>
-                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbItems" Height="80px" Width="230px"></asp:ListBox></td>
+                                        <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbItems" Height="80px" Width="180px"></asp:ListBox></td>
                                     <td style="vertical-align: top"><span class="labelClass">Notes :</span></td>
-                                    <td colspan="3">
-                                        <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="294px" Height="80px" />
+                                    <td>
+                                        <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="190px" Height="80px" />
                                     </td>
 
                                 </tr>
-
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top"><span class="labelClass">Project Type:</span></td>
+                                    <td>
+                                        <asp:Label ID="lblProjectType" runat="server" class="labelClass" Text="--"></asp:Label>
+                                    </td>
+                                    <td style="vertical-align: top"><span class="labelClass">Check Request Date:</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtCRDate" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                        <ajaxToolkit:CalendarExtender ID="txtCRDate_CalendarExtender" runat="server" TargetControlID="txtCRDate">
+                                        </ajaxToolkit:CalendarExtender>
+                                    </td>
+                                    <td style="vertical-align: top">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px">
                                         <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
@@ -518,6 +537,7 @@
                                                     </ItemTemplate>
                                                     <EditItemTemplate>
                                                         <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("chkApproved") %>' />
+                                                        <asp:Label ID="lbleditApproved" Visible="false" runat="Server" Text='<%# Eval("Approved") %>' />
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Staff Name" SortExpression="StaffID">

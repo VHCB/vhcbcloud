@@ -323,7 +323,7 @@
                                                             <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtAmount" runat="Server" onkeyup ='toGridAmtFormatter(value)' CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                                         </EditItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
@@ -496,6 +496,18 @@
 
                 //inputElement.value = "$" + result;
                 $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
+        };
+
+        toGridAmtFormatter = value => {
+                const digits = this.getDigitsFromValue(value);
+                const digitsWithPadding = this.padDigits(digits);
+
+                let result = this.addDecimalToNumber(digitsWithPadding);
+
+                var inputElement = document.getElementById("txtAmount");
+
+                //inputElement.value = "$" + result;
+                
         };
         getDigitsFromValue = (value) => {
             return value.toString().replace(/\D/g, '');
