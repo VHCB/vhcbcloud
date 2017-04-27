@@ -603,7 +603,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
-           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs)
+           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs, DateTime CRDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtPCRDet = null;
@@ -626,6 +626,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("LkStatus", LkStatus));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
                 command.Parameters.Add(new SqlParameter("LKNODs", LKNODs));
+                command.Parameters.Add(new SqlParameter("CRDate", CRDate));
 
                 SqlParameter parmMessage = new SqlParameter("@ProjectCheckReqID", SqlDbType.Int);
                 parmMessage.Direction = ParameterDirection.Output;
@@ -665,7 +666,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable UpdatePCR(int PRCID, int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
-           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs)
+           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs, DateTime CRDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtPCRDet = null;
@@ -689,6 +690,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("LkStatus", LkStatus));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
                 command.Parameters.Add(new SqlParameter("LKNODs", LKNODs));
+                command.Parameters.Add(new SqlParameter("CRDate", CRDate));
 
                 SqlParameter parmMessage1 = new SqlParameter("@TransID", SqlDbType.Int);
                 parmMessage1.Direction = ParameterDirection.Output;

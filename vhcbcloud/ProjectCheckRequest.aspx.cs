@@ -391,6 +391,10 @@ namespace vhcbcloud
                     else if (lblBalAmt.Text == "$0.00")
                         btnNewPCR.Visible = true;
                 }
+                else
+                {
+                    tblFundDetails.Visible = true;
+                }
             }
             catch (Exception ex)
             {
@@ -428,7 +432,7 @@ namespace vhcbcloud
                 lbItems.DataSource = dtItems;
                 lbItems.DataValueField = "typeid";
                 lbItems.DataTextField = "Description";
-                lbItems.DataBind();                
+                lbItems.DataBind();
             }
             catch (Exception ex)
             {
@@ -519,7 +523,7 @@ namespace vhcbcloud
             try
             {
                 if (dt.Rows.Count != 0)
-                {
+                {                   
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
                     //string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
@@ -551,19 +555,22 @@ namespace vhcbcloud
                         ClearPCRForm();
                         EnablePCR();
 
-                        lblProjName.Text = dt.Rows[0][1].ToString(); 
+                        lblProjName.Text = dt.Rows[0][1].ToString();
                         lblProjectType.Text = dt.Rows[0][2].ToString();
                         BindApplicantName(int.Parse(hfProjId.Value));
                         ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
 
                         BindFundTypeCommitments(int.Parse(hfProjId.Value));
                         txtTransDate.Text = DateTime.Now.ToShortDateString();
+                        txtCRDate.Text = DateTime.Now.ToShortDateString();
 
                     }
                     else
                     {
                         if (txtCommitedProjNum.Text != "")
                         {
+                           
+
                             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                             if (dtEPCR.Rows.Count > 0)
                             {
@@ -574,6 +581,9 @@ namespace vhcbcloud
                                 this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
                                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
                                 this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
+                                this.txtCRDate.Text = String.IsNullOrEmpty(dtEPCR.Rows[0]["CRDate"].ToString()) ? "" : DateTime.Parse(dtEPCR.Rows[0]["CRDate"].ToString()).ToShortDateString();
+
+
                                 EnableButton(btnPCRTransDetails);
                                 DisableButton(btnCRSubmit);
                                 BindPCRTransDetails();
@@ -589,6 +599,7 @@ namespace vhcbcloud
                         else
                             ClearPCRForm();
                     }
+                    DisplayControls(ddlProgram.SelectedItem.ToString());
                 }
             }
             catch (Exception ex)
@@ -615,7 +626,7 @@ namespace vhcbcloud
         protected void BindPCRData(int projectId)
         {
             try
-            {                
+            {
                 DataTable dtFundInfo = new DataTable();
                 dtFundInfo = ProjectCheckRequestData.GetExistingPCRByProjId(projectId.ToString());
                 gvFund.DataSource = dtFundInfo;
@@ -910,7 +921,7 @@ namespace vhcbcloud
             //    ddlProjFilter.Focus();
             //    return;
             //}
-            if (txtProjNum.Text=="")
+            if (txtProjNum.Text == "")
             {
                 lblErrorMsg.Text = "Select Project#";
                 return;
@@ -921,6 +932,14 @@ namespace vhcbcloud
                 txtTransDate.Focus();
                 return;
             }
+
+            if (txtCRDate.Text == "")
+            {
+                lblErrorMsg.Text = "Select Check Request Date";
+                txtCRDate.Focus();
+                return;
+            }
+
             if (txtTransDate.Text.Trim() != "")
             {
                 DateTime dt;
@@ -930,6 +949,19 @@ namespace vhcbcloud
                 {
                     lblErrorMsg.Text = "Select a valid Transaction Date";
                     txtTransDate.Focus();
+                    return;
+                }
+            }
+
+            if (txtCRDate.Text.Trim() != "")
+            {
+                DateTime dt;
+                bool isDateTime = DateTime.TryParse(txtCRDate.Text.Trim(), out dt);
+
+                if (!isDateTime)
+                {
+                    lblErrorMsg.Text = "Select valid Check Request Date";
+                    txtCRDate.Focus();
                     return;
                 }
             }
@@ -1030,12 +1062,13 @@ namespace vhcbcloud
             #endregion
 
             try
-            {          
+            {
 
 
                 // string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 string lbNODS = string.Empty;
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);
+                DateTime CRDate = DateTime.Parse(txtCRDate.Text);
 
                 int MatchingGrant = 0;
                 decimal EligibleAmt = 0;
@@ -1065,7 +1098,7 @@ namespace vhcbcloud
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, GetUserId(), lbNODS);
+                        txtNotes.Text, GetUserId(), lbNODS, CRDate );
                     if (dtPCR.Rows.Count > 0)
                     {
                         pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
@@ -1136,7 +1169,7 @@ namespace vhcbcloud
                 string tmp = Regex.Replace(str, "[^0-9a-zA-Z.]+", "");
                 txtTransDetailAmt.Text = tmp.ToString();
 
-               
+
                 #region Validations
                 if (ddlFundTypeCommitments.Items.Count > 1 && ddlFundTypeCommitments.SelectedIndex == 0)
                 {
@@ -1412,7 +1445,7 @@ namespace vhcbcloud
 
         private void DisplayControls(string SelectedText)
         {
-            if (SelectedText != "Farm/Forest Viability")
+            if (SelectedText != "Viability")
             {
                 lblAmtEligibleForMatch.Visible = false;
                 txtEligibleAmt.Visible = false;
@@ -1544,19 +1577,21 @@ namespace vhcbcloud
         protected void gvQuestionsForApproval_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
             {
                 //Checking whether the Row is Data Row
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
                     CheckBox cbApproved = (e.Row.FindControl("cbApproved") as CheckBox);
-                    Label lblProjectCheckReqQuestionID = (e.Row.FindControl("hfProjectCheckReqQuestionID") as Label);
-                    Label lblApproved = (e.Row.FindControl("lblApproved") as Label);
-
-
-                    if (cbApproved != null)
+                    Label lblApproved = (e.Row.FindControl("lbleditApproved") as Label);
+                    
+                    if (lblApproved.Text != "")
                     {
-                        cbApproved.Checked = bool.Parse(lblApproved.Text);
+                        if (cbApproved != null)
+
+                            if (lblApproved.Text.ToLower() == "no")
+                                cbApproved.Checked = false;
+                            else
+                                cbApproved.Checked = true;
                     }
                 }
             }
@@ -1624,6 +1659,7 @@ namespace vhcbcloud
             if (ddlProjFilter.Items.Count > 0) ddlProjFilter.SelectedIndex = 0;
             txtCommitedProjNum.Text = "";
             txtProjNum.Text = "";
+            txtCRDate.Text = "";
             if (rdBtnSelect.SelectedIndex == 0)
             {
                 EnablePCR();
@@ -1991,6 +2027,13 @@ namespace vhcbcloud
                     txtTransDate.Focus();
                     return;
                 }
+
+                if (txtCRDate.Text == "")
+                {
+                    lblErrorMsg.Text = "Select Check Request Date";
+                    txtCRDate.Focus();
+                    return;
+                }
                 if (txtTransDate.Text.Trim() != "")
                 {
                     DateTime dt;
@@ -2000,6 +2043,18 @@ namespace vhcbcloud
                     {
                         lblErrorMsg.Text = "Select a valid Transaction Date";
                         txtTransDate.Focus();
+                        return;
+                    }
+                }
+                if (txtCRDate.Text.Trim() != "")
+                {
+                    DateTime dt;
+                    bool isDateTime = DateTime.TryParse(txtCRDate.Text.Trim(), out dt);
+
+                    if (!isDateTime)
+                    {
+                        lblErrorMsg.Text = "Select valid Check Request Date";
+                        txtCRDate.Focus();
                         return;
                     }
                 }
@@ -2098,6 +2153,7 @@ namespace vhcbcloud
                 string[] ProjectTokens = ddlProjFilter.SelectedValue.ToString().Split('|');
                 string lbNODS = string.Empty;
                 DateTime TransDate = DateTime.Parse(txtTransDate.Text);
+                DateTime CRDate = DateTime.Parse(txtCRDate.Text);
 
                 int MatchingGrant = 0;
                 decimal EligibleAmt = 0;
@@ -2117,7 +2173,7 @@ namespace vhcbcloud
                     dtPCR = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, GetUserId(), lbNODS);
+                        txtNotes.Text, GetUserId(), lbNODS, CRDate);
 
                     if (dtPCR.Rows.Count > 0)
                     {

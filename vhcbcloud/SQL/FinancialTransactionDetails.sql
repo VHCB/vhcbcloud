@@ -2183,7 +2183,7 @@ Begin
 			and pa.RowIsActive = 1 and pa.finlegal = 1
 		order by pa.IsApplicant desc, pa.FinLegal desc, pa.DateModified desc)
 
-	select pcr.ProjectID, pv.project_name, pcr.legalreview,pcr.LCB, pcr.initdate, pcr.ProjectCheckReqId, 
+	select pcr.ProjectID, pv.project_name, pcr.legalreview,pcr.LCB, pcr.initdate, pcr.ProjectCheckReqId, pcr.crdate,
 	t.TransAmt, t.transid, an.Applicantname, @payee as Payee,
 	CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq
 	from ProjectCheckReq pcr(nolock)
@@ -2198,6 +2198,72 @@ Begin
 
 	
 End
+go
+
+
+alter procedure [dbo].[PCR_Submit]
+(
+	@ProjectID int, 
+	@InitDate date, 
+	@LkProgram	int, 
+	@LegalReview	bit, 
+	@LCB	bit, 
+	@MatchAmt	money, 
+	@LkFVGrantMatch	int, 
+	@Notes	nvarchar(2000), 
+	@Disbursement decimal(8,2),
+	@Payee int,
+	@LkStatus int,
+	@UserID	int,
+	@LKNODs 	varchar(50),
+	@CRDate date,
+	@ProjectCheckReqID	int output,
+	@TransID	int output
+)
+as
+Begin
+begin transaction
+
+	begin try
+
+	insert into ProjectCheckReq(ProjectID, InitDate, LkProgram, LegalReview, 
+		LCB, MatchAmt, LkFVGrantMatch, Notes, UserID, crdate)
+	values(@ProjectID, @InitDate, @LkProgram, @LegalReview, 
+		@LCB, @MatchAmt, @LkFVGrantMatch, @Notes, @UserID, @CRDate)
+
+	set @ProjectCheckReqID = @@IDENTITY
+
+	insert into Trans(ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
+	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus)
+
+	set @TransID = @@IDENTITY
+
+	exec PCR_Submit_NOD @ProjectCheckReqID, @LKNODs
+
+	select pcr.ProjectCheckReqId, CONVERT(VARCHAR(101),pcr.InitDate,110)  +' - ' +convert(varchar(20), t.TransAmt)+' - '+ lv.Description as pcq, @TransID as transid
+	from ProjectCheckReq pcr(nolock)
+		join Trans t(nolock) on t.ProjectCheckReqId = pcr.ProjectCheckReqId
+		join project_v pv(nolock) on pcr.ProjectID = pv.Project_id
+		join applicant a(nolock) on a.ApplicantId = t.PayeeApplicant
+		join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
+		join AppName an(nolock) on aan.AppNameID = an.AppNameID
+		join LookupValues lv on lv.TypeID = t.LkStatus
+	where pcr.ProjectCheckReqID = @ProjectCheckReqID
+	order by pcr.ProjectCheckReqId desc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+end
 go
 
 
@@ -2217,6 +2283,7 @@ alter procedure PCR_Update
 	@LkStatus int,
 	@UserID	int,
 	@LKNODs 	varchar(50),
+	@CrDate date,
 	@TransID	int output
 )
 as
@@ -2225,7 +2292,7 @@ begin
 
 	begin try
 		update ProjectCheckReq set ProjectID = @ProjectID, InitDate = @InitDate, LkProgram = @LkProgram, LegalReview = @LegalReview, 
-			LCB =  @LCB, MatchAmt = @MatchAmt, LkFVGrantMatch = @LkFVGrantMatch, Notes = @Notes, UserID = @UserID
+			LCB =  @LCB, MatchAmt = @MatchAmt, LkFVGrantMatch = @LkFVGrantMatch, Notes = @Notes, UserID = @UserID, CRDate = @crDate
 		from ProjectCheckReq
 		where ProjectCheckReqID = @ProjectCheckReqID
 
@@ -2263,7 +2330,6 @@ begin
 	if @@trancount > 0
 		commit transaction;
 end
-
 go
 
 
