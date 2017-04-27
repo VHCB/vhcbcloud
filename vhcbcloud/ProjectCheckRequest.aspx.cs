@@ -523,7 +523,7 @@ namespace vhcbcloud
             try
             {
                 if (dt.Rows.Count != 0)
-                {
+                {                   
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
                     //string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
@@ -562,12 +562,15 @@ namespace vhcbcloud
 
                         BindFundTypeCommitments(int.Parse(hfProjId.Value));
                         txtTransDate.Text = DateTime.Now.ToShortDateString();
+                        txtCRDate.Text = DateTime.Now.ToShortDateString();
 
                     }
                     else
                     {
                         if (txtCommitedProjNum.Text != "")
                         {
+                           
+
                             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                             if (dtEPCR.Rows.Count > 0)
                             {
@@ -578,7 +581,9 @@ namespace vhcbcloud
                                 this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
                                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
                                 this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
-                                this.txtCRDate.Text = dtEPCR.Rows[0]["CRDate"].ToString();
+                                this.txtCRDate.Text = String.IsNullOrEmpty(dtEPCR.Rows[0]["CRDate"].ToString()) ? "" : DateTime.Parse(dtEPCR.Rows[0]["CRDate"].ToString()).ToShortDateString();
+
+
                                 EnableButton(btnPCRTransDetails);
                                 DisableButton(btnCRSubmit);
                                 BindPCRTransDetails();
@@ -594,6 +599,7 @@ namespace vhcbcloud
                         else
                             ClearPCRForm();
                     }
+                    DisplayControls(ddlProgram.SelectedItem.ToString());
                 }
             }
             catch (Exception ex)
@@ -1439,7 +1445,7 @@ namespace vhcbcloud
 
         private void DisplayControls(string SelectedText)
         {
-            if (SelectedText != "Farm/Forest Viability")
+            if (SelectedText != "Viability")
             {
                 lblAmtEligibleForMatch.Visible = false;
                 txtEligibleAmt.Visible = false;
