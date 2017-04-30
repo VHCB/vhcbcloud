@@ -97,7 +97,11 @@
                         <tr>
                             <td><span class="labelClass">Service Supported Units</span></td>
                             <td><asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                            <td colspan="4"></td>
+                             <td><span class="labelClass">VHCB Affordable Units</span></td>
+                            <td>
+                                <span class="labelClass" id="spnVHCBAffUnits" runat="server">0</span>
+                            </td>
+                            <td colspan="2"></td>
                         </tr>
                         <tr>
                             <td colspan="5">
@@ -978,8 +982,8 @@
     <asp:HiddenField ID="hfVHCBUnitWarning" runat="server" />
     <asp:HiddenField ID="hfPrimaryServiceWarning" runat="server" />
     <asp:HiddenField ID="hfAgeRestrWarning" runat="server" />
+    <asp:HiddenField ID="hfNotInCovenantCount" runat="server" Value="0" />
     
-
     <script language="javascript">
         $(document).ready(function () {
            <%-- $('#<%= txtTotalUnits.ClientID%>').blur(function () {
@@ -1057,6 +1061,9 @@
             var TotalUnits = UnitsFromPreProject + NewUnits - UnitsRemoved;
             $('#<%= spnTotalUnits.ClientID%>').text(TotalUnits);
             console.log("TotalUnits:" + TotalUnits);
+
+            //$('#<%= spnVHCBAffUnits.ClientID%>').text(TotalUnits - parseInt($('#<%=hfNotInCovenantCount.ClientID%>').val(), 10););
+
         };
 
         

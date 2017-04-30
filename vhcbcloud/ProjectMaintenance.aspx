@@ -212,46 +212,18 @@
                         <div class="panel-body" runat="server" id="dvProjectEventForm">
                             <asp:Panel runat="server" ID="Panel10">
                                 <table style="width: 100%">
+                                    
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Program</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Admin Milestone</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEventProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true"
-                                                OnSelectedIndexChanged="ddlEventProgram_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEvent_SelectedIndexChanged">
                                             </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 140px">
-                                            <span class="labelClass">Project</span>
-                                        </td>
-                                        <td style="width: 237px">
-                                           <%-- <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>--%>
-                                            <asp:TextBox ID="txtEventProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtEventProjNum" MinimumPrefixLength="1"
-                                                EnableCaching="true" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetProjectNumber">
-                                            </ajaxToolkit:AutoCompleteExtender>
-                                        </td>
-                                        <td style="width: 101px"><span class="labelClass">Entity</span></td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlEventEntity" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 150px"><span class="labelClass">Milestone</span></td>
-                                        <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                            
                                         </td>
                                         <td style="width: 140px">
                                             <span class="labelClass">Program Milestone </span>
                                         </td>
                                         <td style="width: 237px">
-                                            <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
+                                             <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEventSubCategory_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Date</span></td>
@@ -476,6 +448,7 @@
                                                 EnableCaching="true" CompletionSetCount="1" CompletionListCssClass="clsAutoExtDropDown"
                                                 CompletionInterval="100" ServiceMethod="GetAddress1" OnClientItemSelected="GetAddressDetails" OnClientPopulated="onListPopulated">
                                             </ajaxToolkit:AutoCompleteExtender>
+                                            <asp:CheckBox ID="cbReqStreetNo" runat="server" Checked="true" ToolTip="Required Street #" />
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">Address1:</span>
@@ -511,8 +484,13 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Village</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible ="false">
                                             </asp:DropDownList>
+                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetAllVillages">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">County</span></td>
                                         <td style="width: 270px">
@@ -897,6 +875,7 @@
             $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
             $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
             $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+            $('#<%=txtVillage.ClientID%>').val(addressArray[9]);
             $('#<%=ddlVillages.ClientID%>').empty();
             $('#<%=ddlVillages.ClientID%>').append($("<option></option>").val(addressArray[9]).html(addressArray[9]));
         }
@@ -938,6 +917,7 @@
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
                 $('#<%=hfVillage.ClientID%>').val('');
+
                 LoadVillages();
             });
 
@@ -1011,6 +991,9 @@
                             .append($("<option></option>").val(value.ID).html(value.Name));
 
                         //$('#<%=hfVillage.ClientID%>').val(value.Name);
+
+                        if (value.Name != 'Select')
+                            $('#<%=txtVillage.ClientID%>').val(value.Name);
                     });
                 },
                 error: function (data) {
@@ -1086,6 +1069,14 @@
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }
                             response(addr);
+
+                            $('#<%= txtVillage.ClientID%>').attr("disabled", "disabled");
+                            $('#<%=txtVillage.ClientID%>').val('');
+
+                            if ($('#<%= txtState.ClientID%>').val() == 'VT') {
+                                $('#<%= txtVillage.ClientID%>').removeAttr("disabled"); 
+                                LoadVillages();
+                            }
                         } else {
                             response({ success: false });
                         }

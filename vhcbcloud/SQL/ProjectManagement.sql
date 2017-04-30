@@ -1038,6 +1038,35 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAllVillages]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetAllVillages
+go
+
+create procedure dbo.GetAllVillages
+(
+	@VillagePrefix	varchar(50)
+) as
+begin transaction
+--exec GetllAllVillages 'a'
+	begin try
+
+	select top 10 village from village_v where village like @VillagePrefix  + '%'
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[IsProjectNumberExist]') and type in (N'P', N'PC'))
 drop procedure [dbo].IsProjectNumberExist
 go

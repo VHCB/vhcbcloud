@@ -63,7 +63,7 @@
                                     <tr>
                                         <td style="width: 117px"><span class="labelClass">Type</span></td>
                                         <td style="width: 194px">
-                                             <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                         <td style="width: 149px">
                                             <span class="labelClass">Land Use Permit</span>
@@ -73,7 +73,7 @@
                                         </td>
                                         <td style="width: 134px"><span class="labelClass">Town of Development</span></td>
                                         <td class="modal-sm" style="width: 115px">
-                                           <asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -93,6 +93,9 @@
                                         </td>
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtDistrictNo" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True"
+                                                MinimumValue="1" MaximumValue="9" ControlToValidate="txtDistrictNo"
+                                                ErrorMessage="District # value must be between 1 and 9" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -124,7 +127,7 @@
                                         </td>
                                         <td style="width: 134px"><span class="labelClass">Anticipated Funds</span></td>
                                         <td class="modal-sm" style="width: 115px">
-                                            <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 163px"><span class="labelClass">Mitigation Date</span></td>
                                         <td>
@@ -138,13 +141,15 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 149px">
-                                            <span class="labelClass">Active:</span>
+                                            <span class="labelClass">URL</span>
                                         </td>
                                         <td style="width: 176px">
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 134px">Active:</td>
+                                        <td class="modal-sm" style="width: 115px">
                                             <asp:CheckBox ID="chkAct250Active" Enabled="false" runat="server" Checked="true" />
                                         </td>
-                                        <td style="width: 134px"></td>
-                                        <td class="modal-sm" style="width: 115px"></td>
                                         <td style="width: 163px"></td>
                                         <td></td>
                                     </tr>
@@ -204,6 +209,11 @@
                                         <asp:TemplateField HeaderText="Developer">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total acres lost">
@@ -303,6 +313,7 @@
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 Grand Total :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="AmtRec" ItemStyle-HorizontalAlign="Right"
@@ -374,6 +385,7 @@
                                             </ItemTemplate>
                                             <FooterTemplate>
                                                 Running Total :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Amount" ItemStyle-HorizontalAlign="Right"
@@ -399,6 +411,7 @@
                                             </ItemTemplate>
                                             <FooterTemplate>
                                                 Balance Amount :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Status">
@@ -437,7 +450,7 @@
                                     <tr>
                                         <td style="width: 70px"><span class="labelClass">Project #</span></td>
                                         <td style="width: 83px">
-                                           <%-- <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server" 
+                                            <%-- <asp:DropDownList ID="ddlProjects" CssClass="clsDropDown" runat="server" 
                                                 AutoPostBack="true" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged"></asp:DropDownList>--%>
 
                                             <asp:TextBox ID="txtPotentialProjNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"
@@ -459,14 +472,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 70px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 70px"><span class="labelClass">Active</span></td>
                                         <td style="width: 83px">
                                             <asp:CheckBox ID="cbActiveProjects" runat="server" Enabled="false" Checked="true" />
                                         </td>
                                         <td style="width: 70px"><span class="labelClass">Active</span></td>
-                                        <td class="modal-sm" style="width: 70px">
-                                            
-                                        </td>
+                                        <td class="modal-sm" style="width: 70px"></td>
                                         <td style="width: 40px">
                                             <asp:Button ID="btnAddVHCBProject" runat="server" Text="Submit" class="btn btn-info"
                                                 OnClick="btnAddVHCBProject_Click" />
@@ -491,8 +502,8 @@
                                 <asp:GridView ID="gvVHCBProjects" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="True"
-                                     OnRowEditing="gvVHCBProjects_RowEditing" OnRowCancelingEdit="gvVHCBProjects_RowCancelingEdit"
-                                     OnRowUpdating="gvVHCBProjects_RowUpdating">
+                                    OnRowEditing="gvVHCBProjects_RowEditing" OnRowCancelingEdit="gvVHCBProjects_RowCancelingEdit"
+                                    OnRowUpdating="gvVHCBProjects_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -511,6 +522,7 @@
                                             </ItemTemplate>
                                             <FooterTemplate>
                                                 Grand Total :
+                                           
                                             </FooterTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
@@ -526,7 +538,7 @@
                                                 <asp:Label ID="lblAnticipatedFunds" runat="Server" Text='<%# Eval("AmtFunds", "{0:C2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtAnticipatedFunds1" CssClass="clsTextBoxBlueSm" runat="server" 
+                                                <asp:TextBox ID="txtAnticipatedFunds1" CssClass="clsTextBoxBlueSm" runat="server"
                                                     Text='<%# Eval("AmtFunds", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
@@ -582,14 +594,14 @@
         <asp:HiddenField ID="hfTotalDevPayments" runat="server" />
         <asp:HiddenField ID="hfLandUsePermitFinancialsBalance" runat="server" />
         <asp:HiddenField ID="hfProjectsWarning" runat="server" />
-        
+
         <script language="javascript">
             $(document).ready(function () {
                 toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
-                
+
                 $('#<%= txtAnticipatedFunds.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
-                 });
+                });
 
                 $('#<%= txtDevPaymentAmount.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtDevPaymentAmount.ClientID%>').val(), $('#<%= txtDevPaymentAmount.ClientID%>'));
@@ -602,11 +614,11 @@
                 if ($('input[id*=txtpaymentAmount]').val() >= 0) {
                     toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
                 }
-                
-                 $('#<%= txtAntFunds.ClientID%>').keyup(function () {
+
+                $('#<%= txtAntFunds.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtAntFunds.ClientID%>').val(), $('#<%= txtAntFunds.ClientID%>'));
                  });
-                
+
                 $("input[id*=txtAnticipatedFunds1]").keyup(function () {
                     toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
                 });

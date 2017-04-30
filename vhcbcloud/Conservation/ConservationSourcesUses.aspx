@@ -127,6 +127,12 @@
                         </div>
 
                         <div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
+                            <div id="dvWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
                             <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvConsevationSources" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -324,7 +330,9 @@
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfNavigatedProjectId" runat="server" />
-
+    <asp:HiddenField ID="hfSourcesTotal" runat="server" />
+    <asp:HiddenField ID="hfUsesTotal" runat="server" />
+    <asp:HiddenField ID="hfWarning" runat="server" />
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= txtSourceTotal.ClientID%>').keyup(function () {
