@@ -158,6 +158,14 @@ namespace vhcbcloud
                 return;
             }
 
+            string URL = txtURL.Text;
+
+            if (URL != "")
+            {
+                if (!URL.Contains("http"))
+                    URL = "http://" + URL;
+            }
+
             if (btnAddAct250Info.Text == "Submit")
             {
                 ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250Farm(txtLandUsePermit.Text,
@@ -166,7 +174,7 @@ namespace vhcbcloud
                     DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text), DataUtils.GetInt(txtAcresDeveloped.Text),
                     DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDate(txtMitigationDate.Text));
+                    DataUtils.GetDate(txtMitigationDate.Text), URL);
 
                 BindGrids();
                 ClearAct250InfoForm();
@@ -185,7 +193,7 @@ namespace vhcbcloud
                     DataUtils.GetInt(txtPrimeSoilsAcresLost.Text), DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text),
                     DataUtils.GetInt(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDate(txtMitigationDate.Text), chkAct250Active.Checked);
+                    DataUtils.GetDate(txtMitigationDate.Text), URL, chkAct250Active.Checked);
 
                 gvAct250Info.EditIndex = -1;
                 ClearAct250InfoForm();

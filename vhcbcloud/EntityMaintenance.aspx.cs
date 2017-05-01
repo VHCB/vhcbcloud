@@ -1323,7 +1323,7 @@ namespace vhcbcloud
                 BindPrjectEventGrid();
                 ClearProjectEventForm();
                 btnAddEvent.Text = "Add";
-                LogMessage("Project Event Updated Successfully");
+                LogMessage("Project Milestone Updated Successfully");
             }
             //}
         }

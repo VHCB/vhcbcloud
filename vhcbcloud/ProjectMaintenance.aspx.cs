@@ -48,7 +48,7 @@ namespace vhcbcloud
 
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
-                BindApplicantsForCurrentProject(ddlEventEntity);
+                //BindApplicantsForCurrentProject(ddlEventEntity);
             }
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
@@ -90,7 +90,7 @@ namespace vhcbcloud
         private void BindControls()
         {
             BindLookUP(ddlProgram, 34);
-            BindLookUP(ddlEventProgram, 34);
+            //BindLookUP(ddlEventProgram, 34);
             BindLookUP(ddlProjectType, 119);
             BindManagers();
             //BindPrimaryApplicants();
@@ -827,7 +827,7 @@ namespace vhcbcloud
                     {
                         int addressId = Convert.ToInt32(hfAddressId.Value);
 
-                        ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
+                        ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
                             txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
                             cbActive.Checked, cbDefaultAddress.Checked, int.Parse(ddlAddressType.SelectedValue.ToString()));
 
@@ -837,7 +837,7 @@ namespace vhcbcloud
                     }
                     else //add
                     {
-                        ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, Village,
+                        ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
                             txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked,
                             int.Parse(ddlAddressType.SelectedValue.ToString()));
 
@@ -883,6 +883,7 @@ namespace vhcbcloud
             cbDefaultAddress.Checked = true;
             cbDefaultAddress.Enabled = true;
             ddlVillages.Items.Clear();
+            txtVillage.Text = "";
         }
 
         protected void gvAddress_RowCancelingEdit1(object sender, GridViewCancelEditEventArgs e)
@@ -940,6 +941,13 @@ namespace vhcbcloud
                         txtLongitude.Text = dr["longitude"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["PrimaryAdd"].ToString());
+
+                        if (dr["State"].ToString().ToLower() != "va")
+                            txtVillage.Enabled = false;
+                        else
+                            txtVillage.Enabled = true;
+
+                        txtVillage.Text = dr["village"].ToString();
 
                         ddlVillages.Items.Clear();
                         ddlVillages.DataSource = ProjectMaintenanceData.GetVillages(DataUtils.GetInt(dr["Zip"].ToString()));
@@ -1019,7 +1027,7 @@ namespace vhcbcloud
         {
             try
             {
-                BindApplicantsForCurrentProject(ddlEventEntity);
+                //BindApplicantsForCurrentProject(ddlEventEntity);
 
                 DataTable dtProjectEntity = ProjectMaintenanceData.GetProjectApplicantList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
 
@@ -1306,7 +1314,14 @@ namespace vhcbcloud
 
         protected bool IsAddressValid()
         {
-            if (txtStreetNo.Text.Trim() == "")
+            if(ddlAddressType.SelectedIndex == 0)
+            {
+                LogMessage("Select Address Type");
+                ddlAddressType.Focus();
+                return false;
+            }
+
+            if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
             {
                 LogMessage("Enter Street#");
                 txtStreetNo.Focus();
@@ -1532,19 +1547,19 @@ namespace vhcbcloud
                         DataRow dr = ProjectMaintenanceData.GetProjectEventById(DataUtils.GetInt(lblProjectEventID.Text));
 
                         hfProjectEventID.Value = lblProjectEventID.Text;
-                        txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString(); // dr["ProjectID"].ToString();
+                        //txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString(); // dr["ProjectID"].ToString();
                         //PopulateDropDown(ddlEventProject, dr["ProjectID"].ToString());
-                        PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
-                        PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
+                        //PopulateDropDown(ddlEventProgram, dr["Prog"].ToString());
+                        //PopulateDropDown(ddlEventEntity, dr["ApplicantID"].ToString());
                         PopulateDropDown(ddlEvent, dr["EventID"].ToString());
                         PopulateDropDown(ddlEventSubCategory, dr["SubEventID"].ToString());
                         txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
                         txtNotes.Text = dr["Note"].ToString();
                         chkProjectEventActive.Enabled = true;
 
-                        ddlEventProgram.Enabled = false;
+                        //ddlEventProgram.Enabled = false;
                         //ddlEventProject.Enabled = false;
-                        txtEventProjNum.Enabled = false;
+                        //txtEventProjNum.Enabled = false;
                     }
                 }
             }
@@ -1560,8 +1575,8 @@ namespace vhcbcloud
             {
                 if (btnAddEvent.Text == "Add")
                 {
-                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectMilestone(txtEventProjNum.Text,
-                        DataUtils.GetInt(ddlEventProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                    ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectMilestone(txtProjectNumDDL.Text,
+                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), 0,
                         DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
                         DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
 
@@ -1579,7 +1594,7 @@ namespace vhcbcloud
                 }
                 else
                 {
-                    ProjectMaintenanceData.UpdateProjectMilestone(DataUtils.GetInt(hfProjectEventID.Value), DataUtils.GetInt(ddlEventEntity.SelectedValue.ToString()),
+                    ProjectMaintenanceData.UpdateProjectMilestone(DataUtils.GetInt(hfProjectEventID.Value), 0,
                       DataUtils.GetInt(ddlEvent.SelectedValue.ToString()), DataUtils.GetInt(ddlEventSubCategory.SelectedValue.ToString()),
                       DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId(), chkProjectEventActive.Checked);
 
@@ -1597,25 +1612,25 @@ namespace vhcbcloud
             cbAddProjectEvent.Checked = false;
 
             SetEventProjectandProgram();
-            ddlEventEntity.SelectedIndex = -1;
+            //ddlEventEntity.SelectedIndex = -1;
             ddlEvent.SelectedIndex = -1;
             ddlEventSubCategory.SelectedIndex = -1;
             txtEventDate.Text = "";
             txtNotes.Text = "";
-            ddlEventProgram.Enabled = true;
+            //ddlEventProgram.Enabled = true;
             //ddlEventProject.Enabled = true;
-            txtEventProjNum.Enabled = true;
+            //txtEventProjNum.Enabled = true;
             chkProjectEventActive.Enabled = false;
         }
 
         private void SetEventProjectandProgram()
         {
             //ddlEventProject.SelectedIndex = -1;
-            txtEventProjNum.Text = "";
-            ddlEventProgram.SelectedIndex = -1;
+            //txtEventProjNum.Text = "";
+            //ddlEventProgram.SelectedIndex = -1;
             //ddlEventProject.SelectedValue = hfProjectId.Value;
-            txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString();
-            PopulateDropDown(ddlEventProgram, hfProgramId.Value);
+            //txtEventProjNum.Text = txtProjectNumDDL.Text; // ddlProject.SelectedItem.ToString();
+            //PopulateDropDown(ddlEventProgram, hfProgramId.Value);
             EventProgramSelection();
         }
 
@@ -1646,21 +1661,21 @@ namespace vhcbcloud
 
         private bool IsProjectEventFormValid()
         {
-            if (ddlEventProgram.Items.Count > 1 && ddlEventProgram.SelectedIndex == 0)
-            {
-                LogMessage("Select Event Program");
-                ddlEventProgram.Focus();
-                return false;
-            }
+            //if (ddlEventProgram.Items.Count > 1 && ddlEventProgram.SelectedIndex == 0)
+            //{
+            //    LogMessage("Select Event Program");
+            //    ddlEventProgram.Focus();
+            //    return false;
+            //}
 
-            //if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
-            if (txtEventProjNum.Text == "") 
-            {
-                LogMessage("Select Event Project");
-                txtEventProjNum.Focus();
-                //ddlEventProject.Focus();
-                return false;
-            }
+            ////if (ddlEventProject.Items.Count > 1 && ddlEventProject.SelectedIndex == 0)
+            //if (txtEventProjNum.Text == "") 
+            //{
+            //    LogMessage("Select Event Project");
+            //    txtEventProjNum.Focus();
+            //    //ddlEventProject.Focus();
+            //    return false;
+            //}
 
             if (txtEventDate.Text.Trim() == "")
             {
@@ -1687,17 +1702,17 @@ namespace vhcbcloud
 
         private void EventProgramSelection()
         {
-            if (ddlEventProgram.SelectedItem.ToString() == "Admin")
+            if (ddlProgram.SelectedItem.ToString() == "Admin")
                 BindLookUP(ddlEvent, 157);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Housing")
+            else if (ddlProgram.SelectedItem.ToString() == "Housing")
                 BindLookUP(ddlEvent, 160);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Conservation")
+            else if (ddlProgram.SelectedItem.ToString() == "Conservation")
                 BindLookUP(ddlEvent, 159);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Lead")
+            else if (ddlProgram.SelectedItem.ToString() == "Lead")
                 BindLookUP(ddlEvent, 158);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Americorps")
+            else if (ddlProgram.SelectedItem.ToString() == "Americorps")
                 BindLookUP(ddlEvent, 161);
-            else if (ddlEventProgram.SelectedItem.ToString() == "Viability")
+            else if (ddlProgram.SelectedItem.ToString() == "Viability")
                 BindLookUP(ddlEvent, 162);
             //else if (ddlEventProgram.SelectedItem.ToString() == "Healthy Homes")
             //    BindLookUP(ddlEvent, 159);
@@ -1833,6 +1848,21 @@ namespace vhcbcloud
             return ProjNumbers.ToArray();
         }
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetAllVillages(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectMaintenanceData.GetAllVillages(prefixText); //.Replace("_","").Replace("-", ""));
+
+            List<string> Villages = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Villages.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return Villages.ToArray();
+        }
+
         protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
             ShowConservationOnly();
@@ -1877,6 +1907,22 @@ namespace vhcbcloud
         {
             ClientScript.RegisterStartupScript(this.GetType(),
                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Related"));
+        }
+
+        protected void ddlEvent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlEvent.SelectedIndex > 0)
+                ddlEventSubCategory.Enabled = false;
+            else
+                ddlEventSubCategory.Enabled = true;
+        }
+
+        protected void ddlEventSubCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlEventSubCategory.SelectedIndex > 0)
+                ddlEvent.Enabled = false;
+            else
+                ddlEvent.Enabled = true;
         }
     }
 

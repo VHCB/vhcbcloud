@@ -16,7 +16,8 @@ begin
 		lv2.description as 'farmType',
 		act250.DevName, act250.Primelost, act250.Statelost, act250.TotalAcreslost, 
 		act250.AcresDevelop, act250.Developer, an.ApplicantName as 'DeveloperName', act250.AntFunds, act250.MitDate, 
-		act250.RowIsActive, act250.DateModified
+		act250.RowIsActive, act250.DateModified, act250.URL, 
+		CASE when isnull(act250.URL, '') = '' then '' else 'Click here' end as URLText
 	from  Act250Farm act250(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = act250.LkTownDev
 	left join LookupValues lv2(nolock) on lv2.TypeID = act250.Type
@@ -45,6 +46,7 @@ create procedure dbo.AddAct250Farm
 	@Developer		int, 
 	@AntFunds		money, 
 	@MitDate		datetime, 
+	@URL			nvarchar(1500),
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -64,9 +66,9 @@ begin transaction
 	begin
 
 		insert into Act250Farm(UsePermit, LkTownDev, CDist, Type, DevName, Primelost, Statelost, TotalAcreslost, 
-			AcresDevelop, Developer, AntFunds, MitDate)
+			AcresDevelop, Developer, AntFunds, MitDate, URL)
 		values(@UsePermit, @LkTownDev, @CDist, @Type, @DevName, @Primelost, @Statelost, @TotalAcreslost, 
-			@AcresDevelop, @Developer, @AntFunds, @MitDate)
+			@AcresDevelop, @Developer, @AntFunds, @MitDate, @URL)
 
 		set @isDuplicate = 0
 	end
@@ -110,6 +112,7 @@ create procedure dbo.UpdateAct250Farm
 	@Developer		int, 
 	@AntFunds		money, 
 	@MitDate		datetime, 
+	@URL			nvarchar(1500),
 	@IsRowIsActive	bit
 ) as
 begin transaction
@@ -118,7 +121,7 @@ begin transaction
 
 	update Act250Farm set LkTownDev = @LkTownDev, CDist = @CDist, Type = @Type, DevName = @DevName, Primelost = @Primelost, Statelost = @Statelost, 
 		TotalAcreslost = @TotalAcreslost, AcresDevelop = @AcresDevelop, Developer = @Developer, AntFunds = @AntFunds, MitDate = @MitDate,
-		RowIsActive = @IsRowIsActive, DateModified = getdate()
+		RowIsActive = @IsRowIsActive, URL = @URL, DateModified = getdate()
 	from Act250Farm
 	where Act250FarmID = @Act250FarmID
 	
@@ -148,7 +151,7 @@ as
 begin
 --exec GetAct250FarmsList 1
 	select UsePermit, LkTownDev, CDist, Type, DevName, Primelost, Statelost, TotalAcreslost, 
-		AcresDevelop, Developer, convert(varchar(10), AntFunds) AntFunds, MitDate, RowIsActive
+		AcresDevelop, Developer, convert(varchar(10), AntFunds) AntFunds, MitDate, URL, RowIsActive
 	from  Act250Farm act250(nolock)
 	where Act250FarmID = @Act250FarmID
 	order by act250.DateModified desc

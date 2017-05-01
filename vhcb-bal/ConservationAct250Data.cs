@@ -43,7 +43,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static ConservationAct250Result AddAct250Farm(string UsePermit, int LkTownDev, int CDist, int Type, 
             string DevName, int Primelost, int Statelost, int TotalAcreslost,int AcresDevelop, int Developer, decimal AntFunds, 
-            DateTime MitDate)
+            DateTime MitDate, string URL)
         {
             try
             {
@@ -69,6 +69,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Developer", Developer));
                         command.Parameters.Add(new SqlParameter("AntFunds", AntFunds));
                         command.Parameters.Add(new SqlParameter("MitDate", MitDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MitDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -99,7 +100,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateAct250Farm(int Act250FarmID, int LkTownDev, int CDist, int Type,
             string DevName, int Primelost, int Statelost, int TotalAcreslost, int AcresDevelop, int Developer, decimal AntFunds,
-            DateTime MitDate, bool IsRowIsActive)
+            DateTime MitDate, string URL, bool IsRowIsActive)
         {
             try
             {
@@ -126,7 +127,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AntFunds", AntFunds));
                         command.Parameters.Add(new SqlParameter("MitDate", MitDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MitDate));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
-                        
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

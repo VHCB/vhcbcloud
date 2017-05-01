@@ -116,6 +116,9 @@ namespace vhcbcloud.Housing
                 txtMHIP.Text = drHousing["Vermod"].ToString();
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
 
+                
+                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+
                 if (ddlHousingType.SelectedIndex == 0)
                 {
                     dvNewHousingSubType.Visible = false;
@@ -342,6 +345,25 @@ namespace vhcbcloud.Housing
                 LogMessage("Select Housing Type");
                 ddlHousingType.Focus();
                 return;
+            }
+
+            //if(DataUtils.GetInt(spnTotalUnits.InnerText) <= 0)
+            //{
+            //    LogMessage("Total Units should not be less than or equal to zero");
+            //    return;
+            //}
+
+            if (txtSSUnits.Text != "")
+            {
+                int TotalUnits = DataUtils.GetInt(txtUnitsFromPreProject.Text) + DataUtils.GetInt(txtNetNewUnits.Text) -DataUtils.GetInt(txtUnitsRemoved.Text);
+
+                if (DataUtils.GetInt(txtSSUnits.Text) > TotalUnits)
+                {
+                    LogMessage("Service Supported Units not greater than Total Units");
+                    spnTotalUnits.InnerText = TotalUnits.ToString();
+                    txtSSUnits.Focus();
+                    return;
+                }
             }
 
             //if (string.IsNullOrWhiteSpace(txtTotalUnits.Text.ToString()) == true)
@@ -889,8 +911,15 @@ namespace vhcbcloud.Housing
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                        {
                             totVHCBUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
+
+                            if (dt.Rows[i]["VHCB"].ToString() == "Not in Covenant")
+                                hfNotInCovenantCount.Value = dt.Rows[i]["numunits"].ToString();
+                        }
                     }
+
+                    spnVHCBAffUnits.InnerText = (DataUtils.GetInt(hfTotalUnitsFromDB.Value) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
 
                     lblFooterVHCBTotalUnits.Text = totVHCBUnits.ToString();
 

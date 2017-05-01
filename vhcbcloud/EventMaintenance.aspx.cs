@@ -142,7 +142,7 @@ namespace vhcbcloud
                     else if (obProjectMaintResult.IsDuplicate)
                         LogMessage("Project Event already exist");
                     else
-                        LogMessage("New Project Event added successfully");
+                        LogMessage("New Project Milestone added successfully");
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace vhcbcloud
                     BindPrjectEventGrid();
                     ClearProjectEventForm();
                     btnAddEvent.Text = "Add";
-                    LogMessage("Project Event Updated Successfully");
+                    LogMessage("Project Milestone Updated Successfully");
                 }
             }
         }

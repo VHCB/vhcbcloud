@@ -19,6 +19,8 @@ namespace vhcbcloud.Conservation
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
 
+            ShowWarnings();
+
             hfProjectId.Value = "0";
 
             ProjectNotesSetUp();
@@ -110,6 +112,15 @@ namespace vhcbcloud.Conservation
             catch (Exception ex)
             {
                 LogError(Pagename, "BindUsesLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        private void ShowWarnings()
+        {
+            if (hfWarning.Value != "1")
+            {
+                dvWarning.Visible = false;
+                lblWarning.Text = "";
             }
         }
 
@@ -305,6 +316,23 @@ namespace vhcbcloud.Conservation
                     }
 
                     lblFooterTotalAmt.Text = CommonHelper.myDollarFormat(totAmt);
+
+                    hfSourcesTotal.Value = totAmt.ToString();
+
+                    decimal UsesTotal = DataUtils.GetDecimal(hfUsesTotal.Value);
+
+                    hfWarning.Value = "0";
+
+                    if (UsesTotal - totAmt != 0)
+                    {
+                        hfWarning.Value = "1";
+                        WarningMessage(dvWarning, lblWarning, $"Sources Total must be equal to Uses Total, add - {CommonHelper.myDollarFormat(Math.Abs(UsesTotal - totAmt))} difference”");
+                    }
+                    else
+                    {
+                        dvWarning.Visible = false;
+                        lblWarning.Text = "";
+                    }
                 }
                 else
                 {
@@ -317,6 +345,12 @@ namespace vhcbcloud.Conservation
             {
                 LogError(Pagename, "BindSourcegrid", "", ex.Message);
             }
+        }
+
+        private void WarningMessage(HtmlGenericControl div, Label label, string message)
+        {
+            div.Visible = true;
+            label.Text = message;
         }
 
         private void BindUsesgrid()
@@ -353,6 +387,22 @@ namespace vhcbcloud.Conservation
                     lblFooterVHCBTotalAmt.Text = CommonHelper.myDollarFormat(totVHCBAmt);
                     lblFooterOtherTotalAmt.Text = CommonHelper.myDollarFormat(totOtherAmt);
                     lblFooterGrandTotalAmt.Text = CommonHelper.myDollarFormat(totGrantAmt);
+
+                    hfUsesTotal.Value = totGrantAmt.ToString();
+
+                    decimal SourceTotal = DataUtils.GetDecimal(hfSourcesTotal.Value);
+
+                    hfWarning.Value = "0";
+                    if (SourceTotal - totGrantAmt != 0)
+                    {
+                        hfWarning.Value = "1";
+                        WarningMessage(dvWarning, lblWarning, $"Sources Total must be equal to Uses Total, add - {CommonHelper.myDollarFormat(Math.Abs(SourceTotal - totGrantAmt))} difference”");
+                    }
+                    else
+                    {
+                        dvWarning.Visible = false;
+                        lblWarning.Text = "";
+                    }
                 }
                 else
                 {
