@@ -43,7 +43,7 @@
                             </td>
                             <td style="width: 1px"></td>
                             <td>
-                               <%-- <asp:Button ID="btnFundSearch" runat="server" Text="Search" class="btn btn-info"
+                                <%-- <asp:Button ID="btnFundSearch" runat="server" Text="Search" class="btn btn-info"
                                     OnClick="btnFundSearch_Click" />--%>
 
                             </td>
@@ -54,101 +54,102 @@
                     </table>
                 </div>
                 <div id="dvfundf" runat="server">
-                <div class="panel-width" runat="server" id="dvNewFund">
-                    <div class="panel panel-default ">
-                        <div class="panel-heading ">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Fund</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddFund" runat="server" Text="Add New Fund" />
-                                         <asp:ImageButton ID="ImgFundDataReport" ImageUrl="~/Images/print.png" ToolTip="Fund Data Report"
-                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgFundDataReport_Click" />
-                                    </td>
-                                </tr>
-                            </table>
+                    <div class="panel-width" runat="server" id="dvNewFund">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading ">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>
+                                            <h3 class="panel-title">Fund</h3>
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:CheckBox ID="cbAddFund" runat="server" Text="Add New Fund" />
+                                            <asp:ImageButton ID="ImgFundDataReport" ImageUrl="~/Images/print.png" ToolTip="Fund Data Report"
+                                                Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgFundDataReport_Click" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="panel-body" runat="server" id="dvFundForm">
-                    <asp:Panel runat="server" ID="Panel10">
-                        <table style="width: 100%">
-                            <tr>
-                                <td style="width: 150px"><span class="labelClass">Name</span></td>
-                                <td style="width: 250px">
-                                    <asp:TextBox ID="txtFundName" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
-                                </td>
-                                <td style="width: 140px">
-                                    <span class="labelClass">Abbrev</span>
-                                </td>
-                                <td style="width: 237px">
-                                    <asp:TextBox ID="txtAbbrev" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
-                                </td>
-                                <td style="width: 101px"><span class="labelClass">Type</span></td>
-                                <td>
-                                    <asp:DropDownList ID="ddlFundType" CssClass="clsDropDown" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="height: 5px"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 150px"><span class="labelClass">Fund #</span></td>
-                                <td style="width: 250px">
-                                    <asp:TextBox ID="txtFundNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
-                                </td>
-                                <td style="width: 140px">
-                                    <span class="labelClass">SOV Fund Code </span>
-                                </td>
-                                <td style="width: 237px">
-                                    <asp:DropDownList ID="ddlSOVFundCode" CssClass="clsDropDown" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-                                <td style="width: 101px"><span class="labelClass">Acct. Method</span></td>
-                                <td>
-                                    <asp:DropDownList ID="ddlAcctMethod" CssClass="clsDropDown" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="height: 5px"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 150px"><span class="labelClass">SOV Dept. ID</span></td>
-                                <td>
-                                    <asp:DropDownList ID="ddlSOVDeptId" CssClass="clsDropDown" runat="server">
-                                    </asp:DropDownList>
-                                </td>
-                                <td><span class="labelClass">Mitigation Fund</span></td>
-                                <td><asp:CheckBox ID="cbMitFund" Enabled="false" runat="server" Checked="true" />
+                    <div class="panel-body" runat="server" id="dvFundForm">
+                        <asp:Panel runat="server" ID="Panel10">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 150px"><span class="labelClass">Name</span></td>
+                                    <td style="width: 250px">
+                                        <asp:TextBox ID="txtFundName" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
                                     </td>
-                            </tr>
-                            <tr>
-                                <span class="labelClass">Active:</span>
-                            </tr>
-                            <tr>
-                                <asp:CheckBox ID="cbFundActive" Enabled="false" runat="server" Checked="true" />
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="height: 5px"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" style="height: 5px">
-                                    <asp:Button ID="btnSubmitFund" runat="server" Text="Add" class="btn btn-info" OnClick="btnSubmitFund_Click" />
-                                    &nbsp; &nbsp;
+                                    <td style="width: 140px">
+                                        <span class="labelClass">Abbrev</span>
+                                    </td>
+                                    <td style="width: 237px">
+                                        <asp:TextBox ID="txtAbbrev" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                    </td>
+                                    <td style="width: 101px"><span class="labelClass">Type</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlFundType" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 150px"><span class="labelClass">Fund #</span></td>
+                                    <td style="width: 250px">
+                                        <asp:TextBox ID="txtFundNum" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
+                                    </td>
+                                    <td style="width: 140px">
+                                        <span class="labelClass">SOV Fund Code </span>
+                                    </td>
+                                    <td style="width: 237px">
+                                        <asp:DropDownList ID="ddlSOVFundCode" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td style="width: 101px"><span class="labelClass">Acct. Method</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlAcctMethod" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 150px"><span class="labelClass">SOV Dept. ID</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlSOVDeptId" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td><span class="labelClass">Mitigation Fund</span></td>
+                                    <td>
+                                        <asp:CheckBox ID="cbMitFund" runat="server" Checked="true" />
+                                    </td>
+                                    <td>
+                                        <span class="labelClass">Active:</span>
+                                    </td>
+                                    <td>
+                                        <asp:CheckBox ID="cbFundActive" Enabled="false" runat="server" Checked="true" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" style="height: 5px">
+                                        <asp:Button ID="btnSubmitFund" runat="server" Text="Add" class="btn btn-info" OnClick="btnSubmitFund_Click" />
+                                        &nbsp; &nbsp;
                                     <asp:Button ID="btnCancel" runat="server" Text="Cancel" class="btn btn-info" OnClick="btnCancel_Click" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="height: 5px"></td>
-                            </tr>
-                        </table>
-                    </asp:Panel>
-                </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                    </div>
 
                 </div>
             </div>
@@ -156,12 +157,12 @@
     </div>
     <script language="javascript">
         $(document).ready(function () {
-         $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
-         
+            $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
 
-         $('#<%= cbAddFund.ClientID%>').click(function () {
-             $('#<%= dvFundForm.ClientID%>').toggle(this.checked);
-            }).change();
-     });
+
+            $('#<%= cbAddFund.ClientID%>').click(function () {
+                $('#<%= dvFundForm.ClientID%>').toggle(this.checked);
+         }).change();
+        });
     </script>
 </asp:Content>
