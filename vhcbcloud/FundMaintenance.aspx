@@ -123,9 +123,15 @@
                                     <asp:DropDownList ID="ddlSOVDeptId" CssClass="clsDropDown" runat="server">
                                     </asp:DropDownList>
                                 </td>
-                                <td><span class="labelClass">Active:</span></td>
-                                <td>
-                                    <asp:CheckBox ID="cbFundActive" Enabled="false" runat="server" Checked="true" /></td>
+                                <td><span class="labelClass">Mitigation Fund</span></td>
+                                <td><asp:CheckBox ID="cbMitFund" Enabled="false" runat="server" Checked="true" />
+                                    </td>
+                            </tr>
+                            <tr>
+                                <span class="labelClass">Active:</span>
+                            </tr>
+                            <tr>
+                                <asp:CheckBox ID="cbFundActive" Enabled="false" runat="server" Checked="true" />
                             </tr>
                             <tr>
                                 <td colspan="6" style="height: 5px"></td>

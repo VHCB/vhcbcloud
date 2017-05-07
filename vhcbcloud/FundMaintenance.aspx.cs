@@ -202,7 +202,7 @@ namespace vhcbcloud
                 FundMaintenanceData.UpdateFund(Convert.ToInt32(ddlFundName.SelectedValue.ToString()), txtAbbrev.Text,
                     Convert.ToInt32(ddlFundType.SelectedValue.ToString()),
                     txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked);
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked, cbMitFund.Checked);
 
                 LogMessage("Fund updated successfully");
             }
@@ -211,7 +211,7 @@ namespace vhcbcloud
                 AddFund objAddFund = FundMaintenanceData.AddFund(txtFundName.Text, txtAbbrev.Text,
                     Convert.ToInt32(ddlFundType.SelectedValue?.ToString()),
                     txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString());
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbMitFund.Checked);
 
                 if (objAddFund.IsDuplicate && !objAddFund.IsActive)
                     LogMessage("Fund already exist as in-active");
