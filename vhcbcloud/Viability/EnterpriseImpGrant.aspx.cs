@@ -65,7 +65,8 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-            
+            BindLookUP(ddlMatchDescription, 214);
+            BindLookUP(ddlFYGrantRound, 220);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -140,6 +141,21 @@ namespace vhcbcloud.Viability
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
+        }
+
+        protected void btnAddGrantApplication_Click(object sender, EventArgs e)
+        {
+            dvGrantAward.Visible = true;
+        }
+
+        protected void btnAddMatchDesc_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnUpdateGrantAward_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
