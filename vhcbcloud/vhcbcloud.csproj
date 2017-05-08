@@ -362,7 +362,11 @@
     <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
     <Content Include="UserSecurity.aspx" />
-    <Content Include="Viability.aspx" />
+    <Content Include="Viability\EnterpriseEvaluations.aspx" />
+    <Content Include="Viability\EnterpriseFundamentals.aspx" />
+    <Content Include="Viability\EnterpriseImpGrant.aspx" />
+    <Content Include="Viability\EnterpriseInfo.aspx" />
+    <Content Include="Viability\EnterpriseServiceProviders.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -962,12 +966,40 @@
     <Compile Include="VHCBBasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Viability.aspx.cs">
-      <DependentUpon>Viability.aspx</DependentUpon>
+    <Compile Include="Viability\EnterpriseEvaluations.aspx.cs">
+      <DependentUpon>EnterpriseEvaluations.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Viability.aspx.designer.cs">
-      <DependentUpon>Viability.aspx</DependentUpon>
+    <Compile Include="Viability\EnterpriseEvaluations.aspx.designer.cs">
+      <DependentUpon>EnterpriseEvaluations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Viability\EnterpriseFundamentals.aspx.cs">
+      <DependentUpon>EnterpriseFundamentals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability\EnterpriseFundamentals.aspx.designer.cs">
+      <DependentUpon>EnterpriseFundamentals.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Viability\EnterpriseImpGrant.aspx.cs">
+      <DependentUpon>EnterpriseImpGrant.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability\EnterpriseImpGrant.aspx.designer.cs">
+      <DependentUpon>EnterpriseImpGrant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Viability\EnterpriseInfo.aspx.cs">
+      <DependentUpon>EnterpriseInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability\EnterpriseInfo.aspx.designer.cs">
+      <DependentUpon>EnterpriseInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Viability\EnterpriseServiceProviders.aspx.cs">
+      <DependentUpon>EnterpriseServiceProviders.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability\EnterpriseServiceProviders.aspx.designer.cs">
+      <DependentUpon>EnterpriseServiceProviders.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

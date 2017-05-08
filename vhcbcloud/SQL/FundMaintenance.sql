@@ -49,6 +49,7 @@ create procedure dbo.AddFund
 	@LkAcctMethod	int, 
 	@DeptID			nvarchar(12) = null,
 	@VHCBCode		nvarchar(25) = null,
+	@IsMitigationFund	bit = 0,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -66,8 +67,8 @@ begin transaction
 		where name = @name 
     )
 	begin
-		insert into Fund(name, abbrv, LkFundType, account, LkAcctMethod, DeptID, VHCBCode)
-		values(@name, @abbrv, @LkFundType, @account, @LkAcctMethod, @DeptID, @VHCBCode)
+		insert into Fund(name, abbrv, LkFundType, account, LkAcctMethod, DeptID, VHCBCode, MitFund)
+		values(@name, @abbrv, @LkFundType, @account, @LkAcctMethod, @DeptID, @VHCBCode, @IsMitigationFund)
 		
 		set @isDuplicate = 0
 	end
@@ -107,6 +108,7 @@ create procedure dbo.UpdateFund
 	@LkAcctMethod	int, 
 	@DeptID			nvarchar(12),
 	@VHCBCode		nvarchar(25),
+	@IsMitigationFund	bit = 0,
 	@IsRowActive		bit
 ) as
 begin transaction
@@ -116,7 +118,7 @@ begin transaction
 	
 		update Fund set --name = @name, 
 			abbrv = @abbrv, LkFundType = @LkFundType, 
-			account = @account, LkAcctMethod = @LkAcctMethod, DeptID = @DeptID, VHCBCode = @VHCBCode,
+			account = @account, LkAcctMethod = @LkAcctMethod, DeptID = @DeptID, VHCBCode = @VHCBCode, MitFund = @IsMitigationFund,
 			RowIsActive = @IsRowActive
 		where FundId = @FundId
 
