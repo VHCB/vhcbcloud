@@ -85,6 +85,7 @@ namespace vhcbcloud
                 else if (rdBtnSelect.SelectedIndex == 0)
                 {
                     txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    txtCRDate.Text = DateTime.Now.ToShortDateString();
                     ddlProjFilter.Enabled = true;
                 }
             }
