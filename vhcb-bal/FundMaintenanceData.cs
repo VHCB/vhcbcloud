@@ -120,7 +120,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static AddFund AddFund(string name, string abbrv, int LkFundType, string account, 
-            int LkAcctMethod, string DeptID, string VHCBCode)
+            int LkAcctMethod, string DeptID, string VHCBCode, bool IsMitigationFund)
         {
             try
             {
@@ -138,6 +138,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkFundType", LkFundType));
                         command.Parameters.Add(new SqlParameter("account", account));
                         command.Parameters.Add(new SqlParameter("LkAcctMethod", LkAcctMethod));
+                        command.Parameters.Add(new SqlParameter("IsMitigationFund", IsMitigationFund));
+
                         if (DeptID != "NA")
                             command.Parameters.Add(new SqlParameter("DeptID", DeptID));
                         if (VHCBCode != "NA")
@@ -172,7 +174,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateFund(int FundId, string abbrv, int LkFundType, string account,
-            int LkAcctMethod, string DeptID, string VHCBCode, bool IsRowActive)
+            int LkAcctMethod, string DeptID, string VHCBCode, bool IsRowActive, bool IsMitigationFund)
         {
             try
             {
@@ -194,6 +196,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkAcctMethod", LkAcctMethod));
                         command.Parameters.Add(new SqlParameter("DeptID", DeptID));
                         command.Parameters.Add(new SqlParameter("VHCBCode", VHCBCode));
+                        command.Parameters.Add(new SqlParameter("IsMitigationFund", IsMitigationFund));
                         command.Parameters.Add(new SqlParameter("IsRowActive", IsRowActive));
 
                         command.CommandTimeout = 60 * 5;
