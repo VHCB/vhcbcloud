@@ -524,7 +524,7 @@ namespace vhcbcloud
             try
             {
                 if (dt.Rows.Count != 0)
-                {                   
+                {
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
                     //string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
@@ -570,7 +570,7 @@ namespace vhcbcloud
                     {
                         if (txtCommitedProjNum.Text != "")
                         {
-                           
+
 
                             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                             if (dtEPCR.Rows.Count > 0)
@@ -1099,7 +1099,7 @@ namespace vhcbcloud
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, GetUserId(), lbNODS, CRDate );
+                        txtNotes.Text, GetUserId(), lbNODS, CRDate);
                     if (dtPCR.Rows.Count > 0)
                     {
                         pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
@@ -1113,6 +1113,15 @@ namespace vhcbcloud
                                 ProjectCheckRequestData.PCR_Submit_NOD(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
                             }
                         }
+
+                        foreach (ListItem listItem in lbItems.Items)
+                        {
+                            if (listItem.Selected == true)
+                            {
+                                ProjectCheckRequestData.pcr_submit_items(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
+                            }
+                        }
+
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
@@ -1522,6 +1531,20 @@ namespace vhcbcloud
                 bool isApproved = Convert.ToBoolean(((CheckBox)gvQuestionsForApproval.Rows[rowIndex].FindControl("cbApproved")).Checked);
                 int ProjectCheckReqQuestionid = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfProjectCheckReqQuestionID")).Value);
 
+                DataTable dtPCRQuestionsForApproval = new DataTable();
+                dtPCRQuestionsForApproval = ProjectCheckRequestData.GetDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value));
+
+                foreach (DataRow row in dtPCRQuestionsForApproval.Rows)
+                {
+                    if (row["ProjectCheckReqQuestionID"].ToString() == "3" || row["ProjectCheckReqQuestionID"].ToString() == "5")
+                        if (row["StaffID"].ToString() != "")
+                        if (Convert.ToInt32(row["StaffID"].ToString()) == GetUserId())
+                        {
+                                lblErrorMsg.Text = "Same user can't approve both default questions, Please get the question approved from another authorized user";
+                                return;
+                        }
+                }
+
                 ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
 
                 gvQuestionsForApproval.EditIndex = -1;
@@ -1584,7 +1607,7 @@ namespace vhcbcloud
                 {
                     CheckBox cbApproved = (e.Row.FindControl("cbApproved") as CheckBox);
                     Label lblApproved = (e.Row.FindControl("lbleditApproved") as Label);
-                    
+
                     if (lblApproved.Text != "")
                     {
                         if (cbApproved != null)

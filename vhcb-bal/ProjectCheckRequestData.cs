@@ -780,6 +780,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void pcr_submit_items(int ProjectCheckReqId, int lkPCRItems)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
+                command.Parameters.Add(new SqlParameter("lkPCRItems", lkPCRItems));
+                command.CommandText = "pcr_submit_items";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
