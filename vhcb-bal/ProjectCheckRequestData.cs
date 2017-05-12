@@ -211,7 +211,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             catch (Exception ex)
             {
-               return null;
+                return null;
             }
             finally
             {
@@ -712,6 +712,77 @@ namespace VHCBCommon.DataAccessLayer
                     pcr.ProjectCheckReqID = PRCID;
                     pcr.TransID = int.Parse(command.Parameters["@TransID"].Value.ToString());
 
+                    return dtPCRDet;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static DataTable UpdateVoucherNumber(int PCRID, string VoucherNum, DateTime CrDate, int userid)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                DataTable dtPCRDet = null;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("voucherNum", VoucherNum));
+                command.Parameters.Add(new SqlParameter("projectCheckReqId", PCRID));
+                command.Parameters.Add(new SqlParameter("userid", userid));
+                command.Parameters.Add(new SqlParameter("crDate", CrDate));
+                command.CommandText = "UpdateVoucherNumber";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
+                    return dtPCRDet;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static DataTable GetVoucherDet(int PCRID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                DataTable dtPCRDet = null;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("PCRID", PCRID));
+                command.CommandText = "GetVoucherDet";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
                     return dtPCRDet;
                 }
             }

@@ -279,9 +279,11 @@ as
 begin
 --Always include LkPCRQuestions.def=1 If any disbursement from  ProjectCheckReq.Legalreview=1 (entered above), then include LkPCRQuestions.TypeID=7
 
-	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, pcrq.Approved, pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
+	select pcrq.ProjectCheckReqQuestionID, q.Description, pcrq.LkPCRQuestionsID, ui.userid,
+	case when pcrq.Approved = 1 then 'Yes'
+		else 'No' end as Approved , pcrq.Approved as chkApproved, pcrq.Date, --ui.fname+', '+ui.Lname   as staffid ,
 	case when pcrq.Approved != 1 then ''
-		else ui.fname+', '+ui.Lname  end as staffid 
+		else ui.fname+' '+ui.Lname  end as staffid 
 	from ProjectCheckReqQuestions pcrq(nolock) 
 	left join  LkPCRQuestions q(nolock) on pcrq.LkPCRQuestionsID = q.TypeID 
 	left join UserInfo ui on pcrq.StaffID = ui.UserId
@@ -597,3 +599,71 @@ Begin
 	values (@ProjectCheckReqID, @lkPCRItems, 1)
 End
 go
+
+alter procedure UpdateVoucherNumber
+(
+  @voucherNum varchar(10),
+  @crDate datetime,
+  @userId int,
+  @projectCheckReqId int
+)
+as 
+Begin
+	update ProjectCheckReq set [Voucher#] = @vouchernum, paiddate = @crdate, Coordinator = @userid where projectcheckreqid = @projectcheckreqid;
+	
+	select pcrq.projectcheckreqid, pcrq.[Voucher#] as voucherNum, paiddate, pcrq.userid, ui.fname+', '+ui.Lname   as staffid  
+	from projectCheckReq pcrq
+	left join UserInfo ui on pcrq.Coordinator = ui.UserId
+	where pcrq.projectcheckreqid = @projectcheckreqid;
+End
+go
+
+alter procedure GetVoucherDet
+(
+	@pcrId int
+)
+as
+Begin
+	select pcrq.projectcheckreqid, pcrq.[Voucher#] as voucherNum, paiddate, pcrq.userid, ui.fname+', '+ui.Lname   as staffid  
+	from projectCheckReq pcrq
+	left join UserInfo ui on pcrq.Coordinator = ui.UserId
+	where pcrq.projectcheckreqid = @pcrId;
+End
+go
+
+alter procedure GetPCRDetails
+(
+	@ProjectCheckReqId int
+)
+as
+begin
+	select ProjectID, InitDate, LkProgram, LegalReview, 
+			Final, LCB, MatchAmt, LkFVGrantMatch, Notes, UserID 
+	from ProjectCheckReq pcr(nolock)
+	where ProjectCheckReqId = @ProjectCheckReqId
+
+	declare @TransId int
+
+	select @TransId = TransId from Trans(nolock) where ProjectCheckReqId = @ProjectCheckReqId
+
+	select TransId, ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus
+	from trans t(nolock)
+	where ProjectCheckReqId = @ProjectCheckReqId
+
+	select TransId, FundId, LkTransType, Amount
+	from Detail (nolock)
+	where TransId = @TransId
+
+	exec PCR_Trans_Detail_Load @TransId
+	
+	select LKNOD from ProjectCheckReqNOD(nolock) where ProjectCheckReqID = @ProjectCheckReqID
+
+	select ProjectCheckReqID, LkPCRQuestionsID, Approved, Date, StaffID from ProjectCheckReqQuestions(nolock)  where ProjectCheckReqID = @ProjectCheckReqID
+
+	select pa.applicantid from project p join projectapplicant pa on pa.ProjectId = p.ProjectId
+		join projectcheckreq pcr on pcr.ProjectID = p.ProjectId where pa.FinLegal = 1 and pcr.ProjectCheckReqID = @ProjectCheckReqID
+	
+	Select LKCRItems from ProjectCheckReqItems where ProjectCheckReqID = @ProjectCheckReqID
+end
+go
+
