@@ -68,6 +68,7 @@ namespace vhcbcloud
                 BindPCRItemsData();
                 BindPCRQuestions(false);
 
+
                 pnlFund.Visible = false;
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
@@ -85,6 +86,7 @@ namespace vhcbcloud
                 else if (rdBtnSelect.SelectedIndex == 0)
                 {
                     txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    txtCRDate.Text = DateTime.Now.ToShortDateString();
                     ddlProjFilter.Enabled = true;
                 }
             }
@@ -111,6 +113,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -144,6 +147,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -160,6 +164,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
 
         }
@@ -215,6 +220,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPayee: " + ex.Message;
+                lblErrorMsg.Focus();
             }
 
         }
@@ -244,6 +250,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
 
         }
@@ -264,6 +271,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindStatus: " + ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -287,6 +295,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -307,6 +316,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -327,6 +337,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -389,16 +400,18 @@ namespace vhcbcloud
                         btnNewPCR.Visible = false;
                     }
                     else if (lblBalAmt.Text == "$0.00")
-                        btnNewPCR.Visible = true;
+                    { }
                 }
                 else
                 {
                     tblFundDetails.Visible = true;
+
                 }
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = Pagename + ": BindPCRTransDetails: " + ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -419,6 +432,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
         protected void BindPCRItemsData()
@@ -437,6 +451,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -457,6 +472,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -523,7 +539,7 @@ namespace vhcbcloud
             try
             {
                 if (dt.Rows.Count != 0)
-                {                   
+                {
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
                     //string[] tokens = ddlProjFilter.SelectedValue.ToString().Split('|');
@@ -569,7 +585,7 @@ namespace vhcbcloud
                     {
                         if (txtCommitedProjNum.Text != "")
                         {
-                           
+
 
                             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                             if (dtEPCR.Rows.Count > 0)
@@ -599,12 +615,14 @@ namespace vhcbcloud
                         else
                             ClearPCRForm();
                     }
-                    DisplayControls(ddlProgram.SelectedItem.ToString());
+                    if (ddlProgram.SelectedItem != null)
+                        DisplayControls(ddlProgram.SelectedItem.ToString());
                 }
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -620,6 +638,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPCRData: " + ex.Message;
+                lblErrorMsg.Focus();
             }
         }
 
@@ -635,6 +654,7 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPCRData: " + ex.Message;
+                lblErrorMsg.Focus();
             }
 
         }
@@ -648,7 +668,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-
+                lblErrorMsg.Focus();
                 lblErrorMsg.Text = "Exception arised while adding default PCR questions: " + ex.Message;
             }
         }
@@ -661,10 +681,33 @@ namespace vhcbcloud
                 dtPCRQuestionsForApproval = ProjectCheckRequestData.GetDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value));
                 gvQuestionsForApproval.DataSource = dtPCRQuestionsForApproval;
                 gvQuestionsForApproval.DataBind();
+                BindVoucher();
+                int approvals = 0;
+                DataTable dt = new DataTable();
+                dt = ProjectCheckRequestData.GetQuestionsForApproval(int.Parse(this.hfPCRId.Value));
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
+                    {
+                        if (row["approved"].ToString() == "True")
+                        {
+                            approvals += 1;
+                        }
+                    }
+                }
+                if (approvals == dt.Rows.Count)
+                {
+                    pnlVoucherDet.Visible = true;
+                }
+                else
+                {
+                    pnlVoucherDet.Visible = false;
+                    btnNewPCR.Visible = false;
+                }
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -690,7 +733,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: rdBtnSelect_CheckedChanged: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: rdBtnSelect_CheckedChanged: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -841,7 +884,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message; lblErrorMsg.Focus();
             }
 
         }
@@ -1098,7 +1141,7 @@ namespace vhcbcloud
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
                         chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
-                        txtNotes.Text, GetUserId(), lbNODS, CRDate );
+                        txtNotes.Text, GetUserId(), lbNODS, CRDate);
                     if (dtPCR.Rows.Count > 0)
                     {
                         pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
@@ -1112,6 +1155,15 @@ namespace vhcbcloud
                                 ProjectCheckRequestData.PCR_Submit_NOD(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
                             }
                         }
+
+                        foreach (ListItem listItem in lbItems.Items)
+                        {
+                            if (listItem.Selected == true)
+                            {
+                                ProjectCheckRequestData.pcr_submit_items(pcr.ProjectCheckReqID, Convert.ToInt32(listItem.Value));
+                            }
+                        }
+
                         BindTransDate(dtPCR);
                     }
                     lblMessage.Text = "Successfully Saved Check Request";
@@ -1156,7 +1208,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: btnCRSubmit_Click: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: btnCRSubmit_Click: " + ex.Message; lblErrorMsg.Focus();
             }
 
         }
@@ -1252,7 +1304,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -1519,9 +1571,42 @@ namespace vhcbcloud
             {
                 int rowIndex = e.RowIndex;
                 bool isApproved = Convert.ToBoolean(((CheckBox)gvQuestionsForApproval.Rows[rowIndex].FindControl("cbApproved")).Checked);
+                if (!isApproved)
+                {
+                    lblErrorMsg.Text = "No action received. Please select approved inorder to approve.";
+                    return;
+                }
+
                 int ProjectCheckReqQuestionid = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfProjectCheckReqQuestionID")).Value);
 
-                ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                DataTable dtPCRQuestionsForApproval = new DataTable();
+                dtPCRQuestionsForApproval = ProjectCheckRequestData.GetDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value));
+
+                int approvals = 0;
+                foreach (DataRow row in dtPCRQuestionsForApproval.Rows)
+                {
+                    if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
+                    {
+                        if (row["approved"].ToString() == "Yes")
+                        {
+                            approvals += 1;
+                        }
+                    }
+                }
+
+                foreach (DataRow row in dtPCRQuestionsForApproval.Rows)
+                {
+                    if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
+                        if (row["userid"].ToString() != "")
+                            if (Convert.ToInt32(row["userid"].ToString()) == GetUserId() && row["Approved"].ToString() == "Yes")
+                            {
+                                lblErrorMsg.Text = "Same user can't approve both default questions, Please get the question approved from another authorized user";
+                                return;
+                            }
+                }
+
+                if (isApproved)
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
 
                 gvQuestionsForApproval.EditIndex = -1;
                 BindPCRQuestionsForApproval();
@@ -1570,7 +1655,12 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message; lblErrorMsg.Focus();
+            }
+            finally
+            {
+                gvQuestionsForApproval.EditIndex = -1;
+                BindPCRQuestionsForApproval();
             }
         }
 
@@ -1583,7 +1673,7 @@ namespace vhcbcloud
                 {
                     CheckBox cbApproved = (e.Row.FindControl("cbApproved") as CheckBox);
                     Label lblApproved = (e.Row.FindControl("lbleditApproved") as Label);
-                    
+
                     if (lblApproved.Text != "")
                     {
                         if (cbApproved != null)
@@ -1626,7 +1716,7 @@ namespace vhcbcloud
             }
             else
             {
-                lblErrorMsg.Text = "Please select the existing check request date selection.";
+                lblErrorMsg.Text = "Please select the existing check request date selection."; lblErrorMsg.Focus();
                 pnlApprovals.Visible = false;
                 pnlDisbursement.Visible = false;
 
@@ -1776,8 +1866,8 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
-                throw;
+                lblErrorMsg.Text = ex.Message; lblErrorMsg.Focus();
+
             }
         }
 
@@ -1866,7 +1956,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: CR Delete: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: CR Delete: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -1927,6 +2017,9 @@ namespace vhcbcloud
 
                         DataTable dtNOD = new DataTable();
                         dtNOD = ds.Tables[4];
+
+                        DataTable dtItems = new DataTable();
+                        dtItems = ds.Tables[7];
 
                         lblProjName.Text = lblProjectName.Text;
 
@@ -1991,12 +2084,18 @@ namespace vhcbcloud
                                 if (dr["LKNOD"].ToString() == item.Value.ToString())
                                     item.Selected = true;
                         }
+                        foreach (ListItem item in lbItems.Items)
+                        {
+                            foreach (DataRow dr in dtItems.Rows)
+                                if (dr["LKCRItems"].ToString() == item.Value.ToString())
+                                    item.Selected = true;
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: RowDataBound: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: RowDataBound: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -2209,7 +2308,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: CrUpdate: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: CrUpdate: " + ex.Message; lblErrorMsg.Focus();
             }
         }
 
@@ -2226,7 +2325,53 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: Delete detail: " + ex.Message;
+                lblErrorMsg.Text = "ProjectCheckRequest: Delete detail: " + ex.Message; lblErrorMsg.Focus();
+            }
+        }
+
+        protected void BindVoucher()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt = ProjectCheckRequestData.GetVoucherDet(int.Parse(this.hfPCRId.Value));
+                gvVoucher.DataSource = dt;
+                gvVoucher.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: Bind voucher: " + ex.Message; lblErrorMsg.Focus();
+            }
+
+        }
+
+        protected void btnAddVoucher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtCRDate.Text.Trim() != "")
+                {
+                    DateTime dtime;
+                    bool isDateTime = DateTime.TryParse(txtVoucherDt.Text.Trim(), out dtime);
+
+                    if (!isDateTime)
+                    {
+                        lblErrorMsg.Text = "Select valid Check Request Date";
+                        txtVoucherDt.Focus();
+                        return;
+                    }
+                }
+                DataTable dt = new DataTable();
+                dt = ProjectCheckRequestData.UpdateVoucherNumber(int.Parse(this.hfPCRId.Value), txtVoucher.Text, Convert.ToDateTime(txtVoucherDt.Text), GetUserId());
+                gvVoucher.DataSource = dt;
+                gvVoucher.DataBind();
+
+                btnNewPCR.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "ProjectCheckRequest: Add voucher: " + ex.Message;
+                lblErrorMsg.Focus();
             }
         }
     }

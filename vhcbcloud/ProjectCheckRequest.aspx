@@ -44,7 +44,6 @@
                         </asp:Panel>
                         <div class="panel-body">
                             <p class="lblErrMsg">
-                                <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
                                 <asp:Label runat="server" ID="lblMessage" Font-Size="Small"></asp:Label>
                             </p>
                             <table style="width: 100%">
@@ -143,8 +142,7 @@
                                         </asp:DropDownList>
                                     </td>
                                     <td>&nbsp;</td>
-                                    <td>
-                                        &nbsp;</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -195,15 +193,20 @@
                                     <td style="vertical-align: top">&nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px">
                                         <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
                                         &nbsp;<asp:Button ID="btnCrUpdate" runat="server" class="btn btn-info" OnClick="btnCrUpdate_Click" Text="Update" Visible="False" />
+
                                         <br />
+                                        <p class="lblErrMsg">
+                                            <asp:Label ID="lblErrorMsg" runat="server" Font-Size="Small"></asp:Label>
+                                        </p>
                                         <br />
+
                                         <asp:Panel runat="server" ID="pnlFund">
                                             <asp:GridView ID="gvFund" runat="server" AutoGenerateColumns="False"
                                                 Width="95%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
@@ -484,32 +487,20 @@
                                     <td><span class="labelClass">Question :</span></td>
                                     <td>
                                         <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="250px">
-                                        </asp:DropDownList></td>
-                                    <td>
-                                        <%-- <span class="labelClass">Approved By :</span>--%>
-                                    </td>
-                                    <td>
-                                        <%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%>
-                                    </td>
-                                    <td>
-                                        <%--<span class="labelClass">Date :</span>--%>
-                                    </td>
-                                    <td>
-                                        <%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%>
-                                    </td>
+                                        </asp:DropDownList><%-- <span class="labelClass">Approved By :</span>--%><%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%><%--<span class="labelClass">Date :</span>--%><%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="height: 5px"></td>
+                                    <td colspan="2" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6" style="height: 5px">
+                                    <td colspan="2" style="height: 5px">
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6"></td>
+                                    <td colspan="2"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="2">
                                         <br />
                                         <asp:GridView ID="gvQuestionsForApproval" runat="server" AutoGenerateColumns="False"
                                             Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
@@ -556,12 +547,67 @@
                                             <FooterStyle CssClass="footerStyle" />
                                         </asp:GridView>
                                         <br />
-                                        <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
-                                        <br />
                                         <br />
                                     </td>
                                 </tr>
                             </table>
+                            <div class="panel panel-default" runat="server" id="pnlVoucherDet" visible="false">
+                                <div class="panel-heading">Voucher Details</div>
+                                <div class="panel-body">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="height: 19px">
+                                                <span class="labelClass">Voucher #:</span>
+                                            </td>
+                                            <td style="height: 19px">
+                                                <asp:TextBox ID="txtVoucher" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                            </td>
+                                            <td style="height: 19px"><span class="labelClass">Voucher Date:</span></td>
+                                            <td style="height: 19px">
+                                                <asp:TextBox ID="txtVoucherDt" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender ID="txtVoucherDt_CalendarExtender" runat="server" TargetControlID="txtVoucherDt">
+                                                </ajaxToolkit:CalendarExtender>
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <asp:Button ID="btnAddVoucher" runat="server" class="btn btn-info" Text="Submit" OnClick="btnAddVoucher_Click" />
+                                    <br />
+                                    <br />
+                                    <asp:GridView ID="gvVoucher" runat="server" AllowPaging="false" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None" PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <PagerSettings FirstPageText="&amp;lt;" LastPageText="&amp;gt;" Mode="NumericFirstLast" PageButtonCount="5" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <FooterStyle CssClass="footerStyleTotals" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Voucher Date" SortExpression="crdate">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblInitDate" runat="Server" Text='<%# Eval("paiddate", "{0:M-dd-yyyy}")  %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Voucher#" SortExpression="Voucher#">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblVoucher" runat="Server" Text='<%# Eval("vouchernum") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Staff Name" SortExpression="staffid">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblStaffId0" runat="Server" Text='<%# Eval("staffid") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <FooterStyle CssClass="footerStyle" />
+                                    </asp:GridView>
+                                    <br />
+                                </div>
+                            </div>
+                            <br />
+                            <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
+                            <br />
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -627,14 +673,14 @@
         }
         function PopupNewAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
-         };
+        };
 
-         function PopupProjectSearch() {
-             window.open('./projectsearch.aspx')
-         };
+        function PopupProjectSearch() {
+            window.open('./projectsearch.aspx')
+        };
 
-         function PopupExistingAwardSummary() {
-             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        function PopupExistingAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };
 
         //Currency formatter code starts below
@@ -667,42 +713,42 @@
             $('#<%= txtTransDetailAmt.ClientID%>').val(formatter.format(result));
         };
 
-            toEligibleAmtFormatter = value => {
-                const digits = this.getDigitsFromValue(value);
-                const digitsWithPadding = this.padDigits(digits);
+        toEligibleAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
 
-                let result = this.addDecimalToNumber(digitsWithPadding);
+            let result = this.addDecimalToNumber(digitsWithPadding);
 
-                var inputElement = document.getElementById("txtEligibleAmt");
+            var inputElement = document.getElementById("txtEligibleAmt");
 
-                //inputElement.value = "$" + result;
-                $('#<%= txtEligibleAmt.ClientID%>').val(formatter.format(result));
+            //inputElement.value = "$" + result;
+            $('#<%= txtEligibleAmt.ClientID%>').val(formatter.format(result));
         };
 
-            getDigitsFromValue = (value) => {
-                return value.toString().replace(/\D/g, '');
-            };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
 
-            padDigits = digits => {
-                const desiredLength = 3;
-                const actualLength = digits.length;
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
 
-                if (actualLength >= desiredLength) {
-                    return digits;
-                }
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
 
-                const amountToAdd = desiredLength - actualLength;
-                const padding = '0'.repeat(amountToAdd);
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
 
-                return padding + digits;
-            };
-            addDecimalToNumber = number => {
-                const centsStartingPosition = number.length - 2;
-                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-                const cents = number.substring(centsStartingPosition);
-                return `${dollars}.${cents}`;
-            };
-            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
 
 

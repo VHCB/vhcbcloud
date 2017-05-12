@@ -211,7 +211,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             catch (Exception ex)
             {
-               return null;
+                return null;
             }
             finally
             {
@@ -725,6 +725,77 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataTable UpdateVoucherNumber(int PCRID, string VoucherNum, DateTime CrDate, int userid)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                DataTable dtPCRDet = null;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("voucherNum", VoucherNum));
+                command.Parameters.Add(new SqlParameter("projectCheckReqId", PCRID));
+                command.Parameters.Add(new SqlParameter("userid", userid));
+                command.Parameters.Add(new SqlParameter("crDate", CrDate));
+                command.CommandText = "UpdateVoucherNumber";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
+                    return dtPCRDet;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static DataTable GetVoucherDet(int PCRID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                DataTable dtPCRDet = null;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("PCRID", PCRID));
+                command.CommandText = "GetVoucherDet";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
+                    return dtPCRDet;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -763,6 +834,33 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
                 command.Parameters.Add(new SqlParameter("LKNOD", LKNOD));
                 command.CommandText = "PCR_Submit_NOD";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void pcr_submit_items(int ProjectCheckReqId, int lkPCRItems)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
+                command.Parameters.Add(new SqlParameter("lkPCRItems", lkPCRItems));
+                command.CommandText = "pcr_submit_items";
                 using (connection)
                 {
                     connection.Open();
