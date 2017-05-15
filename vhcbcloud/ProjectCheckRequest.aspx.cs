@@ -405,7 +405,7 @@ namespace vhcbcloud
                 else
                 {
                     tblFundDetails.Visible = true;
-
+                    EnableButton(btnPCRTransDetails);
                 }
             }
             catch (Exception ex)
@@ -687,13 +687,11 @@ namespace vhcbcloud
                 dt = ProjectCheckRequestData.GetQuestionsForApproval(int.Parse(this.hfPCRId.Value));
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
+                    if (row["approved"].ToString() == "True")
                     {
-                        if (row["approved"].ToString() == "True")
-                        {
-                            approvals += 1;
-                        }
+                        approvals += 1;
                     }
+
                 }
                 if (approvals == dt.Rows.Count)
                 {
@@ -1578,11 +1576,14 @@ namespace vhcbcloud
                 }
 
                 int ProjectCheckReqQuestionid = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfProjectCheckReqQuestionID")).Value);
+                int lkPCRQId = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfLKPCRQId")).Value);
+
 
                 DataTable dtPCRQuestionsForApproval = new DataTable();
                 dtPCRQuestionsForApproval = ProjectCheckRequestData.GetDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value));
 
-                int approvals = 0;
+
+                int approvals = 0, approvedUser = 0;
                 foreach (DataRow row in dtPCRQuestionsForApproval.Rows)
                 {
                     if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
@@ -1590,27 +1591,25 @@ namespace vhcbcloud
                         if (row["approved"].ToString() == "Yes")
                         {
                             approvals += 1;
+                            if (row["userid"].ToString() != "")
+                                approvedUser = Convert.ToInt32(row["userid"].ToString());
                         }
                     }
                 }
 
                 foreach (DataRow row in dtPCRQuestionsForApproval.Rows)
                 {
-                    if (row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5")
+                    if ((row["LkPCRQuestionsID"].ToString() == "3" || row["LkPCRQuestionsID"].ToString() == "5") && (row["LkPCRQuestionsID"].ToString() == lkPCRQId.ToString()))
                         if (row["userid"].ToString() != "")
-                            if (Convert.ToInt32(row["userid"].ToString()) == GetUserId() && row["Approved"].ToString() == "Yes")
+                            if (approvedUser == GetUserId() && row["Approved"].ToString() == "No" && approvals == 1)
                             {
-                                lblErrorMsg.Text = "Same user can't approve both default questions, Please get the question approved from another authorized user";
+                                lblErrorMsg.Text = "You cannot approve BOTH the 1st and 2nd questions";
                                 return;
                             }
                 }
 
                 if (isApproved)
                     ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
-
-                gvQuestionsForApproval.EditIndex = -1;
-                BindPCRQuestionsForApproval();
-
 
 
                 //if (((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")
