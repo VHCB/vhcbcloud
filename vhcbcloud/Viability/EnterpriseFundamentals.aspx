@@ -100,7 +100,7 @@
                                     <tr>
                                         <td style="width: 14%" colspan="2"><span class="labelClass">How did you hear about the Viability Program?</span></td>
                                         <td style="width: 19%">
-                                            <asp:DropDownList ID="DropDownList1" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            <asp:DropDownList ID="ddlHearViability" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 11%"></td>
@@ -127,7 +127,7 @@
                                     <tr>
                                         <td style="width: 14%"><span class="labelClass">Project Description</span></td>
                                         <td colspan="5">
-                                            <asp:TextBox ID="txtProjectDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                            <asp:TextBox ID="txtProjectDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -136,7 +136,7 @@
                                     <tr>
                                         <td style="width: 14%"><span class="labelClass">Business Description</span></td>
                                         <td colspan="5">
-                                            <asp:TextBox ID="txtBusinessDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                            <asp:TextBox ID="txtBusinessDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -151,7 +151,7 @@
                             </asp:Panel>
                         </div>
 
-                        <div class="panel-width" runat="server" id="dvNewGrantMatch">
+                        <div class="panel-width" runat="server" id="dvNewFinJobs" visible="false">
                             <div class="panel panel-default ">
                                 <div class="panel-heading ">
                                     <table style="width: 100%;">
@@ -223,7 +223,23 @@
                                                 </td>
                                                 <td style="width: 139px"><span class="labelClass">Total Full-time </span></td>
                                                 <td>
-                                                    <span class="labelClass">100</span>
+                                                    <span class="labelClass" id="spnTotalFulltime" runat="server"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 167px"><span class="labelClass">Active</span></td>
+                                                <td style="width: 167px">
+                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" />
+                                                </td>
+                                                <td style="width: 167px">
+                                                </td>
+                                                <td style="width: 147px">
+                                                </td>
+                                                <td style="width: 139px"></td>
+                                                <td>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -237,18 +253,12 @@
                                     </asp:Panel>
                                 </div>
 
-                                <%--<div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
-                                    <div id="dvWarning" runat="server">
-                                        <p class="bg-info">
-                                            &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                                            <asp:Label runat="server" ID="lblWarning" class="labelClass"></asp:Label>
-                                        </p>
-                                    </div>
+                                <div class="panel-body" id="dvFiniceJobsGrid" runat="server">
                                     <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
-                                        <asp:GridView ID="gvHousingSources" runat="server" AutoGenerateColumns="False"
+                                        <asp:GridView ID="gvFiniceJobs" runat="server" AutoGenerateColumns="False"
                                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                            OnRowEditing="gvHousingSources_RowEditing" OnRowCancelingEdit="gvHousingSources_RowCancelingEdit" OnRowUpdating="gvHousingSources_RowUpdating">
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
+                                            OnRowEditing="gvFiniceJobs_RowEditing" OnRowCancelingEdit="gvFiniceJobs_RowCancelingEdit" OnRowDataBound="gvFiniceJobs_RowDataBound">
                                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                             <HeaderStyle CssClass="headerStyle" />
@@ -256,32 +266,27 @@
                                             <RowStyle CssClass="rowStyle" />
                                             <FooterStyle CssClass="footerStyleTotals" />
                                             <Columns>
-                                                <asp:TemplateField HeaderText="HouseSourceID" Visible="false">
+                                                <asp:TemplateField HeaderText="EnterFinancialJobsID" Visible="false">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblHouseSourceID" runat="Server" Text='<%# Eval("HouseSourceID") %>' />
+                                                        <asp:Label ID="lblEnterFinancialJobsID" runat="Server" Text='<%# Eval("EnterFinancialJobsID") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="&nbsp;Source">
+                                                <asp:TemplateField HeaderText="Milestone">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblSourceName" runat="Server" Text='<%# Eval("SourceName") %>' />
+                                                        <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("Milestone") %>' />
                                                     </ItemTemplate>
-                                                    <FooterTemplate>
-                                                        Grand Total :
-                                                    </FooterTemplate>
-                                                    <ItemStyle Width="500px" />
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Total">
+                                                 <asp:TemplateField HeaderText="MSDate">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
+                                                        <asp:Label ID="lblMSDate" runat="Server" Text='<%# Eval("MSDate", "{0:MM/dd/yyyy}") %>' />
                                                     </ItemTemplate>
-                                                    <EditItemTemplate>
-                                                        <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
-                                                    </EditItemTemplate>
-                                                    <FooterTemplate>
-                                                        <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
-                                                    </FooterTemplate>
-                                                    <ItemStyle Width="200px" />
                                                 </asp:TemplateField>
+                                                 <asp:TemplateField HeaderText="Year">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblYear" runat="Server" Text='<%# Eval("Year") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                               
                                                 <asp:TemplateField HeaderText="Active">
                                                     <ItemTemplate>
                                                         <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
@@ -294,7 +299,7 @@
                                             </Columns>
                                         </asp:GridView>
                                     </asp:Panel>
-                                </div>--%>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -303,21 +308,57 @@
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
-
+    <asp:HiddenField ID="hfEnterFundamentalID" runat="server" />
+    <asp:HiddenField ID="hfProjectProgram" runat="server" />
+    <asp:HiddenField ID="hfEnterFinancialJobsID" runat="server" />
+    
 
     <script language="javascript">
         $(document).ready(function () {
+             $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+             });
+
+             $('#<%= txtNetIncome.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+             });
+
+             $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+             });
+
             $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 
             $('#<%= cbAddMilestone.ClientID%>').click(function () {
                 $('#<%= dvMilestoneForm.ClientID%>').toggle(this.checked);
-                }).change();
+            }).change();
+
+             $('#<%= txtFamilyFTEmp.ClientID%>').blur(function () {
+                CalculateTotalFT();
+             });
+            $('#<%= txtNonFamilyFTEmp.ClientID%>').blur(function () {
+                CalculateTotalFT();
+            });
         });
 
+        function CalculateTotalFT() {
+            var FamilyFT = parseInt($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
+            var NonFamilyFT = parseInt($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
 
-            function PopupAwardSummary() {
-                window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+            if (isNaN(FamilyFT)) {
+                var FamilyFT = 0;
+            }
+
+            if (isNaN(NonFamilyFT)) {
+                var NonFamilyFT = 0;
+            }
+
+            var Total = FamilyFT - NonFamilyFT;
+            $('#<%= spnTotalFulltime.ClientID%>').text(Total);
         };
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+            };
     </script>
 </asp:Content>
 

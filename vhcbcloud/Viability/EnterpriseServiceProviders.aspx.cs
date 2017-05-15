@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
 {
@@ -30,6 +32,7 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                BindEntProvDataGrid();
             }
         }
 
@@ -140,11 +143,173 @@ namespace vhcbcloud.Viability
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
+            BindEntProvDataGrid();
         }
 
         protected void btnAddServiceProviders_Click(object sender, EventArgs e)
         {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
 
+                if (IsFormDataValid())
+                {
+                    if (btnAddServiceProviders.Text.ToLower() == "update")
+                    {
+                        int EnterServiceProvID = DataUtils.GetInt(hfEnterServiceProvID.Value);
+                        EnterpriseServiceProvidersData.UpdateEnterpriseServProviderData(EnterServiceProvID,
+                            txtYear.Text, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtNotes.Text, chkActive.Checked);
+
+                        gvEntProvData.EditIndex = -1;
+
+                        LogMessage("Enterprise Service Provider Data updated successfully");
+                    }
+                    else //add
+                    {
+                        ViabilityMaintResult objViabilityMaintResult = EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
+                            txtYear.Text, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtNotes.Text);
+
+
+                        if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                            LogMessage("Enterprise Service Provider Data already exist as in-active");
+                        else if (objViabilityMaintResult.IsDuplicate)
+                            LogMessage("Enterprise Service Provider Data already exist");
+                        else
+                            LogMessage("Enterprise Service Provider Data added successfully");
+                    }
+                    ClearEntProvDataForm();
+                    BindEntProvDataGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddServiceProviders_Click", "", ex.Message);
+            }
+        }
+
+        private bool IsFormDataValid()
+        {
+            if (txtYear.Text.Trim() == "")
+            {
+                LogMessage("Enter Year");
+                txtYear.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void BindEntProvDataGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseServiceProvidersData.GetEnterpriseServProviderDataList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvEntProvDataGrid.Visible = true;
+                    gvEntProvData.DataSource = dt;
+                    gvEntProvData.DataBind();
+                }
+                else
+                {
+                    dvEntProvDataGrid.Visible = false;
+                    gvEntProvData.DataSource = null;
+                    gvEntProvData.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindEntProvDataGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvEntProvData_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddServiceProviders.Text = "Update";
+                    cbAddYear.Checked = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[0].Visible = false;
+
+                        Label lblEnterServiceProvID = e.Row.FindControl("lblEnterServiceProvID") as Label;
+                        DataRow dr = EnterpriseServiceProvidersData.GetEnterpriseServProviderDataById(DataUtils.GetInt(lblEnterServiceProvID.Text));
+
+                        hfEnterServiceProvID.Value = lblEnterServiceProvID.Text;
+
+                        txtYear.Text = dr["Year"].ToString() ?? "";
+                        txtBusPlans.Text = dr["BusPlans"].ToString() ?? "";
+                        txtBusPlanProjCost.Text = dr["BusPlanProjCost"].ToString() ?? "";
+                        txtCashFlows.Text = dr["CashFlows"].ToString() ?? "";
+                        txtCashFlowProjCost.Text = dr["CashFlowProjCost"].ToString() ?? "";
+                        txtYr2Followup.Text = dr["Yr2Followup"].ToString() ?? "";
+                        txtYr2FollowUpProjCost.Text = dr["Yr2FollowUpProjCost"].ToString() ?? "";
+                        txtAddEnrollees.Text = dr["AddEnrollees"].ToString() ?? "";
+                        txtAddEnrolleeProjCost.Text = dr["AddEnrolleeProjCost"].ToString() ?? "";
+                        txtWorkshopsEvents.Text = dr["WorkshopsEvents"].ToString() ?? "";
+                        txtWorkShopEventProjCost.Text = dr["WorkShopEventProjCost"].ToString() ?? "";
+                        txtNotes.Text = dr["Notes"].ToString() ?? "";
+
+                        chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        chkActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvEntProvData_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvEntProvData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvEntProvData.EditIndex = -1;
+            BindEntProvDataGrid();
+            ClearEntProvDataForm();
+            btnAddServiceProviders.Text = "Submit";
+        }
+
+        private void ClearEntProvDataForm()
+        {
+            txtYear.Text = "";
+            txtBusPlans.Text = "";
+            txtBusPlanProjCost.Text = "";
+            txtCashFlows.Text = "";
+            txtCashFlowProjCost.Text = "";
+            txtYr2Followup.Text = "";
+            txtYr2FollowUpProjCost.Text = "";
+            txtAddEnrollees.Text = "";
+            txtAddEnrolleeProjCost.Text = "";
+            txtWorkshopsEvents.Text = "";
+            txtWorkShopEventProjCost.Text = "";
+            txtNotes.Text = "";
+
+            cbAddYear.Checked = false;
+            chkActive.Enabled = false;
+
+        }
+
+        protected void gvEntProvData_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvEntProvData.EditIndex = e.NewEditIndex;
+            BindEntProvDataGrid();
         }
     }
 }

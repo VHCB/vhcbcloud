@@ -282,6 +282,7 @@
     <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ConservationSummary.sql" />
+    <Content Include="SQL\EnterpriseFundamentals.sql" />
     <Content Include="SQL\EntityMaintenance.sql" />
     <Content Include="SQL\EntityNotes.sql" />
     <Content Include="SQL\Financialfunddetails.sql" />

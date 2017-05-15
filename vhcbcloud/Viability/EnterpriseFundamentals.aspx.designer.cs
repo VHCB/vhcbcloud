@@ -193,13 +193,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.DropDownList ddlLeadAdvisor;
         
         /// <summary>
-        /// DropDownList1 control.
+        /// ddlHearViability control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlHearViability;
         
         /// <summary>
         /// txtYearMangBusiness control.
@@ -238,13 +238,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Button btnAddPlanInfo;
         
         /// <summary>
-        /// dvNewGrantMatch control.
+        /// dvNewFinJobs control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewGrantMatch;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewFinJobs;
         
         /// <summary>
         /// cbAddMilestone control.
@@ -355,6 +355,24 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNonFamilyFTEmp;
         
         /// <summary>
+        /// spnTotalFulltime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
+        
+        /// <summary>
+        /// chkActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkActive;
+        
+        /// <summary>
         /// btnAddMilestone control.
         /// </summary>
         /// <remarks>
@@ -364,6 +382,33 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Button btnAddMilestone;
         
         /// <summary>
+        /// dvFiniceJobsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvFiniceJobsGrid;
+        
+        /// <summary>
+        /// Panel9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel9;
+        
+        /// <summary>
+        /// gvFiniceJobs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvFiniceJobs;
+        
+        /// <summary>
         /// hfProjectId control.
         /// </summary>
         /// <remarks>
@@ -371,5 +416,32 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfEnterFundamentalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEnterFundamentalID;
+        
+        /// <summary>
+        /// hfProjectProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectProgram;
+        
+        /// <summary>
+        /// hfEnterFinancialJobsID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEnterFinancialJobsID;
     }
 }
