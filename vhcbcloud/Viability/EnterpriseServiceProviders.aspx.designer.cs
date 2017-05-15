@@ -184,94 +184,94 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtYear;
         
         /// <summary>
-        /// TextBox1 control.
+        /// txtBusPlans control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtBusPlans;
         
         /// <summary>
-        /// txtCostPerProject control.
+        /// txtBusPlanProjCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCostPerProject;
+        protected global::System.Web.UI.WebControls.TextBox txtBusPlanProjCost;
         
         /// <summary>
-        /// TextBox2 control.
+        /// txtCashFlows control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txtCashFlows;
         
         /// <summary>
-        /// TextBox3 control.
+        /// txtCashFlowProjCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtCashFlowProjCost;
         
         /// <summary>
-        /// TextBox4 control.
+        /// txtYr2Followup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox txtYr2Followup;
         
         /// <summary>
-        /// TextBox5 control.
+        /// txtYr2FollowUpProjCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox txtYr2FollowUpProjCost;
         
         /// <summary>
-        /// TextBox6 control.
+        /// txtAddEnrollees control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox6;
+        protected global::System.Web.UI.WebControls.TextBox txtAddEnrollees;
         
         /// <summary>
-        /// TextBox7 control.
+        /// txtAddEnrolleeProjCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox7;
+        protected global::System.Web.UI.WebControls.TextBox txtAddEnrolleeProjCost;
         
         /// <summary>
-        /// TextBox8 control.
+        /// txtWorkshopsEvents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox8;
+        protected global::System.Web.UI.WebControls.TextBox txtWorkshopsEvents;
         
         /// <summary>
-        /// TextBox9 control.
+        /// txtWorkShopEventProjCost control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox9;
+        protected global::System.Web.UI.WebControls.TextBox txtWorkShopEventProjCost;
         
         /// <summary>
         /// txtNotes control.
@@ -283,6 +283,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNotes;
         
         /// <summary>
+        /// chkActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkActive;
+        
+        /// <summary>
         /// btnAddServiceProviders control.
         /// </summary>
         /// <remarks>
@@ -292,6 +301,33 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Button btnAddServiceProviders;
         
         /// <summary>
+        /// dvEntProvDataGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntProvDataGrid;
+        
+        /// <summary>
+        /// Panel9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel9;
+        
+        /// <summary>
+        /// gvEntProvData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvEntProvData;
+        
+        /// <summary>
         /// hfProjectId control.
         /// </summary>
         /// <remarks>
@@ -299,5 +335,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfEnterServiceProvID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEnterServiceProvID;
     }
 }

@@ -80,7 +80,7 @@
                                     <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass">Year</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px"></td>
                                         <td></td>
@@ -91,107 +91,119 @@
                                     <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass"># Business plans/Year |  Projects</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="TextBox1" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtBusPlans" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px">
-                                            <span class="labelClass"> Cost per project
+                                            <span class="labelClass">Cost per project
                                             </span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtCostPerProject" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtBusPlanProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass"># Cash Flow/Short Term Year |  project</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="TextBox2" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtCashFlows" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px">
-                                            <span class="labelClass"> Cost per project
+                                            <span class="labelClass">Cost per project
                                             </span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="TextBox3" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtCashFlowProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass"># Year 2 Follow-ups</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="TextBox4" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtYr2Followup" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px">
-                                            <span class="labelClass"> Cost per project
+                                            <span class="labelClass">Cost per project
                                             </span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="TextBox5" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtYr2FollowUpProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass"># Additional Enrollee Projects</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="TextBox6" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddEnrollees" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px">
-                                            <span class="labelClass"> Cost per project
+                                            <span class="labelClass">Cost per project
                                             </span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="TextBox7" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAddEnrolleeProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass"># Workshops / Special Events</span></td>
                                         <td class="modal-sm" style="width: 164px">
-                                            <asp:TextBox ID="TextBox8" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtWorkshopsEvents" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 175px">
-                                            <span class="labelClass"> Cost per project
+                                            <span class="labelClass">Cost per project
                                             </span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="TextBox9" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtWorkShopEventProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td class="modal-sm" style="width: 250px"><span class="labelClass">Notes</span></td>
                                         <td class="modal-sm" style="width: 164px" colspan="3">
                                             <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" style="height: 5px">
-                                            <asp:Button ID="btnAddServiceProviders" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddServiceProviders_Click"  />
+                                        <td colspan="4" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="modal-sm" style="width: 250px"><span class="labelClass">Active</span></td>
+                                        <td class="modal-sm" style="width: 164px" colspan="5">
+                                            <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" />
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
+                                        <td colspan="4" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" style="height: 5px">
+                                            <asp:Button ID="btnAddServiceProviders" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddServiceProviders_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="4" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
                         </div>
 
-                        <%--<div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
+                        <div class="panel-body" id="dvEntProvDataGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvHousingSources" runat="server" AutoGenerateColumns="False"
+                                <asp:GridView ID="gvEntProvData" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                     OnRowEditing="gvHousingSources_RowEditing" OnRowCancelingEdit="gvHousingSources_RowCancelingEdit" OnRowUpdating="gvHousingSources_RowUpdating">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
+                                    OnRowEditing="gvEntProvData_RowEditing" OnRowCancelingEdit="gvEntProvData_RowCancelingEdit" OnRowDataBound="gvEntProvData_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -199,32 +211,27 @@
                                     <RowStyle CssClass="rowStyle" />
                                     <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
-                                        <asp:TemplateField HeaderText="HouseSourceID" Visible="false">
+                                        <asp:TemplateField HeaderText="EnterServiceProvID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblHouseSourceID" runat="Server" Text='<%# Eval("HouseSourceID") %>' />
+                                                <asp:Label ID="lblEnterServiceProvID" runat="Server" Text='<%# Eval("EnterServiceProvID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="&nbsp;Source">
+                                        <asp:TemplateField HeaderText="Year">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblSourceName" runat="Server" Text='<%# Eval("SourceName") %>' />
+                                                <asp:Label ID="lblYear" runat="Server" Text='<%# Eval("Year") %>' />
                                             </ItemTemplate>
-                                            <FooterTemplate>
-                                                Grand Total :
-                                            </FooterTemplate>
-                                            <ItemStyle Width="500px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total">
+                                        <asp:TemplateField HeaderText="BusPlans">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
+                                                <asp:Label ID="lblBusPlans" runat="Server" Text='<%# Eval("BusPlans") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                             <FooterTemplate>
-                                            <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
-                                        </FooterTemplate>
-                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="BusPlanProjCost">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblBusPlanProjCost" runat="Server" Text='<%# Eval("BusPlanProjCost") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
@@ -237,21 +244,42 @@
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
-                        </div>--%>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
-
+    <asp:HiddenField ID="hfEnterServiceProvID" runat="server" />
+    
     <script language="javascript">
         $(document).ready(function () {
-             $('#<%= dvServiceYearForm.ClientID%>').toggle($('#<%= cbAddYear.ClientID%>').is(':checked'));
+            $('#<%= dvServiceYearForm.ClientID%>').toggle($('#<%= cbAddYear.ClientID%>').is(':checked'));
 
             $('#<%= cbAddYear.ClientID%>').click(function () {
                 $('#<%= dvServiceYearForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= txtBusPlanProjCost.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtBusPlanProjCost.ClientID%>').val(), $('#<%= txtBusPlanProjCost.ClientID%>'));
+            });
+
+            $('#<%= txtCashFlowProjCost.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtCashFlowProjCost.ClientID%>').val(), $('#<%= txtCashFlowProjCost.ClientID%>'));
+            });
+
+            $('#<%= txtYr2FollowUpProjCost.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtYr2FollowUpProjCost.ClientID%>').val(), $('#<%= txtYr2FollowUpProjCost.ClientID%>'));
+            });
+
+            $('#<%= txtAddEnrolleeProjCost.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtAddEnrolleeProjCost.ClientID%>').val(), $('#<%= txtAddEnrolleeProjCost.ClientID%>'));
+            });
+
+            $('#<%= txtWorkShopEventProjCost.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtWorkShopEventProjCost.ClientID%>').val(), $('#<%= txtWorkShopEventProjCost.ClientID%>'));
+            });
         });
 
 
