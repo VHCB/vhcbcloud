@@ -411,7 +411,7 @@ namespace vhcbcloud.Viability
                         txtFamilyFTEmp.Text = dr["FamilyEmp"].ToString() ?? "";
                         txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
 
-                        spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) - DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
+                        spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) + DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
 
                         chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         chkActive.Enabled = true;

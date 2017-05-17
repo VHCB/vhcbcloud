@@ -353,7 +353,7 @@
                 var NonFamilyFT = 0;
             }
 
-            var Total = FamilyFT - NonFamilyFT;
+            var Total = FamilyFT + NonFamilyFT;
             $('#<%= spnTotalFulltime.ClientID%>').text(Total);
         };
         function PopupAwardSummary() {

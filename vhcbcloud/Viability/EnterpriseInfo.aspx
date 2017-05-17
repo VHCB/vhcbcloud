@@ -59,6 +59,103 @@
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvProduct">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Products</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddProduct" runat="server" Text="Add New Product" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvProductForm">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="modal-sm" style="width: 144px"><span class="labelClass">Products</span></td>
+                                        <td class="modal-sm" style="width: 164px">
+                                            <asp:DropDownList ID="ddlProducts" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 97px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 173px">
+                                            <asp:TextBox ID="txtStartDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtStartDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 58px"><span class="labelClass">Active</span></td>
+                                        <td><asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px">
+                                            <asp:Button ID="btnAddProducts" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProducts_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvProductsGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvProducts" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
+                                    OnRowEditing="gvProducts_RowEditing" OnRowCancelingEdit="gvProducts_RowCancelingEdit"
+                                    OnRowUpdating="gvProducts_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="EnterpriseProductsID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEnterpriseProductsID" runat="Server" Text='<%# Eval("EnterpriseProductsID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Product">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProduct" runat="Server" Text='<%# Eval("Product") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Start Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblStartDate" runat="Server" Text='<%# Eval("StartDate",  "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtGridStartDate" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("StartDate",  "{0:MM/dd/yyyy}") %>'></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtGridStartDate">
+                                                </ajaxToolkit:CalendarExtender>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -67,7 +164,11 @@
 
     <script language="javascript">
         $(document).ready(function () {
+            $('#<%= dvProductForm.ClientID%>').toggle($('#<%= cbAddProduct.ClientID%>').is(':checked'));
 
+            $('#<%= cbAddProduct.ClientID%>').click(function () {
+                $('#<%= dvProductForm.ClientID%>').toggle(this.checked);
+            }).change();
         });
 
 

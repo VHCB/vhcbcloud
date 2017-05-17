@@ -166,15 +166,6 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel8;
         
         /// <summary>
-        /// ddlMilestone control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMilestone;
-        
-        /// <summary>
         /// ddlFYGrantRound control.
         /// </summary>
         /// <remarks>
@@ -193,13 +184,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtProjectTitle;
         
         /// <summary>
-        /// txtProjDesc control.
+        /// txtProjectDesc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProjDesc;
+        protected global::System.Web.UI.WebControls.TextBox txtProjectDesc;
         
         /// <summary>
         /// txtProjCost control.
@@ -283,6 +274,33 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Button btnAddMatchDesc;
         
         /// <summary>
+        /// dvGrantMatchGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvGrantMatchGrid;
+        
+        /// <summary>
+        /// Panel4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel4;
+        
+        /// <summary>
+        /// gvGrantMatch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvGrantMatch;
+        
+        /// <summary>
         /// dvGrantAward control.
         /// </summary>
         /// <remarks>
@@ -310,13 +328,22 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
-        /// TextBox5 control.
+        /// txtAwardAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox txtAwardAmount;
+        
+        /// <summary>
+        /// spnLevFunds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnLevFunds;
         
         /// <summary>
         /// txtAwardDescription control.
@@ -328,13 +355,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtAwardDescription;
         
         /// <summary>
-        /// txtNotes control.
+        /// txtComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNotes;
+        protected global::System.Web.UI.WebControls.TextBox txtComments;
         
         /// <summary>
         /// btnUpdateGrantAward control.
@@ -353,5 +380,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfEnterImpGrantID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEnterImpGrantID;
     }
 }

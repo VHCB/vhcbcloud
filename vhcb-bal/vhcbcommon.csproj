@@ -86,6 +86,8 @@
     <Compile Include="TabsData.cs" />
     <Compile Include="UserSecurityData.cs" />
     <Compile Include="Viability\EnterpriseFundamentalsData.cs" />
+    <Compile Include="Viability\EnterpriseImpGrantData.cs" />
+    <Compile Include="Viability\EnterpriseInfoData.cs" />
     <Compile Include="Viability\EnterpriseServiceProvidersData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
