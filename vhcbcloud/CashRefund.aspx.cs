@@ -815,6 +815,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = true;
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
+                Response.Redirect("cashrefund.aspx");
             }
             else
             {
