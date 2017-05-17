@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
 {
@@ -30,6 +31,8 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+
+                BindProductGrid();
             }
         }
 
@@ -140,6 +143,86 @@ namespace vhcbcloud.Viability
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
+            BindProductGrid();
+        }
+
+        protected void btnAddProducts_Click(object sender, EventArgs e)
+        {
+            if (ddlProducts.SelectedIndex == 0)
+            {
+                LogMessage("Select Product");
+                ddlProducts.Focus();
+                return;
+            }
+
+            ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseProducts(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlProducts.SelectedValue.ToString()), DataUtils.GetDate(txtStartDate.Text));
+
+            ddlProducts.SelectedIndex = -1;
+            cbAddProduct.Checked = false;
+
+            BindProductGrid();
+
+            if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                LogMessage("Product already exist as in-active");
+            else if (objViabilityMaintResult.IsDuplicate)
+                LogMessage("Product already exist");
+            else
+                LogMessage("New Product added successfully");
+
+        }
+
+        protected void gvProducts_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProducts.EditIndex = e.NewEditIndex;
+            BindProductGrid();
+        }
+
+        private void BindProductGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseInfoData.GetEnterpriseProductsList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvProductsGrid.Visible = true;
+                    gvProducts.DataSource = dt;
+                    gvProducts.DataBind();
+                }
+                else
+                {
+                    dvProductsGrid.Visible = false;
+                    gvProducts.DataSource = null;
+                    gvProducts.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProductGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvProducts_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvProducts.EditIndex = -1;
+            BindProductGrid();
+        }
+
+        protected void gvProducts_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterpriseProductsID = DataUtils.GetInt(((Label)gvProducts.Rows[rowIndex].FindControl("lblEnterpriseProductsID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvProducts.Rows[rowIndex].FindControl("chkActive")).Checked);
+            DateTime StartDate = DataUtils.GetDate(((TextBox)gvProducts.Rows[rowIndex].FindControl("txtGridStartDate")).Text);
+
+            EnterpriseInfoData.UpdateEnterpriseProducts(EnterpriseProductsID, StartDate, RowIsActive);
+            gvProducts.EditIndex = -1;
+
+            BindProductGrid();
+
+            LogMessage("Product updated successfully");
         }
     }
 }

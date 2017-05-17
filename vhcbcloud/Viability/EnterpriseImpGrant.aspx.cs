@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
 {
@@ -30,6 +32,47 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                LoadForm();
+            }
+        }
+
+        private void LoadForm()
+        {
+            
+            DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
+            if (drEntImpGrant != null)
+            {
+                hfEnterImpGrantID.Value = drEntImpGrant["EnterImpGrantID"].ToString();
+                PopulateDropDown(ddlFYGrantRound, drEntImpGrant["FYGrantRound"].ToString());
+                txtProjectTitle.Text = drEntImpGrant["ProjTitle"].ToString();
+                txtProjectDesc.Text = drEntImpGrant["ProjDesc"].ToString();
+                txtProjCost.Text = drEntImpGrant["ProjCost"].ToString();
+                txtAmountReq.Text = drEntImpGrant["Request"].ToString();
+                txtAwardAmount.Text = drEntImpGrant["AwardAmt"].ToString();
+                txtAwardDescription.Text = drEntImpGrant["AwardDesc"].ToString();
+                spnLevFunds.InnerHtml = (DataUtils.GetDecimal(drEntImpGrant["ProjCost"].ToString()) - DataUtils.GetDecimal(drEntImpGrant["AwardAmt"].ToString())).ToString();
+                txtComments.Text = drEntImpGrant["Comments"].ToString();
+                
+                btnAddGrantApplication.Text = "Update";
+                dvGrantAward.Visible = true;
+                BindGrantMatchGrid();
+            }
+            else
+            {
+                btnAddGrantApplication.Text = "Add";
+                dvGrantAward.Visible = false;
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
             }
         }
 
@@ -65,7 +108,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-            BindLookUP(ddlMatchDescription, 214);
+            BindLookUP(ddlMatchDescription, 216);//214
             BindLookUP(ddlFYGrantRound, 220);
         }
 
@@ -141,21 +184,138 @@ namespace vhcbcloud.Viability
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
+            BindGrantMatchGrid();
         }
 
         protected void btnAddGrantApplication_Click(object sender, EventArgs e)
         {
-            dvGrantAward.Visible = true;
+            UpdateForm();
         }
 
-        protected void btnAddMatchDesc_Click(object sender, EventArgs e)
+        private void UpdateForm()
         {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
 
+                if (btnAddGrantApplication.Text.ToLower() == "update" || btnUpdateGrantAward.Text.ToUpper() == "update")
+                {
+                    int EnterImpGrantID = DataUtils.GetInt(hfEnterImpGrantID.Value);
+                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                        txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtAwardDescription.Text,
+                        DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtComments.Text, true);
+
+                    LogMessage("Grant Application updated successfully");
+                }
+                else //add
+                {
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                        txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtAwardDescription.Text,
+                        DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtComments.Text);
+
+                    if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                        LogMessage("Grant Application already exist as in-active");
+                    else if (objViabilityMaintResult.IsDuplicate)
+                        LogMessage("Grant Application already exist");
+                    else
+                        LogMessage("Grant Application added successfully");
+                }
+                LoadForm();
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddGrantApplication_Click", "", ex.Message);
+            }
         }
 
         protected void btnUpdateGrantAward_Click(object sender, EventArgs e)
         {
+            UpdateForm();
+        }
 
+        protected void btnAddMatchDesc_Click(object sender, EventArgs e)
+        {
+            if (ddlMatchDescription.SelectedIndex == 0)
+            {
+                LogMessage("Select Match");
+                ddlMatchDescription.Focus();
+                return;
+            }
+
+            ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseGrantMatch(DataUtils.GetInt(hfEnterImpGrantID.Value),
+                DataUtils.GetInt(ddlMatchDescription.SelectedValue.ToString()));
+
+            ddlMatchDescription.SelectedIndex = -1;
+            cbAddGrantmatch.Checked = false;
+
+            BindGrantMatchGrid();
+
+            if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                LogMessage("Grant Match already exist as in-active");
+            else if (objViabilityMaintResult.IsDuplicate)
+                LogMessage("Grant Match already exist");
+            else
+                LogMessage("New Grant Match added successfully");
+        }
+
+        private void BindGrantMatchGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseImpGrantData.GetEnterpriseGrantMatchList(DataUtils.GetInt(hfEnterImpGrantID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvGrantMatchGrid.Visible = true;
+                    gvGrantMatch.DataSource = dt;
+                    gvGrantMatch.DataBind();
+                }
+                else
+                {
+                    dvGrantMatchGrid.Visible = false;
+                    gvGrantMatch.DataSource = null;
+                    gvGrantMatch.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindGrantMatchGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvGrantMatch_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvGrantMatch.EditIndex = e.NewEditIndex;
+            BindGrantMatchGrid();
+        }
+
+        protected void gvGrantMatch_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvGrantMatch.EditIndex = -1;
+            BindGrantMatchGrid();
+        }
+
+        protected void gvGrantMatch_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterpriseGrantMatchID = DataUtils.GetInt(((Label)gvGrantMatch.Rows[rowIndex].FindControl("lblEnterpriseGrantMatchID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvGrantMatch.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseImpGrantData.UpdateEnterpriseGrantMatch(EnterpriseGrantMatchID, RowIsActive);
+            gvGrantMatch.EditIndex = -1;
+
+            BindGrantMatchGrid();
+
+            LogMessage("Grant Match updated successfully");
         }
     }
 }

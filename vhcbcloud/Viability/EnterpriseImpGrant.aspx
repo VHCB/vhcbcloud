@@ -73,43 +73,47 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 14%"><span class="labelClass">Milestone</span></td>
+                                        <td style="width: 14%"><span class="labelClass">FY/Grant Round</span></td>
                                         <td style="width: 19%">
-                                            <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 11%">
-                                            <span class="labelClass">FY/Grant Round </span>
-                                        </td>
-                                        <td style="width: 17%">
                                             <asp:DropDownList ID="ddlFYGrantRound" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 13%"><span class="labelClass">Project Title </span>
+                                        <td style="width: 11%">
+                                            <span class="labelClass">Project Title</span>
                                         </td>
-                                        <td style="width: 45%">
-                                            <asp:TextBox ID="txtProjectTitle" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
+                                        <td style="width: 17%">
+                                            <asp:TextBox ID="txtProjectTitle" CssClass="clsTextBoxBlue1" runat="server" Width="180px"></asp:TextBox>
                                         </td>
+                                        <td style="width: 13%"><span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 45%"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 14%"><span class="labelClass">Project Description</span></td>
+                                        <td style="width: 100%" colspan="5">
+                                            <asp:TextBox ID="txtProjectDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 14%"><span class="labelClass">Project Cost</span></td>
                                         <td style="width: 19%">
-                                            <asp:TextBox ID="txtProjDesc" CssClass="clsTextBoxBlue1" runat="server" Width="170px"></asp:TextBox>
-                                        </td>
-                                        <td style="width: 11%">
-                                            <span class="labelClass">Project Cost</span>
-                                        </td>
-                                        <td style="width: 17%">
                                             <asp:TextBox ID="txtProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 13%"><span class="labelClass">Amount Requested</span>
+                                        <td style="width: 11%">
+                                            <span class="labelClass">Amount Requested</span>
                                         </td>
-                                        <td style="width: 45%">
+                                        <td style="width: 17%">
                                             <asp:TextBox ID="txtAmountReq" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
+                                        <td style="width: 13%"><span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 45%"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -163,64 +167,44 @@
                                     </asp:Panel>
                                 </div>
 
-                                <%--<div class="panel-body" id="dvConsevationSourcesGrid" runat="server">
-                                    <div id="dvWarning" runat="server">
-                                        <p class="bg-info">
-                                            &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                                            <asp:Label runat="server" ID="lblWarning" class="labelClass"></asp:Label>
-                                        </p>
-                                    </div>
-                                    <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
-                                        <asp:GridView ID="gvHousingSources" runat="server" AutoGenerateColumns="False"
+                                <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvGrantMatchGrid" runat="server">
+                                    <asp:Panel runat="server" ID="Panel4" Width="100%" Height="100px" ScrollBars="Vertical">
+                                        <asp:GridView ID="gvGrantMatch" runat="server" AutoGenerateColumns="False"
                                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                            OnRowEditing="gvHousingSources_RowEditing" OnRowCancelingEdit="gvHousingSources_RowCancelingEdit" OnRowUpdating="gvHousingSources_RowUpdating">
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                            OnRowEditing="gvGrantMatch_RowEditing" OnRowCancelingEdit="gvGrantMatch_RowCancelingEdit"
+                                            OnRowUpdating="gvGrantMatch_RowUpdating">
                                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                             <HeaderStyle CssClass="headerStyle" />
                                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                             <RowStyle CssClass="rowStyle" />
-                                            <FooterStyle CssClass="footerStyleTotals" />
                                             <Columns>
-                                                <asp:TemplateField HeaderText="HouseSourceID" Visible="false">
+                                                <asp:TemplateField HeaderText="EnterpriseGrantMatchID" Visible="false">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblHouseSourceID" runat="Server" Text='<%# Eval("HouseSourceID") %>' />
+                                                        <asp:Label ID="lblEnterpriseGrantMatchID" runat="Server" Text='<%# Eval("EnterpriseGrantMatchID") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="&nbsp;Source">
+                                                <asp:TemplateField HeaderText="MatchDesc">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblSourceName" runat="Server" Text='<%# Eval("SourceName") %>' />
+                                                        <asp:Label ID="lblMatchDesc" runat="Server" Text='<%# Eval("MatchDesc") %>' />
                                                     </ItemTemplate>
-                                                    <FooterTemplate>
-                                                        Grand Total :
-                                                    </FooterTemplate>
                                                     <ItemStyle Width="500px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Total">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
-                                                    </ItemTemplate>
-                                                    <EditItemTemplate>
-                                                        <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
-                                                    </EditItemTemplate>
-                                                    <FooterTemplate>
-                                                        <asp:Label runat="server" ID="lblFooterTotalAmount" Text=""></asp:Label>
-                                                    </FooterTemplate>
-                                                    <ItemStyle Width="200px" />
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Active">
                                                     <ItemTemplate>
                                                         <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                                     </ItemTemplate>
                                                     <EditItemTemplate>
-                                                        <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                        <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                                     </EditItemTemplate>
+                                                    <ItemStyle Width="350px" />
                                                 </asp:TemplateField>
                                                 <asp:CommandField ShowEditButton="True" />
                                             </Columns>
                                         </asp:GridView>
                                     </asp:Panel>
-                                </div>--%>
+                                </div>
                             </div>
                         </div>
 
@@ -241,13 +225,13 @@
                                             <tr>
                                                 <td style="width: 14%"><span class="labelClass">Award Amount</span></td>
                                                 <td style="width: 19%">
-                                                    <asp:TextBox ID="TextBox5" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="txtAwardAmount" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                                 </td>
                                                 <td style="width: 11%">
                                                     <span class="labelClass">Leveraged Funds</span>
                                                 </td>
                                                 <td style="width: 17%"></td>
-                                                <td style="width: 13%"><span class="labelClass"></span>
+                                                <td style="width: 13%"><span class="labelClass" id="spnLevFunds" runat="server"></span>
                                                 </td>
                                                 <td style="width: 45%"></td>
                                             </tr>
@@ -266,7 +250,7 @@
                                             <tr>
                                                 <td style="width: 14%"><span class="labelClass">Comments</span></td>
                                                 <td colspan="5">
-                                                    <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                                    <asp:TextBox ID="txtComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -288,6 +272,7 @@
             </div>
         </div>
         <asp:HiddenField ID="hfProjectId" runat="server" />
+        <asp:HiddenField ID="hfEnterImpGrantID" runat="server" />
 
 
         <script language="javascript">
@@ -296,12 +281,46 @@
 
                 $('#<%= cbAddGrantmatch.ClientID%>').click(function () {
                     $('#<%= dvGrantMatchForm.ClientID%>').toggle(this.checked);
-            }).change();
+                }).change();
+
+                $('#<%= txtProjCost.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
+                });
+
+                $('#<%= txtAmountReq.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
+                });
+
+                $('#<%= txtAwardAmount.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
+                });
+
+                $('#<%= txtProjCost.ClientID%>').blur(function () {
+                    CalculateLivFund();
+                });
+                $('#<%= txtAwardAmount.ClientID%>').blur(function () {
+                    CalculateLivFund();
+                });
             });
 
+            function CalculateLivFund() {
+                var ProjCost = parseInt($('#<%=txtProjCost.ClientID%>').val(), 10);
+                var AwardAmount = parseInt($('#<%=txtAwardAmount.ClientID%>').val(), 10);
 
-        function PopupAwardSummary() {
-            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+                if (isNaN(ProjCost)) {
+                    var ProjCost = 0;
+                }
+
+                if (isNaN(AwardAmount)) {
+                    var AwardAmount = 0;
+                }
+
+                var LiveFund = ProjCost - AwardAmount;
+                $('#<%= spnLevFunds.ClientID%>').text(LiveFund);
+            };
+
+            function PopupAwardSummary() {
+                window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
             };
         </script>
 </asp:Content>
