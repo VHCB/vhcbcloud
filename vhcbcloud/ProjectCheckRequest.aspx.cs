@@ -587,7 +587,7 @@ namespace vhcbcloud
                     {
                         if (txtCommitedProjNum.Text != "")
                         {
-
+                            txtCRDate.Text = "";
 
                             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                             if (dtEPCR.Rows.Count > 0)
@@ -701,11 +701,18 @@ namespace vhcbcloud
                 else
                 {
                     pnlVoucherDet.Visible = false;
-                }
+                }                
             }
             catch (Exception ex)
             {
                 lblErrorMsg.Text = "ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message; lblErrorMsg.Focus();
+            }
+            finally
+            {
+                if (btnNewPCR.Visible == false)
+                {
+                    btnNewPCR.Visible = true;
+                }
             }
         }
 
@@ -723,6 +730,11 @@ namespace vhcbcloud
                 BindPCRQuestionsForApproval();
                 ddlPCRQuestions.SelectedIndex = -1;
 
+                lblAmtEligibleForMatch.Visible = false;
+                txtEligibleAmt.Visible = false;
+                ddlMatchingGrant.Visible = false;
+                lblMatchingGrant.Visible = false;
+                txtCRDate.Text = "";
                 pnlFund.Visible = true;
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
@@ -1936,6 +1948,7 @@ namespace vhcbcloud
             gvFund.EditIndex = -1;
             BindPCRData(Convert.ToInt32(hfProjId.Value));
             DisablePCR();
+            txtCRDate.Text = "";
             btnCrUpdate.Visible = false;
             pnlDisbursement.Visible = false;
             pnlApprovals.Visible = false;
@@ -2034,7 +2047,7 @@ namespace vhcbcloud
                                 BindApplicantName(int.Parse(drPCR["ProjectID"].ToString()));
                             }
                         }
-
+                        txtCRDate.Text = String.IsNullOrEmpty(drPCR["CRDate"].ToString()) ? "" : DateTime.Parse(drPCR["CRDate"].ToString()).ToShortDateString();
                         txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : DateTime.Parse(drPCR["InitDate"].ToString()).ToShortDateString();
 
                         foreach (ListItem item in ddlPayee.Items)
@@ -2307,6 +2320,12 @@ namespace vhcbcloud
                     btnCrUpdate.Visible = false;
                     ClearPCRForm();
                     DisablePCR();
+
+                    lblAmtEligibleForMatch.Visible = false;
+                    txtEligibleAmt.Visible = false;
+                    ddlMatchingGrant.Visible = false;
+                    lblMatchingGrant.Visible = false;
+
                     pnlFund.Visible = true;
                 }
                 else

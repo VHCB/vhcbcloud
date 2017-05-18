@@ -648,7 +648,7 @@ alter procedure GetPCRDetails
 )
 as
 begin
-	select ProjectID, InitDate, LkProgram, LegalReview, 
+	select ProjectID, InitDate, LkProgram, LegalReview, crdate,
 			Final, LCB, MatchAmt, LkFVGrantMatch, Notes, UserID 
 	from ProjectCheckReq pcr(nolock)
 	where ProjectCheckReqId = @ProjectCheckReqId

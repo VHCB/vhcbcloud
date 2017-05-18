@@ -809,14 +809,15 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
-                Response.Redirect("Commitments.aspx");
+               
             }
             else
             {
                 txtProjNum.Visible = true;
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
-                imgExistingAwardSummary.Visible = true;                
+                imgExistingAwardSummary.Visible = true;
+                Response.Redirect("Commitments.aspx");
             }
         }
 
