@@ -824,6 +824,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void ClearNODAndItems(int ProjectCheckReqId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
+                command.CommandText = "ClearNODAndItems";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
         public static void PCR_Submit_NOD(int ProjectCheckReqId, int LKNOD)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -974,7 +1001,7 @@ namespace VHCBCommon.DataAccessLayer
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
             {
-                decimal total = 0;
+                decimal total = 0.00m;
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "PCR_Disbursment_Detail_Total";
@@ -982,6 +1009,8 @@ namespace VHCBCommon.DataAccessLayer
 
                 SqlParameter parmMessage1 = new SqlParameter("@total", SqlDbType.Decimal);
                 parmMessage1.Direction = ParameterDirection.Output;
+                parmMessage1.Precision = 9;
+                parmMessage1.Scale = 2;
                 command.Parameters.Add(parmMessage1);
 
                 using (connection)

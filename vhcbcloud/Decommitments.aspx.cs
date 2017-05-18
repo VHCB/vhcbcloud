@@ -843,6 +843,7 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
+                Response.Redirect("decommitments.aspx");
             }
             else
             {

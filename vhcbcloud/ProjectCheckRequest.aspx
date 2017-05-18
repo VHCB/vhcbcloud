@@ -520,6 +520,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblQuestion" runat="Server" Text='<%# Eval("Description") %>' />
                                                         <asp:HiddenField ID="hfProjectCheckReqQuestionID" runat="server" Value='<%#Eval("ProjectCheckReqQuestionID")%>' />
+                                                        <asp:HiddenField ID="hfLKPCRQId" runat="server" Value='<%#Eval("LkPCRQuestionsID")%>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Approved" SortExpression="Approved">

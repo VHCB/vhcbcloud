@@ -489,7 +489,7 @@ Begin
 		join Detail det on det.TransId = tr.TransId	
 		join fund f on f.FundId = det.FundId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
-		where tr.LkTransaction in (238,239,240,26552)and pn.DefName =1 
+		where tr.LkTransaction in (236,237,238,239,240,26552)and pn.DefName =1 
 		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
 

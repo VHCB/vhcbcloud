@@ -809,6 +809,7 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
+                Response.Redirect("Commitments.aspx");
             }
             else
             {

@@ -582,7 +582,7 @@ alter procedure PCR_Submit_NOD
 	@LKNOD				int
 )
 as
-begin
+begin	
 	insert into ProjectCheckReqNOD(ProjectCheckReqID, LKNOD)
 	values(@ProjectCheckReqID, @LKNOD)
 end
@@ -597,6 +597,17 @@ as
 Begin
 	insert into ProjectCheckReqItems (ProjectCheckReqID, LKCRItems, RowIsActive)
 	values (@ProjectCheckReqID, @lkPCRItems, 1)
+End
+go
+
+alter procedure ClearNODAndItems
+(
+	@ProjectCheckReqID	int
+)
+as
+Begin
+	delete from ProjectCheckReqNOD where ProjectCheckReqID = @ProjectCheckReqID;
+	delete from ProjectCheckReqItems where ProjectCheckReqID = @ProjectCheckReqID;
 End
 go
 
