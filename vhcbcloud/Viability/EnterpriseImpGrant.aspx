@@ -78,11 +78,11 @@
                                             <asp:DropDownList ID="ddlFYGrantRound" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 11%">
+                                        <td style="width: 14%">
                                             <span class="labelClass">Project Title</span>
                                         </td>
                                         <td style="width: 17%">
-                                            <asp:TextBox ID="txtProjectTitle" CssClass="clsTextBoxBlue1" runat="server" Width="180px"></asp:TextBox>
+                                            <asp:TextBox ID="txtProjectTitle" CssClass="clsTextBoxBlue1" runat="server" Width="232px"></asp:TextBox>
                                         </td>
                                         <td style="width: 13%"><span class="labelClass"></span>
                                         </td>
@@ -105,7 +105,7 @@
                                         <td style="width: 19%">
                                             <asp:TextBox ID="txtProjCost" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 11%">
+                                        <td style="width: 14%">
                                             <span class="labelClass">Amount Requested</span>
                                         </td>
                                         <td style="width: 17%">
@@ -230,8 +230,8 @@
                                                 <td style="width: 11%">
                                                     <span class="labelClass">Leveraged Funds</span>
                                                 </td>
-                                                <td style="width: 17%"></td>
-                                                <td style="width: 13%"><span class="labelClass" id="spnLevFunds" runat="server"></span>
+                                                <td style="width: 17%"><span class="labelClass" id="spnLevFunds" runat="server"></span></td>
+                                                <td style="width: 13%">
                                                 </td>
                                                 <td style="width: 45%"></td>
                                             </tr>
@@ -241,7 +241,7 @@
                                             <tr>
                                                 <td style="width: 14%"><span class="labelClass">Award Description</span></td>
                                                 <td colspan="5">
-                                                    <asp:TextBox ID="txtAwardDescription" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                                    <asp:TextBox ID="txtAwardDescription" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -250,7 +250,7 @@
                                             <tr>
                                                 <td style="width: 14%"><span class="labelClass">Comments</span></td>
                                                 <td colspan="5">
-                                                    <asp:TextBox ID="txtComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="480px" Height="80px" />
+                                                    <asp:TextBox ID="txtComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -283,6 +283,11 @@
                     $('#<%= dvGrantMatchForm.ClientID%>').toggle(this.checked);
                 }).change();
 
+                toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
+                toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
+                toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
+                $('#<%= spnLevFunds.ClientID%>').text(formatter.format($('#<%= spnLevFunds.ClientID%>').text())); //Todo Not working
+                
                 $('#<%= txtProjCost.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
                 });
@@ -323,4 +328,5 @@
                 window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
             };
         </script>
+    </div>
 </asp:Content>
