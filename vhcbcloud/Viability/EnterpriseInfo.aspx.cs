@@ -16,7 +16,7 @@ namespace vhcbcloud.Viability
     public partial class EnterpriseInfo : System.Web.UI.Page
     {
         string Pagename = "EnterpriseInfo";
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
@@ -33,6 +33,7 @@ namespace vhcbcloud.Viability
                 BindControls();
 
                 BindProductGrid();
+                BindAttributeGrid();
             }
         }
 
@@ -64,11 +65,61 @@ namespace vhcbcloud.Viability
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
+
+            int EnterpriseTypeId;
+            int AttributeTypeId;
+            string EnterpriseType;
+
+            GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
+
+            spnEnterPriseType.InnerText = EnterpriseType;
+            BindSubLookUP(ddlPrimaryProduct, EnterpriseTypeId);
+            BindSubLookUP(ddlProducts, EnterpriseTypeId);
+
+            BindLookUP(ddlAttribute, AttributeTypeId);
+
+            if(EnterpriseType != "Viability Farm Enterprise")
+            {
+                dvAcres.Visible = false;
+            }
+            LoadAcresForm();
+        }
+
+        private void GetEnterpriseTypeId(int LkProjectType, out int EnterpriseTypeId, out int AttributeTypeId, out string EnterpriseType)
+        {
+            EnterpriseTypeId = 0;
+            AttributeTypeId = 0;
+            EnterpriseType = "";
+
+            if (LkProjectType == 26399)
+            {
+                AttributeTypeId = 169;
+                EnterpriseTypeId = 375;
+                EnterpriseType = "Viability Farm Enterprise";
+            }
+            else if (LkProjectType == 26400)
+            {
+                AttributeTypeId = 202;
+                EnterpriseTypeId = 376;
+                EnterpriseType = "Viability Food Enterprise";
+            }
+            else if (LkProjectType == 26401)
+            {
+                AttributeTypeId = 204;
+                EnterpriseTypeId = 378;
+                EnterpriseType = "Forest Products";
+            }
+            else if (LkProjectType == 26402)
+            {
+                AttributeTypeId = 203;
+                EnterpriseTypeId = 377;
+                EnterpriseType = "Forest Landowner";
+            }
         }
 
         private void BindControls()
         {
-
+            
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -79,6 +130,23 @@ namespace vhcbcloud.Viability
                 ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
                 ddList.DataValueField = "typeid";
                 ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        private void BindSubLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.GetSubLookupValues(LookupType);
+                ddList.DataValueField = "SubTypeID";
+                ddList.DataTextField = "SubDescription";
                 ddList.DataBind();
                 ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
@@ -144,6 +212,7 @@ namespace vhcbcloud.Viability
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
             BindProductGrid();
+            BindAttributeGrid();
         }
 
         protected void btnAddProducts_Click(object sender, EventArgs e)
@@ -160,6 +229,7 @@ namespace vhcbcloud.Viability
 
             ddlProducts.SelectedIndex = -1;
             cbAddProduct.Checked = false;
+            txtStartDate.Text = "";
 
             BindProductGrid();
 
@@ -223,6 +293,138 @@ namespace vhcbcloud.Viability
             BindProductGrid();
 
             LogMessage("Product updated successfully");
+        }
+
+        protected void btnAddAcres_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
+
+                if (btnAddAcres.Text.ToLower() == "update")
+                {
+                    int EnterpriseAcresId = DataUtils.GetInt(hfEnterpriseAcresId.Value);
+                    EnterpriseInfoData.UpdateEnterpriseAcres(EnterpriseAcresId, DataUtils.GetInt(txtAcresInProd.Text),
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+
+                    LogMessage("Acers updated successfully");
+                }
+                else //add
+                {
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, DataUtils.GetInt(txtAcresInProd.Text),
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+
+                    if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                        LogMessage("Accres already exist as in-active");
+                    else if (objViabilityMaintResult.IsDuplicate)
+                        LogMessage("Accres already exist");
+                    else
+                        LogMessage("Accres added successfully");
+                }
+                LoadAcresForm();
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddGrantApplication_Click", "", ex.Message);
+            }
+        }
+
+        private void LoadAcresForm()
+        {
+            DataRow drEntImpGrant = EnterpriseInfoData.GetEnterpriseAcresById(DataUtils.GetInt(hfProjectId.Value));
+            if (drEntImpGrant != null)
+            {
+                hfEnterpriseAcresId.Value = drEntImpGrant["EnterpriseAcresId"].ToString();
+                
+                txtAcresInProd.Text = drEntImpGrant["AcresInProduction"].ToString();
+                txtAcresLeased.Text = drEntImpGrant["AcresLeased"].ToString();
+                txtAcresOwned.Text = drEntImpGrant["AcresOwned"].ToString();
+                spnTotalAcres.InnerText = drEntImpGrant["TotalAcres"].ToString();
+                btnAddAcres.Text = "Update";
+            }
+            else
+            {
+                btnAddAcres.Text = "Add";
+            }
+        }
+
+        private void BindAttributeGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseInfoData.GetEnterpriseAttributesList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAttributeGrid.Visible = true;
+                    gvAttribute.DataSource = dt;
+                    gvAttribute.DataBind();
+                }
+                else
+                {
+                    dvAttributeGrid.Visible = false;
+                    gvAttribute.DataSource = null;
+                    gvAttribute.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAttributeGrid", "", ex.Message);
+            }
+        }
+
+        protected void btnAddAttribute_Click(object sender, EventArgs e)
+        {
+            if (ddlAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Attribute");
+                ddlAttribute.Focus();
+                return;
+            }
+
+            ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlAttribute.SelectedValue.ToString()), DataUtils.GetDate(txtDate.Text));
+
+            ddlAttribute.SelectedIndex = -1;
+            cbAddAttribute.Checked = false;
+            txtDate.Text = "";
+
+            BindAttributeGrid();
+
+            if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                LogMessage("Attribute already exist as in-active");
+            else if (objViabilityMaintResult.IsDuplicate)
+                LogMessage("Attribute already exist");
+            else
+                LogMessage("New Attribute added successfully");
+        }
+
+        protected void gvAttribute_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAttribute.EditIndex = e.NewEditIndex;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAttribute.EditIndex = -1;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterpriseAttributeID = DataUtils.GetInt(((Label)gvAttribute.Rows[rowIndex].FindControl("lblEnterpriseAttributeID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAttribute.Rows[rowIndex].FindControl("chkActive")).Checked);
+            DateTime Date = DataUtils.GetDate(((TextBox)gvAttribute.Rows[rowIndex].FindControl("txtGridDate")).Text);
+
+            EnterpriseInfoData.UpdateEnterpriseAttributes(EnterpriseAttributeID, Date, RowIsActive);
+            gvAttribute.EditIndex = -1;
+
+            BindAttributeGrid();
+
+            LogMessage("Attribute updated successfully");
         }
     }
 }

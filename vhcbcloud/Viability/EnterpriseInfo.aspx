@@ -59,6 +59,44 @@
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
 
+                <div class="panel-width" runat="server" id="Div1">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Enterprise Data</h3>
+                                    </td>
+                                    <td style="text-align: right"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="Div2">
+                            <asp:Panel runat="server" ID="Panel1">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="modal-sm" style="width: 144px"><span class="labelClass">Enterprise Type</span></td>
+                                        <td class="modal-sm" style="width: 164px">
+                                            <span class="labelClass" runat="server" id="spnEnterPriseType"></span>
+                                        </td>
+                                        <td style="width: 97px"><span class="labelClass">Primary Product</span></td>
+                                        <td style="width: 173px">
+                                            <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 58px"><span class="labelClass"></span></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel-width" runat="server" id="dvProduct">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -90,25 +128,21 @@
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
                                         <td style="width: 58px"><span class="labelClass">Active</span></td>
-                                        <td><asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" /></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" /></td>
+                                        <td style="width: 58px"></td>
+                                        <td>
+                                            <asp:Button ID="btnAddProducts" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProducts_Click" /></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px">
-                                            <asp:Button ID="btnAddProducts" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddProducts_Click" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
+                                        <td colspan="8" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
                         </div>
 
                         <div class="panel-body" id="dvProductsGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="150px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProducts" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
@@ -156,11 +190,152 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="dvAcres">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Acres</h3>
+                                    </td>
+                                    <td style="text-align: right"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvAcresForm">
+                            <asp:Panel runat="server" ID="Panel2">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Acres Owned</span></td>
+                                        <td class="modal-sm" style="width: 129px">
+                                            <asp:TextBox ID="txtAcresOwned" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 129px"><span class="labelClass">Acres in Production</span></td>
+                                        <td style="width: 136px">
+                                            <asp:TextBox ID="txtAcresInProd" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 115px"><span class="labelClass">Acres Leased</span></td>
+                                        <td style="width: 140px">
+                                            <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 100px"><span class="labelClass">Total Acres</span></td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass" runat="server" id="spnTotalAcres"></span>
+                                        </td>
+                                        <td style="width: 15px"></td>
+                                        <td>
+                                            <asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvAttribute">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Attributes</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Attribute" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvAttributeForm">
+                            <asp:Panel runat="server" ID="Panel3">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="modal-sm" style="width: 144px"><span class="labelClass">Attribute</span></td>
+                                        <td class="modal-sm" style="width: 164px">
+                                            <asp:DropDownList ID="ddlAttribute" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 97px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 173px">
+                                            <asp:TextBox ID="txtDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 58px"><span class="labelClass">Active</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="CheckBox2" Enabled="false" runat="server" Checked="true" /></td>
+                                        <td style="width: 58px"></td>
+                                        <td>
+                                            <asp:Button ID="btnAddAttribute" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAttribute_Click" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvAttributeGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel4" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAttribute" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
+                                    OnRowEditing="gvAttribute_RowEditing" OnRowCancelingEdit="gvAttribute_RowCancelingEdit"
+                                    OnRowUpdating="gvAttribute_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="EnterpriseAttributeID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEnterpriseAttributeID" runat="Server" Text='<%# Eval("EnterpriseAttributeID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Attribute">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Attribute") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date",  "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtGridDate" CssClass="clsTextBoxBlue1" runat="server" Text='<%# Eval("Date",  "{0:MM/dd/yyyy}") %>'></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtGridDate">
+                                                </ajaxToolkit:CalendarExtender>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
-
+    <asp:HiddenField ID="hfEnterpriseAcresId" runat="server" />
+    
 
     <script language="javascript">
         $(document).ready(function () {
@@ -169,8 +344,46 @@
             $('#<%= cbAddProduct.ClientID%>').click(function () {
                 $('#<%= dvProductForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= dvAttributeForm.ClientID%>').toggle($('#<%= cbAddAttribute.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddAttribute.ClientID%>').click(function () {
+                $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= txtAcresOwned.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtAcresOwned.ClientID%>').val(), $('#<%= txtAcresOwned.ClientID%>'));
+            });
+            $('#<%= txtAcresLeased.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtAcresLeased.ClientID%>').val(), $('#<%= txtAcresLeased.ClientID%>'));
+            });
+            $('#<%= txtAcresInProd.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtAcresInProd.ClientID%>').val(), $('#<%= txtAcresInProd.ClientID%>'));
+            });
+
+            $('#<%= txtAcresOwned.ClientID%>').blur(function () {
+                CalculateTotalAcres();
+            });
+            $('#<%= txtAcresLeased.ClientID%>').blur(function () {
+                CalculateTotalAcres();
+            });
         });
 
+        function CalculateTotalAcres() {
+                var Owned = parseInt($('#<%=txtAcresOwned.ClientID%>').val(), 10);
+                var Leased = parseInt($('#<%=txtAcresLeased.ClientID%>').val(), 10);
+
+            if (isNaN(Owned)) {
+                var Owned = 0;
+                }
+
+                if (isNaN(Leased)) {
+                    var Leased = 0;
+                }
+
+                var Total = Owned + Leased;
+                $('#<%= spnTotalAcres.ClientID%>').text(Total);
+        };
 
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
