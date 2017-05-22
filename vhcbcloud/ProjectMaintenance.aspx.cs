@@ -1866,6 +1866,7 @@ namespace vhcbcloud
 
         protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
+            hfProgramId.Value = ddlProgram.SelectedValue.ToString();
             ShowConservationOnly();
         }
 
