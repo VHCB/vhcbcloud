@@ -456,8 +456,7 @@ namespace vhcbcloud
 
             li.Controls.Add(anchor);
 
-            DataTable dtTabs = TabsData.GetProgramTabs(ProgramId);
-
+            DataTable dtTabs = TabsData.GetProgramTabsForViability(DataUtils.GetInt(hfProjectId.Value), ProgramId);
             foreach (DataRow dr in dtTabs.Rows)
             {
                 HtmlGenericControl li1 = new HtmlGenericControl("li");
@@ -636,6 +635,8 @@ namespace vhcbcloud
                     this.BindProjectEntityGrid();
 
                     LogMessage("Project updated successfully");
+
+                    GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
 
                     //ClearForm();
                     //ddlProject.SelectedIndex = -1;
