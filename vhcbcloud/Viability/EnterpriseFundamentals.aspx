@@ -113,7 +113,7 @@
                                     <tr>
                                         <td style="width: 14%" colspan="2"><span class="labelClass">Year Began Managing Business</span></td>
                                         <td style="width: 19%">
-                                            <asp:TextBox ID="txtYearMangBusiness" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtYearMangBusiness" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" Width="44px"></asp:TextBox>
                                             <%-- <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
                                             </ajaxToolkit:CalendarExtender>--%>
                                         </td>
@@ -157,10 +157,10 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Milestone</h3>
+                                                <h3 class="panel-title">Financial/Jobs</h3>
                                             </td>
                                             <td style="text-align: right">
-                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
+                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Financial/Job" />
                                             </td>
                                         </tr>
                                     </table>
@@ -185,7 +185,7 @@
                                                 </td>
                                                 <td style="width: 139px"><span class="labelClass">Year</span></td>
                                                 <td>
-                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -315,6 +315,21 @@
 
     <script language="javascript">
         $(document).ready(function () {
+            
+            $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtFamilyFTEmp.ClientID%>').val(), $('#<%= txtFamilyFTEmp.ClientID%>'));
+            }); 
+            $('#<%= txtNonFamilyFTEmp.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtNonFamilyFTEmp.ClientID%>').val(), $('#<%= txtNonFamilyFTEmp.ClientID%>'));
+            });
+            $('#<%= txtYear.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtYear.ClientID%>').val(), $('#<%= txtYear.ClientID%>'));
+            });
+
+            toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+            toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+
              $('#<%= txtGrossSales.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
              });
@@ -356,6 +371,7 @@
             var Total = FamilyFT + NonFamilyFT;
             $('#<%= spnTotalFulltime.ClientID%>').text(Total);
         };
+
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
             };

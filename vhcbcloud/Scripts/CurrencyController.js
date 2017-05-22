@@ -34,3 +34,8 @@ addDecimalToNumber = number => {
     return `${dollars}.${cents}`;
 };
 removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+
+toNumericControl = (value, id) => {
+    const digits = this.getDigitsFromValue(value);
+    id.val(digits);
+};

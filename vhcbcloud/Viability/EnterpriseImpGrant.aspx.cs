@@ -108,7 +108,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-            BindLookUP(ddlMatchDescription, 216);//214
+            BindLookUP(ddlMatchDescription, 214);//214
             BindLookUP(ddlFYGrantRound, 220);
         }
 
@@ -146,7 +146,7 @@ namespace vhcbcloud.Viability
 
             li.Controls.Add(anchor);
 
-            DataTable dtTabs = TabsData.GetProgramTabs(DataUtils.GetInt(ProgramId));
+            DataTable dtTabs = TabsData.GetProgramTabsForViability(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ProgramId));
 
             foreach (DataRow dr in dtTabs.Rows)
             {
