@@ -9,7 +9,7 @@
                 <div id="VehicleDetail">
                     <ul class="vdp-tabs" runat="server" id="Tabs"></ul>
                 </div>
-            </div>
+            </div> 
         </div>
         <!--  Tabs -- >
         <div class="container">
