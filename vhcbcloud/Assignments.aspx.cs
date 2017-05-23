@@ -342,6 +342,7 @@ namespace vhcbcloud
             if (txtToProjNum.Text != txtFromProjNum.Text)
             {
                 ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
+                ddlRtoFundType.SelectedValue = ddlRtoFundType.SelectedValue;
                 ddlRToFund.Enabled = false;
                 if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
                 {

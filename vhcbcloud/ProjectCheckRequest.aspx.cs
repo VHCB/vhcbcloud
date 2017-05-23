@@ -600,7 +600,7 @@ namespace vhcbcloud
                                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
                                 this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
                                 this.txtCRDate.Text = String.IsNullOrEmpty(dtEPCR.Rows[0]["CRDate"].ToString()) ? "" : DateTime.Parse(dtEPCR.Rows[0]["CRDate"].ToString()).ToShortDateString();
-
+                                lblProjectType.Text = dt.Rows[0][2].ToString();
 
                                 EnableButton(btnPCRTransDetails);
                                 DisableButton(btnCRSubmit);
@@ -720,7 +720,7 @@ namespace vhcbcloud
         {
             try
             {
-                ClearPCRForm();
+                //ClearPCRForm();
                 ClearPCRDetails();
                 ClearTransactionDetailForm();
                 EnableButton(btnPCRTransDetails);
@@ -739,6 +739,93 @@ namespace vhcbcloud
                 pnlApprovals.Visible = true;
                 pnlDisbursement.Visible = true;
                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
+
+                #region Fill PCR Entry
+
+                DataSet ds = new DataSet();
+                DataTable dtable = new DataTable();
+                ds = ProjectCheckRequestData.GetPCRDetails(int.Parse(hfPCRId.Value));
+
+                DataRow drPCR = ds.Tables[0].Rows[0];
+                DataRow drTrans = ds.Tables[1].Rows[0];
+
+                DataTable dtNOD = new DataTable();
+                dtNOD = ds.Tables[4];
+
+                DataTable dtItems = new DataTable();
+                dtItems = ds.Tables[7];
+
+                lblProjName.Text = hfProjName.Value.ToString();
+
+                foreach (ListItem item in ddlProjFilter.Items)
+                {
+                    if (drPCR["ProjectID"].ToString() + '|' + hfProjName.Value.ToString() == item.Value.ToString())
+                    {
+                        ddlProjFilter.ClearSelection();
+                        item.Selected = true;
+                        BindApplicantName(int.Parse(drPCR["ProjectID"].ToString()));
+                    }
+                }
+                txtCRDate.Text = String.IsNullOrEmpty(drPCR["CRDate"].ToString()) ? "" : DateTime.Parse(drPCR["CRDate"].ToString()).ToShortDateString();
+                txtTransDate.Text = String.IsNullOrEmpty(drPCR["InitDate"].ToString()) ? "" : DateTime.Parse(drPCR["InitDate"].ToString()).ToShortDateString();
+
+                foreach (ListItem item in ddlPayee.Items)
+                {
+                    if (drTrans["PayeeApplicant"].ToString() == item.Value.ToString())
+                    {
+                        ddlPayee.ClearSelection();
+                        item.Selected = true;
+                    }
+                }
+
+                foreach (ListItem item in ddlProgram.Items)
+                {
+                    if (drPCR["LkProgram"].ToString() == item.Value.ToString())
+                    {
+                        ddlProgram.ClearSelection();
+                        item.Selected = true;
+                        DisplayControls(item.Text);
+                    }
+                }
+
+                foreach (ListItem item in ddlStatus.Items)
+                {
+                    if (drTrans["LkStatus"].ToString() == item.Value.ToString())
+                    {
+                        ddlStatus.ClearSelection();
+                        item.Selected = true;
+                    }
+                }
+
+                chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
+                chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
+                txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();
+                txtNotes.Text = String.IsNullOrEmpty(drPCR["Notes"].ToString()) ? "" : drPCR["Notes"].ToString();
+                txtDisbursementAmt.Text = String.IsNullOrEmpty(drTrans["TransAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drTrans["TransAmt"].ToString()), 2).ToString();
+
+                foreach (ListItem item in ddlMatchingGrant.Items)
+                {
+                    if (drPCR["LkFVGrantMatch"].ToString() == item.Value.ToString())
+                    {
+                        ddlMatchingGrant.ClearSelection();
+                        item.Selected = true;
+                    }
+                }
+
+                foreach (ListItem item in lbNOD.Items)
+                {
+                    foreach (DataRow dr in dtNOD.Rows)
+                        if (dr["LKNOD"].ToString() == item.Value.ToString())
+                            item.Selected = true;
+                }
+                foreach (ListItem item in lbItems.Items)
+                {
+                    foreach (DataRow dr in dtItems.Rows)
+                        if (dr["LKCRItems"].ToString() == item.Value.ToString())
+                            item.Selected = true;
+                }
+
+                #endregion
 
             }
             catch (Exception ex)
