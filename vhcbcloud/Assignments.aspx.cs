@@ -342,7 +342,9 @@ namespace vhcbcloud
             if (txtToProjNum.Text != txtFromProjNum.Text)
             {
                 ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
+
                 ddlRToFund.Enabled = false;
+
                 if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
                 {
                     ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
@@ -356,9 +358,14 @@ namespace vhcbcloud
                 ddlRtoFundType.DataTextField = "Description";
                 ddlRtoFundType.DataBind();
                 ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlRtoFundType.SelectedValue = ddlRFromFundType.SelectedValue;
+                ddlRtoFundType.Enabled = false;
             }
             else
+            {
                 ddlRToFund.Enabled = true;
+                ddlRtoFundType.Enabled = true;
+            }
         }
 
 

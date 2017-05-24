@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -156,7 +156,8 @@ namespace vhcbcloud
 
                 BindUsePermit();
 
-                if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
+                //if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
+                if (dtable.Rows[0]["mitfund"].ToString() == "1")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -202,7 +203,8 @@ namespace vhcbcloud
 
                 BindUsePermit();
 
-                if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                if (dtable.Rows[0]["mitfund"].ToString() == "1")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -303,7 +305,7 @@ namespace vhcbcloud
                         btnCommitmentSubmit.Visible = true;
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnCommitmentSubmit);
-                        
+
                         btnNewTransaction.Visible = false;
                     }
                     if (lblBalAmt.Text != "$0.00")
@@ -434,7 +436,10 @@ namespace vhcbcloud
                         return;
                     }
 
-                    if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+
+                    //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    if (dtable.Rows[0]["mitfund"].ToString() == "1")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                         {
@@ -584,7 +589,7 @@ namespace vhcbcloud
         {
             gvBCommit.EditIndex = e.NewEditIndex;
             BindFundDetails(GetTransId());
-            if (btnNewTransaction.Visible==true)
+            if (btnNewTransaction.Visible == true)
             {
                 btnNewTransaction.Visible = false;
             }
@@ -609,8 +614,8 @@ namespace vhcbcloud
                     }
                 }
 
-                 decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
-               // decimal amount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text, "[^0-9a-zA-Z.]+", ""));
+                decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
+                // decimal amount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text, "[^0-9a-zA-Z.]+", ""));
 
                 int transType = Convert.ToInt32(((DropDownList)gvBCommit.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
@@ -721,7 +726,7 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();               
+                string lblDetId = ((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text.Trim();
                 if (lblDetId.ToString() != "")
                 {
                     FinancialTransactions.ActivateFinancialTransByTransId(Convert.ToInt32(lblDetId));
@@ -809,14 +814,16 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
-                Response.Redirect("Commitments.aspx");
+                txtTransDate.Text = "";
+                
             }
             else
             {
                 txtProjNum.Visible = true;
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
-                imgExistingAwardSummary.Visible = true;                
+                imgExistingAwardSummary.Visible = true;
+                Response.Redirect("Commitments.aspx");
             }
         }
 

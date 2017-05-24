@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -304,7 +304,7 @@ namespace vhcbcloud
                     decimal n;
                     bool IsDecimal = decimal.TryParse(txtAmt.Text.Trim(), out n);
 
-                    if (!IsDecimal || Convert.ToDecimal(txtAmt.Text) <= 0)                    
+                    if (!IsDecimal || Convert.ToDecimal(txtAmt.Text) <= 0)
                     {
                         lblErrorMsg.Text = "Select a valid transaction amount";
                         txtAmt.Focus();
@@ -584,7 +584,7 @@ namespace vhcbcloud
         {
             gvBCommit.EditIndex = e.NewEditIndex;
             BindFundDetails(GetTransId());
-            if (btnNewTransaction.Visible==true)
+            if (btnNewTransaction.Visible == true)
             {
                 btnNewTransaction.Visible = false;
             }
@@ -843,7 +843,8 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
-                Response.Redirect("decommitments.aspx");
+                lblAvailVisibleFund.Text = "";
+                txtTransDate.Text = "";
             }
             else
             {
@@ -852,6 +853,7 @@ namespace vhcbcloud
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
                 btnNewTransaction.Visible = true;
+                Response.Redirect("decommitments.aspx");
             }
 
         }

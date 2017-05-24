@@ -1671,7 +1671,7 @@ alter procedure [dbo].[GetFundDetailsByFundId]
 )
 as
 Begin
-	select lft.FundId, lft.account, lft.name, lft.abbrv, lft.VHCBCode,lft.LkAcctMethod, 
+	select lft.FundId, lft.account, lft.name, lft.abbrv, lft.VHCBCode,lft.LkAcctMethod, lft.mitfund,
 	lft.DeptID,lft.Drawdown, lv.description, lft.LkFundType
 	from Fund lft
 	join LkFundType lv on lv.typeid = lft.lkfundtype
