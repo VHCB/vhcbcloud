@@ -66,7 +66,8 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-
+            BindLookUP(ddlMilestone, 162);
+            BindLookUP(ddlQuoteUse, 212);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -141,6 +142,11 @@ namespace vhcbcloud.Viability
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
+        }
+
+        protected void btnAddEntMilestone_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
