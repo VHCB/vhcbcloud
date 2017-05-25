@@ -13,8 +13,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
     public class EnterpriseEvaluationsData
     {
         public static ViabilityMaintResult AddEnterpriseEvalMilestones(int ProjectID, int Milestone, DateTime MSDate, string Comment, 
-            string LeadPlanAdvisorExp, bool PlanProcess, decimal LoanReq, decimal LoanRec, decimal LoanPend, decimal GrantReq, decimal GrantRec,
-            decimal GrantPend, decimal OtherReq, decimal OtherRec, decimal OtherPend, decimal SharedOutcome, decimal QuoteUse, decimal QuoteName)
+            string LeadPlanAdvisorExp, bool PlanProcess, decimal LoanReq, decimal LoanRec, bool LoanPend, decimal GrantReq, decimal GrantRec,
+            bool GrantPend, decimal OtherReq, decimal OtherRec, bool OtherPend, string SharedOutcome, int QuoteUse, string QuoteName)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectID));
                         command.Parameters.Add(new SqlParameter("Milestone", Milestone));
-                        command.Parameters.Add(new SqlParameter("MSDate", MSDate));
+                        command.Parameters.Add(new SqlParameter("MSDate", MSDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MSDate));
                         command.Parameters.Add(new SqlParameter("Comment", Comment));
                         command.Parameters.Add(new SqlParameter("LeadPlanAdvisorExp", LeadPlanAdvisorExp));
                         command.Parameters.Add(new SqlParameter("PlanProcess", PlanProcess));
@@ -73,8 +73,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseEvalMilestones(int EnterpriseEvalID, int Milestone, DateTime MSDate, string Comment,
-            string LeadPlanAdvisorExp, bool PlanProcess, decimal LoanReq, decimal LoanRec, decimal LoanPend, decimal GrantReq, decimal GrantRec,
-            decimal GrantPend, decimal OtherReq, decimal OtherRec, decimal OtherPend, decimal SharedOutcome, decimal QuoteUse, decimal QuoteName, 
+            string LeadPlanAdvisorExp, bool PlanProcess, decimal LoanReq, decimal LoanRec, bool LoanPend, decimal GrantReq, decimal GrantRec,
+            bool GrantPend, decimal OtherReq, decimal OtherRec, bool OtherPend, string SharedOutcome, int QuoteUse, string QuoteName, 
             bool RowIsActive)
         {
             try
@@ -91,7 +91,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         command.Parameters.Add(new SqlParameter("EnterpriseEvalID", EnterpriseEvalID));
                         command.Parameters.Add(new SqlParameter("Milestone", Milestone));
-                        command.Parameters.Add(new SqlParameter("MSDate", MSDate));
+                        command.Parameters.Add(new SqlParameter("MSDate", MSDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MSDate));
                         command.Parameters.Add(new SqlParameter("Comment", Comment));
                         command.Parameters.Add(new SqlParameter("LeadPlanAdvisorExp", LeadPlanAdvisorExp));
                         command.Parameters.Add(new SqlParameter("PlanProcess", PlanProcess));
@@ -154,6 +154,39 @@ namespace VHCBCommon.DataAccessLayer.Viability
                 throw ex;
             }
             return dt;
+        }
+
+        public static DataRow GetEnterpriseEvalMilestonesById(int EnterpriseEvalID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEnterpriseEvalMilestonesById";
+                        command.Parameters.Add(new SqlParameter("EnterpriseEvalID", EnterpriseEvalID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
         }
     }
 }

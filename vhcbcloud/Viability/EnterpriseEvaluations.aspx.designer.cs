@@ -202,13 +202,13 @@ namespace vhcbcloud.Viability {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
         
         /// <summary>
-        /// TextBox1 control.
+        /// txtComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtComments;
         
         /// <summary>
         /// txtLeadPlanAdvisorExp control.
@@ -238,31 +238,31 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
         
         /// <summary>
-        /// txtTillable control.
+        /// txtLoanReq control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTillable;
+        protected global::System.Web.UI.WebControls.TextBox txtLoanReq;
         
         /// <summary>
-        /// txtUnManaged control.
+        /// txtLoanRec control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUnManaged;
+        protected global::System.Web.UI.WebControls.TextBox txtLoanRec;
         
         /// <summary>
-        /// cbAddLoanPending control.
+        /// cbLoanPending control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddLoanPending;
+        protected global::System.Web.UI.WebControls.CheckBox cbLoanPending;
         
         /// <summary>
         /// txtGrantsReq control.
@@ -283,13 +283,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtGrantsRec;
         
         /// <summary>
-        /// cbAddGrantsPending control.
+        /// cbGrantsPending control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddGrantsPending;
+        protected global::System.Web.UI.WebControls.CheckBox cbGrantsPending;
         
         /// <summary>
         /// txtOtherReq control.
@@ -310,13 +310,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtOtherRec;
         
         /// <summary>
-        /// cbAddOtherPending control.
+        /// cbOtherPending control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddOtherPending;
+        protected global::System.Web.UI.WebControls.CheckBox cbOtherPending;
         
         /// <summary>
         /// txtSharedOutcome control.
@@ -337,6 +337,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.DropDownList ddlQuoteUse;
         
         /// <summary>
+        /// chkMilestoneActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkMilestoneActive;
+        
+        /// <summary>
         /// btnAddEntMilestone control.
         /// </summary>
         /// <remarks>
@@ -346,6 +355,42 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Button btnAddEntMilestone;
         
         /// <summary>
+        /// btnClear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClear;
+        
+        /// <summary>
+        /// dvEntMilestoneGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntMilestoneGrid;
+        
+        /// <summary>
+        /// Panel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel3;
+        
+        /// <summary>
+        /// gvEntMilestoneGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvEntMilestoneGrid;
+        
+        /// <summary>
         /// hfProjectId control.
         /// </summary>
         /// <remarks>
@@ -353,5 +398,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfEnterpriseEvalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEnterpriseEvalID;
     }
 }

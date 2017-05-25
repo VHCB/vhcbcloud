@@ -78,7 +78,7 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 52px"><span class="labelClass">Milestone</span></td>
+                                        <td style="width: 43px"><span class="labelClass">Milestone</span></td>
                                         <td style="width: 93px">
                                             <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
@@ -104,7 +104,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6">
-                                            <asp:TextBox ID="TextBox1" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                            <asp:TextBox ID="txtComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -155,19 +155,19 @@
                                                                 <td style="width: 83px"><span><strong>Loans</strong>:</span></td>
                                                                 <td style="width: 111px"><span class="labelClass">Requested:</span></td>
                                                                 <td style="width: 142px">
-                                                                    <asp:TextBox ID="txtTillable" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                                                    <asp:TextBox ID="txtLoanReq" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                                                 <td style="width: 93px"><span class="labelClass">Received:</span></td>
                                                                 <td style="width: 141px">
-                                                                    <asp:TextBox ID="txtUnManaged" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                                                    <asp:TextBox ID="txtLoanRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                                                 <td style="width: 93px"><span class="labelClass">Pending:</span></td>
                                                                 <td>
-                                                                    <asp:CheckBox ID="cbAddLoanPending" runat="server" Text="" />
+                                                                    <asp:CheckBox ID="cbLoanPending" runat="server" Text="" />
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="7" style="height: 5px"></td>
                                                             </tr>
-                                                             <tr>
+                                                            <tr>
                                                                 <td style="width: 83px"><span><strong>Grants</strong>:</span></td>
                                                                 <td style="width: 111px"><span class="labelClass">Requested:</span></td>
                                                                 <td style="width: 142px">
@@ -177,13 +177,13 @@
                                                                     <asp:TextBox ID="txtGrantsRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                                                 <td style="width: 93px"><span class="labelClass">Pending:</span></td>
                                                                 <td>
-                                                                    <asp:CheckBox ID="cbAddGrantsPending" runat="server" Text="" />
+                                                                    <asp:CheckBox ID="cbGrantsPending" runat="server" Text="" />
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="7" style="height: 5px"></td>
                                                             </tr>
-                                                             <tr>
+                                                            <tr>
                                                                 <td style="width: 83px"><span><strong>Other</strong>:</span></td>
                                                                 <td style="width: 111px"><span class="labelClass">Requested:</span></td>
                                                                 <td style="width: 142px">
@@ -193,7 +193,7 @@
                                                                     <asp:TextBox ID="txtOtherRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                                                 <td style="width: 93px"><span class="labelClass">Pending:</span></td>
                                                                 <td>
-                                                                    <asp:CheckBox ID="cbAddOtherPending" runat="server" Text="" />
+                                                                    <asp:CheckBox ID="cbOtherPending" runat="server" Text="" />
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -232,11 +232,18 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 52px">
+                                        <td style="width: 43px">Active:</td>
+                                        <td class="modal-sm" style="width: 115px" colspan="5">
+                                            <asp:CheckBox ID="chkMilestoneActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 43px">
                                             <asp:Button ID="btnAddEntMilestone" runat="server" Text="Submit" class="btn btn-info"
                                                 OnClick="btnAddEntMilestone_Click" />
                                         </td>
-                                        <td style="width: 93px"></td>
+                                        <td style="width: 93px"> <asp:Button ID="btnClear" runat="server" Text="Cancel" class="btn btn-info"
+                                                OnClick="btnClear_Click" /></td>
                                         <td style="width: 30px"></td>
                                         <td style="width: 176px"></td>
                                         <td style="width: 134px"></td>
@@ -249,51 +256,45 @@
                             </asp:Panel>
                         </div>
 
-                        <%-- <div class="panel-body" id="dvAct250InfoGrid" runat="server">
+                        <div class="panel-body" id="dvEntMilestoneGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel3" Width="100%" Height="170px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvAct250Info" runat="server" AutoGenerateColumns="False"
+                                <asp:GridView ID="gvEntMilestoneGrid" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    OnRowEditing="gvAct250Info_RowEditing" OnRowCancelingEdit="gvAct250Info_RowCancelingEdit"
-                                    OnRowDataBound="gvAct250Info_RowDataBound">
+                                    OnRowEditing="gvEntMilestoneGrid_RowEditing" OnRowCancelingEdit="gvEntMilestoneGrid_RowCancelingEdit"
+                                    OnRowDataBound="gvEntMilestoneGrid_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
                                     <Columns>
-                                        <asp:TemplateField HeaderText="Act250FarmID" Visible="false">
+                                        <asp:TemplateField HeaderText="EnterpriseEvalID" Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblAct250FarmID" runat="Server" Text='<%# Eval("Act250FarmID") %>' />
+                                                <asp:Label ID="lblEnterpriseEvalID" runat="Server" Text='<%# Eval("EnterpriseEvalID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdBtnSelectAct250Info" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
-                                                    OnCheckedChanged="rdBtnSelectAct250Info_CheckedChanged" />
-                                                <asp:HiddenField ID="HiddenAct250FarmID" runat="server" Value='<%#Eval("Act250FarmID")%>' />
+                                                <asp:RadioButton ID="rdBtnSelectEntMilestone" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
+                                                    OnCheckedChanged="rdBtnSelectEntMilestone_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenEnterpriseEvalID" runat="server" Value='<%#Eval("EnterpriseEvalID")%>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Land Use Permit">
+                                        <asp:TemplateField HeaderText="Milestone">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
-                                                <asp:HiddenField ID="HiddenUsePermit" runat="server" Value='<%#Eval("UsePermit")%>' />
+                                                <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("MilestoneDesc") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Developer">
+                                        <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("MSDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total acres lost">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTotalAcresLost" runat="Server" Text='<%# Eval("TotalAcreslost") %>' />
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("Comment") %>' Text='<%# Eval("ShortComment") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -305,26 +306,72 @@
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
-                        </div>--%>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfEnterpriseEvalID" runat="server" />
 
 
     <script language="javascript">
         $(document).ready(function () {
+            CurrencyControls();
+
             $('#<%= dvEntMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
             $('#<%= cbAddMilestone.ClientID%>').click(function () {
                 $('#<%= dvEntMilestoneForm.ClientID%>').toggle(this.checked);
-                }).change();
+            }).change();
         });
 
+        function CurrencyControls() {
+            toCurrencyControl($('#<%= txtLoanReq.ClientID%>').val(), $('#<%= txtLoanReq.ClientID%>'));
+            toCurrencyControl($('#<%= txtLoanRec.ClientID%>').val(), $('#<%= txtLoanRec.ClientID%>'));
+            toCurrencyControl($('#<%= txtOtherReq.ClientID%>').val(), $('#<%= txtOtherReq.ClientID%>'));
+            toCurrencyControl($('#<%= txtOtherRec.ClientID%>').val(), $('#<%= txtOtherRec.ClientID%>'));
+            toCurrencyControl($('#<%= txtGrantsReq.ClientID%>').val(), $('#<%= txtGrantsReq.ClientID%>'));
+            toCurrencyControl($('#<%= txtGrantsRec.ClientID%>').val(), $('#<%= txtGrantsRec.ClientID%>'));
 
-            function PopupAwardSummary() {
-                window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+            $('#<%= txtLoanReq.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtLoanReq.ClientID%>').val(), $('#<%= txtLoanReq.ClientID%>'));
+            });
+            $('#<%= txtLoanRec.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtLoanRec.ClientID%>').val(), $('#<%= txtLoanRec.ClientID%>'));
+            });
+
+            $('#<%= txtOtherReq.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtOtherReq.ClientID%>').val(), $('#<%= txtOtherReq.ClientID%>'));
+            });
+            $('#<%= txtOtherRec.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtOtherRec.ClientID%>').val(), $('#<%= txtOtherRec.ClientID%>'));
+            });
+
+            $('#<%= txtGrantsReq.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtGrantsReq.ClientID%>').val(), $('#<%= txtGrantsReq.ClientID%>'));
+             });
+             $('#<%= txtGrantsRec.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtGrantsRec.ClientID%>').val(), $('#<%= txtGrantsRec.ClientID%>'));
+            });
+        }
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvEntMilestoneGrid.ClientID%>");
+            var rbs = gv.getElementsByTagName("input");
+
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
     </script>
 </asp:Content>

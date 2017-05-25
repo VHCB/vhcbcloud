@@ -14,12 +14,15 @@ create procedure dbo.GetEnterpriseEvalMilestonesList
 )
 as
 begin transaction
---exec GetEnterpriseEvalMilestonesList 5594, 1
+--exec GetEnterpriseEvalMilestonesList 6657, 1
 	begin try
 	
-		select EnterpriseEvalID, ProjectID, Milestone, MSDate, Comment, LeadPlanAdvisorExp, PlanProcess, LoanReq, LoanRec, LoanPend, GrantReq, GrantRec, GrantPend, OtherReq, OtherRec, OtherPend, SharedOutcome, QuoteUse, QuoteName, 
-		RowIsActive
+		select EnterpriseEvalID, ProjectID, Milestone, lv.Description as MilestoneDesc,
+			MSDate, substring(Comment, 0, 25) ShortComment, Comment,
+			LeadPlanAdvisorExp, PlanProcess, LoanReq, LoanRec, LoanPend, GrantReq, GrantRec, GrantPend, OtherReq, OtherRec, OtherPend, SharedOutcome, QuoteUse, QuoteName, 
+			ep.RowIsActive
 		from EnterpriseEvalMilestones ep(nolock)
+		left join LookupValues lv(nolock) on typeid = ep.Milestone
 		where ProjectID = @ProjectID
 			and (@IsActiveOnly = 0 or ep.RowIsActive = @IsActiveOnly)
 		order by EnterpriseEvalID desc
@@ -114,6 +117,7 @@ go
 create procedure dbo.UpdateEnterpriseEvalMilestones
 (
 	@EnterpriseEvalID int,
+	@Milestone		int,
 	@MSDate			DateTime, 
 	@Comment		nvarchar(max), 
 	@LeadPlanAdvisorExp nvarchar(max), 
@@ -136,7 +140,7 @@ begin transaction
 
 	begin try
 	
-	update EnterpriseEvalMilestones set MSDate = @MSDate, Comment = @Comment, LeadPlanAdvisorExp = @LeadPlanAdvisorExp, PlanProcess = @PlanProcess, 
+	update EnterpriseEvalMilestones set Milestone = @Milestone, MSDate = @MSDate, Comment = @Comment, LeadPlanAdvisorExp = @LeadPlanAdvisorExp, PlanProcess = @PlanProcess, 
 		LoanReq = @LoanReq, LoanRec = @LoanRec, LoanPend = @LoanPend, 
 		GrantReq = @GrantReq, GrantRec = @GrantRec, GrantPend = @GrantPend, OtherReq = @OtherReq, OtherRec = @OtherRec, OtherPend = @OtherPend, 
 		SharedOutcome = @SharedOutcome, QuoteUse = @QuoteUse, QuoteName = @QuoteName,
@@ -171,8 +175,11 @@ begin transaction
 --exec GetEnterpriseEvalMilestonesById 1
 	begin try
 	
-		select EnterpriseEvalID, ProjectID, Milestone, MSDate, Comment, LeadPlanAdvisorExp, PlanProcess, LoanReq, LoanRec, LoanPend, 
-			GrantReq, GrantRec, GrantPend, OtherReq, OtherRec, OtherPend, SharedOutcome, QuoteUse, QuoteName, RowIsActive 
+		select EnterpriseEvalID, ProjectID, Milestone, MSDate, Comment, LeadPlanAdvisorExp, PlanProcess, 
+			convert(varchar(10), LoanReq) LoanReq, convert(varchar(10), LoanRec) LoanRec, LoanPend, 
+			convert(varchar(10), GrantReq) GrantReq, convert(varchar(10), GrantRec) GrantRec, GrantPend,
+			convert(varchar(10), OtherReq) OtherReq, convert(varchar(10), OtherRec) OtherRec, OtherPend, 
+			SharedOutcome, QuoteUse, QuoteName, RowIsActive 
 		from EnterpriseEvalMilestones ep(nolock)
 		where EnterpriseEvalID = @EnterpriseEvalID
 	end try
