@@ -309,6 +309,121 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="dvNewManagementSkills" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Management Skills & Abilities Grid</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddManagementSkill" runat="server" Text="Add New Management Skills & Abilities" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvNewManagementSkillsForm">
+                            <asp:Panel runat="server" ID="Panel1">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 119px"><span class="labelClass">Skill Type</span></td>
+                                        <td style="width: 170px">
+                                            <asp:DropDownList ID="ddlSkillType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 182px">
+                                            <span class="labelClass">Pre Level</span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:DropDownList ID="ddlPreLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                         <td style="width: 192px">
+                                            <span class="labelClass">Post Level</span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:DropDownList ID="ddlPostLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 146px"><span class="labelClass">Active</span></td>
+                                        <td class="modal-sm" style="width: 70px">
+                                            <asp:CheckBox ID="chkActive" runat="server" Enabled="false" Checked="true" />
+                                        </td>
+                                        <td style="width: 10px">
+                                            <asp:Button ID="btnAddManagementSkill" runat="server" Text="Submit" class="btn btn-info"
+                                                OnClick="btnAddManagementSkill_Click" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvManagementSkillsGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel4" Width="100%" Height="170px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvManagementSkills" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="false"
+                                    OnRowEditing="gvManagementSkills_RowEditing" OnRowCancelingEdit="gvManagementSkills_RowCancelingEdit"
+                                    OnRowDataBound="gvManagementSkills_RowDataBound" OnRowUpdating="gvManagementSkills_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="EnterEvalSkillTypeID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEnterEvalSkillTypeID" runat="Server" Text='<%# Eval("EnterEvalSkillTypeID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Skill">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblSkill" runat="Server" Text='<%# Eval("Skill") %>' />
+                                            </ItemTemplate>
+                                           <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlSkill" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtSkill" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("SkillType") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                       <asp:TemplateField HeaderText="Pre Level">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPreLevel" runat="Server" Text='<%# Eval("Pre") %>' />
+                                            </ItemTemplate>
+                                           <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlPreLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtPreLevel" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PreLevel") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Post Level">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPostLevel" runat="Server" Text='<%# Eval("Post") %>' />
+                                            </ItemTemplate>
+                                           <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlPostLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtPostLevel" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PostLevel") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -324,6 +439,13 @@
             $('#<%= cbAddMilestone.ClientID%>').click(function () {
                 $('#<%= dvEntMilestoneForm.ClientID%>').toggle(this.checked);
             }).change();
+
+             $('#<%= dvNewManagementSkillsForm.ClientID%>').toggle($('#<%= cbAddManagementSkill.ClientID%>').is(':checked'));
+            $('#<%= cbAddManagementSkill.ClientID%>').click(function () {
+                $('#<%= dvNewManagementSkillsForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            
         });
 
         function CurrencyControls() {

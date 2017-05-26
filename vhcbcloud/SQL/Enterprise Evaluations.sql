@@ -195,3 +195,131 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* EnterpriseEvalMSSkillinfo */
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEnterpriseEvalMSSkillinfoList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEnterpriseEvalMSSkillinfoList
+go
+
+create procedure dbo.GetEnterpriseEvalMSSkillinfoList
+(
+	@EnterPriseEvalID	int,
+	@IsActiveOnly	bit
+)
+as
+begin transaction
+--exec GetEnterpriseEvalMSSkillinfoList 1, 1
+	begin try
+	
+		select EnterEvalSkillTypeID, SkillType, PreLevel, PostLevel, ms.RowIsActive,
+		lv.Description as Skill, lv1.description as Pre, lv2.description as Post
+		from EnterpriseEvalMSSkillinfo ms(nolock)
+		left join LookupValues lv(nolock) on lv.typeid = SkillType
+		left join LookupValues lv1(nolock) on lv1.typeid = PreLevel
+		left join LookupValues lv2(nolock) on lv2.typeid = PostLevel
+		where EnterPriseEvalID = @EnterPriseEvalID
+			and (@IsActiveOnly = 0 or ms.RowIsActive = @IsActiveOnly)
+		order by EnterPriseEvalID desc
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddEnterpriseEvalMSSkillinfo]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddEnterpriseEvalMSSkillinfo
+go
+
+create procedure dbo.AddEnterpriseEvalMSSkillinfo
+(
+	@EnterPriseEvalID	int,
+	@SkillType		int,
+	@PreLevel		int,
+	@PostLevel		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from EnterpriseEvalMSSkillinfo (nolock)
+		where EnterPriseEvalID = @EnterPriseEvalID and SkillType = @SkillType and PreLevel = @PreLevel and PostLevel = @PostLevel
+    )
+	begin
+		insert into EnterpriseEvalMSSkillinfo(EnterPriseEvalID, SkillType, PreLevel, PostLevel)
+		values(@EnterPriseEvalID, @SkillType, @PreLevel, @PostLevel)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from EnterpriseEvalMSSkillinfo (nolock)
+		where EnterPriseEvalID = @EnterPriseEvalID and SkillType = @SkillType and PreLevel = @PreLevel and PostLevel = @PostLevel
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateEnterpriseEvalMSSkillinfo]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateEnterpriseEvalMSSkillinfo
+go
+
+create procedure dbo.UpdateEnterpriseEvalMSSkillinfo
+(
+	@EnterEvalSkillTypeID int,
+	@SkillType		int,
+	@PreLevel		int,
+	@PostLevel		int,
+	@RowIsActive		bit
+) as
+begin transaction
+
+	begin try
+	
+	update EnterpriseEvalMSSkillinfo set SkillType = @SkillType, PreLevel = @PreLevel, PostLevel = @PostLevel,
+		RowIsActive = @RowIsActive, DateModified = getdate()
+	from EnterpriseEvalMSSkillinfo 
+	where EnterEvalSkillTypeID = @EnterEvalSkillTypeID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

@@ -15,7 +15,7 @@ using VHCBCommon.DataAccessLayer.Viability;
 namespace vhcbcloud.Viability
 {
     public partial class EnterpriseEvaluations : System.Web.UI.Page
-    { 
+    {
         string Pagename = "EnterpriseEvaluations";
 
         protected void Page_Load(object sender, EventArgs e)
@@ -70,6 +70,9 @@ namespace vhcbcloud.Viability
         {
             BindLookUP(ddlMilestone, 162);
             BindLookUP(ddlQuoteUse, 212);
+            BindLookUP(ddlSkillType, 217);
+            BindLookUP(ddlPreLevel, 217);//219
+            BindLookUP(ddlPostLevel, 217);//219
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -242,13 +245,13 @@ namespace vhcbcloud.Viability
 
         private void BindMilestonesGrid()
         {
-            //dvNewDeveloperPayments.Visible = false;
+            dvNewManagementSkills.Visible = false;
             //dvNewlandUsePermitFinancials.Visible = false;
             //dvNewVHCBProjects.Visible = false;
 
             try
             {
-                DataTable dt = EnterpriseEvaluationsData.GetEnterpriseEvalMilestonesList(DataUtils.GetInt(hfProjectId.Value), 
+                DataTable dt = EnterpriseEvaluationsData.GetEnterpriseEvalMilestonesList(DataUtils.GetInt(hfProjectId.Value),
                     cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
@@ -323,8 +326,8 @@ namespace vhcbcloud.Viability
             PopulateEntMilestoneForm(DataUtils.GetInt(hfEnterpriseEvalID.Value));
             ////////////////////////
 
-            //dvNewDeveloperPayments.Visible = true;
-            //BindDeveloperPaymentsGrid();
+            dvNewManagementSkills.Visible = true;
+            BindMSkillsGrid();
 
             //BindLandUsePermitFinancialsGrid();
 
@@ -336,7 +339,7 @@ namespace vhcbcloud.Viability
         private void PopulateEntMilestoneForm(int EnterpriseEvalID)
         {
             DataRow dr = EnterpriseEvaluationsData.GetEnterpriseEvalMilestonesById(EnterpriseEvalID);
-            
+
             PopulateDropDown(ddlMilestone, dr["Milestone"].ToString());
             txtDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
             txtComments.Text = dr["Comment"].ToString();
@@ -344,10 +347,10 @@ namespace vhcbcloud.Viability
             rdBtnPlanProcess.SelectedIndex = dr["PlanProcess"].ToString() == "0" ? 0 : 1;
             txtLoanReq.Text = dr["LoanReq"].ToString();
             txtLoanRec.Text = dr["LoanRec"].ToString();
-            cbLoanPending.Checked = DataUtils.GetBool(dr["LoanPend"].ToString()); 
+            cbLoanPending.Checked = DataUtils.GetBool(dr["LoanPend"].ToString());
             txtGrantsReq.Text = dr["GrantReq"].ToString();
             txtGrantsRec.Text = dr["GrantRec"].ToString();
-            cbGrantsPending.Checked = DataUtils.GetBool(dr["GrantPend"].ToString()); 
+            cbGrantsPending.Checked = DataUtils.GetBool(dr["GrantPend"].ToString());
             txtOtherReq.Text = dr["OtherReq"].ToString();
             txtOtherRec.Text = dr["OtherRec"].ToString();
             cbOtherPending.Checked = DataUtils.GetBool(dr["OtherPend"].ToString());
@@ -394,6 +397,126 @@ namespace vhcbcloud.Viability
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ClearEntMilestoneForm();
+        }
+
+        private void BindMSkillsGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseEvaluationsData.GetEnterpriseEvalMSSkillinfoList(DataUtils.GetInt(hfEnterpriseEvalID.Value),
+                    cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvManagementSkillsGrid.Visible = true;
+                    gvManagementSkills.DataSource = dt;
+                    gvManagementSkills.DataBind();
+                }
+                else
+                {
+                    dvManagementSkillsGrid.Visible = false;
+                    gvManagementSkills.DataSource = null;
+                    gvManagementSkills.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindMSkillsGrid", "", ex.Message);
+            }
+        }
+
+        protected void btnAddManagementSkill_Click(object sender, EventArgs e)
+        {
+            if (ddlSkillType.SelectedIndex == 0)
+            {
+                LogMessage("Select Skill Type");
+                ddlSkillType.Focus();
+                return;
+            }
+
+            EnterpriseEvaluationsData.AddEnterpriseEvalMSSkillinfo(DataUtils.GetInt(hfEnterpriseEvalID.Value),
+                DataUtils.GetInt(ddlSkillType.SelectedValue.ToString()),
+                DataUtils.GetInt(ddlPreLevel.SelectedValue.ToString()),
+                DataUtils.GetInt(ddlPostLevel.SelectedValue.ToString()));
+
+            ClearMSkillsForm();
+            BindMSkillsGrid();
+            LogMessage("Management Skill Type Added Successfully");
+        }
+
+        private void ClearMSkillsForm()
+        {
+            ddlSkillType.SelectedIndex = -1;
+            ddlPreLevel.SelectedIndex = -1;
+            ddlPostLevel.SelectedIndex = -1;
+        }
+
+        protected void gvManagementSkills_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvManagementSkills.EditIndex = -1;
+            BindMSkillsGrid();
+            ClearMSkillsForm();
+        }
+
+        protected void gvManagementSkills_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvManagementSkills.EditIndex = e.NewEditIndex;
+            BindMSkillsGrid();
+        }
+
+        protected void gvManagementSkills_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlSkill = (e.Row.FindControl("ddlSkill") as DropDownList);
+                    DropDownList ddlPreLevel = (e.Row.FindControl("ddlPreLevel") as DropDownList);
+                    DropDownList ddlPostLevel = (e.Row.FindControl("ddlPostLevel") as DropDownList);
+
+                    TextBox txtSkill = (e.Row.FindControl("txtSkill") as TextBox);
+                    TextBox txtPreLevel = (e.Row.FindControl("txtPreLevel") as TextBox);
+                    TextBox txtPostLevel = (e.Row.FindControl("txtPostLevel") as TextBox);
+
+                    if (txtSkill != null)
+                    {
+                        BindLookUP(ddlSkill, 217);
+                        PopulateDropDown(ddlSkill, txtSkill.Text);
+                    }
+                    if (txtPreLevel != null)
+                    {
+                        BindLookUP(ddlPreLevel, 217);//219
+                        PopulateDropDown(ddlPreLevel, txtPreLevel.Text);
+                    }
+                    if (txtPostLevel != null)
+                    {
+                        BindLookUP(ddlPostLevel, 217);//219
+                        PopulateDropDown(ddlPostLevel, txtPostLevel.Text);
+                    }
+                }
+            }
+        }
+
+        protected void gvManagementSkills_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterEvalSkillTypeID = DataUtils.GetInt(((Label)gvManagementSkills.Rows[rowIndex].FindControl("lblEnterEvalSkillTypeID")).Text);
+            int SkillType = DataUtils.GetInt(((DropDownList)gvManagementSkills.Rows[rowIndex].FindControl("ddlSkill")).SelectedValue.ToString());
+            int PreLevel = DataUtils.GetInt(((DropDownList)gvManagementSkills.Rows[rowIndex].FindControl("ddlPreLevel")).SelectedValue.ToString());
+            int PostLevel = DataUtils.GetInt(((DropDownList)gvManagementSkills.Rows[rowIndex].FindControl("ddlPostLevel")).SelectedValue.ToString());
+            
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvManagementSkills.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseEvaluationsData.UpdateEnterpriseEvalMSSkillinfo(EnterEvalSkillTypeID, SkillType, PreLevel, PostLevel, RowIsActive);
+
+            gvManagementSkills.EditIndex = -1;
+
+            BindMSkillsGrid();
+
+            LogMessage("Management Skill Updated successfully");
         }
     }
 }
