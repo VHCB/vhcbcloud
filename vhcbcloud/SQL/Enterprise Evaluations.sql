@@ -323,3 +323,124 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* EnterpriseBusPlanUse */
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEnterpriseBusPlanUseList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEnterpriseBusPlanUseList
+go
+
+create procedure dbo.GetEnterpriseBusPlanUseList
+(
+	@EnterpriseEvalID	int,
+	@IsActiveOnly	bit
+)
+as
+begin transaction
+--exec GetEnterpriseBusPlanUseList 1, 1
+	begin try
+	
+		select EnterBusPlanUseID, EnterpriseEvalID, LKBusPlanUsage, bp.RowIsActive,
+		lv.Description as BusPlanUsage
+		from EnterpriseBusPlanUse bp(nolock)
+		left join LookupValues lv(nolock) on lv.typeid = LKBusPlanUsage
+		where EnterpriseEvalID = @EnterpriseEvalID
+			and (@IsActiveOnly = 0 or bp.RowIsActive = @IsActiveOnly)
+		order by EnterBusPlanUseID desc
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddEnterpriseBusPlanUse]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddEnterpriseBusPlanUse
+go
+
+create procedure dbo.AddEnterpriseBusPlanUse
+(
+	@EnterPriseEvalID	int,
+	@LKBusPlanUsage		int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from EnterpriseBusPlanUse (nolock)
+		where EnterPriseEvalID = @EnterPriseEvalID and LKBusPlanUsage = @LKBusPlanUsage
+    )
+	begin
+		insert into EnterpriseBusPlanUse(EnterpriseEvalID, LKBusPlanUsage)
+		values(@EnterPriseEvalID, @LKBusPlanUsage)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from EnterpriseBusPlanUse (nolock)
+		where EnterPriseEvalID = @EnterPriseEvalID and LKBusPlanUsage = @LKBusPlanUsage
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateEnterpriseBusPlanUse]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateEnterpriseBusPlanUse
+go
+
+create procedure dbo.UpdateEnterpriseBusPlanUse
+(
+	@EnterBusPlanUseID int,
+	--LKBusPlanUsage
+	@RowIsActive		bit
+) as
+begin transaction
+
+	begin try
+	
+	update EnterpriseBusPlanUse set RowIsActive = @RowIsActive, DateModified = getdate()
+	from EnterpriseBusPlanUse 
+	where EnterBusPlanUseID = @EnterBusPlanUseID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

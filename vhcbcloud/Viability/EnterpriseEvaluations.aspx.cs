@@ -71,8 +71,9 @@ namespace vhcbcloud.Viability
             BindLookUP(ddlMilestone, 162);
             BindLookUP(ddlQuoteUse, 212);
             BindLookUP(ddlSkillType, 217);
-            BindLookUP(ddlPreLevel, 217);//219
-            BindLookUP(ddlPostLevel, 217);//219
+            BindLookUP(ddlPreLevel, 219);//219
+            BindLookUP(ddlPostLevel, 219);//219
+            BindLookUP(ddlBPU, 211);//211
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -246,8 +247,7 @@ namespace vhcbcloud.Viability
         private void BindMilestonesGrid()
         {
             dvNewManagementSkills.Visible = false;
-            //dvNewlandUsePermitFinancials.Visible = false;
-            //dvNewVHCBProjects.Visible = false;
+            dvNewBPU.Visible = false;
 
             try
             {
@@ -329,6 +329,8 @@ namespace vhcbcloud.Viability
             dvNewManagementSkills.Visible = true;
             BindMSkillsGrid();
 
+            dvNewBPU.Visible = true;
+            BindBPUGrid();
             //BindLandUsePermitFinancialsGrid();
 
             //dvNewVHCBProjects.Visible = true;
@@ -517,6 +519,84 @@ namespace vhcbcloud.Viability
             BindMSkillsGrid();
 
             LogMessage("Management Skill Updated successfully");
+        }
+
+        protected void gvBPU_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvBPU.EditIndex = e.NewEditIndex;
+            BindBPUGrid();
+        }
+
+        protected void gvBPU_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvBPU.EditIndex = -1;
+            BindBPUGrid();
+        }
+
+        protected void gvBPU_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterBusPlanUseID = DataUtils.GetInt(((Label)gvBPU.Rows[rowIndex].FindControl("lblEnterBusPlanUseID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvBPU.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseEvaluationsData.UpdateEnterpriseBusPlanUse(EnterBusPlanUseID, RowIsActive);
+            gvBPU.EditIndex = -1;
+
+            BindBPUGrid();
+
+            LogMessage("Business Plan Usage updated successfully");
+        }
+
+        private void BindBPUGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseEvaluationsData.GetEnterpriseBusPlanUseList(DataUtils.GetInt(hfEnterpriseEvalID.Value), 
+                    cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvBPUGrid.Visible = true;
+                    gvBPU.DataSource = dt;
+                    gvBPU.DataBind();
+                }
+                else
+                {
+                    dvBPUGrid.Visible = false;
+                    gvBPU.DataSource = null;
+                    gvBPU.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindBPUGrid", "", ex.Message);
+            }
+        }
+
+        protected void AddBPU_Click(object sender, EventArgs e)
+        {
+            if (ddlBPU.SelectedIndex == 0)
+            {
+                LogMessage("Select Business Plan Use");
+                ddlBPU.Focus();
+                return;
+            }
+
+            ViabilityMaintResult objViabilityMaintResult = EnterpriseEvaluationsData.AddEnterpriseBusPlanUse(DataUtils.GetInt(hfEnterpriseEvalID.Value),
+                DataUtils.GetInt(ddlBPU.SelectedValue.ToString()));
+
+            ddlBPU.SelectedIndex = -1;
+            cbAddBPU.Checked = false;
+
+            BindBPUGrid();
+
+            if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                LogMessage("Business Plan Usage slready exist as in-active");
+            else if (objViabilityMaintResult.IsDuplicate)
+                LogMessage("Business Plan Usage already exist");
+            else
+                LogMessage("New Business Plan Usage added successfully");
         }
     }
 }

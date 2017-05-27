@@ -242,7 +242,8 @@
                                             <asp:Button ID="btnAddEntMilestone" runat="server" Text="Submit" class="btn btn-info"
                                                 OnClick="btnAddEntMilestone_Click" />
                                         </td>
-                                        <td style="width: 93px"> <asp:Button ID="btnClear" runat="server" Text="Cancel" class="btn btn-info"
+                                        <td style="width: 93px">
+                                            <asp:Button ID="btnClear" runat="server" Text="Cancel" class="btn btn-info"
                                                 OnClick="btnClear_Click" /></td>
                                         <td style="width: 30px"></td>
                                         <td style="width: 176px"></td>
@@ -339,7 +340,7 @@
                                         <td style="width: 180px">
                                             <asp:DropDownList ID="ddlPreLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
-                                         <td style="width: 192px">
+                                        <td style="width: 192px">
                                             <span class="labelClass">Post Level</span>
                                         </td>
                                         <td style="width: 180px">
@@ -385,25 +386,25 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblSkill" runat="Server" Text='<%# Eval("Skill") %>' />
                                             </ItemTemplate>
-                                           <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlSkill" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtSkill" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("SkillType") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                       <asp:TemplateField HeaderText="Pre Level">
+                                        <asp:TemplateField HeaderText="Pre Level">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPreLevel" runat="Server" Text='<%# Eval("Pre") %>' />
                                             </ItemTemplate>
-                                           <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlPreLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtPreLevel" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PreLevel") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Post Level">
+                                        <asp:TemplateField HeaderText="Post Level">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPostLevel" runat="Server" Text='<%# Eval("Post") %>' />
                                             </ItemTemplate>
-                                           <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlPostLevel" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtPostLevel" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PostLevel") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
@@ -424,12 +425,96 @@
 
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="dvNewBPU" visible="false">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Business Plan Usage</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddBPU" runat="server" Text="Add New Business Plan Usage" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvBPUForm">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <span class="labelClass">Please indicate ways you plan to use any business plan or the tools developed as part of the Viability Program.  Will you use this plan...</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:DropDownList ID="ddlBPU" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Button ID="AddBPU" runat="server" Text="Add" class="btn btn-info" OnClick="AddBPU_Click" />
+                                        </td>
+                                        <tr>
+                                            <td style="height: 5px"></td>
+                                        </tr>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvBPUGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvBPU" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvBPU_RowEditing" OnRowCancelingEdit="gvBPU_RowCancelingEdit"
+                                    OnRowUpdating="gvBPU_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="EnterBusPlanUseID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEnterBusPlanUseID" runat="Server" Text='<%# Eval("EnterBusPlanUseID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="BusPlan Usage">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblBusPlanUsage" runat="Server" Text='<%# Eval("BusPlanUsage") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfEnterpriseEvalID" runat="server" />
-
 
     <script language="javascript">
         $(document).ready(function () {
@@ -440,12 +525,16 @@
                 $('#<%= dvEntMilestoneForm.ClientID%>').toggle(this.checked);
             }).change();
 
-             $('#<%= dvNewManagementSkillsForm.ClientID%>').toggle($('#<%= cbAddManagementSkill.ClientID%>').is(':checked'));
+            $('#<%= dvNewManagementSkillsForm.ClientID%>').toggle($('#<%= cbAddManagementSkill.ClientID%>').is(':checked'));
             $('#<%= cbAddManagementSkill.ClientID%>').click(function () {
                 $('#<%= dvNewManagementSkillsForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            
+            $('#<%= dvBPUForm.ClientID%>').toggle($('#<%= cbAddBPU.ClientID%>').is(':checked'));
+            $('#<%= cbAddBPU.ClientID%>').click(function () {
+                $('#<%= dvBPUForm.ClientID%>').toggle(this.checked);
+            }).change();
+
         });
 
         function CurrencyControls() {
@@ -472,8 +561,8 @@
 
             $('#<%= txtGrantsReq.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrantsReq.ClientID%>').val(), $('#<%= txtGrantsReq.ClientID%>'));
-             });
-             $('#<%= txtGrantsRec.ClientID%>').keyup(function () {
+            });
+            $('#<%= txtGrantsRec.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrantsRec.ClientID%>').val(), $('#<%= txtGrantsRec.ClientID%>'));
             });
         }
