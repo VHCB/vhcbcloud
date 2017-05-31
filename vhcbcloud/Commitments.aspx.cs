@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -157,7 +158,7 @@ namespace vhcbcloud
                 BindUsePermit();
 
                 //if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
-                if (dtable.Rows[0]["mitfund"].ToString() == "1")
+                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -204,7 +205,7 @@ namespace vhcbcloud
                 BindUsePermit();
 
                 //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                if (dtable.Rows[0]["mitfund"].ToString() == "1")
+                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -439,7 +440,7 @@ namespace vhcbcloud
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
 
                     //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                    if (dtable.Rows[0]["mitfund"].ToString() == "1")
+                    if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                         {
