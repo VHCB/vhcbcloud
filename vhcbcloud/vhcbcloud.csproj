@@ -267,6 +267,7 @@
     <Content Include="Images\BtnSubmit.png" />
     <Content Include="Images\BtnSubmit2.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm.png" />
+    <Content Include="MilestonesQuickentry.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -852,6 +853,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MilestonesQuickentry.aspx.cs">
+      <DependentUpon>MilestonesQuickentry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MilestonesQuickentry.aspx.designer.cs">
+      <DependentUpon>MilestonesQuickentry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="ProjectCheckRequest.aspx.cs">
