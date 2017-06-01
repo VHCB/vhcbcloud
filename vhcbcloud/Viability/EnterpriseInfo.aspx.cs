@@ -78,11 +78,30 @@ namespace vhcbcloud.Viability
 
             BindLookUP(ddlAttribute, AttributeTypeId);
 
-            if(EnterpriseType != "Viability Farm Enterprise")
+            DataRow drow = EnterpriseInfoData.GetEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value));
+
+            if(drow != null)
+            {
+                PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
+            }
+
+            if (EnterpriseType != "Viability Farm Enterprise")
             {
                 dvAcres.Visible = false;
             }
             LoadAcresForm();
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
         }
 
         private void GetEnterpriseTypeId(int LkProjectType, out int EnterpriseTypeId, out int AttributeTypeId, out string EnterpriseType)
@@ -425,6 +444,12 @@ namespace vhcbcloud.Viability
             BindAttributeGrid();
 
             LogMessage("Attribute updated successfully");
+        }
+
+        protected void ddlPrimaryProduct_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value), 
+                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()));
         }
     }
 }
