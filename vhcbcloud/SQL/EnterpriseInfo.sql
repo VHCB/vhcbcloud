@@ -396,3 +396,79 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* EnterprisePrimeProduct */
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[SubmitEnterprisePrimeProduct]') and type in (N'P', N'PC'))
+drop procedure [dbo].SubmitEnterprisePrimeProduct
+go
+
+create procedure dbo.SubmitEnterprisePrimeProduct
+(
+	@ProjectID			int,
+	@PrimaryProduct		int
+	
+) as
+begin transaction
+
+	begin try
+
+	if not exists
+    (
+		select 1
+		from EnterprisePrimeProduct (nolock)
+		where ProjectID = @ProjectID
+    )
+	begin
+		insert into EnterprisePrimeProduct(ProjectID, PrimaryProduct)
+		values(@ProjectID, @PrimaryProduct)
+	end
+	else
+	begin
+		update EnterprisePrimeProduct set PrimaryProduct = @PrimaryProduct
+		where ProjectID = @ProjectID
+	end
+	
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEnterprisePrimeProduct]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEnterprisePrimeProduct
+go
+
+create procedure dbo.GetEnterprisePrimeProduct
+(
+	@ProjectID	int
+)
+as
+begin transaction
+--exec GetEnterprisePrimeProduct 1
+	begin try
+	
+		select PrimaryProduct 
+		from EnterprisePrimeProduct (nolock)
+		where ProjectID = @ProjectID
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+		RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

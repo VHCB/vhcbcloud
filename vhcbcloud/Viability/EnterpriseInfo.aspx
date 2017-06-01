@@ -82,7 +82,8 @@
                                         </td>
                                         <td style="width: 97px"><span class="labelClass">Primary Product</span></td>
                                         <td style="width: 173px">
-                                            <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" AutoPostBack="true" runat="server" 
+                                                Style="margin-left: 0" OnSelectedIndexChanged="ddlPrimaryProduct_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 58px"><span class="labelClass"></span></td>
