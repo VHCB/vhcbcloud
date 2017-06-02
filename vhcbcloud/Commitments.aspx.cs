@@ -816,7 +816,8 @@ namespace vhcbcloud
                 imgExistingAwardSummary.Visible = false;
                 btnNewTransaction.Visible = false;
                 txtTransDate.Text = "";
-                
+
+                divPtransEntry.Visible = false;
             }
             else
             {
@@ -1039,10 +1040,12 @@ namespace vhcbcloud
                         gvPTrans.DataSource = dtTrans;
                         gvPTrans.DataBind();
                         CommonHelper.DisableButton(btnTransactionSubmit);
+                        divPtransEntry.Visible = false;
                     }
                     else if (rdBtnSelection.SelectedIndex == 0)
                     {
                         CommonHelper.EnableButton(btnTransactionSubmit);
+                        divPtransEntry.Visible = true;
                     }
                 }
                 else

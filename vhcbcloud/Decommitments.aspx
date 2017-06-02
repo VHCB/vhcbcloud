@@ -256,7 +256,7 @@
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 10%; float: left">
-                                                    <span class="labelClass">Available Detail Funds $:</span>
+                                                    <span class="labelClass">Available Funds $:</span>
                                                 </td>
                                                 <td style="width: 30%; float: left">
                                                     <asp:Label ID="lblAvDetailFund" runat="server" class="labelClass" Text=""></asp:Label>
