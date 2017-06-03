@@ -77,6 +77,7 @@
     <Compile Include="LoanMaintenanceData.cs" />
     <Compile Include="LookupMaintenanceData.cs" />
     <Compile Include="LookupValuesData.cs" />
+    <Compile Include="MilestoneData.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCheckRequestData.cs" />
     <Compile Include="ProjectMaintenanceData.cs" />
