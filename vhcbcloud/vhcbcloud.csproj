@@ -305,7 +305,9 @@
     <Content Include="SQL\Lead\ProjectLeadBuildingsUnits.sql" />
     <Content Include="SQL\Lead\ProjectLeadMilestone.sql" />
     <Content Include="SQL\Lead\ProjectLeadOccupant.sql" />
+    <Content Include="SQL\LkLookUps.sql" />
     <Content Include="SQL\LoanProjectMaintenance.sql" />
+    <Content Include="SQL\Milestone-New.sql" />
     <Content Include="SQL\ProjectEvent.sql" />
     <Content Include="SQL\ProjectNotes.sql" />
     <None Include="Properties\PublishProfiles\PublishtoRackspace.pubxml" />
@@ -365,6 +367,7 @@
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
+    <Content Include="SQL\UserSecurity.sql" />
     <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
     <Content Include="UserSecurity.aspx" />
