@@ -61,7 +61,8 @@ namespace vhcbcloud
                     hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
                     spnProgram.InnerText = drProjectDetails["program"].ToString();
                     spnProjectName.InnerText = drProjectDetails["projectName"].ToString();
-                    hfProjectProgram.Value = drProjectDetails["projectName"].ToString();
+                    hfProjectProgram.Value = drProjectDetails["program"].ToString();
+                    EventProgramSelection();
                 }
                 else
                 {
