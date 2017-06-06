@@ -86,17 +86,37 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
-        protected void BindUsePermit()
+        //protected void BindUsePermit()
+        //{
+        //    try
+        //    {
+        //        DataTable dtable = new DataTable();
+        //        dtable = FinancialTransactions.GetDataTableByProcName("GetAllLandUsePermit");
+        //        ddlUsePermit.DataSource = dtable;
+        //        ddlUsePermit.DataValueField = "Act250FarmId";
+        //        ddlUsePermit.DataTextField = "UsePermit";
+        //        ddlUsePermit.DataBind();
+        //        ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblErrorMsg.Text = ex.Message;
+        //    }
+
+        //}
+
+        protected void BindUsePermit(int projId)
         {
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetAllLandUsePermit");
+                dtable = FinancialTransactions.GetAllLandUsePermit(projId);
                 ddlUsePermit.DataSource = dtable;
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";
                 ddlUsePermit.DataBind();
-                ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -155,7 +175,7 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit();
+                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
                 //if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
                 if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
@@ -202,7 +222,7 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit();
+                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
                 //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
                 if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")

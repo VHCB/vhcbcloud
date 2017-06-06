@@ -1396,10 +1396,23 @@ as
  end
 go
 
-alter procedure GetAllLandUsePermit
+--alter procedure GetAllLandUsePermit
+--as
+--begin
+--	select af.UsePermit, af.Act250FarmId from Act250Farm af where af.RowIsActive=1
+--end
+--go
+
+ alter procedure GetAllLandUsePermit
+ (
+	 @projectId int
+ )
 as
 begin
-	select af.UsePermit, af.Act250FarmId from Act250Farm af where af.RowIsActive=1
+	select distinct af.UsePermit, af.Act250FarmId from Act250Farm af 
+	left join Act250Projects ap on ap.Act250FarmID = af.Act250FarmID 
+	join Project p on p.ProjectId = ap.ProjectID
+	where af.RowIsActive=1 and p.LkProgram = (select LkProgram from Project where ProjectId = 6588)
 end
 go
 
