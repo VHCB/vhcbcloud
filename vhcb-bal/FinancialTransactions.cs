@@ -373,7 +373,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit)
+        public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit, string useFarmId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -386,6 +386,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
                 command.Parameters.Add(new SqlParameter("LandUsePermit", usePermit));
+                command.Parameters.Add(new SqlParameter("LandUseFarmId", Convert.ToInt32(useFarmId)));
 
                 using (connection)
                 {
@@ -1438,7 +1439,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "GetLandUsePermit";
+                command.CommandText = "GetAllLandUsePermit";
                 command.Parameters.Add(new SqlParameter("projectId", projectId));
                 using (connection)
                 {

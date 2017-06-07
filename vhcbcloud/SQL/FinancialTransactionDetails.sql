@@ -1391,8 +1391,12 @@ alter procedure GetLandUsePermit
 )
 as
  Begin
-	select af.UsePermit, af.Act250FarmId from Act250Farm af join Act250Projects ap on ap.Act250FarmId = af.Act250FarmId where ap.RowIsActive=1
-	and ap.projectid = @projectId
+	--select af.UsePermit, af.Act250FarmId from Act250Farm af join Act250Projects ap on ap.Act250FarmId = af.Act250FarmId where ap.RowIsActive=1
+	--and ap.projectid = @projectId
+	select distinct af.UsePermit, af.Act250FarmId, * from Act250Farm af 
+		join detail d on d.landusepermit = af.Act250FarmID
+		join Trans tr on tr.TransId = d.TransId
+	where tr.ProjectID = @projectid
  end
 go
 
@@ -1412,7 +1416,7 @@ begin
 	select distinct af.UsePermit, af.Act250FarmId from Act250Farm af 
 	left join Act250Projects ap on ap.Act250FarmID = af.Act250FarmID 
 	join Project p on p.ProjectId = ap.ProjectID
-	where af.RowIsActive=1 and p.LkProgram = (select LkProgram from Project where ProjectId = 6588)
+	where af.RowIsActive=1 and p.LkProgram = (select LkProgram from Project where ProjectId = @projectId)
 end
 go
 
@@ -1427,7 +1431,8 @@ as
 
 BEGIN 
 	insert into Detail (TransId, FundId, LkTransType, Amount)	values
-		(@transid,@fundid , @fundtranstype, @fundamount)
+		(@transid,@fundid , @fundtranstype, @fundamount);
+		
 END 
 go
 
@@ -1437,13 +1442,17 @@ alter procedure [dbo].AddProjectFundDetailsWithLandPermit
 	@fundid int,	
 	@fundtranstype int,
 	@fundamount money,
-	@LandUsePermit nvarchar(15)
+	@LandUsePermit nvarchar(15),
+	@LandUseFarmId int
 )
 as
 
 BEGIN 
 	insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermit)	values
-		(@transid,@fundid , @fundtranstype, @fundamount, @LandUsePermit)
+		(@transid,@fundid , @fundtranstype, @fundamount, @LandUseFarmId)
+
+	insert into act250devpay (Act250FarmId, FundId, AmtRec, DateRec) values
+			(@LandUseFarmId, @fundid, @fundAmount, getdate())
 END 
 go
 
