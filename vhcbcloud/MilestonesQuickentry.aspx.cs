@@ -37,6 +37,9 @@ namespace vhcbcloud
         {
             var onBlurScript = Page.ClientScript.GetPostBackEventReference(txtProjectNumDDL, "OnBlur");
             txtProjectNumDDL.Attributes.Add("onblur", onBlurScript);
+
+            var onBlurScript1 = Page.ClientScript.GetPostBackEventReference(txtEntityDDL, "OnBlur");
+            txtEntityDDL.Attributes.Add("onblur", onBlurScript1);
         }
 
         private void HandleCustomPostbackEvent(string ctrlName, string args)
@@ -44,6 +47,31 @@ namespace vhcbcloud
             if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur")
             {
                 ProjectSelectionChanged();
+            }
+            if (ctrlName == txtEntityDDL.UniqueID && args == "OnBlur")
+            {
+                EntitySelectionChanged();
+            }
+        }
+
+        private void EntitySelectionChanged()
+        {
+            try
+            {
+                if (txtEntityDDL.Text != "")
+                {
+                    BindEntityMilestoneGrid();
+                }
+                else
+                {
+
+                    BindEntityMilestoneGrid();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "EntitySelectionChanged", "", ex.Message);
             }
         }
 
@@ -63,10 +91,17 @@ namespace vhcbcloud
                     spnProjectName.InnerText = drProjectDetails["projectName"].ToString();
                     hfProjectProgram.Value = drProjectDetails["program"].ToString();
                     EventProgramSelection();
+                    BindMilestoneGrid();
                 }
                 else
                 {
-
+                    hfProjectId.Value = "";
+                    hfProgramId.Value = "";
+                    spnProgram.InnerText = "";
+                    spnProjectName.InnerText = "";
+                    hfProjectProgram.Value = "";
+                    EventProgramSelection();
+                    BindMilestoneGrid();
                 }
 
             }
@@ -84,8 +119,12 @@ namespace vhcbcloud
             hfProgramId.Value = "";
             spnProgram.InnerText = "";
             spnProjectName.InnerText = "";
-
             txtEntityDDL.Text = "";
+            ClearEntityAndCommonForm();
+        }
+
+        private void ClearEntityAndCommonForm()
+        {
             ddlEntityMilestone.SelectedIndex = -1;
             ddlEntitySubMilestone.SelectedIndex = -1;
             ddlAdminMilestone.SelectedIndex = -1;
@@ -155,6 +194,7 @@ namespace vhcbcloud
                 LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
             }
         }
+
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -217,6 +257,10 @@ namespace vhcbcloud
                 dvEventMilestone.Visible = true;
                 dvProjectMilestone.Visible = false;
             }
+            rdGrid.SelectedIndex = 0;
+            dvPMFilter.Visible = false;
+            dvMilestoneGrid.Visible = false;
+            dvEntityMilestoneGrid.Visible = false;
         }
 
         protected void ddlAdminMilestone_SelectedIndexChanged(object sender, EventArgs e)
@@ -277,17 +321,26 @@ namespace vhcbcloud
 
         protected void btnAddMilestone_Click(object sender, EventArgs e)
         {
+            string URL = txtURL.Text;
+
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
+
             MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value),
                 txtEntityDDL.Text,
                 DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlAdminSubMilestone.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlEntityMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlEntitySubMilestone.SelectedValue.ToString()),
-               DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, GetUserId());
+                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
 
-            ClearForm();
-            cbAddMilestone.Checked = false;
+            //ClearForm();
+            ClearEntityAndCommonForm();
+            //cbAddMilestone.Checked = false;
 
-            BindMilestoneGrid();
+            if (rdBtnSelection.SelectedValue.ToLower().Trim() == "project")
+                BindMilestoneGrid();
+            else
+                BindEntityMilestoneGrid();
 
             if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
                 LogMessage("Milestone Event already exist as in-active");
@@ -302,22 +355,32 @@ namespace vhcbcloud
             try
             {
                 DataTable dtMilestones = null;
+                int RecCount = 0;
+                dvPMFilter.Visible = false;
 
-                if (rdGrid.SelectedValue.ToLower().Trim() == "admin")
-                    dtMilestones = MilestoneData.GetMilestonesList(false, true, false, cbActiveOnly.Checked);
-                else if (rdGrid.SelectedValue.ToLower().Trim() == "program")
-                    dtMilestones = MilestoneData.GetMilestonesList(false, false, true, cbActiveOnly.Checked);
-                else
-                    dtMilestones = MilestoneData.GetMilestonesList(true, false, false, cbActiveOnly.Checked);
-
-                if (dtMilestones.Rows.Count > 0)
+                if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 {
+                    if (rdGrid.SelectedValue.ToLower().Trim() == "admin")
+                        dtMilestones = MilestoneData.GetProgramMilestonesList(DataUtils.GetInt(hfProjectId.Value), false, true, false, cbActiveOnly.Checked);
+                    else if (rdGrid.SelectedValue.ToLower().Trim() == "program")
+                        dtMilestones = MilestoneData.GetProgramMilestonesList(DataUtils.GetInt(hfProjectId.Value), false, false, true, cbActiveOnly.Checked);
+                    else
+                        dtMilestones = MilestoneData.GetProgramMilestonesList(DataUtils.GetInt(hfProjectId.Value), true, false, false, cbActiveOnly.Checked);
+
+                    RecCount = dtMilestones.Rows.Count;
+                    dvPMFilter.Visible = true;
+                }
+
+                if (RecCount > 0)
+                {
+                    //dvPMFilter.Visible = true;
                     dvMilestoneGrid.Visible = true;
                     gvMilestone.DataSource = dtMilestones;
                     gvMilestone.DataBind();
                 }
                 else
                 {
+                    //dvPMFilter.Visible = false;
                     dvMilestoneGrid.Visible = false;
                     gvMilestone.DataSource = null;
                     gvMilestone.DataBind();
@@ -325,7 +388,35 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                LogError(Pagename, "BindPrjectEventGrid", "", ex.Message);
+                LogError(Pagename, "BindMilestoneGrid", "", ex.Message);
+            }
+        }
+
+        private void BindEntityMilestoneGrid()
+        {
+            try
+            {
+                DataTable dtMilestones = null;
+
+                dtMilestones = MilestoneData.GetEventMilestonesList(txtEntityDDL.Text, cbActiveOnly.Checked);
+
+
+                if (dtMilestones.Rows.Count > 0)
+                {
+                    dvEntityMilestoneGrid.Visible = true;
+                    gvEntityMilestone.DataSource = dtMilestones;
+                    gvEntityMilestone.DataBind();
+                }
+                else
+                {
+                    dvEntityMilestoneGrid.Visible = false;
+                    gvEntityMilestone.DataSource = null;
+                    gvEntityMilestone.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindEntityMilestoneGrid", "", ex.Message);
             }
         }
 
@@ -439,6 +530,36 @@ namespace vhcbcloud
         protected void rdGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindMilestoneGrid();
+        }
+
+        protected void gvMilestone_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int ProjectEventID = Convert.ToInt32(((Label)gvMilestone.Rows[e.RowIndex].FindControl("lblProjectEventID")).Text);
+                MilestoneData.DeleteMilestone(ProjectEventID);
+                BindMilestoneGrid();
+                LogMessage("Milestone Event deleted scuccessfully");
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvEntityMilestone_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int ProjectEventID = Convert.ToInt32(((Label)gvEntityMilestone.Rows[e.RowIndex].FindControl("lblProjectEventID")).Text);
+                MilestoneData.DeleteMilestone(ProjectEventID);
+                BindEntityMilestoneGrid();
+                LogMessage("Milestone Event deleted scuccessfully");
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
     }
 }

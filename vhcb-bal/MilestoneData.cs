@@ -13,7 +13,7 @@ namespace VHCBCommon.DataAccessLayer
     {
         public static MilestoneResult AddMilestone(int ProjectID, int Prog, string AppName, 
             int EventID, int SubEventID, int ProgEventID, int ProgSubEventID, int EntityMSID, int EntitySubMSID, 
-            DateTime Date, string Note, int UserID)
+            DateTime Date, string Note, string URL, int UserID)
         {
             try
             {
@@ -41,6 +41,7 @@ namespace VHCBCommon.DataAccessLayer
 
                         command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
@@ -68,7 +69,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetMilestonesList(bool IsAll, bool IsAdmin, bool IsProgram, bool IsActiveOnly)
+        public static DataTable GetProgramMilestonesList(int ProjectID, bool IsAll, bool IsAdmin, bool IsProgram, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -81,8 +82,8 @@ namespace VHCBCommon.DataAccessLayer
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "GetMilestonesList";
-                        //command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.CommandText = "GetProgramMilestonesList";
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                         command.Parameters.Add(new SqlParameter("IsAll", IsAll));
                         command.Parameters.Add(new SqlParameter("IsAdmin", IsAdmin));
                         command.Parameters.Add(new SqlParameter("IsProgram", IsProgram));
@@ -103,6 +104,66 @@ namespace VHCBCommon.DataAccessLayer
                 throw ex;
             }
             return dt;
+        }
+
+        public static DataTable GetEventMilestonesList(string AppName, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEventMilestonesList";
+                        command.Parameters.Add(new SqlParameter("AppName", AppName));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void DeleteMilestone(int ProjectEventID)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "DeleteMilestone";
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public class MilestoneResult
