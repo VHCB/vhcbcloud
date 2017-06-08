@@ -61,11 +61,18 @@ begin transaction
 			where TabName = 'Implementation Grant'
 			order by taborder
 		end
+		else if(@ProgramName = 'Viability' and @ProjectType = 'Viability Service Provider')
+		begin
+			select TabName, URL
+			from programtab(nolock)
+			where TabName = 'Service Providers'
+			order by taborder
+		end
 		else
 		begin
 			select TabName, URL
 			from programtab(nolock)
-			where LKVHCBProgram = @LKProgramID and TabName <> 'Implementation Grant'
+			where LKVHCBProgram = @LKProgramID and TabName not in('Implementation Grant',  'Service Providers')
 			order by taborder
 		end
 		
