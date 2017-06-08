@@ -124,6 +124,7 @@ namespace vhcbcloud
                 PopulateDropDown(ddlSOVFundCode, dr["VHCBCode"].ToString());
                 PopulateDropDown(ddlAcctMethod, dr["LkAcctMethod"].ToString());
                 PopulateDropDown(ddlSOVDeptId, dr["DeptID"].ToString());
+                cbMitFund.Checked = DataUtils.GetBool(dr["MitFund"].ToString());
                 cbFundActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                 cbFundActive.Enabled = true;
 

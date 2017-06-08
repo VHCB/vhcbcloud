@@ -149,7 +149,7 @@ begin transaction
 
 	begin try
 
-	select FundId, name, abbrv, LkFundType, account, LkAcctMethod, DeptID, VHCBCode, Drawdown, RowIsActive, DateModified
+	select FundId, name, abbrv, LkFundType, account, LkAcctMethod, DeptID, VHCBCode, Drawdown, MitFund, RowIsActive, DateModified
 	from Fund(nolock)
 	where FundId = @FundId
 

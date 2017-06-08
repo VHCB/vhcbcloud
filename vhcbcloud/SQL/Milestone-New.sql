@@ -1,7 +1,7 @@
 use vhcbsandbox
 go
 
-create procedure dbo.AddMilestone
+alter procedure dbo.AddMilestone
 (
 	@Prog			int, 
 	@ProjectID		int, 
@@ -18,6 +18,7 @@ create procedure dbo.AddMilestone
 
 	@Date			datetime, 
 	@Note			nvarchar(max), 
+	@URL			nvarchar(1500),
 	@UserID			int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
@@ -50,10 +51,10 @@ begin transaction
 	begin
 		insert into ProjectEvent(Prog, ProjectID, ApplicantID, EventID, SubEventID, 
 			ProgEventID, ProgSubEventID, EntityMSID, EntitySubMSID, 
-			Date, Note, UserID)
+			Date, Note, URL, UserID)
 		values(@Prog, @ProjectID, @ApplicantID, @EventID, @SubEventID, 
 			@ProgEventID, @ProgSubEventID, @EntityMSID, @EntitySubMSID, 
-			@Date, @Note, @UserID)
+			@Date, @Note,@URL, @UserID)
 
 		set @isDuplicate = 0
 	end
@@ -81,12 +82,12 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
-
 go
 
-alter procedure dbo.GetMilestonesList  
+
+alter procedure dbo.GetProgramMilestonesList  
 (
-	--@ProjectID		int,
+	@ProjectID		int,
 	@IsAll			bit,
 	@IsAdmin		bit,
 	@IsProgram		bit,
@@ -94,9 +95,9 @@ alter procedure dbo.GetMilestonesList
 )
 as
 begin
---exec GetMilestonesList 1, 0, 0, 1 --ALL
---exec GetMilestonesList 0, 1, 0, 1 -- Admin
---exec GetMilestonesList 0, 0, 1, 1 -- Program
+--exec GetProgramMilestonesList 4656, 1, 0, 0, 1 --ALL
+--exec GetProgramMilestonesList 0, 1, 0, 1 -- Admin
+--exec GetProgramMilestonesList 0, 0, 1, 1 -- Program
 
 	if(@IsAll = 1)
 	begin
@@ -123,9 +124,10 @@ begin
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
 		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
-		left join LookupSubValues lsv(nolock) on lsv.TypeID = pe.ProgSubEventID
+		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
-		where (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
+		where ProjectID = @ProjectID 
+			and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
 		order by pe.DateModified desc
 	end
 
@@ -154,9 +156,9 @@ begin
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
 		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
-		left join LookupSubValues lsv(nolock) on lsv.TypeID = pe.ProgSubEventID
+		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
-		where (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
+		where ProjectID = @ProjectID and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
 			and (pe.EventID is not null and pe.EventID != 0)
 		order by pe.DateModified desc
 	end
@@ -186,11 +188,69 @@ begin
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
 		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
-		left join LookupSubValues lsv(nolock) on lsv.TypeID = pe.ProgSubEventID
+		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
-		where (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
+		where ProjectID = @ProjectID and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
 			and (pe.ProgEventID is not null and pe.ProgEventID != 0)
 		order by pe.DateModified desc
 	end
+end
+go
+
+
+alter procedure dbo.GetEventMilestonesList  
+(
+	@AppName		nvarchar(100),
+	@IsActiveOnly	bit
+)
+as
+begin
+--exec GetEventMilestonesList 'Barker, Stephen & Kathleen', 1
+
+	declare @applicantId int
+
+	Select @applicantId = a.ApplicantId 
+			from AppName an(nolock)
+			join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
+			join Applicant a(nolock) on a.ApplicantId = aan.ApplicantID
+			where an.Applicantname = @AppName
+
+		select pe.ProjectEventID, 
+			pe.Prog, lv.Description as Program, 
+			pe.ProjectID, p.project_name, 
+			pe.ApplicantID, an.applicantname, 
+			pe.ProgSubEventID, 
+			pe.EntityMSID, lv.Description as EntityMilestone,
+			pe.EntitySubMSID, lsv.SubDescription as EntitySubMilestone,
+			pe.Date,
+			substring(pe.Note, 0, 25) Notes, pe.Note as FullNotes, pe.URL,
+			CASE when isnull(pe.URL, '') = '' then '' else 'Click here' end as URLText,
+			pe.UserID, ui.username, 
+			pe.RowIsActive
+		from ProjectEvent pe(nolock)
+		left join project_v p(nolock) on pe.ProjectID = p.project_id and p.defname = 1
+		left join applicantappname aan(nolock) on pe.ApplicantId = aan.ApplicantID
+		left join appname an(nolock) on aan.appnameid = an.appnameid
+		left join applicant a(nolock) on a.applicantid = aan.applicantid
+		left join LookupValues lv(nolock) on lv.TypeID = pe.EntityMSID
+		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.EntitySubMSID
+		left join userinfo ui(nolock) on ui.userid = pe.UserId
+		where pe.ApplicantID = @ApplicantID and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
+			and (pe.EntityMSID is not null and pe.EntityMSID != 0)
+		order by pe.DateModified desc
+end
+go
+
+create procedure dbo.DeleteMilestone  
+(
+	@ProjectEventID		int
+)
+as
+begin
+--exec DeleteMilestone 127
+
+		delete pe
+		from ProjectEvent pe(nolock)
+		where ProjectEventID = @ProjectEventID
 end
 go
