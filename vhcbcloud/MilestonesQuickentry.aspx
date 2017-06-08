@@ -25,7 +25,7 @@
                                     <asp:ListItem>Entity</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" Visible="false"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -43,7 +43,7 @@
                                         <h3 class="panel-title">Milestones</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
+                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" Visible="false" />
                                     </td>
                                 </tr>
                             </table>
@@ -59,7 +59,7 @@
                                                 <td style="width: 128px"><span class="labelClass">Entity</span></td>
                                                 <td style="width: 222px">
                                                     <asp:TextBox ID="txtEntityDDL" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
-                                                        ClientIDMode="Static" Visible="true"></asp:TextBox>
+                                                        ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
                                                     <ajaxToolkit:AutoCompleteExtender ID="EntityAE" runat="server" TargetControlID="txtEntityDDL" MinimumPrefixLength="1"
                                                         EnableCaching="true" CompletionSetCount="1"
                                                         CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onApplicantListPopulated">
@@ -207,9 +207,11 @@
                                         <td style="width: 319px">
                                             <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
-                                        <td><span class="labelClass">Active:</span></td>
+                                        <td><span class="labelClass"></span></td>
                                         <td>
-                                            <asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" /></td>
+                                            <%--<asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" />--%>
+
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -235,7 +237,7 @@
                             </asp:Panel>
                         </div>
 
-                        <div class="panel-heading ">
+                        <div class="panel-heading" id="dvPMFilter" runat="server">
                             <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 100%;">
@@ -259,7 +261,7 @@
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
-                                    OnRowDataBound="gvMilestone_RowDataBound">
+                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowDeleting="gvMilestone_RowDeleting">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -287,13 +289,13 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgramMilestone" runat="Server" Text='<%# Eval("ProgEvent") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="100px" />
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Prog Sub MS">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgramSubMilestone" runat="Server" Text='<%# Eval("ProgSubEvent") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="120px" />
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
@@ -303,9 +305,9 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
-                                            <ItemStyle Width="250px" />
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Notes">
                                             <ItemTemplate>
@@ -318,7 +320,74 @@
                                                 <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <%--<asp:CommandField ShowEditButton="True" />--%>
+                                        <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvEntityMilestoneGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel1" Width="100%" Height="300px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvEntityMilestone" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowDeleting="gvEntityMilestone_RowDeleting">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Project Event ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectEventID" runat="Server" Text='<%# Eval("ProjectEventID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Entity">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEntity" runat="Server" Text='<%# Eval("applicantname") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Entity Milestone">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEntityMilestone" runat="Server" Text='<%# Eval("EntityMilestone") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Entity Sub Milestone">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEntitySubMilestone" runat="Server" Text='<%# Eval("EntitySubMilestone") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="190px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="150px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <%--<asp:CommandField ShowEditButton="True" />--%>
+                                        <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -334,11 +403,11 @@
     </div>
     <script language="javascript">
         $(document).ready(function () {
-            $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
+            <%--$('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 
             $('#<%= cbAddMilestone.ClientID%>').click(function () {
                 $('#<%= dvMilestoneForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
         });
         function onApplicantListPopulated() {
             var completionList = $find('<%=EntityAE.ClientID%>').get_completionList();
