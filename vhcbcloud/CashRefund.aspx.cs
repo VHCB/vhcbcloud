@@ -820,7 +820,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = true;
                 imgNewAwardSummary.Visible = true;
                 imgExistingAwardSummary.Visible = false;
-                Response.Redirect("cashrefund.aspx");
+                divPtransEntry.Visible = false;                
             }
             else
             {
@@ -828,7 +828,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
-
+                Response.Redirect("cashrefund.aspx");
             }
         }
 

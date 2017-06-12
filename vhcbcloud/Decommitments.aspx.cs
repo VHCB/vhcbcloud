@@ -848,6 +848,7 @@ namespace vhcbcloud
                 btnNewTransaction.Visible = false;
                 lblAvailVisibleFund.Text = "";
                 txtTransDate.Text = "";
+                divPtransEntry.Visible = false;
             }
             else
             {
@@ -855,7 +856,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
-                btnNewTransaction.Visible = true;
+                btnNewTransaction.Visible = true;                
                 Response.Redirect("decommitments.aspx");
             }
 

@@ -58,13 +58,13 @@
                             <tr>
                                 <td style="width: 20%; float: left"><span class="labelClass">Trans From Date :</span></td>
                                 <td style="width: 20%; float: left">
-                                    <asp:TextBox ID="txtTransDateFrom" runat="server" CssClass="clsTextBoxBlue1" Width="110px" onkeydown="return false;" onpaste="return false;"></asp:TextBox>
+                                    <asp:TextBox ID="txtTransDateFrom" runat="server" CssClass="clsTextBoxBlue1" Width="110px" ></asp:TextBox>
                                     <ajaxToolkit:CalendarExtender ID="txtTransDateFrom_CalendarExtender" runat="server" TargetControlID="txtTransDateFrom">
                                     </ajaxToolkit:CalendarExtender>
                                 </td>
                                 <td style="width: 10%; float: left"><span class="labelClass">Trans End Date :</span></td>
                                 <td style="width: 15%; float: left">
-                                    <asp:TextBox ID="txtTransDateTo" runat="server" CssClass="clsTextBoxBlue1" Width="110px" onkeydown="return false;" onpaste="return false;"></asp:TextBox>
+                                    <asp:TextBox ID="txtTransDateTo" runat="server" CssClass="clsTextBoxBlue1" Width="110px" ></asp:TextBox>
                                     <ajaxToolkit:CalendarExtender ID="txtTransDateTo_CalendarExtender" runat="server" TargetControlID="txtTransDateTo">
                                     </ajaxToolkit:CalendarExtender>
                                 </td>
