@@ -404,7 +404,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static Result AddProjectSurfaceWaters(int ProjectId, int LKWaterShed, string SubWaterShed, int LKWaterBody, int FrontageFeet, string OtherWater)
+        public static Result AddProjectSurfaceWaters(int ProjectId, int LKWaterShed, string SubWaterShed, int LKWaterBody, 
+            int FrontageFeet, string OtherWater, int Riparian)
         {
             try
             {
@@ -424,6 +425,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LKWaterBody", LKWaterBody));
                         command.Parameters.Add(new SqlParameter("FrontageFeet", FrontageFeet));
                         command.Parameters.Add(new SqlParameter("OtherWater", OtherWater));
+                        command.Parameters.Add(new SqlParameter("Riparian", Riparian));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -452,7 +454,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateProjectSurfaceWaters(int SurfaceWatersID, string SubWaterShed, int LKWaterBody, int FrontageFeet, string OtherWater, bool RowIsActive)
+        public static void UpdateProjectSurfaceWaters(int SurfaceWatersID, string SubWaterShed, int LKWaterBody, int FrontageFeet, 
+            string OtherWater, int Riparian, bool RowIsActive)
         {
             try
             {
@@ -471,6 +474,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LKWaterBody", LKWaterBody));
                         command.Parameters.Add(new SqlParameter("FrontageFeet", FrontageFeet));
                         command.Parameters.Add(new SqlParameter("OtherWater", OtherWater));
+                        command.Parameters.Add(new SqlParameter("Riparian", Riparian));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
