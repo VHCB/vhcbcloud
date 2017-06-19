@@ -799,7 +799,8 @@ create procedure dbo.AddRelatedProject
 (
 	@ProjectId			int,
 	@RelProjectId		int,
-	@isDuplicate		bit output
+	@isDuplicate		bit output,
+	@isActive			bit Output
 
 ) as
 begin transaction
@@ -807,6 +808,7 @@ begin transaction
 	begin try
 
 	set @isDuplicate = 1
+	set @isActive = 1
 
 	 if not exists
         (
@@ -823,6 +825,13 @@ begin transaction
 
 			set @isDuplicate = 0
 		end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from projectrelated(nolock)
+			where ProjectID = @ProjectId and RelProjectID = @RelProjectId
+	end
 	end try
 	begin catch
 		if @@trancount > 0
@@ -836,6 +845,7 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateRelatedProject]') and type in (N'P', N'PC'))
 drop procedure [dbo].UpdateRelatedProject

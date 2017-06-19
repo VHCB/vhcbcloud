@@ -17,6 +17,36 @@ select * from ConservePlan
 select * from ConserveEvent
 */
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetMajorAmendmentsById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetMajorAmendmentsById
+go
+
+create procedure dbo.GetMajorAmendmentsById
+(
+	@ConserveMajAmendID	int
+) as
+begin transaction
+
+	begin try
+	
+	select ConserveMajAmendID, ConserveID, LkConsMajAmend, ReqDate, LkDisp, DispDate, Comments, URL, RowIsActive, DateModified 
+	from  ConserveMajorAmend
+	where ConserveMajAmendID = @ConserveMajAmendID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetMajorAmendmentsList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetMajorAmendmentsList 
 go
@@ -30,7 +60,11 @@ as
 --exec GetMajorAmendmentsList 1, 1
 begin
 	select  c.ConserveID, a.ConserveMajAmendID, a.LkConsMajAmend, lv.Description as amendment, 
-		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive
+		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive,
+		substring(a.Comments, 0, 25) Comments, 
+		a.Comments as FullComments, 
+		a.URL,
+		CASE when isnull(a.URL, '') = '' then '' else 'Click here' end as URLText
 	from Conserve c(nolock)
 	join ConserveMajorAmend a(nolock) on c.ConserveID = a.ConserveID
 	left join LookupValues lv(nolock) on lv.TypeID = a.LkConsMajAmend
@@ -40,6 +74,7 @@ begin
 		order by a.DateModified desc
 end
 go
+
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddConservationMajorAmend]') and type in (N'P', N'PC'))
 drop procedure [dbo].AddConservationMajorAmend
@@ -52,6 +87,8 @@ create procedure dbo.AddConservationMajorAmend
 	@ReqDate		datetime,
 	@LkDisp			int,
 	@DispDate		datetime,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),		
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -89,8 +126,8 @@ begin transaction
 			and LkConsMajAmend = @LkConsMajAmend
     )
 	begin
-		insert into ConserveMajorAmend(ConserveID, LkConsMajAmend, ReqDate, LkDisp, DispDate, DateModified)
-		values(@ConserveID, @LkConsMajAmend, @ReqDate, @LkDisp, @DispDate, getdate())
+		insert into ConserveMajorAmend(ConserveID, LkConsMajAmend, ReqDate, LkDisp, DispDate, DateModified, Comments, URL)
+		values(@ConserveID, @LkConsMajAmend, @ReqDate, @LkDisp, @DispDate, getdate(), @Comments, @URL)
 		
 		set @isDuplicate = 0
 	end
@@ -127,6 +164,8 @@ create procedure dbo.UpdateConservationMajorAmend
 	@ReqDate			datetime,
 	@LkDisp				int,
 	@DispDate			datetime,
+	@URL				nvarchar(1500),		
+	@Comments			nvarchar(max),	
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -134,7 +173,7 @@ begin transaction
 	begin try
 	
 	update ConserveMajorAmend set  ReqDate= @ReqDate, LkDisp = @LkDisp, DispDate = @DispDate, 
-		RowIsActive = @RowIsActive, DateModified = getdate()
+		RowIsActive = @RowIsActive, DateModified = getdate(), Comments = @Comments, URL = @URL
 	from ConserveMajorAmend 
 	where ConserveMajAmendID = @ConserveMajAmendID
 
@@ -153,6 +192,35 @@ begin transaction
 go
 
 /* Minor Amendments */
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetMinorAmendmentsById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetMinorAmendmentsById
+go
+
+create procedure dbo.GetMinorAmendmentsById
+(
+	@ConserveMinAmendID	int
+) as
+begin transaction
+-- GetMinorAmendmentsById 2
+	begin try
+	
+	select ConserveMinAmendID, ConserveID, LkConsMinAmend, ReqDate, LkDisp, DispDate, Comments, URL, RowIsActive, DateModified
+	from ConserveMinorAmend
+	where ConserveMinAmendID = @ConserveMinAmendID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetMinorAmendmentsList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetMinorAmendmentsList 
@@ -164,10 +232,14 @@ create procedure GetMinorAmendmentsList
 	@IsActiveOnly	bit
 )  
 as 
---exec GetMinorAmendmentsList 1, 1
+--exec GetMinorAmendmentsList 2, 1
 begin 
 	select  c.ConserveID, a.ConserveMinAmendID, a.LkConsMinAmend, lv.Description as amendment, 
-		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive
+		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive,
+		substring(a.Comments, 0, 25) Comments, 
+		a.Comments as FullComments, 
+		a.URL,
+		CASE when isnull(a.URL, '') = '' then '' else 'Click here' end as URLText
 	from Conserve c(nolock)
 	join ConserveMinorAmend a(nolock) on c.ConserveID = a.ConserveID
 	left join LookupValues lv(nolock) on lv.TypeID = a.LkConsMinAmend
@@ -189,6 +261,8 @@ create procedure dbo.AddConservationMinorAmend
 	@LkConsMinAmend int,
 	@ReqDate		datetime,
 	@LkDisp			int,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -226,8 +300,8 @@ begin transaction
 			and LkConsMinAmend = @LkConsMinAmend
     )
 	begin
-		insert into ConserveMinorAmend(ConserveID, LkConsMinAmend, ReqDate, LkDisp, DispDate, DateModified)
-		values(@ConserveID, @LkConsMinAmend, @ReqDate, @LkDisp, @DispDate, getdate())
+		insert into ConserveMinorAmend(ConserveID, LkConsMinAmend, ReqDate, LkDisp, DispDate, DateModified, Comments, URL)
+		values(@ConserveID, @LkConsMinAmend, @ReqDate, @LkDisp, @DispDate, getdate(), @Comments, @URL)
 		
 		set @isDuplicate = 0
 	end
@@ -264,6 +338,8 @@ create procedure dbo.UpdateConservationMinorAmend
 	@ReqDate			datetime,
 	@LkDisp				int,
 	@DispDate			datetime,
+	@URL				nvarchar(1500),		
+	@Comments			nvarchar(max),	
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -271,7 +347,7 @@ begin transaction
 	begin try
 	
 	update ConserveMinorAmend set  ReqDate= @ReqDate, LkDisp = @LkDisp, DispDate = @DispDate, 
-		RowIsActive = @RowIsActive, DateModified = getdate()
+		RowIsActive = @RowIsActive, DateModified = getdate(), Comments = @Comments, URL = @URL
 	from ConserveMinorAmend 
 	where ConserveMinAmendID = @ConserveMinAmendID
 
@@ -289,7 +365,61 @@ begin transaction
 		commit transaction;
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetMinorAmendmentsList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetMinorAmendmentsList 
+go
+
+create procedure GetMinorAmendmentsList
+(
+	@ProjectID		int,
+	@IsActiveOnly	bit
+)  
+as 
+--exec GetMinorAmendmentsList 1, 1
+begin 
+	select  c.ConserveID, a.ConserveMinAmendID, a.LkConsMinAmend, lv.Description as amendment, 
+		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive
+	from Conserve c(nolock)
+	join ConserveMinorAmend a(nolock) on c.ConserveID = a.ConserveID
+	left join LookupValues lv(nolock) on lv.TypeID = a.LkConsMinAmend
+	left join LookupValues lv1(nolock) on lv1.TypeID = a.LkDisp
+	where c.ProjectID = @ProjectID 
+		and (@IsActiveOnly = 0 or a.RowIsActive = @IsActiveOnly)
+		order by a.DateModified desc
+end
+go
+
 /* Violations */
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConserveViolationsById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetConserveViolationsById
+go
+
+create procedure dbo.GetConserveViolationsById
+(
+	@ConserveViolationsID	int
+) as
+begin transaction
+-- GetConserveViolationsById 2
+	begin try
+	
+	select ConserveViolationsID, ConserveID, LkConsViol, ReqDate, LkDisp, DispDate, Comments, URL, RowIsActive, DateModified
+	from ConserveViolations
+	where ConserveViolationsID = @ConserveViolationsID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConserveViolationsList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetConserveViolationsList 
@@ -304,7 +434,11 @@ as
 --exec GetConserveViolationsList 1, 1
 begin 
 	select  c.ConserveID, a.ConserveViolationsID, a.LkConsViol, lv.Description as violation, 
-		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive
+		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive,
+		substring(a.Comments, 0, 25) Comments, 
+		a.Comments as FullComments, 
+		a.URL,
+		CASE when isnull(a.URL, '') = '' then '' else 'Click here' end as URLText
 	from Conserve c(nolock)
 	join ConserveViolations a(nolock) on c.ConserveID = a.ConserveID
 	left join LookupValues lv(nolock) on lv.TypeID = a.LkConsViol
@@ -326,6 +460,8 @@ create procedure dbo.AddConserveViolations
 	@LkConsViol		int,
 	@ReqDate		datetime,
 	@LkDisp			int,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -363,8 +499,8 @@ begin transaction
 			and LkConsViol = @LkConsViol
     )
 	begin
-		insert into ConserveViolations(ConserveID, LkConsViol, ReqDate, LkDisp, DispDate, DateModified)
-		values(@ConserveID, @LkConsViol, @ReqDate, @LkDisp, @DispDate, getdate())
+		insert into ConserveViolations(ConserveID, LkConsViol, ReqDate, LkDisp, DispDate, DateModified, Comments, URL)
+		values(@ConserveID, @LkConsViol, @ReqDate, @LkDisp, @DispDate, getdate(), @Comments, @URL)
 		
 		set @isDuplicate = 0
 	end
@@ -402,6 +538,8 @@ create procedure dbo.UpdateConserveViolations
 	@ReqDate				datetime,
 	@LkDisp					int,
 	@DispDate				datetime,
+	@URL					nvarchar(1500),		
+	@Comments				nvarchar(max),	
 	@RowIsActive			bit
 ) as
 begin transaction
@@ -409,7 +547,7 @@ begin transaction
 	begin try
 	
 	update ConserveViolations set  ReqDate= @ReqDate, LkDisp = @LkDisp, DispDate = @DispDate, 
-		RowIsActive = @RowIsActive, DateModified = getdate()
+		RowIsActive = @RowIsActive, DateModified = getdate(), Comments = @Comments, URL = @URL
 	from ConserveViolations 
 	where ConserveViolationsID = @ConserveViolationsID
 
@@ -429,6 +567,36 @@ go
 
 /* Approvals */
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConserveApprovalsById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetConserveApprovalsById
+go
+
+create procedure dbo.GetConserveApprovalsById
+(
+	@ConserveApprovalID	int
+) as
+begin transaction
+-- GetConserveApprovalsById 2
+	begin try
+	
+	select ConserveApprovalID, ConserveID, LKApproval, ReqDate, LKDisp, DispDate, Comments, URL, RowIsActive, DateModified
+	from ConserveApproval
+	where ConserveApprovalID = @ConserveApprovalID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConserveApprovalsList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetConserveApprovalsList 
 go
@@ -442,7 +610,11 @@ as
 --exec GetConserveApprovalsList 1, 1
 begin 
 	select  c.ConserveID, a.ConserveApprovalID, a.LKApproval, lv.Description as approval, 
-		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive
+		a.ReqDate, a.LkDisp, lv1.Description disposition, a.DispDate, a.RowIsActive,
+		substring(a.Comments, 0, 25) Comments, 
+		a.Comments as FullComments, 
+		a.URL,
+		CASE when isnull(a.URL, '') = '' then '' else 'Click here' end as URLText
 	from Conserve c(nolock)
 	join ConserveApproval a(nolock) on c.ConserveID = a.ConserveID
 	left join LookupValues lv(nolock) on lv.TypeID = a.LKApproval
@@ -464,6 +636,8 @@ create procedure dbo.AddConserveApprovals
 	@LKApproval		int,
 	@ReqDate		datetime,
 	@LkDisp			int,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -501,8 +675,8 @@ begin transaction
 			and LKApproval = @LKApproval
     )
 	begin
-		insert into ConserveApproval(ConserveID, LKApproval, ReqDate, LkDisp, DispDate, DateModified)
-		values(@ConserveID, @LKApproval, @ReqDate, @LkDisp, @DispDate, getdate())
+		insert into ConserveApproval(ConserveID, LKApproval, ReqDate, LkDisp, DispDate, DateModified, Comments, URL)
+		values(@ConserveID, @LKApproval, @ReqDate, @LkDisp, @DispDate, getdate(), @Comments, @URL)
 		
 		set @isDuplicate = 0
 	end
@@ -529,7 +703,6 @@ begin transaction
 		commit transaction;
 go
 
-
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateConserveApprovals]') and type in (N'P', N'PC'))
 drop procedure [dbo].UpdateConserveApprovals
 go
@@ -540,6 +713,8 @@ create procedure dbo.UpdateConserveApprovals
 	@ReqDate				datetime,
 	@LkDisp					int,
 	@DispDate				datetime,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
 	@RowIsActive			bit
 ) as
 begin transaction
@@ -547,7 +722,7 @@ begin transaction
 	begin try
 	
 	update ConserveApproval set  ReqDate= @ReqDate, LkDisp = @LkDisp, DispDate = @DispDate, 
-		RowIsActive = @RowIsActive, DateModified = getdate()
+		RowIsActive = @RowIsActive, DateModified = getdate(), Comments = @Comments, URL = @URL
 	from ConserveApproval 
 	where ConserveApprovalID = @ConserveApprovalID
 
@@ -567,9 +742,175 @@ go
 
 /* Management Plans */ 
 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConservePlansById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetConservePlansById
+go
+
+create procedure dbo.GetConservePlansById
+(
+	@ConservePlanID	int
+) as
+begin transaction
+-- GetConservePlansById 2
+	begin try
+	
+	select ConservePlanID, ConserveID, LKManagePlan, DispDate, Comments, URL, RowIsActive, DateModified
+	from ConservePlan
+	where ConservePlanID = @ConservePlanID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetConservePlansList]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetConservePlansList 
 go
+
+create procedure GetConservePlansList
+(
+	@ProjectID		int,
+	@IsActiveOnly	bit
+)  
+as 
+--exec GetConservePlansList 1, 1 
+begin 
+	select  c.ConserveID, a.ConservePlanID, a.LKManagePlan, lv.Description as MangePlan, 
+		a.DispDate, a.RowIsActive,
+		substring(a.Comments, 0, 25) Comments, 
+		a.Comments as FullComments, 
+		a.URL,
+		CASE when isnull(a.URL, '') = '' then '' else 'Click here' end as URLText
+	from Conserve c(nolock)
+	join ConservePlan a(nolock) on c.ConserveID = a.ConserveID
+	left join LookupValues lv(nolock) on lv.TypeID = a.LKManagePlan
+	where c.ProjectID = @ProjectID 
+		and (@IsActiveOnly = 0 or a.RowIsActive = @IsActiveOnly)
+		order by a.DateModified desc
+end
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddConservePlans]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddConservePlans
+go
+
+create procedure dbo.AddConservePlans
+(
+	@ProjectId		int,
+	@DispDate		datetime,
+	@LKManagePlan		int,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	declare @ConserveID int
+	set @isDuplicate = 1
+	set @isActive = 1
+
+	if not exists
+    (
+		select 1
+		from Conserve(nolock)
+		where ProjectID = @ProjectId
+    )
+	begin
+		insert into Conserve(ProjectID)
+		values(@ProjectId)
+		set @ConserveID = @@IDENTITY
+	end
+	else
+	begin
+		select @ConserveID = ConserveID 
+		from Conserve(nolock) 
+		where ProjectID = @ProjectId
+	end
+	
+	if not exists
+    (
+		select 1
+		from ConservePlan(nolock)
+		where ConserveID = @ConserveID 
+			and LKManagePlan = @LKManagePlan
+    )
+	begin
+		insert into ConservePlan(ConserveID, LKManagePlan, DispDate, DateModified, Comments, URL)
+		values(@ConserveID, @LKManagePlan, @DispDate, getdate(), @Comments, @URL)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from ConservePlan(nolock)
+		where ConserveID = @ConserveID 
+			and LKManagePlan = @LKManagePlan
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateConservePlans]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateConservePlans
+go
+
+create procedure dbo.UpdateConservePlans
+(
+	@ConservePlanID		int,
+	@DispDate			datetime,
+	@URL			nvarchar(1500),		
+	@Comments		nvarchar(max),	
+	@RowIsActive		bit
+) as
+begin transaction
+
+	begin try
+	
+	update ConservePlan set  DispDate = @DispDate, 
+		RowIsActive = @RowIsActive, DateModified = getdate(), Comments = @Comments, URL = @URL
+	from ConservePlan 
+	where ConservePlanID = @ConservePlanID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+gogo
 
 create procedure GetConservePlansList
 (

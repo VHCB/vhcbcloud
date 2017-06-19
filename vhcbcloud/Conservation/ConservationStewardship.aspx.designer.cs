@@ -229,6 +229,33 @@ namespace vhcbcloud.Conservation {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtMjrDispositionDate;
         
         /// <summary>
+        /// txtMajorURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMajorURL;
+        
+        /// <summary>
+        /// txtMajorComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMajorComments;
+        
+        /// <summary>
+        /// cbMajorActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbMajorActive;
+        
+        /// <summary>
         /// btnAddMajor control.
         /// </summary>
         /// <remarks>
@@ -353,6 +380,33 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtMinorDispositionDate;
+        
+        /// <summary>
+        /// txtMinorURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMinorURL;
+        
+        /// <summary>
+        /// txtMinorComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMinorComments;
+        
+        /// <summary>
+        /// cbMinorActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbMinorActive;
         
         /// <summary>
         /// btnAddMinor control.
@@ -481,6 +535,33 @@ namespace vhcbcloud.Conservation {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtViolationDispDate;
         
         /// <summary>
+        /// txtViolationURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtViolationURL;
+        
+        /// <summary>
+        /// txtViolationComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtViolationComments;
+        
+        /// <summary>
+        /// cbViolationActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbViolationActive;
+        
+        /// <summary>
         /// btnAddViolation control.
         /// </summary>
         /// <remarks>
@@ -607,6 +688,33 @@ namespace vhcbcloud.Conservation {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtApprovalDispositionDate;
         
         /// <summary>
+        /// txtApprovalURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalURL;
+        
+        /// <summary>
+        /// txtApprovalComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtApprovalComments;
+        
+        /// <summary>
+        /// cbApprovalActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbApprovalActive;
+        
+        /// <summary>
         /// btnAddApproval control.
         /// </summary>
         /// <remarks>
@@ -706,6 +814,33 @@ namespace vhcbcloud.Conservation {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtPlanDate;
         
         /// <summary>
+        /// txtPlanURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlanURL;
+        
+        /// <summary>
+        /// txtPlanComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlanComments;
+        
+        /// <summary>
+        /// cbPlanActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbPlanActive;
+        
+        /// <summary>
         /// btnAddPlan control.
         /// </summary>
         /// <remarks>
@@ -749,5 +884,50 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
+        
+        /// <summary>
+        /// hfConserveMajAmendID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConserveMajAmendID;
+        
+        /// <summary>
+        /// hfConserveMinAmendID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConserveMinAmendID;
+        
+        /// <summary>
+        /// hfConserveViolationsID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConserveViolationsID;
+        
+        /// <summary>
+        /// hfConserveApprovalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConserveApprovalID;
+        
+        /// <summary>
+        /// hfConservePlanID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfConservePlanID;
     }
 }

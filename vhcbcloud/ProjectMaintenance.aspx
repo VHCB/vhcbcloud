@@ -747,7 +747,7 @@
                             <asp:Panel runat="server" ID="Panel6">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 180px"><span class="labelClass">Related Project</span></td>
+                                        <td style="width: 180px"><span class="labelClass">Related Project Number</span></td>
                                         <td style="width: 250px">
 <%--                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
@@ -759,7 +759,7 @@
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">
-                                                <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px"></asp:TextBox>
+                                                <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px" ReadOnly="true"></asp:TextBox>
                                             </span>
                                         </td>
                                         <td style="width: 300px">

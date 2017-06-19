@@ -640,7 +640,7 @@ namespace vhcbcloud.Housing
         protected void ImgSourcesUses_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
-             "script", Helper.GetExagoURL(hfProjectId.Value, "chain1 and chain2.wrc"));// "Grid Housing Sources and Uses.wrc"));
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing Sources and Uses"));// "Grid Housing Sources and Uses.wrc"));"chain1 and chain2"
         }
     }
 }

@@ -16,8 +16,6 @@ namespace vhcbcloud
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
 
-            
-
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;
             WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");
@@ -26,7 +24,7 @@ namespace vhcbcloud
 
             ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\Grid Reports\" + ReportName);
 
-            report.ExportType = wrExportType.Html;
+            //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
             api.ReportObjectFactory.SaveToApi(report);
             URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);

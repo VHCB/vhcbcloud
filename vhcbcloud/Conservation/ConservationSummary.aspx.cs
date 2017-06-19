@@ -542,7 +542,7 @@ namespace vhcbcloud.Conservation
                 int SurfaceWatersId = Convert.ToInt32(hfSurfaceWatersId.Value);
 
                 ConservationSummaryData.UpdateProjectSurfaceWaters(SurfaceWatersId, txtSubwatershed.Text, DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()),
-                    DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text, cbActive.Checked);
+                    DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text, DataUtils.GetInt(txtRiparianBuffer.Text), cbActive.Checked);
 
                 hfSurfaceWatersId.Value = "";
                 btnAddSurfaceWaters.Text = "Add";
@@ -554,7 +554,8 @@ namespace vhcbcloud.Conservation
             {
                 Result objResult = ConservationSummaryData.AddProjectSurfaceWaters(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlWatershed.SelectedValue.ToString()), txtSubwatershed.Text,
-                DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()), DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text);
+                DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()), DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text,
+                DataUtils.GetInt(txtRiparianBuffer.Text));
 
                 if (objResult.IsDuplicate && !objResult.IsActive)
                     LogMessage("Surface Waters already exist as in-active");
@@ -578,6 +579,7 @@ namespace vhcbcloud.Conservation
             txtOtherStream.Text = "";
             txtFrontageFeet.Text = "";
             txtSubwatershed.Text = "";
+            txtRiparianBuffer.Text = "";
             cbAddSurfaceWaters.Checked = false;
         }
 
@@ -602,6 +604,7 @@ namespace vhcbcloud.Conservation
                         PopulateDropDown(ddlWaterBody, dr["LKWaterBody"].ToString());
                         txtFrontageFeet.Text = dr["FrontageFeet"].ToString();
                         txtOtherStream.Text = dr["OtherWater"].ToString();
+                        txtRiparianBuffer.Text = dr["Riparian"].ToString();
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbActive.Enabled = true;
                         hfSurfaceWatersId.Value = lblSurfaceWatersID.Text;

@@ -412,6 +412,7 @@ create procedure dbo.AddProjectSurfaceWaters
 	@LKWaterBody	int, 
 	@FrontageFeet	int,
 	@OtherWater		nvarchar(75), 
+	@Riparian		int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -430,8 +431,8 @@ begin transaction
 			and LKWaterShed = @LKWaterShed
     )
 	begin
-		insert into ProjectSurfaceWaters(ProjectID, LKWaterShed, SubWaterShed, LKWaterBody, FrontageFeet, OtherWater, DateModified)
-		values(@ProjectId, @LKWaterShed, @SubWaterShed, @LKWaterBody, @FrontageFeet, @OtherWater, getdate())
+		insert into ProjectSurfaceWaters(ProjectID, LKWaterShed, SubWaterShed, LKWaterBody, FrontageFeet, OtherWater, Riparian, DateModified)
+		values(@ProjectId, @LKWaterShed, @SubWaterShed, @LKWaterBody, @FrontageFeet, @OtherWater, @Riparian, getdate())
 		
 		set @isDuplicate = 0
 	end
@@ -469,6 +470,7 @@ create procedure dbo.UpdateProjectSurfaceWaters
 	@LKWaterBody		int, 
 	@FrontageFeet		int,
 	@OtherWater			nvarchar(75), 
+	@Riparian			int,
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -476,7 +478,7 @@ begin transaction
 	begin try
 	
 	update ProjectSurfaceWaters set  SubWaterShed = @SubWaterShed, LKWaterBody = @LKWaterBody, FrontageFeet = @FrontageFeet, OtherWater = @OtherWater,
-		RowIsActive = @RowIsActive, DateModified = getdate()
+		Riparian = @Riparian, RowIsActive = @RowIsActive, DateModified = getdate()
 	from ProjectSurfaceWaters 
 	where SurfaceWatersID = @SurfaceWatersID
 
@@ -506,7 +508,7 @@ begin transaction
 
 	begin try
 	
-	select LKWaterShed, SubWaterShed, LKWaterBody, FrontageFeet, OtherWater, RowIsActive 
+	select LKWaterShed, SubWaterShed, LKWaterBody, FrontageFeet, OtherWater, Riparian, RowIsActive 
 	from ProjectSurfaceWaters 
 	where SurfaceWatersID = @SurfaceWatersID
 

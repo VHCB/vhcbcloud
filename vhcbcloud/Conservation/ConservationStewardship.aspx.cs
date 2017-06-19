@@ -216,19 +216,48 @@ namespace vhcbcloud.Conservation
                 }
             }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservationMajorAmend(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlMjrAmendment.SelectedValue.ToString()),
-                DataUtils.GetDate(txtMjrReqDate.Text), DataUtils.GetInt(ddlMjrDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtMjrDispositionDate.Text));
+            string URL = txtMajorURL.Text;
 
-            ClearMajorAmendmentForm();
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
 
-            BindMajorGrid();
+            if (btnAddMajor.Text.ToLower() == "update")
+            {
+                int ConserveMajAmendID = Convert.ToInt32(hfConserveMajAmendID.Value);
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Major Amendment already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Major Amendment already exist");
+                ConservationStewardshipData.UpdateConservationMajorAmend(ConserveMajAmendID, DataUtils.GetDate(txtMjrReqDate.Text), DataUtils.GetInt(ddlMjrDisposition.SelectedValue.ToString()),
+                DataUtils.GetDate(txtMjrDispositionDate.Text), cbMajorActive.Checked, URL, txtMajorComments.Text);
+
+                hfConserveMajAmendID.Value = "";
+                btnAddMajor.Text = "Add";
+                cbMajorActive.Checked = true;
+                cbMajorActive.Enabled = false;
+                LogMessage("Major Amendment updated successfully");
+
+                gvMajor.EditIndex = -1;
+
+                BindMajorGrid();
+                ClearMajorAmendmentForm();
+                cbAddMajor.Checked = false;
+            }
             else
-                LogMessage("New Major Amendment added successfully");
+            {
+                ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservationMajorAmend(
+                DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlMjrAmendment.SelectedValue.ToString()),
+                DataUtils.GetDate(txtMjrReqDate.Text), DataUtils.GetInt(ddlMjrDisposition.SelectedValue.ToString()),
+                DataUtils.GetDate(txtMjrDispositionDate.Text), URL, txtMajorComments.Text);
+
+                ClearMajorAmendmentForm();
+
+                BindMajorGrid();
+
+                if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+                    LogMessage("New Major Amendment already exist as in-active");
+                else if (objAddConsAmend.IsDuplicate)
+                    LogMessage("New Major Amendment already exist");
+                else
+                    LogMessage("New Major Amendment added successfully");
+            }
         }
 
         private void BindMajorGrid()
@@ -262,6 +291,8 @@ namespace vhcbcloud.Conservation
             txtMjrReqDate.Text = "";
             ddlMjrDisposition.SelectedIndex = -1;
             txtMjrDispositionDate.Text = "";
+            txtMajorURL.Text = "";
+            txtMajorComments.Text = "";
             cbAddMajor.Checked = false;
         }
 
@@ -275,51 +306,96 @@ namespace vhcbcloud.Conservation
         {
             gvMajor.EditIndex = -1;
             BindMajorGrid();
+            ClearMajorAmendmentForm();
+            cbAddMajor.Checked = false;
         }
 
-        protected void gvMajor_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
+        //protected void gvMajor_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
 
-            int ConserveMajAmendID = DataUtils.GetInt(((Label)gvMajor.Rows[rowIndex].FindControl("lblConserveMajAmendID")).Text);
-            DateTime ReqDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtReqDate")).Text);
-            int LkDisp = DataUtils.GetInt(((DropDownList)gvMajor.Rows[rowIndex].FindControl("ddlMjrDispositionE")).SelectedValue.ToString());
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtDispDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMajor.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+        //    int ConserveMajAmendID = DataUtils.GetInt(((Label)gvMajor.Rows[rowIndex].FindControl("lblConserveMajAmendID")).Text);
+        //    DateTime ReqDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtReqDate")).Text);
+        //    int LkDisp = DataUtils.GetInt(((DropDownList)gvMajor.Rows[rowIndex].FindControl("ddlMjrDispositionE")).SelectedValue.ToString());
+        //    DateTime DispDate = Convert.ToDateTime(((TextBox)gvMajor.Rows[rowIndex].FindControl("txtDispDate")).Text);
+        //    bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMajor.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            ConservationStewardshipData.UpdateConservationMajorAmend(ConserveMajAmendID, ReqDate, LkDisp, DispDate, RowIsActive);
-            gvMajor.EditIndex = -1;
+        //    ConservationStewardshipData.UpdateConservationMajorAmend(ConserveMajAmendID, ReqDate, LkDisp, DispDate, RowIsActive);
+        //    gvMajor.EditIndex = -1;
 
-            BindMajorGrid();
+        //    BindMajorGrid();
            
-            LogMessage("Major Amendment updated successfully");
-        }
+        //    LogMessage("Major Amendment updated successfully");
+        //}
 
         protected void gvMajor_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+            try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
-                    DropDownList ddlMjrDispositionE = (e.Row.FindControl("ddlMjrDispositionE") as DropDownList);
-                    TextBox txtLkConsMajAmend = (e.Row.FindControl("txtLkConsMajAmend") as TextBox);
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMajor.Text = "Update";
+                    cbAddMajor.Checked = true;
 
-                    if (txtLkConsMajAmend != null)
+                    if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        BindLookUP(ddlMjrDispositionE, 68);
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblConserveMajAmendID = e.Row.FindControl("lblConserveMajAmendID") as Label;
+                        DataRow dr = ConservationStewardshipData.GetMajorAmendmentsById(Convert.ToInt32(lblConserveMajAmendID.Text));
 
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlMjrDispositionE.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtLkConsMajAmend.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlMjrDispositionE.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
+                        PopulateDropDown(ddlMjrAmendment, dr["LkConsMajAmend"].ToString());
+                        txtMjrReqDate.Text = dr["ReqDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ReqDate"].ToString()).ToShortDateString();
+                        PopulateDropDown(ddlMjrDisposition, dr["LkDisp"].ToString());
+                        txtMjrDispositionDate.Text = dr["DispDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["DispDate"].ToString()).ToShortDateString();
+                        txtMajorURL.Text = dr["URL"].ToString();
+                        txtMajorComments.Text = dr["Comments"].ToString();
+                        cbMajorActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbMajorActive.Enabled = true;
+                        hfConserveMajAmendID.Value = lblConserveMajAmendID.Text;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvSurfaceWaters_RowDataBound", "", ex.Message);
+            }
+
+            //if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            //    CommonHelper.GridViewSetFocus(e.Row);
+            //{
+            //    if (e.Row.RowType == DataControlRowType.DataRow)
+            //    {
+            //        DropDownList ddlMjrDispositionE = (e.Row.FindControl("ddlMjrDispositionE") as DropDownList);
+            //        TextBox txtLkConsMajAmend = (e.Row.FindControl("txtLkConsMajAmend") as TextBox);
+
+            //        if (txtLkConsMajAmend != null)
+            //        {
+            //            BindLookUP(ddlMjrDispositionE, 68);
+
+            //            string itemToCompare = string.Empty;
+            //            foreach (ListItem item in ddlMjrDispositionE.Items)
+            //            {
+            //                itemToCompare = item.Value.ToString();
+            //                if (txtLkConsMajAmend.Text.ToLower() == itemToCompare.ToLower())
+            //                {
+            //                    ddlMjrDispositionE.ClearSelection();
+            //                    item.Selected = true;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
                 }
             }
         }
@@ -372,20 +448,49 @@ namespace vhcbcloud.Conservation
                 }
             }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservationMinorAmend(DataUtils.GetInt(hfProjectId.Value), 
-                DataUtils.GetInt(ddlMinorAmendment.SelectedValue.ToString()), DataUtils.GetDate(txtMinorReqDate.Text), 
-                DataUtils.GetInt(ddlMinorDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtMinorDispositionDate.Text));
+            string URL = txtMinorURL.Text;
 
-            ClearMinorAmendmentForm();
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
 
-            BindMinorGrid();
+            if (btnAddMinor.Text.ToLower() == "update")
+            {
+                int ConserveMinAmendID = Convert.ToInt32(hfConserveMinAmendID.Value);
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Minor Amendment already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Minor Amendment already exist");
+                ConservationStewardshipData.UpdateConservationMinorAmend(ConserveMinAmendID, DataUtils.GetDate(txtMinorReqDate.Text), DataUtils.GetInt(ddlMinorDisposition.SelectedValue.ToString()),
+                DataUtils.GetDate(txtMinorDispositionDate.Text), cbMinorActive.Checked, URL, txtMinorComments.Text);
+
+                hfConserveMinAmendID.Value = "";
+                btnAddMinor.Text = "Add";
+                cbMinorActive.Checked = true;
+                cbMinorActive.Enabled = false;
+                LogMessage("Minor Amendment updated successfully");
+
+                gvMinor.EditIndex = -1;
+
+                ClearMinorAmendmentForm();
+
+                BindMinorGrid();
+                cbAddMinor.Checked = false;
+            }
             else
-                LogMessage("New Minor Amendment added successfully");
+            {
+                ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservationMinorAmend(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlMinorAmendment.SelectedValue.ToString()), DataUtils.GetDate(txtMinorReqDate.Text),
+                DataUtils.GetInt(ddlMinorDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtMinorDispositionDate.Text), 
+                URL, txtMinorComments.Text);
+
+                ClearMinorAmendmentForm();
+
+                BindMinorGrid();
+
+                if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+                    LogMessage("New Minor Amendment already exist as in-active");
+                else if (objAddConsAmend.IsDuplicate)
+                    LogMessage("New Minor Amendment already exist");
+                else
+                    LogMessage("New Minor Amendment added successfully");
+            }
         }
 
         protected void gvMinor_RowEditing(object sender, GridViewEditEventArgs e)
@@ -398,53 +503,86 @@ namespace vhcbcloud.Conservation
         {
             gvMinor.EditIndex = -1;
             BindMinorGrid();
+            ClearMinorAmendmentForm();
+            cbAddMinor.Checked = false;
         }
 
         protected void gvMinor_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            int rowIndex = e.RowIndex;
+            //int rowIndex = e.RowIndex;
 
-            int ConserveMinAmendID = DataUtils.GetInt(((Label)gvMinor.Rows[rowIndex].FindControl("lblConserveMinAmendID")).Text);
-            DateTime ReqDate = Convert.ToDateTime(((TextBox)gvMinor.Rows[rowIndex].FindControl("txtMinorReqDate")).Text);
-            int LkDisp = DataUtils.GetInt(((DropDownList)gvMinor.Rows[rowIndex].FindControl("ddlMinorDispositionE")).SelectedValue.ToString());
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvMinor.Rows[rowIndex].FindControl("txtMinorDispDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMinor.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+            //int ConserveMinAmendID = DataUtils.GetInt(((Label)gvMinor.Rows[rowIndex].FindControl("lblConserveMinAmendID")).Text);
+            //DateTime ReqDate = Convert.ToDateTime(((TextBox)gvMinor.Rows[rowIndex].FindControl("txtMinorReqDate")).Text);
+            //int LkDisp = DataUtils.GetInt(((DropDownList)gvMinor.Rows[rowIndex].FindControl("ddlMinorDispositionE")).SelectedValue.ToString());
+            //DateTime DispDate = Convert.ToDateTime(((TextBox)gvMinor.Rows[rowIndex].FindControl("txtMinorDispDate")).Text);
+            //bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMinor.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            ConservationStewardshipData.UpdateConservationMinorAmend(ConserveMinAmendID, ReqDate, LkDisp, DispDate, RowIsActive);
-            gvMinor.EditIndex = -1;
+            //ConservationStewardshipData.UpdateConservationMinorAmend(ConserveMinAmendID, ReqDate, LkDisp, DispDate, RowIsActive);
+            //gvMinor.EditIndex = -1;
 
-            BindMinorGrid();
+            //BindMinorGrid();
 
-            LogMessage("Minor Amendment updated successfully");
+            //LogMessage("Minor Amendment updated successfully");
         }
 
         protected void gvMinor_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+            try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
-                    DropDownList ddlMinorDispositionE = (e.Row.FindControl("ddlMinorDispositionE") as DropDownList);
-                    TextBox txtLkConsMinorAmend = (e.Row.FindControl("txtLkConsMinorAmend") as TextBox);
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMinor.Text = "Update";
+                    cbAddMinor.Checked = true;
 
-                    if (txtLkConsMinorAmend != null)
+                    if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        BindLookUP(ddlMinorDispositionE, 68);
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblConserveMinAmendID = e.Row.FindControl("lblConserveMinAmendID") as Label;
+                        DataRow dr = ConservationStewardshipData.GetMinorAmendmentsById(Convert.ToInt32(lblConserveMinAmendID.Text));
 
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlMinorDispositionE.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtLkConsMinorAmend.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlMinorDispositionE.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
+                        PopulateDropDown(ddlMinorAmendment, dr["LkConsMinAmend"].ToString());
+                        txtMinorReqDate.Text = dr["ReqDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ReqDate"].ToString()).ToShortDateString();
+                        PopulateDropDown(ddlMinorDisposition, dr["LkDisp"].ToString());
+                        txtMinorDispositionDate.Text = dr["DispDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["DispDate"].ToString()).ToShortDateString();
+                        txtMinorURL.Text = dr["URL"].ToString();
+                        txtMinorComments.Text = dr["Comments"].ToString();
+                        cbMinorActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbMinorActive.Enabled = true;
+                        hfConserveMinAmendID.Value = lblConserveMinAmendID.Text;
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvMinor_RowDataBound", "", ex.Message);
+            }
+
+            //if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            //    CommonHelper.GridViewSetFocus(e.Row);
+            //{
+            //    if (e.Row.RowType == DataControlRowType.DataRow)
+            //    {
+            //        DropDownList ddlMinorDispositionE = (e.Row.FindControl("ddlMinorDispositionE") as DropDownList);
+            //        TextBox txtLkConsMinorAmend = (e.Row.FindControl("txtLkConsMinorAmend") as TextBox);
+
+            //        if (txtLkConsMinorAmend != null)
+            //        {
+            //            BindLookUP(ddlMinorDispositionE, 68);
+
+            //            string itemToCompare = string.Empty;
+            //            foreach (ListItem item in ddlMinorDispositionE.Items)
+            //            {
+            //                itemToCompare = item.Value.ToString();
+            //                if (txtLkConsMinorAmend.Text.ToLower() == itemToCompare.ToLower())
+            //                {
+            //                    ddlMinorDispositionE.ClearSelection();
+            //                    item.Selected = true;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void BindMinorGrid()
@@ -468,7 +606,7 @@ namespace vhcbcloud.Conservation
             }
             catch (Exception ex)
             {
-                LogError(Pagename, "BindMajorGrid", "", ex.Message);
+                LogError(Pagename, "BindMinorGrid", "", ex.Message);
             }
         }
 
@@ -478,6 +616,8 @@ namespace vhcbcloud.Conservation
             txtMinorReqDate.Text = "";
             ddlMinorDisposition.SelectedIndex = -1;
             txtMinorDispositionDate.Text = "";
+            txtMinorComments.Text = "";
+            txtMinorURL.Text = "";
             cbAddMinor.Checked = false;
         }
 
@@ -512,6 +652,8 @@ namespace vhcbcloud.Conservation
             txtViolationReqDate.Text = "";
             ddlViolationDisposition.SelectedIndex = -1;
             txtViolationDispDate.Text = "";
+            txtViolationComments.Text = "";
+            txtViolationURL.Text = "";
             cbAddViolation.Checked = false;
         }
 
@@ -563,20 +705,49 @@ namespace vhcbcloud.Conservation
                 }
             }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveViolations(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlViolations.SelectedValue.ToString()), DataUtils.GetDate(txtViolationReqDate.Text),
-                DataUtils.GetInt(ddlViolationDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtViolationDispDate.Text));
+            string URL = txtViolationURL.Text;
 
-            ClearViolationForm();
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
 
-            BindViolationsGrid();
+            if (btnAddViolation.Text.ToLower() == "update")
+            {
+                int ConserveViolationsID = Convert.ToInt32(hfConserveViolationsID.Value);
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Violation already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Violation already exist");
+                ConservationStewardshipData.UpdateConserveViolations(ConserveViolationsID, DataUtils.GetDate(txtViolationReqDate.Text), 
+                    DataUtils.GetInt(ddlViolationDisposition.SelectedValue.ToString()),
+                DataUtils.GetDate(txtViolationDispDate.Text), cbViolationActive.Checked, URL, txtViolationComments.Text);
+
+                hfConserveViolationsID.Value = "";
+                btnAddViolation.Text = "Add";
+                cbViolationActive.Checked = true;
+                cbViolationActive.Enabled = false;
+                LogMessage("Violation updated successfully");
+
+                gvViolation.EditIndex = -1;
+
+                ClearViolationForm();
+
+                BindViolationsGrid();
+                cbAddViolation.Checked = false;
+            }
             else
-                LogMessage("New Violation added successfully");
+            {
+                ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveViolations(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlViolations.SelectedValue.ToString()), DataUtils.GetDate(txtViolationReqDate.Text),
+                DataUtils.GetInt(ddlViolationDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtViolationDispDate.Text), URL, txtViolationComments.Text);
+
+                ClearViolationForm();
+
+                BindViolationsGrid();
+
+                if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+                    LogMessage("New Violation already exist as in-active");
+                else if (objAddConsAmend.IsDuplicate)
+                    LogMessage("New Violation already exist");
+                else
+                    LogMessage("New Violation added successfully");
+            }
         }
 
         protected void gvViolation_RowEditing(object sender, GridViewEditEventArgs e)
@@ -589,52 +760,41 @@ namespace vhcbcloud.Conservation
         {
             gvViolation.EditIndex = -1;
             BindViolationsGrid();
+            ClearViolationForm();
+            cbAddViolation.Checked = false;
         }
-
-        protected void gvViolation_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-
-            int ConserveViolationsID = DataUtils.GetInt(((Label)gvViolation.Rows[rowIndex].FindControl("lblConserveViolationsID")).Text);
-            DateTime ReqDate = Convert.ToDateTime(((TextBox)gvViolation.Rows[rowIndex].FindControl("txtViolationsReqDate")).Text);
-            int LkDisp = DataUtils.GetInt(((DropDownList)gvViolation.Rows[rowIndex].FindControl("ddlViolationsDispositionE")).SelectedValue.ToString());
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvViolation.Rows[rowIndex].FindControl("txtViolationsDispDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvViolation.Rows[rowIndex].FindControl("chkActive")).Checked); ;
-
-            ConservationStewardshipData.UpdateConserveViolations(ConserveViolationsID, ReqDate, LkDisp, DispDate, RowIsActive);
-            gvViolation.EditIndex = -1;
-
-            BindViolationsGrid();
-
-            LogMessage("Violation updated successfully");
-        }
-
+        
         protected void gvViolation_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+            try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
-                    DropDownList ddlViolationsDispositionE = (e.Row.FindControl("ddlViolationsDispositionE") as DropDownList);
-                    TextBox txtLkConsViol = (e.Row.FindControl("txtLkConsViol") as TextBox);
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddViolation.Text = "Update";
+                    cbAddViolation.Checked = true;
 
-                    if (txtLkConsViol != null)
+                    if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        BindLookUP(ddlViolationsDispositionE, 68);
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblConserveViolationsID = e.Row.FindControl("lblConserveViolationsID") as Label;
+                        DataRow dr = ConservationStewardshipData.GetConserveViolationsById(Convert.ToInt32(lblConserveViolationsID.Text));
 
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlViolationsDispositionE.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtLkConsViol.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlViolationsDispositionE.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
+                        PopulateDropDown(ddlViolations, dr["LkConsViol"].ToString());
+                        txtViolationReqDate.Text = dr["ReqDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ReqDate"].ToString()).ToShortDateString();
+                        PopulateDropDown(ddlViolationDisposition, dr["LkDisp"].ToString());
+                        txtViolationDispDate.Text = dr["DispDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["DispDate"].ToString()).ToShortDateString();
+                        txtViolationURL.Text = dr["URL"].ToString();
+                        txtViolationComments.Text = dr["Comments"].ToString();
+                        cbViolationActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbViolationActive.Enabled = true;
+                        hfConserveViolationsID.Value = lblConserveViolationsID.Text;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvViolation_RowDataBound", "", ex.Message);
             }
         }
 
@@ -686,20 +846,50 @@ namespace vhcbcloud.Conservation
                 }
             }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveApprovals(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlApproval.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalReqdate.Text),
-                DataUtils.GetInt(ddlApprovalDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalDispositionDate.Text));
+            string URL = txtApprovalURL.Text;
 
-            ClearApprovalForm();
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
 
-            BindApprovalsGrid();
+            if (btnAddApproval.Text.ToLower() == "update")
+            {
+                int ConserveApprovalID = Convert.ToInt32(hfConserveApprovalID.Value);
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Approval already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Approval already exist");
+                ConservationStewardshipData.UpdateConserveApprovals(ConserveApprovalID, DataUtils.GetDate(txtApprovalReqdate.Text),
+                    DataUtils.GetInt(ddlApprovalDisposition.SelectedValue.ToString()),
+                DataUtils.GetDate(txtApprovalDispositionDate.Text), cbApprovalActive.Checked, URL, txtApprovalComments.Text);
+
+                hfConserveApprovalID.Value = "";
+                btnAddApproval.Text = "Add";
+                cbApprovalActive.Checked = true;
+                cbApprovalActive.Enabled = false;
+                LogMessage("Approval updated successfully");
+
+                gvApproval.EditIndex = -1;
+
+                ClearApprovalForm();
+
+                BindApprovalsGrid();
+                cbAddApproval.Checked = false;
+            }
             else
-                LogMessage("New Approval added successfully");
+            {
+                ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveApprovals(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlApproval.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalReqdate.Text),
+                DataUtils.GetInt(ddlApprovalDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalDispositionDate.Text), 
+                URL, txtApprovalComments.Text);
+
+                ClearApprovalForm();
+
+                BindApprovalsGrid();
+
+                if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+                    LogMessage("New Approval already exist as in-active");
+                else if (objAddConsAmend.IsDuplicate)
+                    LogMessage("New Approval already exist");
+                else
+                    LogMessage("New Approval added successfully");
+            }
         }
 
         protected void gvApproval_RowEditing(object sender, GridViewEditEventArgs e)
@@ -712,52 +902,41 @@ namespace vhcbcloud.Conservation
         {
             gvApproval.EditIndex = -1;
             BindApprovalsGrid();
-        }
-
-        protected void gvApproval_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-
-            int ConserveApprovalID = DataUtils.GetInt(((Label)gvApproval.Rows[rowIndex].FindControl("lblConserveApprovalID")).Text);
-            DateTime ReqDate = Convert.ToDateTime(((TextBox)gvApproval.Rows[rowIndex].FindControl("txtApprovalsReqDate")).Text);
-            int LkDisp = DataUtils.GetInt(((DropDownList)gvApproval.Rows[rowIndex].FindControl("ddlApprovalsDispositionE")).SelectedValue.ToString());
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvApproval.Rows[rowIndex].FindControl("txtApprovalsDispDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvApproval.Rows[rowIndex].FindControl("chkActive")).Checked); ;
-
-            ConservationStewardshipData.UpdateConserveApprovals(ConserveApprovalID, ReqDate, LkDisp, DispDate, RowIsActive);
-            gvApproval.EditIndex = -1;
-
-            BindApprovalsGrid();
-
-            LogMessage("Approval updated successfully");
+            ClearApprovalForm();
+            cbAddApproval.Checked = false;
         }
 
         protected void gvApproval_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+            try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
-                    DropDownList ddlApprovalsDispositionE = (e.Row.FindControl("ddlApprovalsDispositionE") as DropDownList);
-                    TextBox LKApproval = (e.Row.FindControl("LKApproval") as TextBox);
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddApproval.Text = "Update";
+                    cbAddApproval.Checked = true;
 
-                    if (LKApproval != null)
+                    if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        BindLookUP(ddlApprovalsDispositionE, 68);
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblConserveApprovalID = e.Row.FindControl("lblConserveApprovalID") as Label;
+                        DataRow dr = ConservationStewardshipData.GetConserveApprovalsById(Convert.ToInt32(lblConserveApprovalID.Text));
 
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlApprovalsDispositionE.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (LKApproval.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlApprovalsDispositionE.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
+                        PopulateDropDown(ddlApproval, dr["LKApproval"].ToString());
+                        txtApprovalReqdate.Text = dr["ReqDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ReqDate"].ToString()).ToShortDateString();
+                        PopulateDropDown(ddlApprovalDisposition, dr["LkDisp"].ToString());
+                        txtApprovalDispositionDate.Text = dr["DispDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["DispDate"].ToString()).ToShortDateString();
+                        txtApprovalURL.Text = dr["URL"].ToString();
+                        txtApprovalComments.Text = dr["Comments"].ToString();
+                        cbApprovalActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbApprovalActive.Enabled = true;
+                        hfConserveApprovalID.Value = lblConserveApprovalID.Text;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvApproval_RowDataBound", "", ex.Message);
             }
 
         }
@@ -793,6 +972,8 @@ namespace vhcbcloud.Conservation
             txtApprovalReqdate.Text = "";
             ddlApprovalDisposition.SelectedIndex = -1;
             txtApprovalDispositionDate.Text = "";
+            txtApprovalComments.Text = "";
+            txtApprovalURL.Text = "";
             cbAddApproval.Checked = false;
         }
 
@@ -806,22 +987,8 @@ namespace vhcbcloud.Conservation
         {
             gvPlan.EditIndex = -1;
             BindPlansGrid();
-        }
-
-        protected void gvPlan_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-
-            int ConserveApprovalID = DataUtils.GetInt(((Label)gvPlan.Rows[rowIndex].FindControl("lblConservePlanID")).Text);
-            DateTime DispDate = Convert.ToDateTime(((TextBox)gvPlan.Rows[rowIndex].FindControl("txtPlanDate")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvPlan.Rows[rowIndex].FindControl("chkActive")).Checked); ;
-
-            ConservationStewardshipData.UpdateConservePlans(ConserveApprovalID, DispDate, RowIsActive);
-            gvPlan.EditIndex = -1;
-
-            BindPlansGrid();
-
-            LogMessage("Plan updated successfully");
+            ClearPlansForm();
+            cbAddPlan.Checked = false;
         }
 
         private void BindPlansGrid()
@@ -853,6 +1020,8 @@ namespace vhcbcloud.Conservation
         {
             ddlPlan.SelectedIndex = -1;
             txtPlanDate.Text = "";
+            txtPlanURL.Text = "";
+            txtPlanComments.Text = "";
             cbAddApproval.Checked = false;
         }
 
@@ -881,19 +1050,79 @@ namespace vhcbcloud.Conservation
                 }
             }
 
-            ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservePlans(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlPlan.SelectedValue.ToString()), DataUtils.GetDate(txtPlanDate.Text));
+            string URL = txtPlanURL.Text;
 
-            ClearPlansForm();
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
 
-            BindPlansGrid();
+            if (btnAddPlan.Text.ToLower() == "update")
+            {
+                int ConservePlanID = Convert.ToInt32(hfConservePlanID.Value);
 
-            if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
-                LogMessage("New Plan already exist as in-active");
-            else if (objAddConsAmend.IsDuplicate)
-                LogMessage("New Plan already exist");
+                ConservationStewardshipData.UpdateConservePlans(ConservePlanID, DataUtils.GetDate(txtPlanDate.Text),
+                    URL, txtPlanComments.Text, cbPlanActive.Checked);
+
+                hfConserveApprovalID.Value = "";
+                btnAddApproval.Text = "Add";
+                cbPlanActive.Checked = true;
+                cbPlanActive.Enabled = false;
+                LogMessage("Plan updated successfully");
+
+                gvPlan.EditIndex = -1;
+
+                ClearPlansForm();
+
+                BindPlansGrid();
+                cbAddPlan.Checked = false;
+            }
             else
-                LogMessage("New Plan added successfully");
+            {
+                ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservePlans(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlPlan.SelectedValue.ToString()), DataUtils.GetDate(txtPlanDate.Text), URL, txtPlanComments.Text);
+
+                ClearPlansForm();
+
+                BindPlansGrid();
+
+                if (objAddConsAmend.IsDuplicate && !objAddConsAmend.IsActive)
+                    LogMessage("New Plan already exist as in-active");
+                else if (objAddConsAmend.IsDuplicate)
+                    LogMessage("New Plan already exist");
+                else
+                    LogMessage("New Plan added successfully");
+            }
+        }
+
+        protected void gvPlan_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddPlan.Text = "Update";
+                    cbAddPlan.Checked = true;
+
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblConservePlanID = e.Row.FindControl("lblConservePlanID") as Label;
+                        DataRow dr = ConservationStewardshipData.GetConservePlansById(Convert.ToInt32(lblConservePlanID.Text));
+
+                        PopulateDropDown(ddlPlan, dr["LKManagePlan"].ToString());
+                        txtPlanDate.Text = dr["DispDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["DispDate"].ToString()).ToShortDateString();
+                        txtPlanURL.Text = dr["URL"].ToString();
+                        txtPlanComments.Text = dr["Comments"].ToString();
+                        cbPlanActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbPlanActive.Enabled = true;
+                        hfConservePlanID.Value = lblConservePlanID.Text;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvPlan_RowDataBound", "", ex.Message);
+            }
         }
 
         //protected void btnAddEvent_Click(object sender, EventArgs e)
