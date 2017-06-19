@@ -65,8 +65,8 @@
 
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
-                                        <td style="width: 30%; float: left">
+                                        <td style="width: 10%; float: left; height: 28px;"><span class="labelClass">Project # :</span></td>
+                                        <td style="width: 30%; float: left; height: 28px;">
                                             <%-- <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                             </asp:DropDownList>--%>
@@ -85,13 +85,19 @@
                                             </ajaxToolkit:AutoCompleteExtender>
 
                                         </td>
-                                        <td style="width: 20%; float: left">
-                                            <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label><span class="labelClass">Available Funds $:</span></td>
-                                        <td style="float: left">
+                                        <td style="width: 20%; float: left; height: 28px;">
+                                            <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                        <td style="float: left; height: 28px;">
                                             <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label>
-                                            <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
-                                            <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left; height: 27px;"><span class="labelClass">Available Funds:</span></td>
+                                        <td style="width: 30%; float: left; height: 27px;">
+                                            <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
+                                            <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label></td>
+                                        <td style="width: 20%; float: left; height: 27px;"></td>
+                                        <td style="float: left; height: 27px;"></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 10%; float: left">&nbsp;</td>
@@ -117,9 +123,7 @@
                                             <td style="width: 20%; float: left">
                                                 <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" onkeyup='toTotAmtFormatter(value)' runat="server"></asp:TextBox></td>
                                             <td style="width: 15%; float: left"></td>
-                                            <td style="width: 15%; float: left">
-                                              
-                                            </td>
+                                            <td style="width: 15%; float: left"></td>
                                         </tr>
                                     </table>
                                     <br />
@@ -382,4 +386,109 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <br />
+    <script type="text/javascript">
+        window.onbeforeunload = confirmExit;
+        function confirmExit() {
+            var balAmt = document.getElementById("<%=hfBalAmt.ClientID%>").value;
+            //var traAmt = document.getElementById("<%=hfTransAmt.ClientID%>").value;
+
+            if (needToConfirm && balAmt != 0)
+                return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
+        }
+        function RadioCheck(rb) {
+            var gv = document.getElementById("<%=gvPTrans.ClientID%>");
+            var rbs = gv.getElementsByTagName("input");
+
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function PopupNewAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+        function PopupExistingAwardSummary() {
+            window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
+        };
+
+        function PopupProjectSearch() {
+            window.open('./projectsearch.aspx')
+        };
+
+        function OnCommittedProjectSelected(source, eventArgs) {
+
+            var hdnCommitedProjValueID = "<%= hdnCommitedProjValue.ClientID %>";
+
+            document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
+            __doPostBack(hdnCommitedProjValueID, "");
+        }
+
+        function OnContactSelected(source, eventArgs) {
+
+            var hdnValueID = "<%= hdnValue.ClientID %>";
+
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+        //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        toTotAmtFormatter = value => {
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
+
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
+            var inputElement = document.getElementById("txtTotAmt");
+
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
+         };
+
+         toAmtFormatter = value => {
+             const digits = this.getDigitsFromValue(value);
+             const digitsWithPadding = this.padDigits(digits);
+
+             let result = this.addDecimalToNumber(digitsWithPadding);
+
+             var inputElement = document.getElementById("txtAmt");
+
+             //inputElement.value = "$" + result;
+             $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
+        };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
+
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
+
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
+
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
+
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+    </script>
 </asp:Content>
