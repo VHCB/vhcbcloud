@@ -133,9 +133,10 @@ namespace vhcbcloud
                 string lkDescription = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtDesc")).Text;
                 int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lblrecordId")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
+                bool isRequired = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkEditRequired")).Checked);
                 int Ordering = Convert.ToInt32(strOrder);
 
-                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, Ordering);
+                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, isRequired, Ordering);
                 gvLookup.EditIndex = -1;
                 //BindLookupMaintenance();
 
@@ -153,16 +154,17 @@ namespace vhcbcloud
                 }
 
                 int incrementOrder = Ordering;
-                foreach (DataRow dr in dt.Rows)
-                {
-                    int dtTypeId = Convert.ToInt32(dr["typeid"].ToString());
-                    if (dtTypeId != typeId)
+                if (dt != null)
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        incrementOrder++;
-                        LookupMaintenanceData.UpdateLookupOrdering(dtTypeId, incrementOrder);
-                    }
+                        int dtTypeId = Convert.ToInt32(dr["typeid"].ToString());
+                        if (dtTypeId != typeId)
+                        {
+                            incrementOrder++;
+                            LookupMaintenanceData.UpdateLookupOrdering(dtTypeId, incrementOrder);
+                        }
 
-                }
+                    }
 
                 BindGrids();
                 lblErrorMsg.Text = "Lookup details updated successfully";
@@ -212,7 +214,7 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString() == "ASC" ?  "ASC" : "DESC" ;
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "ASC" : "DESC";
             }
             set
             {

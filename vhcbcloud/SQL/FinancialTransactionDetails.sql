@@ -2099,11 +2099,11 @@ Begin
 				--set @Fromfundamount = @Fromfundamount -@Tofundamount
 
 				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus, ReallAssignAmt)
-					values (@FromProjectId, @transDate, 0, 240, 261,-@Tofundamount)-- 240 Board Reallocation, 261 Pending
+					values (@FromProjectId, @transDate, 0, 240, 261,-@Fromfundamount)-- 240 Board Reallocation, 261 Pending
 				set @fromTransId = @@IDENTITY;
 	
 				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
-					values (@ToProjectId, @transDate, 0, 240, 261, @Tofundamount)
+					values (@ToProjectId, @transDate, 0, 240, 261, @Fromfundamount)
 				set @toTransId = @@IDENTITY;
 				
 				insert into Detail (TransId, FundId, LkTransType, Amount)	values
@@ -2128,7 +2128,7 @@ Begin
 			else
 			begin			
 				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
-					values (@FromProjectId, @transDate, 0, 240, 261, -@Tofundamount) -- 240 Board Reallocation, 261 Pending
+					values (@FromProjectId, @transDate, 0, 240, 261, -@Fromfundamount) -- 240 Board Reallocation, 261 Pending
 				set @fromTransId = @@IDENTITY;
 				set @toTransId = @@IDENTITY;
 
