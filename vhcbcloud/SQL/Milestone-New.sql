@@ -113,6 +113,7 @@ begin
 			pe.EntitySubMSID,
 			pe.Date,
 			substring(pe.Note, 0, 25) Notes, pe.Note as FullNotes, pe.URL,
+			CASE when isnull(pe.URL, '') = '' then '' else 'Click here' end as URLText,
 			pe.UserID, ui.username, 
 			pe.RowIsActive
 		from ProjectEvent pe(nolock)
@@ -145,6 +146,7 @@ begin
 			pe.EntitySubMSID,
 			pe.Date,
 			substring(pe.Note, 0, 25) Notes, pe.Note as FullNotes, pe.URL,
+			CASE when isnull(pe.URL, '') = '' then '' else 'Click here' end as URLText,
 			pe.UserID, ui.username, 
 			pe.RowIsActive
 		from ProjectEvent pe(nolock)
@@ -177,6 +179,7 @@ begin
 			pe.EntitySubMSID,
 			pe.Date,
 			substring(pe.Note, 0, 25) Notes, pe.Note as FullNotes, pe.URL,
+			CASE when isnull(pe.URL, '') = '' then '' else 'Click here' end as URLText,
 			pe.UserID, ui.username, 
 			pe.RowIsActive
 		from ProjectEvent pe(nolock)
