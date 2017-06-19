@@ -323,7 +323,7 @@
                             <asp:Panel runat="server" ID="Panel2" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAcreage" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
                                     OnRowEditing="gvAcreage_RowEditing" OnRowCancelingEdit="gvAcreage_RowCancelingEdit"
                                     OnRowUpdating="gvAcreage_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -427,13 +427,29 @@
                                             <asp:TextBox ID="txtOtherStream" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
-                                            <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" /></td>
+                                            <span class="labelClass">Riparian Buffer (ft. ):</span>
+                                         </td>
                                         <td>
-                                            <asp:Button ID="btnAddSurfaceWaters" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSurfaceWaters_Click" />
+                                            <asp:TextBox ID="txtRiparianBuffer" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 140px">
+                                            <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" />
+                                        </td>
+                                        <td style="width: 215px">
+                                            <asp:Button ID="btnAddSurfaceWaters" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSurfaceWaters_Click" />
+                                         </td>
+                                        <td style="width: 166px"></td>
+                                        <td style="width: 180px">
+                                        </td>
+                                        <td style="width: 170px">
+                                            </td>
+                                        <td>
+                                        </td>
                                     </tr>
                                 </table>
                             </asp:Panel>

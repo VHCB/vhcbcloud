@@ -13,6 +13,39 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     public class ConservationStewardshipData
     {
         #region ConserveMajorAmend
+        public static DataRow GetMajorAmendmentsById(int ConserveMajAmendID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetMajorAmendmentsById";
+                        command.Parameters.Add(new SqlParameter("ConserveMajAmendID", ConserveMajAmendID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataTable GetMajorAmendmentsList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -48,7 +81,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static AddConsAmend AddConservationMajorAmend(int ProjectId, int LkConsMajAmend, DateTime ReqDate, int LkDisp, 
-            DateTime DispDate)
+            DateTime DispDate, string URL, string Comments)
         {
             try
             {
@@ -67,6 +100,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ReqDate", ReqDate));
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -97,7 +132,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConservationMajorAmend(int ConserveMajAmendID, DateTime ReqDate, int LkDisp, DateTime DispDate, 
-            bool RowIsActive)
+            bool RowIsActive, string URL, string Comments)
         {
             try
             {
@@ -116,6 +151,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -132,6 +169,40 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         #endregion ConserveMajorAmend
 
         #region ConserveMinorAmend
+
+        public static DataRow GetMinorAmendmentsById(int ConserveMinAmendID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetMinorAmendmentsById";
+                        command.Parameters.Add(new SqlParameter("ConserveMinAmendID", ConserveMinAmendID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataTable GetMinorAmendmentsList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -167,7 +238,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static AddConsAmend AddConservationMinorAmend(int ProjectId, int LkConsMinAmend, DateTime ReqDate, int LkDisp,
-            DateTime DispDate)
+            DateTime DispDate, string URL, string Comments)
         {
             try
             {
@@ -186,6 +257,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ReqDate", ReqDate));
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -216,7 +289,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConservationMinorAmend(int ConserveMinAmendID, DateTime ReqDate, int LkDisp, DateTime DispDate,
-            bool RowIsActive)
+            bool RowIsActive, string URL, string Comments)
         {
             try
             {
@@ -235,6 +308,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -250,6 +325,40 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         #endregion ConserveMinorAmend
 
         #region ConserveViolations
+
+        public static DataRow GetConserveViolationsById(int ConserveViolationsID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConserveViolationsById";
+                        command.Parameters.Add(new SqlParameter("ConserveViolationsID", ConserveViolationsID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataTable GetConserveViolationsList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -285,7 +394,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static AddConsAmend AddConserveViolations(int ProjectId, int LkConsViol, DateTime ReqDate, int LkDisp,
-            DateTime DispDate)
+            DateTime DispDate, string URL, string Comments)
         {
             try
             {
@@ -304,6 +413,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ReqDate", ReqDate));
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -334,7 +445,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConserveViolations(int ConserveViolationsID, DateTime ReqDate, int LkDisp, DateTime DispDate,
-            bool RowIsActive)
+            bool RowIsActive, string URL, string Comments)
         {
             try
             {
@@ -353,6 +464,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -368,6 +481,40 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         #endregion ConserveViolations
 
         #region ConserveApprovals
+        public static DataRow GetConserveApprovalsById(int ConserveApprovalID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConserveApprovalsById";
+                        command.Parameters.Add(new SqlParameter("ConserveApprovalID", ConserveApprovalID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
+
         public static DataTable GetConserveApprovalsList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -403,7 +550,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static AddConsAmend AddConserveApprovals(int ProjectId, int LKApproval, DateTime ReqDate, int LkDisp,
-            DateTime DispDate)
+            DateTime DispDate, string URL, string Comments)
         {
             try
             {
@@ -422,6 +569,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ReqDate", ReqDate));
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -452,7 +601,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConserveApprovals(int ConserveApprovalID, DateTime ReqDate, int LkDisp, DateTime DispDate,
-            bool RowIsActive)
+            bool RowIsActive, string URL, string Comments)
         {
             try
             {
@@ -471,6 +620,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("LkDisp", LkDisp));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -486,6 +637,39 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         #endregion ConserveApprovals
 
         #region ConserveManagementPlans
+        public static DataRow GetConservePlansById(int ConservePlanID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConservePlansById";
+                        command.Parameters.Add(new SqlParameter("ConservePlanID", ConservePlanID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataTable GetConservePlansList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -520,7 +704,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static AddConsAmend AddConservePlans(int ProjectId, int LKManagePlan, DateTime DispDate)
+        public static AddConsAmend AddConservePlans(int ProjectId, int LKManagePlan, DateTime DispDate, string URL, string Comments)
         {
             try
             {
@@ -537,6 +721,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("LKManagePlan", LKManagePlan));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -566,7 +752,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateConservePlans(int ConservePlanID, DateTime DispDate, bool RowIsActive)
+        public static void UpdateConservePlans(int ConservePlanID, DateTime DispDate, string URL, string Comments, bool RowIsActive)
         {
             try
             {
@@ -583,6 +769,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ConservePlanID", ConservePlanID));
                         command.Parameters.Add(new SqlParameter("DispDate", DispDate));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 

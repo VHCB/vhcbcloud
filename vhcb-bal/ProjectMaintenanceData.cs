@@ -639,7 +639,7 @@ namespace DataAccessLayer
         #endregion
 
 
-        public static bool AddRelatedProject(int ProjectId, int RelProjectId)
+        public static ProjectMaintResult AddRelatedProject(int ProjectId, int RelProjectId)
         {
             try
             {
@@ -661,11 +661,20 @@ namespace DataAccessLayer
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
 
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
 
-                        return DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
                     }
                 }
             }

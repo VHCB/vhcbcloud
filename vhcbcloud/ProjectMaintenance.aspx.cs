@@ -1220,29 +1220,33 @@ namespace vhcbcloud
                 //string[] tokens = ddlRelatedProjects.SelectedValue.ToString().Split('|');
                 //txtProjectName.Text = tokens[1];
                 int RelProjectId = ProjectMaintenanceData.GetProjectId(txtRelatedProjects.Text);
+
+                if(RelProjectId == 0)
+                {
+                    LogMessage("Invalid Related Project");
+                    return;
+                }
                 if (hfProjectId.Value == RelProjectId.ToString())
                 {
                     LogMessage("Related Project can't be same Project");
                     return;
                 }
 
-                bool isDuplicate = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId);
+                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId);
 
-                if (!isDuplicate)
-                {
+                if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                    LogMessage("Related Project already exist as in-active");
+                else if (obProjectMaintResult.IsDuplicate)
+                    LogMessage("Related Project already exist");
+                else
                     LogMessage("New Related Project added successfully");
 
-                    gvRelatedProjects.EditIndex = -1;
-                    BindRelatedProjectsGrid();
-                    ClearRelatedProjectsForm();
-                    // dvRelatedProjects.Visible = false;
-                    dvRelatedProjectsGrid.Visible = true;
-                    cbRelatedProjects.Checked = false;
-                }
-                else
-                {
-                    LogMessage("Related Project already exist");
-                }
+                gvRelatedProjects.EditIndex = -1;
+                BindRelatedProjectsGrid();
+                ClearRelatedProjectsForm();
+                // dvRelatedProjects.Visible = false;
+                dvRelatedProjectsGrid.Visible = true;
+                cbRelatedProjects.Checked = false;
             }
         }
 
