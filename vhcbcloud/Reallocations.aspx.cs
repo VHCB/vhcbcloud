@@ -437,6 +437,13 @@ namespace vhcbcloud
                 ddlUsePermit.DataBind();
                 if (ddlUsePermit.Items.Count > 1)
                     ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+
+                ddlToUsePermit.DataSource = dtable;
+                ddlToUsePermit.DataValueField = "Act250FarmId";
+                ddlToUsePermit.DataTextField = "UsePermit";
+                ddlToUsePermit.DataBind();
+                if (ddlToUsePermit.Items.Count > 1)
+                    ddlToUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -1063,7 +1070,7 @@ namespace vhcbcloud
                 {
                     if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                     {
-                        lblRErrorMsg.Text = "Select Use Permit";
+                        lblRErrorMsg.Text = "Select reallocate from Use Permit";
                         ddlUsePermit.Focus();
                         return;
                     }
@@ -1073,7 +1080,7 @@ namespace vhcbcloud
                 {
                     if (ddlToUsePermit.Items.Count > 1 && ddlToUsePermit.SelectedIndex == 0)
                     {
-                        lblRErrorMsg.Text = "Select Use Permit";
+                        lblRErrorMsg.Text = "Select reallocate to Use Permit";
                         ddlToUsePermit.Focus();
                         return;
                     }
@@ -1098,8 +1105,8 @@ namespace vhcbcloud
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
                                                                       hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value),
-                                                                      ddlUsePermit.Items.Count <= 1 ? nullable : Convert.ToInt32(ddlUsePermit.SelectedValue.ToString()),
-                                                                      ddlToUsePermit.Items.Count <= 1 ? nullable : Convert.ToInt32(ddlToUsePermit.SelectedValue.ToString()),
+                                                                      ddlUsePermit.SelectedIndex < 1 ? nullable : Convert.ToInt32(ddlUsePermit.SelectedValue.ToString()),
+                                                                      ddlToUsePermit.SelectedIndex < 1 ? nullable : Convert.ToInt32(ddlToUsePermit.SelectedValue.ToString()),
                                                                       hfReallocateGuid.Value.ToString());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
@@ -1148,6 +1155,7 @@ namespace vhcbcloud
 
             FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
             BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+            btnReallocateSubmit.Visible = true;
         }
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
