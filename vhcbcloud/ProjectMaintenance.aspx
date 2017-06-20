@@ -51,7 +51,7 @@
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
 
-                <ajaxToolkit:ModalPopupExtender ID="mpExtender1" runat="server" PopupControlID="pnlProjectDesc" TargetControlID="btnProjectDesc" 
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender1" runat="server" PopupControlID="pnlProjectDesc" TargetControlID="btnProjectDesc"
                     CancelControlID="btnClose1"
                     BackgroundCssClass="MEBackground">
                 </ajaxToolkit:ModalPopupExtender>
@@ -94,10 +94,10 @@
                                             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                                                 MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>
-                                           <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
+                                            <%-- <asp:DropDownList ID="ddlProject" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged">
                                             </asp:DropDownList>--%>
 
-                                            <asp:TextBox ID="txtProjectNumDDL" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server" 
+                                            <asp:TextBox ID="txtProjectNumDDL" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"
                                                 ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtProjectNumDDL" MinimumPrefixLength="1"
                                                 EnableCaching="true" CompletionSetCount="1"
@@ -135,7 +135,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Program</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
+                                            <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true"
                                                 OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
@@ -161,18 +161,18 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                    <div id="dvConserOnly" runat="server" visible="false">
-                                        <table>
-                                            <tr>
-                                        <td style="width: 115px"><span class="labelClass">Project Goal</span></td>
-                                        <td style="width: 100px" colspan="4">
-                                            <asp:DropDownList ID="ddlProjectGoal" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
+                                        <div id="dvConserOnly" runat="server" visible="false">
+                                            <table>
+                                                <tr>
+                                                    <td style="width: 115px"><span class="labelClass">Project Goal</span></td>
+                                                    <td style="width: 100px" colspan="4">
+                                                        <asp:DropDownList ID="ddlProjectGoal" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </tr>
-                                        </table>
-                                    </div>
-                                   </tr>
                                 </table>
                                 <div id="dvUpdate" runat="server" visible="false">
                                     <table>
@@ -202,7 +202,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Milestone" />
-                                         <asp:ImageButton ID="ImgMilestoneReport" ImageUrl="~/Images/print.png" ToolTip="Milestones Report"
+                                        <asp:ImageButton ID="ImgMilestoneReport" ImageUrl="~/Images/print.png" ToolTip="Milestones Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgMilestoneReport_Click" />
                                     </td>
                                 </tr>
@@ -211,8 +211,108 @@
 
                         <div class="panel-body" runat="server" id="dvProjectEventForm">
                             <asp:Panel runat="server" ID="Panel10">
+                                <div runat="server" id="dvAdmin">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 128px"><span class="labelClass">Admin Milestone</span></td>
+                                            <td class="modal-sm" style="width: 222px">
+                                                <asp:DropDownList ID="ddlAdminMilestone" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                                    OnSelectedIndexChanged="ddlAdminMilestone_SelectedIndexChanged" Height="20px" Width="185px">
+                                                </asp:DropDownList>
+                                            </td>
+                                            <td>
+                                                <div runat="server" id="dvSubAdmin" visible="false">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="width: 140px"><span class="labelClass">Admin Sub Milestone</span></td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddlAdminSubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="height: 5px"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div runat="server" id="dvProgram">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 128px">
+                                                <span class="labelClass">Program Milestone </span>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlProgramMilestone" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                                    OnSelectedIndexChanged="ddlProgramMilestone_SelectedIndexChanged" Height="20px" Width="185px">
+                                                </asp:DropDownList>
+                                            </td>
+                                            <td>
+                                                <div runat="server" id="dvSubProgram" visible="false">
+                                                    <table>
+                                                        <tr>
+                                                            <td style="width: 140px"><span class="labelClass">Program Sub Milestone</span></td>
+                                                            <td>
+                                                                <asp:DropDownList ID="ddlProgramSubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                                                </asp:DropDownList>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="height: 5px"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
                                 <table style="width: 100%">
-                                    
+                                    <tr>
+                                        <td style="width: 128px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 224px">
+                                            <asp:TextBox ID="txtEventDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 136px"><span class="labelClass">URL</span></td>
+                                        <td style="width: 319px">
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass"></span></td>
+                                        <td>
+                                            <%--<asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" />--%>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 80px"><span class="labelClass">Comments</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="height: 5px">
+                                            <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+
+                                <%-- <table style="width: 100%">
+
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Admin Milestone</span></td>
                                         <td style="width: 250px">
@@ -223,7 +323,7 @@
                                             <span class="labelClass">Program Milestone </span>
                                         </td>
                                         <td style="width: 237px">
-                                             <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEventSubCategory_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEventSubCategory_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 101px"><span class="labelClass">Date</span></td>
@@ -256,11 +356,103 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                </table>
+                                </table>--%>
+                            </asp:Panel>
+                        </div>
+                         <div class="panel-heading" id="dvPMFilter" runat="server">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <h3 class="panel-title">    &nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:RadioButtonList ID="rdGrid" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
+                                            OnSelectedIndexChanged="rdGrid_SelectedIndexChanged">
+                                            <asp:ListItem Selected="True">All    </asp:ListItem>
+                                            <asp:ListItem>Admin </asp:ListItem>
+                                            <asp:ListItem>Program  </asp:ListItem>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" id="dvMilestoneGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowUpdating="gvMilestone_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Project Event ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectEventID" runat="Server" Text='<%# Eval("ProjectEventID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Admin MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEvent" runat="Server" Text='<%# Eval("Event") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Admin Sub MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAdminSubMilestone" runat="Server" Text='<%# Eval("SubEvent") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Prog MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgramMilestone" runat="Server" Text='<%# Eval("ProgEvent") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Prog Sub MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgramSubMilestone" runat="Server" Text='<%# Eval("ProgSubEvent") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="150px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                        <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
+                                    </Columns>
+                                </asp:GridView>
                             </asp:Panel>
                         </div>
 
-                        <div class="panel-body" id="dvProjectEventGrid" runat="server">
+                       <%-- <div class="panel-body" id="dvProjectEventGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel11" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProjectEvent" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -283,12 +475,12 @@
                                                 <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("applicantname") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Milestone">
+                                        <asp:TemplateField HeaderText="Milestone">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPM" runat="Server" Text='<%# Eval("SubEvent") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Program Milestone">
+                                        <asp:TemplateField HeaderText="Program Milestone">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblEvent" runat="Server" Text='<%# Eval("Event") %>' />
                                             </ItemTemplate>
@@ -317,7 +509,7 @@
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
 
@@ -484,7 +676,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Village</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible ="false">
+                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
                                             </asp:DropDownList>
                                             <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
@@ -623,7 +815,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAttachNewEntity" runat="server" Text="Add New Entity" />
-                                         <asp:ImageButton ID="ImgEntity" ImageUrl="~/Images/print.png" ToolTip="Entities Report"
+                                        <asp:ImageButton ID="ImgEntity" ImageUrl="~/Images/print.png" ToolTip="Entities Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgEntity_Click" />
                                     </td>
                                 </tr>
@@ -749,7 +941,7 @@
                                     <tr>
                                         <td style="width: 180px"><span class="labelClass">Related Project Number</span></td>
                                         <td style="width: 250px">
-<%--                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
+                                            <%--                                            <asp:DropDownList ID="ddlRelatedProjects" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
                                             <asp:TextBox ID="txtRelatedProjects" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtRelatedProjects" MinimumPrefixLength="1"
@@ -1074,7 +1266,7 @@
                             $('#<%=txtVillage.ClientID%>').val('');
 
                             if ($('#<%= txtState.ClientID%>').val() == 'VT') {
-                                $('#<%= txtVillage.ClientID%>').removeAttr("disabled"); 
+                                $('#<%= txtVillage.ClientID%>').removeAttr("disabled");
                                 LoadVillages();
                             }
                         } else {

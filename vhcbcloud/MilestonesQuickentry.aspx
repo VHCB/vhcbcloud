@@ -25,7 +25,7 @@
                                     <asp:ListItem>Entity</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" Visible="false"
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -261,7 +261,7 @@
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
-                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowDeleting="gvMilestone_RowDeleting">
+                                    OnRowDeleting="gvMilestone_RowDeleting" OnRowUpdating="gvMilestone_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -317,11 +317,14 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
+                                        <asp:CommandField ShowEditButton="True" />
+                                        <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -332,8 +335,8 @@
                                 <asp:GridView ID="gvEntityMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
-                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowDeleting="gvEntityMilestone_RowDeleting">
+                                    OnRowEditing="gvEntityMilestone_RowEditing" OnRowCancelingEdit="gvEntityMilestone_RowCancelingEdit"
+                                     OnRowUpdating="gvEntityMilestone_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -383,11 +386,14 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        <asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />
+                                        <asp:CommandField ShowEditButton="True" />
+                                        <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
