@@ -455,7 +455,8 @@ namespace VHCBCommon.DataAccessLayer
 
 
         public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
-                                decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, string transGuid)
+                                decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId,
+                                Nullable<int> fromUsePermit, Nullable<int> toUsePermit, string transGuid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
@@ -475,6 +476,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Tofundamount", Tofundamount));
                 command.Parameters.Add(new SqlParameter("fromTransId", fromTransId));
                 command.Parameters.Add(new SqlParameter("toTransId", toTransId));
+                command.Parameters.Add(new SqlParameter("fromUsePermit", fromUsePermit));
+                command.Parameters.Add(new SqlParameter("toUsePermit", toUsePermit));
                 command.Parameters.Add(new SqlParameter("transGuid", transGuid));
 
                 using (connection)

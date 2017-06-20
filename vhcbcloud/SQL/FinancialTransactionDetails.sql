@@ -2047,7 +2047,9 @@ alter procedure [dbo].[AddBoardReallocationTransaction]
 	@Tofundamount money,
 	@fromTransId int = null,
 	@toTransId int = null, 
-	@transGuid varchar(50) = null
+	@transGuid varchar(50) = null,
+	@fromUsePermit int = null,
+	@toUsePermit int = null
 )
 as
 Begin	
@@ -2087,11 +2089,11 @@ Begin
 			
 			if(@toTransId >0)
 			Begin
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount,LandUsePermitID )	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 			else
 			begin
@@ -2106,11 +2108,11 @@ Begin
 					values (@ToProjectId, @transDate, 0, 240, 261, @Fromfundamount)
 				set @toTransId = @@IDENTITY;
 				
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)			
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)			
 				
 			end
 		end
@@ -2119,11 +2121,11 @@ Begin
 
 			if(@toTransId >0)
 			Begin
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 			else
 			begin			
@@ -2132,11 +2134,11 @@ Begin
 				set @fromTransId = @@IDENTITY;
 				set @toTransId = @@IDENTITY;
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 
 		End

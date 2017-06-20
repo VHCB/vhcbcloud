@@ -247,6 +247,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblAvailVisibleFund;
         
         /// <summary>
+        /// lblUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsePermit;
+        
+        /// <summary>
+        /// ddlUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsePermit;
+        
+        /// <summary>
         /// lblRErrorMsg control.
         /// </summary>
         /// <remarks>
@@ -326,6 +344,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
+        
+        /// <summary>
+        /// lblToUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblToUsePermit;
+        
+        /// <summary>
+        /// ddlToUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlToUsePermit;
         
         /// <summary>
         /// btnReallocateSubmit control.
