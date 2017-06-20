@@ -10,7 +10,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     {
         #region AppraisalValue
         public static void AddConservationAppraisalValue(int ProjectID, int TotAcres, decimal Apbef, decimal Apaft, decimal Aplandopt,
-            decimal Exclusion, decimal EaseValue, decimal Valperacre)
+            decimal Exclusion, decimal EaseValue, decimal Valperacre, string Comments)
         {
             try
             {
@@ -32,6 +32,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("Exclusion", Exclusion));
                         command.Parameters.Add(new SqlParameter("EaseValue", EaseValue));
                         command.Parameters.Add(new SqlParameter("Valperacre", Valperacre));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -46,7 +47,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConservationAppraisalValue(int ProjectID, int TotAcres, decimal Apbef, decimal Apaft, decimal Aplandopt,
-            decimal Exclusion, decimal EaseValue, decimal Valperacre, bool IsRowIsActive)
+            decimal Exclusion, decimal EaseValue, decimal Valperacre, bool IsRowIsActive, string Comments)
         {
             try
             {
@@ -69,6 +70,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("EaseValue", EaseValue));
                         command.Parameters.Add(new SqlParameter("Valperacre", Valperacre));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        command.Parameters.Add(new SqlParameter("Comments", Comments));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -152,7 +154,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static AppraisalResult AddConservationAppraisalInfo(int AppraisalID, int LkAppraiser, DateTime AppOrdered, DateTime AppRecd,
-            DateTime EffDate, decimal AppCost, string Comment, DateTime NRCSSent, bool RevApproved, DateTime ReviewDate)
+            DateTime EffDate, decimal AppCost, string Comment, DateTime NRCSSent, bool RevApproved, DateTime ReviewDate, string URL)
         {
             try
             {
@@ -176,6 +178,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("NRCSSent", NRCSSent.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : NRCSSent));
                         command.Parameters.Add(new SqlParameter("RevApproved", RevApproved));
                         command.Parameters.Add(new SqlParameter("ReviewDate", ReviewDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReviewDate));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -205,7 +208,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConservationAppraisalInfo(int AppraisalInfoID, int LkAppraiser, DateTime AppOrdered, DateTime AppRecd,
-            DateTime EffDate, decimal AppCost, string Comment, DateTime NRCSSent, bool RevApproved, DateTime ReviewDate, bool IsRowIsActive)
+            DateTime EffDate, decimal AppCost, string Comment, DateTime NRCSSent, bool RevApproved, DateTime ReviewDate, 
+            bool IsRowIsActive, string URL)
         {
             try
             {
@@ -230,6 +234,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("RevApproved", RevApproved));
                         command.Parameters.Add(new SqlParameter("ReviewDate", ReviewDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : ReviewDate));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
 
                         command.CommandTimeout = 60 * 5;
 

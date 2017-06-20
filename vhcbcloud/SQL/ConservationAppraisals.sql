@@ -16,13 +16,14 @@ create procedure dbo.AddConservationAppraisalValue
 	@Aplandopt		money, 
 	@Exclusion		money, 
 	@EaseValue		money, 
-	@Valperacre		money
+	@Valperacre		money,
+	@Comments		nvarchar(max)
 ) as
 begin transaction
 
 	begin try
-		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre)
-		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre)
+		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, Comments)
+		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre, @Comments)
 
 		if not exists
 		(
@@ -68,6 +69,7 @@ create procedure dbo.UpdateConservationAppraisalValue
 	@Exclusion		money, 
 	@EaseValue		money, 
 	@Valperacre		money,
+	@Comments		nvarchar(max),
 	@IsRowIsActive	bit
 ) as
 begin transaction
@@ -75,7 +77,8 @@ begin transaction
 	begin try
 
 	update AppraisalValue set  TotAcres = @TotAcres, Apbef = @Apbef, Apaft = @Apaft, Aplandopt = @Aplandopt, 
-		Exclusion = @Exclusion, EaseValue = @EaseValue, Valperacre = @Valperacre, RowIsActive = @IsRowIsActive, DateModified = getdate()
+		Exclusion = @Exclusion, EaseValue = @EaseValue, Valperacre = @Valperacre, RowIsActive = @IsRowIsActive, DateModified = getdate(),
+		Comments = @Comments
 	from AppraisalValue
 	where ProjectID = @ProjectID
 	
@@ -115,7 +118,7 @@ begin
 	from Conserve(nolock)
 	where ProjectID = @ProjectID
 
-	select AppraisalID, ProjectID, @TotAcres as TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive
+	select AppraisalID, ProjectID, @TotAcres as TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive, Comments
 	from AppraisalValue (nolock)
 	where ProjectID = @ProjectID
 end
@@ -137,7 +140,9 @@ as
 begin
 --exec GetConservationAppraisalInfoList 6625, 1
 	select ai.AppraisalInfoID, ai.AppraisalID, ai.LkAppraiser, description as 'Appraiser', ai.AppOrdered, ai.AppRecd, ai.EffDate, ai.AppCost, 
-		ai.Comment, ai.NRCSSent, ai.RevApproved, ai.ReviewDate, ai.RowIsActive, ai.DateModified
+		ai.Comment, ai.NRCSSent, ai.RevApproved, ai.ReviewDate, ai.RowIsActive, ai.DateModified,
+		ai.URL,
+		CASE when isnull(ai.URL, '') = '' then '' else 'Click here' end as URLText
 	from AppraisalInfo ai(nolock)
 	left join LookupValues (nolock) on TypeID = ai.LkAppraiser
 	where ai.AppraisalID = @AppraisalID
@@ -263,7 +268,7 @@ as
 --exec GetConservationAppraisalInfoById 6588
 begin
 
-	select AppraisalID, LkAppraiser, AppOrdered, AppRecd, EffDate, AppCost, Comment, NRCSSent, RevApproved, ReviewDate, RowIsActive, DateModified
+	select AppraisalID, LkAppraiser, AppOrdered, AppRecd, EffDate, AppCost, Comment, NRCSSent, RevApproved, ReviewDate, RowIsActive, DateModified, URL
 	from AppraisalInfo (nolock)
 	where AppraisalInfoID = @AppraisalInfoID
 end
