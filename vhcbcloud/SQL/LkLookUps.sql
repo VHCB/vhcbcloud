@@ -59,14 +59,14 @@ as
 begin
 	if (@recordId = 0)
 	begin
-		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered
+		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered, lv.subreq
 		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
 		where (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)
 		order by lv.Ordering desc, lk.Viewname asc
 	end
 	else
 	Begin
-		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered
+		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered, lv.subreq		
 		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
 		where lk.RecordID = @recordId 
 		and (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)
@@ -119,6 +119,7 @@ alter  procedure [dbo].[updateLookups]
 	@description varchar(50),
 	@lookupTypeid int,	
 	@isActive bit,
+	@isRequired bit,
 	@Ordering int
 )
 as
@@ -126,7 +127,7 @@ as
 begin transaction
 
 	begin try
-		update LookupValues set Description = @description, ordering = @Ordering, RowIsActive=@isActive where TypeID = @typeId;
+		update LookupValues set Description = @description, ordering = @Ordering, RowIsActive=@isActive, SubReq = @isRequired where TypeID = @typeId;
 		--update LkLookups set  RowIsActive=@isActive, Ordered = @isOrdered  where RecordID = @lookupTypeid;
 	end try
 	begin catch
@@ -142,6 +143,7 @@ begin transaction
 		commit transaction;
 
 go
+
 
 alter procedure [dbo].[UpdateLkDescription]
 (
@@ -167,7 +169,7 @@ alter procedure [dbo].[GetLkLookupDetailsByOrder]
  )
 as
 begin	
-		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered
+		select lv.TypeID, lk.RecordID, lk.Tablename, lk.Viewname, lk.lkDescription, lv.Description, lk.Standard, lv.RowIsActive, lv.Ordering, lk.Tiered, lv.subreq
 		from LkLookups lk join LookupValues lv on lv.LookupType = lk.RecordID	
 		where lk.RecordID = @recordId and lv.Ordering >= @order
 		and (@IsActiveOnly = 0 or lv.RowIsActive = @IsActiveOnly)

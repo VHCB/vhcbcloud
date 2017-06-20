@@ -371,7 +371,7 @@ namespace vhcbcloud
                         }
 
                         FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount, ddlUsePermit.SelectedItem.Text);
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                     }
                     else
                         FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
@@ -848,6 +848,7 @@ namespace vhcbcloud
                 btnNewTransaction.Visible = false;
                 lblAvailVisibleFund.Text = "";
                 txtTransDate.Text = "";
+                divPtransEntry.Visible = false;
             }
             else
             {
@@ -855,7 +856,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
-                btnNewTransaction.Visible = true;
+                btnNewTransaction.Visible = true;                
                 Response.Redirect("decommitments.aspx");
             }
 

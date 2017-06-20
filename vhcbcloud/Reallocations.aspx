@@ -128,6 +128,18 @@
                                             <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
                                         </td>
                                     </tr>
+                                    <tr>
+                                       <td style="height: 4px" colspan="6" />
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left"><asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                    </asp:DropDownList></td>
+                                        <td style="width: 10%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                    </tr>
                                 </table>
                                 <br />
                                 <p class="lblErrMsg">
@@ -174,7 +186,18 @@
                                             <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney"  onkeyup='toRToAmtFormatter(value)'  runat="server"></asp:TextBox></td>
 
                                     </tr>
-
+                                     <tr>
+                                       <td style="height: 4px" colspan="6" />
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left"><asp:Label ID="lblToUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                    </asp:DropDownList></td>
+                                        <td style="width: 10%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                        <td style="width: 20%; float: left">&nbsp;</td>
+                                    </tr>
                                 </table>
                                 <br />
                                 <asp:Button ID="btnReallocateSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;" OnClick="btnReallocateSubmit_Click" />

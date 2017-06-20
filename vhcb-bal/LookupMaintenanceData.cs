@@ -71,7 +71,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
-        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive, int ordering)
+        public static void UpdateLookups(int typeId, string description, int lookupTypeId, bool isActive, bool isRequired, int ordering)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -83,6 +83,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("description", description));
                 command.Parameters.Add(new SqlParameter("lookupTypeid", lookupTypeId));
                 command.Parameters.Add(new SqlParameter("isActive", isActive));
+                command.Parameters.Add(new SqlParameter("isRequired", isRequired));
                 command.Parameters.Add(new SqlParameter("Ordering", ordering));
                 using (connection)
                 {

@@ -184,6 +184,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblGrantee;
         
         /// <summary>
+        /// lblAvailFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAvailFund;
+        
+        /// <summary>
+        /// lblAvailVisibleFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAvailVisibleFund;
+        
+        /// <summary>
         /// divPtransEntry control.
         /// </summary>
         /// <remarks>
@@ -218,24 +236,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTotAmt;
-        
-        /// <summary>
-        /// lblAvailFund control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAvailFund;
-        
-        /// <summary>
-        /// lblAvailVisibleFund control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAvailVisibleFund;
         
         /// <summary>
         /// btnTransactionSubmit control.

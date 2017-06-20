@@ -12,7 +12,7 @@ namespace vhcbcloud
     public partial class LookupMaintenance : System.Web.UI.Page
     {
         private int _recordId = 0;
-        
+
         public int recordId { get { return _recordId; } set { _recordId = value; } }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -97,13 +97,19 @@ namespace vhcbcloud
         protected void gvLookup_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvLookup.EditIndex = -1;
-            BindLookupMaintenance();
+            if (SortExpression == string.Empty)
+                BindLookupMaintenance();
+            else
+                BindGridWithSort(true);
         }
 
         protected void gvLookup_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvLookup.EditIndex = e.NewEditIndex;
-            BindLookupMaintenance();
+            if (SortExpression == string.Empty)
+                BindLookupMaintenance();
+            else
+                BindGridWithSort(true);
         }
 
         protected void gvLookup_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -122,14 +128,15 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Please enter numerical values only for ordering";
                 }
 
-                  
+
                 int typeId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lbltypeid")).Text);
                 string lkDescription = ((TextBox)gvLookup.Rows[rowIndex].FindControl("txtDesc")).Text;
                 int recordId = Convert.ToInt32(((Label)gvLookup.Rows[rowIndex].FindControl("lblrecordId")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkActiveEdit")).Checked);
+                bool isRequired = Convert.ToBoolean(((CheckBox)gvLookup.Rows[rowIndex].FindControl("chkEditRequired")).Checked);
                 int Ordering = Convert.ToInt32(strOrder);
 
-                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, Ordering);
+                LookupMaintenanceData.UpdateLookups(typeId, lkDescription, recordId, isActive, isRequired, Ordering);
                 gvLookup.EditIndex = -1;
                 //BindLookupMaintenance();
 
@@ -139,7 +146,7 @@ namespace vhcbcloud
                 if (ddlLkLookupViewname.SelectedIndex == 0 || recordId == 0)
                 {
                     dt = null;
-                   // dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
+                    // dt = LookupMaintenanceData.GetLkLookupDetails(0, cbActiveOnly.Checked);
                 }
                 else
                 {
@@ -147,16 +154,17 @@ namespace vhcbcloud
                 }
 
                 int incrementOrder = Ordering;
-                foreach (DataRow dr in dt.Rows)
-                {
-                    int dtTypeId = Convert.ToInt32(dr["typeid"].ToString());
-                    if (dtTypeId != typeId)
+                if (dt != null)
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        incrementOrder++;
-                        LookupMaintenanceData.UpdateLookupOrdering(dtTypeId, incrementOrder);
+                        int dtTypeId = Convert.ToInt32(dr["typeid"].ToString());
+                        if (dtTypeId != typeId)
+                        {
+                            incrementOrder++;
+                            LookupMaintenanceData.UpdateLookupOrdering(dtTypeId, incrementOrder);
+                        }
+
                     }
-                    
-                }
 
                 BindGrids();
                 lblErrorMsg.Text = "Lookup details updated successfully";
@@ -191,7 +199,22 @@ namespace vhcbcloud
                 if (ViewState["SortDireaction"] == null)
                     return string.Empty;
                 else
-                    return ViewState["SortDireaction"].ToString();
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "DESC" : "ASC";
+            }
+            set
+            {
+                ViewState["SortDireaction"] = value;
+            }
+        }
+
+        public string EditSortDireaction
+        {
+            get
+            {
+                if (ViewState["SortDireaction"] == null)
+                    return string.Empty;
+                else
+                    return ViewState["SortDireaction"].ToString() == "ASC" ? "ASC" : "DESC";
             }
             set
             {
@@ -214,7 +237,7 @@ namespace vhcbcloud
             }
         }
 
-        protected void BindGridWithSort()
+        protected void BindGridWithSort(bool isEditMode)
         {
             recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
 
@@ -224,13 +247,16 @@ namespace vhcbcloud
             else
                 dt = LookupMaintenanceData.GetLkLookupDetails(recordId, cbActiveOnly.Checked);
 
-            SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
+            if (isEditMode)
+                SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, EditSortDireaction);
+            else
+                SortDireaction = CommonHelper.GridSorting(gvLookup, dt, SortExpression, SortDireaction);
         }
 
         protected void gvLookup_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
-            BindGridWithSort();
+            BindGridWithSort(false);
         }
 
         protected void gvLookup_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -250,7 +276,7 @@ namespace vhcbcloud
                 // Clear the error message.
                 lblErrorMsg.Text = "";
                 gvLookup.PageIndex = e.NewPageIndex;
-                BindGridWithSort();
+                BindGridWithSort(false);
             }
         }
 
@@ -289,7 +315,10 @@ namespace vhcbcloud
 
                 //BindViewName(); 
                 BindLKDescription();
-                BindLookupMaintenance();
+                if (SortExpression == string.Empty)
+                    BindLookupMaintenance();
+                else
+                    BindGridWithSort(true);
                 lblErrorMsg.Text = "Lookup description updated successfully";
                 txtDescription.Text = "";
             }
@@ -303,8 +332,11 @@ namespace vhcbcloud
         {
             lblErrorMsg.Text = "";
             BindLKDescription();
-            BindLookupMaintenance();
-            
+            if (SortExpression == string.Empty)
+                BindLookupMaintenance();
+            else
+                BindGridWithSort(false);
+
             pnlAddSubTier.Visible = false;
         }
 
@@ -328,7 +360,10 @@ namespace vhcbcloud
                     return;
                 }
                 gvLookup.PageIndex = 0;
-                BindLookupMaintenance();
+                if (SortExpression == string.Empty)
+                    BindLookupMaintenance();
+                else
+                    BindGridWithSort(false);
             }
             catch (Exception ex)
             {
@@ -344,7 +379,10 @@ namespace vhcbcloud
         {
             //BindViewName();
             BindLKDescription();
-            BindLookupMaintenance();
+            if (SortExpression == string.Empty)
+                BindLookupMaintenance();
+            else
+                BindGridWithSort(false);
             //BindLookupSubValues();
         }
 
@@ -425,7 +463,7 @@ namespace vhcbcloud
         {
             try
             {
-                int rowIndex = e.RowIndex;                
+                int rowIndex = e.RowIndex;
                 int subtypeid = Convert.ToInt32(((Label)gvTier.Rows[rowIndex].FindControl("lblsubtypeid")).Text);
                 LookupMaintenanceData.DeleteLkSubValues(subtypeid);
                 BindLookupSubValues();

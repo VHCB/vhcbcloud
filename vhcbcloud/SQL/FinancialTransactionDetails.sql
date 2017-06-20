@@ -60,7 +60,29 @@ begin
 end
 go
 
-alter procedure getCommittedFinalProjectslistPCRFilter  
+--alter procedure getCommittedFinalProjectslistPCRFilter  
+--(
+--	@filter varchar(20)
+--)
+--as
+--begin
+
+--	select distinct  proj_num,p.projectid, max(rtrim(ltrim(lpn.description))) description,  convert(varchar(25), p.projectid) +'|' + max(rtrim(ltrim(lpn.description))) as project_id_name
+--	,round(sum(tr.TransAmt),2) as availFund
+--	from project p(nolock)
+--	join projectname pn(nolock) on p.projectid = pn.projectid
+--	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
+--	join trans tr on tr.projectid = p.projectid
+--	where defname = 1 and tr.lkstatus = 261 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
+
+--	and tr.RowIsActive=1 and pn.defname=1 and p.Proj_num like @filter +'%'	
+--	group by p.projectid, proj_num
+--	order by proj_num 
+--end
+--go
+
+
+alter  procedure getCommittedFinalProjectslistPCRFilter  
 (
 	@filter varchar(20)
 )
@@ -73,13 +95,18 @@ begin
 	join projectname pn(nolock) on p.projectid = pn.projectid
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	join trans tr on tr.projectid = p.projectid
+	join projectcheckreq pcr on pcr.Projectid = p.projectid
 	where defname = 1 and tr.lkstatus = 261 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
-
+	and 
+	(select count(*) from ProjectCheckReqQuestions where ProjectCheckReqID = pcr.ProjectCheckReqID and Approved = 0)>0
+	and 
+	pcr.Voucher# is not null
+	
 	and tr.RowIsActive=1 and pn.defname=1 and p.Proj_num like @filter +'%'	
 	group by p.projectid, proj_num
 	order by proj_num 
 end
-go
+
 
 
 alter procedure getCommittedProjectslistNoPendingTrans
@@ -992,7 +1019,7 @@ begin
 
 	if ( @financial_transaction_action_id = 236)
 	begin
-		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, v.description as LkTransactionDesc--, trans.LkTransaction, v.*
+		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, (select crdate from projectcheckreq where ProjectCheckReqID = trans.ProjectCheckReqID  and projectid = @project_id) as TransactionDate, trans.TransAmt, v.description as LkTransactionDesc--, trans.LkTransaction, v.*
 		from Trans trans(nolock)
 		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
 		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
@@ -1364,15 +1391,35 @@ alter procedure GetLandUsePermit
 )
 as
  Begin
-	select af.UsePermit, af.Act250FarmId from Act250Farm af join Act250Projects ap on ap.Act250FarmId = af.Act250FarmId where ap.RowIsActive=1
-	and ap.projectid = @projectId
+	--select af.UsePermit, af.Act250FarmId from Act250Farm af join Act250Projects ap on ap.Act250FarmId = af.Act250FarmId where ap.RowIsActive=1
+	--and ap.projectid = @projectId
+	select distinct af.UsePermit, af.Act250FarmId, * from Act250Farm af 
+		join detail d on d.landusepermitid = af.Act250FarmID
+		join Trans tr on tr.TransId = d.TransId
+	where tr.ProjectID = @projectid
  end
 go
 
-alter procedure GetAllLandUsePermit
+--alter procedure GetAllLandUsePermit
+--as
+--begin
+--	select af.UsePermit, af.Act250FarmId from Act250Farm af where af.RowIsActive=1
+--end
+--go
+
+ alter procedure GetAllLandUsePermit
+ (
+	 @projectId int
+ )
 as
 begin
-	select af.UsePermit, af.Act250FarmId from Act250Farm af where af.RowIsActive=1
+	
+	declare @lkprogram int 
+	set @lkprogram = (select LkProgram from Project where ProjectId = @projectid)
+
+	select distinct af.UsePermit, af.Act250FarmId, * from Act250Farm af 
+	left join Act250Projects ap on ap.Act250FarmID = af.Act250FarmID 	
+	where af.RowIsActive=1 and af.type = @lkprogram
 end
 go
 
@@ -1387,7 +1434,8 @@ as
 
 BEGIN 
 	insert into Detail (TransId, FundId, LkTransType, Amount)	values
-		(@transid,@fundid , @fundtranstype, @fundamount)
+		(@transid,@fundid , @fundtranstype, @fundamount);
+		
 END 
 go
 
@@ -1397,13 +1445,17 @@ alter procedure [dbo].AddProjectFundDetailsWithLandPermit
 	@fundid int,	
 	@fundtranstype int,
 	@fundamount money,
-	@LandUsePermit nvarchar(15)
+	@LandUsePermit nvarchar(15),
+	@LandUseFarmId int
 )
 as
 
 BEGIN 
-	insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermit)	values
-		(@transid,@fundid , @fundtranstype, @fundamount, @LandUsePermit)
+	insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitid)	values
+		(@transid,@fundid , @fundtranstype, @fundamount, @LandUseFarmId)
+
+	insert into act250devpay (Act250FarmId, FundId, AmtRec, DateRec) values
+			(@LandUseFarmId, @fundid, @fundAmount, getdate())
 END 
 go
 
@@ -1995,7 +2047,9 @@ alter procedure [dbo].[AddBoardReallocationTransaction]
 	@Tofundamount money,
 	@fromTransId int = null,
 	@toTransId int = null, 
-	@transGuid varchar(50) = null
+	@transGuid varchar(50) = null,
+	@fromUsePermit int = null,
+	@toUsePermit int = null
 )
 as
 Begin	
@@ -2035,30 +2089,30 @@ Begin
 			
 			if(@toTransId >0)
 			Begin
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount,LandUsePermitID )	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 			else
 			begin
 
 				--set @Fromfundamount = @Fromfundamount -@Tofundamount
 
-				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus)
-					values (@FromProjectId, @transDate, 0, 240, 261) -- 240 Board Reallocation, 261 Pending
+				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus, ReallAssignAmt)
+					values (@FromProjectId, @transDate, 0, 240, 261,-@Fromfundamount)-- 240 Board Reallocation, 261 Pending
 				set @fromTransId = @@IDENTITY;
 	
-				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
-					values (@ToProjectId, @transDate, 0, 240, 261)
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
+					values (@ToProjectId, @transDate, 0, 240, 261, @Fromfundamount)
 				set @toTransId = @@IDENTITY;
 				
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)			
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)			
 				
 			end
 		end
@@ -2067,24 +2121,24 @@ Begin
 
 			if(@toTransId >0)
 			Begin
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 			else
 			begin			
-				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
-					values (@FromProjectId, @transDate, 0, 240, 261) -- 240 Board Reallocation, 261 Pending
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
+					values (@FromProjectId, @transDate, 0, 240, 261, -@Fromfundamount) -- 240 Board Reallocation, 261 Pending
 				set @fromTransId = @@IDENTITY;
 				set @toTransId = @@IDENTITY;
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@fromTransId, @Fromfundid , @Fromfundtranstype, -@Tofundamount, @fromUsePermit)
 
-				insert into Detail (TransId, FundId, LkTransType, Amount)	values
-					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount)
+				insert into Detail (TransId, FundId, LkTransType, Amount, LandUsePermitID)	values
+					(@toTransId, @Tofundid , @Tofundtranstype, @Tofundamount, @toUsePermit)
 			end
 
 		End
@@ -3145,12 +3199,12 @@ Begin
 
 				--set @Fromfundamount = @Fromfundamount -@Tofundamount
 
-				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus)
-					values (@FromProjectId, @transDate, 0, 26552, 261) -- 26552 Board Assignment, 261 Pending
+				insert into Trans (ProjectID, date, TransAmt,  LkTransaction, LkStatus, ReallAssignAmt)
+					values (@FromProjectId, @transDate, 0, 26552, 261, -@Tofundamount) -- 26552 Board Assignment, 261 Pending
 				set @fromTransId = @@IDENTITY;
 	
-				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
-					values (@ToProjectId, @transDate, 0, 26552, 261)
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
+					values (@ToProjectId, @transDate, 0, 26552, 261, @Tofundamount)
 				set @toTransId = @@IDENTITY;
 				
 				insert into Detail (TransId, FundId, LkTransType, Amount)	values
@@ -3174,8 +3228,8 @@ Begin
 			end
 			else
 			begin			
-				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus)
-					values (@FromProjectId, @transDate, 0, 26552, 261) -- 26552 Board Assignment, 261 Pending
+				insert into Trans (ProjectID, date, TransAmt, LkTransaction, LkStatus, ReallAssignAmt)
+					values (@FromProjectId, @transDate, 0, 26552, 261, -@Tofundamount) -- 26552 Board Assignment, 261 Pending
 				set @fromTransId = @@IDENTITY;
 				set @toTransId = @@IDENTITY;
 
@@ -3403,4 +3457,19 @@ Begin
 
 End
 
+go
+
+alter procedure [dbo].[GetCommittedFundByProject]
+(
+	@projId int
+)
+as
+Begin
+	select distinct f.FundId, f.name, tr.LkTransaction, p.projectid from Fund f 
+			join detail det on det.FundId = f.FundId
+			join Trans tr on tr.TransId = det.TransId
+			join Project p on p.ProjectID  = tr.ProjectID
+	where p.projectid = @projId and tr.LkTransaction = 238
+	order by f.name asc
+end
 go

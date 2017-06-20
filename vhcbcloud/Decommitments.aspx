@@ -65,8 +65,8 @@
 
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 10%; float: left"><span class="labelClass">Project # :</span></td>
-                                        <td style="width: 30%; float: left">
+                                        <td style="width: 10%; float: left; height: 28px;"><span class="labelClass">Project # :</span></td>
+                                        <td style="width: 30%; float: left; height: 28px;">
                                             <%-- <asp:DropDownList ID="ddlProjFilter" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlProjFilter_SelectedIndexChanged">
                                             </asp:DropDownList>--%>
@@ -85,10 +85,19 @@
                                             </ajaxToolkit:AutoCompleteExtender>
 
                                         </td>
-                                        <td style="width: 20%; float: left">
+                                        <td style="width: 20%; float: left; height: 28px;">
                                             <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                        <td style="float: left">
-                                            <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                        <td style="float: left; height: 28px;">
+                                            <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left; height: 27px;"><span class="labelClass">Available Funds:</span></td>
+                                        <td style="width: 30%; float: left; height: 27px;">
+                                            <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
+                                            <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label></td>
+                                        <td style="width: 20%; float: left; height: 27px;"></td>
+                                        <td style="float: left; height: 27px;"></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 10%; float: left">&nbsp;</td>
@@ -113,11 +122,8 @@
                                             <td style="width: 20%; float: left"><span class="labelClass">Amount to Decommit $ :</span></td>
                                             <td style="width: 20%; float: left">
                                                 <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" onkeyup='toTotAmtFormatter(value)' runat="server"></asp:TextBox></td>
-                                            <td style="width: 15%; float: left"><span class="labelClass">Available Funds $:</span></td>
-                                            <td style="width: 15%; float: left">
-                                                <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
-                                                <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
-                                            </td>
+                                            <td style="width: 15%; float: left"></td>
+                                            <td style="width: 15%; float: left"></td>
                                         </tr>
                                     </table>
                                     <br />
@@ -235,8 +241,8 @@
                                                     <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" AutoPostBack="true" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
                                                     <asp:Label ID="lblFundName" class="labelClass" Text=" " runat="server" Visible="false"></asp:Label>
                                                 </td>
-                                                <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
-                                                <td style="width: 30%; float: left">
+                                                <td style="width: 15%; float: left"><span class="labelClass">Trans Type :</span></td>
+                                                <td style="width: 25%; float: left">
                                                     <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
@@ -255,10 +261,10 @@
                                                     <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
                                                     </asp:DropDownList>
                                                 </td>
-                                                <td style="width: 10%; float: left">
-                                                    <span class="labelClass">Available Detail Funds $:</span>
+                                                <td style="width: 15%; float: left">
+                                                    <span class="labelClass">Available Funds$:</span>
                                                 </td>
-                                                <td style="width: 30%; float: left">
+                                                <td style="width: 25%; float: left">
                                                     <asp:Label ID="lblAvDetailFund" runat="server" class="labelClass" Text=""></asp:Label>
                                                 </td>
                                             </tr>
@@ -379,6 +385,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <br />
     <script type="text/javascript">
         window.onbeforeunload = confirmExit;
         function confirmExit() {
@@ -427,63 +434,61 @@
 
             var hdnValueID = "<%= hdnValue.ClientID %>";
 
-             document.getElementById(hdnValueID).value = eventArgs.get_value();
-             __doPostBack(hdnValueID, "");
-         }
-         //Currency formatter code starts below
-         var formatter = new Intl.NumberFormat('en-US', {
-             style: 'currency',
-             currency: 'USD',
-             minimumFractionDigits: 2,
-         });
-         toTotAmtFormatter = value => {
-             const digits = this.getDigitsFromValue(value);
-             const digitsWithPadding = this.padDigits(digits);
-
-             let result = this.addDecimalToNumber(digitsWithPadding);
-
-             var inputElement = document.getElementById("txtTotAmt");
-
-             //inputElement.value = formatter.format(result);
-             $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
-        };
-
-        toAmtFormatter = value => {
+            document.getElementById(hdnValueID).value = eventArgs.get_value();
+            __doPostBack(hdnValueID, "");
+        }
+        //Currency formatter code starts below
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        toTotAmtFormatter = value => {
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);
 
             let result = this.addDecimalToNumber(digitsWithPadding);
 
-            var inputElement = document.getElementById("txtAmt");
+            var inputElement = document.getElementById("txtTotAmt");
 
-            //inputElement.value = "$" + result;
-            $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
+            //inputElement.value = formatter.format(result);
+            $('#<%= txtTotAmt.ClientID%>').val(formatter.format(result));
+         };
+
+         toAmtFormatter = value => {
+             const digits = this.getDigitsFromValue(value);
+             const digitsWithPadding = this.padDigits(digits);
+
+             let result = this.addDecimalToNumber(digitsWithPadding);
+
+             var inputElement = document.getElementById("txtAmt");
+
+             //inputElement.value = "$" + result;
+             $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
         };
-            getDigitsFromValue = (value) => {
-                return value.toString().replace(/\D/g, '');
-            };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
 
-            padDigits = digits => {
-                const desiredLength = 3;
-                const actualLength = digits.length;
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
 
-                if (actualLength >= desiredLength) {
-                    return digits;
-                }
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
 
-                const amountToAdd = desiredLength - actualLength;
-                const padding = '0'.repeat(amountToAdd);
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
 
-                return padding + digits;
-            };
-            addDecimalToNumber = number => {
-                const centsStartingPosition = number.length - 2;
-                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-                const cents = number.substring(centsStartingPosition);
-                return `${dollars}.${cents}`;
-            };
-            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
-
-
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
     </script>
 </asp:Content>
