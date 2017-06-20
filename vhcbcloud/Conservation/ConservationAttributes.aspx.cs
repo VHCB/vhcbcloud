@@ -125,7 +125,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlAffordability, 54);
             BindLookUP(ddlPA, 28);
             BindLookUP(ddlAltEnergy, 3);
-            BindLookUP(ddlBufferType, 5);
+            //BindLookUP(ddlBufferType, 5);
             BindLookUP(ddlOT, 45);
             BindLookUP(ddlLegalInterest, 80);
             BindLookUP(ddlLegalMechanism, 24);
@@ -137,7 +137,7 @@ namespace vhcbcloud.Conservation
             BindAffordabilityGrid();
             BindPAGrid();
             BindAltEnergyGrid();
-            BindBufferTypeGrid();
+            //BindBufferTypeGrid();
             BindOTGrid();
             BindLegalIntrestGrid();
             BindLegalMechanismGrid();
@@ -469,81 +469,81 @@ namespace vhcbcloud.Conservation
             }
         }
 
-        protected void btnAddBuffer_Click(object sender, EventArgs e)
-        {
-            if (ddlBufferType.SelectedIndex == 0)
-            {
-                LogMessage("Select Buffer Type");
-                ddlBufferType.Focus();
-                return;
-            }
+        //protected void btnAddBuffer_Click(object sender, EventArgs e)
+        //{
+        //    if (ddlBufferType.SelectedIndex == 0)
+        //    {
+        //        LogMessage("Select Buffer Type");
+        //        ddlBufferType.Focus();
+        //        return;
+        //    }
 
-            AttributeResult obAttributeResult = ConservationAttributeData.AddBuffers(DataUtils.GetInt(hfConserveId.Value),
-                          DataUtils.GetInt(ddlBufferType.SelectedValue.ToString()));
-            ddlBufferType.SelectedIndex = -1;
-            cbAddBuffer.Checked = false;
+        //    AttributeResult obAttributeResult = ConservationAttributeData.AddBuffers(DataUtils.GetInt(hfConserveId.Value),
+        //                  DataUtils.GetInt(ddlBufferType.SelectedValue.ToString()));
+        //    ddlBufferType.SelectedIndex = -1;
+        //    cbAddBuffer.Checked = false;
 
-            BindBufferTypeGrid();
+        //    BindBufferTypeGrid();
 
-            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
-                LogMessage("Buffer Type already exist as in-active");
-            else if (obAttributeResult.IsDuplicate)
-                LogMessage("Buffer Type already exist");
-            else
-                LogMessage("New Buffer Type added successfully");
-        }
+        //    if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+        //        LogMessage("Buffer Type already exist as in-active");
+        //    else if (obAttributeResult.IsDuplicate)
+        //        LogMessage("Buffer Type already exist");
+        //    else
+        //        LogMessage("New Buffer Type added successfully");
+        //}
 
-        protected void gvBuffer_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            gvBuffer.EditIndex = e.NewEditIndex;
-            BindBufferTypeGrid();
-        }
+        //protected void gvBuffer_RowEditing(object sender, GridViewEditEventArgs e)
+        //{
+        //    gvBuffer.EditIndex = e.NewEditIndex;
+        //    BindBufferTypeGrid();
+        //}
 
-        protected void gvBuffer_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            gvBuffer.EditIndex = -1;
-            BindBufferTypeGrid();
-        }
+        //protected void gvBuffer_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        //{
+        //    gvBuffer.EditIndex = -1;
+        //    BindBufferTypeGrid();
+        //}
 
-        protected void gvBuffer_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
+        //protected void gvBuffer_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    int rowIndex = e.RowIndex;
 
-            int ConserveBufferID = DataUtils.GetInt(((Label)gvBuffer.Rows[rowIndex].FindControl("lblConserveBufferID")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvBuffer.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+        //    int ConserveBufferID = DataUtils.GetInt(((Label)gvBuffer.Rows[rowIndex].FindControl("lblConserveBufferID")).Text);
+        //    bool RowIsActive = Convert.ToBoolean(((CheckBox)gvBuffer.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            ConservationAttributeData.UpdateBuffers(ConserveBufferID, RowIsActive);
-            gvBuffer.EditIndex = -1;
+        //    ConservationAttributeData.UpdateBuffers(ConserveBufferID, RowIsActive);
+        //    gvBuffer.EditIndex = -1;
 
-            BindBufferTypeGrid();
+        //    BindBufferTypeGrid();
 
-            LogMessage("Buffer Type updated successfully");
-        }
+        //    LogMessage("Buffer Type updated successfully");
+        //}
 
-        private void BindBufferTypeGrid()
-        {
-            try
-            {
-                DataTable dt = ConservationAttributeData.GetBuffersList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
+        //private void BindBufferTypeGrid()
+        //{
+        //    try
+        //    {
+        //        DataTable dt = ConservationAttributeData.GetBuffersList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
 
-                if (dt.Rows.Count > 0)
-                {
-                    dvBufferGrid.Visible = true;
-                    gvBuffer.DataSource = dt;
-                    gvBuffer.DataBind();
-                }
-                else
-                {
-                    dvBufferGrid.Visible = false;
-                    gvBuffer.DataSource = null;
-                    gvBuffer.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindBufferTypeGrid", "", ex.Message);
-            }
-        }
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            dvBufferGrid.Visible = true;
+        //            gvBuffer.DataSource = dt;
+        //            gvBuffer.DataBind();
+        //        }
+        //        else
+        //        {
+        //            dvBufferGrid.Visible = false;
+        //            gvBuffer.DataSource = null;
+        //            gvBuffer.DataBind();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindBufferTypeGrid", "", ex.Message);
+        //    }
+        //}
 
         protected void btnAddOT_Click(object sender, EventArgs e)
         {

@@ -225,7 +225,8 @@ namespace vhcbcloud
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            BindMilestoneGrid();
+            BindEntityMilestoneGrid();
         }
 
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
@@ -514,17 +515,14 @@ namespace vhcbcloud
 
         protected void gvMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
-
+            gvMilestone.EditIndex = -1;
+            BindMilestoneGrid();
         }
 
         protected void gvMilestone_RowEditing(object sender, GridViewEditEventArgs e)
         {
-
-        }
-
-        protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-
+            gvMilestone.EditIndex = e.NewEditIndex;
+            BindMilestoneGrid();
         }
 
         protected void rdGrid_SelectedIndexChanged(object sender, EventArgs e)
@@ -560,6 +558,48 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void gvMilestone_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ProjectEventID = DataUtils.GetInt(((Label)gvMilestone.Rows[rowIndex].FindControl("lblProjectEventID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMilestone.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            MilestoneData.UpdateMilestone(ProjectEventID, RowIsActive);
+            gvMilestone.EditIndex = -1;
+
+            BindMilestoneGrid();
+
+            LogMessage("Milestone updated successfully");
+        }
+
+        protected void gvEntityMilestone_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvEntityMilestone.EditIndex = e.NewEditIndex;
+            BindEntityMilestoneGrid();
+        }
+
+        protected void gvEntityMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvEntityMilestone.EditIndex = -1;
+            BindEntityMilestoneGrid();
+        }
+
+        protected void gvEntityMilestone_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ProjectEventID = DataUtils.GetInt(((Label)gvEntityMilestone.Rows[rowIndex].FindControl("lblProjectEventID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvEntityMilestone.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            MilestoneData.UpdateMilestone(ProjectEventID, RowIsActive);
+            gvEntityMilestone.EditIndex = -1;
+
+            BindEntityMilestoneGrid();
+
+            LogMessage("Milestone updated successfully");
         }
     }
 }

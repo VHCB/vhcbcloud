@@ -166,6 +166,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateMilestone(int ProjectEventID, bool RowIsActive)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateMilestone";
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public class MilestoneResult
         {
             public bool IsDuplicate { set; get; }

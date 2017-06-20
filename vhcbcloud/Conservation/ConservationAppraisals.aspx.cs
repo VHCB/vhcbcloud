@@ -64,6 +64,7 @@ namespace vhcbcloud.Conservation
                 txtEnhancedExclusionValue.Text = DataUtils.GetDecimal(drAppraisalValue["Exclusion"].ToString()).ToString("#.##");
                 spEasementValue.InnerText = DataUtils.GetDecimal(drAppraisalValue["EaseValue"].ToString()).ToString("#.##");
                 spEasementValuePerAcre.InnerText = DataUtils.GetDecimal(drAppraisalValue["Valperacre"].ToString()).ToString("#.##");
+                txtAppraisalValueComments.Text = drAppraisalValue["Comments"].ToString();
 
                 dvNewAppraisalInfo.Visible = true;
                 BindGrids();
@@ -184,7 +185,7 @@ namespace vhcbcloud.Conservation
             {
                 ConservationAppraisalsData.AddConservationAppraisalValue(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(txtTotalAcres.Text),
                     DataUtils.GetDecimal(txtValueBefore.Text), DataUtils.GetDecimal(txtValueafter.Text), DataUtils.GetDecimal(txtValueofLandWithOption.Text),
-                    DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre);
+                    DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre, txtAppraisalValueComments.Text);
                 BindAppraisalValueForm();
                 BindGrids();
                 LogMessage("Appraisal Value Added Successfully");
@@ -193,7 +194,7 @@ namespace vhcbcloud.Conservation
             {
                 ConservationAppraisalsData.UpdateConservationAppraisalValue(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(txtTotalAcres.Text),
                    DataUtils.GetDecimal(txtValueBefore.Text), DataUtils.GetDecimal(txtValueafter.Text), DataUtils.GetDecimal(txtValueofLandWithOption.Text),
-                   DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre, true);
+                   DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre, true, txtAppraisalValueComments.Text);
 
                 gvAppraisalInfo.EditIndex = -1;
                 BindAppraisalValueForm();
@@ -298,7 +299,7 @@ namespace vhcbcloud.Conservation
                         txtDateNRCS.Text = dr["NRCSSent"].ToString() == "" ? "" : Convert.ToDateTime(dr["NRCSSent"].ToString()).ToShortDateString();
                         cbReviewApproved.Checked = DataUtils.GetBool(dr["RevApproved"].ToString());
                         txtReviewApprovedDate.Text = dr["ReviewDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["ReviewDate"].ToString()).ToShortDateString();
-
+                        txtURL.Text = dr["URL"].ToString();
                         chkAppraisalInfoActive.Enabled = true;
                     }
                 }
@@ -380,12 +381,17 @@ namespace vhcbcloud.Conservation
                 }
             }
 
+            string URL = txtURL.Text;
+
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
+
             if (btnAddAppraisalInfo.Text == "Add")
             {
                 AppraisalResult objAppraisalResult = ConservationAppraisalsData.AddConservationAppraisalInfo((DataUtils.GetInt(hfAppraisalID.Value)),
                     DataUtils.GetInt(ddlAppraiser.SelectedValue.ToString()), DataUtils.GetDate(txtDateOrdered.Text), DataUtils.GetDate(txtDateReceived.Text),
                     DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(txtTotalCost.Text), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
-                    cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text));
+                    cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text), URL);
 
                 ClearAppraisalInfoForm();
                 BindGrids();
@@ -402,7 +408,7 @@ namespace vhcbcloud.Conservation
                 ConservationAppraisalsData.UpdateConservationAppraisalInfo((DataUtils.GetInt(hfAppraisalInfoID.Value)),
                    DataUtils.GetInt(ddlAppraiser.SelectedValue.ToString()), DataUtils.GetDate(txtDateOrdered.Text), DataUtils.GetDate(txtDateReceived.Text),
                    DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(txtTotalCost.Text), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
-                   cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text), chkAppraisalInfoActive.Checked);
+                   cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text), chkAppraisalInfoActive.Checked, URL);
 
                 gvAppraisalInfo.EditIndex = -1;
                 BindGrids();
@@ -429,7 +435,7 @@ namespace vhcbcloud.Conservation
             txtNotes.Text = "";
             cbReviewApproved.Checked = false;
             txtReviewApprovedDate.Text = "";
-
+            txtURL.Text = "";
             chkAppraisalInfoActive.Enabled = false;
         }
 

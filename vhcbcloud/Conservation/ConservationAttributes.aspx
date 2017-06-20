@@ -380,7 +380,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvNewBuffer">
+                <%--<div class="panel-width" runat="server" id="dvNewBuffer">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
                         <div class="panel-heading" style="padding: 5px 5px 1px 5px">
                             <table style="width: 100%;">
@@ -456,7 +456,7 @@
                             </asp:Panel>
                         </div>
                     </div>
-                </div>
+                </div>--%>
 
                 <div class="panel-width" runat="server" id="dvNewOT">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
@@ -720,10 +720,10 @@
                 $('#<%= dvAltEnergyForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= dvBufferForm.ClientID%>').toggle($('#<%= cbAddBuffer.ClientID%>').is(':checked'));
+           <%-- $('#<%= dvBufferForm.ClientID%>').toggle($('#<%= cbAddBuffer.ClientID%>').is(':checked'));
             $('#<%= cbAddBuffer.ClientID%>').click(function () {
                 $('#<%= dvBufferForm.ClientID%>').toggle(this.checked);
-            }).change();
+            }).change();--%>
 
             $('#<%= dvOTForm.ClientID%>').toggle($('#<%= cbAddOT.ClientID%>').is(':checked'));
             $('#<%= cbAddOT.ClientID%>').click(function () {
