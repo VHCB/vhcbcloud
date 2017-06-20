@@ -161,7 +161,7 @@ begin
 		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
 		where ProjectID = @ProjectID and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
-			and (pe.EventID is not null and pe.EventID != 0)
+			and ((pe.EventID is not null and pe.EventID != 0) or (pe.SubEventID is not null and pe.SubEventID != 0 ))
 		order by pe.DateModified desc
 	end
 
@@ -194,7 +194,7 @@ begin
 		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
 		where ProjectID = @ProjectID and (@IsActiveOnly = 0 or pe.RowIsActive = @IsActiveOnly)
-			and (pe.ProgEventID is not null and pe.ProgEventID != 0)
+			and ((pe.ProgEventID is not null and pe.ProgEventID != 0) or (pe.ProgSubEventID is not null and pe.ProgSubEventID != 0))
 		order by pe.DateModified desc
 	end
 end
@@ -254,6 +254,20 @@ begin
 
 		delete pe
 		from ProjectEvent pe(nolock)
+		where ProjectEventID = @ProjectEventID
+end
+go
+
+create procedure dbo.UpdateMilestone  
+(
+	@ProjectEventID		int,
+	@RowIsActive		bit
+)
+as
+begin
+--exec UpdateMilestone 127, 1
+
+		update ProjectEvent  set RowIsActive = @RowIsActive
 		where ProjectEventID = @ProjectEventID
 end
 go

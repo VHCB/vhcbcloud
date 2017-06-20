@@ -107,6 +107,15 @@
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
+                                 <tr>
+                                        <td style="width: 160px"><span class="labelClass">Comments</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtAppraisalValueComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
@@ -151,12 +160,12 @@
                                         <td style="width: 185px">
                                             <span class="labelClass">Date Ordered</span>
                                         </td>
-                                        <td style="width: 270px">
+                                        <td style="width: 243px">
                                             <asp:TextBox ID="txtDateOrdered" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDateOrdered" TargetControlID="txtDateOrdered">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Date Received</span></td>
+                                        <td style="width: 183px"><span class="labelClass">Date Received</span></td>
                                         <td>
                                             <asp:TextBox ID="txtDateReceived" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDateReceived" TargetControlID="txtDateReceived">
@@ -176,10 +185,10 @@
                                         <td style="width: 185px">
                                             <span class="labelClass">Total Cost</span>
                                         </td>
-                                        <td style="width: 270px">
+                                        <td style="width: 243px">
                                             <asp:TextBox ID="txtTotalCost" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Date Sent to NRCS</span></td>
+                                        <td style="width: 183px"><span class="labelClass">Date Sent for Tech Review</span></td>
                                         <td>
                                             <asp:TextBox ID="txtDateNRCS" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDateNRCS" TargetControlID="txtDateNRCS">
@@ -195,14 +204,23 @@
                                             <asp:CheckBox ID="cbReviewApproved" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
                                         </td>
                                         <td style="width: 185px"><span class="labelClass">Review Approved</span></td>
-                                        <td style="width: 250px">
+                                        <td style="width: 243px">
                                             <asp:TextBox ID="txtReviewApprovedDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtReviewApprovedDate" TargetControlID="txtReviewApprovedDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td><span class="labelClass">Active:</span></td>
+                                        <td style="width: 183px"><span class="labelClass">Active:</span></td>
                                         <td>
                                             <asp:CheckBox ID="chkAppraisalInfoActive" Enabled="false" runat="server" Checked="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                         <td style="width: 150px"><span class="labelClass">URL</span></td>
+                                        <td colspan="4">
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="218px"></asp:TextBox>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -223,8 +241,8 @@
                                         </td>
                                         <td style="width: 250px"></td>
                                         <td style="width: 185px"></td>
-                                        <td style="width: 250px"></td>
-                                        <td></td>
+                                        <td style="width: 243px"></td>
+                                        <td style="width: 183px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -280,17 +298,16 @@
                                                 <asp:Label ID="lblEffDate" runat="Server" Text='<%# Eval("EffDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="Right">
+                                        <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="center">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAppCost" runat="Server" Text='<%# Eval("AppCost", "{0:c2}") %>' />
                                                 <asp:HiddenField ID="HiddenAppraisalTotalCost" runat="server" Value='<%#Eval("AppCost")%>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="70px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
-                                            <ItemTemplate>
+                                         <asp:TemplateField HeaderText="URL">
+                                              <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
-                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>

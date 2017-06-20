@@ -202,6 +202,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spEasementValuePerAcre;
         
         /// <summary>
+        /// txtAppraisalValueComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAppraisalValueComments;
+        
+        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
@@ -371,6 +380,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAppraisalInfoActive;
+        
+        /// <summary>
+        /// txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtURL;
         
         /// <summary>
         /// txtNotes control.
