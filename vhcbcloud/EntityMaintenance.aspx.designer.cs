@@ -949,31 +949,31 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.GridView gvAttachEntities;
         
         /// <summary>
-        /// dvNewProjectEvent control.
+        /// dvNewMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewProjectEvent;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewMilestone;
         
         /// <summary>
-        /// cbAddProjectEvent control.
+        /// cbAddMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddProjectEvent;
+        protected global::System.Web.UI.WebControls.CheckBox cbAddMilestone;
         
         /// <summary>
-        /// dvProjectEventForm control.
+        /// dvMilestoneForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectEventForm;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMilestoneForm;
         
         /// <summary>
         /// Panel10 control.
@@ -985,49 +985,49 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel10;
         
         /// <summary>
-        /// ddlEventProgram control.
+        /// dvEventMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEventProgram;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEventMilestone;
         
         /// <summary>
-        /// ddlEventProject control.
+        /// dvEntity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEventProject;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntity;
         
         /// <summary>
-        /// EntityName control.
+        /// ddlEntityMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl EntityName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEntityMilestone;
         
         /// <summary>
-        /// ddlEvent control.
+        /// dvSubEntityMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEvent;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSubEntityMilestone;
         
         /// <summary>
-        /// ddlEventSubCategory control.
+        /// ddlEntitySubMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEventSubCategory;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEntitySubMilestone;
         
         /// <summary>
         /// txtEventDate control.
@@ -1048,40 +1048,40 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtEventDate;
         
         /// <summary>
-        /// txtEventNotes control.
+        /// txtURL control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEventNotes;
+        protected global::System.Web.UI.WebControls.TextBox txtURL;
         
         /// <summary>
-        /// chkProjectEventActive control.
+        /// txtEntityMilestoneComments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkProjectEventActive;
+        protected global::System.Web.UI.WebControls.TextBox txtEntityMilestoneComments;
         
         /// <summary>
-        /// btnAddEvent control.
+        /// btnAddMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddEvent;
+        protected global::System.Web.UI.WebControls.Button btnAddMilestone;
         
         /// <summary>
-        /// dvProjectEventGrid control.
+        /// dvEntityMilestoneGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectEventGrid;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityMilestoneGrid;
         
         /// <summary>
         /// Panel11 control.
@@ -1093,13 +1093,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel11;
         
         /// <summary>
-        /// gvProjectEvent control.
+        /// gvEntityMilestone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProjectEvent;
+        protected global::System.Web.UI.WebControls.GridView gvEntityMilestone;
         
         /// <summary>
         /// hfVillage control.
