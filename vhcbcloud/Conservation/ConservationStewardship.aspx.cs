@@ -10,12 +10,14 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 using System.IO;
+using Microsoft.AspNet.Identity;
 
 namespace vhcbcloud.Conservation
 {
     public partial class ConservationStewardship : System.Web.UI.Page
     {
         string Pagename = "ConservationStewardship";
+        string ProgramId = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
@@ -58,7 +60,7 @@ namespace vhcbcloud.Conservation
 
         private void GenerateTabs()
         {
-            string ProgramId = null;
+            //string ProgramId = null;
 
             if (Request.QueryString["ProgramId"] != null)
                 ProgramId = Request.QueryString["ProgramId"];
@@ -134,6 +136,7 @@ namespace vhcbcloud.Conservation
 
             BindLookUP(ddlPlan, 142);
             //BindLookUP(ddlEvent, 146);
+            BindLookUP(ddlProgramMilestone, 159);
         }
 
         private void BindGrids()
@@ -144,6 +147,7 @@ namespace vhcbcloud.Conservation
             BindApprovalsGrid();
             BindPlansGrid();
             //BindEventGrid();
+            BindMilestoneGrid();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -324,7 +328,7 @@ namespace vhcbcloud.Conservation
         //    gvMajor.EditIndex = -1;
 
         //    BindMajorGrid();
-           
+
         //    LogMessage("Major Amendment updated successfully");
         //}
 
@@ -477,7 +481,7 @@ namespace vhcbcloud.Conservation
             {
                 ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConservationMinorAmend(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlMinorAmendment.SelectedValue.ToString()), DataUtils.GetDate(txtMinorReqDate.Text),
-                DataUtils.GetInt(ddlMinorDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtMinorDispositionDate.Text), 
+                DataUtils.GetInt(ddlMinorDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtMinorDispositionDate.Text),
                 URL, txtMinorComments.Text);
 
                 ClearMinorAmendmentForm();
@@ -714,7 +718,7 @@ namespace vhcbcloud.Conservation
             {
                 int ConserveViolationsID = Convert.ToInt32(hfConserveViolationsID.Value);
 
-                ConservationStewardshipData.UpdateConserveViolations(ConserveViolationsID, DataUtils.GetDate(txtViolationReqDate.Text), 
+                ConservationStewardshipData.UpdateConserveViolations(ConserveViolationsID, DataUtils.GetDate(txtViolationReqDate.Text),
                     DataUtils.GetInt(ddlViolationDisposition.SelectedValue.ToString()),
                 DataUtils.GetDate(txtViolationDispDate.Text), cbViolationActive.Checked, URL, txtViolationComments.Text);
 
@@ -763,7 +767,7 @@ namespace vhcbcloud.Conservation
             ClearViolationForm();
             cbAddViolation.Checked = false;
         }
-        
+
         protected void gvViolation_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -876,7 +880,7 @@ namespace vhcbcloud.Conservation
             {
                 ConservationStewardshipData.AddConsAmend objAddConsAmend = ConservationStewardshipData.AddConserveApprovals(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlApproval.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalReqdate.Text),
-                DataUtils.GetInt(ddlApprovalDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalDispositionDate.Text), 
+                DataUtils.GetInt(ddlApprovalDisposition.SelectedValue.ToString()), DataUtils.GetDate(txtApprovalDispositionDate.Text),
                 URL, txtApprovalComments.Text);
 
                 ClearApprovalForm();
@@ -1122,6 +1126,151 @@ namespace vhcbcloud.Conservation
             catch (Exception ex)
             {
                 LogError(Pagename, "gvPlan_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void ddlProgramMilestone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ProgramMilestoneChanged();
+        }
+
+        private void ProgramMilestoneChanged()
+        {
+            if (ddlProgramMilestone.SelectedIndex != 0)
+            {
+                dvProgram.Visible = true;
+                BindSubLookUP(ddlProgramSubMilestone, DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()));
+
+                if (ddlProgramSubMilestone.Items.Count > 1)
+                    dvSubProgram.Visible = true;
+                else
+                    dvSubProgram.Visible = false;
+            }
+        }
+
+        private void BindSubLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.GetSubLookupValues(LookupType);
+                ddList.DataValueField = "SubTypeID";
+                ddList.DataTextField = "SubDescription";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        protected void btnAddMilestone_Click(object sender, EventArgs e)
+        {
+            string URL = txtURL.Text;
+
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
+
+            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ProgramId),
+                null,
+                0, 0,
+                DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
+                0, 0,
+                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
+
+            //ClearForm();
+            ClearEntityAndCommonForm();
+            cbAddMilestone.Checked = false;
+            BindMilestoneGrid();
+
+            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                LogMessage("Milestone Event already exist as in-active");
+            else if (obMilestoneResult.IsDuplicate)
+                LogMessage("Milestone already exist");
+            else
+                LogMessage("New milestone added successfully");
+        }
+
+        private void ClearEntityAndCommonForm()
+        {
+            ddlProgramMilestone.SelectedIndex = -1;
+            ddlProgramSubMilestone.SelectedIndex = -1;
+            txtEventDate.Text = "";
+            txtURL.Text = "";
+            txtNotes.Text = "";
+            ProgramMilestoneChanged();
+        }
+
+        protected void gvMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvMilestone.EditIndex = -1;
+            BindMilestoneGrid();
+        }
+
+        protected void gvMilestone_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvMilestone.EditIndex = e.NewEditIndex;
+            BindMilestoneGrid();
+        }
+
+        protected void gvMilestone_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ProjectEventID = DataUtils.GetInt(((Label)gvMilestone.Rows[rowIndex].FindControl("lblProjectEventID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvMilestone.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            MilestoneData.UpdateMilestone(ProjectEventID, RowIsActive);
+            gvMilestone.EditIndex = -1;
+
+            BindMilestoneGrid();
+
+            LogMessage("Milestone updated successfully");
+        }
+
+        private void BindMilestoneGrid()
+        {
+            try
+            {
+                DataTable dtMilestones = null;
+                int RecCount = 0;
+
+                dtMilestones = MilestoneData.GetProgramMilestonesList(DataUtils.GetInt(hfProjectId.Value), false, false, true, cbActiveOnly.Checked);
+                RecCount = dtMilestones.Rows.Count;
+
+                if (RecCount > 0)
+                {
+                    //dvPMFilter.Visible = true;
+                    dvMilestoneGrid.Visible = true;
+                    gvMilestone.DataSource = dtMilestones;
+                    gvMilestone.DataBind();
+                }
+                else
+                {
+                    //dvPMFilter.Visible = false;
+                    dvMilestoneGrid.Visible = false;
+                    gvMilestone.DataSource = null;
+                    gvMilestone.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindMilestoneGrid", "", ex.Message);
             }
         }
 

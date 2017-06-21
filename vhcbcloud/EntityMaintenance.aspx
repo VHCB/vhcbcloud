@@ -782,86 +782,110 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvNewProjectEvent">
-                    <div class="panel panel-default" style="margin-bottom: 2px;">
-                        <div class="panel-heading" style="padding: 5px 5px 5px 5px">
+                <div class="panel-width" runat="server" id="dvNewMilestone">
+                   <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
                                         <h3 class="panel-title">Milestones</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddProjectEvent" runat="server" Text="Add New Milestone" />
+                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
                                     </td>
                                 </tr>
                             </table>
                         </div>
 
-                        <div class="panel-body" runat="server" id="dvProjectEventForm">
+                        <div class="panel-body" runat="server" id="dvMilestoneForm">
                             <asp:Panel runat="server" ID="Panel10">
+
+                                <div runat="server" id="dvEventMilestone">
+                                    <div>
+                                       <%-- <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 128px"><span class="labelClass">Entity</span></td>
+                                                <td style="width: 222px">
+                                                    <asp:TextBox ID="txtEntityDDL" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
+                                                        ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                                    <ajaxToolkit:AutoCompleteExtender ID="EntityAE" runat="server" TargetControlID="txtEntityDDL" MinimumPrefixLength="1"
+                                                        EnableCaching="true" CompletionSetCount="1"
+                                                        CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onApplicantListPopulated">
+                                                    </ajaxToolkit:AutoCompleteExtender>
+                                                </td>
+                                                <td style="width: 136px"></td>
+                                                <td style="width: 312px"></td>
+                                                <td style="width: 119px"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="height: 5px"></td>
+                                            </tr>
+                                        </table>--%>
+                                    </div>
+
+                                    <div runat="server" id="dvEntity">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 128px"><span class="labelClass">Entity Milestone</span></td>
+                                                <td class="modal-sm" style="width: 222px">
+                                                    <asp:DropDownList ID="ddlEntityMilestone" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                                        OnSelectedIndexChanged="ddlEntityMilestone_SelectedIndexChanged" Height="20px" Width="185px">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <div runat="server" id="dvSubEntityMilestone" visible="false">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 140px"><span class="labelClass">Entity Sub Milestone</span></td>
+                                                                <td>
+                                                                    <asp:DropDownList ID="ddlEntitySubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Program</span></td>
-                                        <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEventProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true"
-                                                OnSelectedIndexChanged="ddlEventProgram_SelectedIndexChanged">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 131px">
-                                            <span class="labelClass">Project</span>
-                                        </td>
-                                        <td style="width: 188px">
-                                            <asp:DropDownList ID="ddlEventProject" CssClass="clsDropDown" runat="server" AutoPostBack="true"
-                                                OnSelectedIndexChanged="ddlEventProject_SelectedIndexChanged">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 68px"><span class="labelClass">Entity</span></td>
-                                        <td><span id="EntityName" runat="server" class="labelClass"></span>
-                                            <%-- <asp:DropDownList ID="ddlEventEntity" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>--%>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 150px"><span class="labelClass">Milestone</span></td>
-                                        <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlEvent" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 131px">
-                                            <span class="labelClass">Milestone SubCategory</span>
-                                        </td>
-                                        <td style="width: 188px">
-                                            <asp:DropDownList ID="ddlEventSubCategory" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 68px"><span class="labelClass">Date</span></td>
-                                        <td>
+                                        <td style="width: 128px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 224px">
                                             <asp:TextBox ID="txtEventDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
+                                        <td style="width: 136px"><span class="labelClass">URL</span></td>
+                                        <td style="width: 319px">
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass"></span></td>
+                                        <td>
+                                            <%--<asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" />--%>
+
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Comments</span></td>
-                                        <td colspan="3">
-                                            <asp:TextBox ID="txtEventNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="548px" Height="49px" />
+                                        <td style="width: 80px"><span class="labelClass">Comments</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtEntityMilestoneComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                         </td>
-                                        <td style="width: 68px"><span class="labelClass">Active:</span></td>
-                                        <td>
-                                            <asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="height: 5px">
-                                            <asp:Button ID="btnAddEvent" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEvent_Click" />
+                                            <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -871,13 +895,13 @@
                             </asp:Panel>
                         </div>
 
-                        <div class="panel-body" id="dvProjectEventGrid" runat="server">
+                        <div class="panel-body" id="dvEntityMilestoneGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel11" Width="100%" Height="100px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvProjectEvent" runat="server" AutoGenerateColumns="False"
+                                <asp:GridView ID="gvEntityMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvProjectEvent_RowEditing" OnRowCancelingEdit="gvProjectEvent_RowCancelingEdit"
-                                    OnRowDataBound="gvProjectEvent_RowDataBound" OnSorting="gvProjectEvent_Sorting">
+                                    OnRowEditing="gvEntityMilestone_RowEditing" OnRowCancelingEdit="gvEntityMilestone_RowCancelingEdit"
+                                    OnRowUpdating="gvEntityMilestone_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -889,35 +913,49 @@
                                                 <asp:Label ID="lblProjectEventID" runat="Server" Text='<%# Eval("ProjectEventID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Entity" SortExpression="applicantname">
+                                        <asp:TemplateField HeaderText="Entity">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("applicantname") %>' />
+                                                <asp:Label ID="lblEntity" runat="Server" Text='<%# Eval("applicantname") %>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Event" SortExpression="Event">
+                                        <asp:TemplateField HeaderText="Entity Milestone">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblEvent" runat="Server" Text='<%# Eval("Event") %>' />
+                                                <asp:Label ID="lblEntityMilestone" runat="Server" Text='<%# Eval("EntityMilestone") %>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date" SortExpression="Date">
+                                        <asp:TemplateField HeaderText="Entity Sub Milestone">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEntitySubMilestone" runat="Server" Text='<%# Eval("EntitySubMilestone") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="190px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="User" SortExpression="username">
+                                        <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblUser" runat="Server" Text='<%# Eval("username") %>' />
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Notes" SortExpression="Notes">
+                                        <asp:TemplateField HeaderText="Notes">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
                                             </ItemTemplate>
+                                            <ItemStyle Width="150px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">
+                                        <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActivePS" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
@@ -926,15 +964,16 @@
                         </div>
                     </div>
                 </div>
-
-                <asp:HiddenField ID="hfVillage" runat="server" />
-                <asp:HiddenField ID="hfApplicatId" runat="server" />
-                <asp:HiddenField ID="hfAddressId" runat="server" />
-                <asp:HiddenField ID="hfFarmId" runat="server" />
-                <asp:HiddenField ID="hfProjectId" runat="server" />
-                <asp:HiddenField ID="hfProjectEventID" runat="server" />
             </div>
+
+            <asp:HiddenField ID="hfVillage" runat="server" />
+            <asp:HiddenField ID="hfApplicatId" runat="server" />
+            <asp:HiddenField ID="hfAddressId" runat="server" />
+            <asp:HiddenField ID="hfFarmId" runat="server" />
+            <asp:HiddenField ID="hfProjectId" runat="server" />
+            <asp:HiddenField ID="hfProjectEventID" runat="server" />
         </div>
+    </div>
     </div>
 
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU"></script>
@@ -979,10 +1018,10 @@
             $('#<%= dvAttachEntitiesForm.ClientID%>').toggle(this.checked);
         }).change();
 
-        $('#<%= dvProjectEventForm.ClientID%>').toggle($('#<%= cbAddProjectEvent.ClientID%>').is(':checked'));
+        $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 
-        $('#<%= cbAddProjectEvent.ClientID%>').click(function () {
-            $('#<%= dvProjectEventForm.ClientID%>').toggle(this.checked);
+        $('#<%= cbAddMilestone.ClientID%>').click(function () {
+            $('#<%= dvMilestoneForm.ClientID%>').toggle(this.checked);
         }).change();
 
         function onEntityListPopulated() {
@@ -1030,76 +1069,76 @@
             //alert(' Key : ' + eventArgs.get_text() + '  Value :  ' + eventArgs.get_value());
             var addressArray = eventArgs.get_value().split('~');
             $('#<%=txtStreetNo.ClientID%>').val(addressArray[0]);
-             $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
-             $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
-             $('#<%=txtState.ClientID%>').val(addressArray[3]);
-             $('#<%=txtZip.ClientID%>').val(addressArray[4]);
-             $('#<%=txtTown.ClientID%>').val(addressArray[5]);
-             $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
-             $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
-             $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
-         }
+            $('#<%=txtAddress1.ClientID%>').val(addressArray[1]);
+            $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
+            $('#<%=txtState.ClientID%>').val(addressArray[3]);
+            $('#<%=txtZip.ClientID%>').val(addressArray[4]);
+            $('#<%=txtTown.ClientID%>').val(addressArray[5]);
+            $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
+            $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
+            $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
+        }
 
-         $(document).ready(function () {
-             $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
+        $(document).ready(function () {
+            $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
-            }).change();
+             }).change();
 
 
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
-            });
+             });
         });
 
-        function getLocation() {
-            getAddressInfoByZip(document.forms[0].zip.value);
-        }
+         function getLocation() {
+             getAddressInfoByZip(document.forms[0].zip.value);
+         }
 
-        function response(obj) {
-            console.log(obj);
-        }
-        function getAddressInfoByZip(zip) {
-            $('#<%= txtTown.ClientID%>').val('');
-        $('#<%= txtState.ClientID%>').val('');
-        $('#<%= txtCounty.ClientID%>').val('');
-        if (zip.length >= 5 && typeof google != 'undefined') {
-            var addr = {};
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'address': zip }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results.length >= 1) {
-                        for (var ii = 0; ii < results[0].address_components.length; ii++) {
-                            var street_number = route = street = city = state = zipcode = country = formatted_address = '';
-                            var types = results[0].address_components[ii].types.join(",");
-                            if (types == "street_number") {
-                                addr.street_number = results[0].address_components[ii].long_name;
-                            }
-                            if (types == "route" || types == "point_of_interest,establishment") {
-                                addr.route = results[0].address_components[ii].long_name;
-                            }
-                            if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
-                                addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                $('#<%= txtTown.ClientID%>').val(addr.city);
+         function response(obj) {
+             console.log(obj);
+         }
+         function getAddressInfoByZip(zip) {
+             $('#<%= txtTown.ClientID%>').val('');
+            $('#<%= txtState.ClientID%>').val('');
+            $('#<%= txtCounty.ClientID%>').val('');
+            if (zip.length >= 5 && typeof google != 'undefined') {
+                var addr = {};
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': zip }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results.length >= 1) {
+                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                var types = results[0].address_components[ii].types.join(",");
+                                if (types == "street_number") {
+                                    addr.street_number = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "route" || types == "point_of_interest,establishment") {
+                                    addr.route = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                    $('#<%= txtTown.ClientID%>').val(addr.city);
                                 }
                                 if (types == "administrative_area_level_1,political") {
                                     addr.state = results[0].address_components[ii].short_name;
                                     $('#<%= txtState.ClientID%>').val(addr.state);
-                                }
-                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
-                                    addr.zipcode = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "country,political") {
-                                    addr.country = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "administrative_area_level_2,political") {
-                                    addr.county = results[0].address_components[ii].short_name;
-                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                            }
+                            if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                addr.zipcode = results[0].address_components[ii].long_name;
+                            }
+                            if (types == "country,political") {
+                                addr.country = results[0].address_components[ii].long_name;
+                            }
+                            if (types == "administrative_area_level_2,political") {
+                                addr.county = results[0].address_components[ii].short_name;
+                                $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
                                 }
                             }
                             addr.success = true;
                             $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
-                                $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
+                            $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
                             }
@@ -1115,5 +1154,10 @@
                 response({ success: false });
             }
         }
+
+       <%-- function onApplicantListPopulated() {
+            var completionList = $find('<%=EntityAE.ClientID%>').get_completionList();
+                    completionList.style.width = 'auto';
+                }--%>
     </script>
 </asp:Content>
