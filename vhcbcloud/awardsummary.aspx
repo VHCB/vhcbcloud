@@ -168,6 +168,7 @@
                         </asp:GridView>
                     </asp:Panel>
                     <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                    <asp:HiddenField ID="hfProjId" runat="server" />
                         
                 </div>
             </div>

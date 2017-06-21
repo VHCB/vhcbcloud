@@ -20,7 +20,7 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
-                string projId = Request.QueryString["projectid"];
+                string projId = Request.QueryString["projectid"].ToString();
 
                 DataTable dtProjects = GetProjects();
                 BindProjects(dtProjects);
@@ -34,6 +34,7 @@ namespace vhcbcloud
                 }
                 ddlProj.Visible = false;
             }
+
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -92,7 +93,14 @@ namespace vhcbcloud
 
             ///populate the form based on retrieved data
             if (dt.Rows.Count > 0)
-                BindAwardSummary(Convert.ToInt32(dt.Rows[0][0].ToString()));
+            {
+                DataTable dtProjects = GetProjects();
+                int projId = Convert.ToInt32(dt.Rows[0][0].ToString());
+                lblProjId.Text = GetProjectName(dtProjects, projId.ToString());
+                txtFromCommitedProjNum.Text = projNum;
+
+                BindAwardSummary(projId);
+            }
         }
 
         private void BindAwardSummary(int projectid)
