@@ -27,7 +27,7 @@
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                             <td style="text-align: right">
-                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
@@ -110,8 +110,7 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtMjrDispositionDate" TargetControlID="txtMjrDispositionDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px">
-                                            </td>
+                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -123,7 +122,7 @@
                                             <asp:TextBox ID="txtMajorURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -185,12 +184,12 @@
                                                 <asp:Label ID="lblDispositionDate" runat="Server" Text='<%# Eval("DispDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Comments">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("FullComments") %>' Text='<%# Eval("Comments") %>' />
                                             </ItemTemplate>
@@ -262,8 +261,7 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtMinorDispositionDate" TargetControlID="txtMinorDispositionDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px">
-                                            </td>
+                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -275,7 +273,7 @@
                                             <asp:TextBox ID="txtMinorURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -338,11 +336,11 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Comments">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("FullComments") %>' Text='<%# Eval("Comments") %>' />
                                             </ItemTemplate>
@@ -414,11 +412,10 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtViolationDispDate" TargetControlID="txtViolationDispDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px">
-                                            </td>
+                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -427,7 +424,7 @@
                                             <asp:TextBox ID="txtViolationURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -490,11 +487,11 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Comments">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("FullComments") %>' Text='<%# Eval("Comments") %>' />
                                             </ItemTemplate>
@@ -566,11 +563,10 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtApprovalDispositionDate" TargetControlID="txtApprovalDispositionDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px">
-                                            </td>
+                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
-                                      <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -579,7 +575,7 @@
                                             <asp:TextBox ID="txtApprovalURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -641,12 +637,12 @@
                                                 <asp:Label ID="lblApprovalsDispositionDate" runat="Server" Text='<%# Eval("DispDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Comments">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("FullComments") %>' Text='<%# Eval("Comments") %>' />
                                             </ItemTemplate>
@@ -697,8 +693,7 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtPlanDate" TargetControlID="txtPlanDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px">
-                                            </td>
+                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -710,7 +705,7 @@
                                             <asp:TextBox ID="txtPlanURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -763,11 +758,11 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Comments">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("FullComments") %>' Text='<%# Eval("Comments") %>' />
                                             </ItemTemplate>
@@ -785,7 +780,164 @@
                     </div>
                 </div>
 
-               <%-- <div class="panel-width" runat="server" id="dvNewEvent">
+                <div class="panel-width" runat="server" id="dvNewMilestone">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Milestones</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvMilestoneForm">
+                            <asp:Panel runat="server" ID="Panel11">
+                                <div runat="server" id="dvProjectMilestone">
+                                    <div runat="server" id="dvProgram">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 128px">
+                                                    <span class="labelClass">Program Milestone </span>
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlProgramMilestone" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                                        OnSelectedIndexChanged="ddlProgramMilestone_SelectedIndexChanged" Height="20px" Width="185px">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <div runat="server" id="dvSubProgram" visible="false">
+                                                        <table>
+                                                            <tr>
+                                                                <td style="width: 140px"><span class="labelClass">Program Sub Milestone</span></td>
+                                                                <td>
+                                                                    <asp:DropDownList ID="ddlProgramSubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 128px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 224px">
+                                            <asp:TextBox ID="txtEventDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 136px"><span class="labelClass">URL</span></td>
+                                        <td style="width: 319px">
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="189px"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass"></span></td>
+                                        <td>
+                                            <%--<asp:CheckBox ID="chkProjectEventActive" Enabled="false" runat="server" Checked="true" />--%>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 80px"><span class="labelClass">Comments</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="height: 5px">
+                                            <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvMilestoneGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel12" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowUpdating="gvMilestone_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Project Event ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectEventID" runat="Server" Text='<%# Eval("ProjectEventID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Prog MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgramMilestone" runat="Server" Text='<%# Eval("ProgEvent") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Prog Sub MS">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgramSubMilestone" runat="Server" Text='<%# Eval("ProgSubEvent") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="150px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                        <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- <div class="panel-width" runat="server" id="dvNewEvent">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -885,8 +1037,8 @@
     <asp:HiddenField ID="hfConserveMinAmendID" runat="server" />
     <asp:HiddenField ID="hfConserveViolationsID" runat="server" />
     <asp:HiddenField ID="hfConserveApprovalID" runat="server" />
-     <asp:HiddenField ID="hfConservePlanID" runat="server" />
-    
+    <asp:HiddenField ID="hfConservePlanID" runat="server" />
+
 
     <script language="javascript">
         $(document).ready(function () {
@@ -895,7 +1047,7 @@
             $('#<%= dvViolationForm.ClientID%>').toggle($('#<%= cbAddViolation.ClientID%>').is(':checked'));
             $('#<%= dvApprovalForm.ClientID%>').toggle($('#<%= cbAddApproval.ClientID%>').is(':checked'));
             $('#<%= dvPlanForm.ClientID%>').toggle($('#<%= cbAddPlan.ClientID%>').is(':checked'));
-            <%--$('#<%= dvEventForm.ClientID%>').toggle($('#<%= cbAddEvent.ClientID%>').is(':checked'));;--%>
+            $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 
             $('#<%= cbAddMajor.ClientID%>').click(function () {
                 $('#<%= dvMajorForm.ClientID%>').toggle(this.checked);
@@ -917,14 +1069,14 @@
                 $('#<%= dvPlanForm.ClientID%>').toggle(this.checked);
             }).change();
 
-           <%-- $('#<%= cbAddEvent.ClientID%>').click(function () {
-                $('#<%= dvEventForm.ClientID%>').toggle(this.checked);
-             }).change();--%>
+           $('#<%= cbAddMilestone.ClientID%>').click(function () {
+                $('#<%= dvMilestoneForm.ClientID%>').toggle(this.checked);
+             }).change();
 
         });
 
-         function PopupAwardSummary() {
-             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
-         };
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+        };
     </script>
 </asp:Content>
