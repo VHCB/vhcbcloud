@@ -66,6 +66,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddMajor" runat="server" Text="Add New Major Amendment" />
+                                        <asp:ImageButton ID="ImgConservationMajorAmendments" ImageUrl="~/Images/print.png" ToolTip="Grid Conservation Major Amendments Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationMajorAmendments_Click"/>
                                     </td>
                                 </tr>
                             </table>
@@ -217,6 +219,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddMinor" runat="server" Text="Add New Minor Amendment" />
+                                        <asp:ImageButton ID="ImgConservationMinorAmendments" ImageUrl="~/Images/print.png" ToolTip="Conservation Minor Amendments Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationMinorAmendments_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -368,6 +372,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddViolation" runat="server" Text="Add New Violation" />
+                                        <asp:ImageButton ID="ImgConservationViolations" ImageUrl="~/Images/print.png" ToolTip="Grid Conservation Violations Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationViolations_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -519,6 +525,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddApproval" runat="server" Text="Add New Approval" />
+                                        <asp:ImageButton ID="ImgeConservationApprovals" ImageUrl="~/Images/print.png" ToolTip="Grid Conservation Approvals Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgeConservationApprovals_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -670,6 +678,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddPlan" runat="server" Text="Add New Plan" />
+                                        <asp:ImageButton ID="ImgConservationManagementPlans" ImageUrl="~/Images/print.png" ToolTip="Grid Conservation Management Plans Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationManagementPlans_Click" />
                                     </td>
                                 </tr>
                             </table>

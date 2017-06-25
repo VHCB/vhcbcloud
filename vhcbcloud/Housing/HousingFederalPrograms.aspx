@@ -241,8 +241,8 @@
                                                         ControlToValidate="txtFreq" ErrorMessage="Inspection Frequency should only accept numbers 1-3"
                                                         Style="top: 520px; left: 650px; position: absolute; height: 218px; width: 355px" />
                                                 </td>--%>
-                                                <td style="width: 139px"><span class="labelClass"></span></td>
-                                                <td style="width: 151px"></td>
+                                                <td style="width: 169px"><span class="labelClass" id="spnUARegulations" runat="server">Subject to UA Regulation</span></td>
+                                                <td style="width: 151px"> <asp:CheckBox ID="chkUARegulation" runat="server" /></td>
                                                 <td style="width: 235px"><span class="labelClass"></span></td>
                                                 <td style="width: 180px"></td>
                                             </tr>
