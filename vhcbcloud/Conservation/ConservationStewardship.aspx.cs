@@ -1274,6 +1274,36 @@ namespace vhcbcloud.Conservation
             }
         }
 
+        protected void ImgConservationManagementPlans_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Management Plans"));
+        }
+
+        protected void ImgeConservationApprovals_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Approvals"));
+        }
+
+        protected void ImgConservationViolations_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Violations"));
+        }
+
+        protected void ImgConservationMinorAmendments_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Minor Amendments"));
+        }
+
+        protected void ImgConservationMajorAmendments_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+            "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Major Amendments"));
+        }
+
         //protected void btnAddEvent_Click(object sender, EventArgs e)
         //{
         //    if (ddlEvent.SelectedIndex == 0)

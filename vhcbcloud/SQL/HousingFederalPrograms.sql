@@ -144,6 +144,7 @@ create procedure dbo.AddProjectFederalProgramDetail
 	@AffrdEnd			DateTime, 
 	@CHDO				bit, 
 	@CHDORecert			int, 
+	@IsUARegulation		bit,
 	@freq				int, 
 	@IDISNum			nvarchar(4), 
 	@Setup				DateTime, 
@@ -158,9 +159,9 @@ begin transaction
 	begin try
 
 	insert into ProjectFederalProgramDetail(ProjectFederalId, Recert, LKAffrdPer, AffrdPeriod, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
-		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy)
+		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy, IsUARegulation)
 	values(@ProjectFederalId, @Recert, @LKAffrdPer, @AffrdPeriod, @AffrdStart, @AffrdEnd, @CHDO, @CHDORecert, 
-		@freq, @IDISNum, @Setup, @CompleteBy, @FundedDate, @FundCompleteBy, @IDISClose, @IDISCompleteBy)
+		@freq, @IDISNum, @Setup, @CompleteBy, @FundedDate, @FundCompleteBy, @IDISClose, @IDISCompleteBy, @IsUARegulation)
 
 	end try
 	begin catch
@@ -190,6 +191,7 @@ create procedure dbo.UpdateProjectFederalProgramDetail
 	@AffrdEnd			DateTime, 
 	@CHDO				bit, 
 	@CHDORecert			int, 
+	@IsUARegulation		bit,
 	@freq				int, 
 	@IDISNum			nvarchar(4), 
 	@Setup				DateTime, 
@@ -206,7 +208,7 @@ begin transaction
 	update ProjectFederalProgramDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdPeriod = @AffrdPeriod, @AffrdStart = @AffrdStart, 
 		AffrdEnd = @AffrdEnd, CHDO = @CHDO, CHDORecert = @CHDORecert, 
 		freq = @freq, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, FundCompleteBy = @FundCompleteBy,
-		IDISClose = @IDISClose, IDISCompleteBy = @IDISCompleteBy, DateModified = getdate()
+		IDISClose = @IDISClose, IDISCompleteBy = @IDISCompleteBy, IsUARegulation= @IsUARegulation, DateModified = getdate()
 	from ProjectFederalProgramDetail
 	where ProjectFederalProgramDetailID = @ProjectFederalProgramDetailID
 	
@@ -222,6 +224,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectFederalProgramDetailById]') and type in (N'P', N'PC'))
@@ -237,7 +240,7 @@ begin transaction
 	begin try
 
 	select ProjectFederalProgramDetailID, ProjectFederalId, Recert, LKAffrdPer, AffrdPeriod, AffrdStart, AffrdEnd, CHDO, CHDORecert, 
-		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy
+		freq, IDISNum, Setup, CompleteBy, FundedDate, FundCompleteBy, IDISClose, IDISCompleteBy, IsUARegulation
 	from ProjectFederalProgramDetail(nolock)
 	where ProjectFederalId = @ProjectFederalId
 	end try
@@ -252,6 +255,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
 go
 
 /* Rental Affordability */

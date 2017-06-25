@@ -603,13 +603,13 @@
                 toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val(), $('#<%= txtAwardAmt.ClientID%>'));
             });
 
-            $("input[id*=txtFyAmount]").keyup(function () {
-                toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
-            });
+            //$("input[id*=txtFyAmount]").keyup(function () {
+            //    toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
+            //});
             
-            if ($('input[id*=txtFyAmount]').val() >= 0) {
-                toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
-            }
+            //if ($('input[id*=txtFyAmount]').val() >= 0) {
+            //    toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));
+            //}
 
             $('#<%= dvGrantInfoForm.ClientID%>').toggle($('#<%= cbAddGrantInfo.ClientID%>').is(':checked'));
             $('#<%= cbAddGrantInfo.ClientID%>').click(function () {

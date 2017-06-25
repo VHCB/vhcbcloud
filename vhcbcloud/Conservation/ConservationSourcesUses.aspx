@@ -346,29 +346,29 @@
             });
 
             
-            $("input[id*=txtTotal]").keyup(function () {
-                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
-            });
+            //$("input[id*=txtTotal]").keyup(function () {
+            //    toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            //});
 
-            if ($('input[id*=txtTotal]').val() >= 0) {
-                toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
-            }
+            //if ($('input[id*=txtTotal]').val() >= 0) {
+            //    toCurrencyControl($('input[id*=txtTotal]').val(), $('input[id*=txtTotal]'));
+            //}
 
-            $("input[id*=txtVHCBTotal]").keyup(function () {
-                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
-            });
+            //$("input[id*=txtVHCBTotal]").keyup(function () {
+            //    toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            //});
 
-            if ($('input[id*=txtVHCBTotal]').val() >= 0) {
-                toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
-            }
+            //if ($('input[id*=txtVHCBTotal]').val() >= 0) {
+            //    toCurrencyControl($('input[id*=txtVHCBTotal]').val(), $('input[id*=txtVHCBTotal]'));
+            //}
 
-            $("input[id*=txtOtherTotal]").keyup(function () {
-                toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
-            });
+            //$("input[id*=txtOtherTotal]").keyup(function () {
+            //    toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
+            //});
 
-            if ($('input[id*=txtOtherTotal]').val() >= 0) {
-                toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
-            }
+            //if ($('input[id*=txtOtherTotal]').val() >= 0) {
+            //    toCurrencyControl($('input[id*=txtOtherTotal]').val(), $('input[id*=txtOtherTotal]'));
+            //}
 
             
 

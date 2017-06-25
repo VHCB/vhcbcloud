@@ -220,7 +220,7 @@ namespace vhcbcloud.Housing
                 if (btnAddAddress.Text == "Add")
                 {
                     HomeOwnershipResult objHomeOwnershipResult = HomeOwnershipData.AddHomeOwnershipAddress((DataUtils.GetInt(hfProjectId.Value)),
-                        DataUtils.GetInt(ddlAddress.SelectedValue.ToString()), cbMH.Checked, cbCondo.Checked, cbSFD.Checked);
+                        DataUtils.GetInt(ddlAddress.SelectedValue.ToString()), rdbMobile.Checked, rdbCondo.Checked, rdbSingle.Checked);
 
                     ClearAddressForm();
                     BindGrids();
@@ -235,7 +235,7 @@ namespace vhcbcloud.Housing
                 else
                 {
                     HomeOwnershipData.UpdateHouseOwnership((DataUtils.GetInt(hfHomeOwnershipID.Value)), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
-                      cbMH.Checked, cbCondo.Checked, cbSFD.Checked, chkAddressActive.Checked);
+                      rdbMobile.Checked, rdbCondo.Checked, rdbSingle.Checked, chkAddressActive.Checked);
 
                     gvHOAddress.EditIndex = -1;
                     BindGrids();
@@ -257,10 +257,11 @@ namespace vhcbcloud.Housing
                 return false;
             }
 
-            if (cbMH.Checked == false && cbSFD.Checked == false && cbCondo.Checked == false)
+            if (rdbMobile.Checked == false && rdbCondo.Checked == false && rdbSingle.Checked == false)
             {
-                LogMessage("Please select any one of the Home Type");
-                cbMH.Focus();
+                LogMessage("Please select Home Type");
+                rdbMobile.Focus();
+                //cbMH.Focus();
                 return false;
             }
             return true;
@@ -277,9 +278,14 @@ namespace vhcbcloud.Housing
             cbAddAddress.Checked = false;
 
             ddlAddress.SelectedIndex = -1;
-            cbMH.Checked = false;
-            cbSFD.Checked = false;
-            cbCondo.Checked = false;
+            
+            rdbMobile.Checked = false;
+            rdbCondo.Checked = false;
+            rdbSingle.Checked = false;
+
+            //cbMH.Checked = false;
+            //cbSFD.Checked = false;
+            //cbCondo.Checked = false;
             chkAddressActive.Enabled = false;
         }
 
@@ -346,9 +352,13 @@ namespace vhcbcloud.Housing
                         hfHomeOwnershipID.Value = lblHomeOwnershipID.Text;
                         PopulateDropDown(ddlAddress, dr["AddressID"].ToString());
 
-                        cbMH.Checked = DataUtils.GetBool(dr["MH"].ToString());
-                        cbSFD.Checked = DataUtils.GetBool(dr["SFD"].ToString());
-                        cbCondo.Checked = DataUtils.GetBool(dr["Condo"].ToString());
+                        rdbSingle.Checked = DataUtils.GetBool(dr["SFD"].ToString());
+                        rdbMobile.Checked = DataUtils.GetBool(dr["MH"].ToString());
+                        rdbCondo.Checked = DataUtils.GetBool(dr["Condo"].ToString());
+
+                        //cbMH.Checked = DataUtils.GetBool(dr["MH"].ToString());
+                        //cbSFD.Checked = DataUtils.GetBool(dr["SFD"].ToString());
+                        //cbCondo.Checked = DataUtils.GetBool(dr["Condo"].ToString());
 
                         chkAddressActive.Enabled = true;
                     }

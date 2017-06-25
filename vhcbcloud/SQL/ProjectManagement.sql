@@ -196,7 +196,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[Updat
 drop procedure [dbo].UpdateProjectInfo
 go
 
-create procedure UpdateProjectInfo
+create procedure [dbo].[UpdateProjectInfo]
 (
 	@ProjectId			int,
 	@LkProjectType		int,
@@ -239,7 +239,7 @@ begin transaction
 	if(isnull(@CurrentApplicantId, '') != @applicantId)
 	begin
 		--Update Current Primary Applicant
-		update pa set LkApplicantRole = '', IsApplicant = 0, DateModified = getdate()
+		update pa set LkApplicantRole = '', IsApplicant = 0, FinLegal = 0, DateModified = getdate()
 		from ProjectApplicant pa
 		where projectId = @projectId and pa.LkApplicantRole = 358
 
@@ -248,8 +248,8 @@ begin transaction
 		where ProjectId = @ProjectId and ApplicantId = @applicantId
 
 		--Insert New Primary Applicant
-		insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant)
-		values (@ProjectId, @applicantId, 358, 1)
+		insert into ProjectApplicant (ProjectId, ApplicantId, LkApplicantRole, IsApplicant, FinLegal)
+		values (@ProjectId, @applicantId, 358, 1, 1)
 	end
 
 	end try
@@ -264,7 +264,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
-
+go
 GO
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[getProjectDetails]') and type in (N'P', N'PC'))
@@ -675,7 +675,7 @@ go
 create procedure dbo.AddProjectApplicant
 (
 	@ProjectId			int,
-	@AppNameId			int,
+	@ApplicantID		int,
 	@LkApplicantRole	int,
 	@IsApplicant		bit
 	--@Defapp				bit, 
@@ -685,9 +685,9 @@ begin transaction
 
 	begin try
 
-	declare @ApplicantId int
+	--declare @ApplicantId int
 
-	select @ApplicantId = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameId
+	--select @ApplicantId = ApplicantID from ApplicantAppName(nolock) where AppNameID = @AppNameId
 
 	insert into ProjectApplicant(ProjectId, ApplicantId,  LkApplicantRole, IsApplicant, UserID)--, Defapp, FinLegal,
 	values(@ProjectId, @ApplicantId,  @LkApplicantRole, @IsApplicant, 123)-- 358 @LkApplicantRole, @Defapp, @IsApplicant, @FinLegal,

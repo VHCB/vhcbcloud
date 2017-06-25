@@ -76,6 +76,9 @@ namespace vhcbcloud
         {
             var onBlurScript = Page.ClientScript.GetPostBackEventReference(txtProjectNumDDL, "OnBlur");
             txtProjectNumDDL.Attributes.Add("onblur", onBlurScript);
+
+            var onBlurScript1 = Page.ClientScript.GetPostBackEventReference(txtEntityDDL, "OnBlur");
+            txtEntityDDL.Attributes.Add("onblur", onBlurScript1);
         }
 
         private void HandleCustomPostbackEvent(string ctrlName, string args)
@@ -83,6 +86,12 @@ namespace vhcbcloud
             if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur")
             {
                 ProjectSelectionChanged();
+            }
+            if (ctrlName == txtEntityDDL.UniqueID && args == "OnBlur")
+            {
+                ddlApplicantRole.ClearSelection();
+                int ApplicantId = ProjectMaintenanceData.GetApplicantId(txtEntityDDL.Text);
+                PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(ApplicantId));
             }
         }
 
@@ -96,7 +105,7 @@ namespace vhcbcloud
             //BindPrimaryApplicants();
             //BindProjects(ddlProject);
             //BindProjects(ddlEventProject);
-            BindApplicants(ddlApplicantName);
+            //BindApplicants(ddlApplicantName);
             //BindLookUP(ddlEventSubCategory, 163);
             BindLookUP(ddlAdminMilestone, 163);
             EventProgramSelection();
@@ -1021,10 +1030,15 @@ namespace vhcbcloud
                 if (ddlApplicantRole.SelectedItem.ToString() == "Primary Applicant" || ddlApplicantRole.SelectedItem.ToString() == "Secondary Applicant")
                     isApplicant = true;
 
-                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString()),
+                int ApplicantId = ProjectMaintenanceData.GetApplicantId(txtEntityDDL.Text);
+
+                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value),
+                    ApplicantId,
                     DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()), isApplicant);
 
-                ddlApplicantName.SelectedIndex = -1;
+                //ddlApplicantName.SelectedIndex = -1;
+                txtEntityDDL.Text = "";
+                txtEntityDDL.Text = "";
                 ddlApplicantRole.SelectedIndex = -1;
 
                 LogMessage("Entity Attached Successfully");
@@ -1039,11 +1053,12 @@ namespace vhcbcloud
 
         private bool IsProjectEntityFormValid()
         {
-
-            if (ddlApplicantName.Items.Count > 1 && ddlApplicantName.SelectedIndex == 0)
+            //if (ddlApplicantName.Items.Count > 1 && ddlApplicantName.SelectedIndex == 0)
+            if (txtEntityDDL.Text == "")
             {
                 LogMessage("Select Entity Applicant Name");
-                ddlApplicantName.Focus();
+                //ddlApplicantName.Focus();
+                txtEntityDDL.Text = "";
                 return false;
             }
 
@@ -1255,7 +1270,7 @@ namespace vhcbcloud
 
                 if (RelProjectId == 0)
                 {
-                    LogMessage("Invalid Related Project");
+                    LogMessage("Project doesn’t exist");
                     return;
                 }
                 if (hfProjectId.Value == RelProjectId.ToString())
@@ -1794,7 +1809,8 @@ namespace vhcbcloud
         protected void ddlApplicantName_SelectedIndexChanged(object sender, EventArgs e)
         {
             ddlApplicantRole.ClearSelection();
-            PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(DataUtils.GetInt(ddlApplicantName.SelectedValue.ToString())));
+            int ApplicantId = ProjectMaintenanceData.GetApplicantId(txtEntityDDL.Text);
+            PopulateDropDown(ddlApplicantRole, ProjectMaintenanceData.GetApplicantAppRole(ApplicantId));
         }
 
         protected void ImgNextProject_Click(object sender, ImageClickEventArgs e)

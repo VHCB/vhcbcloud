@@ -157,6 +157,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.CheckBox cbAddMajor;
         
         /// <summary>
+        /// ImgConservationMajorAmendments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgConservationMajorAmendments;
+        
+        /// <summary>
         /// dvMajorForm control.
         /// </summary>
         /// <remarks>
@@ -308,6 +317,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddMinor;
+        
+        /// <summary>
+        /// ImgConservationMinorAmendments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgConservationMinorAmendments;
         
         /// <summary>
         /// dvMinorForm control.
@@ -463,6 +481,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.CheckBox cbAddViolation;
         
         /// <summary>
+        /// ImgConservationViolations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgConservationViolations;
+        
+        /// <summary>
         /// dvViolationForm control.
         /// </summary>
         /// <remarks>
@@ -616,6 +643,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.CheckBox cbAddApproval;
         
         /// <summary>
+        /// ImgeConservationApprovals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgeConservationApprovals;
+        
+        /// <summary>
         /// dvApprovalForm control.
         /// </summary>
         /// <remarks>
@@ -767,6 +803,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddPlan;
+        
+        /// <summary>
+        /// ImgConservationManagementPlans control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgConservationManagementPlans;
         
         /// <summary>
         /// dvPlanForm control.

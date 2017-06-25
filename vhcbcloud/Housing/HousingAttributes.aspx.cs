@@ -202,9 +202,9 @@ namespace vhcbcloud.Housing
             BindConsolidatedPlanPrioritiesGrid();
 
             if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("Consolidated Plan Priority already exist as in-active");
+                LogMessage("Consolidated Plan Priority already exists as in-active");
             else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("Consolidated Plan Priority already exist");
+                LogMessage("Consolidated Plan Priority already exists");
             else
                 LogMessage("New Consolidated Plan Priority added successfully");
         }
@@ -292,9 +292,9 @@ namespace vhcbcloud.Housing
             BindInterAgencyGrid();
 
             if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("InterAgency Priority already exist as in-active");
+                LogMessage("InterAgency Priority already exists as in-active");
             else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("InterAgency Priority already exist");
+                LogMessage("InterAgency Priority already exists");
             else
                 LogMessage("New InterAgency Priority added successfully");
         }
@@ -344,9 +344,9 @@ namespace vhcbcloud.Housing
             BindVHCBGrid();
 
             if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("VHCB Priority already exist as in-active");
+                LogMessage("VHCB Priority already exists as in-active");
             else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("VHCB Priority already exist");
+                LogMessage("VHCB Priority already exists");
             else
                 LogMessage("New VHCB Priority added successfully");
         }

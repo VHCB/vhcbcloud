@@ -291,6 +291,8 @@ namespace vhcbcloud.Housing
                 ddlCHRDoRecert.Visible = true;
                 txtAffPeriod.Visible = false;
                 ddlAffPeriod.Visible = true;
+                spnUARegulations.Visible = true;
+                chkUARegulation.Visible = true;
 
                 BindLookUP(ddlHomeAff, 173);
                 BindLookUP(ddlUnitType, 168);
@@ -312,6 +314,8 @@ namespace vhcbcloud.Housing
                 ddlCHRDoRecert.Visible = false;
                 txtAffPeriod.Visible = true;
                 ddlAffPeriod.Visible = false;
+                spnUARegulations.Visible = false;
+                chkUARegulation.Visible = false;
 
                 BindLookUP(ddlHomeAff, 174);
                 BindLookUP(ddlUnitType, 175);
@@ -354,6 +358,7 @@ namespace vhcbcloud.Housing
                 txtAffrdStartDate.Text = dr["AffrdStart"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdStart"].ToString()).ToShortDateString();
                 txtAffrdEndDate.Text = dr["AffrdEnd"].ToString() == "" ? "" : Convert.ToDateTime(dr["AffrdEnd"].ToString()).ToShortDateString();
                 chkCHDO.Checked = DataUtils.GetBool(dr["CHDO"].ToString());
+                chkUARegulation.Checked = DataUtils.GetBool(dr["IsUARegulation"].ToString());
                 //txtCHDORecert.Text = dr["CHDORecert"].ToString() == "0" ? "" : dr["CHDORecert"].ToString();
                 PopulateDropDown(ddlCHRDoRecert, dr["CHDORecert"].ToString());
 
@@ -502,7 +507,8 @@ namespace vhcbcloud.Housing
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text),
                             txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
-                            DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()));
+                            DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()), 
+                            chkUARegulation.Checked);
                         ClearDetailForm();
                         PopulateDetailsForm();
                         LogMessage("Project " + hfProjectFedProgram.Value +" details added successfully");
@@ -514,7 +520,8 @@ namespace vhcbcloud.Housing
                             DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetInt(txtAffPeriod.Text), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
-                            DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()));
+                            DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()), 
+                            chkUARegulation.Checked);
 
                         ClearDetailForm();
                         PopulateDetailsForm();
