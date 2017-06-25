@@ -48,7 +48,7 @@ namespace vhcbcloud
         }
         private void BindControls()
         {
-            BindLookUP(ddlFarmType, 164);
+            BindLookUP(ddlFarmType, 34);
             BindLookUP(ddlTown, 89);
             BindApplicants(ddlDeveloper);
             //BindProjects(ddlProjects);

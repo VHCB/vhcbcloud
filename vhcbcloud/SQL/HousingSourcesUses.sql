@@ -245,7 +245,7 @@ create procedure dbo.AddHouseUse
 	@HousingID			int,
 	@LKBudgetPeriod		int,
 	@LkHouseUseVHCB		int,
-	@VHCBTotal			decimal(8, 2),
+	@VHCBTotal			decimal(18, 2),
 	@LKHouseUseOther	int,
 	@OtherTotal			decimal,
 	@isDuplicate		bit output,
@@ -318,6 +318,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateHouseUse]') and type in (N'P', N'PC'))

@@ -1270,7 +1270,7 @@ namespace vhcbcloud
 
                 if (RelProjectId == 0)
                 {
-                    LogMessage("Invalid Related Project");
+                    LogMessage("Project doesn’t exist");
                     return;
                 }
                 if (hfProjectId.Value == RelProjectId.ToString())

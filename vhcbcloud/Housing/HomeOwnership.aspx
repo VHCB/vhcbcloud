@@ -84,10 +84,20 @@
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlAddress" CssClass="clsDropDownLong" runat="server" Style="margin-left: 0px"></asp:DropDownList>
                                         </td>
-                                        <td style="width: 164px">
-                                            <span class="labelClass">Manufactured/Mobile Home:</span>
+                                        <td colspan="6">
+                                            <asp:RadioButton ID="rdbMobile" runat="server" Text="Manufactured/Mobile Home" GroupName="HomeType" />&nbsp;&nbsp;
+                                            <asp:RadioButton ID="rdbSingle" runat="server" Text="Single Family Detached" GroupName="HomeType" />&nbsp;&nbsp;
+                                            <asp:RadioButton ID="rdbCondo" runat="server" Text="Condo" GroupName="HomeType" />
+
+                                           <%-- <asp:RadioButtonList ID="rdBtnHome" runat="server" RepeatDirection="Horizontal" Height="16px" Width="551px">
+                                                <asp:ListItem>Manufactured/Mobile Home</asp:ListItem>
+                                                <asp:ListItem>Single Family Detached</asp:ListItem>
+                                                <asp:ListItem>Condo</asp:ListItem>
+                                            </asp:RadioButtonList>--%>
+
+                                            <%--<span class="labelClass">Manufactured/Mobile Home:</span>--%>
                                         </td>
-                                        <td style="width: 78px">
+                                        <%--<td style="width: 78px">
                                             <asp:CheckBox ID="cbMH" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
                                         </td>
                                         <td style="width: 144px"><span class="labelClass">Single Family Detached:</span></td>
@@ -97,30 +107,31 @@
                                         <td style="width: 47px"><span class="labelClass">Condo:</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbCondo" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
-                                        </td>
-                                        <td><span class="labelClass">Active:</span></td>
-                                        <td>
-                                            <asp:CheckBox ID="chkAddressActive" Enabled="false" runat="server" Checked="true" /></td>
+                                        </td>--%>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="height: 5px"></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
+                                        <td><span class="labelClass">Active:</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkAddressActive" Enabled="false" runat="server" Checked="true" /></td>
+                                        <td colspan="6"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
                                         <td style="width: 67px">
                                             <asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" />
                                         </td>
-                                         <td style="width: 250px">
-                                        </td>
-                                        <td style="width: 164px">
-                                        </td>
-                                        <td style="width: 78px">
-                                        </td>
+                                        <td style="width: 250px"></td>
+                                        <td style="width: 164px"></td>
+                                        <td style="width: 78px"></td>
                                         <td style="width: 144px"></td>
-                                        <td style="width: 97px">
-                                        </td>
+                                        <td style="width: 97px"></td>
                                         <td style="width: 47px"></td>
-                                        <td>
-                                        </td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="8" style="height: 5px"></td>
@@ -147,7 +158,7 @@
                                                 <asp:Label ID="lblHomeOwnershipID" runat="Server" Text='<%# Eval("HomeOwnershipID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
                                             <ItemTemplate>
                                                 <asp:RadioButton ID="rdBtnSelectAddress" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
                                                     OnCheckedChanged="rdBtnSelectAddress_CheckedChanged" />
@@ -188,7 +199,7 @@
                     </div>
                 </div>
 
-                  <div class="panel-width" runat="server" id="dvNewHomeOwnerInfo" visible="false">
+                <div class="panel-width" runat="server" id="dvNewHomeOwnerInfo" visible="false">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -215,7 +226,7 @@
                                             <span class="labelClass">Lender</span>
                                         </td>
                                         <td style="width: 270px">
-                                             <asp:DropDownList ID="ddlLender" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlLender" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                         <td style="width: 406px"><span class="labelClass">VHFA Involved?</span></td>
                                         <td>
@@ -226,7 +237,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 390px"><span class="labelClass">RD Loan?</span></td>
+                                        <td style="width: 390px"><span class="labelClass">RD Loan?</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbRDLoan" CssClass="ChkBox" runat="server" Text="Yes" Checked="false" />
                                         </td>
@@ -246,11 +257,11 @@
                                     </tr>
 
                                     <tr>
-                                         <td style="width: 390px"><span class="labelClass">Capital Improvements at Resale</span></td>
+                                        <td style="width: 390px"><span class="labelClass">Capital Improvements at Resale</span></td>
                                         <td>
                                             <asp:TextBox ID="txtCapitalImpAtResale" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                         <td style="width: 300px"><span class="labelClass">Fee at Purchase</span></td>
+                                        <td style="width: 300px"><span class="labelClass">Fee at Purchase</span></td>
                                         <td>
                                             <asp:TextBox ID="txtFeeAtPurchase" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
@@ -264,15 +275,15 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 390px">
+                                        <td style="width: 390px">
                                             <span class="labelClass">Stewardship Fund Contribution</span></td>
                                         <td style="width: 270px">
-                                             <asp:TextBox ID="txtStewardCont" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtStewardCont" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 300px"><span class="labelClass">Single Family Assistance Loan</span></td>
                                         <td>
                                             <asp:TextBox ID="txtVHCBAsstLoan" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                        </td> 
+                                        </td>
                                         <td style="width: 406px"><span class="labelClass">VHCB Rehab Loan</span></td>
                                         <td>
                                             <asp:TextBox ID="txtVHCBRehabLoan" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -282,13 +293,13 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                    <td style="width: 390px"><span class="labelClass">Purchase Date</span></td>
+                                        <td style="width: 390px"><span class="labelClass">Purchase Date</span></td>
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtPurchaseDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtPurchaseDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                         <td style="width: 300px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 300px"><span class="labelClass">Active</span></td>
                                         <td>
                                             <asp:CheckBox ID="chkOwnerActive" Enabled="false" runat="server" Checked="true" />
                                         </td>
@@ -362,7 +373,7 @@
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfHomeOwnershipID" runat="server" />
     <asp:HiddenField ID="hfProjectHomeOwnershipID" runat="server" />
-    
+
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= dvNewAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
@@ -370,7 +381,7 @@
                 $('#<%= dvNewAddressForm.ClientID%>').toggle(this.checked);
             }).change();
 
-         $('#<%= dvOwnerForm.ClientID%>').toggle($('#<%= cbAddOwner.ClientID%>').is(':checked'));
+            $('#<%= dvOwnerForm.ClientID%>').toggle($('#<%= cbAddOwner.ClientID%>').is(':checked'));
             $('#<%= cbAddOwner.ClientID%>').click(function () {
                 $('#<%= dvOwnerForm.ClientID%>').toggle(this.checked);
             }).change();
@@ -393,7 +404,7 @@
                     }
                 }
             }
-    }
+        }
     </script>
 </asp:Content>
 
