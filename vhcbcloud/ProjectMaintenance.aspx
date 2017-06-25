@@ -359,11 +359,11 @@
                                 </table>--%>
                             </asp:Panel>
                         </div>
-                         <div class="panel-heading" id="dvPMFilter" runat="server">
+                        <div class="panel-heading" id="dvPMFilter" runat="server">
                             <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 100%;">
-                                        <h3 class="panel-title">    &nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                        <h3 class="panel-title">&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                                     </td>
                                     <td style="text-align: right">
                                         <asp:RadioButtonList ID="rdGrid" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
@@ -441,7 +441,7 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -452,7 +452,7 @@
                             </asp:Panel>
                         </div>
 
-                       <%-- <div class="panel-body" id="dvProjectEventGrid" runat="server">
+                        <%-- <div class="panel-body" id="dvProjectEventGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel11" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProjectEvent" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -828,8 +828,14 @@
                                     <tr>
                                         <td style="width: 130px"><span class="labelClass">Entity Name</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantName_SelectedIndexChanged" AutoPostBack="true">
-                                            </asp:DropDownList>
+                                            <%-- <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantName_SelectedIndexChanged" AutoPostBack="true">
+                                            </asp:DropDownList>--%>
+                                            <asp:TextBox ID="txtEntityDDL" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
+                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="EntityAE" runat="server" TargetControlID="txtEntityDDL" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onApplicantListPopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Role</span></td>
                                         <td style="width: 370px">
@@ -1107,7 +1113,7 @@
 
 
             $('#<%= txtZip.ClientID%>').blur(function () {
-                getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
+               // getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
                 $('#<%=hfVillage.ClientID%>').val('');
 
                 LoadVillages();

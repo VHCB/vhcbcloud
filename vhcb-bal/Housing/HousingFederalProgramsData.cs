@@ -154,7 +154,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 
         public static void AddProjectFederalProgramDetail(int ProjectFederalId, int Recert, int LKAffrdPer, int AffrdPeriod,
             DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
-            DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
+            DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy, bool IsUARegulation)
         {
             try
             {
@@ -175,7 +175,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("AffrdStart", AffrdStart.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdStart));
                         command.Parameters.Add(new SqlParameter("AffrdEnd", AffrdEnd.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdEnd));
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
-                        command.Parameters.Add(new SqlParameter("CHDORecert", CHDORecert));
+                        command.Parameters.Add(new SqlParameter("CHDORecert", CHDORecert)); 
+                        command.Parameters.Add(new SqlParameter("IsUARegulation", IsUARegulation));
                         command.Parameters.Add(new SqlParameter("freq", freq));
                         command.Parameters.Add(new SqlParameter("IDISNum", IDISNum));
                         command.Parameters.Add(new SqlParameter("Setup", Setup.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Setup));
@@ -199,7 +200,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 
         public static void UpdateProjectFederalProgramDetail(int ProjectFederalProgramDetailID, int Recert, int LKAffrdPer, int AffrdPeriod,
            DateTime AffrdStart, DateTime AffrdEnd, bool CHDO, int CHDORecert, int freq, string IDISNum, DateTime Setup, int CompleteBy,
-           DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy)
+           DateTime FundedDate, int FundCompleteBy, DateTime IDISClose, int IDISCompleteBy, bool IsUARegulation)
         {
             try
             {
@@ -221,6 +222,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("AffrdEnd", AffrdEnd.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : AffrdEnd));
                         command.Parameters.Add(new SqlParameter("CHDO", CHDO));
                         command.Parameters.Add(new SqlParameter("CHDORecert", CHDORecert));
+                        command.Parameters.Add(new SqlParameter("IsUARegulation", IsUARegulation));
                         command.Parameters.Add(new SqlParameter("freq", freq));
                         command.Parameters.Add(new SqlParameter("IDISNum", IDISNum));
                         command.Parameters.Add(new SqlParameter("Setup", Setup.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Setup));

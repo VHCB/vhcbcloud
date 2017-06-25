@@ -193,31 +193,31 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.DropDownList ddlAddress;
         
         /// <summary>
-        /// cbMH control.
+        /// rdbMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbMH;
+        protected global::System.Web.UI.WebControls.RadioButton rdbMobile;
         
         /// <summary>
-        /// cbSFD control.
+        /// rdbSingle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbSFD;
+        protected global::System.Web.UI.WebControls.RadioButton rdbSingle;
         
         /// <summary>
-        /// cbCondo control.
+        /// rdbCondo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbCondo;
+        protected global::System.Web.UI.WebControls.RadioButton rdbCondo;
         
         /// <summary>
         /// chkAddressActive control.

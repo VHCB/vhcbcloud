@@ -27,7 +27,7 @@
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                             <td style="text-align: right">
-                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
@@ -66,6 +66,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Attribute" />
+                                        <asp:ImageButton ID="ImgConservationAttributes" ImageUrl="~/Images/print.png" ToolTip="Conservation Attributes Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationAttributes_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -150,6 +152,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAffMechanism" runat="server" Text="Add New Affordability Mechanism" />
+                                        <asp:ImageButton ID="ImgConservationAffordMechanism" ImageUrl="~/Images/print.png" ToolTip="Conservation Afford Mechanism Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationAffordMechanism_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -234,6 +238,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddPA" runat="server" Text="Add New Type of Public Access" />
+                                        <asp:ImageButton ID="ImgConservationPublicAccess" ImageUrl="~/Images/print.png" ToolTip="Conservation Public Access Report"
+                                                Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationPublicAccess_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -250,7 +256,7 @@
                                         </td>
                                         <td style="width: 100px"></td>
                                         <td style="width: 180px">
-                                            <asp:Button ID="btnAddPA" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddPA_Click" />
+                                            <asp:Button ID="btnAddPA" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddPA_Click" />                                            
                                         </td>
                                         <td style="width: 170px"></td>
                                         <td></td>
@@ -312,6 +318,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAltEnergy" runat="server" Text="Add New Alternative Energy" />
+                                        <asp:ImageButton ID="ImgConservationAltEnergr" ImageUrl="~/Images/print.png" ToolTip="Conservation Alternative Energy Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationAltEnergr_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -329,6 +337,7 @@
                                         <td style="width: 100px"></td>
                                         <td style="width: 180px">
                                             <asp:Button ID="btnAddAltEnergy" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAltEnergy_Click" />
+
                                         </td>
                                         <td style="width: 170px"></td>
                                         <td></td>
@@ -468,6 +477,9 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddOT" runat="server" Text="Add New Owner Type" />
+                                        <asp:ImageButton ID="ImgConservationownerType" ImageUrl="~/Images/print.png" ToolTip="Conservation Owner TypesReport"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationownerType_Click" />
+
                                     </td>
                                 </tr>
                             </table>
@@ -546,6 +558,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddLegalInterest" runat="server" Text="Add New Legal Interest" />
+                                        <asp:ImageButton ID="ImgConservationLegalInterest" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Interest Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalInterest_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -624,6 +638,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddLegalMechanism" runat="server" Text="Add New Legal Mechanism" />
+                                        <asp:ImageButton ID="ImgConservationLegalMechanism" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Mechanism Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalMechanism_Click" />
                                     </td>
                                 </tr>
                             </table>

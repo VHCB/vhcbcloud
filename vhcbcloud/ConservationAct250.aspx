@@ -607,25 +607,25 @@
                     toCurrencyControl($('#<%= txtDevPaymentAmount.ClientID%>').val(), $('#<%= txtDevPaymentAmount.ClientID%>'));
                 });
 
-                $("input[id*=txtpaymentAmount]").keyup(function () {
-                    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
-                });
+                //$("input[id*=txtpaymentAmount]").keyup(function () {
+                //    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
+                //});
 
-                if ($('input[id*=txtpaymentAmount]').val() >= 0) {
-                    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
-                }
+                //if ($('input[id*=txtpaymentAmount]').val() >= 0) {
+                //    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
+                //}
 
                 $('#<%= txtAntFunds.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtAntFunds.ClientID%>').val(), $('#<%= txtAntFunds.ClientID%>'));
                  });
 
-                $("input[id*=txtAnticipatedFunds1]").keyup(function () {
-                    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
-                });
+                //$("input[id*=txtAnticipatedFunds1]").keyup(function () {
+                //    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
+                //});
 
-                if ($('input[id*=txtAnticipatedFunds1]').val() >= 0) {
-                    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
-                }
+                //if ($('input[id*=txtAnticipatedFunds1]').val() >= 0) {
+                //    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));
+                //}
 
                 $('#<%= dvAct250InfoForm.ClientID%>').toggle($('#<%= cbAddAct250Info.ClientID%>').is(':checked'));
                 $('#<%= cbAddAct250Info.ClientID%>').click(function () {

@@ -772,5 +772,47 @@ namespace vhcbcloud.Conservation
                 LogError(Pagename, "BindLegalMechanismGrid", "", ex.Message);
             }
         }
+
+        protected void ImgConservationAttributes_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Attributes"));
+        }
+
+        protected void ImgConservationAffordMechanism_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Afford Mechanism"));
+        }
+
+        protected void ImgConservationPublicAccess_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Public Access"));
+        }
+
+        protected void ImgConservationAltEnergr_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Alternative Energy"));
+        }
+
+        protected void ImgConservationownerType_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Owner Types"));
+        }
+
+        protected void ImgConservationLegalInterest_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Legal Interest"));
+        }
+
+        protected void ImgConservationLegalMechanism_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                         "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Legal Mechanism"));
+        }
     }
 }
