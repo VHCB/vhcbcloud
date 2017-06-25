@@ -940,13 +940,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel4;
         
         /// <summary>
-        /// ddlApplicantName control.
+        /// txtEntityDDL control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlApplicantName;
+        protected global::System.Web.UI.WebControls.TextBox txtEntityDDL;
+        
+        /// <summary>
+        /// EntityAE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender EntityAE;
         
         /// <summary>
         /// ddlApplicantRole control.

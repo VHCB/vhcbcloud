@@ -538,7 +538,42 @@ namespace DataAccessLayer
         #endregion
 
         #region Project Entity
-        public static void AddProjectApplicant(int ProjectId, int AppNameId, int LkApplicantRole, bool isApplicant)
+
+        public static int GetApplicantId(string AppName)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetApplicantId";
+                        command.Parameters.Add(new SqlParameter("AppName", AppName));
+
+                        SqlParameter parmMessage = new SqlParameter("@ApplicantId", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                        
+                        return DataUtils.GetInt(command.Parameters["@ApplicantId"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void AddProjectApplicant(int ProjectId, int ApplicantID, int LkApplicantRole, bool isApplicant)
         {
             try
             {
@@ -554,7 +589,7 @@ namespace DataAccessLayer
 
                         //2 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
-                        command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                        command.Parameters.Add(new SqlParameter("ApplicantID", ApplicantID));
                         command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
                         command.Parameters.Add(new SqlParameter("isApplicant", isApplicant));
 

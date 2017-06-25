@@ -183,27 +183,27 @@ namespace vhcbcloud
 
             if (Action == "submit")
             {
-                if (txtProjectNotesDate.Text.Trim() == "")
-                {
-                    LogMessage("Enter Date");
-                    txtProjectNotesDate.Focus();
-                    return false;
-                }
-                else
-                {
-                    if (!DataUtils.IsDateTime(txtProjectNotesDate.Text.Trim()))
-                    {
-                        LogMessage("Enter valid Date");
-                        txtProjectNotesDate.Focus();
-                        return false;
-                    }
-                    if (DataUtils.GetDate(txtProjectNotesDate.Text.Trim()) < DataUtils.GetDate(DateTime.Now.ToShortDateString()))
-                    {
-                        LogMessage("Date shouldn't be less than current date");
-                        txtProjectNotesDate.Focus();
-                        return false;
-                    }
-                }
+                //if (txtProjectNotesDate.Text.Trim() == "")
+                //{
+                //    LogMessage("Enter Date");
+                //    txtProjectNotesDate.Focus();
+                //    return false;
+                //}
+                //else
+                //{
+                //    if (!DataUtils.IsDateTime(txtProjectNotesDate.Text.Trim()))
+                //    {
+                //        LogMessage("Enter valid Date");
+                //        txtProjectNotesDate.Focus();
+                //        return false;
+                //    }
+                //    if (DataUtils.GetDate(txtProjectNotesDate.Text.Trim()) < DataUtils.GetDate(DateTime.Now.ToShortDateString()))
+                //    {
+                //        LogMessage("Date shouldn't be less than current date");
+                //        txtProjectNotesDate.Focus();
+                //        return false;
+                //    }
+                //}
             }
             if (txtNotes.Text.Trim() == "")
             {
