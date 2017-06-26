@@ -1943,7 +1943,7 @@ namespace vhcbcloud
         protected void ImgMilestoneReport_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
-                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Milestones"));
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Project Milestone"));
         }
 
         protected void ImgNames_Click(object sender, ImageClickEventArgs e)
