@@ -35,53 +35,59 @@
                                 <td style="width: 10%; float: left">
                                     <asp:Label ID="lblProjNameText" class="labelClass" Visible="false" Text="Project Name :" runat="server"></asp:Label>
                                 </td>
-                                <td style="float: left" colspan="3">
+                                <td style="float: left" colspan="2">
                                     <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                             </tr>
-                            <tr> <td colspan="6" style="height: 8px"></td>
-                                </tr>
                             <tr>
-                                <td style="width: 20%; float: left"><span class="labelClass">Board Financial Transactions :</span></td>
-                                <td style="width: 20%; float: left" colspan="5">
-                                    <asp:DropDownList ID="ddlFinancialTrans" CssClass="clsDropDown" runat="server" Width="161px">
-                                      <%--  <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>
+                                <td style="height: 8px;" colspan="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; float: left;"><span class="labelClass">Board Financial Transactions :</span></td>
+                                <td style="width: 20%; float: left">
+                                    <asp:DropDownList ID="ddlFinancialTrans" runat="server" CssClass="clsDropDown" Width="161px">
+                                        <%--  <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>
                                         <asp:ListItem Text="All" Value="-1"></asp:ListItem>
                                         <asp:ListItem Text="Commitments" Value="238"></asp:ListItem>
                                         <asp:ListItem Text="DeCommitments" Value="239"></asp:ListItem>
                                         <asp:ListItem Text="Board Reallocation" Value="240"></asp:ListItem>
                                         <asp:ListItem Text="Cash Refund" Value="237"></asp:ListItem>--%>
-                                    </asp:DropDownList>
+                                    </asp:DropDownList></td>
+                                <td style="float: left" colspan="3">
+                                    <span class="labelClass">
+                                        <asp:LinkButton ID="lbtnShowAll" runat="server" OnClick="lbtnShowAll_Click" Visible="False">Show all financial transactions</asp:LinkButton></span>
                                 </td>
                             </tr>
-                             <tr> <td colspan="6" style="height: 8px"></td>
-                                </tr>
                             <tr>
-                                <td style="width: 20%; float: left"><span class="labelClass">Trans From Date :</span></td>
+                                <td style="height: 8px;" colspan="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; float: left;">
+                                    <span class="labelClass">Trans From Date :</span></td>
+
                                 <td style="width: 20%; float: left">
-                                    <asp:TextBox ID="txtTransDateFrom" runat="server" CssClass="clsTextBoxBlue1" Width="110px" ></asp:TextBox>
+                                    <asp:TextBox ID="txtTransDateFrom" runat="server" CssClass="clsTextBoxBlue1" Width="110px"></asp:TextBox>
                                     <ajaxToolkit:CalendarExtender ID="txtTransDateFrom_CalendarExtender" runat="server" TargetControlID="txtTransDateFrom">
                                     </ajaxToolkit:CalendarExtender>
                                 </td>
                                 <td style="width: 10%; float: left"><span class="labelClass">Trans End Date :</span></td>
                                 <td style="width: 15%; float: left">
-                                    <asp:TextBox ID="txtTransDateTo" runat="server" CssClass="clsTextBoxBlue1" Width="110px" ></asp:TextBox>
+                                    <asp:TextBox ID="txtTransDateTo" runat="server" CssClass="clsTextBoxBlue1" Width="110px"></asp:TextBox>
                                     <ajaxToolkit:CalendarExtender ID="txtTransDateTo_CalendarExtender" runat="server" TargetControlID="txtTransDateTo">
                                     </ajaxToolkit:CalendarExtender>
                                 </td>
+                                <td style="width: 30%; float: left"></td>
 
-                                <td style="width: 30%; float: left" colspan="2">
                             </tr>
                             <tr>
-                                <td style="width: 15%; float: left; height: 56px;" colspan="6">
+                                <td colspan="5" style="width: 15%; float: left; height: 56px;">
                                     <br />
                                     <asp:Button ID="btnSubmit" runat="server" class="btn btn-info" OnClick="btnSubit_click" OnClientClick="needToConfirm = false;" Text="Submit" ValidationGroup="Date" />
                                 </td>
-
                             </tr>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="5">
                                     <p class="lblErrMsg">
-                                        <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
+                                        <asp:Label ID="lblErrorMsg" runat="server" Font-Size="Small"></asp:Label>
                                     </p>
                                 </td>
                             </tr>
@@ -168,18 +174,18 @@
                         <br />
                     </div>
                 </asp:Panel>
-                 <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
+                <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
                 <asp:HiddenField ID="hfProjId" runat="server" />
             </div>
         </asp:Panel>
     </div>
-      <script type="text/javascript">
-         function OnContactSelected(source, eventArgs) {
+    <script type="text/javascript">
+        function OnContactSelected(source, eventArgs) {
 
             var hdnValueID = "<%= hdnValue.ClientID %>";
 
-            document.getElementById(hdnValueID).value = eventArgs.get_value();
-            __doPostBack(hdnValueID, "");
-        }
+             document.getElementById(hdnValueID).value = eventArgs.get_value();
+             __doPostBack(hdnValueID, "");
+         }
     </script>
 </asp:Content>

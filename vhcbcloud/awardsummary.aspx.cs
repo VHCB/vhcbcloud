@@ -98,7 +98,7 @@ namespace vhcbcloud
                 int projId = Convert.ToInt32(dt.Rows[0][0].ToString());
                 lblProjId.Text = GetProjectName(dtProjects, projId.ToString());
                 txtFromCommitedProjNum.Text = projNum;
-
+                hdnValue.Value = projId.ToString();
                 BindAwardSummary(projId);
             }
         }
@@ -194,8 +194,12 @@ namespace vhcbcloud
             GridViewSortExpression = e.SortExpression;
             int pageIndex = 0;
             DataTable dtTransDetail = new DataTable();
-            dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[1];
 
+            if (hdnValue.Value.ToString() == "")
+                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[1];
+            else
+                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(hdnValue.Value.ToString()), isReallocation).Tables[1];
+            
             gvTransDetail.DataSource = SortDataTable(dtTransDetail, false);
             gvTransDetail.DataBind();
             gvTransDetail.PageIndex = pageIndex;
@@ -263,11 +267,55 @@ namespace vhcbcloud
             GridViewSortExpression = e.SortExpression;
             int pageIndex = 0;
             DataTable dtTransDetail = new DataTable();
-            dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[0];
+            if (hdnValue.Value.ToString() == "")
+                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(ddlProj.SelectedValue.ToString()), isReallocation).Tables[0];
+            else
+                dtTransDetail = FinancialTransactions.GetFinancialFundDetailsByProjectId(Convert.ToInt32(hdnValue.Value.ToString()), isReallocation).Tables[0];
 
             gvCurrentAwdStatus.DataSource = SortDataTable(dtTransDetail, false);
             gvCurrentAwdStatus.DataBind();
             gvCurrentAwdStatus.PageIndex = pageIndex;
+            decimal totCommitAmt = 0;
+            decimal totPendAmt = 0;
+            decimal totExpendAmt = 0;
+            decimal totFinalExpendAmt = 0;
+            decimal totBalanceAmt = 0;
+
+            if (dtTransDetail.Rows.Count > 0)
+            {
+                Label lblCommit = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblCommit");
+                Label lblPending = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblPending");
+                Label lblExpend = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblExpend");
+                Label lblFinalExpend = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblFinalExpend");
+                Label lblBalance = (Label)gvCurrentAwdStatus.FooterRow.FindControl("lblBalance");
+                if (dtTransDetail.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtTransDetail.Rows.Count; i++)
+                    {
+                        //09/29/2016 - modified the totals of commitment amount to !=0 from >0
+                        if (Convert.ToDecimal(dtTransDetail.Rows[i]["commitmentamount"].ToString()) != 0)
+                            totCommitAmt += Convert.ToDecimal(dtTransDetail.Rows[i]["commitmentamount"].ToString());
+
+                        if (Convert.ToDecimal(dtTransDetail.Rows[i]["expendedamount"].ToString()) != 0)
+                            totExpendAmt += Convert.ToDecimal(dtTransDetail.Rows[i]["expendedamount"].ToString());
+
+                        if (Convert.ToDecimal(dtTransDetail.Rows[i]["finaldisbursedamount"].ToString()) != 0)
+                            totFinalExpendAmt += Convert.ToDecimal(dtTransDetail.Rows[i]["finaldisbursedamount"].ToString());
+
+                        if (Convert.ToDecimal(dtTransDetail.Rows[i]["pendingamount"].ToString()) != 0)
+                            totPendAmt += Convert.ToDecimal(dtTransDetail.Rows[i]["pendingamount"].ToString());
+
+                        if (Convert.ToDecimal(dtTransDetail.Rows[i]["balance"].ToString()) != 0)
+                            totBalanceAmt += Convert.ToDecimal(dtTransDetail.Rows[i]["balance"].ToString());
+                    }
+                }
+
+                lblCommit.Text = CommonHelper.myDollarFormat(totCommitAmt);
+                lblPending.Text = CommonHelper.myDollarFormat(totPendAmt);
+                lblExpend.Text = CommonHelper.myDollarFormat(totExpendAmt);
+                lblBalance.Text = CommonHelper.myDollarFormat(totBalanceAmt);
+                lblFinalExpend.Text = CommonHelper.myDollarFormat(totFinalExpendAmt);
+            }
         }
     }
 }

@@ -856,7 +856,7 @@ namespace vhcbcloud
                 txtCommitedProjNum.Visible = false;
                 imgNewAwardSummary.Visible = false;
                 imgExistingAwardSummary.Visible = true;
-                btnNewTransaction.Visible = true;                
+                btnNewTransaction.Visible = true;
                 Response.Redirect("decommitments.aspx");
             }
 
@@ -992,6 +992,7 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlFundName.SelectedIndex != 0)
             {
+                lblAvDetailFund.Text = "";
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
@@ -1014,10 +1015,17 @@ namespace vhcbcloud
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
                 else
                 {
+                    if (ddlTransType.Items.Count < 1)
+                    {
+                        lblErrorMsg.Text = "No transaction types found for this fund and hence this fund can't be used for disbursement";
+                        return;
+                    }
                     DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
                     if (dtAvailFunds != null)
                         if (dtAvailFunds.Rows.Count > 0)
                             lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+                        else
+                            lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
 
                 }
 
@@ -1092,6 +1100,8 @@ namespace vhcbcloud
             if (dtAvailFunds != null)
                 if (dtAvailFunds.Rows.Count > 0)
                     lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+                else
+                    lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
 
         }
     }

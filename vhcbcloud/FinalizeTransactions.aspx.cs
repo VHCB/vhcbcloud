@@ -19,6 +19,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindProjects();
+                BindFinancialTrans();
                 txtTransDateTo.Text = DateTime.Now.ToString("M/dd/yyyy", CultureInfo.InvariantCulture);
             }
         }
@@ -35,7 +36,17 @@ namespace vhcbcloud
                 ddlProjFilter.DataBind();
                 ddlProjFilter.Items.Insert(0, new ListItem("Select", "NA"));
                 ddlProjFilter.Items.Insert(1, new ListItem("All", "-1"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
 
+        protected void BindFinancialTrans()
+        {
+            try
+            {
                 ddlFinancialTrans.DataSource = FinancialTransactions.GetBoardFinancialTrans();
                 ddlFinancialTrans.DataValueField = "TypeID";
                 ddlFinancialTrans.DataTextField = "Description";
@@ -64,10 +75,8 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
-
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             lblErrorMsg.Text = "";
 
             gvTransactions.DataSource = null;
@@ -95,28 +104,31 @@ namespace vhcbcloud
             }
         }
 
-
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
-
             DataTable dt = new DataTable();
 
             dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
-
             ///populate the form based on retrieved data
             if (dt.Rows.Count > 0)
             {
                 lblProjNameText.Visible = true;
 
                 if (txtFromCommitedProjNum.Text.ToLower() == "all")
+                {
                     lblProjName.Text = "All";
+                    BindFinancialTrans();
+                    lbtnShowAll.Visible = false;
+                }
                 else
                 {
+                    lbtnShowAll.Visible = true;
                     DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(dt.Rows[0][0].ToString()));
                     lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
 
                     hfProjId.Value = dt.Rows[0][0].ToString();
+                    ddlFinancialTrans.Items.Remove(ddlFinancialTrans.Items.FindByValue("26552"));
                 }
             }
             else
@@ -178,12 +190,6 @@ namespace vhcbcloud
                     txtTransDateFrom.Focus();
                     return;
                 }
-                if (tranToDate > DateTime.Today)
-                {
-                    lblErrorMsg.Text = "Transaction End date should be less than or equal to today";
-                    txtTransDateTo.Focus();
-                    return;
-                }
                 if (tranFromDate > tranToDate)
                 {
                     lblErrorMsg.Text = "From Transaction date should be less than End date";
@@ -204,11 +210,13 @@ namespace vhcbcloud
                 PopulateTransactions(Convert.ToInt32(hfProjId.Value), tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
                 DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
                 lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+                lbtnShowAll.Visible = true;
             }
             else
             {
                 lblProjName.Text = "All";
                 PopulateTransactions(-1, tranFromDate, tranToDate, Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
+                lbtnShowAll.Visible = false;
             }
         }
 
@@ -301,6 +309,11 @@ namespace vhcbcloud
                 PopulateTransactions(-1, DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()), Convert.ToInt32(ddlFinancialTrans.SelectedValue.ToString()));
                 lblErrorMsg.Text = "Transaction finalized successfully";
             }
+        }
+
+        protected void lbtnShowAll_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("finalizetransactions.aspx");
         }
     }
 }
