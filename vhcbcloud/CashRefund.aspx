@@ -70,12 +70,20 @@
                                                     &nbsp;<asp:Button ID="btnfind" runat="server" Visible="false" class="btn btn-info" OnClick="btnfind_Click" OnClientClick="needToConfirm = false;" TabIndex="2" Text="Find" />
                                                 </td>
                                                 <td style="width: 20%; float: left">
-                                                    <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label><span class="labelClass">Available Funds $:</span></td>
+                                                    <asp:Label ID="lblProjName" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                                 <td style="float: left">
                                                     <asp:Label ID="lblGrantee" class="labelClass" Text=" " runat="server"></asp:Label>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%; float: left"><span class="labelClass">Available Funds:</span></td>
+                                                <td style="width: 20%; float: left">
                                                     <asp:Label ID="lblAvailFund" runat="server" class="labelClass" Text="" Visible="false"></asp:Label>
                                                     <asp:Label ID="lblAvailVisibleFund" runat="server" class="labelClass" Text=""></asp:Label>
                                                 </td>
+                                                <td style="width: 10%; float: left">&nbsp;</td>
+                                                <td style="float: left">&nbsp;</td>
                                             </tr>
 
                                             <tr>

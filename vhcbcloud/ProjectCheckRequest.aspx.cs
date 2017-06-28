@@ -582,6 +582,12 @@ namespace vhcbcloud
                         txtTransDate.Text = DateTime.Now.ToShortDateString();
                         txtCRDate.Text = DateTime.Now.ToShortDateString();
 
+                        if (ddlPayee.Items.Count == 0)
+                        {
+                            lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
+                            return;
+                        }
+
                     }
                     else
                     {

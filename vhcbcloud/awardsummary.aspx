@@ -17,8 +17,8 @@
                         <asp:DropDownList ID="ddlProj" CssClass="clsDropDown" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlProj_SelectedIndexChanged"></asp:DropDownList>
                         <asp:TextBox ID="txtFromCommitedProjNum" runat="server" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
                         <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtFromCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
-                                               OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
-                                            </ajaxToolkit:AutoCompleteExtender>
+                            OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                        </ajaxToolkit:AutoCompleteExtender>
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
@@ -61,14 +61,6 @@
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Committed" SortExpression="CommitmentAmount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
-                                    </ItemTemplate>
-                                    <FooterTemplate>
-                                        <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
-                                    </FooterTemplate>
-                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Pending Committed" SortExpression="pendingamount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
@@ -77,6 +69,15 @@
                                         <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Committed" SortExpression="CommitmentAmount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                        <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
+                                    </FooterTemplate>
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Pending Disburse" SortExpression="expendedamount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblExpendAmd" runat="Server" Text='<%# Eval("expendedamount", "{0:C2}") %>' />
@@ -168,20 +169,21 @@
                         </asp:GridView>
                     </asp:Panel>
                     <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
-                        
+                    <asp:HiddenField ID="hfProjId" runat="server" />
+
                 </div>
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
-         function OnContactSelected(source, eventArgs) {
+        function OnContactSelected(source, eventArgs) {
 
             var hdnValueID = "<%= hdnValue.ClientID %>";
 
-            document.getElementById(hdnValueID).value = eventArgs.get_value();
-            __doPostBack(hdnValueID, "");
-        }
+             document.getElementById(hdnValueID).value = eventArgs.get_value();
+             __doPostBack(hdnValueID, "");
+         }
     </script>
 </asp:Content>
 
