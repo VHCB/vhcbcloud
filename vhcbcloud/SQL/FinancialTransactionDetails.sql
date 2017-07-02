@@ -519,10 +519,7 @@ Begin
 		where tr.LkTransaction in (236,237,238,239,240,26552)and pn.DefName =1 
 		and tr.RowIsActive=1 and det.RowIsActive=1 and p.projectid = @projectid
 		order by p.Proj_num
-
-
 End
-
 go
 
 
@@ -1393,7 +1390,7 @@ as
  Begin
 	--select af.UsePermit, af.Act250FarmId from Act250Farm af join Act250Projects ap on ap.Act250FarmId = af.Act250FarmId where ap.RowIsActive=1
 	--and ap.projectid = @projectId
-	select distinct af.UsePermit, af.Act250FarmId, * from Act250Farm af 
+	select distinct af.UsePermit, af.Act250FarmId from Act250Farm af 
 		join detail d on d.landusepermitid = af.Act250FarmID
 		join Trans tr on tr.TransId = d.TransId
 	where tr.ProjectID = @projectid
@@ -3126,10 +3123,8 @@ Begin
 				else
 					(sum(isnull(commitmentamount,0))- ( sum(isnull (pendingdisburse,0))+ sum(isnull(finaldisbursedamount,0)))) 
 				end as balance from @tempAvailFunds
-			group by projectid, fundid, lktranstype 
-			
+			group by projectid, fundid, lktranstype 			
 End
-
 go
 
 
@@ -3305,12 +3300,9 @@ Begin
 					for fundtype in (' + @cols + ')
 				) p '
 
-
 	execute(@query)
 	drop table #temp
-	
 End
-
 go
 
 
@@ -3417,9 +3409,7 @@ Begin
 	and f.fundid = @fundid 
 	and t.TransId in(select distinct transid from @temp)
 	order by d.DateModified desc
-
 End
-
 go
 
 alter procedure [dbo].GetAssignmentDetailsNewProjFundTransType
