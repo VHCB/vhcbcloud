@@ -8,8 +8,9 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     public class ConservationSummaryData
     {
         #region Conserve
-        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, int TotalAcres, int Wooded, 
-            int Prime, int Statewide, int Tillable, int Pasture, int Unmanaged, int FarmResident, int NaturalRec, int UserID)
+        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, decimal TotalAcres, decimal Wooded,
+            decimal Prime, decimal Statewide, decimal Tillable, decimal Pasture, decimal Unmanaged, decimal FarmResident, decimal NaturalRec, 
+            int UserID)
         {
             try
             {

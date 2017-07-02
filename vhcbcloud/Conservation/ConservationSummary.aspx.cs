@@ -96,8 +96,8 @@ namespace vhcbcloud.Conservation
 
                 if (Total != 0)
                 {
-                    pctPrimeStateWide.InnerText = Math.Round(TotalPS * 100 / Total).ToString();
-                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString();
+                    pctPrimeStateWide.InnerText = (Math.Round(TotalPS * 100 / Total).ToString()).ToString() + " %";
+                    pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString() + " %";
                 }
 
                 btnSubmit.Text = "Update";
@@ -259,9 +259,9 @@ namespace vhcbcloud.Conservation
         {
             ConservationSummaryData.SubmitConserve(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlConservationTrack.SelectedValue.ToString()),
                 DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 0,//DataUtils.GetInt(txtTotProjAcres.Text),
-                DataUtils.GetInt(txtWooded.Text), DataUtils.GetInt(txtPrime.Text), DataUtils.GetInt(txtStateWide.Text),
-                DataUtils.GetInt(txtTillable.Text), DataUtils.GetInt(txtPasture.Text), DataUtils.GetInt(txtUnManaged.Text), 
-                DataUtils.GetInt(txtFarmResident.Text), DataUtils.GetInt(txtNaturalRec.Text), GetUserId());
+                DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
+                DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text), 
+                DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId());
 
             BindConConserveForm();
 
