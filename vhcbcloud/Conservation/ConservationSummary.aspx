@@ -527,21 +527,34 @@
                 $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle(this.checked);
             }).change();
 
+<%--             $('#<%= txtTillable.ClientID%>').keyup(function () {
+                $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());
+             });--%>
+
             var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>, #<%= txtNaturalRec.ClientID%>');
             $.each(txtboxs, function() {
-                $(this).blur(function() {
+                $(this).blur(function () {
+                    $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());
+                    $('#<%=txtPasture.ClientID%>').val($('#<%=txtPasture.ClientID%>').getNum());
+                    $('#<%=txtPrime.ClientID%>').val($('#<%=txtPrime.ClientID%>').getNum());
+                    $('#<%=txtPasture.ClientID%>').val($('#<%=txtPasture.ClientID%>').getNum());
+                    $('#<%=txtFarmResident.ClientID%>').val($('#<%=txtFarmResident.ClientID%>').getNum());
+                    $('#<%=txtStateWide.ClientID%>').val($('#<%=txtStateWide.ClientID%>').getNum());
+                    $('#<%=txtNaturalRec.ClientID%>').val($('#<%=txtNaturalRec.ClientID%>').getNum());
+                    $('#<%=txtWooded.ClientID%>').val($('#<%=txtWooded.ClientID%>').getNum());
+                    $('#<%=txtUnManaged.ClientID%>').val($('#<%=txtUnManaged.ClientID%>').getNum());
                     CalculatePercentages();
                 });
             });
 
             function CalculatePercentages() {
                 
-                var totTillable = (isNaN(parseInt($('#<%=txtTillable.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtTillable.ClientID%>').val(), 10));
-                var totPasture = (isNaN(parseInt($('#<%=txtPasture.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtPasture.ClientID%>').val(), 10));
-                var totWooded = (isNaN(parseInt($('#<%=txtWooded.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtWooded.ClientID%>').val(), 10));
-                var totUnManaged = (isNaN(parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtUnManaged.ClientID%>').val(), 10));
-                var totFarmResident = (isNaN(parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtFarmResident.ClientID%>').val(), 10));
-                var totNaturalRec = (isNaN(parseInt($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtNaturalRec.ClientID%>').val(), 10));
+                var totTillable = (isNaN(parseFloat($('#<%=txtTillable.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtTillable.ClientID%>').val(), 10));
+                var totPasture = (isNaN(parseFloat($('#<%=txtPasture.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtPasture.ClientID%>').val(), 10));
+                var totWooded = (isNaN(parseFloat($('#<%=txtWooded.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtWooded.ClientID%>').val(), 10));
+                var totUnManaged = (isNaN(parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10));
+                var totFarmResident = (isNaN(parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10));
+                var totNaturalRec = (isNaN(parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10));
                 
                 var Total = totTillable + totPasture + totWooded + totUnManaged + totFarmResident + totNaturalRec;
                 $('#<%=spnTotalProject.ClientID%>').text(Total);
@@ -549,17 +562,19 @@
                 $('#<%=pctPrimeStateWide.ClientID%>').text('-');
 
                 if (Total != 0) {
-                    var totPrime = (isNaN(parseInt($('#<%=txtPrime.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtPrime.ClientID%>').val(), 10));
-                    var totStateWide = (isNaN(parseInt($('#<%=txtStateWide.ClientID%>').val(), 10)) ? 0 : parseInt($('#<%=txtStateWide.ClientID%>').val(), 10));
+                    var totPrime = (isNaN(parseFloat($('#<%=txtPrime.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtPrime.ClientID%>').val(), 10));
+                    var totStateWide = (isNaN(parseFloat($('#<%=txtStateWide.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtStateWide.ClientID%>').val(), 10));
 
                     var totPS = totPrime + totStateWide;
                     var pctPS = Math.round(totPS * 100 / Total);
-                    $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS.toPrecision(2));
-                }
-                var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
-                $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2));
-            };
+                    console.log(pctPS);
+                    console.log(pctPS.toPrecision(2));
+                    $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS + ' %');
 
+                     var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
+                    $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2) + ' %');
+                }
+            };
             <%--$('#<%= txtTotProjAcres.ClientID%>').blur(function () {
                 CalculatePercentages();
             });
@@ -610,5 +625,18 @@
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
+
+        jQuery.fn.getNum = function () {
+            var val = $.trim($(this).val());
+            if (val.indexOf(',') > -1) {
+                val = val.replace(',', '.');
+            }
+            var num = parseFloat(val);
+            var num = num.toFixed(2);
+            if (isNaN(num)) {
+                num = '';
+            }
+            return num;
+        }
     </script>
 </asp:Content>

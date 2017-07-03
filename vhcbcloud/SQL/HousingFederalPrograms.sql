@@ -205,7 +205,7 @@ begin transaction
 
 	begin try
 
-	update ProjectFederalProgramDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdPeriod = @AffrdPeriod, @AffrdStart = @AffrdStart, 
+	update ProjectFederalProgramDetail set Recert = @Recert, LKAffrdPer = @LKAffrdPer, AffrdPeriod = @AffrdPeriod, AffrdStart = @AffrdStart, 
 		AffrdEnd = @AffrdEnd, CHDO = @CHDO, CHDORecert = @CHDORecert, 
 		freq = @freq, IDISNum = @IDISNum, Setup = @Setup, CompleteBy = @CompleteBy, FundedDate = @FundedDate, FundCompleteBy = @FundCompleteBy,
 		IDISClose = @IDISClose, IDISCompleteBy = @IDISCompleteBy, IsUARegulation= @IsUARegulation, DateModified = getdate()
