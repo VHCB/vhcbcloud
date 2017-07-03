@@ -584,7 +584,7 @@ namespace vhcbcloud
 
                         if (ddlPayee.Items.Count == 0)
                         {
-                            lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
+                            lblErrorMsg.Text = "Add a payee to this project before proceeding with disbursement";
                             return;
                         }
 

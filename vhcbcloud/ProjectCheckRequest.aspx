@@ -77,7 +77,7 @@
                                         <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDate_SelectedIndexChanged">
                                         </asp:DropDownList>
                                         <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" ReadOnly="True"></asp:TextBox>
-                                        <ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
+                                        <%--<ajaxToolkit:CalendarExtender runat="server" ID="aceTransDate" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>--%>
                                     </td>
                                 </tr>
                                 <tr>
