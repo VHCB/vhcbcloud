@@ -48,7 +48,7 @@ namespace vhcbcloud
         }
         private void BindControls()
         {
-            BindLookUP(ddlFarmType, 34);
+            //BindLookUP(ddlFarmType, 34);
             BindLookUP(ddlTown, 89);
             BindApplicants(ddlDeveloper);
             //BindProjects(ddlProjects);
@@ -218,6 +218,7 @@ namespace vhcbcloud
             txtAcresDeveloped.Text = "";
             txtAnticipatedFunds.Text = "";
             txtMitigationDate.Text = "";
+            txtURL.Text = "";
 
             txtLandUsePermit.Enabled = true;
             chkAct250Active.Enabled = false;
@@ -299,6 +300,7 @@ namespace vhcbcloud
             txtAcresDeveloped.Text = dr["AcresDevelop"].ToString();
             txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
             txtMitigationDate.Text = dr["MitDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MitDate"].ToString()).ToShortDateString();
+            txtURL.Text = dr["URL"].ToString();
             chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
 
             txtLandUsePermit.Enabled = false;
@@ -405,7 +407,10 @@ namespace vhcbcloud
 
         private void BindLandUsePermitFinancialsGrid()
         {
-            DataTable dtLandUsePermitFinacials = ConservationAct250Data.GetLandUsePermitFinancialsList(hfUsePermit.Value);
+            //DataTable dtLandUsePermitFinacials = ConservationAct250Data.GetLandUsePermitFinancialsList(hfUsePermit.Value);
+            //As per Dan per Dan detail.LandUsePermitId = act250Farm.Act250FarmId
+            DataTable dtLandUsePermitFinacials = ConservationAct250Data.GetLandUsePermitFinancialsList(DataUtils.GetInt(hfAct250FarmID.Value));
+
             hfLandUsePermitFinancialsBalance.Value = "0";
 
             if (dtLandUsePermitFinacials.Rows.Count > 0)

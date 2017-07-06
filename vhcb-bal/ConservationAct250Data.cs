@@ -289,7 +289,7 @@ namespace VHCBCommon.DataAccessLayer
         }
         #endregion Developer Payments
 
-        public static DataTable GetLandUsePermitFinancialsList(string LandUsePermit)
+        public static DataTable GetLandUsePermitFinancialsList(int Act250FarmId)
         {
             DataTable dt = null;
             try
@@ -303,7 +303,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetLandUsePermitFinancialsList";
-                        command.Parameters.Add(new SqlParameter("LandUsePermit", LandUsePermit));
+                        command.Parameters.Add(new SqlParameter("Act250FarmId", Act250FarmId));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);

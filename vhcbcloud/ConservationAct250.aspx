@@ -63,7 +63,11 @@
                                     <tr>
                                         <td style="width: 117px"><span class="labelClass">Type</span></td>
                                         <td style="width: 194px">
-                                            <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server">
+                                                 <asp:ListItem Value="NA">Select</asp:ListItem>
+                                                <asp:ListItem Value="144">Housing</asp:ListItem>
+                                                <asp:ListItem Value="145">Conservation</asp:ListItem>
+                                            </asp:DropDownList>
                                         </td>
                                         <td style="width: 149px">
                                             <span class="labelClass">Land Use Permit</span>
@@ -88,8 +92,7 @@
                                         <td style="width: 194px">
                                             <asp:TextBox ID="txtDevname" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 149px">
-                                            <span class="labelClass">District #</span>
+                                        <td style="width: 149px"><span class="labelClass">District #</span>
                                         </td>
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtDistrictNo" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -144,7 +147,7 @@
                                             <span class="labelClass">URL</span>
                                         </td>
                                         <td style="width: 176px">
-                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" runat="server" Width="161px"></asp:TextBox>
                                         </td>
                                         <td style="width: 134px">Active:</td>
                                         <td class="modal-sm" style="width: 115px">
