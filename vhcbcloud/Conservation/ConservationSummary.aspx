@@ -557,7 +557,10 @@
                 var totNaturalRec = (isNaN(parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10));
                 
                 var Total = totTillable + totPasture + totWooded + totUnManaged + totFarmResident + totNaturalRec;
-                $('#<%=spnTotalProject.ClientID%>').text(Total);
+                console.log('Total:' + Total.toFixed(2));
+                
+                
+                $('#<%=spnTotalProject.ClientID%>').text(Total.toFixed(2));
 
                 $('#<%=pctPrimeStateWide.ClientID%>').text('-');
 
