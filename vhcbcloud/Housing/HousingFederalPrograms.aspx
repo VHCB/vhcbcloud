@@ -932,19 +932,26 @@
 
     <script language="javascript">
         $(document).ready(function () {
-           <%-- $('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
-                if ($('#<%=txtAffrdStartDate.ClientID%>').val() == "") {
+            $('#<%= txtCloseDate.ClientID%>').blur(function () {
+                //if ($('#<%=txtAffrdStartDate.ClientID%>').val() == "") {
                     $('#<%=txtAffrdStartDate.ClientID%>').val($('#<%=txtCloseDate.ClientID%>').val());
-                }
+                //}
                 PopupAffrdEndDate();
-            });--%>
+            });
 
-            $('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
+          $('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
+                <%--if ($('#<%=txtAffrdStartDate.ClientID%>').val() == "") {
+                    $('#<%=txtAffrdStartDate.ClientID%>').val($('#<%=txtCloseDate.ClientID%>').val());
+                }--%>
+                PopupAffrdEndDate();
+            });
+
+            <%--$('#<%= txtAffrdStartDate.ClientID%>').blur(function () {
                 if ($('#<%=txtCloseDate.ClientID%>').val() == "") {
                     $('#<%=txtCloseDate.ClientID%>').val($('#<%=txtAffrdStartDate.ClientID%>').val());
                 }
                 PopupAffrdEndDate();
-            });
+            });--%>
 
             $('#<%= ddlAffPeriod.ClientID%>').change(function () {
                 PopupAffrdEndDate();
