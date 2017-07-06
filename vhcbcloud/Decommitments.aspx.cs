@@ -992,6 +992,11 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlFundName.SelectedIndex != 0)
             {
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                lblFundName.Text = "";                
+                lblErrorMsg.Text = "";
+
                 lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
@@ -1104,7 +1109,6 @@ namespace vhcbcloud
                     lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
                 else
                     lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
-
         }
     }
 
