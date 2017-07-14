@@ -244,3 +244,110 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* Attribute */
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddEnterpriseGrantAttributes]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddEnterpriseGrantAttributes
+go
+
+create procedure dbo.AddEnterpriseGrantAttributes
+(
+	@EnterImpGrantID		int,
+	@LKAttributeID	int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from EnterpriseGrantAttributes(nolock)
+		where EnterImpGrantID = @EnterImpGrantID 
+			and LKAttributeID = @LKAttributeID
+    )
+	begin
+		insert into EnterpriseGrantAttributes(EnterImpGrantID, LKAttributeID, DateModified)
+		values(@EnterImpGrantID, @LKAttributeID, getdate())
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from EnterpriseGrantAttributes(nolock)
+		where EnterImpGrantID = @EnterImpGrantID 
+			and LKAttributeID = @LKAttributeID
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateEnterpriseGrantAttributes]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateEnterpriseGrantAttributes
+go
+
+create procedure dbo.UpdateEnterpriseGrantAttributes
+(
+	@EnterImpAttributeID	int,
+	@RowIsActive		bit
+) as
+begin transaction
+
+	begin try
+	
+	update EnterpriseGrantAttributes set  RowIsActive = @RowIsActive, DateModified = getdate()
+	from EnterpriseGrantAttributes 
+	where EnterImpAttributeID = @EnterImpAttributeID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEnterpriseGrantAttributesList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetEnterpriseGrantAttributesList
+go
+
+create procedure GetEnterpriseGrantAttributesList
+(
+	@EnterImpGrantID		int,
+	@IsActiveOnly	bit
+)  
+as
+--exec GetEnterpriseGrantAttributesList 1, 1
+begin
+	select  ca.EnterImpAttributeID, ca.LKAttributeID, lv.Description as Attribute, ca.RowIsActive
+	from EnterpriseGrantAttributes ca(nolock)
+	left join LookupValues lv(nolock) on lv.TypeID = ca.LKAttributeID
+	where ca.EnterImpGrantID = @EnterImpGrantID
+	and (@IsActiveOnly = 0 or ca.RowIsActive = @IsActiveOnly)
+		order by ca.DateModified desc
+end
+go

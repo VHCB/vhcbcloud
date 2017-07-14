@@ -213,8 +213,6 @@ namespace vhcbcloud
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
-                    btnGrantInfo.Text = "Update";
-                    cbAddGrantInfo.Checked = true;
 
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
@@ -222,28 +220,8 @@ namespace vhcbcloud
                         e.Row.Cells[6].Controls[0].Visible = false;
 
                         Label lblGrantinfoID = e.Row.FindControl("lblGrantinfoID") as Label;
-                        DataRow dr = GrantMaintenanceData.GetGrantInfo(DataUtils.GetInt(lblGrantinfoID.Text));
-
+                        PopulateGrantInfo(DataUtils.GetInt(lblGrantinfoID.Text));
                         hfGrantinfoID.Value = lblGrantinfoID.Text;
-
-                        txtVHCBName.Text = dr["VHCBName"].ToString() ?? "";
-                        txtAwardAmt.Text = dr["AwardAmt"].ToString() ?? "";
-                        txtBeginDate.Text = dr["BeginDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["BeginDate"].ToString()).ToShortDateString();
-                        txtEndDate.Text = dr["EndDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["EndDate"].ToString()).ToShortDateString();
-                        PopulateDropDown(ddlGrantingAgency, dr["LkGrantAgency"].ToString());
-                        txtGrantName.Text = dr["GrantName"].ToString() ?? "";
-                        PopulateDropDown(ddlGrantorContact, dr["ContactID"].ToString());
-                        txtAwardNum.Text = dr["AwardNum"].ToString() ?? "";
-                        txtCFDANum.Text = dr["CFDA"].ToString() ?? "";
-                        PopulateDropDown(ddlGrantType, dr["LkGrantSource"].ToString());
-                        PopulateDropDown(ddlStaff, dr["Staff"].ToString());
-                        PopulateDropDown(ddlProgram, dr["Program"].ToString());
-                        cbFederalFunds.Checked = DataUtils.GetBool(dr["FedFunds"].ToString());
-                        cbAdmin.Checked = DataUtils.GetBool(dr["Admin"].ToString());
-                        cbMatch.Checked = DataUtils.GetBool(dr["Match"].ToString());
-                        cbFundsReceived.Checked = DataUtils.GetBool(dr["Fundsrec"].ToString());
-                        cbFundActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
-                        cbFundActive.Enabled = true;
                     }
                 }
             }
@@ -251,6 +229,32 @@ namespace vhcbcloud
             {
                 LogError(Pagename, "gvGrantInfo_RowDataBound", "", ex.Message);
             }
+        }
+
+        private void PopulateGrantInfo(int grantinfoID)
+        {
+            btnGrantInfo.Text = "Update";
+            cbAddGrantInfo.Checked = true;
+
+            DataRow dr = GrantMaintenanceData.GetGrantInfo(grantinfoID);
+            txtVHCBName.Text = dr["VHCBName"].ToString() ?? "";
+            txtAwardAmt.Text = dr["AwardAmt"].ToString() ?? "";
+            txtBeginDate.Text = dr["BeginDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["BeginDate"].ToString()).ToShortDateString();
+            txtEndDate.Text = dr["EndDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["EndDate"].ToString()).ToShortDateString();
+            PopulateDropDown(ddlGrantingAgency, dr["LkGrantAgency"].ToString());
+            txtGrantName.Text = dr["GrantName"].ToString() ?? "";
+            PopulateDropDown(ddlGrantorContact, dr["ContactID"].ToString());
+            txtAwardNum.Text = dr["AwardNum"].ToString() ?? "";
+            txtCFDANum.Text = dr["CFDA"].ToString() ?? "";
+            PopulateDropDown(ddlGrantType, dr["LkGrantSource"].ToString());
+            PopulateDropDown(ddlStaff, dr["Staff"].ToString());
+            PopulateDropDown(ddlProgram, dr["Program"].ToString());
+            cbFederalFunds.Checked = DataUtils.GetBool(dr["FedFunds"].ToString());
+            cbAdmin.Checked = DataUtils.GetBool(dr["Admin"].ToString());
+            cbMatch.Checked = DataUtils.GetBool(dr["Match"].ToString());
+            cbFundsReceived.Checked = DataUtils.GetBool(dr["Fundsrec"].ToString());
+            cbFundActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+            cbFundActive.Enabled = true;
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -268,6 +272,7 @@ namespace vhcbcloud
         protected void rdBtnSelectGrantinfo_CheckedChanged(object sender, EventArgs e)
         {
             int GrantInfoID = GetGrantInfoSelectedRecordID(gvGrantInfo);
+            PopulateGrantInfo(GrantInfoID);
             hfGrantinfoID.Value = GrantInfoID.ToString();
             dvNewAttachedFunds.Visible = true;
             BindAttachFundGrid();

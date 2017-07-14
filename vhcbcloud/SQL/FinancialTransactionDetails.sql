@@ -882,6 +882,7 @@ alter procedure [dbo].[AddBoardFinancialTransaction]
 	@transAmt money,
 	@payeeApplicant int = null,
 	@commitmentType varchar(50),
+	@correction	bit,
 	@lkStatus int
 )
 as
@@ -892,10 +893,12 @@ Begin
 	select @recordId = RecordID from LkLookups where Tablename = 'LkTransAction'
 	select @transTypeId = TypeID from LookupValues where LookupType = @recordId and Description = @commitmentType
 	
-	insert into Trans (ProjectID, date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
-		values (@projectId, @transDate, @transAmt, @payeeApplicant, @transTypeId, @lkStatus)
+	insert into Trans (ProjectID, date, TransAmt, PayeeApplicant, LkTransaction, LkStatus, Correction)
+		values (@projectId, @transDate, @transAmt, @payeeApplicant, @transTypeId, @lkStatus, @correction)
 
-	select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+	select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, 
+		tr.PayeeApplicant, tr.LkTransaction, tr.Correction 
+	from Project p 		
 		join Trans tr on tr.ProjectID = p.ProjectId	
 		join LookupValues lv on lv.TypeID = tr.LkStatus
 	Where  tr.RowIsActive=1 	and tr.TransId = @@IDENTITY; 

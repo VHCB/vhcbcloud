@@ -79,7 +79,7 @@
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 14%">
-                                            <span class="labelClass">Project Title</span>
+                                            <span class="labelClass">Title</span>
                                         </td>
                                         <td style="width: 17%">
                                             <asp:TextBox ID="txtProjectTitle" CssClass="clsTextBoxBlue1" runat="server" Width="232px"></asp:TextBox>
@@ -92,7 +92,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 14%"><span class="labelClass">Project Description</span></td>
+                                        <td style="width: 14%"><span class="labelClass">Description</span></td>
                                         <td style="width: 100%" colspan="5">
                                             <asp:TextBox ID="txtProjectDesc" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
                                         </td>
@@ -231,8 +231,7 @@
                                                     <span class="labelClass">Leveraged Funds</span>
                                                 </td>
                                                 <td style="width: 17%"><span class="labelClass" id="spnLevFunds" runat="server"></span></td>
-                                                <td style="width: 13%">
-                                                </td>
+                                                <td style="width: 13%"></td>
                                                 <td style="width: 45%"></td>
                                             </tr>
                                             <tr>
@@ -267,6 +266,85 @@
 
                             </div>
                         </div>
+
+                        <div class="panel-width" runat="server" id="dvAttribute">
+                            <div class="panel panel-default" style="margin-bottom: 2px;">
+                                <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <h3 class="panel-title">Attributes</h3>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Attribute" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvAttributeForm">
+                                    <asp:Panel runat="server" ID="Panel5">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 240px"><span class="labelClass">Enterprise Grant Attribute:</span></td>
+                                                <td style="width: 215px">
+                                                    <asp:DropDownList ID="ddlAttribute" CssClass="clsDropDownLong" runat="server">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td style="width: 100px"></td>
+                                                <td style="width: 180px">
+                                                    <asp:Button ID="btnAddAttribute" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAttribute_Click" />
+
+                                                </td>
+                                                <td style="width: 170px"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
+                                            </tr>
+                                        </table>
+                                    </asp:Panel>
+                                </div>
+
+                                <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvAttributeGrid" runat="server">
+                                    <asp:Panel runat="server" ID="Panel6" Width="100%" Height="100px" ScrollBars="Vertical">
+                                        <asp:GridView ID="gvAttribute" runat="server" AutoGenerateColumns="False"
+                                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                            OnRowEditing="gvAttribute_RowEditing" OnRowCancelingEdit="gvAttribute_RowCancelingEdit" OnRowUpdating="gvAttribute_RowUpdating">
+                                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                            <HeaderStyle CssClass="headerStyle" />
+                                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                            <RowStyle CssClass="rowStyle" />
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="EnterImpAttributeID" Visible="false">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblEnterImpAttributeID" runat="Server" Text='<%# Eval("EnterImpAttributeID") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Attribute">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Attribute") %>' />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="500px" />
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Active">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </EditItemTemplate>
+                                                    <ItemStyle Width="350px" />
+                                                </asp:TemplateField>
+                                                <asp:CommandField ShowEditButton="True" />
+                                            </Columns>
+                                        </asp:GridView>
+                                    </asp:Panel>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -283,11 +361,17 @@
                     $('#<%= dvGrantMatchForm.ClientID%>').toggle(this.checked);
                 }).change();
 
+                $('#<%= dvAttributeForm.ClientID%>').toggle($('#<%= cbAddAttribute.ClientID%>').is(':checked'));
+
+                $('#<%= cbAddAttribute.ClientID%>').click(function () {
+                    $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
+                }).change();
+
                 toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
                 toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
                 toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
                 $('#<%= spnLevFunds.ClientID%>').text(formatter.format($('#<%= spnLevFunds.ClientID%>').text())); //Todo Not working
-                
+
                 $('#<%= txtProjCost.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
                 });
