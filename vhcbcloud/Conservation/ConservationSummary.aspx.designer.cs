@@ -301,6 +301,15 @@ namespace vhcbcloud.Conservation {
         protected global::System.Web.UI.WebControls.CheckBox cbAddEasementHolder;
         
         /// <summary>
+        /// ImgEasementHoldersReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgEasementHoldersReport;
+        
+        /// <summary>
         /// dvEasementHolderForm control.
         /// </summary>
         /// <remarks>
@@ -380,6 +389,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddAcreage;
+        
+        /// <summary>
+        /// ImgAcreage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgAcreage;
         
         /// <summary>
         /// dvNewAcreageForm control.
@@ -470,6 +488,15 @@ namespace vhcbcloud.Conservation {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSurfaceWaters;
+        
+        /// <summary>
+        /// ImgSurfaceWaters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgSurfaceWaters;
         
         /// <summary>
         /// dvNewSurfaceWatersForm control.

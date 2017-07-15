@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
@@ -294,7 +295,7 @@ namespace vhcbcloud.Conservation
                         txtDateOrdered.Text = dr["AppOrdered"].ToString() == "" ? "" : Convert.ToDateTime(dr["AppOrdered"].ToString()).ToShortDateString();
                         txtDateReceived.Text = dr["AppRecd"].ToString() == "" ? "" : Convert.ToDateTime(dr["AppRecd"].ToString()).ToShortDateString();
                         txtEffectiveDate.Text = dr["EffDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["EffDate"].ToString()).ToShortDateString();
-                        txtTotalCost.Text = DataUtils.GetDecimal(dr["AppCost"].ToString()).ToString("#.##");
+                        txtTotalCost.Text = dr["AppCost"].ToString();
                         txtNotes.Text = dr["Comment"].ToString();
                         txtDateNRCS.Text = dr["NRCSSent"].ToString() == "" ? "" : Convert.ToDateTime(dr["NRCSSent"].ToString()).ToShortDateString();
                         cbReviewApproved.Checked = DataUtils.GetBool(dr["RevApproved"].ToString());
@@ -390,7 +391,7 @@ namespace vhcbcloud.Conservation
             {
                 AppraisalResult objAppraisalResult = ConservationAppraisalsData.AddConservationAppraisalInfo((DataUtils.GetInt(hfAppraisalID.Value)),
                     DataUtils.GetInt(ddlAppraiser.SelectedValue.ToString()), DataUtils.GetDate(txtDateOrdered.Text), DataUtils.GetDate(txtDateReceived.Text),
-                    DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(txtTotalCost.Text), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
+                    DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(Regex.Replace(txtTotalCost.Text, "[^0-9a-zA-Z.]+", "")), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
                     cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text), URL);
 
                 ClearAppraisalInfoForm();
@@ -407,7 +408,7 @@ namespace vhcbcloud.Conservation
             {
                 ConservationAppraisalsData.UpdateConservationAppraisalInfo((DataUtils.GetInt(hfAppraisalInfoID.Value)),
                    DataUtils.GetInt(ddlAppraiser.SelectedValue.ToString()), DataUtils.GetDate(txtDateOrdered.Text), DataUtils.GetDate(txtDateReceived.Text),
-                   DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(txtTotalCost.Text), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
+                   DataUtils.GetDate(txtEffectiveDate.Text), DataUtils.GetDecimal(Regex.Replace(txtTotalCost.Text, "[^0-9a-zA-Z.]+", "")), txtNotes.Text, DataUtils.GetDate(txtDateNRCS.Text),
                    cbReviewApproved.Checked, DataUtils.GetDate(txtReviewApprovedDate.Text), chkAppraisalInfoActive.Checked, URL);
 
                 gvAppraisalInfo.EditIndex = -1;

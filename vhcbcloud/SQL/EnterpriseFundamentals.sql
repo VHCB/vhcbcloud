@@ -5,7 +5,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEn
 drop procedure [dbo].GetEnterpriseFundamentals
 go
 
-create procedure GetEnterpriseFundamentals
+create  procedure GetEnterpriseFundamentals
 (
 	@ProjectID		int
 )  
@@ -15,12 +15,11 @@ begin
 	select  EnterFundamentalID, efd.ProjectID, PlanType,
 		ServiceProvOrg, 
 		LeadAdvisor, 
-		HearAbout, 
-		ProjDesc, BusDesc, YrManageBus, efd.RowIsActive, LkProgram, lv2.Description 'ProjectProgram'
+		ProjDesc, BusDesc, efd.RowIsActive, LkProgram, lv2.Description 'ProjectProgram'
 	from EnterpriseFundamentals efd(nolock)
 	join Project p(nolock) on efd.ProjectID = p.ProjectId
 	left join LookupValues lv(nolock) on lv.TypeID = efd.PlanType
-	left join LookupValues lv1(nolock) on lv1.TypeID = efd.HearAbout
+	--left join LookupValues lv1(nolock) on lv1.TypeID = efd.HearAbout
 	left join LookupValues lv2(nolock) on lv2.TypeID = LkProgram
 	where efd.ProjectID = @ProjectID
 end
@@ -147,6 +146,7 @@ create procedure dbo.AddEnterpriseFinancialJobs
 	@GrossPayroll	money,
 	@FamilyEmp		int,
 	@NonFamilyEmp	int,
+	@Networth		money,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -164,8 +164,8 @@ begin transaction
 		where ProjectID = @ProjectID and MilestoneID = @MilestoneID
     )
 	begin
-		insert into EnterpriseFinancialJobs(ProjectID, MilestoneID, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp)
-		values(@ProjectID, @MilestoneID, @MSDate, @Year, @GrossSales, @Netincome, @GrossPayroll, @FamilyEmp, @NonFamilyEmp)
+		insert into EnterpriseFinancialJobs(ProjectID, MilestoneID, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp, Networth)
+		values(@ProjectID, @MilestoneID, @MSDate, @Year, @GrossSales, @Netincome, @GrossPayroll, @FamilyEmp, @NonFamilyEmp, @Networth)
 		
 		set @isDuplicate = 0
 	end
@@ -206,6 +206,7 @@ create procedure dbo.UpdateEnterpriseFinancialJobs
 	@GrossPayroll	money,
 	@FamilyEmp		int,
 	@NonFamilyEmp	int,
+	@Networth		money,
 	@RowIsActive		bit
 ) as
 begin transaction
@@ -221,6 +222,7 @@ begin transaction
 		GrossPayroll = @GrossPayroll,
 		FamilyEmp = @FamilyEmp,
 		NonFamilyEmp = @NonFamilyEmp,
+		Networth = @Networth,
 		RowIsActive = @RowIsActive, 
 		DateModified = getdate()
 	from EnterpriseFinancialJobs 
@@ -254,6 +256,7 @@ begin
 	select EnterFinancialJobsID, MilestoneID, MSDate, Year, 
 	convert(varchar(10), GrossSales) GrossSales, convert(varchar(10), Netincome) Netincome, 
 	convert(varchar(10), GrossPayroll) GrossPayroll, FamilyEmp, NonFamilyEmp, 
+	convert(varchar(10), Networth) Networth,
 	efj.RowIsActive, efj.DateModified 
 	from EnterpriseFinancialJobs efj(nolock)
 	left join LookupValues lv(nolock) on lv.TypeID = efj.MilestoneID

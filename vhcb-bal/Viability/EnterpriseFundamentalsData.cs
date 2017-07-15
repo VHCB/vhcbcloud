@@ -45,7 +45,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFundamentals(int ProjectId, int PlanType, int ServiceProvOrg, int LeadAdvisor,
-            int HearAbout, string ProjDesc, string BusDesc, string YrManageBus)
+            string ProjDesc, string BusDesc)
         {
             try
             {
@@ -63,10 +63,10 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
-                        command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        //command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
-                        command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
+                        //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -94,7 +94,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFundamentals(int EnterFundamentalID, int PlanType, int ServiceProvOrg, int LeadAdvisor, 
-            int HearAbout, string ProjDesc, string BusDesc, string YrManageBus, bool RowIsActive)
+            string ProjDesc, string BusDesc, bool RowIsActive)
         {
             try
             {
@@ -113,10 +113,10 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
-                        command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        //command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
-                        command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
+                        //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -199,7 +199,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFinancialJobs(int ProjectId, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth)
         {
             try
             {
@@ -222,6 +222,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
+                        command.Parameters.Add(new SqlParameter("Networth", Networth));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -249,7 +250,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFinancialJobs(int EnterFinancialJobsID, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, bool RowIsActive)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth, bool RowIsActive)
         {
             try
             {
@@ -272,6 +273,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
+                        command.Parameters.Add(new SqlParameter("Networth", Networth));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

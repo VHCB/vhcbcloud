@@ -18,6 +18,8 @@
                         <td style="width: 150px">
                             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
                         <td style="text-align: right">
+                             <asp:ImageButton ID="GridLookupValuesReport" ImageUrl="~/Images/print.png" ToolTip="Grid Lookup Values Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="GridLookupValuesReport_Click" />
                             <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                 OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                         </td>

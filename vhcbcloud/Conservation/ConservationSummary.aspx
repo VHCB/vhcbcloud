@@ -206,6 +206,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddEasementHolder" runat="server" Text="Add New Easement Holder" />
+                                         <asp:ImageButton ID="ImgEasementHoldersReport" ImageUrl="~/Images/print.png" ToolTip="Conservation Easement Holders Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgEasementHoldersReport_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -288,6 +290,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAcreage" runat="server" Text="Add New Acreage" />
+                                          <asp:ImageButton ID="ImgAcreage" ImageUrl="~/Images/print.png" ToolTip="Acreage Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAcreage_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -389,6 +393,8 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSurfaceWaters" runat="server" Text="Add New Surface Waters" />
+                                          <asp:ImageButton ID="ImgSurfaceWaters" ImageUrl="~/Images/print.png" ToolTip="Surface Waters Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgSurfaceWaters_Click" />
                                     </td>
                                 </tr>
                             </table>

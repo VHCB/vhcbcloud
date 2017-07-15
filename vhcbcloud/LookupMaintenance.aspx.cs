@@ -473,5 +473,13 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
+
+        protected void GridLookupValuesReport_Click(object sender, ImageClickEventArgs e)
+        {
+            recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+            if (recordId != 0)
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(recordId.ToString(), "Grid Lookup Values"));
+        }
     }
 }

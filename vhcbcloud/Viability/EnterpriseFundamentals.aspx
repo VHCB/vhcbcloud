@@ -76,14 +76,14 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 14%"><span class="labelClass">Type of Planning Work</span></td>
-                                        <td style="width: 19%">
+                                        <td style="width: 18%">
                                             <asp:DropDownList ID="ddlPlanType" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 11%">
+                                        <td style="width: 13%">
                                             <span class="labelClass">Service Provider Org</span>
                                         </td>
-                                        <td style="width: 17%">
+                                        <td style="width: 20%">
                                             <asp:DropDownList ID="ddlServiceProvOrg" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
@@ -97,7 +97,7 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                    <tr>
+                                  <%--  <tr>
                                         <td style="width: 14%" colspan="2"><span class="labelClass">How did you hear about the Viability Program?</span></td>
                                         <td style="width: 19%">
                                             <asp:DropDownList ID="ddlHearViability" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
@@ -114,8 +114,6 @@
                                         <td style="width: 14%" colspan="2"><span class="labelClass">Year Began Managing Business</span></td>
                                         <td style="width: 19%">
                                             <asp:TextBox ID="txtYearMangBusiness" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" Width="44px"></asp:TextBox>
-                                            <%-- <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
-                                            </ajaxToolkit:CalendarExtender>--%>
                                         </td>
                                         <td style="width: 11%"></td>
                                         <td style="width: 17%"></td>
@@ -123,7 +121,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
                                         <td style="width: 14%"><span class="labelClass">Project Description</span></td>
                                         <td colspan="5">
@@ -157,7 +155,7 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Financial/Jobs</h3>
+                                                <h3 class="panel-title">Job/Financial Year</h3>
                                             </td>
                                             <td style="text-align: right">
                                                 <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Financial/Job" />
@@ -189,7 +187,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px"></td>
+                                                <td colspan="6" style="height: 6px"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 167px"><span class="labelClass">Gross Sales</span></td>
@@ -208,7 +206,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px"></td>
+                                                <td colspan="6" style="height: 6px"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 167px"><span class="labelClass">Family Full-time Employees</span></td>
@@ -227,26 +225,27 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px"></td>
+                                                <td colspan="6" style="height: 6px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 167px"><span class="labelClass">Active</span></td>
+                                                <td style="width: 167px"><span class="labelClass">Networth</span></td>
                                                 <td style="width: 167px">
-                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" />
+                                                    <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                                 </td>
-                                                <td style="width: 167px">
+                                                <td style="width: 167px"><span class="labelClass">Active</span>
                                                 </td>
                                                 <td style="width: 147px">
+                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" />
                                                 </td>
                                                 <td style="width: 139px"></td>
                                                 <td>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px"></td>
+                                                <td colspan="6" style="height: 6px"></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px">
+                                                <td colspan="6" style="height: 6px">
                                                     <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" /></td>
                                             </tr>
                                         </table>
@@ -329,6 +328,11 @@
             toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
             toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
             toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+            toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+            
+            $('#<%= txtNetworth.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+            });
 
              $('#<%= txtGrossSales.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));

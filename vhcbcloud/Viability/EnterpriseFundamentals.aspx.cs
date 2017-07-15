@@ -48,8 +48,8 @@ namespace vhcbcloud.Viability
                 PopulateDropDown(ddlPlanType, drEntFunDetails["PlanType"].ToString());
                 PopulateDropDown(ddlServiceProvOrg, drEntFunDetails["ServiceProvOrg"].ToString());
                 PopulateDropDown(ddlLeadAdvisor, drEntFunDetails["LeadAdvisor"].ToString());
-                PopulateDropDown(ddlHearViability, drEntFunDetails["HearAbout"].ToString());
-                txtYearMangBusiness.Text = drEntFunDetails["YrManageBus"].ToString();
+                //PopulateDropDown(ddlHearViability, drEntFunDetails["HearAbout"].ToString());
+                //txtYearMangBusiness.Text = drEntFunDetails["YrManageBus"].ToString();
                 txtProjectDesc.Text = drEntFunDetails["ProjDesc"].ToString();
                 txtBusinessDesc.Text = drEntFunDetails["BusDesc"].ToString();
 
@@ -111,7 +111,7 @@ namespace vhcbcloud.Viability
             BindLookUP(ddlPlanType, 216);
             BindApplicants(26242, "organization", ddlServiceProvOrg);
             BindApplicants(26243, "individual", ddlLeadAdvisor);
-            BindLookUP(ddlHearViability, 215);
+            //BindLookUP(ddlHearViability, 215);
         }
 
         protected void BindApplicants(int RoleId, string RoleName, DropDownList ddList)
@@ -226,8 +226,8 @@ namespace vhcbcloud.Viability
                     int EnterFundamentalID = DataUtils.GetInt(hfEnterFundamentalID.Value);
                     EnterpriseFundamentalsData.UpdateEnterpriseFundamentals(EnterFundamentalID, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtProjectDesc.Text, txtBusinessDesc.Text,
-                        txtYearMangBusiness.Text, true);
+                       txtProjectDesc.Text, txtBusinessDesc.Text,
+                        true);
 
                     LogMessage("Plan Info updated successfully");
                 }
@@ -235,8 +235,7 @@ namespace vhcbcloud.Viability
                 {
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFundamentals(ProjectId, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtProjectDesc.Text, txtBusinessDesc.Text,
-                        txtYearMangBusiness.Text);
+                        txtProjectDesc.Text, txtBusinessDesc.Text);
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
                         LogMessage("Plan Info already exist as in-active");
@@ -267,7 +266,9 @@ namespace vhcbcloud.Viability
                         txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
                         DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), chkActive.Checked);
+                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")), 
+                        chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
 
@@ -280,7 +281,8 @@ namespace vhcbcloud.Viability
                         txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
                         DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text));
+                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -410,6 +412,7 @@ namespace vhcbcloud.Viability
                         txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
                         txtFamilyFTEmp.Text = dr["FamilyEmp"].ToString() ?? "";
                         txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
+                        txtNetworth.Text = dr["Networth"].ToString() ?? "";
 
                         spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) + DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
 

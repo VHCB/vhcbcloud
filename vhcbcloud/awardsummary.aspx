@@ -19,6 +19,8 @@
                         <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtFromCommitedProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                             OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                         </ajaxToolkit:AutoCompleteExtender>
+                        <asp:ImageButton ID="AwardSummaryReport" ImageUrl="~/Images/print.png" ToolTip="Award Summary Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="AwardSummaryReport_Click" />
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"

@@ -193,24 +193,6 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.DropDownList ddlLeadAdvisor;
         
         /// <summary>
-        /// ddlHearViability control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlHearViability;
-        
-        /// <summary>
-        /// txtYearMangBusiness control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtYearMangBusiness;
-        
-        /// <summary>
         /// txtProjectDesc control.
         /// </summary>
         /// <remarks>
@@ -362,6 +344,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
+        
+        /// <summary>
+        /// txtNetworth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNetworth;
         
         /// <summary>
         /// chkActive control.

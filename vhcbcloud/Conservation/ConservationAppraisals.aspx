@@ -107,12 +107,12 @@
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                 <tr>
-                                        <td style="width: 160px"><span class="labelClass">Comments</span></td>
-                                        <td colspan="5">
-                                            <asp:TextBox ID="txtAppraisalValueComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td style="width: 160px"><span class="labelClass">Comments</span></td>
+                                    <td colspan="5">
+                                        <asp:TextBox ID="txtAppraisalValueComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
@@ -217,7 +217,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td style="width: 150px"><span class="labelClass">URL</span></td>
+                                        <td style="width: 150px"><span class="labelClass">URL</span></td>
                                         <td colspan="4">
                                             <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlue1" runat="server" Width="218px"></asp:TextBox>
                                         </td>
@@ -293,7 +293,7 @@
                                                 <asp:Label ID="lblAppRecd" runat="Server" Text='<%# Eval("AppRecd", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Effective Date">
+                                        <asp:TemplateField HeaderText="Effective Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblEffDate" runat="Server" Text='<%# Eval("EffDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
@@ -304,8 +304,8 @@
                                                 <asp:HiddenField ID="HiddenAppraisalTotalCost" runat="server" Value='<%#Eval("AppCost")%>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
-                                              <ItemTemplate>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -451,6 +451,11 @@
 
             <script language="javascript">
                 $(document).ready(function () {
+                    toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
+                    $('#<%= txtTotalCost.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
+                     });
+
                     $('#<%= dvAppraisalInfoForm.ClientID%>').toggle($('#<%= cbAddAppraisalInfo.ClientID%>').is(':checked'));
                     $('#<%= cbAddAppraisalInfo.ClientID%>').click(function () {
                         $('#<%= dvAppraisalInfoForm.ClientID%>').toggle(this.checked);
@@ -484,14 +489,14 @@
 
                 function CalEasementValPerAcre() {
                     var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
-             var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
-             var EasementValPerAcre = Eval / Total;
+                    var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
+                    var EasementValPerAcre = Eval / Total;
 
-             $('#<%= spEasementValuePerAcre.ClientID%>').html(EasementValPerAcre.toPrecision(2));
-        };
+                    $('#<%= spEasementValuePerAcre.ClientID%>').html(EasementValPerAcre.toPrecision(2));
+         };
 
-        function PopupAwardSummary() {
-            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+         function PopupAwardSummary() {
+             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };
 
         function RadioCheck(rb) {

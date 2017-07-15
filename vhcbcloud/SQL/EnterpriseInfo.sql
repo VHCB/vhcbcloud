@@ -456,7 +456,7 @@ begin transaction
 --exec GetEnterprisePrimeProduct 1
 	begin try
 	
-		select PrimaryProduct 
+		select PrimaryProduct, HearAbout, YrManageBus
 		from EnterprisePrimeProduct (nolock)
 		where ProjectID = @ProjectID
 	end try
