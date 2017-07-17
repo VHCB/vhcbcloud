@@ -248,17 +248,47 @@
                                         <td style="width: 136px">
                                             <asp:TextBox ID="txtAcresInProd" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 115px"><span class="labelClass">Acres Leased</span></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
                                         <td style="width: 140px">
+                                        </td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 15px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Acres Leased</span></td>
+                                        <td class="modal-sm" style="width: 129px">
                                             <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">Total Acres</span></td>
-                                        <td style="width: 100px">
+                                        <td style="width: 129px"><span class="labelClass"></span></td>
+                                        <td style="width: 136px"></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
+                                        <td style="width: 140px"></td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 15px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Total Acres</span></td>
+                                        <td class="modal-sm" style="width: 129px">
                                             <span class="labelClass" runat="server" id="spnTotalAcres"></span>
                                         </td>
+                                        <td style="width: 129px"><span class="labelClass"></span></td>
+                                        <td style="width: 136px"><asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
+                                        <td style="width: 140px"></td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
                                         <td style="width: 15px"></td>
-                                        <td>
-                                            <asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="10" style="height: 5px"></td>
