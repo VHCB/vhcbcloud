@@ -322,7 +322,20 @@ create procedure dbo.AddEnterpriseServProviderData
 	@AddEnrolleeProjCost	money, 
 	@WorkshopsEvents		int, 
 	@WorkShopEventProjCost	money, 
+	@SplProjects			nvarchar(max),
 	@Notes					nvarchar(max),
+	@BusPlans1				int, 
+	@BusPlanProjCost1		money, 
+	@CashFlows1				int, 
+	@CashFlowProjCost1		money,
+	@Yr2Followup1			int, 
+	@Yr2FollowUpProjCost1	money, 
+	@AddEnrollees1			int, 
+	@AddEnrolleeProjCost1	money, 
+	@WorkshopsEvents1		int, 
+	@WorkShopEventProjCost1	money, 
+	@SplProjects1			nvarchar(max),
+	@Notes1					nvarchar(max),
 	@isDuplicate			bit output,
 	@isActive				bit Output
 ) as
@@ -336,20 +349,29 @@ begin transaction
 	if not exists
     (
 		select 1
-		from EnterpriseServProviderData(nolock)
+		from EnterpriseMasterServiceProvider(nolock)
 		where ProjectID = @ProjectID and Year = @Year
     )
 	begin
-		insert into EnterpriseServProviderData(ProjectID, Year, BusPlans, BusPlanProjCost, CashFlows, CashFlowProjCost, Yr2Followup, Yr2FollowUpProjCost, AddEnrollees, AddEnrolleeProjCost, WorkshopsEvents, WorkShopEventProjCost, Notes)
-		values(@ProjectID, @Year, @BusPlans, @BusPlanProjCost, @CashFlows, @CashFlowProjCost, @Yr2Followup, @Yr2FollowUpProjCost, @AddEnrollees, @AddEnrolleeProjCost, @WorkshopsEvents, @WorkShopEventProjCost, @Notes)
+		declare @EnterpriseMasterServiceProvID int
+		insert into EnterpriseMasterServiceProvider(ProjectID, Year)
+		values(@ProjectID, @Year)
+
+		set @EnterpriseMasterServiceProvID = @@Identity
+
+		insert into EnterpriseServProviderData(EnterpriseMasterServiceProvID, PrePost, BusPlans, BusPlanProjCost, CashFlows, CashFlowProjCost, Yr2Followup, Yr2FollowUpProjCost, AddEnrollees, AddEnrolleeProjCost, WorkshopsEvents, WorkShopEventProjCost, SpecialProj, Notes)
+		values(@EnterpriseMasterServiceProvID, 1, @BusPlans, @BusPlanProjCost, @CashFlows, @CashFlowProjCost, @Yr2Followup, @Yr2FollowUpProjCost, @AddEnrollees, @AddEnrolleeProjCost, @WorkshopsEvents, @WorkShopEventProjCost, @SplProjects, @Notes)
 		
+		insert into EnterpriseServProviderData(EnterpriseMasterServiceProvID, PrePost, BusPlans, BusPlanProjCost, CashFlows, CashFlowProjCost, Yr2Followup, Yr2FollowUpProjCost, AddEnrollees, AddEnrolleeProjCost, WorkshopsEvents, WorkShopEventProjCost, SpecialProj, Notes)
+		values(@EnterpriseMasterServiceProvID, 2, @BusPlans1, @BusPlanProjCost1, @CashFlows1, @CashFlowProjCost1, @Yr2Followup1, @Yr2FollowUpProjCost1, @AddEnrollees1, @AddEnrolleeProjCost1, @WorkshopsEvents1, @WorkShopEventProjCost1, @SplProjects1, @Notes1)
+
 		set @isDuplicate = 0
 	end
 
 	if(@isDuplicate = 1)
 	begin
 		select @isActive =  RowIsActive
-		from EnterpriseServProviderData(nolock)
+		from EnterpriseMasterServiceProvider(nolock)
 		where ProjectID = @ProjectID and Year = @Year
 	end
 
@@ -420,20 +442,21 @@ go
 
 create procedure GetEnterpriseServProviderDataById
 (
-	@EnterServiceProvID		int
+	@EnterpriseMasterServiceProvID		int
 )  
 as 
---exec GetEnterpriseServProviderDataById 2790
+--exec GetEnterpriseServProviderDataById 1
 begin
-	select EnterServiceProvID, ProjectID, Year, 
-	BusPlans, convert(varchar(10), BusPlanProjCost) BusPlanProjCost, 
-	CashFlows, convert(varchar(10), CashFlowProjCost) CashFlowProjCost, 
-	Yr2Followup, convert(varchar(10), Yr2FollowUpProjCost) Yr2FollowUpProjCost, 
-	AddEnrollees, convert(varchar(10), AddEnrolleeProjCost) AddEnrolleeProjCost, 
-	WorkshopsEvents, convert(varchar(10), WorkShopEventProjCost) WorkShopEventProjCost, 
-	Notes, RowIsActive, DateModified 
-	from EnterpriseServProviderData (nolock)
-	where EnterServiceProvID = @EnterServiceProvID
+	select m.ProjectID, m.Year, c.PrePost, 
+	c.BusPlans, convert(varchar(10), c.BusPlanProjCost) BusPlanProjCost, 
+	c.CashFlows, convert(varchar(10), c.CashFlowProjCost) CashFlowProjCost, 
+	c.Yr2Followup, convert(varchar(10), c.Yr2FollowUpProjCost) Yr2FollowUpProjCost, 
+	c.AddEnrollees, convert(varchar(10), c.AddEnrolleeProjCost) AddEnrolleeProjCost, 
+	c.WorkshopsEvents, convert(varchar(10), c.WorkShopEventProjCost) WorkShopEventProjCost, 
+	c.SpecialProj, c.Notes 
+	from EnterpriseMasterServiceProvider m(nolock)
+	join EnterpriseServProviderData c(nolock) on m.EnterpriseMasterServiceProvID = c.EnterpriseMasterServiceProvID
+	where m.EnterpriseMasterServiceProvID = @EnterpriseMasterServiceProvID
 end
 go
 
@@ -451,17 +474,11 @@ begin transaction
 --exec GetEnterpriseServProviderDataList 1, 1
 	begin try
 	
-		select EnterServiceProvID, ProjectID, Year, 
-			BusPlans, convert(varchar(10), BusPlanProjCost) BusPlanProjCost, 
-			CashFlows, convert(varchar(10), CashFlowProjCost) CashFlowProjCost, 
-			Yr2Followup, convert(varchar(10), Yr2FollowUpProjCost) Yr2FollowUpProjCost, 
-			AddEnrollees, convert(varchar(10), AddEnrolleeProjCost) AddEnrolleeProjCost, 
-			WorkshopsEvents, convert(varchar(10), WorkShopEventProjCost) WorkShopEventProjCost, 
-			Notes, RowIsActive, DateModified 
-		from EnterpriseServProviderData (nolock)
+		select EnterpriseMasterServiceProvID, ProjectID, Year, RowIsActive
+		from EnterpriseMasterServiceProvider (nolock)
 		where ProjectID = @ProjectID
 			and (@IsActiveOnly = 0 or RowIsActive = @IsActiveOnly)
-		order by EnterServiceProvID desc
+		order by year desc
 
 	end try
 	begin catch

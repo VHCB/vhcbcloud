@@ -156,7 +156,7 @@ namespace vhcbcloud.Viability
                 {
                     if (btnAddServiceProviders.Text.ToLower() == "update")
                     {
-                        int EnterServiceProvID = DataUtils.GetInt(hfEnterServiceProvID.Value);
+                        int EnterServiceProvID = DataUtils.GetInt(hfEnterpriseMasterServiceProvID.Value);
                         EnterpriseServiceProvidersData.UpdateEnterpriseServProviderData(EnterServiceProvID,
                             txtYear.Text, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
@@ -177,7 +177,13 @@ namespace vhcbcloud.Viability
                             txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtNotes.Text);
+                            txtSplProjects.Text, txtNotes.Text,
+                            txtBusPlans1.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows1.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup1.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees1.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents1.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtSplProjects1.Text, txtNotes1.Text);
 
 
                         if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -247,28 +253,83 @@ namespace vhcbcloud.Viability
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[2].Controls[0].Visible = false;
 
-                        Label lblEnterServiceProvID = e.Row.FindControl("lblEnterServiceProvID") as Label;
-                        DataRow dr = EnterpriseServiceProvidersData.GetEnterpriseServProviderDataById(DataUtils.GetInt(lblEnterServiceProvID.Text));
+                        Label lblEnterpriseMasterServiceProvID = e.Row.FindControl("lblEnterpriseMasterServiceProvID") as Label;
+                        DataTable dt = EnterpriseServiceProvidersData.GetEnterpriseServProviderDataById(DataUtils.GetInt(lblEnterpriseMasterServiceProvID.Text));
 
-                        hfEnterServiceProvID.Value = lblEnterServiceProvID.Text;
+                        hfEnterpriseMasterServiceProvID.Value = lblEnterpriseMasterServiceProvID.Text;
 
-                        txtYear.Text = dr["Year"].ToString() ?? "";
-                        txtBusPlans.Text = dr["BusPlans"].ToString() ?? "";
-                        txtBusPlanProjCost.Text = dr["BusPlanProjCost"].ToString() ?? "";
-                        txtCashFlows.Text = dr["CashFlows"].ToString() ?? "";
-                        txtCashFlowProjCost.Text = dr["CashFlowProjCost"].ToString() ?? "";
-                        txtYr2Followup.Text = dr["Yr2Followup"].ToString() ?? "";
-                        txtYr2FollowUpProjCost.Text = dr["Yr2FollowUpProjCost"].ToString() ?? "";
-                        txtAddEnrollees.Text = dr["AddEnrollees"].ToString() ?? "";
-                        txtAddEnrolleeProjCost.Text = dr["AddEnrolleeProjCost"].ToString() ?? "";
-                        txtWorkshopsEvents.Text = dr["WorkshopsEvents"].ToString() ?? "";
-                        txtWorkShopEventProjCost.Text = dr["WorkShopEventProjCost"].ToString() ?? "";
-                        txtNotes.Text = dr["Notes"].ToString() ?? "";
+                        if (dt.Rows.Count == 2)
+                        {
+                            DataRow dr = dt.Rows[0];
+                            txtYear.Text = dr["Year"].ToString() ?? "";
 
-                        chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
-                        chkActive.Enabled = true;
+                            txtBusPlans.Text = dr["BusPlans"].ToString() ?? "";
+                            txtBusPlanProjCost.Text = dr["BusPlanProjCost"].ToString() ?? "";
+                            var bTotal = DataUtils.GetInt(txtBusPlans.Text) * DataUtils.GetDecimal(txtBusPlanProjCost.Text);
+                            spnBusPlanTotal.InnerText = " $ " + bTotal.ToString();
+
+                            txtCashFlows.Text = dr["CashFlows"].ToString() ?? "";
+                            txtCashFlowProjCost.Text = dr["CashFlowProjCost"].ToString() ?? "";
+                            var cTotal = DataUtils.GetInt(txtCashFlows.Text) * DataUtils.GetDecimal(txtCashFlowProjCost.Text);
+                            spnCashFlowTotal.InnerText = " $ " + cTotal.ToString();
+
+                            txtYr2Followup.Text = dr["Yr2Followup"].ToString() ?? "";
+                            txtYr2FollowUpProjCost.Text = dr["Yr2FollowUpProjCost"].ToString() ?? "";
+                            var yTotal = DataUtils.GetInt(txtYr2Followup.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost.Text);
+                            spnYest2FollowupsTotal.InnerText = " $ " + yTotal.ToString();
+
+                            txtAddEnrollees.Text = dr["AddEnrollees"].ToString() ?? "";
+                            txtAddEnrolleeProjCost.Text = dr["AddEnrolleeProjCost"].ToString() ?? "";
+                            var aTotal = DataUtils.GetInt(txtAddEnrollees.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost.Text);
+                            spnAddEnrolleeProjTotal.InnerText = " $ " + aTotal.ToString();
+
+                            txtWorkshopsEvents.Text = dr["WorkshopsEvents"].ToString() ?? "";
+                            txtWorkShopEventProjCost.Text = dr["WorkShopEventProjCost"].ToString() ?? "";
+                            var wTotal = DataUtils.GetInt(txtWorkshopsEvents.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost.Text);
+                            spnWorkshopsTotal.InnerText = " $ " + wTotal.ToString();
+
+                            txtNotes.Text = dr["Notes"].ToString() ?? "";
+                            txtSplProjects.Text = dr["SpecialProj"].ToString() ?? "";
+
+                            spnGrandTotal.InnerText = " $ " + (bTotal + cTotal + yTotal + aTotal + wTotal).ToString();
+
+                            DataRow dr1 = dt.Rows[1];
+
+                            txtBusPlans1.Text = dr1["BusPlans"].ToString() ?? "";
+                            txtBusPlanProjCost1.Text = dr1["BusPlanProjCost"].ToString() ?? "";
+                            var bTotal1 = DataUtils.GetInt(txtBusPlans1.Text) * DataUtils.GetDecimal(txtBusPlanProjCost1.Text);
+                            spnBusPlanTotal1.InnerText = " $ " + bTotal1.ToString();
+
+                            txtCashFlows1.Text = dr1["CashFlows"].ToString() ?? "";
+                            txtCashFlowProjCost1.Text = dr1["CashFlowProjCost"].ToString() ?? "";
+                            var cTotal1 = DataUtils.GetInt(txtCashFlows1.Text) * DataUtils.GetDecimal(txtCashFlowProjCost1.Text);
+                            spnCashFlowTotal1.InnerText = " $ " + cTotal1.ToString();
+
+                            txtYr2Followup1.Text = dr1["Yr2Followup"].ToString() ?? "";
+                            txtYr2FollowUpProjCost1.Text = dr1["Yr2FollowUpProjCost"].ToString() ?? "";
+                            var yTotal1 = DataUtils.GetInt(txtYr2Followup1.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost1.Text);
+                            spnYest2FollowupsTotal1.InnerText = " $ " + yTotal1.ToString();
+
+                            txtAddEnrollees1.Text = dr1["AddEnrollees"].ToString() ?? "";
+                            txtAddEnrolleeProjCost1.Text = dr1["AddEnrolleeProjCost"].ToString() ?? "";
+                            var aTotal1 = DataUtils.GetInt(txtAddEnrollees1.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost1.Text);
+                            spnAddEnrolleeProjTotal1.InnerText = " $ " + aTotal1.ToString();
+
+                            txtWorkshopsEvents1.Text = dr1["WorkshopsEvents"].ToString() ?? "";
+                            txtWorkShopEventProjCost1.Text = dr1["WorkShopEventProjCost"].ToString() ?? "";
+                            var wTotal1 = DataUtils.GetInt(txtWorkshopsEvents1.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost1.Text);
+                            spnWorkshopsTotal1.InnerText = " $ " + wTotal1.ToString();
+
+                            spnGrandTotal1.InnerText = " $ " + (bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1).ToString();
+
+                            txtNotes1.Text = dr1["Notes"].ToString() ?? "";
+                            txtSplProjects1.Text = dr1["SpecialProj"].ToString() ?? "";
+
+                            //chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                            //chkActive.Enabled = true;
+                        }
                     }
                 }
             }
@@ -300,7 +361,21 @@ namespace vhcbcloud.Viability
             txtWorkshopsEvents.Text = "";
             txtWorkShopEventProjCost.Text = "";
             txtNotes.Text = "";
+            txtSplProjects.Text = "";
 
+            txtBusPlans1.Text = "";
+            txtBusPlanProjCost1.Text = "";
+            txtCashFlows1.Text = "";
+            txtCashFlowProjCost1.Text = "";
+            txtYr2Followup1.Text = "";
+            txtYr2FollowUpProjCost1.Text = "";
+            txtAddEnrollees1.Text = "";
+            txtAddEnrolleeProjCost1.Text = "";
+            txtWorkshopsEvents1.Text = "";
+            txtWorkShopEventProjCost1.Text = "";
+            txtNotes1.Text = "";
+            txtSplProjects1
+                .Text = "";
             cbAddYear.Checked = false;
             chkActive.Enabled = false;
 

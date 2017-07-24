@@ -99,14 +99,14 @@ begin
 	where defname = 1 and tr.lkstatus = 261 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
 	and 
 	(select count(*) from ProjectCheckReqQuestions where ProjectCheckReqID = pcr.ProjectCheckReqID and Approved = 0)>0
-	and 
-	pcr.Voucher# is not null
+/**	and 
+	pcr.Voucher# is not null **/ --Dan commented this voucher condition
 	
 	and tr.RowIsActive=1 and pn.defname=1 and p.Proj_num like @filter +'%'	
 	group by p.projectid, proj_num
-	order by proj_num 
+	order by proj_num  
 end
-
+go
 
 
 alter procedure getCommittedProjectslistNoPendingTrans
@@ -2274,7 +2274,7 @@ Begin
 	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
 	join AppName an(nolock) on aan.AppNameID = an.AppNameID
 	join LookupValues lv on lv.TypeID = t.LkStatus
-	where pv.defname = 1 and pcr.projectid = @projId
+	where pv.defname = 1 and pcr.projectid = @projId and t.LkStatus = 261 --Dan added LKstatus =261
 	order by pcr.ProjectCheckReqId desc
 
 	
