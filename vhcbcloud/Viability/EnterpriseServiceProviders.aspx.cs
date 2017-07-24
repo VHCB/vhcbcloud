@@ -156,14 +156,22 @@ namespace vhcbcloud.Viability
                 {
                     if (btnAddServiceProviders.Text.ToLower() == "update")
                     {
-                        int EnterServiceProvID = DataUtils.GetInt(hfEnterpriseMasterServiceProvID.Value);
-                        EnterpriseServiceProvidersData.UpdateEnterpriseServProviderData(EnterServiceProvID,
-                            txtYear.Text, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                        int EnterpriseMasterServiceProvID = DataUtils.GetInt(hfEnterpriseMasterServiceProvID.Value);
+                        EnterpriseServiceProvidersData.UpdateEnterpriseServProviderData(EnterpriseMasterServiceProvID,
+                            txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                             txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtNotes.Text, chkActive.Checked);
+                            txtNotes.Text, txtSplProjects.Text,
+
+                            txtBusPlans1.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows1.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup1.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees1.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents1.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtSplProjects1.Text, txtNotes1.Text, 
+                            chkActive.Checked);
 
                         gvEntProvData.EditIndex = -1;
 

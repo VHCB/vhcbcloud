@@ -117,9 +117,13 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static void UpdateEnterpriseServProviderData(int EnterServiceProvID, string Year, string BusPlans, decimal BusPlanProjCost,
+        public static void UpdateEnterpriseServProviderData(int EnterpriseMasterServiceProvID, string BusPlans, decimal BusPlanProjCost,
             string CashFlows, decimal CashFlowProjCost, string Yr2Followup, decimal Yr2FollowUpProjCost,
-            string AddEnrollees, decimal AddEnrolleeProjCost, string WorkshopsEvents, decimal WorkShopEventProjCost, string Notes, bool RowIsActive)
+            string AddEnrollees, decimal AddEnrolleeProjCost, string WorkshopsEvents, decimal WorkShopEventProjCost, string Notes, string SplProjects,
+            string BusPlans1, decimal BusPlanProjCost1,
+            string CashFlows1, decimal CashFlowProjCost1, string Yr2Followup1, decimal Yr2FollowUpProjCost1,
+            string AddEnrollees1, decimal AddEnrolleeProjCost1, string WorkshopsEvents1, decimal WorkShopEventProjCost1, string SplProjects1, string Notes1, 
+            bool RowIsActive)
         {
             try
             {
@@ -133,8 +137,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateEnterpriseServProviderData";
 
-                        command.Parameters.Add(new SqlParameter("EnterServiceProvID", EnterServiceProvID));
-                        command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("EnterpriseMasterServiceProvID", EnterpriseMasterServiceProvID));
+                      
                         command.Parameters.Add(new SqlParameter("BusPlans", BusPlans));
                         command.Parameters.Add(new SqlParameter("BusPlanProjCost", BusPlanProjCost));
                         command.Parameters.Add(new SqlParameter("CashFlows", CashFlows));
@@ -145,7 +149,22 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AddEnrolleeProjCost", AddEnrolleeProjCost));
                         command.Parameters.Add(new SqlParameter("WorkshopsEvents", WorkshopsEvents));
                         command.Parameters.Add(new SqlParameter("WorkShopEventProjCost", WorkShopEventProjCost));
+                        command.Parameters.Add(new SqlParameter("SplProjects", SplProjects));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
+
+                        command.Parameters.Add(new SqlParameter("BusPlans1", BusPlans1));
+                        command.Parameters.Add(new SqlParameter("BusPlanProjCost1", BusPlanProjCost1));
+                        command.Parameters.Add(new SqlParameter("CashFlows1", CashFlows1));
+                        command.Parameters.Add(new SqlParameter("CashFlowProjCost1", CashFlowProjCost1));
+                        command.Parameters.Add(new SqlParameter("Yr2Followup1", Yr2Followup1));
+                        command.Parameters.Add(new SqlParameter("Yr2FollowUpProjCost1", Yr2FollowUpProjCost1));
+                        command.Parameters.Add(new SqlParameter("AddEnrollees1", AddEnrollees1));
+                        command.Parameters.Add(new SqlParameter("AddEnrolleeProjCost1", AddEnrolleeProjCost1));
+                        command.Parameters.Add(new SqlParameter("WorkshopsEvents1", WorkshopsEvents1));
+                        command.Parameters.Add(new SqlParameter("WorkShopEventProjCost1", WorkShopEventProjCost1));
+                        command.Parameters.Add(new SqlParameter("SplProjects1", SplProjects1));
+                        command.Parameters.Add(new SqlParameter("Notes1", Notes1));
+
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
