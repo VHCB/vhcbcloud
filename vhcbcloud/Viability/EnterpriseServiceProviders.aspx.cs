@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -146,71 +147,6 @@ namespace vhcbcloud.Viability
             BindEntProvDataGrid();
         }
 
-        protected void btnAddServiceProviders_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
-
-                if (IsFormDataValid())
-                {
-                    if (btnAddServiceProviders.Text.ToLower() == "update")
-                    {
-                        int EnterpriseMasterServiceProvID = DataUtils.GetInt(hfEnterpriseMasterServiceProvID.Value);
-                        EnterpriseServiceProvidersData.UpdateEnterpriseServProviderData(EnterpriseMasterServiceProvID,
-                            txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtNotes.Text, txtSplProjects.Text,
-
-                            txtBusPlans1.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtCashFlows1.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtYr2Followup1.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtAddEnrollees1.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtWorkshopsEvents1.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtSplProjects1.Text, txtNotes1.Text, 
-                            chkActive.Checked);
-
-                        gvEntProvData.EditIndex = -1;
-
-                        LogMessage("Enterprise Service Provider Data updated successfully");
-                    }
-                    else //add
-                    {
-                        ViabilityMaintResult objViabilityMaintResult = EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
-                            txtYear.Text, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtSplProjects.Text, txtNotes.Text,
-                            txtBusPlans1.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtCashFlows1.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtYr2Followup1.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtAddEnrollees1.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtWorkshopsEvents1.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
-                            txtSplProjects1.Text, txtNotes1.Text);
-
-
-                        if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
-                            LogMessage("Enterprise Service Provider Data already exist as in-active");
-                        else if (objViabilityMaintResult.IsDuplicate)
-                            LogMessage("Enterprise Service Provider Data already exist");
-                        else
-                            LogMessage("Enterprise Service Provider Data added successfully");
-                    }
-                    ClearEntProvDataForm();
-                    BindEntProvDataGrid();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "btnAddServiceProviders_Click", "", ex.Message);
-            }
-        }
-
         private bool IsFormDataValid()
         {
             if (txtYear.Text.Trim() == "")
@@ -255,9 +191,10 @@ namespace vhcbcloud.Viability
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
-                    btnAddServiceProviders.Text = "Update";
-                    cbAddYear.Checked = true;
 
+                    cbAddYear.Checked = true;
+                    cbAddYear.Enabled = false;
+                    txtYear.Enabled = true;
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
@@ -268,75 +205,122 @@ namespace vhcbcloud.Viability
 
                         hfEnterpriseMasterServiceProvID.Value = lblEnterpriseMasterServiceProvID.Text;
 
-                        if (dt.Rows.Count == 2)
+                        if (dt.Rows.Count > 0)
                         {
+                            btnAddAppliationData.Text = "Update";
+                            dvEndOfContract.Visible = true;
+                            cbAddNewEndOfContract.Visible = true;
+                            cbAddNewEndOfContract.Enabled = true;
+
                             DataRow dr = dt.Rows[0];
                             txtYear.Text = dr["Year"].ToString() ?? "";
+                            txtYear.Enabled = false;
 
                             txtBusPlans.Text = dr["BusPlans"].ToString() ?? "";
                             txtBusPlanProjCost.Text = dr["BusPlanProjCost"].ToString() ?? "";
                             var bTotal = DataUtils.GetInt(txtBusPlans.Text) * DataUtils.GetDecimal(txtBusPlanProjCost.Text);
-                            spnBusPlanTotal.InnerText = " $ " + bTotal.ToString();
+                            spnBusPlanTotal.InnerText = String.Format("{0:C}", bTotal);  //" $ " + bTotal.ToString();
 
                             txtCashFlows.Text = dr["CashFlows"].ToString() ?? "";
                             txtCashFlowProjCost.Text = dr["CashFlowProjCost"].ToString() ?? "";
                             var cTotal = DataUtils.GetInt(txtCashFlows.Text) * DataUtils.GetDecimal(txtCashFlowProjCost.Text);
-                            spnCashFlowTotal.InnerText = " $ " + cTotal.ToString();
+                            spnCashFlowTotal.InnerText = String.Format("{0:C}", cTotal);  //" $ " + cTotal.ToString();
 
                             txtYr2Followup.Text = dr["Yr2Followup"].ToString() ?? "";
                             txtYr2FollowUpProjCost.Text = dr["Yr2FollowUpProjCost"].ToString() ?? "";
                             var yTotal = DataUtils.GetInt(txtYr2Followup.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost.Text);
-                            spnYest2FollowupsTotal.InnerText = " $ " + yTotal.ToString();
+                            spnYest2FollowupsTotal.InnerText = String.Format("{0:C}", yTotal);  //" $ " + yTotal.ToString();
 
                             txtAddEnrollees.Text = dr["AddEnrollees"].ToString() ?? "";
                             txtAddEnrolleeProjCost.Text = dr["AddEnrolleeProjCost"].ToString() ?? "";
                             var aTotal = DataUtils.GetInt(txtAddEnrollees.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost.Text);
-                            spnAddEnrolleeProjTotal.InnerText = " $ " + aTotal.ToString();
+                            spnAddEnrolleeProjTotal.InnerText = String.Format("{0:C}", aTotal);  //" $ " + aTotal.ToString();
 
                             txtWorkshopsEvents.Text = dr["WorkshopsEvents"].ToString() ?? "";
                             txtWorkShopEventProjCost.Text = dr["WorkShopEventProjCost"].ToString() ?? "";
                             var wTotal = DataUtils.GetInt(txtWorkshopsEvents.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost.Text);
-                            spnWorkshopsTotal.InnerText = " $ " + wTotal.ToString();
+                            spnWorkshopsTotal.InnerText = String.Format("{0:C}", wTotal);  //" $ " + wTotal.ToString();
 
                             txtNotes.Text = dr["Notes"].ToString() ?? "";
                             txtSplProjects.Text = dr["SpecialProj"].ToString() ?? "";
 
-                            spnGrandTotal.InnerText = " $ " + (bTotal + cTotal + yTotal + aTotal + wTotal).ToString();
+                            spnGrandTotal.InnerText = String.Format("{0:C}", bTotal + cTotal + yTotal + aTotal + wTotal);  //" $ " + (bTotal + cTotal + yTotal + aTotal + wTotal).ToString();
 
-                            DataRow dr1 = dt.Rows[1];
+                            if (dt.Rows.Count == 2)
+                            {
+                                btnAddEndContractData.Text = "Update";
+                                cbAddNewEndOfContract.Checked = true;
+                                cbAddNewEndOfContract.Enabled = false;
 
-                            txtBusPlans1.Text = dr1["BusPlans"].ToString() ?? "";
-                            txtBusPlanProjCost1.Text = dr1["BusPlanProjCost"].ToString() ?? "";
-                            var bTotal1 = DataUtils.GetInt(txtBusPlans1.Text) * DataUtils.GetDecimal(txtBusPlanProjCost1.Text);
-                            spnBusPlanTotal1.InnerText = " $ " + bTotal1.ToString();
+                                DataRow dr1 = dt.Rows[1];
 
-                            txtCashFlows1.Text = dr1["CashFlows"].ToString() ?? "";
-                            txtCashFlowProjCost1.Text = dr1["CashFlowProjCost"].ToString() ?? "";
-                            var cTotal1 = DataUtils.GetInt(txtCashFlows1.Text) * DataUtils.GetDecimal(txtCashFlowProjCost1.Text);
-                            spnCashFlowTotal1.InnerText = " $ " + cTotal1.ToString();
+                                txtBusPlans1.Text = dr1["BusPlans"].ToString() ?? "";
+                                txtBusPlanProjCost1.Text = dr1["BusPlanProjCost"].ToString() ?? "";
+                                var bTotal1 = DataUtils.GetInt(txtBusPlans1.Text) * DataUtils.GetDecimal(txtBusPlanProjCost1.Text);
+                                spnBusPlanTotal1.InnerText = String.Format("{0:C}", bTotal1);  //" $ " + bTotal1.ToString();
 
-                            txtYr2Followup1.Text = dr1["Yr2Followup"].ToString() ?? "";
-                            txtYr2FollowUpProjCost1.Text = dr1["Yr2FollowUpProjCost"].ToString() ?? "";
-                            var yTotal1 = DataUtils.GetInt(txtYr2Followup1.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost1.Text);
-                            spnYest2FollowupsTotal1.InnerText = " $ " + yTotal1.ToString();
+                                txtCashFlows1.Text = dr1["CashFlows"].ToString() ?? "";
+                                txtCashFlowProjCost1.Text = dr1["CashFlowProjCost"].ToString() ?? "";
+                                var cTotal1 = DataUtils.GetInt(txtCashFlows1.Text) * DataUtils.GetDecimal(txtCashFlowProjCost1.Text);
+                                spnCashFlowTotal1.InnerText = String.Format("{0:C}", cTotal1);  //" $ " + cTotal1.ToString();
 
-                            txtAddEnrollees1.Text = dr1["AddEnrollees"].ToString() ?? "";
-                            txtAddEnrolleeProjCost1.Text = dr1["AddEnrolleeProjCost"].ToString() ?? "";
-                            var aTotal1 = DataUtils.GetInt(txtAddEnrollees1.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost1.Text);
-                            spnAddEnrolleeProjTotal1.InnerText = " $ " + aTotal1.ToString();
+                                txtYr2Followup1.Text = dr1["Yr2Followup"].ToString() ?? "";
+                                txtYr2FollowUpProjCost1.Text = dr1["Yr2FollowUpProjCost"].ToString() ?? "";
+                                var yTotal1 = DataUtils.GetInt(txtYr2Followup1.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost1.Text);
+                                spnYest2FollowupsTotal1.InnerText = String.Format("{0:C}", yTotal1); //" $ " + yTotal1.ToString();
 
-                            txtWorkshopsEvents1.Text = dr1["WorkshopsEvents"].ToString() ?? "";
-                            txtWorkShopEventProjCost1.Text = dr1["WorkShopEventProjCost"].ToString() ?? "";
-                            var wTotal1 = DataUtils.GetInt(txtWorkshopsEvents1.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost1.Text);
-                            spnWorkshopsTotal1.InnerText = " $ " + wTotal1.ToString();
+                                txtAddEnrollees1.Text = dr1["AddEnrollees"].ToString() ?? "";
+                                txtAddEnrolleeProjCost1.Text = dr1["AddEnrolleeProjCost"].ToString() ?? "";
+                                var aTotal1 = DataUtils.GetInt(txtAddEnrollees1.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost1.Text);
+                                spnAddEnrolleeProjTotal1.InnerText = String.Format("{0:C}", aTotal1);  //" $ " + aTotal1.ToString();
 
-                            spnGrandTotal1.InnerText = " $ " + (bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1).ToString();
+                                txtWorkshopsEvents1.Text = dr1["WorkshopsEvents"].ToString() ?? "";
+                                txtWorkShopEventProjCost1.Text = dr1["WorkShopEventProjCost"].ToString() ?? "";
+                                var wTotal1 = DataUtils.GetInt(txtWorkshopsEvents1.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost1.Text);
+                                spnWorkshopsTotal1.InnerText = String.Format("{0:C}", wTotal1);  //" $ " + wTotal1.ToString();
 
-                            txtNotes1.Text = dr1["Notes"].ToString() ?? "";
-                            txtSplProjects1.Text = dr1["SpecialProj"].ToString() ?? "";
+                                spnGrandTotal1.InnerText = String.Format("{0:C}", bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1); //" $ " + (bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1).ToString();
 
-                            //chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
-                            //chkActive.Enabled = true;
+                                txtNotes1.Text = dr1["Notes"].ToString() ?? "";
+                                txtSplProjects1.Text = dr1["SpecialProj"].ToString() ?? "";
+
+                                //chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                                //chkActive.Enabled = true;
+                            }
+                            else
+                            {
+                                btnAddEndContractData.Text = "Update";
+
+                                txtBusPlans1.Text = dr["BusPlans"].ToString() ?? "";
+                                txtBusPlanProjCost1.Text = dr["BusPlanProjCost"].ToString() ?? "";
+                                var bTotal1 = DataUtils.GetInt(txtBusPlans1.Text) * DataUtils.GetDecimal(txtBusPlanProjCost1.Text);
+                                spnBusPlanTotal1.InnerText = String.Format("{0:C}", bTotal1);  //" $ " + bTotal1.ToString();
+
+                                txtCashFlows1.Text = dr["CashFlows"].ToString() ?? "";
+                                txtCashFlowProjCost1.Text = dr["CashFlowProjCost"].ToString() ?? "";
+                                var cTotal1 = DataUtils.GetInt(txtCashFlows1.Text) * DataUtils.GetDecimal(txtCashFlowProjCost1.Text);
+                                spnCashFlowTotal1.InnerText = String.Format("{0:C}", cTotal1);  //" $ " + cTotal1.ToString();
+
+                                txtYr2Followup1.Text = dr["Yr2Followup"].ToString() ?? "";
+                                txtYr2FollowUpProjCost1.Text = dr["Yr2FollowUpProjCost"].ToString() ?? "";
+                                var yTotal1 = DataUtils.GetInt(txtYr2Followup1.Text) * DataUtils.GetDecimal(txtYr2FollowUpProjCost1.Text);
+                                spnYest2FollowupsTotal1.InnerText = String.Format("{0:C}", yTotal1); //" $ " + yTotal1.ToString();
+
+                                txtAddEnrollees1.Text = dr["AddEnrollees"].ToString() ?? "";
+                                txtAddEnrolleeProjCost1.Text = dr["AddEnrolleeProjCost"].ToString() ?? "";
+                                var aTotal1 = DataUtils.GetInt(txtAddEnrollees1.Text) * DataUtils.GetDecimal(txtAddEnrolleeProjCost1.Text);
+                                spnAddEnrolleeProjTotal1.InnerText = String.Format("{0:C}", aTotal1);  //" $ " + aTotal1.ToString();
+
+                                txtWorkshopsEvents1.Text = dr["WorkshopsEvents"].ToString() ?? "";
+                                txtWorkShopEventProjCost1.Text = dr["WorkShopEventProjCost"].ToString() ?? "";
+                                var wTotal1 = DataUtils.GetInt(txtWorkshopsEvents1.Text) * DataUtils.GetDecimal(txtWorkShopEventProjCost1.Text);
+                                spnWorkshopsTotal1.InnerText = String.Format("{0:C}", wTotal1);  //" $ " + wTotal1.ToString();
+
+                                spnGrandTotal1.InnerText = String.Format("{0:C}", bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1); //" $ " + (bTotal1 + cTotal1 + yTotal1 + aTotal1 + wTotal1).ToString();
+
+                                txtNotes1.Text = dr["Notes"].ToString() ?? "";
+                                txtSplProjects1.Text = dr["SpecialProj"].ToString() ?? "";
+                            }
                         }
                     }
                 }
@@ -352,11 +336,17 @@ namespace vhcbcloud.Viability
             gvEntProvData.EditIndex = -1;
             BindEntProvDataGrid();
             ClearEntProvDataForm();
-            btnAddServiceProviders.Text = "Submit";
+            btnAddAppliationData.Text = "Submit";
+            btnAddEndContractData.Text = "Submit";
         }
 
         private void ClearEntProvDataForm()
         {
+            cbAddYear.Enabled = true;
+            cbAddNewEndOfContract.Checked = false;
+            cbAddNewEndOfContract.Visible = false;
+            txtYear.Enabled = true;
+
             txtYear.Text = "";
             txtBusPlans.Text = "";
             txtBusPlanProjCost.Text = "";
@@ -382,17 +372,144 @@ namespace vhcbcloud.Viability
             txtWorkshopsEvents1.Text = "";
             txtWorkShopEventProjCost1.Text = "";
             txtNotes1.Text = "";
-            txtSplProjects1
-                .Text = "";
+            txtSplProjects1.Text = "";
+
+            spnBusPlanTotal.InnerText = "";
+            spnCashFlowTotal.InnerText = "";
+            spnYest2FollowupsTotal.InnerText = "";
+            spnAddEnrolleeProjTotal.InnerText = "";
+            spnWorkshopsTotal.InnerText = "";
+            spnGrandTotal.InnerText = "";
+
+            spnBusPlanTotal1.InnerText = "";
+            spnCashFlowTotal1.InnerText = "";
+            spnYest2FollowupsTotal1.InnerText = "";
+            spnAddEnrolleeProjTotal1.InnerText = "";
+            spnWorkshopsTotal1.InnerText = "";
+            spnGrandTotal1.InnerText = "";
+
             cbAddYear.Checked = false;
-            chkActive.Enabled = false;
+            //chkActive.Enabled = false;
 
         }
 
         protected void gvEntProvData_RowEditing(object sender, GridViewEditEventArgs e)
         {
+            ClearEntProvDataForm();
             gvEntProvData.EditIndex = e.NewEditIndex;
             BindEntProvDataGrid();
+        }
+
+        [WebMethod]
+        public static bool IsYearExist(int ProjectId, string Year)
+        {
+            bool isExist = EnterpriseServiceProvidersData.IsYearExist(ProjectId, Year);
+
+            return isExist;
+        }
+
+        protected void btnAddAppliationData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
+
+                if (IsFormDataValid())
+                {
+                    if (btnAddAppliationData.Text.ToLower() == "update")
+                    {
+                        EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
+                            txtYear.Text, 1, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtSplProjects.Text, txtNotes.Text);
+
+                        gvEntProvData.EditIndex = -1;
+
+                        LogMessage("Application Budget updated successfully");
+                    }
+                    else //add
+                    {
+                        EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
+                            txtYear.Text, 1, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                            txtSplProjects.Text, txtNotes.Text);
+
+                        LogMessage("Application Budget added successfully");
+                    }
+                    ClearEntProvDataForm();
+                    BindEntProvDataGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddAppliationData_click", "", ex.Message);
+            }
+        }
+
+        protected void btnAddEndContractData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
+
+                if (IsFormDataValid())
+                {
+                    //if (btnAddAppliationData.Text.ToLower() == "update")
+                    //{
+                    //    EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
+                    //        txtYear.Text, 2, txtBusPlans.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                    //        txtCashFlows.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                    //        txtYr2Followup.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                    //        txtAddEnrollees.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                    //        txtWorkshopsEvents.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost.Text, "[^0-9a-zA-Z.]+", "")),
+                    //        txtSplProjects.Text, txtNotes.Text);
+
+                    //    gvEntProvData.EditIndex = -1;
+
+                    //    LogMessage("End of Contract updated successfully");
+                    //}
+                    //else //add
+                    //{
+                    EnterpriseServiceProvidersData.AddEnterpriseServProviderData(ProjectId,
+                        txtYear.Text, 2, txtBusPlans1.Text, DataUtils.GetDecimal(Regex.Replace(txtBusPlanProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtCashFlows1.Text, DataUtils.GetDecimal(Regex.Replace(txtCashFlowProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtYr2Followup1.Text, DataUtils.GetDecimal(Regex.Replace(txtYr2FollowUpProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtAddEnrollees1.Text, DataUtils.GetDecimal(Regex.Replace(txtAddEnrolleeProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtWorkshopsEvents1.Text, DataUtils.GetDecimal(Regex.Replace(txtWorkShopEventProjCost1.Text, "[^0-9a-zA-Z.]+", "")),
+                        txtSplProjects1.Text, txtNotes.Text);
+
+                    //LogMessage("End of Contract added successfully");
+                    //}
+
+                    if (btnAddAppliationData.Text.ToLower() == "update")
+                    {
+                        gvEntProvData.EditIndex = -1;
+                        LogMessage("End of Contract updated successfully");
+                    }
+                    else
+                        LogMessage("End of Contract added successfully");
+
+                    ClearEntProvDataForm();
+                    BindEntProvDataGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddEndContractData_Click", "", ex.Message);
+            }
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            gvEntProvData.EditIndex = -1;
+            BindEntProvDataGrid();
+            ClearEntProvDataForm();
         }
     }
 }

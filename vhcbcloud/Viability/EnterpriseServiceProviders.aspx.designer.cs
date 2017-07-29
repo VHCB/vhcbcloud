@@ -211,13 +211,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
         
         /// <summary>
-        /// Span1 control.
+        /// cbAddNewEndOfContract control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Span1;
+        protected global::System.Web.UI.WebControls.CheckBox cbAddNewEndOfContract;
         
         /// <summary>
         /// Panel8 control.
@@ -391,22 +391,31 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNotes;
         
         /// <summary>
-        /// chkActive control.
+        /// btnAddAppliationData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkActive;
+        protected global::System.Web.UI.WebControls.Button btnAddAppliationData;
         
         /// <summary>
-        /// Div2 control.
+        /// btnCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div2;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// dvEndOfContract control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEndOfContract;
         
         /// <summary>
         /// Span2 control.
@@ -589,22 +598,22 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNotes1;
         
         /// <summary>
-        /// chkActive1 control.
+        /// btnAddEndContractData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkActive1;
+        protected global::System.Web.UI.WebControls.Button btnAddEndContractData;
         
         /// <summary>
-        /// btnAddServiceProviders control.
+        /// btnCancel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddServiceProviders;
+        protected global::System.Web.UI.WebControls.Button btnCancel1;
         
         /// <summary>
         /// dvEntProvDataGrid control.

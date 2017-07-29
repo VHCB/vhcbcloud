@@ -11,6 +11,40 @@ namespace VHCBCommon.DataAccessLayer.Viability
 {
     public class EnterpriseServiceProvidersData
     {
+        public static bool IsYearExist(int ProjectID, string Year)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "IsYearExist";
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static DataTable GetEnterpriseServProviderDataById(int EnterpriseMasterServiceProvID)
         {
             DataTable dt = null;
@@ -44,12 +78,9 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dt;
         }
 
-        public static ViabilityMaintResult AddEnterpriseServProviderData(int ProjectID, string Year, string BusPlans, decimal BusPlanProjCost, 
+        public static void AddEnterpriseServProviderData(int ProjectID, string Year, int PrePost, string BusPlans, decimal BusPlanProjCost, 
             string CashFlows, decimal CashFlowProjCost, string Yr2Followup, decimal Yr2FollowUpProjCost, 
-            string AddEnrollees, decimal AddEnrolleeProjCost, string WorkshopsEvents, decimal WorkShopEventProjCost, string SplProjects, string Notes,
-            string BusPlans1, decimal BusPlanProjCost1,
-            string CashFlows1, decimal CashFlowProjCost1, string Yr2Followup1, decimal Yr2FollowUpProjCost1,
-            string AddEnrollees1, decimal AddEnrolleeProjCost1, string WorkshopsEvents1, decimal WorkShopEventProjCost1, string SplProjects1, string Notes1)
+            string AddEnrollees, decimal AddEnrolleeProjCost, string WorkshopsEvents, decimal WorkShopEventProjCost, string SplProjects, string Notes)
         {
             try
             {
@@ -78,36 +109,10 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("SplProjects", SplProjects));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
 
-                        command.Parameters.Add(new SqlParameter("BusPlans1", BusPlans1));
-                        command.Parameters.Add(new SqlParameter("BusPlanProjCost1", BusPlanProjCost1));
-                        command.Parameters.Add(new SqlParameter("CashFlows1", CashFlows1));
-                        command.Parameters.Add(new SqlParameter("CashFlowProjCost1", CashFlowProjCost1));
-                        command.Parameters.Add(new SqlParameter("Yr2Followup1", Yr2Followup1));
-                        command.Parameters.Add(new SqlParameter("Yr2FollowUpProjCost1", Yr2FollowUpProjCost1));
-                        command.Parameters.Add(new SqlParameter("AddEnrollees1", AddEnrollees1));
-                        command.Parameters.Add(new SqlParameter("AddEnrolleeProjCost1", AddEnrolleeProjCost1));
-                        command.Parameters.Add(new SqlParameter("WorkshopsEvents1", WorkshopsEvents1));
-                        command.Parameters.Add(new SqlParameter("WorkShopEventProjCost1", WorkShopEventProjCost1));
-                        command.Parameters.Add(new SqlParameter("SplProjects1", SplProjects1));
-                        command.Parameters.Add(new SqlParameter("Notes1", Notes1));
-
-
-                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
-                        parmMessage.Direction = ParameterDirection.Output;
-                        command.Parameters.Add(parmMessage);
-
-                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
-                        parmMessage1.Direction = ParameterDirection.Output;
-                        command.Parameters.Add(parmMessage1);
-
+                        command.Parameters.Add(new SqlParameter("PrePost", PrePost));
+                       
+                       
                         command.ExecuteNonQuery();
-
-                        ViabilityMaintResult objResult = new ViabilityMaintResult();
-
-                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
-                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
-
-                        return objResult;
                     }
                 }
             }

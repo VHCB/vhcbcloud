@@ -71,7 +71,7 @@ namespace vhcbcloud.Viability
             GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
 
             spnEnterPriseType.InnerText = EnterpriseType;
-            BindSubLookUP(ddlPrimaryProduct, EnterpriseTypeId);
+            BindSubLookUP(ddlPrimaryProduct, DataUtils.GetInt(dr["LkProjectType"].ToString()));
             BindSubLookUP(ddlProducts, EnterpriseTypeId);
 
             BindLookUP(ddlAttribute, AttributeTypeId);
