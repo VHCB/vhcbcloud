@@ -133,12 +133,12 @@
                                 </EditItemTemplate>
 
                             </asp:TemplateField>
-                             <asp:TemplateField HeaderText="Required" SortExpression="subreq">
+                             <asp:TemplateField HeaderText="Required" SortExpression="Subreq">
                                 <ItemTemplate>
-                                    <asp:CheckBox ID="chkRequired" runat="server" Checked='<%# Eval("subreq") %>' Enabled="false" />
+                                    <asp:CheckBox ID="chkRequired" runat="server" Checked='<%# Eval("Subreq") %>' Enabled="false" />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:CheckBox ID="chkEditRequired" runat="server" Checked='<%# Eval("subreq") %>' />
+                                    <asp:CheckBox ID="chkEditRequired" runat="server" Checked='<%# Eval("Subreq") %>' />
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">

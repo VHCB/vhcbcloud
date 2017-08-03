@@ -83,9 +83,12 @@ namespace vhcbcloud
                 gvLkDescription.DataSource = dt;
                 gvLkDescription.DataBind();
 
-                if (dt.Rows[0]["ordered"].ToString().ToLower() == "true")
+                if (dt != null  && dt.Rows.Count > 0)
                 {
-                    IsOrdered.Value = "true";
+                    if (dt.Rows[0]["ordered"].ToString().ToLower() == "true")
+                    {
+                        IsOrdered.Value = "true";
+                    }
                 }
             }
             catch (Exception ex)
