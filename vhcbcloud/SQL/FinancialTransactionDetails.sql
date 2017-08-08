@@ -801,13 +801,24 @@ if @activeOnly = 1
 			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
 			and t.TransId = @transId and t.RowIsActive=1 
 		End
+	Else if (@commitmentType = 240) --Relocation
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction, t.TransId 
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId and t.RowIsActive=1 
+		End
 	End
 else
 	Begin
 	if @commitmentType = 238
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction, t.TransId   
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
@@ -818,7 +829,18 @@ else
 	Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction , t.TransId  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId 
+		End
+		Else if (@commitmentType = 240) -- Relocation
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction , t.TransId  
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
@@ -3504,3 +3526,20 @@ as
 		and tr.RowIsActive=1 and det.RowIsActive=1 --and p.projectid = @projectid
 		
 go
+
+IF EXISTS ( SELECT  * FROM    sys.objects WHERE   object_id = OBJECT_ID(N'UpdateTransDetailsWithFund') AND type IN (N'P', N'PC')) 
+DROP PROCEDURE [dbo].[UpdateTransDetailsWithFund]
+GO
+CREATE procedure [dbo].[UpdateTransDetailsWithFund]
+(	
+	@detailId int,	
+	@fundtranstype int,
+	@fundamount money,
+	@fundId int
+)
+as
+BEGIN 
+	update Detail set Amount = @fundamount, LkTransType = @fundtranstype,FundId = @fundId
+	where DetailID = @detailId
+END 
+GO

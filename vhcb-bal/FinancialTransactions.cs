@@ -1036,6 +1036,36 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateTransDetailsWithFund(int detailId, int fundtranstype, decimal fundamount,int fundId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateTransDetailsWithFund";
+                command.Parameters.Add(new SqlParameter("detailId", detailId));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable GetTransDetails(int detailId)
         {
             DataTable dtable = null;
