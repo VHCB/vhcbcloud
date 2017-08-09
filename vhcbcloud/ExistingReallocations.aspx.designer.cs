@@ -229,6 +229,60 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblTransDetHeader;
         
         /// <summary>
+        /// dvReallocateToForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvReallocateToForm;
+        
+        /// <summary>
+        /// tblReallocateTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblReallocateTo;
+        
+        /// <summary>
+        /// ddlRToFund control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRToFund;
+        
+        /// <summary>
+        /// ddlRtoFundType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRtoFundType;
+        
+        /// <summary>
+        /// txtRToAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
+        
+        /// <summary>
+        /// btnReallocateSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReallocateSubmit;
+        
+        /// <summary>
         /// gvbRelocationDetails control.
         /// </summary>
         /// <remarks>

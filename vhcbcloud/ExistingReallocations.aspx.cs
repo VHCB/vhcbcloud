@@ -23,6 +23,7 @@ namespace vhcbcloud
             {
                 rdBtnSelection.SelectedIndex = 1;
                 hfReallocateGuid.Value = "";
+                BindControls();
             }
             if (rdBtnSelection.SelectedIndex == 0)
             {
@@ -42,7 +43,34 @@ namespace vhcbcloud
                 this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
-        
+
+        private void BindControls()
+        {
+
+            ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
+            ddlRToFund.DataValueField = "fundid";
+            ddlRToFund.DataTextField = "name";
+            ddlRToFund.DataBind();
+            ddlRToFund.Items.Insert(0, new ListItem("Select", "NA"));
+
+           
+                //ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
+                //ddlRToFund.Enabled = false;
+                //if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
+                ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                ddlRtoFundType.DataValueField = "typeid";
+                ddlRtoFundType.DataTextField = "Description";
+                ddlRtoFundType.DataBind();
+                ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+        }
+
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnFinancial.SelectedIndex == 0)
@@ -679,6 +707,7 @@ namespace vhcbcloud
                 decimal tranAmount = 0;
                 decimal totFundAmt = 0;
                 decimal totBalAmt = 0;
+                decimal totDetailAmount = 0;
 
                 if (dtFundDet.Rows.Count > 0)
                 {
@@ -693,10 +722,13 @@ namespace vhcbcloud
                         for (int i = 0; i < dtFundDet.Rows.Count; i++)
                         {
                             totFundAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+
+                            if(Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                totDetailAmount += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
                         }
                     }
 
-                    totBalAmt = tranAmount - totFundAmt;
+                    totBalAmt = tranAmount - totDetailAmount;
                     hfBalAmt.Value = totBalAmt.ToString();
 
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
@@ -706,16 +738,16 @@ namespace vhcbcloud
                     gvbRelocationDetails.FooterRow.Visible = true;
                     lblTransDetHeader.Text = "Transaction Detail";
 
+                    dvReallocateToForm.Visible = false;
+
                     if (lblBalAmt.Text != "$0.00")
                     {
                         lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-
+                        dvReallocateToForm.Visible = true;
                     }
                 }
                 else
-                {
-                    pnlTranDetails.Visible = false;
-                }
+                    dvReallocateToForm.Visible = true;
             }
             catch (Exception ex)
             {
@@ -723,6 +755,35 @@ namespace vhcbcloud
             }
         }
 
-       
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectsByFilter(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
+
+        protected void ddlRToFund_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void ddlRToProj_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnReallocateSubmit_Click(object sender, EventArgs e)
+        {
+
+
+        }
     }
 }

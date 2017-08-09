@@ -74,7 +74,7 @@
                                                 OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>--%>
 
-                                           <%-- <asp:TextBox ID="txtFromProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>--%>
+                                            <%-- <asp:TextBox ID="txtFromProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>--%>
                                             <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
                                             <%--<ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtFromProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
@@ -213,7 +213,46 @@
                                     <asp:Label runat="server" ID="lblTransDetHeader" Text="Transaction Detail"></asp:Label>
                                 </div>
                                 <div class="panel-body">
-                                    <br />
+                                    <div id="dvReallocateToForm" runat="server">
+                                        <table style="width: 1000px" runat="server" id="tblReallocateTo">
+                                            <tr>
+                                                <td style="width: 52px; height: 4px;"><span class="labelClass">Fund :</span></td>
+                                                <td style="width: 66px; height: 4px;">
+                                                    <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
+                                                        OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged" style="margin-left: 62; margin-bottom: 0;">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td style="width: 50px; height: 4px;"><span class="labelClass">&nbsp;&nbsp; Type :</span></td>
+                                                <td style="width: 106px; height: 4px;">
+                                                    <asp:DropDownList ID="ddlRtoFundType" CssClass="clsDropDown" runat="server">
+                                                    </asp:DropDownList>
+                                                    </td>
+                                                <td style="width: 10px; height: 4px;"><span class="labelClass">&nbsp; Amount :</span></td>
+                                                <td style="width: 100px; height: 4px;">
+                                                    <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney" onkeyup='toRToAmtFormatter(value)' runat="server"></asp:TextBox>
+                                                    </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 4px" colspan="6" />
+                                            </tr>
+                                            <%--<tr>
+                                                <td style="width: 10%; float: left">
+                                                    <asp:Label ID="lblToUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                                                <td style="width: 20%; float: left">
+                                                    <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                    </asp:DropDownList></td>
+                                                <td style="width: 10%; float: left">&nbsp;</td>
+                                                <td style="width: 20%; float: left">&nbsp;</td>
+                                                <td style="width: 20%; float: left">&nbsp;</td>
+                                                <td style="width: 20%; float: left">&nbsp;</td>
+                                            </tr>--%>
+                                        </table>
+                                        <br />
+                                        <asp:Button ID="btnReallocateSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClientClick="needToConfirm = false;"
+                                            OnClick="btnReallocateSubmit_Click" />
+                                        <br />
+                                        <br />
+                                    </div>
                                     <asp:GridView ID="gvbRelocationDetails" runat="server" AutoGenerateColumns="False"
                                         Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                         GridLines="None" EnableTheming="True"
@@ -334,7 +373,7 @@
         window.onbeforeunload = confirmExit;
         function confirmExit() {
             var balAmt = document.getElementById("<%=hfBalAmt.ClientID%>").value;
-           
+
             if (needToConfirm && balAmt != 0)
                 return "You have attempted to leave this page.  Please make sure balance amount is 0 for each transaction, otherwise the transaction can't be used for board financial transactions.  Are you sure you want to exit this page?";
         }
@@ -387,10 +426,10 @@
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);
 
-        let result = this.addDecimalToNumber(digitsWithPadding);
-   
+            let result = this.addDecimalToNumber(digitsWithPadding);
+
         };
-      
+
         getDigitsFromValue = (value) => {
             return value.toString().replace(/\D/g, '');
         };
@@ -399,20 +438,20 @@
             const desiredLength = 3;
             const actualLength = digits.length;
 
-        if (actualLength >= desiredLength) {
-            return digits;
-        }
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
 
             const amountToAdd = desiredLength - actualLength;
             const padding = '0'.repeat(amountToAdd);
 
-        return padding + digits;
+            return padding + digits;
         };
         addDecimalToNumber = number => {
             const centsStartingPosition = number.length - 2;
             const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
             const cents = number.substring(centsStartingPosition);
-        return `${dollars}.${cents}`;
+            return `${dollars}.${cents}`;
         };
         removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
