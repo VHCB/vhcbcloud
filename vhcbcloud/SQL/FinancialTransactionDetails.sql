@@ -809,7 +809,7 @@ if @activeOnly = 1
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
 				join LookupValues lv on lv.TypeID = d.LkTransType
-			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
+			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType and d.Amount > 0
 			and t.TransId = @transId and t.RowIsActive=1 
 		End
 	End
@@ -845,7 +845,7 @@ else
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
 				join LookupValues lv on lv.TypeID = d.LkTransType
-			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType
+			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType and d.Amount > 0
 			and t.TransId = @transId 
 		End
 	End
