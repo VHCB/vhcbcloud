@@ -317,5 +317,11 @@ namespace vhcbcloud
                 lblFinalExpend.Text = CommonHelper.myDollarFormat(totFinalExpendAmt);
             }
         }
+
+        protected void AwardSummaryReport_Click(object sender, ImageClickEventArgs e)
+        {
+                ClientScript.RegisterStartupScript(this.GetType(),
+                        "script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award Summary"));
+        }
     }
 }

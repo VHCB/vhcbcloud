@@ -379,14 +379,14 @@ namespace vhcbcloud.Housing
                 PopulateDropDown(ddlIDISCompletionDateCompletedBy, dr["IDISCompleteBy"].ToString());
                 PopulateDropDown(ddlFundedDateCompleteBy, dr["FundCompleteBy"].ToString());
 
-                //if (txtAffrdStartDate.Text == "")
-                //{
-                //    txtAffrdStartDate.Text = txtCloseDate.Text;
-                //}
-                if (txtCloseDate.Text == "")
+                if (txtAffrdStartDate.Text == "")
                 {
-                    txtCloseDate.Text = txtAffrdStartDate.Text;
+                    txtAffrdStartDate.Text = txtCloseDate.Text;
                 }
+                //if (txtCloseDate.Text == "")
+                //{
+                //    txtCloseDate.Text = txtAffrdStartDate.Text;
+                //}
 
             }
         }

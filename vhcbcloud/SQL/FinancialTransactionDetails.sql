@@ -99,14 +99,14 @@ begin
 	where defname = 1 and tr.lkstatus = 261 --and tr.LkTransaction = 238--and tr.lkstatus = 262--
 	and 
 	(select count(*) from ProjectCheckReqQuestions where ProjectCheckReqID = pcr.ProjectCheckReqID and Approved = 0)>0
-	and 
-	pcr.Voucher# is not null
+/**	and 
+	pcr.Voucher# is not null **/ --Dan commented this voucher condition
 	
 	and tr.RowIsActive=1 and pn.defname=1 and p.Proj_num like @filter +'%'	
 	group by p.projectid, proj_num
-	order by proj_num 
+	order by proj_num  
 end
-
+go
 
 
 alter procedure getCommittedProjectslistNoPendingTrans
@@ -801,13 +801,24 @@ if @activeOnly = 1
 			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType
 			and t.TransId = @transId and t.RowIsActive=1 
 		End
+	Else if (@commitmentType = 240) --Relocation
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction, t.TransId 
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and d.RowIsActive=1 and t.LkTransaction = @commitmentType and d.Amount > 0
+			and t.TransId = @transId and t.RowIsActive=1 
+		End
 	End
 else
 	Begin
 	if @commitmentType = 238
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction, t.TransId   
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
@@ -818,12 +829,23 @@ else
 	Else if (@commitmentType = 239 or @commitmentType = 237) -- Decommitment or Cash refund
 		Begin
 			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(-d.Amount, 'N2') as amount, lv.Description, 
-				d.LkTransType, t.LkTransaction  
+				d.LkTransType, t.LkTransaction , t.TransId  
 			from Fund f 
 				join Detail d on d.FundId = f.FundId
 				join Trans t on t.TransId = d.TransId
 				join LookupValues lv on lv.TypeID = d.LkTransType
 			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType
+			and t.TransId = @transId 
+		End
+		Else if (@commitmentType = 240) -- Relocation
+		Begin
+			Select t.projectid, d.detailid, f.FundId, f.account, f.name, format(d.Amount, 'N2') as amount, lv.Description, 
+				d.LkTransType, t.LkTransaction , t.TransId  
+			from Fund f 
+				join Detail d on d.FundId = f.FundId
+				join Trans t on t.TransId = d.TransId
+				join LookupValues lv on lv.TypeID = d.LkTransType
+			Where     f.RowIsActive=1 and t.LkTransaction = @commitmentType and d.Amount > 0
 			and t.TransId = @transId 
 		End
 	End
@@ -882,6 +904,7 @@ alter procedure [dbo].[AddBoardFinancialTransaction]
 	@transAmt money,
 	@payeeApplicant int = null,
 	@commitmentType varchar(50),
+	@correction	bit,
 	@lkStatus int
 )
 as
@@ -892,10 +915,12 @@ Begin
 	select @recordId = RecordID from LkLookups where Tablename = 'LkTransAction'
 	select @transTypeId = TypeID from LookupValues where LookupType = @recordId and Description = @commitmentType
 	
-	insert into Trans (ProjectID, date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
-		values (@projectId, @transDate, @transAmt, @payeeApplicant, @transTypeId, @lkStatus)
+	insert into Trans (ProjectID, date, TransAmt, PayeeApplicant, LkTransaction, LkStatus, Correction)
+		values (@projectId, @transDate, @transAmt, @payeeApplicant, @transTypeId, @lkStatus, @correction)
 
-	select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, tr.PayeeApplicant, tr.LkTransaction from Project p 		
+	select tr.TransId, p.projectid, p.Proj_num, tr.Date, format(tr.TransAmt, 'N2') as TransAmt, tr.LkStatus, lv.description, 
+		tr.PayeeApplicant, tr.LkTransaction, tr.Correction 
+	from Project p 		
 		join Trans tr on tr.ProjectID = p.ProjectId	
 		join LookupValues lv on lv.TypeID = tr.LkStatus
 	Where  tr.RowIsActive=1 	and tr.TransId = @@IDENTITY; 
@@ -2271,7 +2296,7 @@ Begin
 	join ApplicantAppName aan(nolock) on a.applicantid = aan.applicantid
 	join AppName an(nolock) on aan.AppNameID = an.AppNameID
 	join LookupValues lv on lv.TypeID = t.LkStatus
-	where pv.defname = 1 and pcr.projectid = @projId
+	where pv.defname = 1 and pcr.projectid = @projId and t.LkStatus = 261 --Dan added LKstatus =261
 	order by pcr.ProjectCheckReqId desc
 
 	
@@ -3501,3 +3526,20 @@ as
 		and tr.RowIsActive=1 and det.RowIsActive=1 --and p.projectid = @projectid
 		
 go
+
+IF EXISTS ( SELECT  * FROM    sys.objects WHERE   object_id = OBJECT_ID(N'UpdateTransDetailsWithFund') AND type IN (N'P', N'PC')) 
+DROP PROCEDURE [dbo].[UpdateTransDetailsWithFund]
+GO
+CREATE procedure [dbo].[UpdateTransDetailsWithFund]
+(	
+	@detailId int,	
+	@fundtranstype int,
+	@fundamount money,
+	@fundId int
+)
+as
+BEGIN 
+	update Detail set Amount = @fundamount, LkTransType = @fundtranstype,FundId = @fundId
+	where DetailID = @detailId
+END 
+GO

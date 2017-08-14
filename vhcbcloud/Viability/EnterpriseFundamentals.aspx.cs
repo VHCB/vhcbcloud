@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Conservation;
 using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
@@ -48,14 +49,17 @@ namespace vhcbcloud.Viability
                 PopulateDropDown(ddlPlanType, drEntFunDetails["PlanType"].ToString());
                 PopulateDropDown(ddlServiceProvOrg, drEntFunDetails["ServiceProvOrg"].ToString());
                 PopulateDropDown(ddlLeadAdvisor, drEntFunDetails["LeadAdvisor"].ToString());
-                PopulateDropDown(ddlHearViability, drEntFunDetails["HearAbout"].ToString());
-                txtYearMangBusiness.Text = drEntFunDetails["YrManageBus"].ToString();
+                //PopulateDropDown(ddlHearViability, drEntFunDetails["HearAbout"].ToString());
+                //txtYearMangBusiness.Text = drEntFunDetails["YrManageBus"].ToString();
                 txtProjectDesc.Text = drEntFunDetails["ProjDesc"].ToString();
                 txtBusinessDesc.Text = drEntFunDetails["BusDesc"].ToString();
+                cbBusplan.Checked = DataUtils.GetBool(drEntFunDetails["BusPlan"].ToString());
+                cbGrantApp.Checked = DataUtils.GetBool(drEntFunDetails["GrantApp"].ToString());
 
                 btnAddPlanInfo.Text = "Update";
                 dvNewFinJobs.Visible = true;
                 BindFinJobsGrid();
+                BindAttributeGrid();
             }
             else
             {
@@ -111,7 +115,8 @@ namespace vhcbcloud.Viability
             BindLookUP(ddlPlanType, 216);
             BindApplicants(26242, "organization", ddlServiceProvOrg);
             BindApplicants(26243, "individual", ddlLeadAdvisor);
-            BindLookUP(ddlHearViability, 215);
+            //BindLookUP(ddlHearViability, 215);
+            BindLookUP(ddlAttribute, 230);
         }
 
         protected void BindApplicants(int RoleId, string RoleName, DropDownList ddList)
@@ -213,6 +218,7 @@ namespace vhcbcloud.Viability
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
             BindFinJobsGrid();
+            BindAttributeGrid();
         }
 
         protected void btnAddPlanInfo_Click(object sender, EventArgs e)
@@ -226,8 +232,8 @@ namespace vhcbcloud.Viability
                     int EnterFundamentalID = DataUtils.GetInt(hfEnterFundamentalID.Value);
                     EnterpriseFundamentalsData.UpdateEnterpriseFundamentals(EnterFundamentalID, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtProjectDesc.Text, txtBusinessDesc.Text,
-                        txtYearMangBusiness.Text, true);
+                       txtProjectDesc.Text, txtBusinessDesc.Text, cbBusplan.Checked, cbGrantApp.Checked,
+                        true);
 
                     LogMessage("Plan Info updated successfully");
                 }
@@ -235,8 +241,7 @@ namespace vhcbcloud.Viability
                 {
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFundamentals(ProjectId, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtProjectDesc.Text, txtBusinessDesc.Text,
-                        txtYearMangBusiness.Text);
+                        txtProjectDesc.Text, txtBusinessDesc.Text, cbBusplan.Checked, cbGrantApp.Checked);
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
                         LogMessage("Plan Info already exist as in-active");
@@ -267,7 +272,9 @@ namespace vhcbcloud.Viability
                         txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
                         DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), chkActive.Checked);
+                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")), 
+                        chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
 
@@ -280,7 +287,8 @@ namespace vhcbcloud.Viability
                         txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
                         DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text));
+                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -410,6 +418,7 @@ namespace vhcbcloud.Viability
                         txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
                         txtFamilyFTEmp.Text = dr["FamilyEmp"].ToString() ?? "";
                         txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
+                        txtNetworth.Text = dr["Networth"].ToString() ?? "";
 
                         spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) + DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
 
@@ -422,6 +431,84 @@ namespace vhcbcloud.Viability
             {
                 LogError(Pagename, "gvFiniceJobs_RowDataBound", "", ex.Message);
             }
+        }
+
+        protected void btnAddAttribute_Click(object sender, EventArgs e)
+        {
+            if (ddlAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Attribute");
+                ddlAttribute.Focus();
+                return;
+            }
+
+            int EnterImpGrantID = DataUtils.GetInt(hfEnterFundamentalID.Value);
+
+            AttributeResult obAttributeResult = EnterpriseFundamentalsData.AddEnterpriseEngagementAttributes(EnterImpGrantID,
+               DataUtils.GetInt(ddlAttribute.SelectedValue.ToString()));
+            ddlAttribute.SelectedIndex = -1;
+            cbAddAttribute.Checked = false;
+
+            BindAttributeGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Attribute already exist as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("Attribute already exist");
+            else
+                LogMessage("New Attribute added successfully");
+        }
+
+        private void BindAttributeGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseFundamentalsData.GetEnterpriseEngagementAttributesList(DataUtils.GetInt(hfEnterFundamentalID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAttributeGrid.Visible = true;
+                    gvAttribute.DataSource = dt;
+                    gvAttribute.DataBind();
+                }
+                else
+                {
+                    dvAttributeGrid.Visible = false;
+                    gvAttribute.DataSource = null;
+                    gvAttribute.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAttributeGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvAttribute_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAttribute.EditIndex = e.NewEditIndex;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAttribute.EditIndex = -1;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterEngageAttrID = DataUtils.GetInt(((Label)gvAttribute.Rows[rowIndex].FindControl("lblEnterEngageAttrID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAttribute.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseFundamentalsData.UpdateEnterpriseEngagementAttributes(EnterEngageAttrID, RowIsActive);
+            gvAttribute.EditIndex = -1;
+
+            BindAttributeGrid();
+
+            LogMessage("Attribute updated successfully");
         }
     }
 }

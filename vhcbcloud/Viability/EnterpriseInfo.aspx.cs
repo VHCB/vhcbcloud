@@ -28,10 +28,8 @@ namespace vhcbcloud.Viability
 
             if (!IsPostBack)
             {
-                PopulateProjectDetails();
-
                 BindControls();
-
+                PopulateProjectDetails();
                 BindProductGrid();
                 BindAttributeGrid();
             }
@@ -73,7 +71,7 @@ namespace vhcbcloud.Viability
             GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
 
             spnEnterPriseType.InnerText = EnterpriseType;
-            BindSubLookUP(ddlPrimaryProduct, EnterpriseTypeId);
+            BindSubLookUP(ddlPrimaryProduct, DataUtils.GetInt(dr["LkProjectType"].ToString()));
             BindSubLookUP(ddlProducts, EnterpriseTypeId);
 
             BindLookUP(ddlAttribute, AttributeTypeId);
@@ -83,6 +81,9 @@ namespace vhcbcloud.Viability
             if(drow != null)
             {
                 PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
+                PopulateDropDown(ddlHearViability, drow["HearAbout"].ToString());
+                txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
+                btnAddEntInfo.Text = "Update";
             }
 
             if (EnterpriseType != "Viability Farm Enterprise")
@@ -138,7 +139,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-            
+            BindLookUP(ddlHearViability, 215);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -448,8 +449,14 @@ namespace vhcbcloud.Viability
 
         protected void ddlPrimaryProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
-            EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value), 
-                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()));
+            //EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value), 
+            //    DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()));
+        }
+
+        protected void btnAddEntInfo_Click(object sender, EventArgs e)
+        {
+            EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()));
         }
     }
 }

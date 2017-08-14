@@ -21,13 +21,16 @@
                             <td>
                                 <span class="labelClass" id="ProjectNum" runat="server"></span>
                             </td>
-                            <td><span class="labelClass">Name</span></td>
+                            <td><span class="labelClass">Name:</span></td>
                             <td style="text-align: left">
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
-                            <td>
-                                <%--<asp:CheckBox ID="cbLatestBudget" runat="server" Checked="true" Text=" Is Latest Budget" />--%>
-                            </td>
+  
+                                <td class="modal-sm" style="width: 144px"><span class="labelClass">Enterprise Type:</span></td>
+                                        <td style="width: 150px">
+                                            <span class="labelClass" runat="server" id="spnEnterPriseType"></span>
+                                        </td>
+
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
@@ -76,20 +79,48 @@
                             <asp:Panel runat="server" ID="Panel1">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td class="modal-sm" style="width: 144px"><span class="labelClass">Enterprise Type</span></td>
-                                        <td class="modal-sm" style="width: 164px">
-                                            <span class="labelClass" runat="server" id="spnEnterPriseType"></span>
-                                        </td>
-                                        <td style="width: 97px"><span class="labelClass">Primary Product</span></td>
-                                        <td style="width: 173px">
-                                            <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" AutoPostBack="true" runat="server" 
-                                                Style="margin-left: 0" OnSelectedIndexChanged="ddlPrimaryProduct_SelectedIndexChanged">
+                                        <td class="modal-sm" style="width: 194px"><span class="labelClass">Type of Business</span></td>
+                                        <td style="width: 200px">
+                                            <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" AutoPostBack="false" runat="server" 
+                                                 OnSelectedIndexChanged="ddlPrimaryProduct_SelectedIndexChanged">
                                             </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 97px"></td>
+                                        <td style="width: 173px">
                                         </td>
                                         <td style="width: 58px"><span class="labelClass"></span></td>
                                         <td></td>
                                     </tr>
                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    </table>
+                                <table style="width: 100%">
+                                      <tr>
+                                        <td style="width: 255px"><span class="labelClass">How did you hear about the Viability Program?</span></td>
+                                        <td style="width: 19%">
+                                            <asp:DropDownList ID="ddlHearViability" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 11%"></td>
+                                        <td style="width: 17%"></td>
+                                        <td style="width: 13%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="labelClass">Year Began Managing Business</span></td>
+                                        <td style="width: 19%">
+                                            <asp:TextBox ID="txtYearMangBusiness" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" Width="44px"></asp:TextBox>
+                                            <%-- <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
+                                            </ajaxToolkit:CalendarExtender>--%>
+                                        </td>
+                                        <td style="width: 11%"></td>
+                                        <td style="width: 17%"></td>
+                                        <td style="width: 13%"><asp:Button ID="btnAddEntInfo" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntInfo_Click" /></td>
+                                    </tr>
+                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
@@ -217,17 +248,47 @@
                                         <td style="width: 136px">
                                             <asp:TextBox ID="txtAcresInProd" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 115px"><span class="labelClass">Acres Leased</span></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
                                         <td style="width: 140px">
+                                        </td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 15px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Acres Leased</span></td>
+                                        <td class="modal-sm" style="width: 129px">
                                             <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">Total Acres</span></td>
-                                        <td style="width: 100px">
+                                        <td style="width: 129px"><span class="labelClass"></span></td>
+                                        <td style="width: 136px"></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
+                                        <td style="width: 140px"></td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 15px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Total Acres</span></td>
+                                        <td class="modal-sm" style="width: 129px">
                                             <span class="labelClass" runat="server" id="spnTotalAcres"></span>
                                         </td>
+                                        <td style="width: 129px"><span class="labelClass"></span></td>
+                                        <td style="width: 136px"><asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                        <td style="width: 115px"><span class="labelClass"></span></td>
+                                        <td style="width: 140px"></td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
                                         <td style="width: 15px"></td>
-                                        <td>
-                                            <asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="10" style="height: 5px"></td>

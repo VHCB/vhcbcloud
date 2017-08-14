@@ -49,6 +49,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjName;
         
         /// <summary>
+        /// spnEnterPriseType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnEnterPriseType;
+        
+        /// <summary>
         /// imgSearch control.
         /// </summary>
         /// <remarks>
@@ -166,15 +175,6 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
-        /// spnEnterPriseType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnEnterPriseType;
-        
-        /// <summary>
         /// ddlPrimaryProduct control.
         /// </summary>
         /// <remarks>
@@ -182,6 +182,33 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryProduct;
+        
+        /// <summary>
+        /// ddlHearViability control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlHearViability;
+        
+        /// <summary>
+        /// txtYearMangBusiness control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtYearMangBusiness;
+        
+        /// <summary>
+        /// btnAddEntInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddEntInfo;
         
         /// <summary>
         /// dvProduct control.

@@ -83,9 +83,12 @@ namespace vhcbcloud
                 gvLkDescription.DataSource = dt;
                 gvLkDescription.DataBind();
 
-                if (dt.Rows[0]["ordered"].ToString().ToLower() == "true")
+                if (dt != null  && dt.Rows.Count > 0)
                 {
-                    IsOrdered.Value = "true";
+                    if (dt.Rows[0]["ordered"].ToString().ToLower() == "true")
+                    {
+                        IsOrdered.Value = "true";
+                    }
                 }
             }
             catch (Exception ex)
@@ -472,6 +475,14 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void GridLookupValuesReport_Click(object sender, ImageClickEventArgs e)
+        {
+            recordId = Convert.ToInt32(ddlLkLookupViewname.SelectedValue.ToString() == "" || ddlLkLookupViewname.SelectedValue.ToString() == "NA" ? "0" : ddlLkLookupViewname.SelectedValue.ToString());
+            if (recordId != 0)
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURLLookup(recordId.ToString(), "Grid Lookup Values"));
         }
     }
 }

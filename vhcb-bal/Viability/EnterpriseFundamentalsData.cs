@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VHCBCommon.DataAccessLayer.Conservation;
 
 namespace VHCBCommon.DataAccessLayer.Viability
 {
@@ -45,7 +46,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFundamentals(int ProjectId, int PlanType, int ServiceProvOrg, int LeadAdvisor,
-            int HearAbout, string ProjDesc, string BusDesc, string YrManageBus)
+            string ProjDesc, string BusDesc, bool Busplan, bool Grantapp)
         {
             try
             {
@@ -63,10 +64,12 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
-                        command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        //command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
-                        command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
+                        //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
+                        command.Parameters.Add(new SqlParameter("Busplan", Busplan));
+                        command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -94,7 +97,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFundamentals(int EnterFundamentalID, int PlanType, int ServiceProvOrg, int LeadAdvisor, 
-            int HearAbout, string ProjDesc, string BusDesc, string YrManageBus, bool RowIsActive)
+            string ProjDesc, string BusDesc, bool Busplan, bool Grantapp, bool RowIsActive)
         {
             try
             {
@@ -113,10 +116,12 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
-                        command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        //command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
-                        command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
+                        command.Parameters.Add(new SqlParameter("Busplan", Busplan));
+                        command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
+                        //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -199,7 +204,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFinancialJobs(int ProjectId, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth)
         {
             try
             {
@@ -222,6 +227,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
+                        command.Parameters.Add(new SqlParameter("Networth", Networth));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -249,7 +255,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFinancialJobs(int EnterFinancialJobsID, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, bool RowIsActive)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth, bool RowIsActive)
         {
             try
             {
@@ -272,6 +278,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
+                        command.Parameters.Add(new SqlParameter("Networth", Networth));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -284,6 +291,113 @@ namespace VHCBCommon.DataAccessLayer.Viability
             {
                 throw ex;
             }
+        }
+
+        public static AttributeResult AddEnterpriseEngagementAttributes(int EnterFundamentalID, int LKAttributeID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddEnterpriseEngagementAttributes";
+
+                        command.Parameters.Add(new SqlParameter("EnterFundamentalID", EnterFundamentalID));
+                        command.Parameters.Add(new SqlParameter("LKAttributeID", LKAttributeID));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        AttributeResult acs = new AttributeResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateEnterpriseEngagementAttributes(int EnterEngageAttrID, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateEnterpriseEngagementAttributes";
+
+                        command.Parameters.Add(new SqlParameter("EnterEngageAttrID", EnterEngageAttrID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetEnterpriseEngagementAttributesList(int EnterFundamentalID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEnterpriseEngagementAttributesList";
+                        command.Parameters.Add(new SqlParameter("EnterFundamentalID", EnterFundamentalID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
     }
 

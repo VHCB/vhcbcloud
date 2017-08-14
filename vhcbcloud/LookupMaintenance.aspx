@@ -18,6 +18,8 @@
                         <td style="width: 150px">
                             <asp:TextBox ID="txtDescription" CssClass="clsTextBoxBlueSMDL" runat="server"></asp:TextBox></td>
                         <td style="text-align: right">
+                             <asp:ImageButton ID="GridLookupValuesReport" ImageUrl="~/Images/print.png" ToolTip="Grid Lookup Values Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="GridLookupValuesReport_Click" />
                             <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                 OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                         </td>
@@ -131,12 +133,12 @@
                                 </EditItemTemplate>
 
                             </asp:TemplateField>
-                             <asp:TemplateField HeaderText="Required" SortExpression="subreq">
+                             <asp:TemplateField HeaderText="Required" SortExpression="Subreq">
                                 <ItemTemplate>
-                                    <asp:CheckBox ID="chkRequired" runat="server" Checked='<%# Eval("subreq") %>' Enabled="false" />
+                                    <asp:CheckBox ID="chkRequired" runat="server" Checked='<%# Eval("Subreq") %>' Enabled="false" />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:CheckBox ID="chkEditRequired" runat="server" Checked='<%# Eval("subreq") %>' />
+                                    <asp:CheckBox ID="chkEditRequired" runat="server" Checked='<%# Eval("Subreq") %>' />
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Active" SortExpression="RowIsActive">

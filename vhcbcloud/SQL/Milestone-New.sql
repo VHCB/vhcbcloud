@@ -106,7 +106,7 @@ begin
 			pe.ProjectID, p.project_name, 
 			pe.ApplicantID, an.applicantname, 
 			pe.EventID, lv1.Description as Event, 
-			pe.SubEventID, lv2.Description as SubEvent,
+			pe.SubEventID, lsv1.SubDescription as SubEvent,
 			pe.ProgEventID, lv3.Description as ProgEvent,
 			pe.ProgSubEventID, lsv.SubDescription as ProgSubEvent,
 			pe.EntityMSID, 
@@ -123,7 +123,8 @@ begin
 		left join applicant a(nolock) on a.applicantid = aan.applicantid
 		left join LookupValues lv(nolock) on lv.TypeID = pe.Prog
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
-		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+		--left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+		left join LookupSubValues lsv1(nolock) on lsv1.SubTypeID = pe.SubEventID
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
 		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
@@ -139,7 +140,7 @@ begin
 			pe.ProjectID, p.project_name, 
 			pe.ApplicantID, an.applicantname, 
 			pe.EventID, lv1.Description as Event, 
-			pe.SubEventID, lv2.Description as SubEvent,
+			pe.SubEventID, lsv1.SubDescription as SubEvent,
 			pe.ProgEventID, lv3.Description as ProgEvent,
 			pe.ProgSubEventID, lsv.SubDescription as ProgSubEvent,
 			pe.EntityMSID, 
@@ -156,7 +157,8 @@ begin
 		left join applicant a(nolock) on a.applicantid = aan.applicantid
 		left join LookupValues lv(nolock) on lv.TypeID = pe.Prog
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
-		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+		--left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+		left join LookupSubValues lsv1(nolock) on lsv1.SubTypeID = pe.SubEventID
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
 		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId
@@ -172,7 +174,7 @@ begin
 			pe.ProjectID, p.project_name, 
 			pe.ApplicantID, an.applicantname, 
 			pe.EventID, lv1.Description as Event, 
-			pe.SubEventID, lv2.Description as SubEvent,
+			pe.SubEventID, lsv1.SubDescription as SubEvent,
 			pe.ProgEventID, lv3.Description as ProgEvent,
 			pe.ProgSubEventID, lsv.SubDescription as ProgSubEvent,
 			pe.EntityMSID, 
@@ -189,7 +191,10 @@ begin
 		left join applicant a(nolock) on a.applicantid = aan.applicantid
 		left join LookupValues lv(nolock) on lv.TypeID = pe.Prog
 		left join LookupValues lv1(nolock) on lv1.TypeID = pe.EventID
-		left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+		--left join LookupValues lv2(nolock) on lv2.TypeID = pe.SubEventID
+
+		left join LookupSubValues lsv1(nolock) on lsv1.SubTypeID = pe.SubEventID
+
 		left join LookupValues lv3(nolock) on lv3.TypeID = pe.ProgEventID
 		left join LookupSubValues lsv(nolock) on lsv.SubTypeID = pe.ProgSubEventID
 		left join userinfo ui(nolock) on ui.userid = pe.UserId

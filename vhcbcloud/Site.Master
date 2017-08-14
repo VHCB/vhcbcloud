@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - VHCB Cloud Application</title>
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -34,7 +34,7 @@
                     <asp:ScriptReference Name="WebParts.js" Path="~/Scripts/WebForms/WebParts.js" />
                     <asp:ScriptReference Name="Focus.js" Path="~/Scripts/WebForms/Focus.js" />
                     <asp:ScriptReference Name="CurrencyController.js" Path="~/Scripts/CurrencyController.js" />
-
+                    
                     <asp:ScriptReference Name="WebFormsBundle" />
                     <%--Site Scripts--%>
                 </Scripts>

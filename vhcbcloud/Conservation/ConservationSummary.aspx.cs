@@ -634,5 +634,23 @@ namespace vhcbcloud.Conservation
             gvSurfaceWaters.EditIndex = -1;
             BindSurfacewatersGrid();
         }
+
+        protected void ImgEasementHoldersReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Easement Holders"));
+        }
+
+        protected void ImgAcreage_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Acres"));
+        }
+
+        protected void ImgSurfaceWaters_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Surface Waters"));
+        }
     }
 }

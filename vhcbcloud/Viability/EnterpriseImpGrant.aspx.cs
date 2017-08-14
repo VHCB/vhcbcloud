@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Conservation;
 using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
@@ -56,6 +57,7 @@ namespace vhcbcloud.Viability
                 btnAddGrantApplication.Text = "Update";
                 dvGrantAward.Visible = true;
                 BindGrantMatchGrid();
+                BindAttributeGrid();
             }
             else
             {
@@ -110,6 +112,7 @@ namespace vhcbcloud.Viability
         {
             BindLookUP(ddlMatchDescription, 214);//214
             BindLookUP(ddlFYGrantRound, 220);
+            BindLookUP(ddlAttribute, 228);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -185,6 +188,7 @@ namespace vhcbcloud.Viability
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
             BindGrantMatchGrid();
+            BindAttributeGrid();
         }
 
         protected void btnAddGrantApplication_Click(object sender, EventArgs e)
@@ -316,6 +320,84 @@ namespace vhcbcloud.Viability
             BindGrantMatchGrid();
 
             LogMessage("Grant Match updated successfully");
+        }
+
+        protected void btnAddAttribute_Click(object sender, EventArgs e)
+        {
+            if (ddlAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Attribute");
+                ddlAttribute.Focus();
+                return;
+            }
+
+            int EnterImpGrantID = DataUtils.GetInt(hfEnterImpGrantID.Value);
+
+            AttributeResult obAttributeResult = EnterpriseImpGrantData.AddEnterpriseGrantAttributes(EnterImpGrantID,
+               DataUtils.GetInt(ddlAttribute.SelectedValue.ToString()));
+            ddlAttribute.SelectedIndex = -1;
+            cbAddAttribute.Checked = false;
+
+            BindAttributeGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Attribute already exist as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("Attribute already exist");
+            else
+                LogMessage("New Attribute added successfully");
+        }
+
+        private void BindAttributeGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseImpGrantData.GetEnterpriseGrantAttributesList(DataUtils.GetInt(hfEnterImpGrantID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAttributeGrid.Visible = true;
+                    gvAttribute.DataSource = dt;
+                    gvAttribute.DataBind();
+                }
+                else
+                {
+                    dvAttributeGrid.Visible = false;
+                    gvAttribute.DataSource = null;
+                    gvAttribute.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAttributeGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvAttribute_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAttribute.EditIndex = e.NewEditIndex;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAttribute.EditIndex = -1;
+            BindAttributeGrid();
+        }
+
+        protected void gvAttribute_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterImpAttributeID = DataUtils.GetInt(((Label)gvAttribute.Rows[rowIndex].FindControl("lblEnterImpAttributeID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAttribute.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseImpGrantData.UpdateEnterpriseGrantAttributes(EnterImpAttributeID, RowIsActive);
+            gvAttribute.EditIndex = -1;
+
+            BindAttributeGrid();
+
+            LogMessage("Attribute updated successfully");
         }
     }
 }
