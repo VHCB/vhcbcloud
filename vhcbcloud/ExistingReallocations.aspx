@@ -133,6 +133,13 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="10px" />
+                                            <FooterStyle Width="10px" />
+                                            <HeaderStyle Width="10px" />
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
@@ -143,12 +150,36 @@
                                                 <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="50px" />
+                                            <FooterStyle Width="50px" />
+                                            <HeaderStyle Width="50px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Fund Name" SortExpression="FromFundName">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FromFundName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                             <FooterStyle Width="100px" />
                                             <HeaderStyle Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Transaction Type" SortExpression="FromFundtransType">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("FromFundtransType") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="50px" />
+                                            <FooterStyle Width="50px" />
+                                            <HeaderStyle Width="50px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
                                             FooterStyle-HorizontalAlign="Right">
@@ -163,8 +194,8 @@
                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
-                                            <ItemStyle Width="250px" />
-                                            <FooterStyle Width="250px" />
+                                            <ItemStyle Width="50px" />
+                                            <FooterStyle Width="50px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Trans Status" SortExpression="Description">
                                             <ItemTemplate>
