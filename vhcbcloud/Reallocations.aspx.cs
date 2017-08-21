@@ -438,6 +438,20 @@ namespace vhcbcloud
                 if (ddlUsePermit.Items.Count > 1)
                     ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
 
+            }
+            catch (Exception ex)
+            {
+                lblRErrorMsg.Text = ex.Message;
+            }
+        }
+            protected void BindToUsePermit(int projId)
+        {
+            try
+            {
+
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetLandUsePermit(projId);
+
                 ddlToUsePermit.DataSource = dtable;
                 ddlToUsePermit.DataValueField = "Act250FarmId";
                 ddlToUsePermit.DataTextField = "UsePermit";
@@ -449,7 +463,6 @@ namespace vhcbcloud
             {
                 lblRErrorMsg.Text = ex.Message;
             }
-
         }
 
         protected void ddlRFromFund_SelectedIndexChanged(object sender, EventArgs e)
@@ -481,6 +494,7 @@ namespace vhcbcloud
                 }
 
                 BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+                //BindToUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
                 DataTable dtFundDet = new DataTable();
                 dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
@@ -559,7 +573,7 @@ namespace vhcbcloud
                     ddlRtoFundType.DataBind();
                     ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                    BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+                    BindToUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
                     DataTable dtFundDet = new DataTable();
                     dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));

@@ -1036,7 +1036,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateTransDetailsWithFund(int detailId, int fundtranstype, decimal fundamount,int fundId)
+        public static void UpdateTransDetailsWithFund(int detailId, int fundtranstype, decimal fundamount, int fundId, string useFarmId = null)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -1048,7 +1048,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
-
+                command.Parameters.Add(new SqlParameter("useFarmId", useFarmId));
+                
                 using (connection)
                 {
                     connection.Open();
@@ -2938,5 +2939,37 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static DataRow GetTransactionDetailsByDetailId(int DetailID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetTransactionDetailsByDetailId";
+                        command.Parameters.Add(new SqlParameter("DetailID", DetailID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
     }
 }
