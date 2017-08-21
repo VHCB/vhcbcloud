@@ -18,6 +18,8 @@ namespace vhcbcloud
         private int TRANS_PENDING_STATUS = 261;
         private int ActiveOnly = 1;
 
+        string Pagename = "ExistingReallocations";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -145,8 +147,10 @@ namespace vhcbcloud
         {
             lblRErrorMsg.Text = "";
             GetSelectedTransId(gvReallocate);
+            gvbRelocationDetails.EditIndex = -1;
             BindFundDetails(GetTransId());
             pnlTranDetails.Visible = true;
+            ClearTransactionDetailForm();
         }
         private void getDetails(DataTable dt)
         {
@@ -428,6 +432,7 @@ namespace vhcbcloud
         protected void gvbRelocationDetails_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvbRelocationDetails.EditIndex = -1;
+            ClearTransactionDetailForm();
             BindFundDetails(GetTransId());
         }
 
@@ -435,7 +440,6 @@ namespace vhcbcloud
         {
             gvbRelocationDetails.EditIndex = e.NewEditIndex;
             BindFundDetails(GetTransId());
-
         }
 
         protected void gvbRelocationDetails_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -485,7 +489,7 @@ namespace vhcbcloud
                     lblRErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
                     return;
                 }
-                FinancialTransactions.UpdateTransDetailsWithFund(detailId, transType, amount, fundId);
+                FinancialTransactions.UpdateTransDetailsWithFund(detailId, transType, amount, fundId, null);
 
 
                 gvbRelocationDetails.EditIndex = -1;
@@ -498,84 +502,128 @@ namespace vhcbcloud
 
         }
 
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
         protected void gvbRelocationDetails_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
+
+            try
             {
-                //Checking whether the Row is Data Row
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
-                    DropDownList ddlTrans = (e.Row.FindControl("ddlTransType") as DropDownList);
-                    TextBox txtTransType = (e.Row.FindControl("txtTransType") as TextBox);
-                    //Label lblFName = (e.Row.FindControl("lblFundName") as Label);
-                    TextBox txtFundName = (e.Row.FindControl("txtFundName") as TextBox);
-                    Label lblAmt = (e.Row.FindControl("lblAmt") as Label);
-                    if (lblAmt != null)
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnReallocateSubmit.Text = "Update";
+                    dvReallocateToForm.Visible = true;
+                    pnlTranDetails.Visible = true;
+
+                    if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        if (Convert.ToDecimal(lblAmt.Text.Trim()) < 0)
-                        {
-                            LinkButton lnkBtnEdit = (e.Row.FindControl("LnkBtnEdit") as LinkButton);
-                            lnkBtnEdit.Visible = false;
-                        }
-                    }
-                    if (txtTransType != null)
-                    {
-                        DataTable dtable = new DataTable();
-                        if (txtFundName.Text.ToLower().Contains("hopwa"))
-                        {
-                            dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                        }
-                        else
-                        {
-                            dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                        }
+                       // e.Row.Cells[11].Controls[0].Visible = false;
+                        Label lblDetId = e.Row.FindControl("lblDetId") as Label;
+                        hfDetailId.Value = lblDetId.Text;
+                        DataRow dr = FinancialTransactions.GetTransactionDetailsByDetailId(Convert.ToInt32(lblDetId.Text));
 
-                        // dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
-                        ddlTrans.DataSource = dtable;
-                        ddlTrans.DataValueField = "typeid";
-                        ddlTrans.DataTextField = "Description";
-                        ddlTrans.DataBind();
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlTrans.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtTransType.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlTrans.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-                    }
-
-                    DropDownList ddlEditFundName = (e.Row.FindControl("ddlEditFundName") as DropDownList);
-                    if (txtFundName != null)
-                    {
-                        if (txtFundName.Text != null)
-                        {
-
-                            DataTable dtable = new DataTable();
-                            dtable = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
-
-                            ddlEditFundName.DataSource = dtable;
-                            ddlEditFundName.DataValueField = "fundid";
-                            ddlEditFundName.DataTextField = "name";
-                            ddlEditFundName.DataBind();
-
-                            string itemToCompare = string.Empty;
-                            foreach (ListItem item in ddlEditFundName.Items)
-                            {
-                                itemToCompare = item.Text.ToString();
-                                if (txtFundName.Text.ToLower() == itemToCompare.ToLower())
-                                {
-                                    ddlEditFundName.ClearSelection();
-                                    item.Selected = true;
-                                }
-                            }
-                        }
+                        PopulateDropDown(ddlAcctNum, dr["FundId"].ToString());
+                        SelectedFundNum();
+                        PopulateDropDown(ddlFundName, dr["FundId"].ToString());
+                        PopulateDropDown(ddlTransType, dr["LkTransType"].ToString());
+                        txtAmt.Text = dr["Amount"].ToString();
+                        PopulateDropDown(ddlUsePermit, dr["LandUsePermitID"].ToString());
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvbRelocationDetails_RowDataBound", "", ex.Message);
+            }
+
+
+            //if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            //    CommonHelper.GridViewSetFocus(e.Row);
+            //{
+            //    //Checking whether the Row is Data Row
+            //    if (e.Row.RowType == DataControlRowType.DataRow)
+            //    {
+            //        DropDownList ddlTrans = (e.Row.FindControl("ddlTransType") as DropDownList);
+            //        TextBox txtTransType = (e.Row.FindControl("txtTransType") as TextBox);
+            //        //Label lblFName = (e.Row.FindControl("lblFundName") as Label);
+            //        TextBox txtFundName = (e.Row.FindControl("txtFundName") as TextBox);
+            //        Label lblAmt = (e.Row.FindControl("lblAmt") as Label);
+            //        if (lblAmt != null)
+            //        {
+            //            if (Convert.ToDecimal(lblAmt.Text.Trim()) < 0)
+            //            {
+            //                LinkButton lnkBtnEdit = (e.Row.FindControl("LnkBtnEdit") as LinkButton);
+            //                lnkBtnEdit.Visible = false;
+            //            }
+            //        }
+            //        if (txtTransType != null)
+            //        {
+            //            DataTable dtable = new DataTable();
+            //            if (txtFundName.Text.ToLower().Contains("hopwa"))
+            //            {
+            //                dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+            //            }
+            //            else
+            //            {
+            //                dtable = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+            //            }
+
+            //            // dtable = FinancialTransactions.GetLookupDetailsByName("LkTransType");
+            //            ddlTrans.DataSource = dtable;
+            //            ddlTrans.DataValueField = "typeid";
+            //            ddlTrans.DataTextField = "Description";
+            //            ddlTrans.DataBind();
+            //            string itemToCompare = string.Empty;
+            //            foreach (ListItem item in ddlTrans.Items)
+            //            {
+            //                itemToCompare = item.Value.ToString();
+            //                if (txtTransType.Text.ToLower() == itemToCompare.ToLower())
+            //                {
+            //                    ddlTrans.ClearSelection();
+            //                    item.Selected = true;
+            //                }
+            //            }
+            //        }
+
+            //        DropDownList ddlEditFundName = (e.Row.FindControl("ddlEditFundName") as DropDownList);
+            //        if (txtFundName != null)
+            //        {
+            //            if (txtFundName.Text != null)
+            //            {
+
+            //                DataTable dtable = new DataTable();
+            //                dtable = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
+
+            //                ddlEditFundName.DataSource = dtable;
+            //                ddlEditFundName.DataValueField = "fundid";
+            //                ddlEditFundName.DataTextField = "name";
+            //                ddlEditFundName.DataBind();
+
+            //                string itemToCompare = string.Empty;
+            //                foreach (ListItem item in ddlEditFundName.Items)
+            //                {
+            //                    itemToCompare = item.Text.ToString();
+            //                    if (txtFundName.Text.ToLower() == itemToCompare.ToLower())
+            //                    {
+            //                        ddlEditFundName.ClearSelection();
+            //                        item.Selected = true;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
 
         }
@@ -601,8 +649,6 @@ namespace vhcbcloud
                 lblRErrorMsg.Text = ex.Message;
             }
         }
-
-
 
         private void BindTransGrid()
         {
@@ -738,11 +784,18 @@ namespace vhcbcloud
                     gvbRelocationDetails.FooterRow.Visible = true;
                     lblTransDetHeader.Text = "Transaction Detail";
 
-                    dvReallocateToForm.Visible = false;
-
-                    if (lblBalAmt.Text != "$0.00")
+                    if (btnReallocateSubmit.Text.ToLower() == "submit")// When Edit mode form needs to show
                     {
-                        lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                        dvReallocateToForm.Visible = false;
+
+                        if (lblBalAmt.Text != "$0.00")
+                        {
+                            lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                            dvReallocateToForm.Visible = true;
+                        }
+                    }
+                    else
+                    {
                         dvReallocateToForm.Visible = true;
                     }
                 }
@@ -781,6 +834,11 @@ namespace vhcbcloud
         }
 
         protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedFundNum();
+        }
+
+        private void SelectedFundNum()
         {
             DataTable dtable = new DataTable();
             if (ddlAcctNum.SelectedIndex != 0)
@@ -962,52 +1020,93 @@ namespace vhcbcloud
                 if (hfTransId.Value != null)
                 {
                     int transId = Convert.ToInt32(hfTransId.Value);
-
-                    if (currentBalAmount == 0 && gvbRelocationDetails.Rows.Count > 0)
-                    {
-                        lblRErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
-                        ClearTransactionDetailForm();
-                        CommonHelper.DisableButton(btnReallocateSubmit);
-
-                        return;
-                    }
-                    else if (currentTranFudAmount > currentBalAmount)
-                    {
-                        //currentTranFudAmount = currentBalAmount;
-                        //lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
-
-                        lblRErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
-                        return;
-                    }
-
-                    if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
-                    {
-                        lblRErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
-                        return;
-                    }
-
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
 
-                    //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                    if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    if (btnReallocateSubmit.Text.ToLower() == "submit")
                     {
-                        if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                        if (currentBalAmount == 0 && gvbRelocationDetails.Rows.Count > 0)
                         {
-                            lblRErrorMsg.Text = "Select Use Permit";
-                            ddlUsePermit.Focus();
+                            lblRErrorMsg.Text = "This transaction details are all set. No more funds allowed to add for the transaction.";
+                            ClearTransactionDetailForm();
+                            CommonHelper.DisableButton(btnReallocateSubmit);
+
+                            return;
+                        }
+                        else if (currentTranFudAmount > currentBalAmount)
+                        {
+                            //currentTranFudAmount = currentBalAmount;
+                            //lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+
+                            lblRErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
                             return;
                         }
 
-                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
+                        if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
+                        {
+                            lblRErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                            return;
+                        }
+
+                        //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                        if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                        {
+                            if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                            {
+                                lblRErrorMsg.Text = "Select Use Permit";
+                                ddlUsePermit.Focus();
+                                return;
+                            }
+
+                            FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
+                        }
+                        else
+                            FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                                Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+
+                        ClearTransactionDetailForm();
+                        BindFundDetails(transId);
                     }
                     else
-                        FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                    {
+                        //Update
+                        int detailId = Convert.ToInt32(hfDetailId.Value);
 
-                    BindFundDetails(transId);
-                    ClearTransactionDetailForm();
+                        decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
+                        decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
+                        decimal allowed_amount = old_amount + bal_amount;
+
+
+                        decimal amount = currentTranFudAmount;
+                        if (amount == allowed_amount)
+                        {
+                            lblRErrorMsg.Text = "Transaction is complete, more funds not allowed";
+                        }
+                        else if (amount > allowed_amount)
+                        {
+                            //amount = allowed_amount;
+                            //lblRErrorMsg.Text = "Amount auto adjusted to available fund amount";
+
+                            lblRErrorMsg.Text = "Amount entered is more than the available balance amount. Please enter available funds.";
+                            return;
+                        }
+
+                        if (ddlUsePermit.SelectedValue.ToString() != "NA")
+                        {
+                            FinancialTransactions.UpdateTransDetailsWithFund(detailId, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                                currentTranFudAmount, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()), ddlUsePermit.SelectedValue.ToString());
+                        }
+                        else
+                        {
+                            FinancialTransactions.UpdateTransDetailsWithFund(detailId, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                               currentTranFudAmount, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()), null);
+                        }
+
+                        gvbRelocationDetails.EditIndex = -1;
+                        ClearTransactionDetailForm();
+                        BindFundDetails(transId);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1026,9 +1125,27 @@ namespace vhcbcloud
                 ddlTransType.SelectedIndex = 0;
                 ddlAcctNum.SelectedIndex = 0;
                 ddlFundName.SelectedIndex = 0;
+                btnReallocateSubmit.Text = "Submit";
             }
             catch (Exception)
             { }
+        }
+
+         private void LogError(string pagename, string method, string message, string error)
+        {
+            lblRErrorMsg.Visible = true;
+            if (message == "")
+            {
+                lblRErrorMsg.Text = Pagename + ": " + method + ": Error Message: " + error;
+            }
+            else
+                lblRErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+        }
+
+        private void LogMessage(string message)
+        {
+            lblRErrorMsg.Visible = true;
+            lblRErrorMsg.Text = message;
         }
     }
 }

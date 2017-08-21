@@ -1,9 +1,9 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" MaintainScrollPositionOnPostback="true"
     CodeBehind="ExistingReallocations.aspx.cs" Inherits="vhcbcloud.ExistingReallocations" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
+   <%-- <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>--%>
             <div class="jumbotron clearfix" id="vhcb">
 
                 <p class="lead">Board Reallocations</p>
@@ -133,13 +133,13 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                        <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="10px" />
                                             <FooterStyle Width="10px" />
                                             <HeaderStyle Width="10px" />
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="Trans Date" SortExpression="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("Date", "{0:MM-dd-yyyy}") %>' />
@@ -150,37 +150,49 @@
                                                 <ajaxToolkit:CalendarExtender runat="server" ID="acebdt" TargetControlID="txtTransDate"></ajaxToolkit:CalendarExtender>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                        <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="50px" />
                                             <FooterStyle Width="50px" />
                                             <HeaderStyle Width="50px" />
-                                        </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Fund Name" SortExpression="FromFundName">
+                                        </asp:TemplateField>--%>
+                                        <asp:TemplateField HeaderText="Fund Name" SortExpression="FromFundName">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FromFundName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                        <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                             <FooterStyle Width="100px" />
                                             <HeaderStyle Width="100px" />
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="Transaction Type" SortExpression="FromFundtransType">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("FromFundtransType") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                        <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
                                             </ItemTemplate>
                                             <ItemStyle Width="50px" />
                                             <FooterStyle Width="50px" />
                                             <HeaderStyle Width="50px" />
+                                        </asp:TemplateField>--%>
+                                        <asp:TemplateField HeaderText="Landuse Permit ID" SortExpression="FromLandusePermitId">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLandusePermitID" runat="Server" Text='<%# Eval("FromLandusePermitId") %>' />
+                                            </ItemTemplate>
                                         </asp:TemplateField>
+                                        <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="50px" />
+                                            <FooterStyle Width="50px" />
+                                            <HeaderStyle Width="50px" />
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
                                             FooterStyle-HorizontalAlign="Right">
                                             <ItemTemplate>
@@ -278,7 +290,7 @@
                                             <tr>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                                 <td style="width: 20%; float: left">
-                                                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" onkeyup='toAmtFormatter(value)' TabIndex="10"></asp:TextBox></td>
+                                                    <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox></td>
                                                 <td style="width: 10%; float: left">
                                                     <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                 </td>
@@ -297,7 +309,8 @@
                                     Width="90%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True"
                                     AllowSorting="True" ShowFooter="True" OnRowCancelingEdit="gvbRelocationDetails_RowCancelingEdit"
-                                    OnRowEditing="gvbRelocationDetails_RowEditing" OnRowUpdating="gvbRelocationDetails_RowUpdating" OnRowDataBound="gvbRelocationDetails_RowDataBound" OnRowDeleting="gvbRelocationDetails_RowDeleting" TabIndex="12">
+                                    OnRowEditing="gvbRelocationDetails_RowEditing" OnRowUpdating="gvbRelocationDetails_RowUpdating"
+                                    OnRowDataBound="gvbRelocationDetails_RowDataBound" OnRowDeleting="gvbRelocationDetails_RowDeleting" TabIndex="12">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -305,61 +318,6 @@
                                     <RowStyle CssClass="rowStyle" />
                                     <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
-                                            <ItemTemplate>
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Fund #" SortExpression="Account">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
-                                            </ItemTemplate>
-                                            <FooterTemplate>
-                                                Running Total :
-                                            </FooterTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:DropDownList ID="ddlEditFundName" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                                <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>
-                                            <FooterTemplate>
-                                                <asp:Label runat="server" ID="lblFooterAmount" Text=""></asp:Label>
-                                            </FooterTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                                <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
-                                            </EditItemTemplate>
-                                            <FooterTemplate>
-                                                Balance Amount :
-                                            </FooterTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox ID="txtAmount" runat="Server" onkeyup='toGridAmtFormatter(value)' CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                            <FooterTemplate>
-                                                <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
-                                            </FooterTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
-                                            <ItemTemplate>
-                                            </ItemTemplate>
-                                            <ItemStyle Width="200px" />
-                                            <FooterStyle Width="200px" />
-                                            <HeaderStyle Width="200px" />
-                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="false" HeaderText="Fund Id" SortExpression="FundID">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
@@ -375,10 +333,96 @@
                                                 <asp:Label ID="lblTransId" runat="Server" Text='<%# Eval("Transid") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <%--   <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        </asp:TemplateField>--%>
+                                        <asp:TemplateField HeaderText="Fund #" SortExpression="Account">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Running Total :
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                            </ItemTemplate>
+                                            <%--  <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlEditFundName" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterAmount" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="10px" />
+                                            <FooterStyle Width="10px" />
+                                            <HeaderStyle Width="10px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                            <%--<EditItemTemplate>
+                                                <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtTransType" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("lktranstype") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="10px" />
+                                            <FooterStyle Width="10px" />
+                                            <HeaderStyle Width="10px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="UsePermit ID" SortExpression="UsePermit">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
+                                            </ItemTemplate>
+                                            <%--  <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlEditUsePermit" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtUsePermit" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("UsePermit") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                Balance Amount :
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="10px" />
+                                            <FooterStyle Width="10px" />
+                                            <HeaderStyle Width="10px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                            </ItemTemplate>
+                                            <%-- <EditItemTemplate>
+                                                <asp:TextBox ID="txtAmount" runat="Server" onkeyup='toGridAmtFormatter(value)' CssClass="clsTextBoxMoney" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterBalance" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="10px" />
+                                            <FooterStyle Width="10px" />
+                                            <HeaderStyle Width="10px" />
+                                        </asp:TemplateField>
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
-                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                                <%-- <asp:LinkButton ID="lnkbtnUpdate" runat="server" CausesValidation="True" CommandName="Update" Text="Update234"></asp:LinkButton>
+                                                &nbsp;--%>
+                                                <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
                                                 <asp:LinkButton ID="LnkBtnEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
@@ -394,9 +438,10 @@
                             </div>
                         </div>
                     </div>
+                </asp:Panel>
             </div>
-            </asp:Panel>
-                <asp:HiddenField ID="hfGrantee" runat="server" />
+
+            <asp:HiddenField ID="hfGrantee" runat="server" />
             <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
             <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
             <asp:HiddenField ID="hfTransId" runat="server" />
@@ -406,10 +451,18 @@
             <asp:HiddenField ID="hfReallocateGuid" runat="server" />
             <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
             <asp:HiddenField ID="hdnRelocationProjValue" OnValueChanged="hdnRelocationProjValue_ValueChanged" runat="server" />
-            </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+            <asp:HiddenField ID="hfDetailId" runat="server" />
+           
+       <%-- </ContentTemplate>
+    </asp:UpdatePanel>--%>
     <script type="text/javascript">
+        $(document).ready(function () {
+           toCurrencyControl($('#<%= txtAmt.ClientID%>').val(), $('#<%= txtAmt.ClientID%>'));
+                    $('#<%= txtAmt.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtAmt.ClientID%>').val(), $('#<%= txtAmt.ClientID%>'));
+                     });
+        });
+        
         window.onbeforeunload = confirmExit;
         function confirmExit() {
             var balAmt = document.getElementById("<%=hfBalAmt.ClientID%>").value;
@@ -424,15 +477,15 @@
 
         function PopupExistingAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
-        };
+                };
 
-        function PopupProjectSearch() {
-            window.open('./projectsearch.aspx')
-        };
+                function PopupProjectSearch() {
+                    window.open('./projectsearch.aspx')
+                };
 
-        function OnRelocationProjectSelected(source, eventArgs) {
+                function OnRelocationProjectSelected(source, eventArgs) {
 
-            var hdnCommitedProjValueID = "<%= hdnRelocationProjValue.ClientID %>";
+                    var hdnCommitedProjValueID = "<%= hdnRelocationProjValue.ClientID %>";
 
             document.getElementById(hdnCommitedProjValueID).value = eventArgs.get_value();
             __doPostBack(hdnCommitedProjValueID, "");
@@ -457,43 +510,43 @@
             __doPostBack(hdnValueID, "");
         }
         //Currency formatter code starts below
-        var formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-        });
-        toRFromAmtFormatter = value => {
-            const digits = this.getDigitsFromValue(value);
-            const digitsWithPadding = this.padDigits(digits);
+        //var formatter = new Intl.NumberFormat('en-US', {
+        //    style: 'currency',
+        //    currency: 'USD',
+        //    minimumFractionDigits: 2,
+        //});
+        //toRFromAmtFormatter = value => {
+        //    const digits = this.getDigitsFromValue(value);
+        //    const digitsWithPadding = this.padDigits(digits);
 
-            let result = this.addDecimalToNumber(digitsWithPadding);
+        //    let result = this.addDecimalToNumber(digitsWithPadding);
 
-        };
+        //};
 
-        getDigitsFromValue = (value) => {
-            return value.toString().replace(/\D/g, '');
-        };
+        //getDigitsFromValue = (value) => {
+        //    return value.toString().replace(/\D/g, '');
+        //};
 
-        padDigits = digits => {
-            const desiredLength = 3;
-            const actualLength = digits.length;
+        //padDigits = digits => {
+        //    const desiredLength = 3;
+        //    const actualLength = digits.length;
 
-            if (actualLength >= desiredLength) {
-                return digits;
-            }
+        //    if (actualLength >= desiredLength) {
+        //        return digits;
+        //    }
 
-            const amountToAdd = desiredLength - actualLength;
-            const padding = '0'.repeat(amountToAdd);
+        //    const amountToAdd = desiredLength - actualLength;
+        //    const padding = '0'.repeat(amountToAdd);
 
-            return padding + digits;
-        };
-        addDecimalToNumber = number => {
-            const centsStartingPosition = number.length - 2;
-            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-            const cents = number.substring(centsStartingPosition);
-            return `${dollars}.${cents}`;
-        };
-        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+        //    return padding + digits;
+        //};
+        //addDecimalToNumber = number => {
+        //    const centsStartingPosition = number.length - 2;
+        //    const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+        //    const cents = number.substring(centsStartingPosition);
+        //    return `${dollars}.${cents}`;
+        //};
+        //removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvReallocate.ClientID%>");
@@ -510,7 +563,7 @@
             }
         }
 
-        toAmtFormatter = value => {
+        <%--        toAmtFormatter = value => {
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);
 
@@ -520,6 +573,6 @@
 
             //inputElement.value = "$" + result;
             $('#<%= txtAmt.ClientID%>').val(formatter.format(result));
-                };
+        };--%>
     </script>
 </asp:Content>
