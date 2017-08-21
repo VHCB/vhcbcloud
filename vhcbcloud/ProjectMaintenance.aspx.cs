@@ -53,6 +53,25 @@ namespace vhcbcloud
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+
+            if (Context.User.Identity.Name == "jhollar")
+            {
+                cbAddAddress.Enabled = false;
+                cbAddProjectEvent.Enabled = false;
+                cbAddTBDAddress.Enabled = false;
+                cbAttachNewEntity.Enabled = false;
+                cbDefaultAddress.Enabled = false;
+                cbAddProjectName.Enabled = false;
+                cbRelatedProjects.Enabled = false;
+                rdBtnSelection.Enabled = false;
+                btnAddMilestone.Visible = false;
+                btnAddAddress.Visible = false;
+                btnAddEntity.Visible = false;
+                btnAddProjectName.Visible = false;
+                btnAddRelatedProject.Visible = false;
+                btnProjectSubmit.Visible = false;
+                btnProjectUpdate.Visible = false;                
+            }
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -62,6 +81,17 @@ namespace vhcbcloud
                 this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        protected bool GetRoleAuth()
+        {
+            if (Context.User.Identity.Name == "jhollar")
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         private void ProjectNotesSetUp(string ProjectId)
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
