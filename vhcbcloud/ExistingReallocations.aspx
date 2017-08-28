@@ -60,6 +60,7 @@
                                 <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
 
                             </asp:Panel>
+
                             <div class="panel-heading">Reallocations</div>
                             <div class="panel-body" id="pnlReallocateFrom" runat="server">
                                 <table style="width: 100%" class="">
