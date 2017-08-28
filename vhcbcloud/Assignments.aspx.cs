@@ -146,7 +146,8 @@ namespace vhcbcloud
                     {
                         txtRfromAmt.Text = dtRelAmt.Rows[0]["amount"].ToString();
                     }
-                    BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    //BindGvReallocate(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                    BindGvReallocate();
                 }
             }
         }
@@ -322,7 +323,7 @@ namespace vhcbcloud
         private void getToDetails(DataTable dt)
         {
             hfToProjId.Value = dt.Rows[0][0].ToString();
-            hfTransId.Value = ""; hfRFromTransId.Value = "";
+            //hfTransId.Value = ""; hfRFromTransId.Value = "";
             /*DO NOT Remove the below code*/
             //if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
             //{
@@ -571,21 +572,23 @@ namespace vhcbcloud
             txtRfromAmt.Enabled = true;
         }
 
-        private void BindGvReallocate(int fromProjId)
+        private void BindGvReallocate()
         {
             try
             {
                 DataTable dtFundDet = new DataTable();
                 // dtFundDet = FinancialTransactions.GetReallocationDetailsTransId(fromProjId);
 
-                if (rdBtnSelection.SelectedIndex > 0)
-                {
-                    dtFundDet = FinancialTransactions.GetAssignmentByTransId(fromProjId);
-                }
-                else
-                {
-                    dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, hfReallocateGuid.Value);
-                }
+                dtFundDet = FinancialTransactions.GetAssignmentByTransId(Convert.ToInt32(hfTransId.Value));
+
+                //if (rdBtnSelection.SelectedIndex > 0)
+                //{
+                //    dtFundDet = FinancialTransactions.GetAssignmentByTransId(fromProjId);
+                //}
+                //else
+                //{
+                //    dtFundDet = FinancialTransactions.GetAssignmentByGuid(fromProjId, hfReallocateGuid.Value);
+                //}
 
                 gvReallocate.DataSource = dtFundDet;
                 gvReallocate.DataBind();
@@ -629,11 +632,11 @@ namespace vhcbcloud
                         EnableReallocationFromPanel();
                     }
                 }
-                else
-                {
-                    btnReallocateSubmit.Visible = false;
-                    btnNewTransaction.Visible = true;
-                }
+                //else
+                //{
+                //    btnReallocateSubmit.Visible = false;
+                //    btnNewTransaction.Visible = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -885,7 +888,7 @@ namespace vhcbcloud
             }
             else
             {
-                Response.Redirect("existingreallocations.aspx");
+                Response.Redirect("ExistingAssignments.aspx");
                 btnReallocateSubmit.Visible = false;
             }
         }
@@ -1047,10 +1050,11 @@ namespace vhcbcloud
                                                                       hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
-                hfTransId.Value = dtable.Rows[0][1].ToString();
+                hfTransId.Value = dtable.Rows[0][0].ToString();
 
                 lblRErrorMsg.Text = "Assignment was added successfully";
-                BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+                //BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+                BindGvReallocate();
                 ClearReallocationToPanel();
             }
             catch (Exception ex)
@@ -1081,8 +1085,9 @@ namespace vhcbcloud
             gvReallocate.EditIndex = -1;
             Label lblGuid = (Label)gvReallocate.Rows[e.RowIndex].FindControl("lblProjGuid");
 
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()), lblGuid.Text);
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+            //BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()), lblGuid.Text);
+            //BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()));
+            BindGvReallocate();
         }
 
         protected void gvReallocate_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -1090,8 +1095,9 @@ namespace vhcbcloud
             
             Label lblGuid = (Label)gvReallocate.Rows[e.RowIndex].FindControl("lblProjGuid");
 
-            FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+            FinancialTransactions.DeleteAssignmentDetailByGUID(lblGuid.Text);
+            //BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+            BindGvReallocate();
         }
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)

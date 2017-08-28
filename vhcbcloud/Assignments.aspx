@@ -29,7 +29,7 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                            <asp:RadioButtonList ID="rdBtnSelection" Visible="false" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
+                                            <asp:RadioButtonList ID="rdBtnSelection" Visible="true" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal" onclick="needToConfirm = true;"
                                                 OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
                                                 <asp:ListItem Selected="True">New    </asp:ListItem>
                                                 <asp:ListItem>Existing</asp:ListItem>
@@ -38,14 +38,17 @@
                                             <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
                                                 OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
                                             &nbsp;
-                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
-                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
+                                       
+                                            <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
+                                                OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
                                             <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false"
                                                 OnClientClick="PopupExistingAwardSummary(); return false;"></asp:ImageButton>
                                             &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
+                               
+                                            <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
                                             &nbsp;
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                               
+                                            <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                         </td>
                                     </tr>
                                 </table>
@@ -60,6 +63,7 @@
                                 <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
 
                             </asp:Panel>
+
                             <div class="panel-heading">Assign from</div>
                             <div class="panel-body" id="pnlReallocateFrom" runat="server">
                                 <table style="width: 100%" class="">
@@ -137,6 +141,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="container" id="divReallocateTo" runat="server">
                         <div class="panel panel-default">
                             <div class="panel-heading">Assign To</div>
@@ -212,6 +217,7 @@
                                 </EditItemTemplate>--%>
                                             <FooterTemplate>
                                                 Running Total :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
@@ -236,6 +242,7 @@
                                     </EditItemTemplate>--%>
                                             <FooterTemplate>
                                                 Balance Amount :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right"
@@ -285,6 +292,7 @@
                             </div>
                         </div>
                     </div>
+
                     <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
                     <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
                     <asp:HiddenField ID="hfTransId" runat="server" />
@@ -389,30 +397,30 @@
             //inputElement.value = "$" + result;
             $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
         };
-            getDigitsFromValue = (value) => {
-                return value.toString().replace(/\D/g, '');
-            };
+        getDigitsFromValue = (value) => {
+            return value.toString().replace(/\D/g, '');
+        };
 
-            padDigits = digits => {
-                const desiredLength = 3;
-                const actualLength = digits.length;
+        padDigits = digits => {
+            const desiredLength = 3;
+            const actualLength = digits.length;
 
-                if (actualLength >= desiredLength) {
-                    return digits;
-                }
+            if (actualLength >= desiredLength) {
+                return digits;
+            }
 
-                const amountToAdd = desiredLength - actualLength;
-                const padding = '0'.repeat(amountToAdd);
+            const amountToAdd = desiredLength - actualLength;
+            const padding = '0'.repeat(amountToAdd);
 
-                return padding + digits;
-            };
-            addDecimalToNumber = number => {
-                const centsStartingPosition = number.length - 2;
-                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-                const cents = number.substring(centsStartingPosition);
-                return `${dollars}.${cents}`;
-            };
-            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+            return padding + digits;
+        };
+        addDecimalToNumber = number => {
+            const centsStartingPosition = number.length - 2;
+            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+            const cents = number.substring(centsStartingPosition);
+            return `${dollars}.${cents}`;
+        };
+        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
     </script>
 </asp:Content>
