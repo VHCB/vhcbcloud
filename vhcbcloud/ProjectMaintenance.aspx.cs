@@ -54,24 +54,56 @@ namespace vhcbcloud
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
 
-            if (Context.User.Identity.Name == "jhollar")
+            DataTable dtPrg = new DataTable();
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt != null)
             {
-                cbAddAddress.Enabled = false;
-                cbAddProjectEvent.Enabled = false;
-                cbAddTBDAddress.Enabled = false;
-                cbAttachNewEntity.Enabled = false;
-                cbDefaultAddress.Enabled = false;
-                cbAddProjectName.Enabled = false;
-                cbRelatedProjects.Enabled = false;
-                rdBtnSelection.Enabled = false;
-                btnAddMilestone.Visible = false;
-                btnAddAddress.Visible = false;
-                btnAddEntity.Visible = false;
-                btnAddProjectName.Visible = false;
-                btnAddRelatedProject.Visible = false;
-                btnProjectSubmit.Visible = false;
-                btnProjectUpdate.Visible = false;                
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+
+                if (dt.Rows.Count > 0)
+                    if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
+                    {
+                        RoleReadOnly();
+                    }
+                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                    {
+                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                        {
+                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                        }
+                        if (dtPrg.Rows.Count <= 0)
+                        {
+                            RoleReadOnly();
+                        }
+
+                    }
             }
+            DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (dtMgr != null)
+                if (dtMgr.Rows.Count > 0)
+                    divApproval.Visible = true;
+                else
+                    divApproval.Visible = false;
+
+        }
+
+        protected void RoleReadOnly()
+        {
+            cbAddAddress.Enabled = false;
+            cbAddProjectEvent.Enabled = false;
+            cbAddTBDAddress.Enabled = false;
+            cbAttachNewEntity.Enabled = false;
+            cbDefaultAddress.Enabled = false;
+            cbAddProjectName.Enabled = false;
+            cbRelatedProjects.Enabled = false;
+            rdBtnSelection.Enabled = false;
+            btnAddMilestone.Visible = false;
+            btnAddAddress.Visible = false;
+            btnAddEntity.Visible = false;
+            btnAddProjectName.Visible = false;
+            btnAddRelatedProject.Visible = false;
+            btnProjectSubmit.Visible = false;
+            btnProjectUpdate.Visible = false;
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {

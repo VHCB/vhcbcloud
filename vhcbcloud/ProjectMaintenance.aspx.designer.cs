@@ -310,6 +310,33 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlManager;
         
         /// <summary>
+        /// divApproval control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divApproval;
+        
+        /// <summary>
+        /// chkApprove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkApprove;
+        
+        /// <summary>
+        /// dtApprove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label dtApprove;
+        
+        /// <summary>
         /// cbAddTBDAddress control.
         /// </summary>
         /// <remarks>

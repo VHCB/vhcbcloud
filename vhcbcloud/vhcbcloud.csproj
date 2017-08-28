@@ -14,7 +14,7 @@
     <RootNamespace>vhcbcloud</RootNamespace>
     <AssemblyName>VHCB</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -115,7 +115,7 @@
     </Reference>
     <Reference Include="WebReportsApi, Version=2016.3.0.104, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Exago\eWebReportsAPI\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Exago\ExagoWebAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1050,7 +1050,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1163</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/vhcbcloud</IISUrl>
+          <IISUrl>http://localhost:1163/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

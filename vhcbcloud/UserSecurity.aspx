@@ -68,8 +68,8 @@
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
                                     <Columns>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
-                                            <ItemTemplate>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select" Visible="false">
+                                            <ItemTemplate >
                                                 <asp:RadioButton ID="rdBtnSelectDetail" class="show" runat="server" onclick="RadioCheck(this);" AutoPostBack="true"
                                                     OnCheckedChanged="rdBtnSelectDetail_CheckedChanged" />
                                                 <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("userid")%>' />

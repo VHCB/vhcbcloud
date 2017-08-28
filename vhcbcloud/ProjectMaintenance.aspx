@@ -156,6 +156,27 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
+                                        <div id="divApproval" runat="server" visible="false">
+                                            <table>
+                                                <tr>
+                                                    <td style="width: 150px"></td>
+                                                    <td style="width: 250px">
+                                                        <asp:CheckBox ID="chkApprove" Text="Approve" runat="server" />
+                                                    </td>
+                                                    <td style="width: 100px">
+                                                        <span class="labelClass">Date</span>
+                                                    </td>
+                                                    <td style="width: 270px">
+                                                        <asp:Label ID="dtApprove" CssClass="labelClass" runat="server"></asp:Label>
+                                                    </td>                                                    
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px">
                                             <asp:CheckBox ID="cbAddTBDAddress" runat="server" Checked="true" Text="Add default TBD address record" />
                                         </td>
@@ -165,7 +186,7 @@
                                             <table>
                                                 <tr>
                                                     <td style="width: 115px"><span class="labelClass">Project Goal</span></td>
-                                                    <td style="width: 100px" colspan="4">
+                                                    <td style="width: 250px" colspan="4">
                                                         <asp:DropDownList ID="ddlProjectGoal" CssClass="clsDropDown" runat="server">
                                                         </asp:DropDownList>
                                                     </td>
@@ -455,7 +476,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>                                                
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -609,14 +630,14 @@
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        
+
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>                                                
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -819,14 +840,14 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        
+
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>                                                
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -948,14 +969,14 @@
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        
+
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>                                                
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -1054,14 +1075,14 @@
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowEditButton="True" />--%>
-                                        
+
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>                                                
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

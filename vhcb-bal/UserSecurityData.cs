@@ -266,13 +266,121 @@ namespace VHCBCommon.DataAccessLayer
         {
             try
             {
-                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(username);                
-                return dtUser != null ? GetMasterPageSecurity(Convert.ToInt32(dtUser.Rows[0][0].ToString())) : null;
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(username);
+                //return dtUser != null ? GetMasterPageSecurity(Convert.ToInt32(dtUser.Rows[0][0].ToString())) : null;
+                return dtUser;
             }
             catch (Exception)
             {
                 return null;
             }
+        }
+
+        public static DataTable GetProjectsByProgram(int ProgId, int projId)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetProjectsByProgram";
+                command.Parameters.Add(new SqlParameter("progId", ProgId));
+                command.Parameters.Add(new SqlParameter("projId", projId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetUserSecurityByUserId(int userid)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetUserSecurityByUserId";
+                command.Parameters.Add(new SqlParameter("userid", userid));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetManagerByProjId(int projId)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetManagerByProjId";
+                command.Parameters.Add(new SqlParameter("projId", projId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
         }
 
         public static string GetMasterPageFileFromSession(int userid)
