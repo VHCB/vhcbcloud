@@ -119,6 +119,38 @@ namespace VHCBCommon.DataAccessLayer
             return dtBoardFinancialTrans;
         }
 
+        public static DataTable GetAssignmentTransactionsByProject(int ProjectId, int TransactionType, bool ActiveOnly)
+        {
+            DataSet ds = new DataSet();
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAssignmentTransactionsByProject";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                command.Parameters.Add(new SqlParameter("TransactionType", TransactionType));
+                command.Parameters.Add(new SqlParameter("ActiveOnly", ActiveOnly));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return ds.Tables[0];
+        }
+
         public static DataSet GetFinancialFundDetailsByProjectId(int projectId, bool isReallocation)
         {
             DataSet ds = new DataSet();
@@ -540,7 +572,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
-        public static DataTable GetAssignmentByTransId(int fromProjId)
+        public static DataTable GetAssignmentByTransId(int TransID)
         {
             DataTable dtable = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -549,7 +581,8 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetAssignmentByTransId";
-                command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
+                command.Parameters.Add(new SqlParameter("TransID", TransID));
+                //command.Parameters.Add(new SqlParameter("fromProjId", fromProjId));
                 //command.Parameters.Add(new SqlParameter("toTransId", toTransId));
                 using (connection)
                 {
@@ -690,7 +723,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtable;
         }
-        
+
         public static DataTable GetAssignmentDetailsNewProjFund(int fromProjId, int fundId)
         {
             DataTable dtable = null;
@@ -980,6 +1013,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void DeleteAssignmentDetailByGUID(string DetailGuId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteAssignmentDetailByGUID";
+                command.Parameters.Add(new SqlParameter("DetailGuId", DetailGuId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void DeleteReallocationTrans(int transId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1049,7 +1109,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.Parameters.Add(new SqlParameter("useFarmId", useFarmId));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -2124,7 +2184,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
-        public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType, 
+        public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType,
             int lkStatus, bool correction = false)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);

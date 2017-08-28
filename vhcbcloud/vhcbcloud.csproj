@@ -192,6 +192,7 @@
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
     <Content Include="EventMaintenance.aspx" />
+    <Content Include="ExistingAssignments.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
     <Content Include="awardsummary.aspx" />
@@ -275,6 +276,7 @@
     <Content Include="ExistingReallocations.aspx" />
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
+    <Content Include="QAManagement.aspx" />
     <Content Include="Scripts\CurrencyController.js" />
     <Content Include="Scripts\NumericController.js" />
     <Content Include="SiteLogin.Master" />
@@ -533,6 +535,13 @@
     </Compile>
     <Compile Include="EventMaintenance.aspx.designer.cs">
       <DependentUpon>EventMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExistingAssignments.aspx.cs">
+      <DependentUpon>ExistingAssignments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExistingAssignments.aspx.designer.cs">
+      <DependentUpon>ExistingAssignments.aspx</DependentUpon>
     </Compile>
     <Compile Include="FederalRentalAffordability.aspx.cs">
       <DependentUpon>FederalRentalAffordability.aspx</DependentUpon>
@@ -914,6 +923,13 @@
     </Compile>
     <Compile Include="Assignments.aspx.designer.cs">
       <DependentUpon>Assignments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QAManagement.aspx.cs">
+      <DependentUpon>QAManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QAManagement.aspx.designer.cs">
+      <DependentUpon>QAManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reallocations.aspx.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
