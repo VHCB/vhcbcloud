@@ -203,7 +203,7 @@ create procedure [dbo].[UpdateProjectInfo]
 	@LkProgram			int,
 	@Manager			int,
 	--@ClosingDate		datetime,
-	--@verified			bit,
+	@verified			bit = false,
 	@appName			varchar(150),
 	@goal				int
 	--@projName			varchar(75)
@@ -216,7 +216,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager, Goal = @goal --ClosingDate = @ClosingDate, verified = @verified
+		Manager = @Manager, Goal = @goal, verified = @verified --ClosingDate = @ClosingDate
 	from Project
 	where ProjectId = @ProjectId
 

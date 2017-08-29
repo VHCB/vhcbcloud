@@ -80,7 +80,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtProjects;
         }
 
-        public static void AddUserPageSecurity(int userId, int pageid, int fieldid, int actionid)
+        public static void AddUserPageSecurity(int userId, int pageid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -90,9 +90,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddUserPageSecurity";
                 command.Parameters.Add(new SqlParameter("userid", userId));
                 command.Parameters.Add(new SqlParameter("pageid", pageid));
-                command.Parameters.Add(new SqlParameter("fieldid", fieldid));
-                command.Parameters.Add(new SqlParameter("actionid", actionid));
-
+                
                 using (connection)
                 {
                     connection.Open();

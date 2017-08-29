@@ -133,7 +133,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName, int Goal)
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName, int Goal, bool verified = false)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Manager", Manager));
                         //command.Parameters.Add(new SqlParameter("ClosingDate", ClosingDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ClosingDate)));
                         //command.Parameters.Add(new SqlParameter("GrantClosingDate", ExpireDate == "" ? System.Data.SqlTypes.SqlDateTime.Null : DateTime.Parse(ExpireDate)));
-                        //command.Parameters.Add(new SqlParameter("verified", verified));
+                        command.Parameters.Add(new SqlParameter("verified", verified));
                         command.Parameters.Add(new SqlParameter("appName", appName));
                         command.Parameters.Add(new SqlParameter("Goal", Goal));
                         // command.Parameters.Add(new SqlParameter("projName", projName));

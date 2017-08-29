@@ -61,22 +61,22 @@ namespace vhcbcloud
                 DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
 
                 if (dt.Rows.Count > 0)
-                    if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
-                    {
-                        RoleReadOnly();
-                    }
-                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
-                    {
-                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                        {
-                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
-                        }
-                        if (dtPrg.Rows.Count <= 0)
+                    if (dtGetUserSec.Rows.Count > 0)
+                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
                         {
                             RoleReadOnly();
                         }
-
-                    }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                RoleReadOnly();
+                            }
+                        }
             }
             DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
             if (dtMgr != null)
@@ -733,7 +733,7 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()));
+                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()), chkApprove.Checked);
 
                     this.BindProjectEntityGrid();
 

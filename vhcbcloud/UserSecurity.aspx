@@ -68,7 +68,7 @@
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
                                     <Columns>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select" Visible="false">
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select" >
                                             <ItemTemplate >
                                                 <asp:RadioButton ID="rdBtnSelectDetail" class="show" runat="server" onclick="RadioCheck(this);" AutoPostBack="true"
                                                     OnCheckedChanged="rdBtnSelectDetail_CheckedChanged" />
@@ -115,9 +115,9 @@
                                                             <asp:DropDownList ID="ddlPage" runat="server" AutoPostBack="true" CssClass="clsDropDown" onclick="needToConfirm = false;">
                                                             </asp:DropDownList>
                                                         </td>
-                                                        <td style="width: 10%; float: left"><span class="labelClass">Field :</span></td>
+                                                        <td style="width: 10%; float: left"><span style="visibility:hidden" class="labelClass">Field :</span></td>
                                                         <td style="width: 20%; float: left">
-                                                            <asp:DropDownList ID="ddlField" runat="server" AutoPostBack="true" CssClass="clsDropDown" onclick="needToConfirm = false;">
+                                                            <asp:DropDownList ID="ddlField" runat="server" AutoPostBack="true" CssClass="clsDropDown" onclick="needToConfirm = false;" Visible="False">
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td style="width: 10%; float: left"><span class="labelClass">Action :</span></td>
@@ -168,17 +168,8 @@
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblPage" runat="Server" Text='<%# Eval("pagedesc") %>' />
                                                             </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField  HeaderText="Field" SortExpression="FieldDesc">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblField" runat="Server" Text='<%# Eval("FieldDesc") %>' />
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Action" SortExpression="ActionDesc">
-                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblAction" runat="Server" Text='<%# Eval("ActionDesc") %>' />
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
+                                                        </asp:TemplateField>                                                       
+                                                       
                                                         <asp:CommandField ShowDeleteButton="True" />
                                                     </Columns>
                                                 </asp:GridView>

@@ -283,7 +283,7 @@ namespace vhcbcloud
                     lblErrorMsg.Text = "Please select Action to the selected page";
                     return;
                 }
-                UserSecurityData.AddUserPageSecurity(Convert.ToInt32(hfUserId.Value), Convert.ToInt32(ddlPage.SelectedValue.ToString()), Convert.ToInt32(ddlField.SelectedValue.ToString()), Convert.ToInt32(ddlAction.SelectedValue.ToString()));
+                UserSecurityData.AddUserPageSecurity(Convert.ToInt32(hfUserId.Value), Convert.ToInt32(ddlPage.SelectedValue.ToString()));
                 BindUserPageSecurity();
             }
             catch (Exception ex)
