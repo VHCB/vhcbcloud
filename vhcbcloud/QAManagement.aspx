@@ -20,6 +20,7 @@
                 </div>
                 <div class="panel-body" runat="server" id="dvNewYrQrtrForm">
                     <asp:Panel ID="pnlAddNew" runat="server">
+                        <div runat="server" id="dvAddNew">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="width: 70px">
@@ -38,59 +39,63 @@
                                 <td>
                                     <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" class="btn btn-info" /></td>
                             </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;
-                                    <asp:Label runat="server" class="lblErrMsg" ID="lblErrorMsg"></asp:Label>
-                                </td>
-                                <td colspan="3"></td>
-                            </tr>
-
                         </table>
+                            </div>
                     </asp:Panel>
                 </div>
 
                 <div class="panel-body" id="dvProjectNamesGrid" runat="server">
-                    <asp:Panel ID="pnlYrQrtrDetails" runat="server" Visible="false" Width="100%" Height="100px" ScrollBars="Vertical">
-                        <asp:GridView ID="gvYrQrtrDetails" runat="server" AutoGenerateColumns="False"
-                            Width="100%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                            GridLines="None" EnableTheming="True" OnRowDeleting="gvYrQrtrDetails_RowDeleting">
-                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                            <HeaderStyle CssClass="headerStyle" />
-                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                            <RowStyle CssClass="rowStyle" />
-                            <Columns>
-                                <asp:TemplateField HeaderText="Select">
-                                    <ItemTemplate>
-                                        <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
-                                        <asp:HiddenField ID="hdnYrQrtrId" runat="server" Value='<%#Eval("ACYrQtrID")%>' />
-                                    </ItemTemplate>
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="height: 5px">
+                                <asp:Label runat="server" class="lblErrMsg" ID="lblErrorMsg"></asp:Label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:Panel ID="pnlYrQrtrDetails" runat="server" Visible="false" Width="100%" Height="100px" ScrollBars="Vertical">
+                                    <asp:GridView ID="gvYrQrtrDetails" runat="server" AutoGenerateColumns="False"
+                                        Width="100%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
+                                        GridLines="None" EnableTheming="True" OnRowDeleting="gvYrQrtrDetails_RowDeleting">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Select">
+                                                <ItemTemplate>
+                                                    <asp:RadioButton ID="rdBtnSelect" runat="server" AutoPostBack="true" onclick="RadioCheck(this);" OnCheckedChanged="rdBtnSelect_CheckedChanged" />
+                                                    <asp:HiddenField ID="hdnYrQrtrId" runat="server" Value='<%#Eval("ACYrQtrID")%>' />
+                                                </ItemTemplate>
 
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Year" HeaderStyle-HorizontalAlign="Center">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblYear" runat="Server" Text='<%# Eval("Year") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Quarter" HeaderStyle-HorizontalAlign="Center">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblQuarter" runat="Server" Text='<%# Eval("Qtr") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField ShowHeader="False">
-                                    <ItemTemplate>
-                                        &nbsp;
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Year" HeaderStyle-HorizontalAlign="Center">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblYear" runat="Server" Text='<%# Eval("Year") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Quarter" HeaderStyle-HorizontalAlign="Center">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblQuarter" runat="Server" Text='<%# Eval("Qtr") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField ShowHeader="False">
+                                                <ItemTemplate>
+                                                    &nbsp;
                            <asp:LinkButton ID="lbRemove" runat="server" CausesValidation="False" CommandName="Delete" Text="Remove" OnClientClick="return confirm('Are you sure you want to delete this Year/Quarter detail?');"></asp:LinkButton>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                        </asp:GridView>
-                    </asp:Panel>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div class="panel-width" runat="server" id="dvDataSetUp" visible ="false">
+        <div class="panel-width" runat="server" id="dvDataSetUp" visible="false">
             <div class="panel panel-default ">
                 <div class="panel-heading ">
                     <table style="width: 100%;">
@@ -99,10 +104,13 @@
                                 <h3 class="panel-title">Data Setup
                                 </h3>
                             </td>
+                            <td style="text-align: right">
+                                <asp:CheckBox ID="cbAddNewQuestion" runat="server" Text="Add New" Checked="false" AutoPostBack="true" OnCheckedChanged="cbAddNewQuestion_CheckedChanged" />
+                            </td>
                         </tr>
                     </table>
                 </div>
-                <div class="panel-body" runat="server" id="dvDataSetupForm" >
+                <div class="panel-body" runat="server" id="dvDataSetupForm">
                     <asp:Panel ID="pnlDataSetupForm" runat="server" Visible="false">
                         <table style="width: 100%;">
                             <tr>
@@ -128,7 +136,10 @@
                                 </td>
                                 <td style="width: 100px"><span class="labelClass">Result Type</span></td>
                                 <td style="width: 270px">
-                                    <asp:TextBox ID="txtResultType" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                    <asp:DropDownList ID="ddlResultType" CssClass="clsDropDown" runat="server">
+                                        <asp:ListItem Text="Alphanumeric" Value="1"></asp:ListItem>
+                                        <asp:ListItem Text="Digits" Value="2"></asp:ListItem>
+                                    </asp:DropDownList>
                                 </td>
                                 <td style="width: 100px"><span class="labelClass">Active</span></td>
                                 <td style="width: 270px">
@@ -244,5 +255,5 @@
             toNumericControl($('#<%= txtQuestionDesc.ClientID%>').val(), $('#<%= txtQuestionDesc.ClientID%>'));
         }
     </script>
-  
+
 </asp:Content>
