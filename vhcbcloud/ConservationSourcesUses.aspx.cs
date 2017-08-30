@@ -49,7 +49,7 @@ namespace vhcbcloud
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
             if (dt.Rows.Count > 0)
             {
-                this.MasterPageFile = "SiteNonAdmin.Master";
+                //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
         private void PopulateProjectDetails()

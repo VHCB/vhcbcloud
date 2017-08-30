@@ -110,7 +110,7 @@ namespace vhcbcloud
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
             if (dt.Rows.Count > 0)
             {
-                this.MasterPageFile = "SiteNonAdmin.Master";
+                //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
 
@@ -531,7 +531,8 @@ namespace vhcbcloud
             txtPrimaryApplicant.Text = drProjectDetails["AppName"].ToString();
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
-
+            chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+            dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
             txtProjectName.Enabled = false;
             //txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
@@ -595,7 +596,7 @@ namespace vhcbcloud
             DisplayControlsbasedOnSelection();
 
             dvUpdate.Visible = false;
-
+            divApproval.Visible = false;
             //ProjectNames
             dvNewProjectName.Visible = false;
             //dvProjectName.Visible = false;

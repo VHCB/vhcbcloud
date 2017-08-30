@@ -216,7 +216,7 @@ begin transaction
 	declare @CurrentApplicantId int
 
 	update Project set LkProjectType = @LkProjectType, LkProgram = @LkProgram,
-		Manager = @Manager, Goal = @goal, verified = @verified --ClosingDate = @ClosingDate
+		Manager = @Manager, Goal = @goal, verified = @verified, verifieddate = getdate() --ClosingDate = @ClosingDate
 	from Project
 	where ProjectId = @ProjectId
 
@@ -296,10 +296,12 @@ begin transaction
 	join lookupvalues lpn on lpn.typeid = pn.lkprojectname
 	where p.ProjectId = @ProjectId and pn.DefName = 1
 
-	select p.Proj_num, @projectName as projectName, p.LkProjectType, p.LkProgram,p.AppRec, p.LkAppStatus, p.Manager, p.LkBoardDate, p.ClosingDate, p.ExpireDate, p.verified,  p.userid, 
-		@AppNameID as AppNameId, @AppName AppName, Goal
+	select p.Proj_num, @projectName as projectName, p.LkProjectType, p.LkProgram, lv.Description as program,
+		p.AppRec, p.LkAppStatus, p.Manager, p.LkBoardDate, p.ClosingDate, p.ExpireDate, p.verified,  p.userid, 
+		@AppNameID as AppNameId, @AppName AppName, Goal, p.verified, p.VerifiedDate
 	from project p(nolock) 
 	left join projectname pn(nolock) on p.projectid = pn.projectid
+	left join LookupValues lv(nolock) on lv.TypeID = p.LkProgram 
 	where pn.defname = 1 and p.ProjectId = @ProjectId
 
 	end try

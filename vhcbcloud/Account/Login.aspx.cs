@@ -81,7 +81,7 @@ namespace vhcbcloud.Account
             DataTable dt = UserSecurityData.GetMasterPageSecurity(userid);
             if (dt.Rows.Count > 0)
             {
-                this.MasterPageFile = "SiteNonAdmin.Master";
+                //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
 

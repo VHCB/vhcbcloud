@@ -164,8 +164,8 @@
                                                         <asp:CheckBox ID="chkApprove" Text="Approve" runat="server" />
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Date</span>
-                                                    </td>
+                                                        <span class="labelClass">Date Approved: </span>
+                                                    &nbsp;</td>
                                                     <td style="width: 270px">
                                                         <asp:Label ID="dtApprove" CssClass="labelClass" runat="server"></asp:Label>
                                                     </td>                                                    
