@@ -70,7 +70,7 @@
                                     <asp:TextBox ID="txtFromProjectNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px"></asp:TextBox>
                                     <ajaxToolkit:AutoCompleteExtender ID="aceCommitAuto" runat="server" TargetControlID="txtFromProjectNum" MinimumPrefixLength="1"
                                         EnableCaching="false" CompletionSetCount="1"
-                                        OnClientItemSelected="OnRelocationProjectSelected" CompletionInterval="100" ServiceMethod="GetAssignmentProjectslistByFilter">
+                                        OnClientItemSelected="OnRelocationProjectSelected" CompletionInterval="100" ServiceMethod="GetAssignmentProjectslist">
                                     </ajaxToolkit:AutoCompleteExtender>
                                 </td>
                                 <td style="width: 10%; float: left">&nbsp;</td>
@@ -125,11 +125,11 @@
                                         <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("FromFundtransType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Landuse Permit ID" SortExpression="FromLandusePermitId">
+                              <%--  <asp:TemplateField HeaderText="Landuse Permit ID" SortExpression="FromLandusePermitId">
                                     <ItemTemplate>
                                         <asp:Label ID="lblLandusePermitID" runat="Server" Text='<%# Eval("FromLandusePermitId") %>' />
                                     </ItemTemplate>
-                                </asp:TemplateField>
+                                </asp:TemplateField>--%>
                                 <asp:TemplateField HeaderText="Trans Amount" SortExpression="TransAmt" ItemStyle-HorizontalAlign="Right"
                                     FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
@@ -190,15 +190,15 @@
                             <asp:Label runat="server" ID="lblTransDetHeader" Text="Transaction Detail"></asp:Label>
                         </div>
                         <div class="panel-body">
-                            <div id="dvReallocateToForm" runat="server">
-                                <table style="width: 100%" id="tblFundDet" runat="server">
+                            <div id="dvToAssignmentsForm" runat="server" visible="false">
+                                <table style="width: 100%" id="tblToAssignment" runat="server">
                                     <tr>
                                         <td style="width: 10%; float: left">
                                             <span class="labelClass">Project # :</span></td>
                                         <td style="width: 20%; float: left">
                                             <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
-                                                OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                                OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetAssignmentProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund # :</span></td>
@@ -216,14 +216,13 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="DropDownList1" CssClass="clsDropDown" runat="server" TabIndex="9">
-                                            </asp:DropDownList>
+                                            <asp:Label ID="lblTransType" class="labelClass" Text=" " runat="server" Visible="false"></asp:Label>
                                         </td>
                                         <td style="width: 10%; float: left">
                                             <span class="labelClass">Amount :</span>
                                         </td>
                                         <td style="width: 20%; float: left">
-                                            <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox>
+                                            <asp:TextBox ID="txtToAmt" CssClass="clsTextBoxMoney" runat="server" TabIndex="10"></asp:TextBox>
                                         </td>
                                         <td style="width: 10%; float: left">
                                             <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
@@ -235,13 +234,110 @@
                                     </tr>
                                 </table>
                                 <br />
-                                <asp:Button ID="btnAssignmentDetailSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnAssignmentDetailSubmit_Click" TabIndex="11" />
+                                <asp:Button ID="btnToAssignmentDetailSubmit" runat="server" Enabled="true" Text="Submit" class="btn btn-info" OnClick="btnAssignmentDetailSubmit_Click" TabIndex="11" />
                             </div>
                             <br />
+
+                             <asp:GridView ID="gvToAssignments" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
+                                    GridLines="None"
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvToAssignments_RowCancelingEdit"
+                                    OnRowEditing="gvToAssignments_RowEditing" OnRowDeleting="gvToAssignments_RowDeleting" OnRowDataBound="gvToAssignments_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings FirstPageText="&amp;lt;" LastPageText="&amp;gt;" Mode="NumericFirstLast" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
+                                            <ItemTemplate>
+                                                <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("transid")%>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project #" SortExpression="proj_num">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblRProjNum" runat="Server" Text='<%# Eval("proj_num") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Account Number" SortExpression="Account">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Running Total :
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label ID="lblFooterAmount" runat="server" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Transaction Type" SortExpression="Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Balance Amount :
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right"
+                                            FooterStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                            </ItemTemplate>
+                                           <%-- <EditItemTemplate>
+                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                            <FooterTemplate>
+                                                <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+                                            <ItemTemplate>
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                            <FooterStyle Width="200px" />
+                                            <HeaderStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Guid" SortExpression="projguid" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjGuid" runat="Server" Text='<%# Eval("projguid") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Fund Id" SortExpression="FundID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Detail Id" SortExpression="detailid" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LnkBtnEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete the detail?');"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <FooterStyle CssClass="footerStyle" />
+                                </asp:GridView>
+
                         </div>
                         
                         <br />
-                        <br />
+                                <asp:Button ID="btnNewTransaction" runat="server" class="btn btn-info" Enabled="true" OnClick="btnNewTransaction_Click" TabIndex="11" Text="Add New Assignment" Visible="False" />
+                                <br />
+
+                                <br />
                         <br />
                     </div>
                 </div>
