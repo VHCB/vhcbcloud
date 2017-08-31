@@ -75,7 +75,7 @@ namespace vhcbcloud
                         ddlYearQrtr.DataValueField = "ACYrQtrID";
                         ddlYearQrtr.DataSource = dtable;
                         ddlYearQrtr.DataBind();
-
+                     
                     }
                     else
                         pnlDataSetupForm.Visible = false;
@@ -125,8 +125,8 @@ namespace vhcbcloud
             pnlAQManagementForm.Visible = false;
             gvQuestionAnswer.EditIndex = -1;
             BindQuestionAnswerGrid();
-
-
+           
+           
         }
 
         protected void btnImport_Click(object sender, EventArgs e)
@@ -202,7 +202,7 @@ namespace vhcbcloud
             string YearQrtrId = default(string);
             try
             {
-
+               
                 for (int i = 0; i < gvYrQrtrDetails.Rows.Count; i++)
                 {
                     RadioButton rb = (gvYrQrtrDetails.Rows[i].FindControl("rdBtnSelect") as RadioButton);
@@ -231,8 +231,8 @@ namespace vhcbcloud
                     cbAddNewQuestion.Enabled = false;
                     BindYearQuarterGrid(false);
                 }
-
-
+                    
+                
             }
             catch (Exception ex)
             {
@@ -244,7 +244,7 @@ namespace vhcbcloud
         {
             try
             {
-
+                
                 int questionId = Convert.ToInt32(hfQuestionId.Value);
                 string YearQrtrId = default(string);
                 for (int i = 0; i < gvYrQrtrDetails.Rows.Count; i++)
@@ -256,7 +256,7 @@ namespace vhcbcloud
                         break;
                     }
                 }
-                YearQuarterData.UpdateQuestions(ACPerformanceMasterID: questionId, QuestionNum: DataUtils.GetInt(txtQuestionNum.Text.Trim()), Question: txtQuestionDesc.Text.Trim(), ResultType: DataUtils.GetInt(ddlResultType.SelectedValue.Trim()), IsActive: chkFormActive.Checked, IsUpdate: (btnQuestionDetails.Text == "Update"), ACYrQtrID: DataUtils.GetInt(YearQrtrId));
+                YearQuarterData.UpdateQuestions(ACPerformanceMasterID: questionId, QuestionNum: DataUtils.GetInt(txtQuestionNum.Text.Trim()), Question: txtQuestionDesc.Text.Trim(), ResultType: DataUtils.GetInt(ddlResultType.SelectedValue.Trim()), IsActive: chkFormActive.Checked, IsUpdate: (btnQuestionDetails.Text == "Update"), ACYrQtrID:DataUtils.GetInt(YearQrtrId));
                 hfQuestionId.Value = "";
                 gvQuestionAnswer.EditIndex = -1;
                 pnlAQManagementForm.Visible = false;
@@ -265,14 +265,14 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblQuestionErrorMsg.Text = ex.Message;
+                   lblQuestionErrorMsg.Text = ex.Message;
             }
         }
 
         protected void cbAddNewQuestion_CheckedChanged(object sender, EventArgs e)
         {
             lblQuestionErrorMsg.Text = string.Empty;
-            if (cbAddNewQuestion.Checked)
+            if(cbAddNewQuestion.Checked)
             {
                 pnlAQManagementForm.Visible = true;
                 gvQuestionAnswer.EditIndex = -1;

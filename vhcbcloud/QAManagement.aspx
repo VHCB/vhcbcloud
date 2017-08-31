@@ -52,10 +52,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:Panel ID="pnlYrQrtrDetails" runat="server" Visible="false" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:Panel ID="pnlYrQrtrDetails" runat="server" Visible="false" Width="100%" Height="180px" ScrollBars="Vertical">
                                     <asp:GridView ID="gvYrQrtrDetails" runat="server" AutoGenerateColumns="False"
                                         Width="100%" CssClass="gridView" PagerSettings-Mode="NextPreviousFirstLast"
-                                        GridLines="None" EnableTheming="True" OnRowDeleting="gvYrQrtrDetails_RowDeleting">
+                                        GridLines="None" EnableTheming="True" OnRowDeleting="gvYrQrtrDetails_RowDeleting" >
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />
@@ -137,7 +137,7 @@
                                 <td style="width: 100px"><span class="labelClass">Result Type</span></td>
                                 <td style="width: 270px">
                                     <asp:DropDownList ID="ddlResultType" CssClass="clsDropDown" runat="server">
-                                        <asp:ListItem Text="Alphanumeric" Value="1"></asp:ListItem>
+                                        <asp:ListItem Text="Text" Value="1"></asp:ListItem>
                                         <asp:ListItem Text="Digits" Value="2"></asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
@@ -173,7 +173,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:Panel runat="server" ID="pnlQuestionAnswerGrid" Width="100%" Height="100px" ScrollBars="Vertical" Visible="false">
+                                <asp:Panel runat="server" ID="pnlQuestionAnswerGrid" Width="100%" Height="325px" ScrollBars="Vertical" Visible="false">
                                     <asp:GridView ID="gvQuestionAnswer" runat="server" AutoGenerateColumns="False"
                                         Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                         GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvQuestionAnswer_RowCancelingEdit1" OnRowDataBound="gvQuestionAnswer_RowDataBound"
@@ -251,9 +251,6 @@
 
         }
 
-        function toQuestionNumericControl() {
-            toNumericControl($('#<%= txtQuestionDesc.ClientID%>').val(), $('#<%= txtQuestionDesc.ClientID%>'));
-        }
     </script>
 
 </asp:Content>
