@@ -49,6 +49,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel pnlAddNew;
         
         /// <summary>
+        /// dvAddNew control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddNew;
+        
+        /// <summary>
         /// txtYear control.
         /// </summary>
         /// <remarks>
@@ -76,15 +85,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// lblErrorMsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-        
-        /// <summary>
         /// dvProjectNamesGrid control.
         /// </summary>
         /// <remarks>
@@ -92,6 +92,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectNamesGrid;
+        
+        /// <summary>
+        /// lblErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
         /// pnlYrQrtrDetails control.
@@ -119,6 +128,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvDataSetUp;
+        
+        /// <summary>
+        /// cbAddNewQuestion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddNewQuestion;
         
         /// <summary>
         /// dvDataSetupForm control.
@@ -184,13 +202,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtQuestionNum;
         
         /// <summary>
-        /// txtResultType control.
+        /// ddlResultType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtResultType;
+        protected global::System.Web.UI.WebControls.DropDownList ddlResultType;
         
         /// <summary>
         /// chkFormActive control.

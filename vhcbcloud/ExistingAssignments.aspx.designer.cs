@@ -202,22 +202,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblTransDetHeader;
         
         /// <summary>
-        /// dvReallocateToForm control.
+        /// dvToAssignmentsForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvReallocateToForm;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvToAssignmentsForm;
         
         /// <summary>
-        /// tblFundDet control.
+        /// tblToAssignment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tblFundDet;
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblToAssignment;
         
         /// <summary>
         /// txtToProjNum control.
@@ -256,22 +256,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblFromFundName;
         
         /// <summary>
-        /// DropDownList1 control.
+        /// lblTransType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
+        protected global::System.Web.UI.WebControls.Label lblTransType;
         
         /// <summary>
-        /// txtAmt control.
+        /// txtToAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAmt;
+        protected global::System.Web.UI.WebControls.TextBox txtToAmt;
         
         /// <summary>
         /// lblUsePermit control.
@@ -292,13 +292,31 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlUsePermit;
         
         /// <summary>
-        /// btnAssignmentDetailSubmit control.
+        /// btnToAssignmentDetailSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAssignmentDetailSubmit;
+        protected global::System.Web.UI.WebControls.Button btnToAssignmentDetailSubmit;
+        
+        /// <summary>
+        /// gvToAssignments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvToAssignments;
+        
+        /// <summary>
+        /// btnNewTransaction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNewTransaction;
         
         /// <summary>
         /// hfBalAmt control.

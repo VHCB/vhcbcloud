@@ -31,6 +31,10 @@ namespace vhcbcloud
                     YearQuarterData.DeleteYearQuarterDetails(Convert.ToInt32(YearQrtrId));
                     BindYearQuarterGrid(true);
                     lblErrorMsg.Text = "Year/Quarter details was successfully deleted.";
+                    txtYear.Text = string.Empty;
+                    ddlQuarter.SelectedIndex = 0;
+                    cbAddNew.Checked = false;
+                    dvDataSetUp.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -91,9 +95,15 @@ namespace vhcbcloud
                 DataUtils.GetInt(ddlQuarter.SelectedValue.ToString()));
                 BindYearQuarterGrid(true);
                 if (obYearQrtrResult.IsDuplicate)
+                {
                     LogMessage("Year/Quarter details already exist.");
+                    cbAddNew.Checked = false;
+                }
                 else
                     LogMessage("Year/Quarter details added successfully.");
+                txtYear.Text = string.Empty;
+                ddlQuarter.SelectedIndex = 0;
+                cbAddNew.Checked = false;
             }
             catch (Exception ex)
             {
@@ -110,6 +120,10 @@ namespace vhcbcloud
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
+            lblQuestionErrorMsg.Text = string.Empty;
+            cbAddNewQuestion.Checked = false;
+            pnlAQManagementForm.Visible = false;
+            gvQuestionAnswer.EditIndex = -1;
             BindQuestionAnswerGrid();
            
            
@@ -151,6 +165,8 @@ namespace vhcbcloud
         {
             lblQuestionErrorMsg.Text = string.Empty;
             gvQuestionAnswer.EditIndex = e.NewEditIndex;
+            cbAddNewQuestion.Checked = false;
+            btnQuestionDetails.Text = "Update";
             pnlAQManagementForm.Visible = true;
             BindQuestionAnswerGrid();
         }
@@ -168,12 +184,9 @@ namespace vhcbcloud
                         hfQuestionId.Value = (e.Row.FindControl("lblPerformanceMasterId") as Label).Text.Trim();
                         txtQuestionNum.Text = (e.Row.FindControl("lblQuestionNum") as Label).Text.Trim();
                         txtQuestionDesc.Text = (e.Row.FindControl("lblLabelDefinition") as Label).Text.Trim();
-                        txtResultType.Text = (e.Row.FindControl("lblResulType") as Label).Text.Trim();
+                        ddlResultType.ClearSelection();
+                        ddlResultType.Items.FindByText((e.Row.FindControl("lblResulType") as Label).Text.Trim()).Selected = true;// (e.Row.FindControl("lblResulType") as Label).Text.Trim();
                         chkFormActive.Checked = (e.Row.FindControl("chkActive") as CheckBox).Checked;
-                        if (txtResultType.Text.Trim() == "2")
-                            txtQuestionDesc.Attributes.Add("onKeyUp", "toQuestionNumericControl();");
-                        else
-                            txtQuestionDesc.Attributes.Remove("onKeyUp");
                     }
                 }
             }
@@ -209,11 +222,13 @@ namespace vhcbcloud
                     pnlQuestionAnswerGrid.Visible = true;
                     gvQuestionAnswer.DataSource = dtable;
                     gvQuestionAnswer.DataBind();
+                    cbAddNewQuestion.Enabled = true;
                 }
                 else
                 {
                     pnlDataSetupForm.Visible = true;
                     pnlQuestionAnswerGrid.Visible = false;
+                    cbAddNewQuestion.Enabled = false;
                     BindYearQuarterGrid(false);
                 }
                     
@@ -229,17 +244,49 @@ namespace vhcbcloud
         {
             try
             {
+                
                 int questionId = Convert.ToInt32(hfQuestionId.Value);
-                YearQuarterData.UpdateQuestions(ACPerformanceMasterID: questionId, QuestionNum: DataUtils.GetInt(txtQuestionNum.Text.Trim()), Question: txtQuestionDesc.Text.Trim(), ResultType: DataUtils.GetInt(txtResultType.Text.Trim()), IsActive: chkFormActive.Checked);
+                string YearQrtrId = default(string);
+                for (int i = 0; i < gvYrQrtrDetails.Rows.Count; i++)
+                {
+                    RadioButton rb = (gvYrQrtrDetails.Rows[i].FindControl("rdBtnSelect") as RadioButton);
+                    if (rb.Checked == true)
+                    {
+                        YearQrtrId = ((HiddenField)gvYrQrtrDetails.Rows[i].FindControl("hdnYrQrtrId")).Value.Trim();
+                        break;
+                    }
+                }
+                YearQuarterData.UpdateQuestions(ACPerformanceMasterID: questionId, QuestionNum: DataUtils.GetInt(txtQuestionNum.Text.Trim()), Question: txtQuestionDesc.Text.Trim(), ResultType: DataUtils.GetInt(ddlResultType.SelectedValue.Trim()), IsActive: chkFormActive.Checked, IsUpdate: (btnQuestionDetails.Text == "Update"), ACYrQtrID:DataUtils.GetInt(YearQrtrId));
                 hfQuestionId.Value = "";
                 gvQuestionAnswer.EditIndex = -1;
                 pnlAQManagementForm.Visible = false;
                 BindQuestionAnswerGrid();
-                lblQuestionErrorMsg.Text ="Question Details updated successfully.";
+                lblQuestionErrorMsg.Text = (btnQuestionDetails.Text == "Update") ? "Question Details updated successfully." : "Question Details inserted successfully.";
             }
             catch (Exception ex)
             {
                    lblQuestionErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void cbAddNewQuestion_CheckedChanged(object sender, EventArgs e)
+        {
+            lblQuestionErrorMsg.Text = string.Empty;
+            if(cbAddNewQuestion.Checked)
+            {
+                pnlAQManagementForm.Visible = true;
+                gvQuestionAnswer.EditIndex = -1;
+                BindQuestionAnswerGrid();
+                btnQuestionDetails.Text = "Submit";
+                txtQuestionNum.Text = (gvQuestionAnswer.Rows.Count + 1).ToString();
+                txtQuestionDesc.Text = string.Empty;
+                ddlResultType.ClearSelection();
+                chkFormActive.Checked = false;
+            }
+            else
+            {
+                pnlAQManagementForm.Visible = false;
+                btnQuestionDetails.Text = "Update";
             }
         }
 

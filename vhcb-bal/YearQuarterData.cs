@@ -214,7 +214,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static void UpdateQuestions(int ACPerformanceMasterID, int QuestionNum, string Question, int ResultType,bool IsActive)
+        public static void UpdateQuestions(int ACPerformanceMasterID, int QuestionNum, string Question, int ResultType, bool IsActive, bool IsUpdate, int ACYrQtrID)
         {
             try
             {
@@ -226,12 +226,14 @@ namespace VHCBCommon.DataAccessLayer
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "UpdateQuestions";
+                        command.CommandText = "InsertOrUpdateQuestions";
                         command.Parameters.Add(new SqlParameter("ACPerformanceMasterID", ACPerformanceMasterID));
                         command.Parameters.Add(new SqlParameter("QuestionNum", QuestionNum));
                         command.Parameters.Add(new SqlParameter("Question", Question));
                         command.Parameters.Add(new SqlParameter("ResultType", ResultType));
                         command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        command.Parameters.Add(new SqlParameter("IsUpdate", IsUpdate));
+                        command.Parameters.Add(new SqlParameter("ACYrQtrID", ACYrQtrID));
                         command.ExecuteNonQuery();
                     }
                 }
