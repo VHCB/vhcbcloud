@@ -152,24 +152,28 @@
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
                                         <div id="divApproval" runat="server" visible="false">
+
                                             <table>
                                                 <tr>
-                                                    <td style="width: 150px"></td>
-                                                    <td style="width: 250px">
-                                                        <asp:CheckBox ID="chkApprove" Text="Approve" runat="server" />
-                                                    </td>
-                                                    <td style="width: 100px">
-                                                        <span class="labelClass">Date Approved: </span>
-                                                    &nbsp;</td>
+                                                    <td style="width: 150px">&nbsp;</td>
+                                                    <td style="width: 250px">&nbsp;</td>
+                                                    <td style="width: 100px"><span class="labelClass">Verify: </span></td>
                                                     <td style="width: 270px">
-                                                        <asp:Label ID="dtApprove" CssClass="labelClass" runat="server"></asp:Label>
-                                                    </td>                                                    
+                                                        <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
+                                                    </td>
+                                                    <td style="width: 170px"><span class="labelClass">Date verified: </span></td>
+                                                    <td style="width: 170px">
+                                                        <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
+                                                    </td>
+                                                    <td>&nbsp;</td>
                                                 </tr>
+
                                             </table>
                                         </div>
                                     </tr>

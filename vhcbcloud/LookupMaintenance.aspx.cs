@@ -19,7 +19,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                BindLookupMaintenance();
+                //BindLookupMaintenance();
                 BindViewName();
             }
         }

@@ -80,7 +80,8 @@ namespace vhcbcloud
             }
             DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
             if (dtMgr != null)
-                if (dtMgr.Rows.Count > 0)
+                
+                if (dtMgr.Rows.Count > 0 && (dtMgr.Rows[0]["manager"].ToString() !="0"))
                     divApproval.Visible = true;
                 else
                     divApproval.Visible = false;
@@ -104,6 +105,8 @@ namespace vhcbcloud
             btnAddRelatedProject.Visible = false;
             btnProjectSubmit.Visible = false;
             btnProjectUpdate.Visible = false;
+            divApproval.Visible = false;
+            GetRoleAuth();
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -116,11 +119,7 @@ namespace vhcbcloud
 
         protected bool GetRoleAuth()
         {
-            if (Context.User.Identity.Name == "jhollar")
-            {
-                return false;
-            }
-            return true;
+            return false;
         }
 
 
