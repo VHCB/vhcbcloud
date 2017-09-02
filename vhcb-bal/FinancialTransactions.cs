@@ -609,6 +609,35 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
+        public static void InsertAssignmentDetail(int TransID, int ProjectId, decimal Amount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "InsertAssignmentDetail";
+                command.Parameters.Add(new SqlParameter("TransID", TransID));
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                command.Parameters.Add(new SqlParameter("Amount", Amount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable GetReallocationDetailsProjFund(int fromProjId, int fundId, DateTime dtModified)
         {
             DataTable dtable = null;
@@ -1109,6 +1138,35 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
                 command.Parameters.Add(new SqlParameter("fundId", fundId));
                 command.Parameters.Add(new SqlParameter("useFarmId", useFarmId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdateAssignmentDetails(int DetailId, int Projectid, decimal Amount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateAssignmentDetails";
+                command.Parameters.Add(new SqlParameter("DetailId", DetailId));
+                command.Parameters.Add(new SqlParameter("Projectid", Projectid));
+                command.Parameters.Add(new SqlParameter("Amount", Amount));
 
                 using (connection)
                 {

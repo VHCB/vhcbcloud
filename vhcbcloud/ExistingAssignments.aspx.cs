@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -91,23 +92,25 @@ namespace vhcbcloud
             BindGvToAssignments();
             pnlTranDetails.Visible = true;
             ClearDetailForm();
+
+            PopulateDetailFormStaticFields();
+        }
+
+        private void PopulateDetailFormStaticFields()
+        {
+            //lblFromFundNumber.Text = hfFromAccountNumber.Value;
+            lblFromFundName.Text = hfFromFundName.Value;
+            lblFromTransType.Text = hfFromTransType.Value;
         }
 
         private void ClearDetailForm()
         {
-            //lblFundName.Text = "";
-            //txtAmt.Text = "";
-            //lblUsePermit.Visible = false;
-            //ddlUsePermit.Visible = false;
-            //try
-            //{
-            //    ddlTransType.SelectedIndex = 0;
-            //    ddlAcctNum.SelectedIndex = 0;
-            //    ddlFundName.SelectedIndex = 0;
-            //    btnReallocateSubmit.Text = "Submit";
-            //}
-            //catch (Exception)
-            //{ }
+            txtToAmt.Text = "";
+            txtToProjNum.Text = "";
+            //lblFromFundNumber.Text = "";
+            lblFromFundName.Text = "";
+            lblFromTransType.Text = "";
+            btnToAssignmentDetailSubmit.Text = "Submit";
         }
 
         private int GetTransId()
@@ -150,6 +153,15 @@ namespace vhcbcloud
                     }
                 }
             }
+
+           // Label lblFundNum = (Label)gvFGM.Rows[0].Cells[2].FindControl("lblFundName");
+            Label lblFundName = (Label)gvFGM.Rows[0].Cells[2].FindControl("lblFundName");
+            Label lblTransType = (Label)gvFGM.Rows[0].Cells[3].FindControl("lblTransType");
+
+            //lblFromFundNumber.Text = lblFundNum.Text;
+            hfFromFundName.Value= lblFundName.Text;
+            hfFromTransType.Value = lblTransType.Text;
+
         }
 
         private void SetRadioButton(string TransId)
@@ -233,8 +245,20 @@ namespace vhcbcloud
 
                 DataTable dtTrans = FinancialTransactions.GetAssignmentTransactionsByProject(Convert.ToInt32(hfProjId.Value), 26552, cbActiveOnly.Checked);
 
-                gvAssignments.DataSource = dtTrans;
-                gvAssignments.DataBind();
+                if (dtTrans.Rows.Count > 0)
+                {
+                    gvAssignments.DataSource = dtTrans;
+                    gvAssignments.DataBind();
+                    dvAssignmentsGrid.Visible = true;
+                }
+                else
+                {
+                    gvAssignments.DataSource = null;
+                    gvAssignments.DataBind();
+                    dvAssignmentsGrid.Visible = false;
+                }
+
+
 
             }
             catch (Exception ex)
@@ -261,7 +285,7 @@ namespace vhcbcloud
 
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
-        public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count)
+        public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
         {
             DataTable dt = new DataTable();
             dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
@@ -269,6 +293,7 @@ namespace vhcbcloud
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                if(dt.Rows[i][0].ToString() != contextKey)
                 ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNames.ToArray();
@@ -303,31 +328,98 @@ namespace vhcbcloud
                 return;
             }
             dt = Project.GetProjects("GetProjectIdByProjNum", projNum.ToString());
-        }
-
-        private void getToDetails(DataTable dt)
-        {
-
-        }
-
-        protected void ddlToFund_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void ddlToFundName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnReallocateSubmit_Click(object sender, EventArgs e)
-        {
-
+            hfToProjId.Value = dt.Rows[0][0].ToString();
         }
 
         protected void btnAssignmentDetailSubmit_Click(object sender, EventArgs e)
         {
+            txtToAmt.Text = Regex.Replace(txtToAmt.Text, "[^0-9a-zA-Z.]+", "");
 
+            if (txtToProjNum.Text == "")
+            {
+                lblRErrorMsg.Text = "Select assignment to project";
+                txtToProjNum.Focus();
+                return;
+            }
+
+            if (txtToAmt.Text == "" || Convert.ToDecimal(txtToAmt.Text) == 0)
+            {
+                lblRErrorMsg.Text = "Please enter a non zero amount before proceed";
+                txtToAmt.Focus();
+                return;
+            }
+
+            hfTransId.Value = GetTransId().ToString();
+            if (hfTransId.Value != null)
+            {
+                if (btnToAssignmentDetailSubmit.Text.ToLower() == "submit")
+                {
+                    DataTable dtFundDet = new DataTable();
+                    dtFundDet = FinancialTransactions.GetAssignmentByTransId(Convert.ToInt32(hfTransId.Value));
+
+                    decimal tranAmount = 0;
+                    decimal totFundAmt = 0;
+                    decimal totBalAmt = 0;
+                    decimal totDetailAmount = 0;
+
+                    tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
+
+                    if (dtFundDet.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                        {
+                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                totDetailAmount += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                        }
+                    }
+
+                    totBalAmt = tranAmount - totDetailAmount;
+
+                    if (totBalAmt == 0)
+                    {
+                        lblRErrorMsg.Text = "Assignment is complete, more funds not allowed";
+                        return;
+                    }
+
+                    if (Convert.ToDecimal(txtToAmt.Text) > totBalAmt)
+                    {
+                        lblRErrorMsg.Text = "Amount can't be more than available assignment funds (" + CommonHelper.myDollarFormat(totBalAmt) + ")";
+                        txtToAmt.Focus();
+                        return;
+                    }
+
+                    FinancialTransactions.InsertAssignmentDetail((Convert.ToInt32(hfTransId.Value)), Convert.ToInt32(hfToProjId.Value.ToString()), Convert.ToDecimal(txtToAmt.Text));
+                    lblRErrorMsg.Text = "Assignment was added successfully";
+                    BindGvToAssignments();
+                    ClearToAssignmentsForm();
+                }
+                else
+                {
+                    int detailId = Convert.ToInt32(hfDetailId.Value);
+
+                    decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
+                    decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
+                    decimal allowed_amount = old_amount + bal_amount;
+
+                    decimal amount = Convert.ToDecimal(txtToAmt.Text); ;
+                    if (amount == allowed_amount)
+                    {
+                        lblRErrorMsg.Text = "Transaction is complete, more funds not allowed";
+                    }
+                    else if (amount > allowed_amount)
+                    {
+                        lblRErrorMsg.Text = "Amount can't be more than available assignment funds (" + CommonHelper.myDollarFormat(bal_amount) + ")";
+                        txtToAmt.Focus();
+                        return;
+                    }
+
+                    FinancialTransactions.UpdateAssignmentDetails(detailId, Convert.ToInt32(hfToProjId.Value.ToString()), amount);
+
+                    gvToAssignments.EditIndex = -1;
+                    ClearToAssignmentsForm();
+                    BindGvToAssignments();
+                }
+            }
         }
 
         protected void gvToAssignments_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -359,12 +451,20 @@ namespace vhcbcloud
                     {
                         // e.Row.Cells[11].Controls[0].Visible = false;
                         Label lblDetId = e.Row.FindControl("lblDetId") as Label;
-                        //hfDetailId.Value = lblDetId.Text;
+                        hfDetailId.Value = lblDetId.Text;
                         DataRow dr = FinancialTransactions.GetTransactionDetailsByDetailId(Convert.ToInt32(lblDetId.Text));
 
                         txtToProjNum.Text = dr["ProjectNum"].ToString();
-
                         txtToAmt.Text = dr["Amount"].ToString();
+                        hfToProjId.Value = dr["ProjectId"].ToString(); 
+                        //Label lblFundNum = e.Row.FindControl("lblAcctNum") as Label;
+                        //Label lblFundName = e.Row.FindControl("lblFundName") as Label;
+                        //Label lblTransType = e.Row.FindControl("lblTransType") as Label;
+                        //
+                        //lblFromFundNumber.Text = lblFundNum.Text;
+                        //lblFromFundName.Text = lblFundName.Text;
+                        //lblFromTransType.Text = lblTransType.Text;
+
                         //PopulateDropDown(ddlUsePermit, dr["LandUsePermitID"].ToString());
                     }
                 }
@@ -377,7 +477,12 @@ namespace vhcbcloud
 
         protected void gvToAssignments_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
+            Label lblGuid = (Label)gvToAssignments.Rows[e.RowIndex].FindControl("lblProjGuid");
 
+            FinancialTransactions.DeleteAssignmentDetailByGUID(lblGuid.Text);
+
+            ClearToAssignmentsForm();
+            BindGvToAssignments();
         }
 
         protected void gvToAssignments_RowEditing(object sender, GridViewEditEventArgs e)
@@ -394,63 +499,73 @@ namespace vhcbcloud
 
                 dtFundDet = FinancialTransactions.GetAssignmentByTransId(Convert.ToInt32(hfTransId.Value));
 
-
-                gvToAssignments.DataSource = dtFundDet;
-                gvToAssignments.DataBind();
-
-                decimal tranAmount = 0;
-                decimal totFundAmt = 0;
-                decimal totBalAmt = 0;
-                decimal totDetailAmount = 0;
-
-                hfBalAmt.Value = "";
-
                 if (dtFundDet.Rows.Count > 0)
                 {
-                    tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
+                    gvToAssignments.DataSource = dtFundDet;
+                    gvToAssignments.DataBind();
 
-                    Label lblTotAmt = (Label)gvToAssignments.FooterRow.FindControl("lblFooterAmount");
-                    Label lblBalAmt = (Label)gvToAssignments.FooterRow.FindControl("lblFooterBalance");
+                    dvToAssignmentsGrid.Visible = true;
 
-                    if (dtFundDet.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                    decimal tranAmount = 0;
+                    decimal totFundAmt = 0;
+                    decimal totBalAmt = 0;
+                    decimal totDetailAmount = 0;
+
+                    hfBalAmt.Value = "";
+                        tranAmount = Convert.ToDecimal(this.hfTransAmt.Value);
+
+                        Label lblTotAmt = (Label)gvToAssignments.FooterRow.FindControl("lblFooterAmount");
+                        Label lblBalAmt = (Label)gvToAssignments.FooterRow.FindControl("lblFooterBalance");
+
+                        if (dtFundDet.Rows.Count > 0)
                         {
-                            totFundAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                            for (int i = 0; i < dtFundDet.Rows.Count; i++)
+                            {
+                                totFundAmt += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
 
-                            if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
-                                totDetailAmount += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                                if (Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString()) > 0)
+                                    totDetailAmount += Convert.ToDecimal(dtFundDet.Rows[i]["Amount"].ToString());
+                            }
                         }
-                    }
 
-                    totBalAmt = tranAmount - totDetailAmount;
-                    hfBalAmt.Value = totBalAmt.ToString();
+                        totBalAmt = tranAmount - totDetailAmount;
+                        hfBalAmt.Value = totBalAmt.ToString();
 
-                    lblTotAmt.Text = CommonHelper.myDollarFormat(totDetailAmount);
-                    lblBalAmt.Text = CommonHelper.myDollarFormat(totBalAmt);
+                        lblTotAmt.Text = CommonHelper.myDollarFormat(totDetailAmount);
+                        lblBalAmt.Text = CommonHelper.myDollarFormat(totBalAmt);
 
-                    if (btnToAssignmentDetailSubmit.Text.ToLower() == "submit")// When Edit mode form needs to show
-                    {
-                        if (lblBalAmt.Text != "$0.00")
+                        if (btnToAssignmentDetailSubmit.Text.ToLower() == "submit")// When Edit mode form needs to show
                         {
-                            //tblToAssignment.Visible = true;
-                            dvToAssignmentsForm.Visible = true;
-                            // btnToAssignmentDetailSubmit.Visible = true;
-                            lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
-                            btnNewTransaction.Visible = false;
-                            DisableToAssignmentsForm();
+                            if (lblBalAmt.Text != "$0.00")
+                            {
+                                //tblToAssignment.Visible = true;
+                                dvToAssignmentsForm.Visible = true;
+                                // btnToAssignmentDetailSubmit.Visible = true;
+                                lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                                //btnNewTransaction.Visible = false;
+                                DisableToAssignmentsForm();
+                            }
+                            if (lblBalAmt.Text == "$0.00")
+                            {
+                                //tblToAssignment.Visible = false;
+                                dvToAssignmentsForm.Visible = false;
+                                // btnToAssignmentDetailSubmit.Visible = false;
+                                //CommonHelper.DisableButton(btnToAssignmentDetailSubmit);
+                                //btnNewTransaction.Visible = true;
+                                //hfReallocateGuid.Value = "";
+                                EnableToAssignmentsForm();
+                            }
                         }
-                        if (lblBalAmt.Text == "$0.00")
-                        {
-                            //tblToAssignment.Visible = false;
-                            dvToAssignmentsForm.Visible = false;
-                            // btnToAssignmentDetailSubmit.Visible = false;
-                            //CommonHelper.DisableButton(btnToAssignmentDetailSubmit);
-                            btnNewTransaction.Visible = true;
-                            //hfReallocateGuid.Value = "";
-                            EnableToAssignmentsForm();
-                        }
-                    }
+                }
+                else
+                {
+                    gvToAssignments.DataSource = null;
+                    gvToAssignments.DataBind();
+
+                    dvToAssignmentsGrid.Visible = false;
+                    dvToAssignmentsForm.Visible = true;
+                    lblRErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                    //btnNewTransaction.Visible = false;
                 }
             }
             catch (Exception ex)
