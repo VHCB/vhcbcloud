@@ -55,35 +55,15 @@ namespace vhcbcloud
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
 
-            DataTable dtPrg = new DataTable();
-            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
-            if (dt != null)
-            {
-                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
-
-                if (dt.Rows.Count > 0)
-                    if (dtGetUserSec.Rows.Count > 0)
-                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
-                        {
-                            RoleReadOnly();
-                        }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
-                        {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                RoleReadOnly();
-                            }
-                        }
-            }
+            GetRoleAuth();
             DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
             if (dtMgr != null)
-                
-                if (dtMgr.Rows.Count > 0 && (dtMgr.Rows[0]["manager"].ToString() !="0"))
-                    divApproval.Visible = true;
+
+                if (dtMgr.Rows.Count > 0 && (dtMgr.Rows[0]["manager"].ToString() != "0") && ddlManager.SelectedIndex > 0)
+                {
+                    if ((DataUtils.GetInt(dtMgr.Rows[0]["manager"].ToString())) == DataUtils.GetInt(ddlManager.SelectedValue.ToString()))
+                        divApproval.Visible = true;
+                }
                 else
                     divApproval.Visible = false;
 
@@ -107,7 +87,7 @@ namespace vhcbcloud
             btnProjectSubmit.Visible = false;
             btnProjectUpdate.Visible = false;
             divApproval.Visible = false;
-            GetRoleAuth();
+            
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -120,7 +100,33 @@ namespace vhcbcloud
 
         protected bool GetRoleAuth()
         {
-            return false;
+
+            DataTable dtPrg = new DataTable();
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt != null)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+
+                if (dt.Rows.Count > 0)
+                    if (dtGetUserSec.Rows.Count > 0)
+                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
+                        {
+                            RoleReadOnly();
+                        }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                RoleReadOnly();
+                                return false;
+                            }
+                        }
+            }
+            return true;
         }
 
 

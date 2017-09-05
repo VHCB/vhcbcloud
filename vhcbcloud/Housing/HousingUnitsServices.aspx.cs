@@ -35,7 +35,66 @@ namespace vhcbcloud.Housing
                 BindControls();
                 BindHousingUnitsForm();
             }
+
+            GetRoleAuth();
+
         }
+
+        protected void RoleReadOnly()
+        {
+            cbAddHousingSubType.Enabled = false;
+            cbAddAgeRes.Enabled = false;
+            cbAddMultiUnit.Enabled = false;
+            cbAddSecService.Enabled = false;
+            cbAddSingleUnit.Enabled = false;
+            cbAddSuppService.Enabled = false;
+            cbAddVHCBAff.Enabled = false;          
+            
+            btnAddAgeRest.Visible = false;
+            btnAddHousingSubType.Visible = false;
+            btnAddMultiUnitCharacteristic.Visible = false;
+            btnAddSecServices.Visible = false;
+            btnAddSingleUnitCharacteristic.Visible = false;
+            btnAddSuppServices.Visible = false;
+            btnAddVHCBAff.Visible = false;
+            btnSubmit.Visible = false;
+                        
+           
+        }
+
+        protected bool GetRoleAuth()
+        {
+
+            DataTable dtPrg = new DataTable();
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt != null)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+
+                if (dt.Rows.Count > 0)
+                    if (dtGetUserSec.Rows.Count > 0)
+                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
+                        {
+                            RoleReadOnly();
+                        }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                RoleReadOnly();
+                                return false;
+                            }
+                        }
+            }
+            return true;
+        }
+
+
+
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
