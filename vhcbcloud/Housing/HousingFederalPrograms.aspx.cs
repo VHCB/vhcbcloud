@@ -35,6 +35,7 @@ namespace vhcbcloud.Housing
                 BindControls();
                 BindGrids();
             }
+            GetRoleAuth();
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -44,6 +45,55 @@ namespace vhcbcloud.Housing
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        protected void RoleReadOnly()
+        {
+            btnAddHomeAff.Visible = false;
+            btnAddInspection.Visible = false;
+            btnAddRentalAffordability.Visible = false;
+            btnAddUnitType.Visible = false;
+            btnSubmitHomeForm.Visible = false;
+
+            cbAddFedProgram.Enabled = false;
+            cbAddHomeAff.Enabled = false;
+            cbAddNewInspections.Enabled = false;
+            cbAddRentalAffordability.Enabled = false;
+            cbAddUnitOccupancy.Enabled = false;
+            cbDeficiency.Enabled = false;
+            
+        }
+
+        protected bool GetRoleAuth()
+        {
+
+            DataTable dtPrg = new DataTable();
+            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
+            if (dt != null)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+
+                if (dt.Rows.Count > 0)
+                    if (dtGetUserSec.Rows.Count > 0)
+                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
+                        {
+                            RoleReadOnly();
+                        }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                RoleReadOnly();
+                                return false;
+                            }
+                        }
+            }
+            return true;
+        }
+
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
