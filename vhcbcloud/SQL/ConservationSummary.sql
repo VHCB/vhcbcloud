@@ -404,7 +404,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddPr
 drop procedure [dbo].AddProjectSurfaceWaters
 go
 
-create procedure dbo.AddProjectSurfaceWaters
+alter procedure dbo.AddProjectSurfaceWaters
 (
 	@ProjectId		int,
 	@LKWaterShed	int,
@@ -423,27 +423,28 @@ begin transaction
 	set @isDuplicate = 1
 	set @isActive = 1
 
-	if not exists
-    (
-		select 1
-		from ProjectSurfaceWaters(nolock)
-		where ProjectID = @ProjectId 
-			and LKWaterShed = @LKWaterShed
-    )
-	begin
+	--if not exists
+ --   (
+	--	select 1
+	--	from ProjectSurfaceWaters(nolock)
+	--	where ProjectID = @ProjectId 
+	--		and LKWaterShed = @LKWaterShed
+ --   )
+	--begin
 		insert into ProjectSurfaceWaters(ProjectID, LKWaterShed, SubWaterShed, LKWaterBody, FrontageFeet, OtherWater, Riparian, DateModified)
 		values(@ProjectId, @LKWaterShed, @SubWaterShed, @LKWaterBody, @FrontageFeet, @OtherWater, @Riparian, getdate())
 		
 		set @isDuplicate = 0
-	end
 
-	if(@isDuplicate = 1)
-	begin
-		select @isActive =  RowIsActive
-		from ProjectSurfaceWaters(nolock)
-		where ProjectID = @ProjectId 
-			and LKWaterShed = @LKWaterShed 
-	end
+	--end
+
+	--if(@isDuplicate = 1)
+	--begin
+	--	select @isActive =  RowIsActive
+	--	from ProjectSurfaceWaters(nolock)
+	--	where ProjectID = @ProjectId 
+	--		and LKWaterShed = @LKWaterShed 
+	--end
 
 	end try
 	begin catch
@@ -457,6 +458,7 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+go
 go
 
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateProjectSurfaceWaters]') and type in (N'P', N'PC'))
