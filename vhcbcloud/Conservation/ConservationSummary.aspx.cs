@@ -560,7 +560,7 @@ namespace vhcbcloud.Conservation
                 if (objResult.IsDuplicate && !objResult.IsActive)
                     LogMessage("Surface Waters already exist as in-active");
                 else if (objResult.IsDuplicate)
-                    LogMessage("Surfac eWaters already exist");
+                    LogMessage("Surface Waters already exist");
                 else
                     LogMessage("New Surface Waters added successfully");
             }
