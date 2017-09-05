@@ -286,7 +286,7 @@
                                     <asp:Panel runat="server" ID="Panel5">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 240px"><span class="labelClass">Enterprise Grant Attribute:</span></td>
+                                                <td style="width: 240px"><span class="labelClass">Grant Attribute:</span></td>
                                                 <td style="width: 215px">
                                                     <asp:DropDownList ID="ddlAttribute" CssClass="clsDropDownLong" runat="server">
                                                     </asp:DropDownList>

@@ -184,84 +184,111 @@
                                     <asp:Panel runat="server" ID="Panel1">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 167px"><span class="labelClass">Milestone</span></td>
-                                                <td style="width: 167px">
-                                                    <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                                <td>
+                                                    <span class="labelClass">Milestone</span>
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0" TabIndex="1">
                                                     </asp:DropDownList>
                                                 </td>
-                                                <td style="width: 167px">
+                                                <td>
                                                     <span class="labelClass">Date</span>
                                                 </td>
-                                                <td style="width: 147px">
-                                                    <asp:TextBox ID="txtMSDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                <td>
+                                                    <asp:TextBox ID="txtMSDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="7"></asp:TextBox>
                                                     <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtMSDate">
                                                     </ajaxToolkit:CalendarExtender>
                                                 </td>
-                                                <td style="width: 139px"><span class="labelClass">Year</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 12px"></td>
+                                            </tr>
+                                            <tr>
                                                 <td>
-                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4"></asp:TextBox>
+                                                    <span class="labelClass">Year of Financial Data</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Family FTEs</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server" TabIndex="8"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 6px"></td>
+                                                <td colspan="4" style="height: 6px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 167px"><span class="labelClass">Gross Sales</span></td>
-                                                <td style="width: 167px">
-                                                    <asp:TextBox ID="txtGrossSales" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                <td>
+                                                    <span class="labelClass">Gross Sales</span>
                                                 </td>
-                                                <td style="width: 167px">
+                                                <td>
+                                                    <asp:TextBox ID="txtGrossSales" CssClass="clsTextBoxBlue1" runat="server" TabIndex="3"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Non-Family FTEs</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtNonFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server" TabIndex="9"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <span class="labelClass">Net Income</span>
                                                 </td>
-                                                <td style="width: 147px">
-                                                    <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                                </td>
-                                                <td style="width: 139px"><span class="labelClass">Gross Payroll</span></td>
                                                 <td>
-                                                    <asp:TextBox ID="txtGrossPayroll" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6" style="height: 6px"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 167px"><span class="labelClass">Family Full-time Employees</span></td>
-                                                <td style="width: 167px">
-                                                    <asp:TextBox ID="txtFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                <td>
+                                                    <span class="labelClass">Total FTEs</span>
                                                 </td>
-                                                <td style="width: 167px">
-                                                    <span class="labelClass">Non-Family Full-time Empl</span>
-                                                </td>
-                                                <td style="width: 147px">
-                                                    <asp:TextBox ID="txtNonFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                                </td>
-                                                <td style="width: 139px"><span class="labelClass">Total Full-time </span></td>
                                                 <td>
                                                     <span class="labelClass" id="spnTotalFulltime" runat="server"></span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 6px"></td>
+                                                <td colspan="4" style="height: 6px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 167px"><span class="labelClass">Networth</span></td>
-                                                <td style="width: 167px">
-                                                    <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                                <td>
+                                                    <span class="labelClass">Net Worth</span>
                                                 </td>
-                                                <td style="width: 167px"><span class="labelClass">Active</span>
+                                                <td>
+                                                    <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
-                                                <td style="width: 147px">
-                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" />
+                                                <td>
+                                                    <span class="labelClass"></span>
                                                 </td>
-                                                <td style="width: 139px"></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 6px"></td>
+                                                <td colspan="4" style="height: 6px"></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 6px">
-                                                    <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" /></td>
+                                                <td>
+                                                    <span class="labelClass">Gross Payroll</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtGrossPayroll" CssClass="clsTextBoxBlue1" runat="server" TabIndex="6"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Active</span>
+                                                </td>
+                                                <td>
+                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" TabIndex="10" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px">
+                                                    <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMilestone_Click" TabIndex="11" /></td>
                                             </tr>
                                         </table>
                                     </asp:Panel>
@@ -336,7 +363,7 @@
                                     <asp:Panel runat="server" ID="Panel5">
                                         <table style="width: 100%">
                                             <tr>
-                                                <td style="width: 240px"><span class="labelClass">Enterprise Engagement Attribute:</span></td>
+                                                <td style="width: 240px"><span class="labelClass">Engagement Attribute:</span></td>
                                                 <td style="width: 215px">
                                                     <asp:DropDownList ID="ddlAttribute" CssClass="clsDropDownLong" runat="server">
                                                     </asp:DropDownList>
@@ -413,7 +440,7 @@
 
             $('#<%= cbAddAttribute.ClientID%>').click(function () {
                 $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
-                }).change();
+            }).change();
 
             $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtFamilyFTEmp.ClientID%>').val(), $('#<%= txtFamilyFTEmp.ClientID%>'));

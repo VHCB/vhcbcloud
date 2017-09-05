@@ -29,6 +29,8 @@ namespace vhcbcloud.Viability
 
             if (!IsPostBack)
             {
+                CalendarExtender1.SelectedDate = DateTime.Today;
+
                 PopulateProjectDetails();
 
                 BindControls();

@@ -79,7 +79,7 @@
                             <asp:Panel runat="server" ID="Panel1">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td class="modal-sm" style="width: 194px"><span class="labelClass">Type of Business</span></td>
+                                        <td class="modal-sm" style="width: 194px"><span class="labelClass">Primary Product/Service</span></td>
                                         <td style="width: 200px">
                                             <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" AutoPostBack="false" runat="server" 
                                                  OnSelectedIndexChanged="ddlPrimaryProduct_SelectedIndexChanged">
@@ -242,11 +242,11 @@
                                     <tr>
                                         <td class="modal-sm" style="width: 97px"><span class="labelClass">Acres Owned</span></td>
                                         <td class="modal-sm" style="width: 129px">
-                                            <asp:TextBox ID="txtAcresOwned" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                            <asp:TextBox ID="txtAcresOwned" CssClass="clsTextBoxBlue1" runat="server" Width="100px" TabIndex="1"></asp:TextBox>
                                         </td>
                                         <td style="width: 129px"><span class="labelClass">Acres in Production</span></td>
                                         <td style="width: 136px">
-                                            <asp:TextBox ID="txtAcresInProd" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                            <asp:TextBox ID="txtAcresInProd" CssClass="clsTextBoxBlue1" runat="server" Width="100px" TabIndex="3"></asp:TextBox>
                                         </td>
                                         <td style="width: 115px"><span class="labelClass"></span></td>
                                         <td style="width: 140px">
@@ -262,7 +262,7 @@
                                      <tr>
                                         <td class="modal-sm" style="width: 97px"><span class="labelClass">Acres Leased</span></td>
                                         <td class="modal-sm" style="width: 129px">
-                                            <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+                                            <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px" TabIndex="2"></asp:TextBox>
                                         </td>
                                         <td style="width: 129px"><span class="labelClass"></span></td>
                                         <td style="width: 136px"></td>
@@ -282,7 +282,7 @@
                                             <span class="labelClass" runat="server" id="spnTotalAcres"></span>
                                         </td>
                                         <td style="width: 129px"><span class="labelClass"></span></td>
-                                        <td style="width: 136px"><asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" /></td>
+                                        <td style="width: 136px"><asp:Button ID="btnAddAcres" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAcres_Click" TabIndex="4" /></td>
                                         <td style="width: 115px"><span class="labelClass"></span></td>
                                         <td style="width: 140px"></td>
                                         <td style="width: 100px"><span class="labelClass"></span></td>

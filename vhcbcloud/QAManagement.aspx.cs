@@ -123,6 +123,7 @@ namespace vhcbcloud
             lblQuestionErrorMsg.Text = string.Empty;
             cbAddNewQuestion.Checked = false;
             pnlAQManagementForm.Visible = false;
+            cbActive.Checked = true;
             gvQuestionAnswer.EditIndex = -1;
             BindQuestionAnswerGrid();
            
@@ -214,12 +215,13 @@ namespace vhcbcloud
                 }
 
                 dtable = new DataTable();
-                dtable = YearQuarterData.GetQuestionAnswerList(Convert.ToInt32(YearQrtrId));
+                dtable = YearQuarterData.GetQuestionAnswerList(Convert.ToInt32(YearQrtrId), cbActive.Checked);
                 dvDataSetUp.Visible = true;
                 if (dtable.Rows.Count > 0)
                 {
                     pnlDataSetupForm.Visible = false;
                     pnlQuestionAnswerGrid.Visible = true;
+                    cbActive.Enabled = true;
                     gvQuestionAnswer.DataSource = dtable;
                     gvQuestionAnswer.DataBind();
                     cbAddNewQuestion.Enabled = true;
@@ -230,6 +232,7 @@ namespace vhcbcloud
                     pnlQuestionAnswerGrid.Visible = false;
                     cbAddNewQuestion.Enabled = false;
                     BindYearQuarterGrid(false);
+                    cbActive.Enabled = false;
                 }
                     
                 
@@ -244,8 +247,7 @@ namespace vhcbcloud
         {
             try
             {
-                
-                int questionId = Convert.ToInt32(hfQuestionId.Value);
+                int questionId= hfQuestionId.Value != string.Empty ? Convert.ToInt32(hfQuestionId.Value) : 0;
                 string YearQrtrId = default(string);
                 for (int i = 0; i < gvYrQrtrDetails.Rows.Count; i++)
                 {
@@ -260,6 +262,7 @@ namespace vhcbcloud
                 hfQuestionId.Value = "";
                 gvQuestionAnswer.EditIndex = -1;
                 pnlAQManagementForm.Visible = false;
+                cbAddNewQuestion.Checked = false;
                 BindQuestionAnswerGrid();
                 lblQuestionErrorMsg.Text = (btnQuestionDetails.Text == "Update") ? "Question Details updated successfully." : "Question Details inserted successfully.";
             }
@@ -281,13 +284,18 @@ namespace vhcbcloud
                 txtQuestionNum.Text = (gvQuestionAnswer.Rows.Count + 1).ToString();
                 txtQuestionDesc.Text = string.Empty;
                 ddlResultType.ClearSelection();
-                chkFormActive.Checked = false;
+                chkFormActive.Checked = true;
             }
             else
             {
                 pnlAQManagementForm.Visible = false;
                 btnQuestionDetails.Text = "Update";
             }
+        }
+
+        protected void cbActive_CheckedChanged(object sender, EventArgs e)
+        {
+            BindQuestionAnswerGrid();
         }
 
     }

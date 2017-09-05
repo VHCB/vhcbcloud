@@ -181,7 +181,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetQuestionAnswerList(int ACYrQtrId)
+        public static DataTable GetQuestionAnswerList(int ACYrQtrId, bool IsActive)
         {
             DataTable dt = null;
             try
@@ -196,6 +196,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetQuestionAnswerList";
                         command.Parameters.Add(new SqlParameter("ACYrQtrID", ACYrQtrId));
+                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
                      
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);

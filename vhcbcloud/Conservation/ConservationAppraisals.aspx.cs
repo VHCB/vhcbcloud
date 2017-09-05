@@ -58,13 +58,14 @@ namespace vhcbcloud.Conservation
             {
                 btnSubmit.Text = "Update";
                 hfAppraisalID.Value = drAppraisalValue["AppraisalID"].ToString();
+                txtFeeValue.Text = drAppraisalValue["FeeValue"].ToString();
                 txtTotalAcres.Text = drAppraisalValue["TotAcres"].ToString();
-                txtValueBefore.Text = DataUtils.GetDecimal(drAppraisalValue["Apbef"].ToString()).ToString("#.##");
-                txtValueafter.Text = DataUtils.GetDecimal(drAppraisalValue["Apaft"].ToString()).ToString("#.##");
-                txtValueofLandWithOption.Text = DataUtils.GetDecimal(drAppraisalValue["Aplandopt"].ToString()).ToString("#.##");
-                txtEnhancedExclusionValue.Text = DataUtils.GetDecimal(drAppraisalValue["Exclusion"].ToString()).ToString("#.##");
-                spEasementValue.InnerText = DataUtils.GetDecimal(drAppraisalValue["EaseValue"].ToString()).ToString("#.##");
-                spEasementValuePerAcre.InnerText = DataUtils.GetDecimal(drAppraisalValue["Valperacre"].ToString()).ToString("#.##");
+                txtValueBefore.Text = drAppraisalValue["Apbef"].ToString();
+                txtValueafter.Text =drAppraisalValue["Apaft"].ToString();
+                txtValueofLandWithOption.Text = drAppraisalValue["Aplandopt"].ToString();
+                txtEnhancedExclusionValue.Text =drAppraisalValue["Exclusion"].ToString();
+                spEasementValue.InnerText = CommonHelper.myDollarFormat(drAppraisalValue["EaseValue"].ToString());// DataUtils.GetDecimal(drAppraisalValue["EaseValue"].ToString()).ToString("#.##");
+                spEasementValuePerAcre.InnerText = CommonHelper.myDollarFormat(drAppraisalValue["Valperacre"].ToString());  //DataUtils.GetDecimal(drAppraisalValue["Valperacre"].ToString()).ToString("#.##");
                 txtAppraisalValueComments.Text = drAppraisalValue["Comments"].ToString();
 
                 dvNewAppraisalInfo.Visible = true;
@@ -178,15 +179,25 @@ namespace vhcbcloud.Conservation
             //    return;
             //}
 
+            decimal Easementvalue;
 
-            decimal Easementvalue = DataUtils.GetDecimal(txtValueBefore.Text) - DataUtils.GetDecimal(txtValueafter.Text);
+            if (txtFeeValue.Text == "")
+                Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", ""));
+            else
+                Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
+
+
             decimal EasementValuePerAcre = Easementvalue / DataUtils.GetInt(txtTotalAcres.Text);
 
             if (btnSubmit.Text == "Submit")
             {
                 ConservationAppraisalsData.AddConservationAppraisalValue(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(txtTotalAcres.Text),
-                    DataUtils.GetDecimal(txtValueBefore.Text), DataUtils.GetDecimal(txtValueafter.Text), DataUtils.GetDecimal(txtValueofLandWithOption.Text),
-                    DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre, txtAppraisalValueComments.Text);
+                    DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")), 
+                    DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", "")), 
+                    DataUtils.GetDecimal(Regex.Replace(txtValueofLandWithOption.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(txtEnhancedExclusionValue.Text, "[^0-9a-zA-Z.]+", "")),  
+                    Easementvalue, EasementValuePerAcre, txtAppraisalValueComments.Text, 
+                    DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")));
                 BindAppraisalValueForm();
                 BindGrids();
                 LogMessage("Appraisal Value Added Successfully");
@@ -194,8 +205,12 @@ namespace vhcbcloud.Conservation
             else
             {
                 ConservationAppraisalsData.UpdateConservationAppraisalValue(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(txtTotalAcres.Text),
-                   DataUtils.GetDecimal(txtValueBefore.Text), DataUtils.GetDecimal(txtValueafter.Text), DataUtils.GetDecimal(txtValueofLandWithOption.Text),
-                   DataUtils.GetDecimal(txtEnhancedExclusionValue.Text), Easementvalue, EasementValuePerAcre, true, txtAppraisalValueComments.Text);
+                   DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(txtValueofLandWithOption.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(txtEnhancedExclusionValue.Text, "[^0-9a-zA-Z.]+", "")),
+                   Easementvalue, EasementValuePerAcre, true, txtAppraisalValueComments.Text,
+                   DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")));
 
                 gvAppraisalInfo.EditIndex = -1;
                 BindAppraisalValueForm();
