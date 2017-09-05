@@ -31,6 +31,7 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
+                ce_txtEventDate.SelectedDate = DateTime.Today;
                 if (Request.QueryString["Type"] == "new")
                 {
                     rdBtnSelection.SelectedIndex = 0;

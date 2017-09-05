@@ -17,13 +17,14 @@ create procedure dbo.AddConservationAppraisalValue
 	@Exclusion		money, 
 	@EaseValue		money, 
 	@Valperacre		money,
-	@Comments		nvarchar(max)
+	@Comments		nvarchar(max),
+	@FeeValue		money
 ) as
 begin transaction
 
 	begin try
-		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, Comments)
-		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre, @Comments)
+		insert into AppraisalValue(ProjectID, TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, Comments, FeeValue)
+		values(@ProjectID, @TotAcres, @Apbef, @Apaft, @Aplandopt, @Exclusion, @EaseValue, @Valperacre, @Comments, @FeeValue)
 
 		if not exists
 		(
@@ -70,7 +71,8 @@ create procedure dbo.UpdateConservationAppraisalValue
 	@EaseValue		money, 
 	@Valperacre		money,
 	@Comments		nvarchar(max),
-	@IsRowIsActive	bit
+	@IsRowIsActive	bit,
+	@FeeValue		money
 ) as
 begin transaction
 
@@ -78,7 +80,7 @@ begin transaction
 
 	update AppraisalValue set  TotAcres = @TotAcres, Apbef = @Apbef, Apaft = @Apaft, Aplandopt = @Aplandopt, 
 		Exclusion = @Exclusion, EaseValue = @EaseValue, Valperacre = @Valperacre, RowIsActive = @IsRowIsActive, DateModified = getdate(),
-		Comments = @Comments
+		Comments = @Comments, FeeValue = @FeeValue
 	from AppraisalValue
 	where ProjectID = @ProjectID
 	
@@ -118,7 +120,7 @@ begin
 	from Conserve(nolock)
 	where ProjectID = @ProjectID
 
-	select AppraisalID, ProjectID, @TotAcres as TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive, Comments
+	select AppraisalID, ProjectID, @TotAcres as TotAcres, Apbef, Apaft, Aplandopt, Exclusion, EaseValue, Valperacre, RowIsActive, Comments, FeeValue
 	from AppraisalValue (nolock)
 	where ProjectID = @ProjectID
 end

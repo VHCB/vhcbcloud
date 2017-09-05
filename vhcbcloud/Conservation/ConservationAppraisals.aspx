@@ -78,31 +78,47 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
+                                    <td><span class="labelClass">Fee Value</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtFeeValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                    </td>
                                     <td><span class="labelClass">Value BEFORE</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtValueBefore" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtValueBefore" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                       
                                     </td>
-                                    <td><span class="labelClass">Value AFTER:</span></td>
+                                      <td><span class="labelClass">Value AFTER</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">Value of land only with option</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                         <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
+                                    <td><span class="labelClass">Value of land only with option</span></td>
+                                    <td>
+                                         <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                    </td>
                                     <td><span class="labelClass">Enhanced Exclusion Value</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtEnhancedExclusionValue" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtEnhancedExclusionValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Easement Value</span></td>
+
+                                     <td><span class="labelClass">Easement Value</span></td>
                                     <td><span class="labelClass" id="spEasementValue" runat="server"></span></td>
-                                    <td><span class="labelClass">Easement Value/Acre</span></td>
-                                    <td><span class="labelClass" id="spEasementValuePerAcre" runat="server"></span></td>
+
+                                   <%-- <td><span class="labelClass">Easement Value/Acre</span></td>
+                                    <td><span class="labelClass" id="spEasementValuePerAcre" runat="server"></span></td>--%>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                 <tr>
+                                    <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
+                                    <td colspan="5">
+                                        <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -451,6 +467,30 @@
 
             <script language="javascript">
                 $(document).ready(function () {
+                    toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
+                      $('#<%= txtFeeValue.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
+                     });
+                    toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
+                      $('#<%= txtValueBefore.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
+                     });
+                    toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
+                      $('#<%= txtValueafter.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
+                     });
+                    toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
+                      $('#<%= txtValueofLandWithOption.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
+                     });
+                    toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
+                      $('#<%= txtEnhancedExclusionValue.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
+                     });
+                    
+                    <%--toCurrencyControl($('#<%= spEasementValue.ClientID%>').text(), $('#<%= spEasementValue.ClientID%>'));
+                    toCurrencyControl($('#<%= spEasementValuePerAcre.ClientID%>').text(), $('#<%= spEasementValuePerAcre.ClientID%>'));--%>
+
                     toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     $('#<%= txtTotalCost.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
@@ -466,6 +506,10 @@
                         $('#<%= dvAppraisalPayForm.ClientID%>').toggle(this.checked);
                     }).change();
 
+                    $('#<%= txtFeeValue.ClientID%>').blur(function () {
+                        CalEasementVal();
+                    });
+
                     $('#<%= txtValueBefore.ClientID%>').blur(function () {
                         CalEasementVal();
                     });
@@ -479,20 +523,25 @@
                 });
 
                 function CalEasementVal() {
-                    var Before = parseInt($('#<%=txtValueBefore.ClientID%>').val(), 10);
-                    var After = parseInt($('#<%=txtValueafter.ClientID%>').val(), 10);
+                    var Before = parseFloat($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(",", ""), 10);
+                    var After = parseFloat($('#<%=txtValueafter.ClientID%>').val().replace("$", "").replace(",", ""), 10);
 
-                    var EasementVal = Before - After;
-                    $('#<%= spEasementValue.ClientID%>').html(EasementVal);
+                    var EasementVal = parseFloat(Before - After).toFixed(2);
+
+                    if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
+                        $('#<%= spEasementValue.ClientID%>').html(EasementVal);
+                    else
+                          $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+
                     CalEasementValPerAcre();
                 };
 
                 function CalEasementValPerAcre() {
-                    var Total = parseInt($('#<%=txtTotalAcres.ClientID%>').val(), 10);
-                    var Eval = parseInt($('#<%=spEasementValue.ClientID%>').text(), 10);
-                    var EasementValPerAcre = Eval / Total;
+                    var Total = parseFloat($('#<%=txtTotalAcres.ClientID%>').val().replace("$", "").replace(",", ""), 10);
+                    var Eval = parseFloat($('#<%=spEasementValue.ClientID%>').text().replace("$", "").replace(",", ""), 10);
+                    var EasementValPerAcre = parseFloat(Eval / Total).toFixed(2);
 
-                    $('#<%= spEasementValuePerAcre.ClientID%>').html(EasementValPerAcre.toPrecision(2));
+                    $('#<%= spEasementValuePerAcre.ClientID%>').html('$' + EasementValPerAcre);
          };
 
          function PopupAwardSummary() {

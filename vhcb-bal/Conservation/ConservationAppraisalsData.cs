@@ -10,7 +10,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     {
         #region AppraisalValue
         public static void AddConservationAppraisalValue(int ProjectID, int TotAcres, decimal Apbef, decimal Apaft, decimal Aplandopt,
-            decimal Exclusion, decimal EaseValue, decimal Valperacre, string Comments)
+            decimal Exclusion, decimal EaseValue, decimal Valperacre, string Comments, decimal FeeValue)
         {
             try
             {
@@ -33,6 +33,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("EaseValue", EaseValue));
                         command.Parameters.Add(new SqlParameter("Valperacre", Valperacre));
                         command.Parameters.Add(new SqlParameter("Comments", Comments));
+                        command.Parameters.Add(new SqlParameter("FeeValue", FeeValue));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -47,7 +48,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         }
 
         public static void UpdateConservationAppraisalValue(int ProjectID, int TotAcres, decimal Apbef, decimal Apaft, decimal Aplandopt,
-            decimal Exclusion, decimal EaseValue, decimal Valperacre, bool IsRowIsActive, string Comments)
+            decimal Exclusion, decimal EaseValue, decimal Valperacre, bool IsRowIsActive, string Comments, decimal FeeValue)
         {
             try
             {
@@ -71,6 +72,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("Valperacre", Valperacre));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         command.Parameters.Add(new SqlParameter("Comments", Comments));
+                        command.Parameters.Add(new SqlParameter("FeeValue", FeeValue));
 
                         command.CommandTimeout = 60 * 5;
 

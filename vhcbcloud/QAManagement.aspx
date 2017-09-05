@@ -105,7 +105,7 @@
                                 </h3>
                             </td>
                             <td style="text-align: right">
-                                <asp:CheckBox ID="cbAddNewQuestion" runat="server" Text="Add New" Checked="false" AutoPostBack="true" OnCheckedChanged="cbAddNewQuestion_CheckedChanged" />
+                                <asp:CheckBox ID="cbActive" runat="server" Text="Active Only" Checked="true" Enabled="false" OnCheckedChanged="cbActive_CheckedChanged" AutoPostBack="true"   /> <asp:CheckBox ID="cbAddNewQuestion" runat="server" Text="Add New" Checked="false" AutoPostBack="true" OnCheckedChanged="cbAddNewQuestion_CheckedChanged" />
                             </td>
                         </tr>
                     </table>

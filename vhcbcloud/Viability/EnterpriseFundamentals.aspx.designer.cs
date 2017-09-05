@@ -310,33 +310,6 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtYear;
         
         /// <summary>
-        /// txtGrossSales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrossSales;
-        
-        /// <summary>
-        /// txtNetIncome control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNetIncome;
-        
-        /// <summary>
-        /// txtGrossPayroll control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrossPayroll;
-        
-        /// <summary>
         /// txtFamilyFTEmp control.
         /// </summary>
         /// <remarks>
@@ -346,6 +319,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtFamilyFTEmp;
         
         /// <summary>
+        /// txtGrossSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGrossSales;
+        
+        /// <summary>
         /// txtNonFamilyFTEmp control.
         /// </summary>
         /// <remarks>
@@ -353,6 +335,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNonFamilyFTEmp;
+        
+        /// <summary>
+        /// txtNetIncome control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNetIncome;
         
         /// <summary>
         /// spnTotalFulltime control.
@@ -371,6 +362,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetworth;
+        
+        /// <summary>
+        /// txtGrossPayroll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGrossPayroll;
         
         /// <summary>
         /// chkActive control.
