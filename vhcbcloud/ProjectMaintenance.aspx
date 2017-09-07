@@ -675,9 +675,9 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
-                                        <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                        <td style="width: 250px"><span class="labelClass">Physical Location</span>
+                                           <%-- <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 270px">
