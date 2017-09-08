@@ -76,6 +76,73 @@
                     </table>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvIndividual">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 7px 5px 7px 5px">
+                            <h3 class="panel-title">Individual</h3>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px">
+                            <asp:Panel runat="server" ID="pnlIndividualForm">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td><span class="labelClass">Acct #</span></td>
+                                        <td>
+                                            <span class="labelClass" runat="server" id="spnAcctNumber"></span>
+                                        </td>
+                                        <td>
+                                            <span class="labelClass">Last Name</span>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtLastName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtLastName" runat="server" TargetControlID="txtLastName"
+                                                MinimumPrefixLength="1"
+                                                EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetIndividualLastNames"
+                                                OnClientItemSelected="PopulateLnameDetails"
+                                                OnClientPopulated="onLirstNamePopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
+                                        <td><span class="labelClass">First Name</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtFirstName" runat="server" TargetControlID="txtFirstName"
+                                                MinimumPrefixLength="1"
+                                                EnableCaching="false" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetIndividualFirstNames"
+                                                OnClientItemSelected="PopulateFnameDetails"
+                                                OnClientPopulated="onFirstNamePopulated">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                         <td><span class="labelClass">Role</span></td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td><span class="labelClass">Title</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtTitle" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
+                                        <td>
+                                            <span class="labelClass">Email</span>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel-width" runat="server" id="dvCommonForm">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
                         <div class="panel-heading" style="padding: 7px 5px 7px 5px">
@@ -166,70 +233,7 @@
                     </div>
                 </div>
 
-                <div class="panel-width" runat="server" id="dvIndividual">
-                    <div class="panel panel-default" style="margin-bottom: 2px;">
-                        <div class="panel-heading" style="padding: 7px 5px 7px 5px">
-                            <h3 class="panel-title">Individual</h3>
-                        </div>
-
-                        <div class="panel-body" style="padding: 10px 15px 0px 15px">
-                            <asp:Panel runat="server" ID="pnlIndividualForm">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td><span class="labelClass">First Name</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtFirstName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtFirstName" runat="server" TargetControlID="txtFirstName"
-                                                MinimumPrefixLength="1"
-                                                EnableCaching="false" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetIndividualFirstNames"
-                                                OnClientItemSelected="PopulateFnameDetails"
-                                                OnClientPopulated="onFirstNamePopulated">
-                                            </ajaxToolkit:AutoCompleteExtender>
-                                        </td>
-                                        <td>
-                                            <span class="labelClass">Last Name</span>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtLastName" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                            <ajaxToolkit:AutoCompleteExtender ID="ac_txtLastName" runat="server" TargetControlID="txtLastName"
-                                                MinimumPrefixLength="1"
-                                                EnableCaching="false" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetIndividualLastNames"
-                                                OnClientItemSelected="PopulateLnameDetails"
-                                                OnClientPopulated="onLirstNamePopulated">
-                                            </ajaxToolkit:AutoCompleteExtender>
-                                        </td>
-                                        <td><span class="labelClass">Role</span></td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="labelClass">Title</span></td>
-                                        <td>
-                                            <asp:TextBox ID="txtTitle" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
-                                        <td>
-                                            <span class="labelClass">Email</span>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
-                                        </td>
-                                        <td><span class="labelClass"></span></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="panel-width" runat="server" id="dvFarm">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
@@ -1053,7 +1057,7 @@
             var addressArray = eventArgs.get_value().split(',');
             $('#<%=txtFirstName.ClientID%>').val(addressArray[1].trim());
             $('#<%=txtLastName.ClientID%>').val(addressArray[0].trim());
-            $('#<%=txtEmail.ClientID%>').val(addressArray[2].trim());
+            $('#<%=txtEmail.ClientID%>').val(addressArray[3].trim());
         }
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);

@@ -291,7 +291,7 @@ if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetEn
 drop procedure [dbo].GetEntityData
 go
 
-create procedure dbo.GetEntityData
+create procedure [dbo].[GetEntityData]
 (
 	@ApplicantId		int
 )
@@ -307,8 +307,8 @@ begin
 	select a.LkEntityType, a.LKEntityType2, a.Individual, a.FYend, a.website, a.email, a.HomePhone, a.WorkPhone, a.CellPhone, a.Stvendid, a.AppRole,
 		c.Firstname, c.Lastname, c.LkPosition, c.Title,
 		an.Applicantname,
-		f.ApplicantID, f.FarmId, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, 
-		f.OutOFBiz, f.Notes, f.AgEd, f.YearsManagingFarm
+		f.ApplicantID, f.FarmId, f.FarmName, f.LkFVEnterpriseType, f.AcresInProduction, f.AcresOwned, f.AcresLeased, f.AcresLeasedOut, f.TotalAcres, f.OutOFBiz, 
+			f.Notes, f.AgEd, f.YearsManagingFarm, isnull(an.AppNameID, '') AppNameID
 	from applicant a(nolock) 
 	left join applicantcontact ac(nolock) on ac.ApplicantID = a.ApplicantID
 	left join contact c(nolock) on c.ContactId = ac.ContactID
@@ -334,7 +334,7 @@ begin
 --exec GetEntitiesByRole 26242
 	if(@Operation != 3) --3 is farm
 	begin
-		select a.ApplicantId, an.ApplicantName 
+		select a.ApplicantId, an.ApplicantName + ' ' + convert(varchar(10), isnull(an.AppNameID, ''))  as ApplicantName
 		from Appname an(nolock)
 		join ApplicantAppName aan(nolock) on aan.appnameid = an.appnameid
 		join applicant a(nolock) on a.applicantid = aan.ApplicantID
@@ -930,10 +930,12 @@ as
 --exec GetLastNames 'na'
 begin
 
-  select top 5 c.Lastname + ', '+ c.Firstname +', '+  a.email 
+  select top 10 c.Lastname + ', '+ c.Firstname +', '+ isnull(c.MI, '') +', '+  isnull(a.email, '') + ', ' + convert(varchar(10), isnull(an.AppNameID, ''))
   from applicantcontact ac(nolock)
   join contact c(nolock) on c.ContactId = ac.ContactID
   join Applicant a(nolock) on a.ApplicantId = ac.ApplicantID
+  left join applicantappname aan(nolock) on aan.ApplicantID = a.ApplicantId
+  left join appname an(nolock) on an.AppNameID = aan.AppNameID
   where c.Lastname like @LastNamePrefix + '%'
   order by c.Lastname asc 
 end
