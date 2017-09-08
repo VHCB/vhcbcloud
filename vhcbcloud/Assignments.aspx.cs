@@ -112,6 +112,21 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i][0].ToString() != contextKey)
+                    ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
 
         protected void ddlRFromProj_SelectedIndexChanged(object sender, EventArgs e)
         {
