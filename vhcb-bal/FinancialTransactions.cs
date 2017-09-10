@@ -439,7 +439,8 @@ namespace VHCBCommon.DataAccessLayer
 
 
         public static DataTable AddStaffAssignment(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
-                          decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, string transGuid)
+                          decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, 
+                          string transGuid, int UserId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
@@ -459,7 +460,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Tofundamount", Tofundamount));
                 command.Parameters.Add(new SqlParameter("fromTransId", fromTransId));
                 command.Parameters.Add(new SqlParameter("toTransId", toTransId));
-                command.Parameters.Add(new SqlParameter("transGuid", transGuid));
+                command.Parameters.Add(new SqlParameter("transGuid", transGuid)); 
+                    command.Parameters.Add(new SqlParameter("UserId", UserId));
 
                 using (connection)
                 {
@@ -488,7 +490,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static DataTable AddBoardReallocationTransaction(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
                                 decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId,
-                                Nullable<int> fromUsePermit, Nullable<int> toUsePermit, string transGuid)
+                                Nullable<int> fromUsePermit, Nullable<int> toUsePermit, string transGuid, int UserId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
@@ -510,7 +512,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("toTransId", toTransId));
                 command.Parameters.Add(new SqlParameter("fromUsePermit", fromUsePermit));
                 command.Parameters.Add(new SqlParameter("toUsePermit", toUsePermit));
-                command.Parameters.Add(new SqlParameter("transGuid", transGuid));
+                command.Parameters.Add(new SqlParameter("transGuid", transGuid)); 
+                    command.Parameters.Add(new SqlParameter("UserId", UserId));
 
                 using (connection)
                 {
@@ -571,6 +574,7 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtable;
         }
+
 
         public static DataTable GetAssignmentByTransId(int TransID)
         {
@@ -2243,7 +2247,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType,
-            int lkStatus, bool correction = false)
+            int lkStatus, int UserId, bool correction = false)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtStatus = new DataTable();
@@ -2259,6 +2263,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("commitmentType", CommitmentType));
                 command.Parameters.Add(new SqlParameter("lkStatus", lkStatus));
                 command.Parameters.Add(new SqlParameter("correction", correction));
+                command.Parameters.Add(new SqlParameter("UserId", UserId));
 
                 using (connection)
                 {

@@ -1,4 +1,5 @@
 
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -545,7 +546,7 @@ namespace vhcbcloud
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, granteeId, "Board Commitment",
-                    TRANS_PENDING_STATUS, cbCorrection.Checked);
+                    TRANS_PENDING_STATUS, GetUserId(), cbCorrection.Checked);
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
@@ -559,6 +560,19 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
 

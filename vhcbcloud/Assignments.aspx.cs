@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -1062,7 +1063,7 @@ namespace vhcbcloud
                                                                       Convert.ToInt32(ddlRtoFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
-                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString());
+                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString(), GetUserId());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][0].ToString();
@@ -1118,6 +1119,19 @@ namespace vhcbcloud
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
         {
            
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }
