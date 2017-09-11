@@ -67,6 +67,15 @@ namespace vhcbcloud.Account {
         protected global::System.Web.UI.WebControls.TextBox txtCPassword;
         
         /// <summary>
+        /// ddlSecurityGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSecurityGroup;
+        
+        /// <summary>
         /// ddlVHCBProgram control.
         /// </summary>
         /// <remarks>

@@ -141,7 +141,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtUserInfo;
         }
 
-        public static void AddUserInfo(string firstName, string lastName, string password, string email, int DfltPrg)
+        public static void AddUserInfo(string firstName, string lastName, string password, string email, int DfltPrg, int dfltSecGrp)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -154,6 +154,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("password", password));
                 command.Parameters.Add(new SqlParameter("email", email));
                 command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
+                command.Parameters.Add(new SqlParameter("dfltSecGrp", dfltSecGrp));
                 using (connection)
                 {
                     connection.Open();
@@ -171,7 +172,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email, int DfltPrg)
+        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email, int DfltPrg, int dfltSecGrp)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -185,6 +186,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("password", password));
                 command.Parameters.Add(new SqlParameter("email", email));
                 command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
+                command.Parameters.Add(new SqlParameter("dfltSecGrp", dfltSecGrp));
 
                 using (connection)
                 {

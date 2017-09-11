@@ -17,6 +17,7 @@ namespace vhcbcloud.Account
             {
                 BindUserInfo();
                 BindVHCBProgram();
+                BindSecurityGroups();
             }
         }
 
@@ -75,10 +76,16 @@ namespace vhcbcloud.Account
         {
             try
             {
-                int dfltPrg = 0;
+                int dfltPrg = 0, dfltSecGrp = 0;
                 if (ddlVHCBProgram.SelectedIndex != 0)
                     dfltPrg = Convert.ToInt32(ddlVHCBProgram.SelectedValue.ToString());
-                AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg);
+                if (ddlSecurityGroup.SelectedIndex == 0)
+                {
+                    lblErrorMsg.Text = "Please select security group";
+                    return;
+                }
+                dfltSecGrp = Convert.ToInt32(ddlSecurityGroup.SelectedValue.ToString());
+                AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp);
                 BindUserInfo();
                 ClearFields();
                 lblErrorMsg.Text = "User Information added successfully";
@@ -122,11 +129,13 @@ namespace vhcbcloud.Account
                 string strEmail = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtEmail")).Text.Trim();
                 string strPassword = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtPassword")).Text.Trim();
                 int dfltPgr = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedValue.ToString()) : 0;
-                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr);
+
+                int dflSecGrp = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedValue.ToString()) : 0;
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp);
 
                 gvUserInfo.EditIndex = -1;
                 BindUserInfo();
-                lblErrorMsg.Text = "User information updated successfully.";                
+                lblErrorMsg.Text = "User information updated successfully.";
             }
             catch (Exception ex)
             {
@@ -151,6 +160,7 @@ namespace vhcbcloud.Account
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
                     DropDownList ddlPrg = (e.Row.FindControl("ddlEditVhcbPrg") as DropDownList);
+                   
                     TextBox txtPrg = (e.Row.FindControl("txtDfltPrg") as TextBox);
                     if (ddlPrg != null)
                     {
@@ -168,6 +178,30 @@ namespace vhcbcloud.Account
                                 if (txtPrg.Text.ToLower() == itemToCompare.ToLower())
                                 {
                                     ddlPrg.ClearSelection();
+                                    item.Selected = true;
+                                }
+                            }
+                    }
+
+                    DropDownList ddlSecGrp = (e.Row.FindControl("ddlEditSecGroup") as DropDownList);
+                    TextBox txtSecName = (e.Row.FindControl("txtDfltSecGroup") as TextBox);
+                    if (ddlSecGrp != null)
+                    {
+                        DataTable dt = new DataTable();
+                        dt = UserSecurityData.GetData("GetUserSecurityGroup");
+                        ddlSecGrp.DataSource = dt;
+                        ddlSecGrp.DataValueField = "usergroupid";
+                        ddlSecGrp.DataTextField = "userGroupName";
+                        ddlSecGrp.DataBind();
+                        ddlSecGrp.Items.Insert(0, new ListItem("Select", "NA"));
+                        string itemToCompare = string.Empty;
+                        if (txtSecName != null)
+                            foreach (ListItem item in ddlSecGrp.Items)
+                            {
+                                itemToCompare = item.Text;
+                                if (txtSecName.Text.ToLower() == itemToCompare.ToLower())
+                                {
+                                    ddlSecGrp.ClearSelection();
                                     item.Selected = true;
                                 }
                             }
@@ -229,6 +263,29 @@ namespace vhcbcloud.Account
         {
             get { return ViewState["SortDirection"] as string ?? "ASC"; }
             set { ViewState["SortDirection"] = value; }
+        }
+
+        private void BindSecurityGroups()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt = UserSecurityData.GetData("GetUserSecurityGroup");
+                ddlSecurityGroup.DataSource = dt;
+                ddlSecurityGroup.DataValueField = "usergroupid";
+                ddlSecurityGroup.DataTextField = "userGroupName";
+                ddlSecurityGroup.DataBind();
+                ddlSecurityGroup.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected void ddlSecurityGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

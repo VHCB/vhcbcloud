@@ -76,6 +76,18 @@
                             <td style="height: 4px" colspan="2" />
                         </tr>
                         <tr>
+                            <td style="width: 22%; float: left"><span class="labelClass">Default Security Group </span></td>
+                            <td style="width: 65%; float: left">
+                                <asp:DropDownList ID="ddlSecurityGroup" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
+                                    OnSelectedIndexChanged="ddlSecurityGroup_SelectedIndexChanged">
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 4px" colspan="2" />
+
+                        </tr>
+                        <tr>
                             <td style="width: 22%; float: left"><span class="labelClass">VHCB Program </span></td>
                             <td style="width: 65%; float: left">
                                 <asp:DropDownList ID="ddlVHCBProgram" CssClass="clsDropDown" runat="server" TabIndex="9">
@@ -162,7 +174,16 @@
                                             CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />--%>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
-
+                                <asp:TemplateField HeaderText="Security Group" SortExpression="Sec Group">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblDfltSecGrp" runat="Server" Text='<%# Eval("UserGroupName") %>' />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:DropDownList ID="ddlEditSecGroup" CssClass="clsDropDown" runat="server">
+                                        </asp:DropDownList>
+                                        <asp:TextBox ID="txtDfltSecGroup" runat="Server" Visible="false" Text='<%# Eval("UserGroupName") %>' />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="VHCB Program" SortExpression="description">
                                     <ItemTemplate>
                                         <asp:Label ID="lblDfltPrg" runat="Server" Text='<%# Eval("description") %>' />
@@ -170,7 +191,7 @@
                                     <EditItemTemplate>
                                         <asp:DropDownList ID="ddlEditVhcbPrg" CssClass="clsDropDown" runat="server">
                                         </asp:DropDownList>
-                                         <asp:TextBox ID="txtDfltPrg" runat="Server" Visible="false" Text='<%# Eval("description") %>' />
+                                        <asp:TextBox ID="txtDfltPrg" runat="Server" Visible="false" Text='<%# Eval("description") %>' />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
 
