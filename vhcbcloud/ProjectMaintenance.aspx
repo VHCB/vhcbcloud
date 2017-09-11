@@ -675,9 +675,9 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
-                                        <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList>
+                                        <td style="width: 250px"><span class="labelClass">Physical Location</span>
+                                           <%-- <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>--%>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Street #</span></td>
                                         <td style="width: 270px">
@@ -882,26 +882,31 @@
                             <asp:Panel runat="server" ID="Panel4">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 130px"><span class="labelClass">Entity Name</span></td>
-                                        <td style="width: 250px">
+                                        <td><span class="labelClass">Entity Role</span></td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlEntityRole" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
+                                        </td>
+                                        <td><span class="labelClass">Entity Name</span></td>
+                                        <td>
                                             <%-- <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server" OnSelectedIndexChanged="ddlApplicantName_SelectedIndexChanged" AutoPostBack="true">
                                             </asp:DropDownList>--%>
                                             <asp:TextBox ID="txtEntityDDL" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"
-                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                                ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');" onkeyup="SetEntityContextKey()"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="EntityAE" runat="server" TargetControlID="txtEntityDDL" MinimumPrefixLength="1"
                                                 EnableCaching="true" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetPrimaryApplicant" OnClientPopulated="onApplicantListPopulated">
+                                                UseContextKey="true" CompletionInterval="100" ServiceMethod="GetEntitiesByRole" OnClientPopulated="onEntityListPopulated">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">Role</span></td>
-                                        <td style="width: 370px">
+                                        <td><span class="labelClass">Role</span></td>
+                                        <td >
                                             <asp:DropDownList ID="ddlApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
-                                        <td style="width: 70px">
+                                        <td>
                                             <asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
-                                        <td></td>
+                                        
                                     </tr>
                                     <tr>
-                                        <td colspan="6" style="height: 5px"></td>
+                                        <td colspan="7" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -1131,6 +1136,12 @@
             //completionList.style.css = 'clsAutoExtDropDownListItem';
         }
 
+        function onEntityListPopulated() {
+            var completionList = $find('<%=EntityAE.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+
         function onListPopulated() {
             var completionList = $find('<%=ae_txtStreetNo.ClientID%>').get_completionList();
             completionList.style.width = 'auto';
@@ -1292,6 +1303,10 @@
 
         function response(obj) {
             console.log(obj);
+        }
+
+         function SetEntityContextKey() {            
+            $find('<%=EntityAE.ClientID%>').set_contextKey($('#<%= ddlEntityRole.ClientID%>').val());
         }
 
         function getAddressInfoByZip(zip) {

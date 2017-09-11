@@ -179,8 +179,9 @@ namespace vhcbcloud
             EventProgramSelection();
             BindLookUP(ddlApplicantRole, 56);
             ddlApplicantRole.Items.Remove(ddlApplicantRole.Items.FindByValue("358"));
-            BindLookUP(ddlAddressType, 1);
+            //BindLookUP(ddlAddressType, 1);
             BindLookUP(ddlProjectGoal, 201);
+            BindLookUP(ddlEntityRole, 170);
         }
 
         private void EventProgramSelection()
@@ -940,7 +941,7 @@ namespace vhcbcloud
 
                         ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
                             txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
-                            cbActive.Checked, cbDefaultAddress.Checked, int.Parse(ddlAddressType.SelectedValue.ToString()));
+                            cbActive.Checked, cbDefaultAddress.Checked, 26241 ); // int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         hfAddressId.Value = "";
                         btnAddAddress.Text = "Add";
@@ -950,7 +951,7 @@ namespace vhcbcloud
                     {
                         ProjectMaintResult objProjectMaintResult = ProjectMaintenanceData.AddProjectAddress(ProjectId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtVillage.Text,
                             txtState.Text, txtZip.Text, txtCounty.Text, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked,
-                            int.Parse(ddlAddressType.SelectedValue.ToString()));
+                            26241);// int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         btnAddAddress.Text = "Add";
 
@@ -979,7 +980,7 @@ namespace vhcbcloud
 
         private void ClearAddressForm()
         {
-            ddlAddressType.SelectedIndex = -1;
+            //ddlAddressType.SelectedIndex = -1;
             txtStreetNo.Text = "";
             txtAddress1.Text = "";
             txtAddress2.Text = "";
@@ -1040,7 +1041,7 @@ namespace vhcbcloud
 
                         hfAddressId.Value = lblAddressId.Text;
 
-                        PopulateDropDown(ddlAddressType, dr["LkAddressType"].ToString());
+                        //PopulateDropDown(ddlAddressType, dr["LkAddressType"].ToString());
                         txtStreetNo.Text = dr["Street#"].ToString();
                         txtAddress1.Text = dr["Address1"].ToString();
                         txtAddress2.Text = dr["Address2"].ToString();
@@ -1108,6 +1109,7 @@ namespace vhcbcloud
                 //ddlApplicantName.SelectedIndex = -1;
                 txtEntityDDL.Text = "";
                 txtEntityDDL.Text = "";
+                ddlEntityRole.SelectedIndex = -1;
                 ddlApplicantRole.SelectedIndex = -1;
 
                 LogMessage("Entity Attached Successfully");
@@ -1435,12 +1437,12 @@ namespace vhcbcloud
 
         protected bool IsAddressValid()
         {
-            if (ddlAddressType.SelectedIndex == 0)
-            {
-                LogMessage("Select Address Type");
-                ddlAddressType.Focus();
-                return false;
-            }
+            //if (ddlAddressType.SelectedIndex == 0)
+            //{
+            //    LogMessage("Select Address Type");
+            //    ddlAddressType.Focus();
+            //    return false;
+            //}
 
             if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
             {
@@ -1967,6 +1969,22 @@ namespace vhcbcloud
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetEntitiesByRole(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = ApplicantData.GetSortedApplicants(prefixText);
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i][1].ToString() == contextKey)
+                    ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -112,6 +113,21 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+
+            List<string> ProjNames = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i][0].ToString() != contextKey)
+                    ProjNames.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNames.ToArray();
+        }
 
         protected void ddlRFromProj_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1047,7 +1063,7 @@ namespace vhcbcloud
                                                                       Convert.ToInt32(ddlRtoFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
-                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString());
+                                                                      hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), hfReallocateGuid.Value.ToString(), GetUserId());
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][0].ToString();
@@ -1103,6 +1119,19 @@ namespace vhcbcloud
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
         {
            
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -531,7 +532,7 @@ namespace vhcbcloud
                     granteeId = Convert.ToInt32(hfGrantee.Value);
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
-                    TransAmount, granteeId, "Cash Refund",
+                    TransAmount, granteeId, "Cash Refund", GetUserId(),
                     TRANS_PENDING_STATUS);
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
@@ -545,6 +546,19 @@ namespace vhcbcloud
             catch (Exception ex)
             {
                 lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
 

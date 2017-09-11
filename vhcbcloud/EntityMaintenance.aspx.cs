@@ -704,7 +704,8 @@ namespace vhcbcloud
                 txtHomePhone.Text = "";
             else
                 txtHomePhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["HomePhone"].ToString()));
-
+            
+            spnAcctNumber.InnerHtml = drEntityData["AppNameID"].ToString();  
             txtStateVendorId.Text = drEntityData["Stvendid"].ToString();
             txtApplicantName.Text = drEntityData["Applicantname"].ToString();
             txtFirstName.Text = drEntityData["Firstname"].ToString();
@@ -729,6 +730,7 @@ namespace vhcbcloud
         private void ClearForm()
         {
             ddlEntityType.SelectedIndex = -1;
+            spnAcctNumber.InnerHtml = "";
             txtFiscalYearEnd.Text = "";
             txtWebsite.Text = "";
             txtHomePhone.Text = "";

@@ -153,11 +153,11 @@
                                             <asp:DropDownList ID="ddlRToProj" CssClass="clsDropDown" AutoPostBack="true" Visible="false" runat="server" onclick="needToConfirm = false;"
                                                 OnSelectedIndexChanged="ddlRToProj_SelectedIndexChanged">
                                             </asp:DropDownList>
-                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1" onkeyup="SetContextKey()"></asp:TextBox>
                                             <%-- <ajaxToolkit:MaskedEditExtender ID="ameProjNum" runat="server" ClearMaskOnLostFocus="false" Mask="9999-999-999" MaskType="Number" TargetControlID="txtProjNum">
                                             </ajaxToolkit:MaskedEditExtender>--%>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
-                                                OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
+                                                UseContextKey="true" OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetAssignmentProjectslistByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
@@ -422,5 +422,8 @@
         };
         removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
+        function SetContextKey() {            
+            $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($('#<%= txtFromProjNum.ClientID%>').val());
+        }
     </script>
 </asp:Content>

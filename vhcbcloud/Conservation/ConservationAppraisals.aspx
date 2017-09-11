@@ -529,9 +529,9 @@
                     var EasementVal = parseFloat(Before - After).toFixed(2);
 
                     if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
-                        $('#<%= spEasementValue.ClientID%>').html(EasementVal);
+                        $('#<%= spEasementValue.ClientID%>').html('$' + EasementVal);
                     else
-                          $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+                        $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
 
                     CalEasementValPerAcre();
                 };
