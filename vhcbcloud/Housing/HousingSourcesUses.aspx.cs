@@ -64,39 +64,14 @@ namespace vhcbcloud.Housing
             btnAddSources.Visible = false;
             cbAddSource.Enabled = false;
             cbAddUse.Enabled = false;
-            
-           
         }
 
         protected bool GetRoleAuth()
         {
-
-            DataTable dtPrg = new DataTable();
-            DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
-            if (dt != null)
-            {
-                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
-
-                if (dt.Rows.Count > 0)
-                    if (dtGetUserSec.Rows.Count > 0)
-                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
-                        {
-                            RoleReadOnly();
-                        }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
-                        {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                RoleReadOnly();
-                                return false;
-                            }
-                        }
-            }
-            return true;
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
         }
 
         private void ProjectNotesSetUp()

@@ -34,6 +34,7 @@ namespace vhcbcloud.Housing
                 BindControls();
                 BindGrids();
             }
+            GetRoleAuth();
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -56,6 +57,24 @@ namespace vhcbcloud.Housing
                     btnProjectNotes.ImageUrl = "~/Images/currentpagenotes.png";
             }
         }
+
+        private void RoleReadOnly()
+        {
+            cbAddCPP.Enabled = false;
+            cbAddInterAgency.Enabled = false;
+            cbAddVHCB.Enabled = false;
+            btnAddInterAgency.Enabled = false;
+            btnAddVHCB.Enabled = false;            
+        }
+
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+
 
         private void GenerateTabs()
         {

@@ -161,17 +161,17 @@
 
                                             <table>
                                                 <tr>
-                                                    <td style="width: 150px">&nbsp;</td>
-                                                    <td style="width: 250px">&nbsp;</td>
-                                                    <td style="width: 100px"><span class="labelClass">Verify: </span></td>
-                                                    <td style="width: 270px">
+                                                    <td style="width: 150px; height: 20px;"></td>
+                                                    <td style="width: 250px; height: 20px;"></td>
+                                                    <td style="width: 100px; text-align:left; height: 20px;"><span class="labelClass">Verify: </span></td>
+                                                    <td style="width: 270px; height: 20px;">
                                                         <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
                                                     </td>
-                                                    <td style="width: 170px"><span class="labelClass">Date verified: </span></td>
-                                                    <td style="width: 170px">
+                                                    <td style="width: 170px; text-align:left; height: 20px;"><span class="labelClass">Date verified: </span></td>
+                                                    <td style="width: 170px; height: 20px;">
                                                         <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
                                                     </td>
-                                                    <td>&nbsp;</td>
+                                                    <td style="height: 20px"></td>
                                                 </tr>
 
                                             </table>

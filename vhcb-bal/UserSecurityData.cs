@@ -207,6 +207,35 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
+        public static bool GetRoleAuth(string username, int projId)
+        {
+            DataTable dtPrg = new DataTable();
+            DataTable dt = GetUserId(username);
+            if (dt != null)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+
+                if (dt.Rows.Count > 0)
+                    if (dtGetUserSec.Rows.Count > 0)
+                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
+                        {                           
+                            return false;
+                        }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                return false;
+                            }
+                        }
+            }
+            return true;
+        }
+
         public static void DeleteUsersUserSecurityGroup(int usersUserSecurityGrpId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
