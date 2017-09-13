@@ -156,26 +156,20 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                    <tr>
-                                        <div id="divApproval" runat="server" visible="false">
-
-                                            <table>
-                                                <tr>
-                                                    <td style="width: 150px; height: 20px;"></td>
-                                                    <td style="width: 250px; height: 20px;"></td>
-                                                    <td style="width: 100px; text-align:left; height: 20px;"><span class="labelClass">Verify: </span></td>
-                                                    <td style="width: 270px; height: 20px;">
-                                                        <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
-                                                    </td>
-                                                    <td style="width: 170px; text-align:left; height: 20px;"><span class="labelClass">Date verified: </span></td>
-                                                    <td style="width: 170px; height: 20px;">
-                                                        <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
-                                                    </td>
-                                                    <td style="height: 20px"></td>
-                                                </tr>
-
-                                            </table>
-                                        </div>
+                                    <table  style="width: 100%">
+                                        <tr>
+                                            <td style="width: 150px; height: 20px;"></td>
+                                            <td style="width: 250px; height: 20px;"></td>
+                                            <td style="width: 100px; text-align: left; height: 20px;"><span class="labelClass">Verify: </span></td>
+                                            <td style="width: 270px; height: 20px;">
+                                                <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
+                                            </td>
+                                            <td style="width: 170px; text-align: left; height: 20px;"><span class="labelClass">Date verified: </span></td>
+                                            <td >
+                                                <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -676,7 +670,7 @@
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Address Type</span></td>
                                         <td style="width: 250px"><span class="labelClass">Physical Location</span>
-                                           <%-- <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
+                                            <%-- <asp:DropDownList ID="ddlAddressType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Street #</span></td>
@@ -885,7 +879,7 @@
                                         <td><span class="labelClass">Entity Role</span></td>
                                         <td>
                                             <asp:DropDownList ID="ddlEntityRole" CssClass="clsDropDown" runat="server">
-                                </asp:DropDownList>
+                                            </asp:DropDownList>
                                         </td>
                                         <td><span class="labelClass">Entity Name</span></td>
                                         <td>
@@ -899,11 +893,11 @@
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td><span class="labelClass">Role</span></td>
-                                        <td >
+                                        <td>
                                             <asp:DropDownList ID="ddlApplicantRole" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                         <td>
                                             <asp:Button ID="btnAddEntity" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntity_Click" /></td>
-                                        
+
                                     </tr>
                                     <tr>
                                         <td colspan="7" style="height: 5px"></td>
@@ -1305,7 +1299,7 @@
             console.log(obj);
         }
 
-         function SetEntityContextKey() {            
+        function SetEntityContextKey() {
             $find('<%=EntityAE.ClientID%>').set_contextKey($('#<%= ddlEntityRole.ClientID%>').val());
         }
 
