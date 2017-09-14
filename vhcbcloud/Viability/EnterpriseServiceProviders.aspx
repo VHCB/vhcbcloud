@@ -65,7 +65,7 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Enterprise Service Providers</h3>
+                                        <h3 class="panel-title">Service Providers – Agreement</h3>
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddYear" runat="server" Text="Add New Application Budget" />
@@ -133,12 +133,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Business plans/Year |  Projects</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Business plans/Year 1  clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtBusPlans" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -156,12 +156,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year |  project</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year 1 clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtCashFlows" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -179,12 +179,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Year 2 Follow-ups</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Year 2 clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtYr2Followup" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -202,12 +202,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Additional Enrollee Projects</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Additional clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtAddEnrollees" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -225,12 +225,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Workshops / Special Events</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Workshops</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtWorkshopsEvents" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -324,12 +324,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Business plans/Year |  Projects</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Business plans/Year 1 clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtBusPlans1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -347,12 +347,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year |  project</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year  clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtCashFlows1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -370,12 +370,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Year 2 Follow-ups</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Year 2 clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtYr2Followup1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -393,12 +393,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Additional Enrollee Projects</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Additional clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtAddEnrollees1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
@@ -416,12 +416,12 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Workshops / Special Events</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Workshops</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtWorkshopsEvents1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
                                                     <td style="width: 100px">
-                                                        <span class="labelClass">Cost per project
+                                                        <span class="labelClass">Cost per client
                                                         </span>
                                                     </td>
                                                     <td style="width: 223px">
