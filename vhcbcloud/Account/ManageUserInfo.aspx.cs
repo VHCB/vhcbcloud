@@ -11,6 +11,7 @@ namespace vhcbcloud.Account
 {
     public partial class ManageUserInfo : System.Web.UI.Page
     {
+        private int SECURITY_PAGE = 193;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -18,6 +19,7 @@ namespace vhcbcloud.Account
                 BindUserInfo();
                 BindVHCBProgram();
                 BindSecurityGroups();
+                BindDDLPage();
             }
         }
 
@@ -56,6 +58,25 @@ namespace vhcbcloud.Account
                     gvUserInfo.DataSource = view.ToTable();
                     gvUserInfo.DataBind();
                 }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void BindDDLPage()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt = UserSecurityData.GetPageSecurityBySelection(SECURITY_PAGE);
+                ddlPage.DataValueField = "typeid";
+                ddlPage.DataTextField = "description";
+                ddlPage.DataSource = dt;
+                ddlPage.DataBind();
+                ddlPage.Items.Insert(0, new ListItem("Select", "NA"));
+
             }
             catch (Exception ex)
             {
@@ -160,7 +181,7 @@ namespace vhcbcloud.Account
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
                     DropDownList ddlPrg = (e.Row.FindControl("ddlEditVhcbPrg") as DropDownList);
-                   
+
                     TextBox txtPrg = (e.Row.FindControl("txtDfltPrg") as TextBox);
                     if (ddlPrg != null)
                     {
@@ -208,6 +229,13 @@ namespace vhcbcloud.Account
                     }
                 }
             }
+        }
+
+        protected void rdBtnSelectDetail_CheckedChanged(object sender, EventArgs e)
+        {
+            GetSelectedUserId(gvUserInfo);
+            BindUserPageSecurity();
+            pnlHide.Visible = true;
         }
 
         protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
@@ -285,7 +313,82 @@ namespace vhcbcloud.Account
 
         protected void ddlSecurityGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+           
         }
+        private void GetSelectedUserId(GridView gvFGM)
+        {
+            for (int i = 0; i < gvFGM.Rows.Count; i++)
+            {
+                RadioButton rbGInfo = (RadioButton)gvFGM.Rows[i].Cells[0].FindControl("rdBtnSelectDetail");
+                if (rbGInfo != null)
+                {
+                    if (rbGInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvFGM.Rows[i].Cells[0].FindControl("HiddenField1");
+                        if (hf != null)
+                        {
+                            ViewState["SelectedTransId"] = hf.Value;
+                            hfUserId.Value = hf.Value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        private void BindUserPageSecurity()
+        {
+            if (hfUserId.Value != null)
+            {
+                DataTable dt = new DataTable();
+                dt = UserSecurityData.GetuserPageSecurity(Convert.ToInt32(hfUserId.Value));
+                gvPageSecurity.DataSource = dt;
+                gvPageSecurity.DataBind();
+            }
+            else
+            {
+                gvPageSecurity.DataSource = null;
+                gvPageSecurity.DataBind();
+                lblErrorMsg.Text = "Select User to view the user page security permissions";
+            }
+        }
+        protected void btnPageSecurity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ddlPage.SelectedIndex <= 0)
+                {
+                    lblErrorMsg.Text = "Please select page to add an action";
+                    return;
+                }
+                
+                UserSecurityData.AddUserPageSecurity(Convert.ToInt32(hfUserId.Value), Convert.ToInt32(ddlPage.SelectedValue.ToString()));
+                BindUserPageSecurity();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+
+        protected void gvPageSecurity_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                Label lblpagesecurityid = (Label)gvPageSecurity.Rows[rowIndex].FindControl("lblpagesecurityid");
+                if (lblpagesecurityid != null)
+                {
+                    UserSecurityData.DeletePageSecurity(Convert.ToInt32(lblpagesecurityid.Text));
+                    lblErrorMsg.Text = "User Page Security was deleted successfully";
+                    BindUserPageSecurity();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
     }
 }
