@@ -244,6 +244,81 @@ namespace VHCBCommon.DataAccessLayer
                 throw ex;
             }
         }
+        public static DataTable GetAllQuestionAnswerDetailsByUser(int YrQtrId, int UserId,bool IsActive)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetAllQuestionAnswerDetailsByUser";
+                        command.Parameters.Add(new SqlParameter("YrQrtrId", YrQtrId));
+                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
+                        command.Parameters.Add(new SqlParameter("UserId", UserId));
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void AddQuestionAnswers(DataTable dt)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddQuestionAnswers";
+
+                        command.Parameters.Add(new SqlParameter("@QuestionAnswerstble", dt));
+                        //command.Parameters.Add(new SqlParameter("Qtr", Qtr));
+
+                        //SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        //parmMessage.Direction = ParameterDirection.Output;
+                        //command.Parameters.Add(parmMessage);
+
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        //YearQrtrResult yqr = new YearQrtrResult();
+
+                        //yqr.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+
+                        //return yqr;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 
 
