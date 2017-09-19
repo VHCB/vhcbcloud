@@ -156,8 +156,7 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                    <table  style="width: 100%">
-                                        <tr>
+                                    <tr>
                                             <td style="width: 150px; height: 20px;"></td>
                                             <td style="width: 250px; height: 20px;"></td>
                                             <td style="width: 100px; text-align: left; height: 20px;"><span class="labelClass">Verify: </span></td>
@@ -168,8 +167,6 @@
                                             <td >
                                                 <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
                                             </td>
-                                        </tr>
-                                    </table>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
