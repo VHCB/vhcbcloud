@@ -319,6 +319,136 @@ namespace VHCBCommon.DataAccessLayer
             }
 
         }
+
+        public static DataTable GetAllYearQuarterDetailsForUserQA()
+        {
+            DataTable dtYrQtr = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAllYearQuarterDetailsForUserQA";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtYrQtr = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtYrQtr;
+        }
+
+        public static DataTable GetUserDetailsByUserName(string username)
+        {
+            DataTable dtTranDetails = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("username", username));
+                command.CommandText = "GetUserDetailsByUserName";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTranDetails = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTranDetails;
+        }
+
+        public static void SubmitUserQuestionAnswers(int UserId, int YrQrtrId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "SubmitUserQuestionAnswers";
+
+                        //12 Parameters
+                        command.Parameters.Add(new SqlParameter("UserId", UserId));
+                        command.Parameters.Add(new SqlParameter("YrQrtrId", YrQrtrId));
+                     
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SubmitOtherMembers(int UserId, int YrQrtrId, string MemberIncluded)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "SubmitOtherMembers";
+
+                        //12 Parameters
+                        command.Parameters.Add(new SqlParameter("UserId", UserId));
+                        command.Parameters.Add(new SqlParameter("YrQrtrId", YrQrtrId));
+                        command.Parameters.Add(new SqlParameter("MemberIncluded", MemberIncluded));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
 
