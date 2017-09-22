@@ -32,6 +32,25 @@ namespace vhcbcloud.Conservation
                 BindAppraisalValueForm();
                 BindGrids();
             }
+            GetRoleAuth();
+        }
+
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+
+        protected void RoleReadOnly()
+        {
+            btnAddAppraisalInfo.Visible = false;
+            btnAddPay.Visible = false;
+            btnSubmit.Visible = false;
+            cbAddAppraisalInfo.Enabled = false;
+            cbAddAppraisalPay.Enabled = false;
+            cbReviewApproved.Enabled = false;
         }
 
         private void ProjectNotesSetUp()

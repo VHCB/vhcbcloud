@@ -180,7 +180,8 @@
                                 </tr>
                                 <tr>
                                     <td><span class="labelClass">Natural/Rec</span></td>
-                                    <td><asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td>
+                                        <asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                     <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td><span class="labelClass" id="spnTotalProject" runat="server"></span></td>
                                     <td><span class="labelClass"></span></td>
@@ -206,7 +207,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddEasementHolder" runat="server" Text="Add New Easement Holder" />
-                                         <asp:ImageButton ID="ImgEasementHoldersReport" ImageUrl="~/Images/print.png" ToolTip="Conservation Easement Holders Report"
+                                        <asp:ImageButton ID="ImgEasementHoldersReport" ImageUrl="~/Images/print.png" ToolTip="Conservation Easement Holders Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgEasementHoldersReport_Click" />
                                     </td>
                                 </tr>
@@ -272,7 +273,15 @@
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -290,7 +299,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAcreage" runat="server" Text="Add New Acreage" />
-                                          <asp:ImageButton ID="ImgAcreage" ImageUrl="~/Images/print.png" ToolTip="Acreage Report"
+                                        <asp:ImageButton ID="ImgAcreage" ImageUrl="~/Images/print.png" ToolTip="Acreage Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAcreage_Click" />
                                     </td>
                                 </tr>
@@ -375,7 +384,15 @@
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -393,7 +410,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddSurfaceWaters" runat="server" Text="Add New Surface Waters" />
-                                          <asp:ImageButton ID="ImgSurfaceWaters" ImageUrl="~/Images/print.png" ToolTip="Surface Waters Report"
+                                        <asp:ImageButton ID="ImgSurfaceWaters" ImageUrl="~/Images/print.png" ToolTip="Surface Waters Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgSurfaceWaters_Click" />
                                     </td>
                                 </tr>
@@ -434,7 +451,7 @@
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">Riparian Buffer (ft. ):</span>
-                                         </td>
+                                        </td>
                                         <td>
                                             <asp:TextBox ID="txtRiparianBuffer" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
@@ -448,14 +465,11 @@
                                         </td>
                                         <td style="width: 215px">
                                             <asp:Button ID="btnAddSurfaceWaters" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddSurfaceWaters_Click" />
-                                         </td>
+                                        </td>
                                         <td style="width: 166px"></td>
-                                        <td style="width: 180px">
-                                        </td>
-                                        <td style="width: 170px">
-                                            </td>
-                                        <td>
-                                        </td>
+                                        <td style="width: 180px"></td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -498,7 +512,15 @@
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -538,7 +560,7 @@
              });--%>
 
             var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>, #<%= txtNaturalRec.ClientID%>');
-            $.each(txtboxs, function() {
+            $.each(txtboxs, function () {
                 $(this).blur(function () {
                     $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());
                     $('#<%=txtPasture.ClientID%>').val($('#<%=txtPasture.ClientID%>').getNum());
@@ -554,18 +576,18 @@
             });
 
             function CalculatePercentages() {
-                
+
                 var totTillable = (isNaN(parseFloat($('#<%=txtTillable.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtTillable.ClientID%>').val(), 10));
                 var totPasture = (isNaN(parseFloat($('#<%=txtPasture.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtPasture.ClientID%>').val(), 10));
                 var totWooded = (isNaN(parseFloat($('#<%=txtWooded.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtWooded.ClientID%>').val(), 10));
                 var totUnManaged = (isNaN(parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10));
                 var totFarmResident = (isNaN(parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10));
                 var totNaturalRec = (isNaN(parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10));
-                
+
                 var Total = totTillable + totPasture + totWooded + totUnManaged + totFarmResident + totNaturalRec;
                 console.log('Total:' + Total.toFixed(2));
-                
-                
+
+
                 $('#<%=spnTotalProject.ClientID%>').text(Total.toFixed(2));
 
                 $('#<%=pctPrimeStateWide.ClientID%>').text('-');
@@ -580,7 +602,7 @@
                     console.log(pctPS.toPrecision(2));
                     $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS + ' %');
 
-                     var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
+                    var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
                     $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2) + ' %');
                 }
             };

@@ -134,7 +134,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -220,7 +228,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -239,7 +255,7 @@
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddPA" runat="server" Text="Add New Type of Public Access" />
                                         <asp:ImageButton ID="ImgConservationPublicAccess" ImageUrl="~/Images/print.png" ToolTip="Conservation Public Access Report"
-                                                Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationPublicAccess_Click" />
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationPublicAccess_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -256,7 +272,7 @@
                                         </td>
                                         <td style="width: 100px"></td>
                                         <td style="width: 180px">
-                                            <asp:Button ID="btnAddPA" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddPA_Click" />                                            
+                                            <asp:Button ID="btnAddPA" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddPA_Click" />
                                         </td>
                                         <td style="width: 170px"></td>
                                         <td></td>
@@ -300,7 +316,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -381,7 +405,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -540,7 +572,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -620,7 +660,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -700,7 +748,15 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="350px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>

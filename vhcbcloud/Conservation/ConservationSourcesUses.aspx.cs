@@ -42,6 +42,22 @@ namespace vhcbcloud.Conservation
                 ddlBudgetPeriod.SelectedValue = ConservationSourcesUsesData.GetLatestBudgetPeriod(DataUtils.GetInt(hfProjectId.Value)).ToString();
                 BudgetPeriodSelectionChanged();
             }
+            GetRoleAuth();
+        }
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+        protected void RoleReadOnly()
+        {
+            btnAddOtherUses.Visible = false;
+            btnAddSources.Visible = false;
+            cbAddSource.Enabled = false;
+            cbAddUse.Enabled = false;
+            
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {

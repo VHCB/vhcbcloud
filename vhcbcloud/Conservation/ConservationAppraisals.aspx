@@ -85,11 +85,11 @@
                                     <td><span class="labelClass">Value BEFORE</span></td>
                                     <td>
                                         <asp:TextBox ID="txtValueBefore" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-                                       
+
                                     </td>
-                                      <td><span class="labelClass">Value AFTER</span></td>
+                                    <td><span class="labelClass">Value AFTER</span></td>
                                     <td>
-                                         <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -98,23 +98,23 @@
                                 <tr>
                                     <td><span class="labelClass">Value of land only with option</span></td>
                                     <td>
-                                         <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
                                     <td><span class="labelClass">Enhanced Exclusion Value</span></td>
                                     <td>
                                         <asp:TextBox ID="txtEnhancedExclusionValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
 
-                                     <td><span class="labelClass">Easement Value</span></td>
+                                    <td><span class="labelClass">Easement Value</span></td>
                                     <td><span class="labelClass" id="spEasementValue" runat="server"></span></td>
 
-                                   <%-- <td><span class="labelClass">Easement Value/Acre</span></td>
+                                    <%-- <td><span class="labelClass">Easement Value/Acre</span></td>
                                     <td><span class="labelClass" id="spEasementValuePerAcre" runat="server"></span></td>--%>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
                                     <td colspan="5">
                                         <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
@@ -330,7 +330,15 @@
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -449,7 +457,15 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -468,33 +484,33 @@
             <script language="javascript">
                 $(document).ready(function () {
                     toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
-                      $('#<%= txtFeeValue.ClientID%>').keyup(function () {
+                    $('#<%= txtFeeValue.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
-                     });
+                      });
                     toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
-                      $('#<%= txtValueBefore.ClientID%>').keyup(function () {
+                    $('#<%= txtValueBefore.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
-                     });
+                      });
                     toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
-                      $('#<%= txtValueafter.ClientID%>').keyup(function () {
+                    $('#<%= txtValueafter.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
-                     });
+                      });
                     toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
-                      $('#<%= txtValueofLandWithOption.ClientID%>').keyup(function () {
+                    $('#<%= txtValueofLandWithOption.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
-                     });
+                      });
                     toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
-                      $('#<%= txtEnhancedExclusionValue.ClientID%>').keyup(function () {
+                    $('#<%= txtEnhancedExclusionValue.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
-                     });
-                    
+                      });
+
                     <%--toCurrencyControl($('#<%= spEasementValue.ClientID%>').text(), $('#<%= spEasementValue.ClientID%>'));
                     toCurrencyControl($('#<%= spEasementValuePerAcre.ClientID%>').text(), $('#<%= spEasementValuePerAcre.ClientID%>'));--%>
 
                     toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     $('#<%= txtTotalCost.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
-                     });
+                    });
 
                     $('#<%= dvAppraisalInfoForm.ClientID%>').toggle($('#<%= cbAddAppraisalInfo.ClientID%>').is(':checked'));
                     $('#<%= cbAddAppraisalInfo.ClientID%>').click(function () {
@@ -542,14 +558,14 @@
                     var EasementValPerAcre = parseFloat(Eval / Total).toFixed(2);
 
                     $('#<%= spEasementValuePerAcre.ClientID%>').html('$' + EasementValPerAcre);
+                };
+
+                function PopupAwardSummary() {
+                    window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
          };
 
-         function PopupAwardSummary() {
-             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
-        };
-
-        function RadioCheck(rb) {
-            var gv = document.getElementById("<%=gvAppraisalInfo.ClientID%>");
+         function RadioCheck(rb) {
+             var gv = document.getElementById("<%=gvAppraisalInfo.ClientID%>");
             var rbs = gv.getElementsByTagName("input");
 
             var row = rb.parentNode.parentNode;

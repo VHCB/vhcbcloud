@@ -35,6 +35,23 @@ namespace vhcbcloud.Conservation
                 BindControls();
                 BindConConserveForm();
             }
+            GetRoleAuth();
+        }
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+        protected void RoleReadOnly()
+        {
+            btnAddAcreage.Visible = false;
+            btnAddSurfaceWaters.Visible = false;
+            btnSubmit.Visible = false;
+            cbAddAcreage.Enabled = false;
+            cbAddEasementHolder.Enabled = false;
+            cbAddSurfaceWaters.Enabled = false;
         }
 
         private void ProjectNotesSetUp()
