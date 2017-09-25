@@ -282,6 +282,7 @@
     <Content Include="Scripts\NumericController.js" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
+    <Content Include="SQL\Americorpsmembers.sql" />
     <Content Include="SQL\ConservationAct250.sql" />
     <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />

@@ -29,6 +29,11 @@ namespace vhcbcloud
             {
                 BindControls();
                 DisplayPanels();
+                if (Request.QueryString["ApplicantId"] != "")
+                {
+
+                    PopulateEntity(DataUtils.GetInt(Request.QueryString["ApplicantId"]), DataUtils.GetInt(Request.QueryString["Role"]));
+                }
             }
         }
 

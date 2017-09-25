@@ -157,16 +157,16 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                            <td style="width: 150px; height: 20px;"></td>
-                                            <td style="width: 250px; height: 20px;"></td>
-                                            <td style="width: 100px; text-align: left; height: 20px;"><span class="labelClass">Verify: </span></td>
-                                            <td style="width: 270px; height: 20px;">
-                                                <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
-                                            </td>
-                                            <td style="width: 170px; text-align: left; height: 20px;"><span class="labelClass">Date verified: </span></td>
-                                            <td >
-                                                <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
-                                            </td>
+                                        <td style="width: 150px; height: 20px;"></td>
+                                        <td style="width: 250px; height: 20px;"></td>
+                                        <td style="width: 100px; text-align: left; height: 20px;"><span class="labelClass">Verify: </span></td>
+                                        <td style="width: 270px; height: 20px;">
+                                            <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
+                                        </td>
+                                        <td style="width: 170px; text-align: left; height: 20px;"><span class="labelClass">Date verified: </span></td>
+                                        <td>
+                                            <asp:Label ID="dtApprove" runat="server" CssClass="labelClass"></asp:Label>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -918,6 +918,12 @@
                                         <asp:TemplateField HeaderText="Project Applicant Id" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProjectApplicantID" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project Applicant Id">
+                                            <ItemTemplate>
+                                                <asp:HyperLink ID="HyperLink1" runat="server" target='_blank' 
+                                                    NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'><%# Eval("ApplicantId") %></asp:HyperLink>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Entity Name">
