@@ -347,7 +347,7 @@
                                                     <td colspan="4" style="height: 5px"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year  clients</span></td>
+                                                    <td class="modal-sm" style="width: 213px"><span class="labelClass"># Cash Flow/Short Term Year 1 clients</span></td>
                                                     <td class="modal-sm" style="width: 164px">
                                                         <asp:TextBox ID="txtCashFlows1" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" onKeyUp="javascript: return RestrictInt(this)"></asp:TextBox>
                                                     </td>
