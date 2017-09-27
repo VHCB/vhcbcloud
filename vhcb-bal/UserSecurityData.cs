@@ -221,6 +221,17 @@ namespace VHCBCommon.DataAccessLayer
                         {                           
                             return false;
                         }
+                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "2")
+                        {
+                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
+                            {
+                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
+                            }
+                            if (dtPrg.Rows.Count <= 0)
+                            {
+                                return false;
+                            }                          
+                        }
                         else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
                         {
                             if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")

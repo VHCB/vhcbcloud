@@ -35,6 +35,24 @@ namespace vhcbcloud.Viability
                 BindProductGrid();
                 BindAttributeGrid();
             }
+            GetRoleAuth();
+        }
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+        protected void RoleReadOnly()
+        {
+            btnAddAcres.Visible = false;
+            btnAddAttribute.Visible = false;
+            btnAddEntInfo.Visible = false;
+            btnAddProducts.Visible = false;
+            cbAddAttribute.Enabled = false;
+            cbAddProduct.Enabled = false;
+            
         }
 
         protected void Page_PreInit(Object sender, EventArgs e)

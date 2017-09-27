@@ -35,6 +35,23 @@ namespace vhcbcloud.Viability
 
                 LoadEnterpriseFundamentals();
             }
+            GetRoleAuth();
+        }
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+        protected void RoleReadOnly()
+        {
+            btnAddAttribute.Visible = false;
+            btnAddMilestone.Visible = false;
+            btnAddPlanInfo.Visible = false;
+            cbAddAttribute.Enabled = false;
+            cbAddMilestone.Enabled = false;
+            cbBusplan.Enabled = false;
         }
 
         private void LoadEnterpriseFundamentals()
