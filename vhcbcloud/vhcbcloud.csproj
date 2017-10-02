@@ -173,7 +173,8 @@
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />
-    <Content Include="Americorps.aspx" />
+    <Content Include="Americorps\AmericorpsMember.aspx" />
+    <Content Include="Americorps\ProgressReport.aspx" />
     <Content Include="Applicant.aspx" />
     <Content Include="CashRefund_old.aspx" />
     <Content Include="CheckRequestDates.aspx" />
@@ -236,6 +237,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FundMaintenance.aspx" />
     <Content Include="GrantMaintenance.aspx" />
+    <Content Include="HOPWAManagement.aspx" />
     <Content Include="Housing\HomeOwnership.aspx" />
     <Content Include="Housing\HousingAttributes.aspx" />
     <Content Include="Housing\HousingFederalPrograms.aspx" />
@@ -412,12 +414,19 @@
     <Compile Include="Account\SetPassword.aspx.designer.cs">
       <DependentUpon>SetPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Americorps.aspx.cs">
-      <DependentUpon>Americorps.aspx</DependentUpon>
+    <Compile Include="Americorps\AmericorpsMember.aspx.cs">
+      <DependentUpon>AmericorpsMember.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Americorps.aspx.designer.cs">
-      <DependentUpon>Americorps.aspx</DependentUpon>
+    <Compile Include="Americorps\AmericorpsMember.aspx.designer.cs">
+      <DependentUpon>AmericorpsMember.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Americorps\ProgressReport.aspx.cs">
+      <DependentUpon>ProgressReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Americorps\ProgressReport.aspx.designer.cs">
+      <DependentUpon>ProgressReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Applicant.aspx.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
@@ -781,6 +790,13 @@
       <DependentUpon>GrantMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
+    <Compile Include="HOPWAManagement.aspx.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HOPWAManagement.aspx.designer.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Housing\HomeOwnership.aspx.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
