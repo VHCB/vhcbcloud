@@ -122,7 +122,7 @@ create procedure dbo.GetACMemberFormData
 ) as
 begin
 --exec GetACMemberFormData 1119, 26730, 1
-	select Name, af.ACFormID, ACmemberformID, Received, Date, URL, Notes, amf.RowIsActive
+	select Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0) Received, Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
 	from acforms af(nolock)
 	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
 	where Groupnum = @GroupNum --and ACMemberID = @ACMemberID 
@@ -136,7 +136,7 @@ go
 
 
 
-	select Name, af.ACFormID, ACmemberformID, Received, Date, URL, Notes, amf.RowIsActive
+	select Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0), Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
 	from acforms af(nolock)
 	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
 	where Groupnum = 26730 --and ACMemberID = 234

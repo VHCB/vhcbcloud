@@ -303,7 +303,7 @@
                         </div>
 
                          <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="400px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvACMemberForm" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvACMemberForm_RowCancelingEdit"
@@ -326,7 +326,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Received">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblReceived" runat="Server" Text='<%# Eval("Received") %>' />
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("Received") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkReceived" Text="Yes" runat="server" Checked='<%# Eval("Received") %>' />
