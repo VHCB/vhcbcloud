@@ -1,18 +1,19 @@
 use vhcbsandbox
 go
 
-if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAmeicopMemberInfo]') and type in (N'P', N'PC'))
-drop procedure [dbo].GetAmeicopMemberInfo
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetAmericopMemberInfo]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetAmericopMemberInfo
 go
 
-CREATE procedure GetAmeicopMemberInfo
+CREATE procedure GetAmericopMemberInfo
 (
 	@ProjectId		int
 )
---exec GetAmeicopMemberInfo 6638
+--exec GetAmericopMemberInfo 6638
 as
 begin
-	select  a.email, isnull(nullif(a.cellphone, ''), isnull(nullif(a.WorkPhone, ''), a.HomePhone)) phone, pa.Applicantid, 
+	select  a.email, --isnull(nullif(a.cellphone, ''), isnull(nullif(a.WorkPhone, ''), a.HomePhone)) cellphone, 
+	a.cellphone, pa.Applicantid, 
 		isnull(c.Firstname, '') + ' ' + isnull(c.MI, '') + isnull(c.Lastname, '') name,
 		c.DOB
 	from applicant a(nolock)
@@ -38,10 +39,12 @@ CREATE procedure GetApplicantAddress
 --exec GetApplicantAddress 1248
 as
 begin
-	select top 1 a.AddressId, LkAddressType, Street#, Address1, Address2, Town, State, Zip, County, Country
+	select top 1 a.AddressId, LkAddressType, lv.Description AddressType, Street#, Address1, Address2, Town, State, Zip, County, Country
 	from ApplicantAddress aa(nolock)
 	join address a(nolock) on aa.addressid = a.addressid
+	left join LookupValues lv(nolock) on lv.TypeID = a.LkAddressType
 	where a.RowIsActive = 1 and aa.applicantid = @Applicantid
+	order by LkAddressType
 end
 go
 
@@ -106,13 +109,45 @@ begin transaction
 		commit transaction;
 go
 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetACMemberFormData]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetACMemberFormData
+go
+
+create procedure dbo.GetACMemberFormData
+( 
+	@ACMemberID		int,
+	@GroupNum		int,
+	@isActive		bit
+) as
+begin
+--exec GetACMemberFormData 1119, 26730, 1
+	select Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0) Received, Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
+	from acforms af(nolock)
+	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
+	where Groupnum = @GroupNum --and ACMemberID = @ACMemberID 
+		and isnull(amf.RowIsActive, 1) = @isActive
+	order by ordernum
+end
+go
+
+
+
+
+
+
+	select Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0), Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
+	from acforms af(nolock)
+	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
+	where Groupnum = 26730 --and ACMemberID = 234
+	order by ordernum
+
+
+select * from ACMembers
 select top 2 * from ACForms
 select * from acmemberform
 
-select Name, af.ACFormID, ACmemberformID, Received, Date, URL, Notes, amf.RowIsActive
-from acforms af(nolock)
-left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
-where Groupnum = 26730
-order by ordernum
+
 
 select distinct groupnum from acforms
+
