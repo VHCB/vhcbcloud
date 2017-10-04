@@ -30,6 +30,18 @@ namespace vhcbcloud.Lead
                 BindControls();
                 BindGrids();
             }
+            GetRoleAuth();
+        }
+        protected bool GetRoleAuth()
+        {
+            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            if (!checkAuth)
+                RoleReadOnly();
+            return checkAuth;
+        }
+        protected void RoleReadOnly()
+        {
+            btnSubmit.Visible = false;           
         }
 
         private void ProjectNotesSetUp()

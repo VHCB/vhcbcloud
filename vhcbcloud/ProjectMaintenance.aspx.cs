@@ -524,6 +524,9 @@ namespace vhcbcloud
             ShowConservationOnly();
             //Event Form
             SetEventProjectandProgram();
+            if (!chkApprove.Checked)
+                dtApprove.Text = "";
+
         }
 
         private void GenerateTabs(int ProjectId, int ProgramId)
