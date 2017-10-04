@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -211,6 +212,10 @@ namespace VHCBCommon.DataAccessLayer
         {
             DataTable dtPrg = new DataTable();
             DataTable dt = GetUserId(username);
+            bool isVerified = false;
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(projId);
+            if (drProjectDetails !=null)
+                isVerified= Convert.ToBoolean(drProjectDetails["verified"].ToString());
             if (dt != null)
             {
                 DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
@@ -230,7 +235,9 @@ namespace VHCBCommon.DataAccessLayer
                             if (dtPrg.Rows.Count <= 0)
                             {
                                 return false;
-                            }                          
+                            }
+                            else
+                                return isVerified;                          
                         }
                         else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
                         {
