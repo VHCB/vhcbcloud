@@ -66,8 +66,8 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td class="modal-sm" style="width: 137px"><span class="labelClass">Member Name</span></td>
-                                        <td class="modal-sm" style="width: 245px">&nbsp;
-                                           <asp:Label ID="lblMemberName" runat="Server"></asp:Label>
+                                        <td class="modal-sm" style="width: 245px">
+                                            <asp:Label ID="lblMemberName" runat="Server"></asp:Label>
                                         </td>
                                         <td style="width: 88px"><span class="labelClass">Email</span></td>
                                         <td class="modal-sm" style="width: 237px">
@@ -227,7 +227,8 @@
                                     </tr>
                                     <tr>
                                         <td class="modal-sm" style="width: 137px"><span class="labelClass">Sweat-shirt size</span></td>
-                                        <td class="modal-sm" style="width: 245px"><asp:DropDownList ID="ddlSwatShirtSize" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <td class="modal-sm" style="width: 245px">
+                                            <asp:DropDownList ID="ddlSwatShirtSize" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
                                         <td style="width: 122px"><span class="labelClass"></span></td>
                                         <td class="modal-sm" style="width: 155px">
@@ -251,15 +252,15 @@
                                     </tr>
                                     <tr>
                                         <td class="modal-sm" style="width: 137px"><span class="labelClass">Notes</span></td>
-                                        <td class="modal-sm" style="width: 245px" colspan="5">&nbsp;<asp:TextBox ID="TextNotesBox1" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="5" runat="server" Width="100%" Height="80px" />
+                                        <td class="modal-sm" style="width: 245px" colspan="5"><asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="5" runat="server" Width="100%" Height="80px" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td class="modal-sm" style="width: 137px"> 
-                                              <asp:Button ID="btnAddmemberData" runat="server" Text="Submit" class="btn btn-info"
+                                        <td class="modal-sm" style="width: 137px">
+                                            <asp:Button ID="btnAddmemberData" runat="server" Text="Submit" class="btn btn-info"
                                                 OnClick="btnAddmemberData_Click" />
                                         </td>
                                     </tr>
@@ -272,27 +273,85 @@
                     </div>
                 </div>
 
-                 <div class="panel-width" runat="server" id="Div4">
-                    <div class="panel panel-default" style="margin-bottom: 2px;">
-                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                <div class="panel-width" runat="server" id="dvNewMember">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Member Form</h3>
+                                        <h3 class="panel-title">Member Forms</h3>
                                     </td>
-                                    <td style="text-align: right"></td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddMemberForm" runat="server" Text="Add New Form" />
+                                    </td>
                                 </tr>
                             </table>
                         </div>
-                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="Div5">
+
+                        <div class="panel-body" runat="server" id="dvNewMemberForm">
                             <asp:Panel runat="server" ID="Panel3">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td class="modal-sm" style="width: 134px"><span class="labelClass">Group</span>
+                                        <td style="width: 50px"><span class="labelClass">Group</span></td>
+                                        <td style="width: 350px">
+                                            <asp:DropDownList ID="ddlFormGroup" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                                OnSelectedIndexChanged="ddlFormGroup_SelectedIndexChanged" Height="20px" Width="185px">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 70px">
+                                            <span class="labelClass">Form Name</span>
+                                        </td>
+                                        <td style="width: 300px">
+                                            <asp:DropDownList ID="ddlFormName" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px">
+                                              <asp:CheckBox ID="cbReceived" CssClass="ChkBox" runat="server" Text="Received" Checked="true" />
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="ddlFormGroup" CssClass="clsDropDown" runat="server" AutoPostBack="true" 
-                                                OnSelectedIndexChanged="ddlFormGroup_SelectedIndexChanged"></asp:DropDownList>
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td style="width: 50px"><span class="labelClass">Date</span></td>
+                                        <td style="width: 350px">
+                                            <asp:TextBox ID="txtReceivedDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender3" TargetControlID="txtReceivedDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 70px">
+                                            <span class="labelClass">URL</span>
+                                        </td>
+                                        <td style="width: 300px">
+                                           <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" runat="server" Width="182px"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                              <asp:CheckBox ID="cbACFormActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" />
+                                        </td>
+                                        <td>
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50px"><span class="labelClass">Notes</span></td>
+                                        <td colspan="5">
+                                           <asp:TextBox ID="txtACMemberFormNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="5" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                   <tr>
+                                        <td colspan="6" style="height: 5px">
+                                             <asp:Button ID="btnSubmitACForm" runat="server" Text="Submit" class="btn btn-info"
+                                                OnClick="btnSubmitACForm_Click" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -302,7 +361,7 @@
                             </asp:Panel>
                         </div>
 
-                         <div class="panel-body" id="dvEntityGrid" runat="server">
+                        <div class="panel-body" id="dvMemberFormGrid" runat="server">
                             <asp:Panel runat="server" ID="Panel5" Width="100%" Height="400px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvACMemberForm" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
@@ -319,6 +378,11 @@
                                                 <asp:Label ID="lblACmemberformID" runat="Server" Text='<%# Eval("ACmemberformID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Group">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblGroupName" runat="Server" Text='<%# Eval("GroupName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Form Name">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFormName" runat="Server" Text='<%# Eval("Name") %>' />
@@ -328,44 +392,44 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("Received") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                            <%--<EditItemTemplate>
                                                 <asp:CheckBox ID="chkReceived" Text="Yes" runat="server" Checked='<%# Eval("Received") %>' />
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Date">
-                                             <ItemTemplate>
+                                            <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                           <%-- <EditItemTemplate>
                                                 <asp:TextBox ID="txtReceivedDate" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>'></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtReceivedDate">
-                                            </ajaxToolkit:CalendarExtender>
-                                            </EditItemTemplate>
+                                                <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtReceivedDate">
+                                                </ajaxToolkit:CalendarExtender>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
-                                             <ItemTemplate>
+                                            <ItemTemplate>
                                                 <asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                           <%-- <EditItemTemplate>
                                                 <asp:TextBox ID="txtURL" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("URL") %>'></asp:TextBox>
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
-                                          <asp:TemplateField HeaderText="Notes">
-                                             <ItemTemplate>
+                                        <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
                                                 <asp:Label ID="lblNotes" runat="Server" Text='<%# Eval("Notes") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                           <%-- <EditItemTemplate>
                                                 <asp:TextBox ID="txtNotes" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Notes") %>'></asp:TextBox>
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
-                                       
+
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                <asp:CheckBox ID="chkActive1" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                          <%--  <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActiveEditEntity" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
@@ -380,12 +444,24 @@
                                 </asp:GridView>
                             </asp:Panel>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
         <asp:HiddenField ID="hfProjectId" runat="server" />
         <asp:HiddenField ID="hfApplicantId" runat="server" />
+        <asp:HiddenField ID="hfContactId" runat="server" />
+        <asp:HiddenField ID="hfACMemberId" runat="server" />
 
     </div>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            $('#<%= dvNewMemberForm.ClientID%>').toggle($('#<%= cbAddMemberForm.ClientID%>').is(':checked'));
+            $('#<%= cbAddMemberForm.ClientID%>').click(function () {
+                $('#<%= dvNewMemberForm.ClientID%>').toggle(this.checked);
+             }).change();
+        });
+    </script>
 </asp:Content>
