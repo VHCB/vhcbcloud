@@ -1084,6 +1084,11 @@ namespace vhcbcloud
                     ApplicantId,
                     DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()), isApplicant);
 
+                if (ddlApplicantRole.SelectedValue.ToString() == "26294")
+                {
+                    GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                }
+
                 //ddlApplicantName.SelectedIndex = -1;
                 txtEntityDDL.Text = "";
                 txtEntityDDL.Text = "";
@@ -1257,6 +1262,11 @@ namespace vhcbcloud
 
             ProjectMaintenanceData.UpdateProjectApplicant(ProjectApplicantId, isApplicant, isFinLegal, LkApplicantRole, isRowIsActive);
             gvEntity.EditIndex = -1;
+
+            if (LkApplicantRole == 26294)
+            {
+                GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+            }
 
             BindProjectEntityGrid();
 

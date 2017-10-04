@@ -18,10 +18,14 @@
                     <asp:Panel ID="pnlUserDetails" runat="server">
                         <table style="width: 100%;">
                             <tr>
+                            <td colspan="4" style="height: 5px">
+                                <asp:Label runat="server" class="lblErrMsg" ID="lblQuestionAnswerErrorMsg2"></asp:Label></td>
+                        </tr>
+                            <tr>
                                 <td style="width: 20%">
                                     <span class="labelClass">Reporting Quarter:</span></td>
                                 <td colspan="3" style="width: 150px">
-                                    <asp:DropDownList ID="ddlYearQrtr" CssClass="clsDropDown" runat="server" Width="100px">
+                                    <asp:DropDownList ID="ddlYearQrtr" CssClass="clsDropDown" runat="server" Width="100px" OnSelectedIndexChanged="ddlYearQrtr_SelectedIndexChanged" AutoPostBack="true">
                                     </asp:DropDownList></td>
                             </tr>
                             <tr>
@@ -88,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <asp:Button ID="btnNextPage" runat="server" Text="Nextpage" class="btn btn-info" OnClick="btnNextPage_Click" />
+                                    <asp:Button ID="btnNextPage" runat="server" Text="Nextpage" class="btn btn-info" OnClick="btnNextPage_Click"  />
                                 </td>
                             </tr>
                         </table>
@@ -149,7 +153,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnBack" runat="server" Text="Back" class="btn btn-info" Visible="false" OnClick="btnBack_Click" />&nbsp;&nbsp;
                                     <asp:DataPager ID="QuestionsListNextPrevious" runat="server"
                                         PagedControlID="lstVwQuestions" PageSize="10">
                                         <Fields>
