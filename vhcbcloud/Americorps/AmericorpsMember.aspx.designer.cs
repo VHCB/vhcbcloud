@@ -454,13 +454,31 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewMember;
         
         /// <summary>
-        /// cbAddMemberForm control.
+        /// Div4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddMemberForm;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div4;
+        
+        /// <summary>
+        /// Panel4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel4;
+        
+        /// <summary>
+        /// ddlGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGroup;
         
         /// <summary>
         /// dvNewMemberForm control.
@@ -481,22 +499,13 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
-        /// ddlFormGroup control.
+        /// lblFormName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFormGroup;
-        
-        /// <summary>
-        /// ddlFormName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFormName;
+        protected global::System.Web.UI.WebControls.Label lblFormName;
         
         /// <summary>
         /// cbReceived control.
@@ -623,5 +632,23 @@ namespace vhcbcloud.Americorps {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfACMemberId;
+        
+        /// <summary>
+        /// hfACMemberFormId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfACMemberFormId;
+        
+        /// <summary>
+        /// hfACFormID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfACFormID;
     }
 }

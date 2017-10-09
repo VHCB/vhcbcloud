@@ -80,7 +80,8 @@ create procedure dbo.GetACMember
 ) as
 begin
 -- exec GetACMember 1119
-	select ACMemberID, ApplicantID, ContactID, convert(varchar(10), StartDate, 101)StartDate,   convert(varchar(10), EndDate, 101) EndDate, LkSlot, LkServiceType, Tshirt, SweatShirt, DietPref, MedConcerns, Notes
+	select ACMemberID, ApplicantID, ContactID, convert(varchar(10), StartDate, 101)StartDate,   convert(varchar(10), EndDate, 101) EndDate, LkSlot, 
+	LkServiceType, Tshirt, SweatShirt, DietPref, MedConcerns, Notes
 	from ACMembers where ApplicantID = @ApplicantID
 end
 go
@@ -177,16 +178,19 @@ go
 create procedure dbo.GetACMemberFormData
 ( 
 	@ACMemberID		int,
+	@Groupnum		int,
 	@isActive		bit
 ) as
 begin
 --exec GetACMemberFormData 5, 1
-	select ACMemberID, af.Groupnum, lv.description GroupName, Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0) Received, Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
+	select ACMemberID, af.Groupnum, lv.description GroupName, Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0) Received, 
+	Date as ReceivedDate, isnull(URL, '') URL, 
+	substring(Notes, 0, 25) Notes,  Notes as FullNotes, 
+	isnull(amf.RowIsActive, 1) RowIsActive
 	from acforms af(nolock)
-	join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
+	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID and ACMemberID = @ACMemberID --and (@isActive = 0 or amf.RowIsActive = @isActive)
 	join LookupValues lv(nolock) on lv.TypeID = af.Groupnum
-	where ACMemberID = @ACMemberID 
-		and isnull(amf.RowIsActive, 1) = @isActive
+	where af.Groupnum = @Groupnum  --and (@isActive = 0 or amf.RowIsActive = @isActive)
 	order by ordernum
 end
 go
@@ -200,8 +204,9 @@ create procedure dbo.GetACMemberFormDataById
 	@ACmemberformID		int
 ) as
 begin
-	select amf.ACMemberID, amf.ACFormID, amf.Received, amf.Date, amf.URL, amf.Notes, amf.RowIsActive, amf.DateModified, 
-	af.[Name], af.Groupnum
+	select amf.ACMemberID, amf.ACFormID, amf.Received, convert(varchar(10), amf.Date, 101)   as ReceivedDate, amf.URL, 
+	substring( amf.Notes, 0, 25) Notes,  amf.Notes as FullNotes, amf.RowIsActive, amf.DateModified, 
+	af.[Name] FormName, af.Groupnum
 	from acmemberform amf(nolock)
 	join acforms af(nolock) on amf.ACFormID = af.ACFormID
 	where ACmemberformID = @ACmemberformID 
@@ -265,9 +270,32 @@ begin transaction
 		commit transaction;
 go
 
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateACMemberForm]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateACMemberForm
+go
+
+create procedure dbo.UpdateACMemberForm
+(
+	@ACMemberFormId	int, 
+	@Received		bit, 
+	@Date			datetime, 
+	@URL			nvarchar(50),
+	@Notes			nvarchar(max),
+	@RowisActive	bit
+) as
+begin 
+
+	update ACMemberForm set Received = @Received, Date = @Date, URL = @URL, Notes = @Notes, RowisActive = @RowisActive
+	where ACMemberFormId = @ACMemberFormId
+		
+end
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetACForms]') and type in (N'P', N'PC'))
 drop procedure [dbo].GetACForms
 go
+
 
 create procedure dbo.GetACForms
 (
@@ -278,21 +306,4 @@ begin
 	from acforms where Groupnum = @Groupnum and RowIsActive = 1
 end
 go
-
-select * from acforms where Groupnum =  and RowIsActive = 1
-
-	select Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0), Date, isnull(URL, '') URL, isnull(Notes, '') Notes, isnull(amf.RowIsActive, 1) RowIsActive
-	from acforms af(nolock)
-	left join acmemberform amf(nolock) on amf.ACFormID = af.ACFormID
-	where Groupnum = 26730 --and ACMemberID = 234
-	order by ordernum
-
-
-select * from ACMembers
-select top 2 * from ACForms
-select * from acmemberform
-
-
-
-select distinct groupnum from acforms
 

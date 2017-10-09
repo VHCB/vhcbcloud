@@ -726,6 +726,7 @@ namespace vhcbcloud
                     LogMessage("Project updated successfully");
 
                     GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                    PopulateForm(DataUtils.GetInt(hfProjectId.Value));
 
                     //ClearForm();
                     //ddlProject.SelectedIndex = -1;

@@ -27,7 +27,7 @@ namespace vhcbcloud.Americorps
                 BindControls();
                 PopulateMemberData();
                 PopulateMemberAddress();
-               
+
                 //BindGrids();
             }
         }
@@ -39,7 +39,9 @@ namespace vhcbcloud.Americorps
             BindLookUP(ddlDietryPref, 240);
             BindLookUP(ddlTShirtSize, 239);
             BindLookUP(ddlSwatShirtSize, 239);
-            BindLookUP(ddlFormGroup, 238);
+            //BindLookUP(ddlFormGroup, 238);
+            BindLookUP(ddlGroup, 238);
+
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -172,7 +174,7 @@ namespace vhcbcloud.Americorps
         }
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
-
+            BindACMemberFormDataGrid();
         }
 
         protected void btnUpdatememberDOB_Click(object sender, EventArgs e)
@@ -214,7 +216,7 @@ namespace vhcbcloud.Americorps
             {
                 AmericorpMemberResult objAmericorpMemberResult = AmericorpsMemberData.AddACMember(DataUtils.GetInt(hfApplicantId.Value), DataUtils.GetInt(hfContactId.Value),
                     DataUtils.GetDate(txtStartDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlSlotFullFilled.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlServiceType.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlServiceType.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlTShirtSize.SelectedValue.ToString()), DataUtils.GetInt(ddlSwatShirtSize.SelectedValue.ToString()), DataUtils.GetInt(ddlDietryPref.SelectedValue.ToString()), txtMedConcern.Text, txtNotes.Text);
 
                 btnAddmemberData.Text = "Update";
@@ -238,9 +240,9 @@ namespace vhcbcloud.Americorps
         {
             try
             {
-                DataTable dtACMemberFormData = AmericorpsMemberData.GetACMemberFormData(DataUtils.GetInt(hfACMemberId.Value), true);
+                DataView dtACMemberFormData = AmericorpsMemberData.GetACMemberFormData(DataUtils.GetInt(hfACMemberId.Value), DataUtils.GetInt(ddlGroup.SelectedValue.ToString()), cbActiveOnly.Checked);
 
-                if (dtACMemberFormData.Rows.Count > 0)
+                if (dtACMemberFormData.Count > 0)
                 {
                     dvMemberFormGrid.Visible = true;
                     gvACMemberForm.DataSource = dtACMemberFormData;
@@ -272,58 +274,138 @@ namespace vhcbcloud.Americorps
 
         protected void gvACMemberForm_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
 
+                    dvNewMemberForm.Visible = true;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        //e.Row.Cells[8].Controls[0].Visible = false;
+                        Label lblACmemberformID = e.Row.FindControl("lblACmemberformID") as Label;
+                        if (lblACmemberformID.Text != "-99")
+                        {
+                            btnSubmitACForm.Text = "Update";
+                            DataRow dr = AmericorpsMemberData.GetACMemberFormDataById(DataUtils.GetInt(lblACmemberformID.Text));
+                            hfACMemberFormId.Value = lblACmemberformID.Text;
+
+                            lblFormName.Text = dr["FormName"].ToString();
+                            txtURL.Text = dr["URL"].ToString();
+                            txtACMemberFormNotes.Text = dr["Notes"].ToString();
+                            txtReceivedDate.Text = dr["ReceivedDate"].ToString();
+                            cbReceived.Checked = DataUtils.GetBool(dr["Received"].ToString());
+                            cbACFormActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                            //cbReceived.Enabled = true;
+                            //cbACFormActive.Enabled = true;
+                        }
+                        else
+                        {
+                            btnSubmitACForm.Text = "Submit";
+                            Label lblACFormID = e.Row.FindControl("lblACFormID") as Label;
+                            hfACFormID.Value = lblACFormID.Text;
+                            Label lblFormName1 = e.Row.FindControl("lblFormName") as Label;
+                            lblFormName.Text = lblFormName1.Text;
+
+                           cbReceived.Checked = true;
+                            cbACFormActive.Checked = true;
+                            //cbReceived.Enabled = false;
+                            //cbACFormActive.Enabled = false; 
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvACMemberForm_RowDataBound", "", ex.Message);
+            }
         }
 
         protected void gvACMemberForm_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvACMemberForm.EditIndex = -1;
+            hfACMemberFormId.Value = "";
+            hfACFormID.Value = "";
+            txtReceivedDate.Text = "";
+            txtURL.Text = "";
+            txtACMemberFormNotes.Text = "";
+
             BindACMemberFormDataGrid();
+            dvNewMemberForm.Visible = false;
         }
 
-        protected void ddlFormGroup_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                ddlFormName.Items.Clear();
-                if (ddlFormGroup.SelectedIndex != 0)
-                {
-                    ddlFormName.DataSource = AmericorpsMemberData.GetACForms(DataUtils.GetInt(ddlFormGroup.SelectedValue.ToString()));
-                    ddlFormName.DataValueField = "ACFormID";
-                    ddlFormName.DataTextField = "Name";
-                    ddlFormName.DataBind();
-                    ddlFormName.Items.Insert(0, new ListItem("Select", "NA"));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindLookUP", "Control ID:", ex.Message);
-            }
-        }
+        //protected void ddlFormGroup_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        ddlFormName.Items.Clear();
+        //        if (ddlFormGroup.SelectedIndex != 0)
+        //        {
+        //            ddlFormName.DataSource = AmericorpsMemberData.GetACForms(DataUtils.GetInt(ddlFormGroup.SelectedValue.ToString()));
+        //            ddlFormName.DataValueField = "ACFormID";
+        //            ddlFormName.DataTextField = "Name";
+        //            ddlFormName.DataBind();
+        //            ddlFormName.Items.Insert(0, new ListItem("Select", "NA"));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindLookUP", "Control ID:", ex.Message);
+        //    }
+        //}
 
         protected void btnSubmitACForm_Click(object sender, EventArgs e)
         {
             if (btnSubmitACForm.Text.ToLower() == "update")
             {
-                LogMessage("Address updated successfully");
+                AmericorpsMemberData.UpdateACMemberForm(DataUtils.GetInt(hfACMemberFormId.Value),
+                                cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), txtURL.Text,
+                                txtACMemberFormNotes.Text, cbACFormActive.Checked);
+                LogMessage("AC Member Form data updated successfully");
+
+                dvNewMemberForm.Visible = false;
+
+                hfACMemberFormId.Value = "";
+                txtReceivedDate.Text = "";
+                txtURL.Text = "";
+                txtACMemberFormNotes.Text = "";
+
+                gvACMemberForm.EditIndex = -1;
+                BindACMemberFormDataGrid();
             }
             else //add
             {
-                AmericorpMemberResult objAmericorpMemberResult = AmericorpsMemberData.AddACMemberForm(DataUtils.GetInt(hfACMemberId.Value), DataUtils.GetInt(ddlFormName.SelectedValue.ToString()),
-                    cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), txtURL.Text, txtACMemberFormNotes.Text);
+                AmericorpMemberResult objAmericorpMemberResult = AmericorpsMemberData.AddACMemberForm(DataUtils.GetInt(hfACMemberId.Value),
+                                DataUtils.GetInt(hfACFormID.Value), cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), txtURL.Text,
+                                txtACMemberFormNotes.Text);
 
-                btnSubmitACForm.Text = "Update";
+                dvNewMemberForm.Visible = false;
+
+                hfACFormID.Value = "";
+                txtReceivedDate.Text = "";
+                txtURL.Text = "";
+                txtACMemberFormNotes.Text = "";
 
                 if (objAmericorpMemberResult.IsDuplicate && !objAmericorpMemberResult.IsActive)
-                    LogMessage("AC Member already exist as in-active");
+                    LogMessage("AC Member form already exist as in-active");
                 else if (objAmericorpMemberResult.IsDuplicate)
-                    LogMessage("AC Member already exist");
+                    LogMessage("AC Member form already exist");
                 else
-                    LogMessage("AC Member added successfully");
+                    LogMessage("AC Member form added successfully");
 
+                gvACMemberForm.EditIndex = -1;
                 BindACMemberFormDataGrid();
 
             }
+        }
+
+        protected void ddlGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindACMemberFormDataGrid();
         }
     }
 }

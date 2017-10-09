@@ -224,9 +224,9 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static DataTable GetACMemberFormData(int ACMemberID, bool isActive)
+        public static DataView GetACMemberFormData(int ACMemberID, int Groupnum, bool isActive)
         {
-            DataTable dt = null;
+            DataView dt = null;
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
@@ -239,6 +239,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetACMemberFormData";
                         command.Parameters.Add(new SqlParameter("ACMemberID", ACMemberID));
+                        command.Parameters.Add(new SqlParameter("Groupnum", Groupnum));
                         command.Parameters.Add(new SqlParameter("isActive", isActive));
 
                         DataSet ds = new DataSet();
@@ -246,7 +247,10 @@ namespace VHCBCommon.DataAccessLayer
                         da.Fill(ds);
                         if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
                         {
-                            dt = ds.Tables[0];
+                            dt = ds.Tables[0].DefaultView;
+
+                            if(isActive)
+                            dt.RowFilter = "RowIsActive = " + isActive;
                         }
                     }
                 }
@@ -335,6 +339,72 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static void UpdateACMemberForm(int ACMemberFormId, bool Received, DateTime Date, string URL, string Notes, bool RowisActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateACMemberForm";
+
+                        command.Parameters.Add(new SqlParameter("ACMemberFormId", ACMemberFormId));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Received", Received));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("RowisActive", RowisActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataRow GetACMemberFormDataById(int ACmemberformID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetACMemberFormDataById";
+                        command.Parameters.Add(new SqlParameter("ACmemberformID", ACmemberformID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
         }
     }
     

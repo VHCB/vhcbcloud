@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -92,7 +91,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddUserPageSecurity";
                 command.Parameters.Add(new SqlParameter("userid", userId));
                 command.Parameters.Add(new SqlParameter("pageid", pageid));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -211,46 +210,53 @@ namespace VHCBCommon.DataAccessLayer
 
         public static bool GetRoleAuth(string username, int projId)
         {
-            DataTable dtPrg = new DataTable();
-            DataTable dt = GetUserId(username);
             bool isVerified = false;
+            DataTable dtPrg = new DataTable();
+
+
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(projId);
-            if (drProjectDetails !=null)
-                isVerified= Convert.ToBoolean(drProjectDetails["verified"].ToString());
-            if (dt != null)
+
+            if (drProjectDetails != null)
+                isVerified = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+
+            DataTable dt = GetUserId(username);
+            if (dt != null && dt.Rows.Count > 0)
             {
                 DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
 
-                if (dt.Rows.Count > 0)
-                    if (dtGetUserSec.Rows.Count > 0)
-                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
-                        {                           
+                if (dtGetUserSec.Rows.Count > 0)
+                {
+                    if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3") // View Only
+                    {
+                        return false;
+                    }
+                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "2") //Program Staff
+                    {
+                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "") //Default Program
+                        {
+                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
+                        }
+                        if (dtPrg.Rows.Count <= 0)
+                        {
                             return false;
                         }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "2")
+                        else
                         {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                return false;
-                            }
-                            else
-                                return isVerified;                          
+                            return isVerified;
                         }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                    }
+                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1") //Program Admin
+                    {
+                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
                         {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                return false;
-                            }
+                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
                         }
+                        if (dtPrg.Rows.Count <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
             return true;
         }
@@ -368,7 +374,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetUserSecurityByUserId";
                 command.Parameters.Add(new SqlParameter("userid", userid));
-                
+
                 using (connection)
                 {
                     connection.Open();
