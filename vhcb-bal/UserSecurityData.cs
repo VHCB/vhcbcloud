@@ -208,6 +208,19 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
+        public static DataRow GetUserSecurity(string username)
+        {
+            DataRow dr = null;
+
+            DataTable dt = GetUserId(username);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+                dr = dtGetUserSec.Rows[0];
+            }
+            return dr;
+        }
+
         public static bool GetRoleAuth(string username, int projId)
         {
             bool isVerified = false;

@@ -184,7 +184,7 @@
                                             CssClass="text-danger" Display="Dynamic" ErrorMessage="The password and confirmation password do not match." />--%>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Security Group" SortExpression="Sec Group">
+                                        <asp:TemplateField HeaderText="Security Group" SortExpression="UserGroupName">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDfltSecGrp" runat="Server" Text='<%# Eval("UserGroupName") %>' />
                                             </ItemTemplate>

@@ -50,22 +50,66 @@ namespace vhcbcloud
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));
                 }
                 //BindApplicantsForCurrentProject(ddlEventEntity);
+                //GetRoleAuth();
             }
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
 
-            GetRoleAuth();
-            DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (dtMgr != null)
+            //DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
+            //if (dtMgr != null)
 
-                if (dtMgr.Rows.Count > 0 && (dtMgr.Rows[0]["manager"].ToString() != "0") && ddlManager.SelectedIndex > 0)
-                {
-                    //if ((DataUtils.GetInt(dtMgr.Rows[0]["manager"].ToString())) == DataUtils.GetInt(ddlManager.SelectedValue.ToString()))
-                        chkApprove.Enabled = true;
-                }
-                else
-                    chkApprove.Enabled = false;
+            //    if (dtMgr.Rows.Count > 0 && (dtMgr.Rows[0]["manager"].ToString() != "0") && ddlManager.SelectedIndex > 0)
+            //    {
+            //        //if ((DataUtils.GetInt(dtMgr.Rows[0]["manager"].ToString())) == DataUtils.GetInt(ddlManager.SelectedValue.ToString()))
+            //            chkApprove.Enabled = true;
+            //    }
+            //    else
+            //        chkApprove.Enabled = false;
+        }
+        
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            //cbAddAddress.Enabled = false;
+            //cbAddProjectEvent.Enabled = false;
+            //cbAddTBDAddress.Enabled = false;
+            //cbAttachNewEntity.Enabled = false;
+            cbDefaultAddress.Enabled = false;
+            //cbAddProjectName.Enabled = false;
+            //cbRelatedProjects.Enabled = false;
+            rdBtnSelection.Enabled = false;
+            //btnAddMilestone.Visible = false;
+            //btnAddAddress.Visible = false;
+            //btnAddEntity.Visible = false;
+            //btnAddProjectName.Visible = false;
+            //btnAddRelatedProject.Visible = false;
+            //btnProjectSubmit.Visible = false;
+            //btnProjectUpdate.Visible = false;
+            chkApprove.Enabled = false;
+        }
+
+        protected void RoleViewOnly()
+        {
+            cbAddAddress.Enabled = false;
+            cbAddProjectEvent.Enabled = false;
+            cbAddTBDAddress.Enabled = false;
+            cbAttachNewEntity.Enabled = false;
+            cbDefaultAddress.Enabled = false;
+            cbAddProjectName.Enabled = false;
+            cbRelatedProjects.Enabled = false;
+            rdBtnSelection.Enabled = false;
+            btnAddMilestone.Visible = false;
+            btnAddAddress.Visible = false;
+            btnAddEntity.Visible = false;
+            btnAddProjectName.Visible = false;
+            btnAddRelatedProject.Visible = false;
+            btnProjectSubmit.Visible = false;
+            btnProjectUpdate.Visible = false;
+            chkApprove.Enabled = false;
         }
 
         protected void RoleReadOnly()
@@ -96,12 +140,74 @@ namespace vhcbcloud
             }
         }
 
+        protected void GetRoleAccess()
+        {
+            ddlProgram.Enabled = false;
+            
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if(dr != null)
+            {
+                if (ddlManager.SelectedValue == dr["userid"].ToString())
+                    chkApprove.Enabled = true;
+                else
+                    chkApprove.Enabled = false;
+
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    ddlProgram.Enabled = true;
+                    hfIsVisibleBasedOnRole.Value = "true";
+                    chkApprove.Enabled = true;
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != hfProgramId.Value) 
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        btnProjectUpdate.Visible = true;
+                        hfIsVisibleBasedOnRole.Value = "true";
+                        chkApprove.Enabled = true;
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != hfProgramId.Value)
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(hfIsVerified.Value))
+                        {
+                            btnProjectUpdate.Visible = false;
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            btnProjectUpdate.Visible = true;
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
         protected bool GetRoleAuth()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
+            bool IsVisibleBasedOnRole = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+
+            if (!IsVisibleBasedOnRole)
                 RoleReadOnly();
-            return checkAuth;
+            return IsVisibleBasedOnRole;
         }
 
 
@@ -365,6 +471,7 @@ namespace vhcbcloud
                     //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
                     ProjectNotesSetUp(hfProjectId.Value);
                     BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
+                    GetRoleAccess();
 
                     //ProjectNames
                     dvNewProjectName.Visible = true;
@@ -514,6 +621,7 @@ namespace vhcbcloud
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
             chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+           
             dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
             txtProjectName.Enabled = false;
@@ -527,6 +635,7 @@ namespace vhcbcloud
             if (!chkApprove.Checked)
                 dtApprove.Text = "";
 
+            hfIsVerified.Value = drProjectDetails["verified"].ToString();
         }
 
         private void GenerateTabs(int ProjectId, int ProgramId)

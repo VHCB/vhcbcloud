@@ -276,7 +276,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
-    <Content Include="ProgressReport.aspx" />
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
@@ -892,13 +891,6 @@
       <DependentUpon>MilestonesQuickentry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="ProgressReport.aspx.cs">
-      <DependentUpon>ProgressReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProgressReport.aspx.designer.cs">
-      <DependentUpon>ProgressReport.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ProjectCheckRequest.aspx.cs">
       <DependentUpon>ProjectCheckRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

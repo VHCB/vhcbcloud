@@ -7,24 +7,13 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using VHCBCommon.DataAccessLayer;
-using System.Web.UI.HtmlControls;
-using DataAccessLayer;
 
-namespace vhcbcloud.Americorps
+namespace vhcbcloud
 {
     public partial class ProgressReport : System.Web.UI.Page
     {
-        string Pagename = "ProgressReport";
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["ProjectId"] != null)
-            {
-                hfProjectId.Value = Request.QueryString["ProjectId"];
-            }
-
-            GenerateTabs();
-
             foreach (DataPagerFieldItem dpfItem in QuestionsListNextPrevious.Controls)
             {
                 foreach (Control cPagerControls in dpfItem.Controls)
@@ -69,65 +58,27 @@ namespace vhcbcloud.Americorps
                 txtHostSite.Text = dtUserDetails.Rows[0]["Hostsite"].ToString().Trim();
                 hfUserId.Value = dtUserDetails.Rows[0]["UserId"].ToString().Trim();
                 btnNextPage.Attributes.Add("disabled", "disabled");
-
+              
             }
-            btnSubmit.Visible = false;
-            btnBack.Visible = false;
-            txtOtherUsers.ReadOnly = false;
-            lblQuestionAnswerErrorMsg.Text = string.Empty;
-            lblQuestionAnswerErrorMsg2.Text = string.Empty;
-        }
-
-        private void GenerateTabs()
-        {
-            string ProgramId = null;
-
-            if (Request.QueryString["ProgramId"] != null)
-                ProgramId = Request.QueryString["ProgramId"];
-
-            //Active Tab
-            HtmlGenericControl li = new HtmlGenericControl("li");
-            li.Attributes.Add("class", "RoundedCornerTop");
-            Tabs.Controls.Add(li);
-
-            HtmlGenericControl anchor = new HtmlGenericControl("a");
-            anchor.Attributes.Add("href", "../ProjectMaintenance.aspx?ProjectId=" + hfProjectId.Value);
-            anchor.InnerText = "Project Maintenance";
-            anchor.Attributes.Add("class", "RoundedCornerTop");
-
-            li.Controls.Add(anchor);
-
-            DataTable dtTabs = TabsData.GetProgramTabs(DataUtils.GetInt(ProgramId));
-
-            foreach (DataRow dr in dtTabs.Rows)
-            {
-                HtmlGenericControl li1 = new HtmlGenericControl("li");
-                if (dr["URL"].ToString().Contains("ProgressReport.aspx"))
-                    li1.Attributes.Add("class", "RoundedCornerTop selected");
-                else
-                    li1.Attributes.Add("class", "RoundedCornerTop");
-
-                Tabs.Controls.Add(li1);
-                HtmlGenericControl anchor1 = new HtmlGenericControl("a");
-                anchor1.Attributes.Add("href", "../" + dr["URL"].ToString() + "?ProjectId=" + hfProjectId.Value + "&ProgramId=" + ProgramId);
-                anchor1.InnerText = dr["TabName"].ToString();
-                anchor1.Attributes.Add("class", "RoundedCornerTop");
-                li1.Controls.Add(anchor1);
-            }
+                btnSubmit.Visible = false;
+                btnBack.Visible = false;
+                txtOtherUsers.ReadOnly = false;
+                lblQuestionAnswerErrorMsg.Text = string.Empty;
+                lblQuestionAnswerErrorMsg2.Text = string.Empty;
         }
 
         protected void btnNextPage_Click(object sender, EventArgs e)
         {
-            try
+             try
             {
                 YearQuarterData.SubmitOtherMembers(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), txtOtherUsers.Text.ToString().Trim());
                 btnBack.Visible = true;
                 BindUserQuestionAnswerList();
             }
-            catch (Exception ex)
-            {
-                lblQuestionAnswerErrorMsg.Text = ex.Message;
-            }
+             catch (Exception ex)
+             {
+                 lblQuestionAnswerErrorMsg.Text = ex.Message;
+             }
         }
 
         protected void BindUserQuestionAnswerList()
@@ -142,11 +93,11 @@ namespace vhcbcloud.Americorps
                     pnlUserDetails.Visible = false;
                     pnlQuestions.Visible = true;
                     DataRow dr = dtable.Select("IsCompleted = True").FirstOrDefault();
-                    if (dr != null)
+                    if(dr != null)
                         hdnAllIsCompleted.Value = dr["IsCompleted"].ToString();
                     lstVwQuestions.DataSource = dtable;
                     lstVwQuestions.DataBind();
-
+                   
                     //if (DataUtils.GetBool(dtable.Rows[0]["IsCompleted"].ToString()))
                     if (DataUtils.GetBool(hdnAllIsCompleted.Value.ToString()))
                     {
@@ -233,7 +184,7 @@ namespace vhcbcloud.Americorps
                 dt.Columns.Add(new DataColumn("UserID", typeof(string)));
                 dt.Columns.Add(new DataColumn("IsCompleted", typeof(bool)));
                 dt.Columns.Add(new DataColumn("RowIsActive", typeof(bool)));
-
+                
                 for (int i = 0; i < QuestionsListNextPrevious.MaximumRows; i++)
                 {
 
@@ -270,7 +221,7 @@ namespace vhcbcloud.Americorps
                 dt.Columns.Add(new DataColumn("UserID", typeof(string)));
                 dt.Columns.Add(new DataColumn("IsCompleted", typeof(bool)));
                 dt.Columns.Add(new DataColumn("RowIsActive", typeof(bool)));
-
+              
                 for (int i = 0; i < QuestionsListNumeric.MaximumRows; i++)
                 {
                     DataRow dr = dt.NewRow();
@@ -292,7 +243,7 @@ namespace vhcbcloud.Americorps
             catch (Exception ex)
             {
 
-                lblQuestionAnswerErrorMsg.Text = ex.Message;
+                 lblQuestionAnswerErrorMsg.Text = ex.Message;
             }
         }
 
@@ -325,14 +276,26 @@ namespace vhcbcloud.Americorps
                     if (dt.Rows.Count > 0)
                         YearQuarterData.AddQuestionAnswers(dt);
                 }
-                YearQuarterData.SubmitUserQuestionAnswers(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()));
-                //YearQuarterData.SubmitOtherMembers(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), txtOtherUsers.Text.ToString().Trim());
-                BindUserQuestionAnswerList();
-                lblQuestionAnswerErrorMsg.Text = "Question Answer information submitted successfully.";
+                DataTable dtable = new DataTable();
+                dtable = YearQuarterData.GetAllQuestionAnswerDetailsByUser(DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), DataUtils.GetInt(hfUserId.Value.Trim()), true);
+                DataRow drResponse = dtable.Select("Response = ''").FirstOrDefault();
+                if (drResponse == null)
+                {
+
+                    YearQuarterData.SubmitUserQuestionAnswers(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()));
+                    //YearQuarterData.SubmitOtherMembers(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), txtOtherUsers.Text.ToString().Trim());
+                    BindUserQuestionAnswerList();
+                    lblQuestionAnswerErrorMsg.Text = "Question Answer information submitted successfully.";
+                }
+                else
+                {
+                    lblQuestionAnswerErrorMsg.Text = "Please answer all the questions before submitting.";
+                    btnSubmit.Visible = true;
+                }
             }
             catch (Exception ex)
             {
-                lblQuestionAnswerErrorMsg.Text = ex.Message;
+                 lblQuestionAnswerErrorMsg.Text = ex.Message;
             }
         }
         protected void ddlYearQrtr_SelectedIndexChanged(object sender, EventArgs e)
@@ -340,45 +303,45 @@ namespace vhcbcloud.Americorps
             DataTable dtable = default(DataTable);
             try
             {
-                if (ddlYearQrtr.SelectedValue != "0")
-                {
-                    btnNextPage.Attributes.Remove("disabled");
-                    dtable = new DataTable();
-                    dtable = YearQuarterData.GetAllQuestionAnswerDetailsByUser(DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), DataUtils.GetInt(hfUserId.Value.Trim()), true);
-                    if (dtable.Rows.Count > 0)
+                    if (ddlYearQrtr.SelectedValue != "0")
                     {
-                        DataRow dr = dtable.Select("IsCompleted = True").FirstOrDefault();
-                        if (dr != null)
+                        btnNextPage.Attributes.Remove("disabled");
+                        dtable = new DataTable();
+                        dtable = YearQuarterData.GetAllQuestionAnswerDetailsByUser(DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()), DataUtils.GetInt(hfUserId.Value.Trim()), true);
+                        if (dtable.Rows.Count > 0)
                         {
-                            hdnAllIsCompleted.Value = dr["IsCompleted"].ToString();
-                            txtOtherUsers.ReadOnly = true;
-                            lblQuestionAnswerErrorMsg2.Text = "Question Answer information is already submitted.";
+                            DataRow dr = dtable.Select("IsCompleted = True").FirstOrDefault();
+                            if (dr != null)
+                            {
+                                hdnAllIsCompleted.Value = dr["IsCompleted"].ToString();
+                                txtOtherUsers.ReadOnly = true;
+                                lblQuestionAnswerErrorMsg2.Text = "Question Answer information is already submitted.";
+                            }
+                            else
+                                hdnAllIsCompleted.Value = string.Empty;
+
+                        }
+                        DataTable dtOtherUsers = YearQuarterData.GetOtherMembersDetails(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()));
+                        if (dtOtherUsers.Rows.Count > 0)
+                        {
+                            txtOtherUsers.Text = dtOtherUsers.Rows[0][0].ToString().Trim();
                         }
                         else
-                            hdnAllIsCompleted.Value = string.Empty;
-
-                    }
-                    DataTable dtOtherUsers = YearQuarterData.GetOtherMembersDetails(DataUtils.GetInt(hfUserId.Value.Trim()), DataUtils.GetInt(ddlYearQrtr.SelectedValue.Trim()));
-                    if (dtOtherUsers.Rows.Count > 0)
-                    {
-                        txtOtherUsers.Text = dtOtherUsers.Rows[0][0].ToString().Trim();
+                             txtOtherUsers.Text = string.Empty;
+                        
                     }
                     else
+                    {
                         txtOtherUsers.Text = string.Empty;
-
-                }
-                else
-                {
-                    txtOtherUsers.Text = string.Empty;
-                    btnNextPage.Attributes.Add("disabled", "disabled");
-                }
-
+                        btnNextPage.Attributes.Add("disabled", "disabled");
+                    }
+                
             }
-            catch (Exception ex)
-            {
+             catch (Exception ex)
+             {
 
-                lblQuestionAnswerErrorMsg.Text = ex.Message;
-            }
+                 lblQuestionAnswerErrorMsg.Text = ex.Message;
+             }
         }
 
         protected void btnBack_Click(object sender, EventArgs e)
@@ -392,6 +355,6 @@ namespace vhcbcloud.Americorps
             }
         }
 
-
+        
     }
 }
