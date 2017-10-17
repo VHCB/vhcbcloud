@@ -423,7 +423,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblURL" runat="Server" Text='<%# Eval("URL") %>' />
+                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
                                             <%-- <EditItemTemplate>
                                                 <asp:TextBox ID="txtURL" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("URL") %>'></asp:TextBox>

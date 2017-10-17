@@ -184,7 +184,7 @@ create procedure dbo.GetACMemberFormData
 begin
 --exec GetACMemberFormData 5, 1
 	select ACMemberID, af.Groupnum, lv.description GroupName, Name, af.ACFormID, isnull(ACmemberformID, -99) ACmemberformID, isnull(Received, 0) Received, 
-	Date as ReceivedDate, isnull(URL, '') URL, 
+	Date as ReceivedDate, isnull(URL, '') URL, CASE when isnull(URL, '') = '' then '' else 'Click here' end as URLText,
 	substring(Notes, 0, 25) Notes,  Notes as FullNotes, 
 	isnull(amf.RowIsActive, 1) RowIsActive
 	from acforms af(nolock)

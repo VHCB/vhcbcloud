@@ -10,7 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class HOPWAManagement {
+    public partial class AmericorpsMember {
         
         /// <summary>
         /// dvTabs control.
@@ -31,13 +31,31 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tabs;
         
         /// <summary>
-        /// btnProjectNotes1 control.
+        /// imgSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes1;
+        protected global::System.Web.UI.WebControls.ImageButton imgSearch;
+        
+        /// <summary>
+        /// ibAwardSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ibAwardSummary;
+        
+        /// <summary>
+        /// btnProjectNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
         
         /// <summary>
         /// cbActiveOnly control.
@@ -103,219 +121,201 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// dvHOPWAMaster control.
+        /// dvmemberInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHOPWAMaster;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvmemberInfo;
         
         /// <summary>
-        /// cbAddHOPWAMaster control.
+        /// dvMemberInfoForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddHOPWAMaster;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMemberInfoForm;
         
         /// <summary>
-        /// dvHOPWAMasterForm control.
+        /// Panel8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHOPWAMasterForm;
+        protected global::System.Web.UI.WebControls.Panel Panel8;
         
         /// <summary>
-        /// pnlHOPWAMaster control.
+        /// lblMemberName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlHOPWAMaster;
+        protected global::System.Web.UI.WebControls.Label lblMemberName;
         
         /// <summary>
-        /// txtUUID control.
+        /// lblEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUUID;
+        protected global::System.Web.UI.WebControls.Label lblEmail;
         
         /// <summary>
-        /// ddlPrimaryASO control.
+        /// lblCellPhone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryASO;
+        protected global::System.Web.UI.WebControls.Label lblCellPhone;
         
         /// <summary>
-        /// txtHHIncludes control.
+        /// txtDOB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHHIncludes;
+        protected global::System.Web.UI.WebControls.TextBox txtDOB;
         
         /// <summary>
-        /// txtWithHIV control.
+        /// ce_txtEventDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWithHIV;
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtEventDate;
         
         /// <summary>
-        /// txtInHouseHold control.
+        /// btnUpdatememberDOB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtInHouseHold;
+        protected global::System.Web.UI.WebControls.Button btnUpdatememberDOB;
         
         /// <summary>
-        /// txtMinors control.
+        /// dvMemberAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMinors;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMemberAddress;
         
         /// <summary>
-        /// txtGender control.
+        /// Div2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGender;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div2;
         
         /// <summary>
-        /// txtAge control.
+        /// Panel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAge;
+        protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
-        /// ddlEthnicity control.
+        /// lblAddressType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEthnicity;
+        protected global::System.Web.UI.WebControls.Label lblAddressType;
         
         /// <summary>
-        /// ddlRace control.
+        /// lblStreetNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRace;
+        protected global::System.Web.UI.WebControls.Label lblStreetNo;
         
         /// <summary>
-        /// ddlGMI control.
+        /// lblAddress1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlGMI;
+        protected global::System.Web.UI.WebControls.Label lblAddress1;
         
         /// <summary>
-        /// ddlAMI control.
+        /// lblAddress2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAMI;
+        protected global::System.Web.UI.WebControls.Label lblAddress2;
         
         /// <summary>
-        /// txtBeds control.
+        /// lblCity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBeds;
+        protected global::System.Web.UI.WebControls.Label lblCity;
         
         /// <summary>
-        /// cbHOPWAMaster control.
+        /// lblState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbHOPWAMaster;
+        protected global::System.Web.UI.WebControls.Label lblState;
         
         /// <summary>
-        /// txtNotes control.
+        /// lblZip control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNotes;
+        protected global::System.Web.UI.WebControls.Label lblZip;
         
         /// <summary>
-        /// btnHOPWAMaster control.
+        /// lblCountry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnHOPWAMaster;
+        protected global::System.Web.UI.WebControls.Label lblCountry;
         
         /// <summary>
-        /// dvHOPWAMasterGrid control.
+        /// hfProjectId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHOPWAMasterGrid;
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
         
         /// <summary>
-        /// Panel4 control.
+        /// hfApplicantId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel4;
-        
-        /// <summary>
-        /// gvHOPWAMaster control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvHOPWAMaster;
-        
-        /// <summary>
-        /// hfHOPWAId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfHOPWAId;
+        protected global::System.Web.UI.WebControls.HiddenField hfApplicantId;
     }
 }

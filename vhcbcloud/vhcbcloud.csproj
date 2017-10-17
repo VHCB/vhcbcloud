@@ -301,6 +301,7 @@
     <Content Include="SQL\FundMaintenance.sql" />
     <Content Include="SQL\GrantMaintenance.sql" />
     <Content Include="SQL\HomeOwnerShip.sql" />
+    <Content Include="SQL\HOPWAMaintenance.sql" />
     <Content Include="SQL\HousingAttributes.sql" />
     <Content Include="SQL\HousingFederalPrograms.sql" />
     <Content Include="SQL\HousingInfo.sql" />

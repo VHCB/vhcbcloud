@@ -66,6 +66,7 @@
     <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
     <Compile Include="GrantMaintenanceData.cs" />
+    <Compile Include="HOPWAMaintenanceData.cs" />
     <Compile Include="Housing\HomeOwnershipData.cs" />
     <Compile Include="Housing\HousingAttributesData.cs" />
     <Compile Include="Housing\HousingFederalProgramsData.cs" />

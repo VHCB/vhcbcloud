@@ -210,7 +210,7 @@ namespace vhcbcloud.Americorps
                     DataUtils.GetInt(ddlServiceType.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlTShirtSize.SelectedValue.ToString()), DataUtils.GetInt(ddlSwatShirtSize.SelectedValue.ToString()), DataUtils.GetInt(ddlDietryPref.SelectedValue.ToString()), txtMedConcern.Text, txtNotes.Text);
 
-                LogMessage("Address updated successfully");
+                LogMessage("AC Member data updated successfully");
             }
             else //add
             {
@@ -360,10 +360,15 @@ namespace vhcbcloud.Americorps
 
         protected void btnSubmitACForm_Click(object sender, EventArgs e)
         {
+            string URL = txtURL.Text;
+
+            if (!URL.Contains("http"))
+                URL = "http://" + URL;
+
             if (btnSubmitACForm.Text.ToLower() == "update")
             {
                 AmericorpsMemberData.UpdateACMemberForm(DataUtils.GetInt(hfACMemberFormId.Value),
-                                cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), txtURL.Text,
+                                cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), URL,
                                 txtACMemberFormNotes.Text, cbACFormActive.Checked);
                 LogMessage("AC Member Form data updated successfully");
 
@@ -380,7 +385,7 @@ namespace vhcbcloud.Americorps
             else //add
             {
                 AmericorpMemberResult objAmericorpMemberResult = AmericorpsMemberData.AddACMemberForm(DataUtils.GetInt(hfACMemberId.Value),
-                                DataUtils.GetInt(hfACFormID.Value), cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), txtURL.Text,
+                                DataUtils.GetInt(hfACFormID.Value), cbReceived.Checked, DataUtils.GetDate(txtReceivedDate.Text), URL,
                                 txtACMemberFormNotes.Text);
 
                 dvNewMemberForm.Visible = false;
