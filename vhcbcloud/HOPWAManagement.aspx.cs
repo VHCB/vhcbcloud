@@ -21,18 +21,22 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindControls();
-                BindGrids();
+                BindHOPWAanMasterGrid();
             }
         }
 
         private void BindControls()
         {
             BindLookUP(ddlPrimaryASO, 232);
-            BindLookUP(ddlEthnicity, 190);
-            BindLookUP(ddlRace, 191);
-            BindLookUP(ddlGMI, 192);
-            BindLookUP(ddlAMI, 178);
+            BindLookUP(ddlEthnicity, 149);
+            BindLookUP(ddlRace, 10);
+            BindLookUP(ddlGMI, 242);
+            BindLookUP(ddlAMI, 243);
+            BindLookUP(ddlHOPWARace, 10);
+            BindLookUP(ddlHOPWAEthnicity, 149);
+            BindLookUP(ddlAgeGender, 231);
         }
+
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -68,12 +72,6 @@ namespace vhcbcloud
         }
 
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            BindGrids();
-            
-        }
-
-        private void BindGrids()
         {
             BindHOPWAanMasterGrid();
         }
@@ -117,10 +115,9 @@ namespace vhcbcloud
 
         private void BindHOPWAanMasterGrid()
         {
-            //dvHOPWAMaster.Visible = false;
-            //dvNewEvent.Visible = false;
-            //dvTransaction.Visible = false;
-            //dvNotes.Visible = false;
+            dvNewHOPWARace.Visible = false;
+            dvNewHOPWAEthnicity.Visible = false;
+            dvNewHOPWAAge.Visible = false;
 
             try
             {
@@ -165,27 +162,414 @@ namespace vhcbcloud
 
         protected void gvHOPWAMaster_RowEditing(object sender, GridViewEditEventArgs e)
         {
-
+            gvHOPWAMaster.EditIndex = e.NewEditIndex;
+            BindHOPWAanMasterGrid();
         }
 
         protected void gvHOPWAMaster_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
-
+            cbAddHOPWAMaster.Checked = false;
+            ClearHOPWAMasterForm();
+            btnHOPWAMaster.Text = "Add";
+            gvHOPWAMaster.EditIndex = -1;
+            BindHOPWAanMasterGrid();
         }
 
         protected void gvHOPWAMaster_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnHOPWAMaster.Text = "Update";
+                    cbAddHOPWAMaster.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[0].Visible = false;
+                        Label lblHOPWAID = e.Row.FindControl("lblHOPWAID") as Label;
+                        DataRow drHOPWAMasterDetails = HOPWAMaintenanceData.GetHOPWAMasterDetailsByHOPWAID(Convert.ToInt32(lblHOPWAID.Text));
 
+                        hfHOPWAId.Value = lblHOPWAID.Text;
+                        //txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
+                        //txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
+                        //txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
+                        //txtNoteAmount.Text = drLoanMasterDetails["NoteAmt"].ToString();
+
+                        //txtPrimaryApplicant.Text = drLoanMasterDetails["Applicantname"].ToString();
+                        ////PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["AppNameID"].ToString());
+                        //PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
+                        btnHOPWAMaster.Text = "Update";
+
+                        cbHOPWAMaster.Checked = DataUtils.GetBool(drHOPWAMasterDetails["RowIsActive"].ToString()); ;
+                        cbHOPWAMaster.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvLoanMaster_RowDataBound", "", ex.Message);
+            }
         }
 
-        protected void gvHOPWAMaster_SelectedIndexChanged(object sender, EventArgs e)
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
         {
-
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
         }
 
-        protected void rdBtnSelectHOPWA_CheckedChanged(object sender, EventArgs e)
+        protected void btnAddRace_Click(object sender, EventArgs e)
         {
+            if (ddlHOPWARace.SelectedIndex == 0)
+            {
+                LogMessage("Select Race");
+                ddlHOPWARace.Focus();
+                return;
+            }
 
+            HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWARace(DataUtils.GetInt(hfHOPWAId.Value),
+                DataUtils.GetInt(ddlHOPWARace.SelectedValue.ToString()), DataUtils.GetInt(txtHOPWAHousehold.Text));
+
+            ddlHOPWARace.SelectedIndex = -1;
+            txtHOPWAHousehold.Text = "";
+
+            cbAddHOPWARace.Checked = false;
+
+            BindHOPWARaceGrid();
+
+            if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
+                LogMessage("HOPWA Race already exists as in-active");
+            else if (objHOPWAmainttResult.IsDuplicate)
+                LogMessage("HOPWA Race already exists");
+            else
+                LogMessage("New HOPWA Race added successfully");
         }
+
+        private void BindHOPWARaceGrid()
+        {
+            try
+            {
+                DataTable dt = HOPWAMaintenanceData.GetHOPWARaceList(DataUtils.GetInt(hfHOPWAId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvHOPWARaceGrid.Visible = true;
+                    gvHOPWARace.DataSource = dt;
+                    gvHOPWARace.DataBind();
+                }
+                else
+                {
+                    dvHOPWARaceGrid.Visible = false;
+                    gvHOPWARace.DataSource = null;
+                    gvHOPWARace.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindHOPWARaceGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvHOPWARace_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvHOPWARace.EditIndex = e.NewEditIndex;
+            BindHOPWARaceGrid();
+        }
+
+        protected void gvHOPWARace_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvHOPWARace.EditIndex = -1;
+            BindHOPWARaceGrid();
+        }
+
+        protected void gvHOPWARace_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int HOPWARaceID = DataUtils.GetInt(((Label)gvHOPWARace.Rows[rowIndex].FindControl("lblHOPWARaceID")).Text);
+            int RaceId = DataUtils.GetInt(((DropDownList)gvHOPWARace.Rows[rowIndex].FindControl("ddlHOPWARace1")).SelectedValue.ToString());
+            int HouseholdNum = DataUtils.GetInt(((TextBox)gvHOPWARace.Rows[rowIndex].FindControl("txtHouseHold1")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvHOPWARace.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HOPWAMaintenanceData.UpdateHOPWARace(HOPWARaceID, RaceId, HouseholdNum, RowIsActive);
+            gvHOPWARace.EditIndex = -1;
+
+            BindHOPWARaceGrid();
+
+            LogMessage("HOPWA Race updated successfully");
+        }
+
+        protected void rdBtnSelectHOPWAMaster_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectedHOPWAMasterInfo objSelectedHOPWAMasterInfo = GetHOPWAMasterSelectedRecordID(gvHOPWAMaster);
+
+            hfHOPWAId.Value = objSelectedHOPWAMasterInfo.HOPWAId.ToString();
+
+            dvNewHOPWARace.Visible = true;
+            BindHOPWARaceGrid();
+            dvNewHOPWAEthnicity.Visible = true;
+            BindHOPWAEthnicityGrid();
+            dvNewHOPWAAge.Visible = true;
+            BindHOPWAAgeGrid();
+        }
+
+        private SelectedHOPWAMasterInfo GetHOPWAMasterSelectedRecordID(GridView gvHOPWAMaster)
+        {
+            SelectedHOPWAMasterInfo objSelectedHOPWAMasterInfo = new SelectedHOPWAMasterInfo();
+
+            for (int i = 0; i < gvHOPWAMaster.Rows.Count; i++)
+            {
+                RadioButton rbLoanMasterInfo = (RadioButton)gvHOPWAMaster.Rows[i].Cells[0].FindControl("rdBtnSelectHOPWAMaster");
+                if (rbLoanMasterInfo != null)
+                {
+                    if (rbLoanMasterInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvHOPWAMaster.Rows[i].Cells[0].FindControl("HiddenHOPWAID");
+                        //Label lblNoteAmt = (Label)gvHOPWAMaster.Rows[i].Cells[1].FindControl("lblNoteAmt");
+
+                        if (hf != null)
+                        {
+                            objSelectedHOPWAMasterInfo.HOPWAId = DataUtils.GetInt(hf.Value);
+                            //objSelectedHOPWAMasterInfo.NoteAmt = lblNoteAmt.Text;
+                        }
+                        break;
+                    }
+                }
+            }
+            return objSelectedHOPWAMasterInfo;
+        }
+
+        protected void gvHOPWARace_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlHOPWARace1 = (e.Row.FindControl("ddlHOPWARace1") as DropDownList);
+                    TextBox txtRaceId = (e.Row.FindControl("txtRaceId") as TextBox);
+
+                    if (txtRaceId != null)
+                    {
+                        BindLookUP(ddlHOPWARace1, 10);
+                        PopulateDropDown(ddlHOPWARace1, txtRaceId.Text);
+                    }
+                }
+            }
+        }
+
+        protected void btnAddEthnicity_Click(object sender, EventArgs e)
+        {
+            if (ddlHOPWAEthnicity.SelectedIndex == 0)
+            {
+                LogMessage("Select Ethnicity");
+                ddlHOPWAEthnicity.Focus();
+                return;
+            }
+
+            HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAEthnicity(DataUtils.GetInt(hfHOPWAId.Value),
+                DataUtils.GetInt(ddlHOPWAEthnicity.SelectedValue.ToString()), DataUtils.GetInt(txtHOPWAEthnicityHH.Text));
+
+            ddlHOPWAEthnicity.SelectedIndex = -1;
+            txtHOPWAEthnicityHH.Text = "";
+
+            cbAddHOPWAEthnicity.Checked = false;
+
+            BindHOPWAEthnicityGrid();
+
+            if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
+                LogMessage("HOPWA Ethnicity already exists as in-active");
+            else if (objHOPWAmainttResult.IsDuplicate)
+                LogMessage("HOPWA Ethnicity already exists");
+            else
+                LogMessage("New Ethnicity added successfully");
+        }
+
+        private void BindHOPWAEthnicityGrid()
+        {
+            try
+            {
+                DataTable dt = HOPWAMaintenanceData.GetHOPWAEthnicityList(DataUtils.GetInt(hfHOPWAId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvHOPWAEthnicityGrid.Visible = true;
+                    gvHOPWAEthnicity.DataSource = dt;
+                    gvHOPWAEthnicity.DataBind();
+                }
+                else
+                {
+                    dvHOPWAEthnicityGrid.Visible = false;
+                    gvHOPWAEthnicity.DataSource = null;
+                    gvHOPWAEthnicity.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindHOPWAEthnicityGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvHOPWAEthnicity_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvHOPWAEthnicity.EditIndex = e.NewEditIndex;
+            BindHOPWAEthnicityGrid();
+        }
+
+        protected void gvHOPWAEthnicity_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvHOPWAEthnicity.EditIndex = -1;
+            BindHOPWAEthnicityGrid();
+        }
+
+        protected void gvHOPWAEthnicity_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlHOPWAEthnicity1 = (e.Row.FindControl("ddlHOPWAEthnicity1") as DropDownList);
+                    TextBox txtEthnicId = (e.Row.FindControl("txtEthnicId") as TextBox);
+
+                    if (txtEthnicId != null)
+                    {
+                        BindLookUP(ddlHOPWAEthnicity1, 149);
+                        PopulateDropDown(ddlHOPWAEthnicity1, txtEthnicId.Text);
+                    }
+                }
+            }
+        }
+
+        protected void gvHOPWAEthnicity_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int HOPWAEthnicID = DataUtils.GetInt(((Label)gvHOPWAEthnicity.Rows[rowIndex].FindControl("lblHOPWAEthnicID")).Text);
+            int EthnicId = DataUtils.GetInt(((DropDownList)gvHOPWAEthnicity.Rows[rowIndex].FindControl("ddlHOPWAEthnicity1")).SelectedValue.ToString());
+            int HouseholdNum = DataUtils.GetInt(((TextBox)gvHOPWAEthnicity.Rows[rowIndex].FindControl("txtEthnicHH1")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvHOPWAEthnicity.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HOPWAMaintenanceData.UpdateHOPWAEthnicity(HOPWAEthnicID, EthnicId, HouseholdNum, RowIsActive);
+            gvHOPWAEthnicity.EditIndex = -1;
+
+            BindHOPWAEthnicityGrid();
+
+            LogMessage("HOPWA Ethnicity updated successfully");
+        }
+
+        protected void btnAddAge_Click(object sender, EventArgs e)
+        {
+            if (ddlAgeGender.SelectedIndex == 0)
+            {
+                LogMessage("Select Age Gender");
+                ddlAgeGender.Focus();
+                return;
+            }
+
+            HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAAge(DataUtils.GetInt(hfHOPWAId.Value),
+                DataUtils.GetInt(ddlAgeGender.SelectedValue.ToString()), DataUtils.GetInt(txtAgeNum.Text));
+
+            ddlAgeGender.SelectedIndex = -1;
+            txtAgeNum.Text = "";
+
+            cbAddHOPWAAge.Checked = false;
+
+            BindHOPWAAgeGrid();
+
+            if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
+                LogMessage("HOPWA Age/Gender already exists as in-active");
+            else if (objHOPWAmainttResult.IsDuplicate)
+                LogMessage("HOPWA Age/Gender already exists");
+            else
+                LogMessage("New HOPWA Age/Gender added successfully");
+        }
+
+        protected void gvHOPWAAge_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvHOPWAAge.EditIndex = e.NewEditIndex;
+            BindHOPWAAgeGrid();
+        }
+
+        protected void gvHOPWAAge_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvHOPWAAge.EditIndex = -1;
+            BindHOPWAAgeGrid();
+        }
+
+        protected void gvHOPWAAge_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                CommonHelper.GridViewSetFocus(e.Row);
+            {
+                //Checking whether the Row is Data Row
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    DropDownList ddlHOPWAAgeGender1 = (e.Row.FindControl("ddlHOPWAAgeGender1") as DropDownList);
+                    TextBox txtAgeGenderId = (e.Row.FindControl("txtAgeGenderId") as TextBox);
+
+                    if (txtAgeGenderId != null)
+                    {
+                        BindLookUP(ddlHOPWAAgeGender1, 231);
+                        PopulateDropDown(ddlHOPWAAgeGender1, txtAgeGenderId.Text);
+                    }
+                }
+            }
+        }
+
+        protected void gvHOPWAAge_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int HOPWAAgeId = DataUtils.GetInt(((Label)gvHOPWAAge.Rows[rowIndex].FindControl("lblHOPWAAgeId")).Text);
+            int AgeGenderId = DataUtils.GetInt(((DropDownList)gvHOPWAAge.Rows[rowIndex].FindControl("ddlHOPWAAgeGender1")).SelectedValue.ToString());
+            int AgeNum = DataUtils.GetInt(((TextBox)gvHOPWAAge.Rows[rowIndex].FindControl("txtAgeNum1")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvHOPWAAge.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HOPWAMaintenanceData.UpdateHOPWAAge(HOPWAAgeId, AgeGenderId, AgeNum, RowIsActive);
+            gvHOPWAAge.EditIndex = -1;
+
+            BindHOPWAAgeGrid();
+
+            LogMessage("HOPWA Age/Gender updated successfully");
+        }
+        private void BindHOPWAAgeGrid()
+        {
+            try
+            {
+                DataTable dt = HOPWAMaintenanceData.GetHOPWAAgeList(DataUtils.GetInt(hfHOPWAId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvHOPWAAgeGrid.Visible = true;
+                    gvHOPWAAge.DataSource = dt;
+                    gvHOPWAAge.DataBind();
+                }
+                else
+                {
+                    dvHOPWAAgeGrid.Visible = false;
+                    gvHOPWAAge.DataSource = null;
+                    gvHOPWAAge.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindHOPWAAgeGrid", "", ex.Message);
+            }
+        }
+    }
+
+    public class SelectedHOPWAMasterInfo
+    {
+        public int HOPWAId { set; get; }
     }
 }
