@@ -36,6 +36,38 @@ begin transaction
 
 go
 
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHOPWAMasterDetailsByHOPWAID]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHOPWAMasterDetailsByHOPWAID
+go
+
+create procedure dbo.GetHOPWAMasterDetailsByHOPWAID
+(
+	@HOPWAID	int
+) as
+--GetHOPWAMasterDetailsByHOPWAID 1
+begin transaction
+
+	begin try
+
+	select UUID, HHincludes, PrimaryASO, WithHIV, InHousehold, Minors, Gender, Age, Ethnic, Race, GMI, AMI, Beds, Notes, RowisActive
+	from HOPWAMaster hm(nolock) 
+	where hm.HOPWAID = @HOPWAID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
 if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddHOPWAMaster]') and type in (N'P', N'PC'))
 drop procedure [dbo].AddHOPWAMaster
 go
@@ -507,6 +539,181 @@ begin transaction
 	update HOPWAAge set  GenderAgeID = @GenderAgeID, GANum = @GANum, RowIsActive = @RowIsActive, DateModified = getdate()
 	from HOPWAAge 
 	where HOPWAAgeId = @HOPWAAgeId
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+/* HOPWA Program*/
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHOPWAProgramList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHOPWAProgramList
+go
+
+create procedure dbo.GetHOPWAProgramList
+(
+	@HOPWAId		int,
+	@IsActiveOnly	bit
+) as
+--GetHOPWAProgramList 3, 1
+begin transaction
+
+	begin try
+
+	select HOPWAProgramID, Program, lv.description ProgramName, Fund,f.name as 'FundName', Yr1, Yr2, Yr3, 
+		convert(varchar(10), StartDate, 101) StartDate, convert(varchar(10), EndDate, 101) EndDate, LivingSituationId, Notes, hp.RowIsactive, hp.DateModified
+	from HOPWAProgram hp(nolock) 
+	join lookupvalues lv(nolock) on hp.Program = lv.TypeID
+	join Fund f(nolock) on f.fundid = hp.fund
+	where HOPWAId = @HOPWAId 
+		and (@IsActiveOnly = 0 or hp.RowIsActive = @IsActiveOnly)
+		order by hp.DateModified desc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHOPWAProgramById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHOPWAProgramById
+go
+
+create procedure dbo.GetHOPWAProgramById
+(
+	@HOPWAProgramID		int
+) as
+--GetHOPWAProgramById 1, 1
+begin transaction
+
+	begin try
+
+	select Program, Fund, Yr1, Yr2, Yr3, convert(varchar(10), StartDate, 101) StartDate, convert(varchar(10), EndDate, 101) EndDate, LivingSituationId, Notes, RowIsactive, DateModified
+	from HOPWAProgram hp(nolock) 
+	where HOPWAProgramID = @HOPWAProgramID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddHOPWAProgram]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddHOPWAProgram
+go
+
+create procedure dbo.AddHOPWAProgram
+(
+	@HOPWAID	int, 
+	@Program	int, 
+	@Fund		int, 
+	@Yr1		bit, 
+	@Yr2		bit, 
+	@Yr3		bit, 
+	@StartDate	date, 
+	@EndDate	date, 
+	@LivingSituationId	int, 
+	@Notes			nvarchar(max),
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from HOPWAProgram(nolock)
+		where HOPWAID = @HOPWAID 
+			and Program = @Program
+    )
+	begin
+		insert into HOPWAProgram(HOPWAID, Program, Fund, Yr1, Yr2, Yr3, StartDate, EndDate, LivingSituationId, Notes)
+		values(@HOPWAID, @Program, @Fund, @Yr1, @Yr2, @Yr3, @StartDate, @EndDate, @LivingSituationId, @Notes)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from HOPWAProgram(nolock)
+		where HOPWAID = @HOPWAID 
+			and Program = @Program
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateHOPWAProgram]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateHOPWAProgram
+go
+
+create procedure dbo.UpdateHOPWAProgram
+(
+	@HOPWAProgramID	int, 
+	@Program	int, 
+	@Fund		int, 
+	@Yr1		bit, 
+	@Yr2		bit, 
+	@Yr3		bit, 
+	@StartDate	date, 
+	@EndDate	date, 
+	@LivingSituationId	int, 
+	@Notes			nvarchar(max),
+	@RowIsActive	bit
+) as
+begin transaction
+
+	begin try
+	
+	update HOPWAProgram set  Program = @Program, Fund = @Fund, Yr1 = @Yr1, Yr2 = @Yr2, Yr3 = @Yr3, 
+		StartDate = @StartDate, EndDate = @EndDate, LivingSituationId = @LivingSituationId, Notes = @Notes, 
+		RowIsActive = @RowIsActive, DateModified = getdate()
+	from HOPWAProgram 
+	where HOPWAProgramID = @HOPWAProgramID
 
 	end try
 	begin catch

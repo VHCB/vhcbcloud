@@ -89,11 +89,11 @@
                                             <span class="labelClass"># in Household</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtInHouseHold" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtInHouseHold" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass"># of Minors (<18)</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtMinors" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtMinors" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -108,7 +108,7 @@
                                             <span class="labelClass">Age</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Ethnicity</span></td>
                                         <td>
@@ -222,6 +222,285 @@
                                         <asp:CommandField ShowEditButton="True" />
                                     </Columns>
                                 </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewHOPWAProgram" visible="true">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Program</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddProgram" runat="server" Text="Add New Program/Fund" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvHOPWAProgramForm">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Program</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass">Fund</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:DropDownList ID="ddlFund" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Yr1</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbYear1" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Yr2</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="cbYear2" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass">Yr3</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:CheckBox ID="cbYear3" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Start Date</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtStartDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtStartDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">End Date</span></td>
+                                        <td style="width: 250px">
+                                            <asp:TextBox ID="txtEndDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender2" TargetControlID="txtEndDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass">Living Situation</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:DropDownList ID="ddlLivingSituation" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Active</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbProgramActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Notes</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtProgramNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Button ID="btnProgram" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnProgram_Click" /></td>
+                                        <td colspan="5" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvHOPWAProgramGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel9" Width="100%" Height="200px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvHOPWAProgram" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowEditing="gvHOPWAProgram_RowEditing" OnRowCancelingEdit="gvHOPWAProgram_RowCancelingEdit"
+                                    OnRowDataBound="gvHOPWAProgram_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="HOPWAProgramID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblHOPWAProgramID" runat="Server" Text='<%# Eval("HOPWAProgramID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                            <ItemTemplate>
+                                                <asp:RadioButton ID="rdBtnSelectProgram" runat="server" AutoPostBack="true" onclick="RadioCheck1(this);"
+                                                    OnCheckedChanged="rdBtnSelectProgram_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenProgramId" runat="server" Value='<%#Eval("HOPWAProgramID")%>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Program">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgram" runat="Server" Text='<%# Eval("ProgramName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Fund">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFund" runat="Server" Text='<%# Eval("Fundname") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Start Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblStartDate" runat="Server" Text='<%# Eval("StartDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="End Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEndDate" runat="Server" Text='<%# Eval("EndDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Yr1">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chYr1" Enabled="false" runat="server" Checked='<%# Eval("Yr1") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Yr2">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chYr2" Enabled="false" runat="server" Checked='<%# Eval("Yr2") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Yr3">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chYr3" Enabled="false" runat="server" Checked='<%# Eval("Yr3") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewExpenses" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Expenses / Category</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddExpense" runat="server" Text="Add another Expense" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvExpensesForm">
+                            <asp:Panel runat="server" ID="Panel10">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Amount</span></td>
+                                        <td style="width: 250px">
+                                            <asp:TextBox ID="txtAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass">Date</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender5" TargetControlID="txtExpensesDate">
+                                            </ajaxToolkit:CalendarExtender>
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Disbursement Record</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtDisRecord" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">PHP Use</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlPHPuse" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 270px"></td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Rent</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="cbRent" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass">Mortgage</span>
+                                        </td>
+                                        <td style="width: 270px">
+                                            <asp:CheckBox ID="cbMortgage" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass">Utilities</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbUtilities" CssClass="ChkBox" runat="server" Checked="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Active</span></td>
+                                        <td style="width: 250px">
+                                            <asp:CheckBox ID="cbExpensesActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
+                                        </td>
+                                        <td style="width: 107px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 270px"></td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Button ID="btnAddExpense" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddExpense_Click" /></td>
+                                        <td colspan="5" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
                             </asp:Panel>
                         </div>
                     </div>
@@ -539,6 +818,8 @@
             </div>
         </div>
         <asp:HiddenField ID="hfHOPWAId" runat="server" />
+        <asp:HiddenField ID="hfProgramId" runat="server" />
+
     </div>
     <script language="javascript">
         $(document).ready(function () {
@@ -546,6 +827,12 @@
 
             $('#<%= cbAddHOPWAMaster.ClientID%>').click(function () {
                 $('#<%= dvHOPWAMasterForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvHOPWAProgramForm.ClientID%>').toggle($('#<%= cbAddProgram.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddProgram.ClientID%>').click(function () {
+                $('#<%= dvHOPWAProgramForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvHOPWARACEForm.ClientID%>').toggle($('#<%= cbAddHOPWARace.ClientID%>').is(':checked'));
@@ -565,6 +852,13 @@
             $('#<%= cbAddHOPWAAge.ClientID%>').click(function () {
                 $('#<%= dvHOPWAAgeForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= dvExpensesForm.ClientID%>').toggle($('#<%= cbAddExpense.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddExpense.ClientID%>').click(function () {
+                $('#<%= dvExpensesForm.ClientID%>').toggle(this.checked);
+            }).change();
+
             //Input Validation
             $('#<%= txtHOPWAHousehold.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtHOPWAHousehold.ClientID%>').val(), $('#<%= txtHOPWAHousehold.ClientID%>'));
@@ -582,7 +876,7 @@
                 toNumericControl($('input[id*=txtEthnicHH1]').val(), $('input[id*=txtEthnicHH1]'));
             });
 
-             $('#<%= txtAgeNum.ClientID%>').keyup(function () {
+            $('#<%= txtAgeNum.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtAgeNum.ClientID%>').val(), $('#<%= txtAgeNum.ClientID%>'));
             });
 
@@ -594,6 +888,21 @@
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvHOPWAMaster.ClientID%>");
+             var rbs = gv.getElementsByTagName("input");
+
+             var row = rb.parentNode.parentNode;
+             for (var i = 0; i < rbs.length; i++) {
+                 if (rbs[i].type == "radio") {
+                     if (rbs[i].checked && rbs[i] != rb) {
+                         rbs[i].checked = false;
+                         break;
+                     }
+                 }
+             }
+        }
+
+        function RadioCheck1(rb) {
+            var gv = document.getElementById("<%=gvHOPWAProgram.ClientID%>");
              var rbs = gv.getElementsByTagName("input");
 
              var row = rb.parentNode.parentNode;

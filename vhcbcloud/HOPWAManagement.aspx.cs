@@ -35,6 +35,10 @@ namespace vhcbcloud
             BindLookUP(ddlHOPWARace, 10);
             BindLookUP(ddlHOPWAEthnicity, 149);
             BindLookUP(ddlAgeGender, 231);
+
+            BindLookUP(ddlProgram, 231);
+            BindLookUP(ddlLivingSituation, 234);
+            LoadFundNames();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -54,6 +58,21 @@ namespace vhcbcloud
             }
         }
 
+        private void LoadFundNames()
+        {
+            try
+            {
+                ddlFund.DataSource = FundMaintenanceData.GetFundName(cbActiveOnly.Checked);
+                ddlFund.DataValueField = "fundid";
+                ddlFund.DataTextField = "name";
+                ddlFund.DataBind();
+                ddlFund.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
         private void LogError(string pagename, string method, string message, string error)
         {
             dvMessage.Visible = true;
@@ -92,7 +111,7 @@ namespace vhcbcloud
                     LogMessage("HOPWA UUID added successfully");
 
                 gvHOPWAMaster.EditIndex = -1;
-                dvHOPWAMaster.Visible = true;
+               
                 cbAddHOPWAMaster.Checked = false;
             }
             else
@@ -106,6 +125,7 @@ namespace vhcbcloud
 
                 hfHOPWAId.Value = "";
                 btnHOPWAMaster.Text = "Add";
+
                 cbAddHOPWAMaster.Checked = false;
                 gvHOPWAMaster.EditIndex = -1;
             }
@@ -118,6 +138,8 @@ namespace vhcbcloud
             dvNewHOPWARace.Visible = false;
             dvNewHOPWAEthnicity.Visible = false;
             dvNewHOPWAAge.Visible = false;
+            dvNewHOPWAProgram.Visible = false;
+            dvNewExpenses.Visible = false;
 
             try
             {
@@ -158,6 +180,8 @@ namespace vhcbcloud
             ddlAMI.SelectedIndex = -1;
             txtBeds.Text = "";
             txtNotes.Text = "";
+            cbHOPWAMaster.Checked = true;
+            cbHOPWAMaster.Enabled = false;
         }
 
         protected void gvHOPWAMaster_RowEditing(object sender, GridViewEditEventArgs e)
@@ -192,14 +216,20 @@ namespace vhcbcloud
                         DataRow drHOPWAMasterDetails = HOPWAMaintenanceData.GetHOPWAMasterDetailsByHOPWAID(Convert.ToInt32(lblHOPWAID.Text));
 
                         hfHOPWAId.Value = lblHOPWAID.Text;
-                        //txtDescriptor.Text = drLoanMasterDetails["Descriptor"].ToString();
-                        //txtTaxCreditPartner.Text = drLoanMasterDetails["TaxCreditPartner"].ToString();
-                        //txtNoteOwner.Text = drLoanMasterDetails["NoteOwner"].ToString();
-                        //txtNoteAmount.Text = drLoanMasterDetails["NoteAmt"].ToString();
-
-                        //txtPrimaryApplicant.Text = drLoanMasterDetails["Applicantname"].ToString();
-                        ////PopulateDropDown(ddlPrimaryApplicant, drLoanMasterDetails["AppNameID"].ToString());
-                        //PopulateDropDown(ddlFund, drLoanMasterDetails["FundID"].ToString());
+                        txtUUID.Text = drHOPWAMasterDetails["UUID"].ToString();
+                        PopulateDropDown(ddlPrimaryASO, drHOPWAMasterDetails["PrimaryASO"].ToString());
+                        txtHHIncludes.Text = drHOPWAMasterDetails["HHincludes"].ToString();
+                        txtWithHIV.Text = drHOPWAMasterDetails["WithHIV"].ToString();
+                        txtInHouseHold.Text = drHOPWAMasterDetails["InHousehold"].ToString();
+                        txtMinors.Text = drHOPWAMasterDetails["Minors"].ToString();
+                        txtGender.Text = drHOPWAMasterDetails["Gender"].ToString();
+                        txtAge.Text =  drHOPWAMasterDetails["Age"].ToString();
+                        PopulateDropDown(ddlRace, drHOPWAMasterDetails["Race"].ToString());
+                        PopulateDropDown(ddlEthnicity, drHOPWAMasterDetails["Ethnic"].ToString());
+                        PopulateDropDown(ddlGMI, drHOPWAMasterDetails["GMI"].ToString());
+                        PopulateDropDown(ddlAMI, drHOPWAMasterDetails["AMI"].ToString());
+                        txtBeds.Text = drHOPWAMasterDetails["Beds"].ToString();
+                        txtNotes.Text = drHOPWAMasterDetails["Notes"].ToString();
                         btnHOPWAMaster.Text = "Update";
 
                         cbHOPWAMaster.Checked = DataUtils.GetBool(drHOPWAMasterDetails["RowIsActive"].ToString()); ;
@@ -314,10 +344,13 @@ namespace vhcbcloud
 
             dvNewHOPWARace.Visible = true;
             BindHOPWARaceGrid();
+            dvNewHOPWAProgram.Visible = true;
+            BindHOPWAProgramGrid();
             dvNewHOPWAEthnicity.Visible = true;
             BindHOPWAEthnicityGrid();
             dvNewHOPWAAge.Visible = true;
             BindHOPWAAgeGrid();
+            
         }
 
         private SelectedHOPWAMasterInfo GetHOPWAMasterSelectedRecordID(GridView gvHOPWAMaster)
@@ -566,10 +599,192 @@ namespace vhcbcloud
                 LogError(Pagename, "BindHOPWAAgeGrid", "", ex.Message);
             }
         }
+
+        protected void btnProgram_Click(object sender, EventArgs e)
+        {
+            if (btnProgram.Text == "Add")
+            {
+                HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAProgram(DataUtils.GetInt(hfHOPWAId.Value), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    cbYear1.Checked, cbYear2.Checked, cbYear3.Checked, 
+                    DataUtils.GetDate(txtStartDate.Text), DataUtils.GetDate(txtEndDate.Text), 
+                    DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()),
+                    txtProgramNotes.Text);
+
+                if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
+                    LogMessage("HOPWA Program already exist as in-active");
+                else if (objHOPWAmainttResult.IsDuplicate)
+                    LogMessage("HOPWA Program already exist");
+                else
+                    LogMessage("HOPWA Program added successfully");
+
+                gvHOPWAProgram.EditIndex = -1;
+
+                cbAddProgram.Checked = false;
+            }
+            else
+            {
+                HOPWAMaintenanceData.UpdateHOPWAProgram(DataUtils.GetInt(hfProgramId.Value), DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlFund.SelectedValue.ToString()),
+                    cbYear1.Checked, cbYear2.Checked, cbYear3.Checked, 
+                    DataUtils.GetDate(txtStartDate.Text), DataUtils.GetDate(txtEndDate.Text), 
+                    DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()),
+                    txtProgramNotes.Text, cbProgramActive.Checked);
+
+                LogMessage("HOPWA Program updated successfully");
+
+                hfProgramId.Value = "";
+                btnProgram.Text = "Add";
+
+                cbAddProgram.Checked = false;
+                gvHOPWAProgram.EditIndex = -1;
+            }
+            ClearProgramForm();
+            BindHOPWAProgramGrid();
+        }
+
+        private void ClearProgramForm()
+        {
+            ddlProgram.SelectedIndex = -1;
+            ddlFund.SelectedIndex = -1;
+            cbYear1.Checked = false;
+            cbYear2.Checked = false;
+            cbYear3.Checked = false;
+            txtStartDate.Text = "";
+            txtEndDate.Text = "";
+            ddlLivingSituation.SelectedIndex = -1;
+            txtProgramNotes.Text = "";
+            cbProgramActive.Checked = true;
+            cbProgramActive.Enabled = false;
+            cbAddProgram.Checked = false;
+        }
+
+        protected void gvHOPWAProgram_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvHOPWAProgram.EditIndex = e.NewEditIndex;
+            BindHOPWAProgramGrid();
+        }
+
+        protected void gvHOPWAProgram_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvHOPWAProgram.EditIndex = -1;
+            ClearProgramForm();
+            BindHOPWAProgramGrid();
+        }
+
+        protected void gvHOPWAProgram_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnProgram.Text = "Update";
+                    cbAddProgram.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[10].Controls[0].Visible = false;
+                        Label lblHOPWAProgramID = e.Row.FindControl("lblHOPWAProgramID") as Label;
+                        DataRow drHOPWAMasterDetails = HOPWAMaintenanceData.GetHOPWAProgramById(Convert.ToInt32(lblHOPWAProgramID.Text));
+
+                        hfProgramId.Value = lblHOPWAProgramID.Text;
+
+                        PopulateDropDown(ddlProgram, drHOPWAMasterDetails["Program"].ToString());
+                        PopulateDropDown(ddlFund, drHOPWAMasterDetails["Fund"].ToString());
+                        cbYear1.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Yr1"].ToString());
+                        cbYear2.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Yr2"].ToString());
+                        cbYear3.Checked = DataUtils.GetBool(drHOPWAMasterDetails["yr3"].ToString());
+                        txtStartDate.Text = drHOPWAMasterDetails["StartDate"].ToString();
+                        txtEndDate.Text = drHOPWAMasterDetails["EndDate"].ToString();
+                        PopulateDropDown(ddlLivingSituation, drHOPWAMasterDetails["LivingSituationId"].ToString());
+                        cbProgramActive.Checked = DataUtils.GetBool(drHOPWAMasterDetails["RowIsActive"].ToString());
+                        cbProgramActive.Enabled = true;
+                        txtProgramNotes.Text = drHOPWAMasterDetails["Notes"].ToString();
+                        btnProgram.Text = "Update";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvLoanMaster_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void rdBtnSelectProgram_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectedProgramInfo objSelectedProgramInfo = GetSelectedProgramId(gvHOPWAProgram);
+
+            hfProgramId.Value = objSelectedProgramInfo.ProgramId.ToString();
+
+            dvNewExpenses.Visible = true;
+            //BindHOPWARaceGrid();
+        }
+        private void BindHOPWAProgramGrid()
+        {
+            dvNewExpenses.Visible = false;
+            try
+            {
+                DataTable dt = HOPWAMaintenanceData.GetHOPWAProgramList(DataUtils.GetInt(hfHOPWAId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvHOPWAProgramGrid.Visible = true;
+                    gvHOPWAProgram.DataSource = dt;
+                    gvHOPWAProgram.DataBind();
+                }
+                else
+                {
+                    dvHOPWAProgramGrid.Visible = false;
+                    gvHOPWAProgram.DataSource = null;
+                    gvHOPWAProgram.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindHOPWAProgramGrid", "", ex.Message);
+            }
+        }
+
+        private SelectedProgramInfo GetSelectedProgramId(GridView gvHOPWAProgram)
+        {
+            SelectedProgramInfo objSelectedProgramInfo = new SelectedProgramInfo();
+
+            for (int i = 0; i < gvHOPWAMaster.Rows.Count; i++)
+            {
+                RadioButton rbLoanMasterInfo = (RadioButton)gvHOPWAProgram.Rows[i].Cells[0].FindControl("rdBtnSelectProgram");
+                if (rbLoanMasterInfo != null)
+                {
+                    if (rbLoanMasterInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvHOPWAProgram.Rows[i].Cells[0].FindControl("HiddenProgramId");
+                        //Label lblNoteAmt = (Label)gvHOPWAMaster.Rows[i].Cells[1].FindControl("lblNoteAmt");
+
+                        if (hf != null)
+                        {
+                            objSelectedProgramInfo.ProgramId = DataUtils.GetInt(hf.Value);
+                            //objSelectedHOPWAMasterInfo.NoteAmt = lblNoteAmt.Text;
+                        }
+                        break;
+                    }
+                }
+            }
+            return objSelectedProgramInfo;
+        }
+
+        protected void btnAddExpense_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class SelectedHOPWAMasterInfo
     {
         public int HOPWAId { set; get; }
+    }
+
+    public class SelectedProgramInfo
+    {
+        public int ProgramId { set; get; }
     }
 }

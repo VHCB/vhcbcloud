@@ -135,7 +135,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateHOPWAMaster(int HOPWAID, string HHincludes, int PrimaryASO, int WithHIV, int InHousehold, int Minors, int Gender, int Age,
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool isActive)
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool IsRowIsActive)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AMI", AMI));
                         command.Parameters.Add(new SqlParameter("Beds", Beds));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
-                        command.Parameters.Add(new SqlParameter("isActive", isActive));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -493,6 +493,166 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("HOPWAAgeId", HOPWAAgeId));
                         command.Parameters.Add(new SqlParameter("GenderAgeID", GenderAgeID));
                         command.Parameters.Add(new SqlParameter("GANum", GANum));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetHOPWAProgramList(int HOPWAId, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetHOPWAProgramList";
+                        command.Parameters.Add(new SqlParameter("HOPWAId", HOPWAId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataRow GetHOPWAProgramById(int HOPWAProgramID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetHOPWAProgramById";
+                        command.Parameters.Add(new SqlParameter("HOPWAProgramID", HOPWAProgramID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count != 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
+        public static HOPWAmainttResult AddHOPWAProgram(int HOPWAID, int Program, int Fund, bool Yr1, bool Yr2, bool Yr3, DateTime StartDate, DateTime EndDate, 
+            int LivingSituationId, string Notes)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddHOPWAProgram";
+
+                        command.Parameters.Add(new SqlParameter("HOPWAID", HOPWAID));
+                        command.Parameters.Add(new SqlParameter("Program", Program));
+                        command.Parameters.Add(new SqlParameter("Fund", Fund));
+                        command.Parameters.Add(new SqlParameter("Yr1", Yr1));
+                        command.Parameters.Add(new SqlParameter("Yr2", Yr2));
+                        command.Parameters.Add(new SqlParameter("Yr3", Yr3));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
+                        command.Parameters.Add(new SqlParameter("EndDate", EndDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EndDate));
+                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
+                        command.Parameters.Add(new SqlParameter("Notes", Notes));
+                       
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        HOPWAmainttResult acs = new HOPWAmainttResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateHOPWAProgram(int HOPWAProgramID, int Program, int Fund, bool Yr1, bool Yr2, bool Yr3, DateTime StartDate, DateTime EndDate,
+            int LivingSituationId, string Notes, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateHOPWAProgram";
+
+                        command.Parameters.Add(new SqlParameter("HOPWAProgramID", HOPWAProgramID));
+                        command.Parameters.Add(new SqlParameter("Program", Program));
+                        command.Parameters.Add(new SqlParameter("Fund", Fund));
+                        command.Parameters.Add(new SqlParameter("Yr1", Yr1));
+                        command.Parameters.Add(new SqlParameter("Yr2", Yr2));
+                        command.Parameters.Add(new SqlParameter("Yr3", Yr3));
+                        command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
+                        command.Parameters.Add(new SqlParameter("EndDate", EndDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EndDate));
+                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
+                        command.Parameters.Add(new SqlParameter("Notes", Notes));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
