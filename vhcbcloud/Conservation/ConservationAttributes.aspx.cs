@@ -32,18 +32,81 @@ namespace vhcbcloud.Conservation
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAffMechanism.Enabled = true;
+            cbAddAltEnergy.Enabled = true;
+            cbAddAttribute.Enabled = true;
+            cbAddLegalInterest.Enabled = true;
+            cbAddLegalMechanism.Enabled = true;
+            cbAddOT.Enabled = true;
+            cbAddPA.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAffordability.Visible = false;
             btnAddAltEnergy.Visible = false;
@@ -51,14 +114,39 @@ namespace vhcbcloud.Conservation
             btnAddLegalMechanism.Visible = false;
             btnAddOT.Visible = false;
             btnAddPA.Visible = false;
+
             cbAddAffMechanism.Enabled = false;
             cbAddAltEnergy.Enabled = false;
             cbAddAttribute.Enabled = false;
             cbAddLegalInterest.Enabled = false;
             cbAddLegalMechanism.Enabled = false;
             cbAddOT.Enabled = false;
-            cbAddPA.Enabled = false;            
+            cbAddPA.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddAffordability.Visible = false;
+        //    btnAddAltEnergy.Visible = false;
+        //    btnAddLegalInterest.Visible = false;
+        //    btnAddLegalMechanism.Visible = false;
+        //    btnAddOT.Visible = false;
+        //    btnAddPA.Visible = false;
+        //    cbAddAffMechanism.Enabled = false;
+        //    cbAddAltEnergy.Enabled = false;
+        //    cbAddAttribute.Enabled = false;
+        //    cbAddLegalInterest.Enabled = false;
+        //    cbAddLegalMechanism.Enabled = false;
+        //    cbAddOT.Enabled = false;
+        //    cbAddPA.Enabled = false;            
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {

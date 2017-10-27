@@ -33,18 +33,87 @@ namespace vhcbcloud.Conservation
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            //btnAddApproval.Visible = false;
+            //btnAddMajor.Visible = false;
+            ////btnAddMilestone.Visible = false;
+            //btnAddMinor.Visible = false;
+            //btnAddPlan.Visible = false;
+            //btnAddViolation.Visible = false;
+
+            cbAddApproval.Enabled = true;
+            cbAddMajor.Enabled = true;
+            cbAddMinor.Enabled = true;
+            cbAddMilestone.Enabled = true;
+            cbAddPlan.Enabled = true;
+            cbAddViolation.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddApproval.Visible = false;
             btnAddMajor.Visible = false;
@@ -52,14 +121,38 @@ namespace vhcbcloud.Conservation
             btnAddMinor.Visible = false;
             btnAddPlan.Visible = false;
             btnAddViolation.Visible = false;
+
             cbAddApproval.Enabled = false;
             cbAddMajor.Enabled = false;
             cbAddMinor.Enabled = false;
             cbAddMilestone.Enabled = false;
             cbAddPlan.Enabled = false;
-            cbAddViolation.Enabled = false;            
-
+            cbAddViolation.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddApproval.Visible = false;
+        //    btnAddMajor.Visible = false;
+        //    btnAddMilestone.Visible = false;
+        //    btnAddMinor.Visible = false;
+        //    btnAddPlan.Visible = false;
+        //    btnAddViolation.Visible = false;
+        //    cbAddApproval.Enabled = false;
+        //    cbAddMajor.Enabled = false;
+        //    cbAddMinor.Enabled = false;
+        //    cbAddMilestone.Enabled = false;
+        //    cbAddPlan.Enabled = false;
+        //    cbAddViolation.Enabled = false;            
+
+        //}
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -336,6 +429,8 @@ namespace vhcbcloud.Conservation
             BindMajorGrid();
             ClearMajorAmendmentForm();
             cbAddMajor.Checked = false;
+            btnAddMajor.Visible = true;
+            btnAddMajor.Text = "Add";
         }
 
         //protected void gvMajor_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -364,11 +459,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddMajor.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMajor.Visible = true;
+                    else
+                        btnAddMajor.Visible = false;
+
                     cbAddMajor.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveMajAmendID = e.Row.FindControl("lblConserveMajAmendID") as Label;
                         DataRow dr = ConservationStewardshipData.GetMajorAmendmentsById(Convert.ToInt32(lblConserveMajAmendID.Text));
 
@@ -533,6 +634,8 @@ namespace vhcbcloud.Conservation
             BindMinorGrid();
             ClearMinorAmendmentForm();
             cbAddMinor.Checked = false;
+            btnAddMinor.Visible = true;
+            btnAddMinor.Text = "Add";
         }
 
         protected void gvMinor_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -561,11 +664,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddMinor.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMinor.Visible = true;
+                    else
+                        btnAddMinor.Visible = false;
+
                     cbAddMinor.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveMinAmendID = e.Row.FindControl("lblConserveMinAmendID") as Label;
                         DataRow dr = ConservationStewardshipData.GetMinorAmendmentsById(Convert.ToInt32(lblConserveMinAmendID.Text));
 
@@ -790,6 +899,8 @@ namespace vhcbcloud.Conservation
             BindViolationsGrid();
             ClearViolationForm();
             cbAddViolation.Checked = false;
+            btnAddViolation.Visible = true;
+            btnAddViolation.Text = "Add";
         }
 
         protected void gvViolation_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -800,11 +911,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddViolation.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddViolation.Visible = true;
+                    else
+                        btnAddViolation.Visible = false;
+
                     cbAddViolation.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveViolationsID = e.Row.FindControl("lblConserveViolationsID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConserveViolationsById(Convert.ToInt32(lblConserveViolationsID.Text));
 
@@ -932,6 +1049,8 @@ namespace vhcbcloud.Conservation
             BindApprovalsGrid();
             ClearApprovalForm();
             cbAddApproval.Checked = false;
+            btnAddApproval.Visible = true;
+            btnAddApproval.Text = "Add";
         }
 
         protected void gvApproval_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -942,11 +1061,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddApproval.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddApproval.Visible = true;
+                    else
+                        btnAddApproval.Visible = false;
+
                     cbAddApproval.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveApprovalID = e.Row.FindControl("lblConserveApprovalID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConserveApprovalsById(Convert.ToInt32(lblConserveApprovalID.Text));
 
@@ -1017,6 +1142,8 @@ namespace vhcbcloud.Conservation
             BindPlansGrid();
             ClearPlansForm();
             cbAddPlan.Checked = false;
+            btnAddPlan.Visible = true;
+            btnAddPlan.Text = "Add";
         }
 
         private void BindPlansGrid()
@@ -1129,11 +1256,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddPlan.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddPlan.Visible = true;
+                    else
+                        btnAddPlan.Visible = false;
+
                     cbAddPlan.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
                         Label lblConservePlanID = e.Row.FindControl("lblConservePlanID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConservePlansById(Convert.ToInt32(lblConservePlanID.Text));
 

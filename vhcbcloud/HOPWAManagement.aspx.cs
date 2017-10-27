@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -36,8 +37,9 @@ namespace vhcbcloud
             BindLookUP(ddlHOPWAEthnicity, 149);
             BindLookUP(ddlAgeGender, 231);
 
-            BindLookUP(ddlProgram, 231);
+            BindLookUP(ddlProgram, 244);
             BindLookUP(ddlLivingSituation, 234);
+            BindLookUP(ddlPHPuse, 233);
             LoadFundNames();
         }
 
@@ -670,6 +672,8 @@ namespace vhcbcloud
             gvHOPWAProgram.EditIndex = -1;
             ClearProgramForm();
             BindHOPWAProgramGrid();
+            btnProgram.Text = "Add";
+            hfProgramId.Value = "";
         }
 
         protected void gvHOPWAProgram_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -716,10 +720,26 @@ namespace vhcbcloud
             SelectedProgramInfo objSelectedProgramInfo = GetSelectedProgramId(gvHOPWAProgram);
 
             hfProgramId.Value = objSelectedProgramInfo.ProgramId.ToString();
+            hfProgramName.Value =  objSelectedProgramInfo.ProgramName;
+
+            cbAddExpense.Checked = false;
+
+            tblPHP.Visible = false;
+            tblSTRMU.Visible = false;
+
+            if (objSelectedProgramInfo.ProgramName.ToString().ToUpper() == "PHP")
+            {
+                tblPHP.Visible = true;
+            }
+            else if (objSelectedProgramInfo.ProgramName.ToString().ToUpper() == "STRMU")
+            {
+                tblSTRMU.Visible = true;
+            }
 
             dvNewExpenses.Visible = true;
-            //BindHOPWARaceGrid();
+            BindExpensesGrid();
         }
+
         private void BindHOPWAProgramGrid()
         {
             dvNewExpenses.Visible = false;
@@ -758,12 +778,12 @@ namespace vhcbcloud
                     if (rbLoanMasterInfo.Checked)
                     {
                         HiddenField hf = (HiddenField)gvHOPWAProgram.Rows[i].Cells[0].FindControl("HiddenProgramId");
-                        //Label lblNoteAmt = (Label)gvHOPWAMaster.Rows[i].Cells[1].FindControl("lblNoteAmt");
+                        Label lblProgram = (Label)gvHOPWAProgram.Rows[i].Cells[1].FindControl("lblProgram");
 
                         if (hf != null)
                         {
                             objSelectedProgramInfo.ProgramId = DataUtils.GetInt(hf.Value);
-                            //objSelectedHOPWAMasterInfo.NoteAmt = lblNoteAmt.Text;
+                            objSelectedProgramInfo.ProgramName = lblProgram.Text;
                         }
                         break;
                     }
@@ -774,7 +794,138 @@ namespace vhcbcloud
 
         protected void btnAddExpense_Click(object sender, EventArgs e)
         {
+            decimal amount = DataUtils.GetDecimal(Regex.Replace(txtAmount.Text, "[^0-9a-zA-Z.]+", ""));
 
+            if (btnAddExpense.Text == "Add")
+            {
+                HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAExp(DataUtils.GetInt(hfProgramId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(txtExpensesDate.Text), DataUtils.GetInt(txtDisRecord.Text));
+
+                if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
+                    LogMessage("Program Expenses already exist as in-active");
+                else if (objHOPWAmainttResult.IsDuplicate)
+                    LogMessage("Program Expenses already exist");
+                else
+                    LogMessage("Program Expenses added successfully");
+
+                gvExpenses.EditIndex = -1;
+
+                cbAddExpense.Checked = false;
+            }
+            else
+            {
+                HOPWAMaintenanceData.UpdateHOPWAExp(DataUtils.GetInt(hfExpId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(txtExpensesDate.Text), DataUtils.GetInt(txtDisRecord.Text), cbExpensesActive.Checked);
+
+                LogMessage("Program Expenses updated successfully");
+
+                hfExpId.Value = "";
+                btnAddExpense.Text = "Add";
+
+                cbAddExpense.Checked = false;
+                gvExpenses.EditIndex = -1;
+            }
+            ClearExpensesForm();
+            BindExpensesGrid();
+        }
+
+        private void ClearExpensesForm()
+        {
+            txtAmount.Text = "";
+            txtDisRecord.Text = "";
+            txtExpensesDate.Text = "";
+            cbRent.Checked = false;
+            cbMortgage.Checked = false;
+            cbUtilities.Checked = false;
+            ddlPHPuse.SelectedIndex = -1;
+        }
+
+        protected void gvExpenses_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvExpenses.EditIndex = e.NewEditIndex;
+            BindExpensesGrid();
+        }
+
+        protected void gvExpenses_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvExpenses.EditIndex = -1;
+            ClearExpensesForm();
+            cbAddExpense.Checked = false;
+            BindExpensesGrid();
+        }
+
+        protected void gvExpenses_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddExpense.Text = "Update";
+                    cbAddExpense.Checked = true;
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[6].Controls[0].Visible = false;
+                        Label lblHOPWAExpID = e.Row.FindControl("lblHOPWAExpID") as Label;
+                        DataRow drHOPWAMasterDetails = HOPWAMaintenanceData.GetHOPWAExpById(Convert.ToInt32(lblHOPWAExpID.Text));
+
+                        hfExpId.Value = lblHOPWAExpID.Text;
+
+                        txtAmount.Text = drHOPWAMasterDetails["Amount"].ToString();
+                        txtExpensesDate.Text = drHOPWAMasterDetails["Date"].ToString();
+                        PopulateDropDown(ddlPHPuse, drHOPWAMasterDetails["PHPUse"].ToString());
+                        txtDisRecord.Text = drHOPWAMasterDetails["DisbursementRecord"].ToString();
+                        cbMortgage.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Mortgage"].ToString());
+                        cbRent.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Rent"].ToString());
+                        cbUtilities.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Utilities"].ToString());
+                        cbExpensesActive.Checked = DataUtils.GetBool(drHOPWAMasterDetails["RowIsActive"].ToString()); ;
+                        cbExpensesActive.Enabled = true;
+
+                        btnAddExpense.Text = "Update";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvLoanMaster_RowDataBound", "", ex.Message);
+            }
+        }
+
+        private void BindExpensesGrid()
+        {
+            try
+            {
+                DataTable dt = HOPWAMaintenanceData.GetHOPWAExpList(DataUtils.GetInt(hfProgramId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvExpensesGrid.Visible = true;
+                    gvExpenses.DataSource = dt;
+                    gvExpenses.DataBind();
+
+                    decimal totAmt = 0;
+
+                    Label lblTotAmt = (Label)gvExpenses.FooterRow.FindControl("lblFooterAmount");
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (Convert.ToDecimal(dt.Rows[i]["Amount"].ToString()) > 0)
+                            totAmt += Convert.ToDecimal(dt.Rows[i]["Amount"].ToString());
+                    }
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                }
+                else
+                {
+                    dvExpensesGrid.Visible = false;
+                    gvExpenses.DataSource = null;
+                    gvExpenses.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindExpensesGrid", "", ex.Message);
+            }
         }
     }
 
@@ -786,5 +937,6 @@ namespace vhcbcloud
     public class SelectedProgramInfo
     {
         public int ProgramId { set; get; }
+        public string ProgramName { set; get; }
     }
 }

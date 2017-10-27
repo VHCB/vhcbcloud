@@ -422,18 +422,18 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Amount</span></td>
-                                        <td style="width: 250px">
+                                        <td style="width: 174px">
                                             <asp:TextBox ID="txtAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 107px">
                                             <span class="labelClass">Date</span>
                                         </td>
-                                        <td style="width: 270px">
+                                        <td style="width: 172px">
                                             <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender5" TargetControlID="txtExpensesDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Disbursement Record</span></td>
+                                        <td style="width: 137px"><span class="labelClass">Disbursement Record</span></td>
                                         <td>
                                             <asp:TextBox ID="txtDisRecord" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
@@ -441,34 +441,38 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                </table>
+                                <table style="width: 100%" id="tblPHP" runat="server" visible="false">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">PHP Use</span></td>
-                                        <td style="width: 250px">
+                                        <td style="width: 174px">
                                             <asp:DropDownList ID="ddlPHPuse" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 107px">
                                             <span class="labelClass"></span>
                                         </td>
-                                        <td style="width: 270px"></td>
-                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td style="width: 172px"></td>
+                                        <td style="width: 137px"><span class="labelClass"></span></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                </table>
+                                <table style="width: 100%" id="tblSTRMU" runat="server" visible="false">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Rent</span></td>
-                                        <td style="width: 250px">
+                                        <td style="width: 174px">
                                             <asp:CheckBox ID="cbRent" CssClass="ChkBox" runat="server" Checked="false" />
                                         </td>
                                         <td style="width: 107px">
                                             <span class="labelClass">Mortgage</span>
                                         </td>
-                                        <td style="width: 270px">
+                                        <td style="width: 172px">
                                             <asp:CheckBox ID="cbMortgage" CssClass="ChkBox" runat="server" Checked="false" />
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Utilities</span></td>
+                                        <td style="width: 137px"><span class="labelClass">Utilities</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbUtilities" CssClass="ChkBox" runat="server" Checked="false" />
                                         </td>
@@ -478,19 +482,21 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Active</span></td>
-                                        <td style="width: 250px">
+                                        <td style="width: 174px">
                                             <asp:CheckBox ID="cbExpensesActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
                                         </td>
                                         <td style="width: 107px">
                                             <span class="labelClass"></span>
                                         </td>
-                                        <td style="width: 270px"></td>
-                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td style="width: 172px"></td>
+                                        <td style="width: 137px"><span class="labelClass"></span></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                </table>
+                                <table style="width: 100%">
                                     <tr>
                                         <td>
                                             <asp:Button ID="btnAddExpense" runat="server" Text="Add" class="btn btn-info"
@@ -501,6 +507,64 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvExpensesGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel11" Width="100%" Height="200px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvExpenses" runat="server" AutoGenerateColumns="False" ShowFooter="True"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowEditing="gvExpenses_RowEditing" OnRowCancelingEdit="gvExpenses_RowCancelingEdit"
+                                    OnRowDataBound="gvExpenses_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="HOPWAExpID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblHOPWAExpID" runat="Server" Text='<%# Eval("HOPWAExpID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Program">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProgram" runat="Server" Text='<%# Eval("ProgramName") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Total :
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label ID="lblFooterAmount" runat="server" Text=""></asp:Label>
+                                            </FooterTemplate>
+
+
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Disbursement Record">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDisbursementRecord" runat="Server" Text='<%# Eval("DisbursementRecord") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
                             </asp:Panel>
                         </div>
                     </div>
@@ -819,10 +883,22 @@
         </div>
         <asp:HiddenField ID="hfHOPWAId" runat="server" />
         <asp:HiddenField ID="hfProgramId" runat="server" />
+        <asp:HiddenField ID="hfExpId" runat="server" />
+        <asp:HiddenField ID="hfProgramName" runat="server" />
 
     </div>
     <script language="javascript">
         $(document).ready(function () {
+            if ($('#dvExpensesForm').css('display') == 'none') {
+                alert('rama');
+                toCurrencyControl($('#<%= txtAmount.ClientID%>').val(), $('#<%= txtAmount.ClientID%>'));
+            }
+
+
+            $('#<%= txtAmount.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtAmount.ClientID%>').val(), $('#<%= txtAmount.ClientID%>'));
+            });
+
             $('#<%= dvHOPWAMasterForm.ClientID%>').toggle($('#<%= cbAddHOPWAMaster.ClientID%>').is(':checked'));
 
             $('#<%= cbAddHOPWAMaster.ClientID%>').click(function () {
@@ -888,33 +964,33 @@
 
         function RadioCheck(rb) {
             var gv = document.getElementById("<%=gvHOPWAMaster.ClientID%>");
-             var rbs = gv.getElementsByTagName("input");
+            var rbs = gv.getElementsByTagName("input");
 
-             var row = rb.parentNode.parentNode;
-             for (var i = 0; i < rbs.length; i++) {
-                 if (rbs[i].type == "radio") {
-                     if (rbs[i].checked && rbs[i] != rb) {
-                         rbs[i].checked = false;
-                         break;
-                     }
-                 }
-             }
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
         }
 
         function RadioCheck1(rb) {
             var gv = document.getElementById("<%=gvHOPWAProgram.ClientID%>");
-             var rbs = gv.getElementsByTagName("input");
+            var rbs = gv.getElementsByTagName("input");
 
-             var row = rb.parentNode.parentNode;
-             for (var i = 0; i < rbs.length; i++) {
-                 if (rbs[i].type == "radio") {
-                     if (rbs[i].checked && rbs[i] != rb) {
-                         rbs[i].checked = false;
-                         break;
-                     }
-                 }
-             }
-         }
+            var row = rb.parentNode.parentNode;
+            for (var i = 0; i < rbs.length; i++) {
+                if (rbs[i].type == "radio") {
+                    if (rbs[i].checked && rbs[i] != rb) {
+                        rbs[i].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
     </script>
 </asp:Content>
 

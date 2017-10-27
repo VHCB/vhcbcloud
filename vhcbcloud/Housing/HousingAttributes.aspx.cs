@@ -32,10 +32,12 @@ namespace vhcbcloud.Housing
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
+
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -44,6 +46,81 @@ namespace vhcbcloud.Housing
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddCPP.Enabled = true;
+            cbAddInterAgency.Enabled = true;
+            cbAddVHCB.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
+        {
+            cbAddCPP.Enabled = false;
+            cbAddInterAgency.Enabled = false;
+            cbAddVHCB.Enabled = false;
+
+            btnAddInterAgency.Enabled = false;
+            btnAddVHCB.Enabled = false;
+        }
+
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
@@ -58,22 +135,13 @@ namespace vhcbcloud.Housing
             }
         }
 
-        private void RoleReadOnly()
-        {
-            cbAddCPP.Enabled = false;
-            cbAddInterAgency.Enabled = false;
-            cbAddVHCB.Enabled = false;
-            btnAddInterAgency.Enabled = false;
-            btnAddVHCB.Enabled = false;            
-        }
-
-        protected bool GetRoleAuth()
-        {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
-        }
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
 
         private void GenerateTabs()

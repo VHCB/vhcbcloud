@@ -33,26 +33,104 @@ namespace vhcbcloud.Conservation
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindConConserveForm();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            btnSubmit.Visible = false;
+            cbAddAcreage.Enabled = true;
+            cbAddEasementHolder.Enabled = true;
+            cbAddSurfaceWaters.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAcreage.Visible = false;
             btnAddSurfaceWaters.Visible = false;
             btnSubmit.Visible = false;
+
             cbAddAcreage.Enabled = false;
             cbAddEasementHolder.Enabled = false;
             cbAddSurfaceWaters.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddAcreage.Visible = false;
+        //    btnAddSurfaceWaters.Visible = false;
+        //    btnSubmit.Visible = false;
+        //    cbAddAcreage.Enabled = false;
+        //    cbAddEasementHolder.Enabled = false;
+        //    cbAddSurfaceWaters.Enabled = false;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -469,6 +547,7 @@ namespace vhcbcloud.Conservation
         {
             gvAcreage.EditIndex = -1;
             BindAcreageGrid();
+           
         }
 
         protected void gvAcreage_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -608,11 +687,17 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddSurfaceWaters.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddSurfaceWaters.Visible = true;
+                    else
+                        btnAddSurfaceWaters.Visible = false;
+
                     cbAddSurfaceWaters.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[5].Controls[1].Visible = false;
                         Label lblSurfaceWatersID = e.Row.FindControl("lblSurfaceWatersID") as Label;
                         DataRow dr = ConservationSummaryData.GetProjectSurfaceWatersById(Convert.ToInt32(lblSurfaceWatersID.Text));
 
@@ -650,6 +735,8 @@ namespace vhcbcloud.Conservation
 
             gvSurfaceWaters.EditIndex = -1;
             BindSurfacewatersGrid();
+
+            btnAddSurfaceWaters.Visible = true;
         }
 
         protected void ImgEasementHoldersReport_Click(object sender, ImageClickEventArgs e)

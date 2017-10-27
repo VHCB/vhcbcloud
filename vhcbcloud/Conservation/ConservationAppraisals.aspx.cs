@@ -29,29 +29,104 @@ namespace vhcbcloud.Conservation
                 Session["dtOccupantsList"] = null;
                 PopulateProjectDetails();
                 BindControls();
+                GetRoleAccess();
                 BindAppraisalValueForm();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
 
-        protected bool GetRoleAuth()
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
 
-        protected void RoleReadOnly()
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAppraisalInfo.Enabled = true;
+            cbAddAppraisalPay.Enabled = true;
+            btnSubmit.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAppraisalInfo.Visible = false;
             btnAddPay.Visible = false;
             btnSubmit.Visible = false;
+
             cbAddAppraisalInfo.Enabled = false;
             cbAddAppraisalPay.Enabled = false;
-            cbReviewApproved.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddAppraisalInfo.Visible = false;
+        //    btnAddPay.Visible = false;
+        //    btnSubmit.Visible = false;
+        //    cbAddAppraisalInfo.Enabled = false;
+        //    cbAddAppraisalPay.Enabled = false;
+        //    cbReviewApproved.Enabled = false;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -302,6 +377,8 @@ namespace vhcbcloud.Conservation
             BindAppaisalInfoGrid();
             ClearAppraisalInfoForm();
             hfAppraisalInfoID.Value = "";
+
+            btnAddAppraisalInfo.Visible = true;
             btnAddAppraisalInfo.Text = "Add";
         }
 
@@ -313,12 +390,18 @@ namespace vhcbcloud.Conservation
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddAppraisalInfo.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddAppraisalInfo.Visible = true;
+                    else
+                        btnAddAppraisalInfo.Visible = false;
+
                     cbAddAppraisalInfo.Checked = true;
 
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[8].Controls[0].Visible = false;
+                        e.Row.Cells[9].Controls[1].Visible = false;
 
                         Label lblAppraisalInfoID = e.Row.FindControl("lblAppraisalInfoID") as Label;
                         DataRow dr = ConservationAppraisalsData.GetConservationAppraisalInfoById(DataUtils.GetInt(lblAppraisalInfoID.Text));

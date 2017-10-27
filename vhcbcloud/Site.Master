@@ -142,12 +142,12 @@
                                         </ul>
                                     </li>
                                     <li class="menu-item "><a runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>
-                                    <li class="menu-item "><a runat="server" href="~/HOPWAManagement.aspx">HOPWA</a></li>
                                     <li class="menu-item "><a runat="server" href="~/MilestonesQuickentry.aspx">Milestone Quickentry</a></li>
                                      <li class="menu-item "><a runat="server" href="~/UserSecurity.aspx">User Security</a></li>
                                 </ul>
                             </li>
                             <li><a runat="server" href="~/LoanMaintenance.aspx">Loans</a></li>
+                             <li><a runat="server" href="~/HOPWAManagement.aspx">HOPWA</a></li>
                             <li><a runat="server" href="~/FileHold">FileHold</a></li>
                             <li><a runat="server" href="~/Exago">Exago</a></li>                            
                             <li><a runat="server" href="~/About">About</a></li>

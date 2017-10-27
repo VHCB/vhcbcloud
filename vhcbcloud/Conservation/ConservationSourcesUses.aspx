@@ -161,7 +161,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
+                                                <asp:Label ID="lblTotal2" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("Total", "{0:0.00}") %>'></asp:TextBox>
@@ -184,7 +184,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -285,7 +285,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="VHCB Total">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
+                                                <asp:Label ID="lblTotal3" runat="Server" Text='<%# Eval("VHCBTotal", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtVHCBTotal" CssClass="clsTextBoxBlue1" style="width: 100px" runat="server" Text='<%# Eval("VHCBTotal", "{0:0.00}") %>'></asp:TextBox>
@@ -312,7 +312,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblTotal" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
+                                                <asp:Label ID="lblTotal1" runat="Server" Text='<%# Eval("Total", "{0:c2}") %>' />
                                             </ItemTemplate>
                                             <FooterTemplate>
                                             <asp:Label runat="server" ID="lblFooterGrandTotalAmount" Text=""></asp:Label>
@@ -332,7 +332,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -349,6 +349,8 @@
     <asp:HiddenField ID="hfSourcesTotal" runat="server" />
     <asp:HiddenField ID="hfUsesTotal" runat="server" />
     <asp:HiddenField ID="hfWarning" runat="server" />
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+
     <script language="javascript">
         $(document).ready(function () {
             $('#<%= txtSourceTotal.ClientID%>').keyup(function () {

@@ -728,3 +728,180 @@ begin transaction
 	if @@trancount > 0
 		commit transaction;
 go
+
+/* HOPWAExp*/
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHOPWAExpList]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHOPWAExpList
+go
+
+create procedure dbo.GetHOPWAExpList
+(
+	@HOPWAProgramID		int,
+	@IsActiveOnly		bit
+) as
+--GetHOPWAExpList 3, 1
+begin transaction
+
+	begin try
+	declare @ProgramName nvarchar(250)
+
+	select @ProgramName = lv.description
+	from HOPWAProgram hp(nolock)
+	join lookupvalues lv(nolock) on hp.Program = lv.TypeID
+	where HOPWAProgramID = @HOPWAProgramID
+
+	select HOPWAExpID, @ProgramName ProgramName, Amount, Rent, Mortgage, Utilities, PHPUse, lv.description PHPUseName, convert(varchar(10), Date, 101) Date, 
+		DisbursementRecord, hp.RowIsActive
+	from HOPWAExp hp(nolock) 
+	left join lookupvalues lv(nolock) on hp.PHPUse = lv.TypeID
+	where HOPWAProgramID = @HOPWAProgramID 
+		and (@IsActiveOnly = 0 or hp.RowIsActive = @IsActiveOnly)
+		order by hp.DateModified desc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetHOPWAExpById]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetHOPWAExpById
+go
+
+create procedure dbo.GetHOPWAExpById
+(
+	@HOPWAExpID		int
+) as
+--GetHOPWAExpById 1
+begin transaction
+
+	begin try
+
+	select HOPWAExpID, HOPWAProgramID, convert(varchar(10), Amount) Amount, Rent, Mortgage, Utilities, PHPUse, 
+		convert(varchar(10), Date, 101) Date, DisbursementRecord, RowIsActive, DateModified
+	from HOPWAExp hp(nolock) 
+	where HOPWAExpID = @HOPWAExpID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[AddHOPWAExp]') and type in (N'P', N'PC'))
+drop procedure [dbo].AddHOPWAExp
+go
+
+create procedure dbo.AddHOPWAExp
+(
+	@HOPWAProgramID	int,
+	@Amount			decimal(18, 2),
+	@Rent			bit,
+	@Mortgage		bit, 
+	@Utilities		bit, 
+	@PHPUse			int, 
+	@Date			date, 
+	@DisbursementRecord	int,
+	@isDuplicate	bit output,
+	@isActive		bit Output
+) as
+begin transaction
+
+	begin try
+
+	set @isDuplicate = 1
+	set @isActive = 1
+	
+	if not exists
+    (
+		select 1
+		from HOPWAExp(nolock)
+		where HOPWAProgramID = @HOPWAProgramID 
+			and 1 = 2
+    )
+	begin
+		insert into HOPWAExp(HOPWAProgramID, Amount, Rent, Mortgage, Utilities, PHPUse, Date, DisbursementRecord)
+		values(@HOPWAProgramID, @Amount, @Rent, @Mortgage, @Utilities, @PHPUse, @Date, @DisbursementRecord)
+		
+		set @isDuplicate = 0
+	end
+
+	if(@isDuplicate = 1)
+	begin
+		select @isActive =  RowIsActive
+		from HOPWAExp(nolock)
+		where HOPWAProgramID = @HOPWAProgramID 
+			and 1 = 2
+	end
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+        RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[UpdateHOPWAExp]') and type in (N'P', N'PC'))
+drop procedure [dbo].UpdateHOPWAExp
+go
+
+create procedure dbo.UpdateHOPWAExp
+(
+	@HOPWAExpID	int, 
+	@Amount			decimal(18, 2),
+	@Rent			bit,
+	@Mortgage		bit, 
+	@Utilities		bit, 
+	@PHPUse			int, 
+	@Date			date, 
+	@DisbursementRecord	int,
+	@RowIsActive	bit
+) as
+begin transaction
+
+	begin try
+	
+	update HOPWAExp set  Amount = @Amount, Rent = @Rent, 
+		Mortgage = @Mortgage, Utilities = @Utilities, PHPUse = @PHPUse, Date = @Date, DisbursementRecord = @DisbursementRecord,
+		RowIsActive = @RowIsActive, DateModified = getdate()
+	from HOPWAExp 
+	where HOPWAExpID = @HOPWAExpID
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+go

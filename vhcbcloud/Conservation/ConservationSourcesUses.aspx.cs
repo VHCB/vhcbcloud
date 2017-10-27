@@ -32,7 +32,7 @@ namespace vhcbcloud.Conservation
 
                 dvImport.Visible = false;
                 BindControls();
-
+                GetRoleAccess();
                 dvNewSource.Visible = false;
                 dvConsevationSourcesGrid.Visible = false;
 
@@ -42,23 +42,96 @@ namespace vhcbcloud.Conservation
                 ddlBudgetPeriod.SelectedValue = ConservationSourcesUsesData.GetLatestBudgetPeriod(DataUtils.GetInt(hfProjectId.Value)).ToString();
                 BudgetPeriodSelectionChanged();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddSource.Enabled = true;
+            cbAddUse.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddOtherUses.Visible = false;
             btnAddSources.Visible = false;
+
             cbAddSource.Enabled = false;
             cbAddUse.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddOtherUses.Visible = false;
+        //    btnAddSources.Visible = false;
+        //    cbAddSource.Enabled = false;
+        //    cbAddUse.Enabled = false;
+            
+        //}
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
