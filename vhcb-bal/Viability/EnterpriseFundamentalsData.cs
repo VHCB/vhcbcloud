@@ -45,8 +45,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dr;
         }
 
-        public static ViabilityMaintResult AddEnterpriseFundamentals(int ProjectId, int PlanType, int ServiceProvOrg, int LeadAdvisor,
-            string ProjDesc, string BusDesc, bool Busplan, bool Grantapp)
+        public static ViabilityMaintResult AddEnterpriseFundamentals(int ProjectId, int FiscalYr, int PlanType, int ServiceProvOrg, int LeadAdvisor,
+            string ProjDesc, string BusDesc)
         {
             try
             {
@@ -61,6 +61,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.CommandText = "AddEnterpriseFundamentals";
 
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("FiscalYr", FiscalYr));
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
@@ -68,8 +69,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
                         //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
-                        command.Parameters.Add(new SqlParameter("Busplan", Busplan));
-                        command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
+                        //command.Parameters.Add(new SqlParameter("Busplan", Busplan));
+                        //command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -96,8 +97,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static void UpdateEnterpriseFundamentals(int EnterFundamentalID, int PlanType, int ServiceProvOrg, int LeadAdvisor, 
-            string ProjDesc, string BusDesc, bool Busplan, bool Grantapp, bool RowIsActive)
+        public static void UpdateEnterpriseFundamentals(int EnterFundamentalID, int FiscalYr, int PlanType, int ServiceProvOrg, int LeadAdvisor, 
+            string ProjDesc, string BusDesc, bool RowIsActive)
         {
             try
             {
@@ -113,14 +114,15 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         //4 Parameters
                         command.Parameters.Add(new SqlParameter("EnterFundamentalID", EnterFundamentalID));
+                        command.Parameters.Add(new SqlParameter("FiscalYr", FiscalYr));
                         command.Parameters.Add(new SqlParameter("PlanType", PlanType));
                         command.Parameters.Add(new SqlParameter("ServiceProvOrg", ServiceProvOrg));
                         command.Parameters.Add(new SqlParameter("LeadAdvisor", LeadAdvisor));
                         //command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
                         command.Parameters.Add(new SqlParameter("BusDesc", BusDesc));
-                        command.Parameters.Add(new SqlParameter("Busplan", Busplan));
-                        command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
+                        //command.Parameters.Add(new SqlParameter("Busplan", Busplan));
+                        //command.Parameters.Add(new SqlParameter("Grantapp", Grantapp));
                         //command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 

@@ -31,29 +31,98 @@ namespace vhcbcloud.Viability
                 ce_txtEventDate.SelectedDate = DateTime.Today;
                 CalendarExtender1.SelectedDate = DateTime.Today;
                 BindControls();
+                GetRoleAccess();
                 PopulateProjectDetails();
                 BindProductGrid();
                 BindAttributeGrid();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAttribute.Enabled = true;
+            cbAddProduct.Enabled = true;
+
+            btnAddAcres.Visible = false;
+            btnAddEntInfo.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAcres.Visible = false;
             btnAddAttribute.Visible = false;
             btnAddEntInfo.Visible = false;
             btnAddProducts.Visible = false;
+
             cbAddAttribute.Enabled = false;
             cbAddProduct.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -104,6 +173,7 @@ namespace vhcbcloud.Viability
                 PopulateDropDown(ddlHearViability, drow["HearAbout"].ToString());
                 txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
                 btnAddEntInfo.Text = "Update";
+                txtOtherNames.Text = drow["OtherNames"].ToString();
             }
 
             if (EnterpriseType != "Viability Farm Enterprise")
@@ -476,7 +546,7 @@ namespace vhcbcloud.Viability
         protected void btnAddEntInfo_Click(object sender, EventArgs e)
         {
             EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtOtherNames.Text);
         }
     }
 }

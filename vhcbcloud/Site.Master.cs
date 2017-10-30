@@ -128,6 +128,7 @@ namespace vhcbcloud
         }
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
+            Session.Remove("UserMenuDetails");
             Context.GetOwinContext().Authentication.SignOut();
         }
 

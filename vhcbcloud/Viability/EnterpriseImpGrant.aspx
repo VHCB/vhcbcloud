@@ -40,6 +40,17 @@
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
+                        <tr>
+                            <td style="height: 5px"><span class="labelClass">Other Names</span></td>
+                            <td style="height: 5px">
+                                <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
+
+                            </td>
+                            <td colspan="4" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
                     </table>
                 </div>
 
@@ -148,17 +159,17 @@
                                             <tr>
                                                 <td style="width: 136px"><span class="labelClass">Match Description</span></td>
                                                 <td style="width: 215px">
-                                                    <asp:DropDownList ID="ddlMatchDescription" CssClass="clsDropDownLong" runat="server" Style="margin-left: 0">
+                                                    <asp:DropDownList ID="ddlMatchDescription" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                                     </asp:DropDownList>
                                                 </td>
-                                                <td style="width: 70px">
-                                                    <span class="labelClass"></span>
-                                                </td>
+                                                <td style="width: 106px">
+                                                    <span class="labelClass">Grant Amount</span></td>
                                                 <td style="width: 180px">
-                                                    <asp:Button ID="btnAddMatchDesc" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMatchDesc_Click" />
+                                                    <asp:TextBox ID="txtGrantAmt" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                                 </td>
                                                 <td style="width: 170px"></td>
-                                                <td></td>
+                                                <td>
+                                                    <asp:Button ID="btnAddMatchDesc" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddMatchDesc_Click" /></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 15px"></td>
@@ -171,7 +182,7 @@
                                     <asp:Panel runat="server" ID="Panel4" Width="100%" Height="100px" ScrollBars="Vertical">
                                         <asp:GridView ID="gvGrantMatch" runat="server" AutoGenerateColumns="False"
                                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
                                             OnRowEditing="gvGrantMatch_RowEditing" OnRowCancelingEdit="gvGrantMatch_RowCancelingEdit"
                                             OnRowUpdating="gvGrantMatch_RowUpdating">
                                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -179,6 +190,7 @@
                                             <HeaderStyle CssClass="headerStyle" />
                                             <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                             <RowStyle CssClass="rowStyle" />
+                                            <FooterStyle CssClass="footerStyleTotals" />
                                             <Columns>
                                                 <asp:TemplateField HeaderText="EnterpriseGrantMatchID" Visible="false">
                                                     <ItemTemplate>
@@ -189,7 +201,17 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblMatchDesc" runat="Server" Text='<%# Eval("MatchDesc") %>' />
                                                     </ItemTemplate>
-                                                    <ItemStyle Width="500px" />
+                                                    <FooterTemplate>
+                                                        Total :
+                                                    </FooterTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Grant Amount">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblGrantAmount" runat="Server" Text='<%# Eval("GrantAmt", "{0:C2}") %>' />
+                                                    </ItemTemplate>
+                                                    <FooterTemplate>
+                                                        <asp:Label ID="lblFooterAmount" runat="server" Text=""></asp:Label>
+                                                    </FooterTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Active">
                                                     <ItemTemplate>
@@ -198,7 +220,6 @@
                                                     <EditItemTemplate>
                                                         <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                                     </EditItemTemplate>
-                                                    <ItemStyle Width="350px" />
                                                 </asp:TemplateField>
                                                 <asp:TemplateField ShowHeader="False">
                                                     <EditItemTemplate>
@@ -206,7 +227,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -352,7 +373,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -367,7 +388,7 @@
         </div>
         <asp:HiddenField ID="hfProjectId" runat="server" />
         <asp:HiddenField ID="hfEnterImpGrantID" runat="server" />
-
+        <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
         <script language="javascript">
             $(document).ready(function () {
@@ -386,6 +407,12 @@
                 toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
                 toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
                 toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
+                toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
+
+                $('#<%= txtGrantAmt.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
+                });
+
                 $('#<%= spnLevFunds.ClientID%>').text(formatter.format($('#<%= spnLevFunds.ClientID%>').text())); //Todo Not working
 
                 $('#<%= txtProjCost.ClientID%>').keyup(function () {

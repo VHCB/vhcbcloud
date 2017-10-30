@@ -34,25 +34,93 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddBPU.Enabled = true;
+            cbAddManagementSkill.Enabled = true;
+            cbAddMilestone.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddEntMilestone.Visible = false;
             btnAddManagementSkill.Visible = false;
+
             cbAddBPU.Enabled = false;
             cbAddManagementSkill.Enabled = false;
             cbAddMilestone.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -303,6 +371,8 @@ namespace vhcbcloud.Viability
             BindMilestonesGrid();
             ClearEntMilestoneForm();
             hfEnterpriseEvalID.Value = "";
+
+            btnAddEntMilestone.Visible = true;
             btnAddEntMilestone.Text = "Submit";
         }
 
@@ -316,10 +386,15 @@ namespace vhcbcloud.Viability
                     btnAddEntMilestone.Text = "Update";
                     cbAddMilestone.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddEntMilestone.Visible = true;
+                    else
+                        btnAddEntMilestone.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
                         //e.Row.Cells[7].Controls[0].Visible = false;
 
                         Label lblEnterpriseEvalID = e.Row.FindControl("lblEnterpriseEvalID") as Label;
@@ -340,6 +415,12 @@ namespace vhcbcloud.Viability
             GetEnterpriseEvalID(gvEntMilestoneGrid);
 
             btnAddEntMilestone.Text = "Update";
+
+            if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                btnAddEntMilestone.Visible = true;
+            else
+                btnAddEntMilestone.Visible = false;
+
             cbAddMilestone.Checked = true;
             PopulateEntMilestoneForm(DataUtils.GetInt(hfEnterpriseEvalID.Value));
             ////////////////////////

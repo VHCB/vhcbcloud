@@ -33,27 +33,96 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 LoadForm();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAttribute.Enabled = true;
+            cbAddGrantmatch.Enabled = true;
+
+            btnAddGrantApplication.Visible = false;
+            btnUpdateGrantAward.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAttribute.Visible = false;
             btnAddGrantApplication.Visible = false;
             btnAddMatchDesc.Visible = false;
             btnUpdateGrantAward.Visible = false;
+
             cbAddAttribute.Enabled = false;
             cbAddGrantmatch.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void LoadForm()
         {
@@ -71,7 +140,8 @@ namespace vhcbcloud.Viability
                 txtAwardDescription.Text = drEntImpGrant["AwardDesc"].ToString();
                 spnLevFunds.InnerHtml = (DataUtils.GetDecimal(drEntImpGrant["ProjCost"].ToString()) - DataUtils.GetDecimal(drEntImpGrant["AwardAmt"].ToString())).ToString();
                 txtComments.Text = drEntImpGrant["Comments"].ToString();
-                
+                txtOtherNames.Text = drEntImpGrant["OtherNames"].ToString();
+
                 btnAddGrantApplication.Text = "Update";
                 dvGrantAward.Visible = true;
                 BindGrantMatchGrid();
@@ -223,7 +293,8 @@ namespace vhcbcloud.Viability
                 if (btnAddGrantApplication.Text.ToLower() == "update" || btnUpdateGrantAward.Text.ToUpper() == "update")
                 {
                     int EnterImpGrantID = DataUtils.GetInt(hfEnterImpGrantID.Value);
-                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, txtOtherNames.Text,
+                        DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
@@ -235,7 +306,8 @@ namespace vhcbcloud.Viability
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, txtOtherNames.Text,
+                        DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
@@ -273,9 +345,10 @@ namespace vhcbcloud.Viability
             }
 
             ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseGrantMatch(DataUtils.GetInt(hfEnterImpGrantID.Value),
-                DataUtils.GetInt(ddlMatchDescription.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlMatchDescription.SelectedValue.ToString()), DataUtils.GetDecimal(Regex.Replace(txtGrantAmt.Text, "[^0-9a-zA-Z.]+", "")));
 
             ddlMatchDescription.SelectedIndex = -1;
+            txtGrantAmt.Text = "";
             cbAddGrantmatch.Checked = false;
 
             BindGrantMatchGrid();
@@ -299,6 +372,17 @@ namespace vhcbcloud.Viability
                     dvGrantMatchGrid.Visible = true;
                     gvGrantMatch.DataSource = dt;
                     gvGrantMatch.DataBind();
+
+                    decimal totAmt = 0;
+
+                    Label lblTotAmt = (Label)gvGrantMatch.FooterRow.FindControl("lblFooterAmount");
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (Convert.ToDecimal(dt.Rows[i]["GrantAmt"].ToString()) > 0)
+                            totAmt += Convert.ToDecimal(dt.Rows[i]["GrantAmt"].ToString());
+                    }
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
                 }
                 else
                 {
@@ -323,6 +407,8 @@ namespace vhcbcloud.Viability
         {
             gvGrantMatch.EditIndex = -1;
             BindGrantMatchGrid();
+            ddlMatchDescription.SelectedIndex = -1;
+            txtGrantAmt.Text = "";
         }
 
         protected void gvGrantMatch_RowUpdating(object sender, GridViewUpdateEventArgs e)

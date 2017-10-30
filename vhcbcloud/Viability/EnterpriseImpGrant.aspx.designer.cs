@@ -85,6 +85,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
         
         /// <summary>
+        /// txtOtherNames control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOtherNames;
+        
+        /// <summary>
         /// mpExtender control.
         /// </summary>
         /// <remarks>
@@ -263,6 +272,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMatchDescription;
+        
+        /// <summary>
+        /// txtGrantAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGrantAmt;
         
         /// <summary>
         /// btnAddMatchDesc control.
@@ -470,5 +488,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEnterImpGrantID;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

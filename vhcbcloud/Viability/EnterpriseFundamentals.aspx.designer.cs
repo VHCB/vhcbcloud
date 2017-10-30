@@ -166,22 +166,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel8;
         
         /// <summary>
-        /// cbBusplan control.
+        /// ddlFiscalYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbBusplan;
-        
-        /// <summary>
-        /// cbGrantApp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbGrantApp;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiscalYear;
         
         /// <summary>
         /// ddlPlanType control.
@@ -533,5 +524,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEnterFinancialJobsID;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

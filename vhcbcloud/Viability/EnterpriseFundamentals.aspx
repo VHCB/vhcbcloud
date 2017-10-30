@@ -74,7 +74,22 @@
                         <div class="panel-body" runat="server" id="dvPlanForm">
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
-                                    <tr>
+                                     <tr>
+                                        <td style="width: 24%"><span class="labelClass">Fiscal Year</span></td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlFiscalYear" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 18%">
+                                            <span class="labelClass"></span>
+                                        </td>
+
+                                        <td style="width: 13%">
+                                           </td>
+                                        <td style="width: 45%"></td>
+                                    </tr>
+
+                                   <%-- <tr>
                                         <td style="width: 24%"><span class="labelClass">Business Planning Application</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbBusplan" runat="server" Text="" />
@@ -86,7 +101,7 @@
                                         <td style="width: 13%">
                                             <asp:CheckBox ID="cbGrantApp" runat="server" Text="" /></td>
                                         <td style="width: 45%"></td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
@@ -342,7 +357,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -429,7 +444,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -447,7 +462,7 @@
     <asp:HiddenField ID="hfEnterFundamentalID" runat="server" />
     <asp:HiddenField ID="hfProjectProgram" runat="server" />
     <asp:HiddenField ID="hfEnterFinancialJobsID" runat="server" />
-
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -458,26 +473,30 @@
                 $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
+           <%-- $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtFamilyFTEmp.ClientID%>').val(), $('#<%= txtFamilyFTEmp.ClientID%>'));
             });
             $('#<%= txtNonFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtNonFamilyFTEmp.ClientID%>').val(), $('#<%= txtNonFamilyFTEmp.ClientID%>'));
-            });
+            });--%>
             $('#<%= txtYear.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtYear.ClientID%>').val(), $('#<%= txtYear.ClientID%>'));
             });
 
             toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            //accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val());
+            //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val()));
+
             toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
             toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
             toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
 
-            $('#<%= txtNetworth.ClientID%>').keyup(function () {
+           $('#<%= txtNetworth.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
             });
 
-            $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+           $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+                //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatColumn( $('#<%= txtGrossSales.ClientID%>').val(), "$ "));
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
             });
 
@@ -504,8 +523,8 @@
         });
 
         function CalculateTotalFT() {
-            var FamilyFT = parseInt($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
-            var NonFamilyFT = parseInt($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
+            var FamilyFT = parseFloat($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
+            var NonFamilyFT = parseFloat($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
 
             if (isNaN(FamilyFT)) {
                 var FamilyFT = 0;

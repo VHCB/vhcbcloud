@@ -334,7 +334,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dr;
         }
 
-        public static void SubmitEnterprisePrimeProduct(int ProjectID, int PrimaryProduct, string YrManageBus, int HearAbout)
+        public static void SubmitEnterprisePrimeProduct(int ProjectID, int PrimaryProduct, string YrManageBus, int HearAbout, string OtherNames)
         {
             try
             {
@@ -352,6 +352,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PrimaryProduct", PrimaryProduct));
                         command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
                         command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        command.Parameters.Add(new SqlParameter("OtherNames", OtherNames));
 
                         command.CommandTimeout = 60 * 5;
 

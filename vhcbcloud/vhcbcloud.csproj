@@ -279,6 +279,7 @@
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
+    <Content Include="Scripts\accounting.js" />
     <Content Include="Scripts\CurrencyController.js" />
     <Content Include="Scripts\NumericController.js" />
     <Content Include="SiteLogin.Master" />
@@ -326,7 +327,7 @@
     <Content Include="PTConvertScripts\PostCopyScripts.sql" />
     <Content Include="Reallocations.aspx" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\WebForms\bootstrap.min.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

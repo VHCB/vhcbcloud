@@ -22,7 +22,8 @@ namespace vhcbcloud
                             "~/Scripts/WebForms/DetailsView.js",
                             "~/Scripts/WebForms/TreeView.js",
                             "~/Scripts/WebForms/WebParts.js",
-                            "~/Scripts/CurrencyController.js"));
+                            "~/Scripts/CurrencyController.js",
+                            "~/Scripts/accounting.js"));
 
             //// Order is very important for these files to work, they have explicit dependencies
             //bundles.Add(new ScriptBundle("~/bundles/MsAjaxJs").Include(
