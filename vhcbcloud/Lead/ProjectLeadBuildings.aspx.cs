@@ -33,24 +33,91 @@ namespace vhcbcloud.Lead
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddBldgInfo.Enabled = true;
+            cbAddUnitInfo.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddBldgInfoSubmit.Visible = false;
             btnAddUnitInfo.Visible = false;
+
             cbAddBldgInfo.Enabled = false;
-            cbAddUnitInfo.Enabled = false;            
+            cbAddUnitInfo.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -301,6 +368,7 @@ namespace vhcbcloud.Lead
             ClearBldgInfoForm();
             hfLeadBldgID.Value = "";
             btnAddBldgInfoSubmit.Text = "Submit";
+            btnAddBldgInfoSubmit.Visible = true;
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -325,10 +393,15 @@ namespace vhcbcloud.Lead
                     btnAddBldgInfoSubmit.Text = "Update";
                     cbAddBldgInfo.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddBldgInfoSubmit.Visible = true;
+                    else
+                        btnAddBldgInfoSubmit.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[5].Controls[1].Visible = false;
 
                         Label lblLeadBldgID = e.Row.FindControl("lblLeadBldgID") as Label;
                         DataRow dr = ProjectLeadBuildingsData.GetProjectLeadBldgById(DataUtils.GetInt(lblLeadBldgID.Text));
@@ -509,6 +582,7 @@ namespace vhcbcloud.Lead
             ClearUnitInfoForm();
             hfLeadUnitID.Value = "";
             btnAddUnitInfo.Text = "Submit";
+            btnAddUnitInfo.Visible = true;
         }
 
         protected void gvUnitInfo_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -521,10 +595,15 @@ namespace vhcbcloud.Lead
                     btnAddUnitInfo.Text = "Update";
                     cbAddUnitInfo.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddUnitInfo.Visible = true;
+                    else
+                        btnAddUnitInfo.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
 
                         Label lblLeadUnitID = e.Row.FindControl("lblLeadUnitID") as Label;
                         DataRow dr = ProjectLeadBuildingsData.GetProjectLeadUnitById(DataUtils.GetInt(lblLeadUnitID.Text));

@@ -47,11 +47,9 @@
                         </tr>
                          <tr>
                              <td  style="height: 5px"><span class="labelClass">Other Names</span></td>
-                             <td  style="height: 5px">
-                                 <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="100px"></asp:TextBox>
-
+                             <td  style="height: 5px" colspan="5">
+                                 <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
                              </td>
-                            <td colspan="4" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
