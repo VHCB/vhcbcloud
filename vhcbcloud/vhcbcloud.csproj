@@ -237,8 +237,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FundMaintenance.aspx" />
     <Content Include="GrantMaintenance.aspx" />
-    <Content Include="HOPWAManagement.aspx" />
     <Content Include="Housing\HomeOwnership.aspx" />
+    <Content Include="Housing\HOPWAManagement.aspx" />
     <Content Include="Housing\HousingAttributes.aspx" />
     <Content Include="Housing\HousingFederalPrograms.aspx" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
@@ -791,19 +791,19 @@
       <DependentUpon>GrantMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
-    <Compile Include="HOPWAManagement.aspx.cs">
-      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="HOPWAManagement.aspx.designer.cs">
-      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Housing\HomeOwnership.aspx.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Housing\HomeOwnership.aspx.designer.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\HOPWAManagement.aspx.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\HOPWAManagement.aspx.designer.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Housing\HousingAttributes.aspx.cs">
       <DependentUpon>HousingAttributes.aspx</DependentUpon>

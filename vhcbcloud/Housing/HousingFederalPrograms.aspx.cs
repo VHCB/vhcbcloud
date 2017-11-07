@@ -106,6 +106,8 @@ namespace vhcbcloud.Housing
 
         protected void RoleViewOnlyExceptAddNewItem()
         {
+            btnSubmitHomeForm.Visible = false;
+
             cbAddFedProgram.Enabled = true;
             cbAddHomeAff.Enabled = true;
             cbAddNewInspections.Enabled = true;

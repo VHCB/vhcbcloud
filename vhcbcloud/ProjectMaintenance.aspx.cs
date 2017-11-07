@@ -646,7 +646,7 @@ namespace vhcbcloud
             Tabs.Controls.Add(li);
 
             HtmlGenericControl anchor = new HtmlGenericControl("a");
-            anchor.Attributes.Add("href", "ProjectMaintenance.aspx");
+            anchor.Attributes.Add("href", "#");
             anchor.InnerText = "Project Maintenance";
             anchor.Attributes.Add("class", "RoundedCornerTop");
 

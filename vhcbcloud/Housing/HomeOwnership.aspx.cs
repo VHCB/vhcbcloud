@@ -415,7 +415,7 @@ namespace vhcbcloud.Housing
             //    //hfLeadUnitID.Value = "";
             btnAddAddress.Text = "Submit";
 
-            btnAddAddress.Visible = true;
+            //btnAddAddress.Visible = true;
 
         }
 
@@ -428,10 +428,10 @@ namespace vhcbcloud.Housing
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddAddress.Text = "Update";
 
-                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
-                        btnAddAddress.Visible = true;
-                    else
-                        btnAddAddress.Visible = false;
+                    //if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    //    btnAddAddress.Visible = true;
+                    //else
+                    //    btnAddAddress.Visible = false;
 
                     cbAddAddress.Checked = true;
 

@@ -106,6 +106,8 @@ namespace vhcbcloud.Housing
 
         protected void RoleViewOnlyExceptAddNewItem()
         {
+            btnSubmit.Visible = false;
+
             cbAddHousingSubType.Enabled = true;
             cbAddAgeRes.Enabled = true;
             cbAddMultiUnit.Enabled = true;

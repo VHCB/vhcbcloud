@@ -11,7 +11,7 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class HOPWAMaintenanceData
     {
-        public static DataTable GetHOPWAMasterList(bool IsActiveOnly)
+        public static DataTable GetHOPWAMasterList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
             try
@@ -25,6 +25,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetHOPWAMasterList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                         DataSet ds = new DataSet();
@@ -77,8 +78,8 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static HOPWAmainttResult AddHOPWAMaster(string UUID, string HHincludes, int PrimaryASO, int WithHIV, int InHousehold, int Minors, int Gender, int Age, 
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes)
+        public static HOPWAmainttResult AddHOPWAMaster(string UUID, string HHincludes, int SpecialNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age, 
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, int ProjectId, int LivingSituationId)
         {
             try
             {
@@ -93,7 +94,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandText = "AddHOPWAMaster";
                         command.Parameters.Add(new SqlParameter("UUID", UUID));
                         command.Parameters.Add(new SqlParameter("HHincludes", HHincludes));
-                        command.Parameters.Add(new SqlParameter("PrimaryASO", PrimaryASO));
+                        command.Parameters.Add(new SqlParameter("SpecialNeeds", SpecialNeeds));
                         command.Parameters.Add(new SqlParameter("WithHIV", WithHIV));
                         command.Parameters.Add(new SqlParameter("InHousehold", InHousehold));
                         command.Parameters.Add(new SqlParameter("Minors", Minors));
@@ -105,7 +106,9 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AMI", AMI));
                         command.Parameters.Add(new SqlParameter("Beds", Beds));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
-                        
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
+
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -134,8 +137,8 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateHOPWAMaster(int HOPWAID, string HHincludes, int PrimaryASO, int WithHIV, int InHousehold, int Minors, int Gender, int Age,
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool IsRowIsActive)
+        public static void UpdateHOPWAMaster(int HOPWAID, string HHincludes, int SpecNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age,
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool IsRowIsActive, int LivingSituationId)
         {
             try
             {
@@ -151,7 +154,7 @@ namespace VHCBCommon.DataAccessLayer
 
                         command.Parameters.Add(new SqlParameter("HOPWAID", HOPWAID));
                         command.Parameters.Add(new SqlParameter("HHincludes", HHincludes));
-                        command.Parameters.Add(new SqlParameter("PrimaryASO", PrimaryASO));
+                        command.Parameters.Add(new SqlParameter("SpecNeeds", SpecNeeds));
                         command.Parameters.Add(new SqlParameter("WithHIV", WithHIV));
                         command.Parameters.Add(new SqlParameter("InHousehold", InHousehold));
                         command.Parameters.Add(new SqlParameter("Minors", Minors));
@@ -164,6 +167,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Beds", Beds));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -575,7 +579,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static HOPWAmainttResult AddHOPWAProgram(int HOPWAID, int Program, int Fund, bool Yr1, bool Yr2, bool Yr3, DateTime StartDate, DateTime EndDate, 
-            int LivingSituationId, string Notes)
+            string Notes)
         {
             try
             {
@@ -597,7 +601,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Yr3", Yr3));
                         command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
                         command.Parameters.Add(new SqlParameter("EndDate", EndDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EndDate));
-                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
+                        //command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                        
 
@@ -629,7 +633,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateHOPWAProgram(int HOPWAProgramID, int Program, int Fund, bool Yr1, bool Yr2, bool Yr3, DateTime StartDate, DateTime EndDate,
-            int LivingSituationId, string Notes, bool RowIsActive)
+            string Notes, bool RowIsActive)
         {
             try
             {
@@ -651,7 +655,6 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Yr3", Yr3));
                         command.Parameters.Add(new SqlParameter("StartDate", StartDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : StartDate));
                         command.Parameters.Add(new SqlParameter("EndDate", EndDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EndDate));
-                        command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 

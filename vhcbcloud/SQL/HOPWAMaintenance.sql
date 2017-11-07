@@ -7,6 +7,7 @@ go
 
 create procedure dbo.GetHOPWAMasterList
 (
+	@ProjectId		int,
 	@IsActiveOnly	bit
 ) as
 --GetHOPWAMasterList 1
@@ -15,10 +16,10 @@ begin transaction
 	begin try
 
 	select HOPWAID, UUID, HHincludes, PrimaryASO, lv.description as PrimaryASOST,  WithHIV, InHousehold, Minors, Gender, Age, Ethnic, 
-		Race, GMI, AMI, Beds, Notes, hm.RowisActive, hm.DateModified
+		Race, GMI, AMI, Beds, Notes, hm.RowisActive, hm.DateModified, substring(hm.Notes, 0, 25) Notes, hm.Notes as FullNotes
 	from HOPWAMaster hm(nolock) 
-	join lookupvalues lv(nolock) on hm.PrimaryASO = lv.TypeID
-	where (@IsActiveOnly = 0 or hm.RowIsActive = @IsActiveOnly)
+	left join lookupvalues lv(nolock) on hm.PrimaryASO = lv.TypeID
+	where ProjectId = @ProjectId and (@IsActiveOnly = 0 or hm.RowIsActive = @IsActiveOnly)
 		order by hm.DateModified desc
 
 	end try
@@ -49,7 +50,7 @@ begin transaction
 
 	begin try
 
-	select UUID, HHincludes, PrimaryASO, WithHIV, InHousehold, Minors, Gender, Age, Ethnic, Race, GMI, AMI, Beds, Notes, RowisActive
+	select UUID, HHincludes,PrimaryASO, SpecNeeds, WithHIV, InHousehold, Minors, Gender, Age, Ethnic, Race, GMI, AMI, Beds, Notes, RowisActive, LivingSituationId
 	from HOPWAMaster hm(nolock) 
 	where hm.HOPWAID = @HOPWAID
 
@@ -76,7 +77,7 @@ create procedure dbo.AddHOPWAMaster
 (
 	@UUID			nvarchar(6), 
 	@HHincludes		nchar(6), 
-	@PrimaryASO		int, 
+	@SpecNeeds		int, 
 	@WithHIV		int, 
 	@InHousehold	int, 
 	@Minors			int, 
@@ -88,6 +89,8 @@ create procedure dbo.AddHOPWAMaster
 	@AMI			money, 
 	@Beds			int, 
 	@Notes			nvarchar(max),
+	@ProjectId		int,
+	@LivingSituationId	int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -105,10 +108,10 @@ begin transaction
 	)
 	begin
 
-		insert into HOPWAMaster(UUID, HHincludes, PrimaryASO, WithHIV, InHousehold, Minors, Gender, Age, 
-			Ethnic, Race, GMI, AMI, Beds, Notes)
-		values(@UUID, @HHincludes, @PrimaryASO, @WithHIV, @InHousehold, @Minors, @Gender, @Age, 
-			@Ethnic, @Race, @GMI, @AMI, @Beds, @Notes)
+		insert into HOPWAMaster(UUID, HHincludes, SpecNeeds, WithHIV, InHousehold, Minors, Gender, Age, 
+			Ethnic, Race, GMI, AMI, Beds, Notes, ProjectID, LivingSituationId)
+		values(@UUID, @HHincludes, @SpecNeeds, @WithHIV, @InHousehold, @Minors, @Gender, @Age, 
+			@Ethnic, @Race, @GMI, @AMI, @Beds, @Notes, @ProjectId, @LivingSituationId)
 
 		set @isDuplicate = 0
 	end
@@ -141,7 +144,7 @@ create procedure dbo.UpdateHOPWAMaster
 (
 	@HOPWAID		int, 
 	@HHincludes		nchar(6), 
-	@PrimaryASO		int, 
+	@SpecNeeds		int,  
 	@WithHIV		int, 
 	@InHousehold	int, 
 	@Minors			int, 
@@ -153,14 +156,16 @@ create procedure dbo.UpdateHOPWAMaster
 	@AMI			money, 
 	@Beds			int,  
 	@Notes			nvarchar(max),
+	@LivingSituationId	int,
 	@IsRowIsActive	bit
 ) as
 begin transaction
 
 	begin try
 
-	update HOPWAMaster set HHincludes = @HHincludes, PrimaryASO = @PrimaryASO, WithHIV = @WithHIV, InHousehold = @InHousehold, 
+	update HOPWAMaster set HHincludes = @HHincludes, SpecNeeds = @SpecNeeds, WithHIV = @WithHIV, InHousehold = @InHousehold, 
 		Minors = @Minors, Gender = @Gender, Age = @Age, Ethnic = @Ethnic, Race = @Race, GMI = @GMI, AMI = @AMI, Beds = @Beds, Notes = @Notes, 
+		LivingSituationId = @LivingSituationId, 
 		RowIsActive = @IsRowIsActive, DateModified = getdate()
 	from HOPWAMaster
 	where HOPWAID = @HOPWAID
@@ -639,7 +644,6 @@ create procedure dbo.AddHOPWAProgram
 	@Yr3		bit, 
 	@StartDate	date, 
 	@EndDate	date, 
-	@LivingSituationId	int, 
 	@Notes			nvarchar(max),
 	@isDuplicate	bit output,
 	@isActive		bit Output
@@ -659,8 +663,8 @@ begin transaction
 			and Program = @Program
     )
 	begin
-		insert into HOPWAProgram(HOPWAID, Program, Fund, Yr1, Yr2, Yr3, StartDate, EndDate, LivingSituationId, Notes)
-		values(@HOPWAID, @Program, @Fund, @Yr1, @Yr2, @Yr3, @StartDate, @EndDate, @LivingSituationId, @Notes)
+		insert into HOPWAProgram(HOPWAID, Program, Fund, Yr1, Yr2, Yr3, StartDate, EndDate, Notes)
+		values(@HOPWAID, @Program, @Fund, @Yr1, @Yr2, @Yr3, @StartDate, @EndDate, @Notes)
 		
 		set @isDuplicate = 0
 	end
@@ -701,7 +705,6 @@ create procedure dbo.UpdateHOPWAProgram
 	@Yr3		bit, 
 	@StartDate	date, 
 	@EndDate	date, 
-	@LivingSituationId	int, 
 	@Notes			nvarchar(max),
 	@RowIsActive	bit
 ) as
@@ -710,7 +713,7 @@ begin transaction
 	begin try
 	
 	update HOPWAProgram set  Program = @Program, Fund = @Fund, Yr1 = @Yr1, Yr2 = @Yr2, Yr3 = @Yr3, 
-		StartDate = @StartDate, EndDate = @EndDate, LivingSituationId = @LivingSituationId, Notes = @Notes, 
+		StartDate = @StartDate, EndDate = @EndDate,  Notes = @Notes, 
 		RowIsActive = @RowIsActive, DateModified = getdate()
 	from HOPWAProgram 
 	where HOPWAProgramID = @HOPWAProgramID
