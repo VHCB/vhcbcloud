@@ -78,8 +78,8 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static HOPWAmainttResult AddHOPWAMaster(string UUID, string HHincludes, int SpecialNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age, 
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, int ProjectId, int LivingSituationId)
+        public static HOPWAmainttResult AddHOPWAMaster(string UUID, string HHincludes, int SpecNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age, 
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, int ProjectId, int LivingSituationId, int PrimaryASO)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandText = "AddHOPWAMaster";
                         command.Parameters.Add(new SqlParameter("UUID", UUID));
                         command.Parameters.Add(new SqlParameter("HHincludes", HHincludes));
-                        command.Parameters.Add(new SqlParameter("SpecialNeeds", SpecialNeeds));
+                        command.Parameters.Add(new SqlParameter("SpecNeeds", SpecNeeds));
                         command.Parameters.Add(new SqlParameter("WithHIV", WithHIV));
                         command.Parameters.Add(new SqlParameter("InHousehold", InHousehold));
                         command.Parameters.Add(new SqlParameter("Minors", Minors));
@@ -108,6 +108,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
+                        command.Parameters.Add(new SqlParameter("PrimaryASO", PrimaryASO));
 
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
@@ -135,6 +136,78 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static DataTable GetHOPWAFundName(bool RowIsActive)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetHOPWAFundName";
+                command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
+        public static DataTable GetProjectCheckReqDates(int ProjectId)
+        {
+            DataTable dtStatus = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetProjectCheckReqDates";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
         }
 
         public static void UpdateHOPWAMaster(int HOPWAID, string HHincludes, int SpecNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age,

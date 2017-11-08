@@ -157,13 +157,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.TextBox txtUUID;
         
         /// <summary>
-        /// ddlSpecialNeeds control.
+        /// ddlLivingSituation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSpecialNeeds;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLivingSituation;
         
         /// <summary>
         /// txtHHIncludes control.
@@ -265,13 +265,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.TextBox txtBeds;
         
         /// <summary>
-        /// ddlLivingSituation control.
+        /// ddlSpecialNeeds control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLivingSituation;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSpecialNeeds;
         
         /// <summary>
         /// cbHOPWAMaster control.
@@ -544,31 +544,22 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.TextBox txtAmount;
         
         /// <summary>
-        /// txtExpensesDate control.
+        /// ddlExpensesDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtExpensesDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlExpensesDate;
         
         /// <summary>
-        /// CalendarExtender5 control.
+        /// spnDisRecord control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender5;
-        
-        /// <summary>
-        /// txtDisRecord control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDisRecord;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnDisRecord;
         
         /// <summary>
         /// tblPHP control.
@@ -1073,5 +1064,14 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfHOPWAAgeWarning;
+        
+        /// <summary>
+        /// hfAppNameId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfAppNameId;
     }
 }

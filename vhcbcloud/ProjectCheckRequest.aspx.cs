@@ -2061,6 +2061,29 @@ namespace vhcbcloud
                 pnlApprovals.Visible = false;
                 pnlFund.Visible = true;
                 lblErrorMsg.Text = "Project check request was successfully deleted";
+
+                #region Clear Form
+                txtTransDate.Text = "";
+                ddlApplicantName.Items.Clear();
+                ddlPayee.Items.Clear();
+                ddlProgram.Items.Clear();
+                ddlStatus.Items.Clear();
+                chkLCB.Checked = false;
+                chkLegalReview.Checked = false;
+
+                if (txtEligibleAmt.Visible)
+                {
+                    txtEligibleAmt.Text = "";
+                    if (ddlMatchingGrant.Items.Count > 0) ddlMatchingGrant.SelectedIndex = 0;
+                }
+                
+                ddlDate.Visible = false;
+                txtTransDate.Visible = true;
+                lbNOD.SelectedIndex = -1;
+                lbItems.SelectedIndex = -1;
+                txtNotes.Text = "";
+                txtDisbursementAmt.Text = "";
+                #endregion Clear Form
             }
             catch (Exception ex)
             {

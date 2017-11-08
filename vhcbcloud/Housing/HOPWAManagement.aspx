@@ -70,10 +70,10 @@
                                             <asp:TextBox ID="txtUUID" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 179px">
-                                            <span class="labelClass">Special Needs</span>
+                                            <span class="labelClass">Recent Living Situation</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:DropDownList ID="ddlSpecialNeeds" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlLivingSituation" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">HH Includes</span></td>
@@ -153,10 +153,10 @@
                                             <asp:TextBox ID="txtBeds" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 179px">
-                                            <span class="labelClass">Recent Living Situation</span>
+                                            <span class="labelClass">Special Needs</span>
                                         </td>
                                         <td style="width: 270px">
-                                            <asp:DropDownList ID="ddlLivingSituation" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlSpecialNeeds" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Active</span></td>
@@ -445,13 +445,16 @@
                                             <span class="labelClass">Date</span>
                                         </td>
                                         <td style="width: 172px">
-                                            <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                             <asp:DropDownList ID="ddlExpensesDate" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                           <%-- <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender5" TargetControlID="txtExpensesDate">
-                                            </ajaxToolkit:CalendarExtender>
+                                            </ajaxToolkit:CalendarExtender>--%>
                                         </td>
                                         <td style="width: 137px"><span class="labelClass">Disbursement Record</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtDisRecord" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <span class="labelClass" id="spnDisRecord" runat="server"></span>
+                                            <%--<asp:TextBox ID="txtDisRecord" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -946,6 +949,7 @@
         <asp:HiddenField ID="hfHOPWARaceWarning" runat="server" />
         <asp:HiddenField ID="hfHOPWAEthnicityWarning" runat="server" />
         <asp:HiddenField ID="hfHOPWAAgeWarning" runat="server" />
+         <asp:HiddenField ID="hfAppNameId" runat="server" />
     </div>
     <script language="javascript">
         $(document).ready(function () {
@@ -954,6 +958,15 @@
                 toCurrencyControl($('#<%= txtAmount.ClientID%>').val(), $('#<%= txtAmount.ClientID%>'));
             }
 
+            $('#<%= ddlExpensesDate.ClientID%>').change(function () {
+                $('#<%=spnDisRecord.ClientID%>').text($('#<%= ddlExpensesDate.ClientID%>').val());
+            });
+
+            $('#<%= ddlExpensesDate.ClientID%>').change(function () {
+                var x = $('#<%= ddlExpensesDate.ClientID%>').value;
+                console.log(x);
+            });
+            
 
             $('#<%= txtAmount.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtAmount.ClientID%>').val(), $('#<%= txtAmount.ClientID%>'));

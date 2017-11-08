@@ -91,6 +91,7 @@ create procedure dbo.AddHOPWAMaster
 	@Notes			nvarchar(max),
 	@ProjectId		int,
 	@LivingSituationId	int,
+	@PrimaryASO		int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -109,9 +110,9 @@ begin transaction
 	begin
 
 		insert into HOPWAMaster(UUID, HHincludes, SpecNeeds, WithHIV, InHousehold, Minors, Gender, Age, 
-			Ethnic, Race, GMI, AMI, Beds, Notes, ProjectID, LivingSituationId)
+			Ethnic, Race, GMI, AMI, Beds, Notes, ProjectID, LivingSituationId, PrimaryASO)
 		values(@UUID, @HHincludes, @SpecNeeds, @WithHIV, @InHousehold, @Minors, @Gender, @Age, 
-			@Ethnic, @Race, @GMI, @AMI, @Beds, @Notes, @ProjectId, @LivingSituationId)
+			@Ethnic, @Race, @GMI, @AMI, @Beds, @Notes, @ProjectId, @LivingSituationId, @PrimaryASO)
 
 		set @isDuplicate = 0
 	end
@@ -907,4 +908,36 @@ begin transaction
 
 	if @@trancount > 0
 		commit transaction;
+go
+
+if  exists (select * from sys.objects where object_id = object_id(N'[dbo].[GetProjectCheckReqDates]') and type in (N'P', N'PC'))
+drop procedure [dbo].GetProjectCheckReqDates
+go
+
+create procedure dbo.GetProjectCheckReqDates
+(
+	@ProjectId		int
+) as
+--GetProjectCheckReqDates 6530
+begin transaction
+
+	begin try
+	select top 3 ProjectCheckReqID, convert(varchar(10), CRDate, 101) CRDate
+	from ProjectCheckReq 
+	where projectid = @ProjectId 
+	order by CRDate desc
+
+	end try
+	begin catch
+		if @@trancount > 0
+		rollback transaction;
+
+		DECLARE @msg nvarchar(4000) = error_message()
+      RAISERROR (@msg, 16, 1)
+		return 1  
+	end catch
+
+	if @@trancount > 0
+		commit transaction;
+
 go

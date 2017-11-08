@@ -38,6 +38,7 @@ namespace vhcbcloud.Housing
                 BindControls();
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(ProjectId));
                 spnPrimaryASO.InnerHtml = drProjectDetails["AppName"].ToString();
+                hfAppNameId.Value = drProjectDetails["AppNameId"].ToString();
                 BindHOPWAanMasterGrid();
             }
         }
@@ -101,6 +102,23 @@ namespace vhcbcloud.Housing
             
             BindLookUP(ddlPHPuse, 233);
             LoadFundNames();
+            LoadExpenseDates();
+        }
+
+        private void LoadExpenseDates()
+        {
+            try
+            {
+                ddlExpensesDate.DataSource = HOPWAMaintenanceData.GetProjectCheckReqDates(DataUtils.GetInt(hfProjectId.Value));
+                ddlExpensesDate.DataValueField = "ProjectCheckReqID";
+                ddlExpensesDate.DataTextField = "CRDate";
+                ddlExpensesDate.DataBind();
+                ddlExpensesDate.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         private void ShowWarnings()
@@ -145,7 +163,7 @@ namespace vhcbcloud.Housing
         {
             try
             {
-                ddlFund.DataSource = FundMaintenanceData.GetFundName(cbActiveOnly.Checked);
+                ddlFund.DataSource = HOPWAMaintenanceData.GetHOPWAFundName(cbActiveOnly.Checked);
                 ddlFund.DataValueField = "fundid";
                 ddlFund.DataTextField = "name";
                 ddlFund.DataBind();
@@ -185,7 +203,7 @@ namespace vhcbcloud.Housing
                 HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAMaster(txtUUID.Text, txtHHIncludes.Text, DataUtils.GetInt(ddlSpecialNeeds.SelectedValue.ToString()), DataUtils.GetInt(txtWithHIV.Text),
                     DataUtils.GetInt(txtInHouseHold.Text), DataUtils.GetInt(txtMinors.Text), DataUtils.GetInt(ddlGender.Text), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlEthnicity.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlRace.SelectedValue.ToString()), DataUtils.GetInt(ddlGMI.SelectedValue.ToString()), DataUtils.GetInt(ddlAMI.SelectedValue.ToString()), DataUtils.GetInt(txtBeds.Text), txtNotes.Text, 
-                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()));
+                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()), DataUtils.GetInt(hfAppNameId.Value));
 
                 if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
                     LogMessage("HOPWA UUID already exist as in-active");
@@ -960,7 +978,7 @@ namespace vhcbcloud.Housing
             if (btnAddExpense.Text == "Add")
             {
                 HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAExp(DataUtils.GetInt(hfProgramId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
-                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(txtExpensesDate.Text), DataUtils.GetInt(txtDisRecord.Text));
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()));
 
                 if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
                     LogMessage("Program Expenses already exist as in-active");
@@ -976,7 +994,7 @@ namespace vhcbcloud.Housing
             else
             {
                 HOPWAMaintenanceData.UpdateHOPWAExp(DataUtils.GetInt(hfExpId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
-                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(txtExpensesDate.Text), DataUtils.GetInt(txtDisRecord.Text), cbExpensesActive.Checked);
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()), cbExpensesActive.Checked);
 
                 LogMessage("Program Expenses updated successfully");
 
@@ -993,8 +1011,9 @@ namespace vhcbcloud.Housing
         private void ClearExpensesForm()
         {
             txtAmount.Text = "";
-            txtDisRecord.Text = "";
-            txtExpensesDate.Text = "";
+            //txtDisRecord.Text = "";
+            spnDisRecord.InnerHtml = "";
+            ddlExpensesDate.SelectedIndex = -1;
             cbRent.Checked = false;
             cbMortgage.Checked = false;
             cbUtilities.Checked = false;
@@ -1034,9 +1053,11 @@ namespace vhcbcloud.Housing
                         hfExpId.Value = lblHOPWAExpID.Text;
 
                         txtAmount.Text = drHOPWAMasterDetails["Amount"].ToString();
-                        txtExpensesDate.Text = drHOPWAMasterDetails["Date"].ToString();
+                        //txtExpensesDate.Text = drHOPWAMasterDetails["Date"].ToString();
+                        PopulateDropDown(ddlExpensesDate, drHOPWAMasterDetails["DisbursementRecord"].ToString());
                         PopulateDropDown(ddlPHPuse, drHOPWAMasterDetails["PHPUse"].ToString());
-                        txtDisRecord.Text = drHOPWAMasterDetails["DisbursementRecord"].ToString();
+                        //txtDisRecord.Text = drHOPWAMasterDetails["DisbursementRecord"].ToString();
+                        spnDisRecord.InnerHtml = drHOPWAMasterDetails["DisbursementRecord"].ToString();
                         cbMortgage.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Mortgage"].ToString());
                         cbRent.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Rent"].ToString());
                         cbUtilities.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Utilities"].ToString());
