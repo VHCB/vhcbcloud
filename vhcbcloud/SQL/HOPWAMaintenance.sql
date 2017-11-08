@@ -20,7 +20,7 @@ begin transaction
 	from HOPWAMaster hm(nolock) 
 	left join lookupvalues lv(nolock) on hm.PrimaryASO = lv.TypeID
 	where ProjectId = @ProjectId and (@IsActiveOnly = 0 or hm.RowIsActive = @IsActiveOnly)
-		order by hm.DateModified desc
+		order by hm.UUID asc
 
 	end try
 	begin catch

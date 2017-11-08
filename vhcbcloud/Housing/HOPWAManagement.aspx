@@ -186,7 +186,7 @@
                         </div>
 
                         <div class="panel-body" id="dvHOPWAMasterGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel4" Width="100%" Height="200px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel4" Width="100%" Height="500px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvHOPWAMaster" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
