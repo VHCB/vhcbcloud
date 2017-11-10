@@ -250,10 +250,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Program</h3>
+                                        <h3 class="panel-title">Type of Assistance</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddProgram" runat="server" Text="Add New Program/Fund" />
+                                        <asp:CheckBox ID="cbAddProgram" runat="server" Text="Add New Type of Assistance" />
                                     </td>
                                 </tr>
                             </table>
@@ -263,7 +263,7 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Program</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Type of Assistance</span></td>
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -370,7 +370,7 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Program">
+                                        <asp:TemplateField HeaderText="Type of Assistance">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgram" runat="Server" Text='<%# Eval("ProgramName") %>' />
                                             </ItemTemplate>

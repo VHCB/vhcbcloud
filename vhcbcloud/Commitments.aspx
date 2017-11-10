@@ -107,7 +107,7 @@
                                                     <td style="width: 20%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" class="totMoney" onkeyup='toTotAmtFormatter(value)' runat="server" TabIndex="4"></asp:TextBox></td>
-                                                    <td style="width: 10%; float: left"><asp:CheckBox ID="cbCorrection" runat="server" Text="Correction" /></td>
+                                                    <td style="width: 10%; float: left"><asp:CheckBox ID="cbCorrection" runat="server" Text="Correction" Visible="false" /></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
                                                         </asp:DropDownList>

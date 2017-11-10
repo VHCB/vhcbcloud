@@ -216,7 +216,7 @@ namespace vhcbcloud
                         }
                     }
 
-                    totBalAmt = tranAmount + totFundAmt;
+                    totBalAmt = tranAmount + (-totFundAmt);
 
                     hfBalAmt.Value = (-totBalAmt).ToString();
 

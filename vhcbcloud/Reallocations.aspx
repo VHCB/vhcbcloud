@@ -169,7 +169,7 @@
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
-                                            <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server"><%--AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged"--%>
                                             </asp:DropDownList></td>
                                     </tr>
                                     <tr>
