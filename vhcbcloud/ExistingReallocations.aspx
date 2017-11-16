@@ -173,6 +173,8 @@
                                         <asp:TemplateField HeaderText="Transaction Type" SortExpression="FromFundtransType">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTransType" runat="Server" Text='<%# Eval("FromFundtransType") %>' />
+                                                <asp:HiddenField ID="hiddenFieldTransType" runat="server" Value='<%#Eval("FromFundtransType")%>' />
+                                                <asp:HiddenField ID="hiddenFieldTransTypeId" runat="server" Value='<%#Eval("FromTransTypeId")%>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <%-- <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
@@ -281,8 +283,9 @@
                                                 </td>
                                                 <td style="width: 10%; float: left"><span class="labelClass">Trans Type :</span></td>
                                                 <td style="width: 30%; float: left">
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9">
-                                                    </asp:DropDownList>
+                                                   <%-- <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9">
+                                                    </asp:DropDownList>--%>
+                                                    <asp:TextBox ID="txtTransType" CssClass="clsTextBoxBlueSm" runat="server" Enabled="false"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -453,6 +456,7 @@
             <asp:HiddenField ID="hdnValue" OnValueChanged="hdnValue_ValueChanged" runat="server" />
             <asp:HiddenField ID="hdnRelocationProjValue" OnValueChanged="hdnRelocationProjValue_ValueChanged" runat="server" />
             <asp:HiddenField ID="hfDetailId" runat="server" />
+     <asp:HiddenField ID="hfTransTypeId" runat="server" />
            
        <%-- </ContentTemplate>
     </asp:UpdatePanel>--%>

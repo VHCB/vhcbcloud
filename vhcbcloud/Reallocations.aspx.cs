@@ -344,19 +344,19 @@ namespace vhcbcloud
             {
                 ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
                 ddlRToFund.Enabled = false;
-                if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
-                {
-                    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                }
-                else
-                {
-                    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                }
-                //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                ddlRtoFundType.DataValueField = "typeid";
-                ddlRtoFundType.DataTextField = "Description";
-                ddlRtoFundType.DataBind();
-                ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                //if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
+                ////ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //ddlRtoFundType.DataValueField = "typeid";
+                //ddlRtoFundType.DataTextField = "Description";
+                //ddlRtoFundType.DataBind();
+                //ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
             }
             else
                 ddlRToFund.Enabled = true;
@@ -388,19 +388,19 @@ namespace vhcbcloud
                 {
                     ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
                     ddlRToFund.Enabled = false;
-                    if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
-                    {
-                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                    }
-                    else
-                    {
-                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                    }
-                    //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                    ddlRtoFundType.DataValueField = "typeid";
-                    ddlRtoFundType.DataTextField = "Description";
-                    ddlRtoFundType.DataBind();
-                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                    //if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                    //{
+                    //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                    //}
+                    //else
+                    //{
+                    //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    //}
+                    ////ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    //ddlRtoFundType.DataValueField = "typeid";
+                    //ddlRtoFundType.DataTextField = "Description";
+                    //ddlRtoFundType.DataBind();
+                    //ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
                 }
                 else
                     ddlRToFund.Enabled = true;
@@ -483,11 +483,6 @@ namespace vhcbcloud
                 }
                 else if (ddlRFromFundType.Items.Count == 1)
                 {
-                    ddlRtoFundType.DataSource = ddlRFromFundType.DataSource;
-                    ddlRtoFundType.DataValueField = "typeid";
-                    ddlRtoFundType.DataTextField = "fundtype";
-                    ddlRtoFundType.DataBind();
-
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                     if (dtable.Rows.Count > 0)
                     {
@@ -533,6 +528,8 @@ namespace vhcbcloud
             {
                 if (ddlRFromFundType.SelectedIndex != 0)
                 {
+                    txtRtoFundType.Text = ddlRFromFundType.SelectedItem.ToString();
+
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
                     if (dtable.Rows.Count > 0)
                     {
@@ -541,6 +538,10 @@ namespace vhcbcloud
                     }
                     if (rdBtnSelection.SelectedIndex > 0)
                         BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
+                }
+                else
+                {
+                    txtRtoFundType.Text = "";
                 }
             }
         }
@@ -565,19 +566,19 @@ namespace vhcbcloud
             {
                 if (ddlRToFund.SelectedIndex > 0)
                 {
-                    if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
-                    {
-                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                    }
-                    else
-                    {
-                        ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                    }
-                    //ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                    ddlRtoFundType.DataValueField = "typeid";
-                    ddlRtoFundType.DataTextField = "Description";
-                    ddlRtoFundType.DataBind();
-                    ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                    //if (ddlRToFund.SelectedItem.Text.ToLower().Contains("hopwa"))
+                    //{
+                    //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                    //}
+                    //else
+                    //{
+                    //    ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    //}
+                    ////ddlRtoFundType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                    //ddlRtoFundType.DataValueField = "typeid";
+                    //ddlRtoFundType.DataTextField = "Description";
+                    //ddlRtoFundType.DataBind();
+                    //ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
 
                     BindToUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
@@ -604,8 +605,8 @@ namespace vhcbcloud
             ddlRToProj.SelectedIndex = 0;
             ddlRToFund.DataSource = null;
             ddlRToFund.DataBind();
-            ddlRtoFundType.DataSource = null;
-            ddlRtoFundType.DataBind();
+            //ddlRtoFundType.DataSource = null;
+            //ddlRtoFundType.DataBind();
             txtRToAmt.Text = "";
         }
 
@@ -1023,12 +1024,12 @@ namespace vhcbcloud
                     ddlRToFund.Focus();
                     return;
                 }
-                if (ddlRtoFundType.Items.Count > 1 && ddlRtoFundType.SelectedIndex == 0)
-                {
-                    lblRErrorMsg.Text = "Select fund type from reallocate to project";
-                    ddlRtoFundType.Focus();
-                    return;
-                }
+                //if (ddlRtoFundType.Items.Count > 1 && ddlRtoFundType.SelectedIndex == 0)
+                //{
+                //    lblRErrorMsg.Text = "Select fund type from reallocate to project";
+                //    ddlRtoFundType.Focus();
+                //    return;
+                //}
                 if (Convert.ToDecimal(txtRfromAmt.Text) < Convert.ToDecimal(txtRToAmt.Text))
                 {
                     lblRErrorMsg.Text = "Reallocate to amount can't be more than available reallocation from amount";
@@ -1039,12 +1040,12 @@ namespace vhcbcloud
                 if (txtFromProjNum.Text == txtToProjNum.Text)
                     if (ddlRFromFund.SelectedValue.ToString() == ddlRToFund.SelectedValue.ToString())
                     {
-                        if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
-                        {
-                            lblRErrorMsg.Text = "Fund cannot be reallocated to same fund type. Reallocate to different fund type.";
-                            ddlRtoFundType.Focus();
-                            return;
-                        }
+                        //if (ddlRtoFundType.SelectedValue.ToString() == ddlRFromFundType.SelectedValue.ToString())
+                        //{
+                        //    lblRErrorMsg.Text = "Fund cannot be reallocated to same fund type. Reallocate to different fund type.";
+                        //    ddlRtoFundType.Focus();
+                        //    return;
+                        //}
                     }
                 //if (hfTransId.Value != "" && hfRFromTransId.Value !="")
                 //{
@@ -1121,7 +1122,7 @@ namespace vhcbcloud
                                                                       Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRfromAmt.Text),
                                                                       Convert.ToInt32(ddlRToFund.SelectedValue.ToString()),
-                                                                      Convert.ToInt32(ddlRtoFundType.SelectedValue.ToString()),
+                                                                      Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()),
                                                                       Convert.ToDecimal(txtRToAmt.Text),
                                                                       hfRFromTransId.Value == "" ? nullable : Convert.ToInt32(hfRFromTransId.Value),
                                                                       hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value),
