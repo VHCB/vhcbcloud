@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace vhcbcloud.Account
                 BindVHCBProgram();
                 BindSecurityGroups();
                 BindDDLPage();
+                BindLookUP(ddlSecFunctions, 246);
             }
         }
 
@@ -84,6 +86,23 @@ namespace vhcbcloud.Account
             }
         }
 
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+        
         protected void ClearFields()
         {
             txtFname.Text = "";
@@ -236,6 +255,8 @@ namespace vhcbcloud.Account
             GetSelectedUserId(gvUserInfo);
             BindUserPageSecurity();
             pnlHide.Visible = true;
+            BindUserFxnSecurity();
+            pnlSecFunctions.Visible = true;
         }
 
         protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
@@ -390,5 +411,60 @@ namespace vhcbcloud.Account
             }
         }
 
+        protected void btnSecFunctions_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ddlSecFunctions.SelectedIndex <= 0)
+                {
+                    lblErrorMsg.Text = "Please select security function to add an action";
+                    return;
+                }
+
+                UserSecurityData.AddUserFxnSecurity(Convert.ToInt32(hfUserId.Value), Convert.ToInt32(ddlSecFunctions.SelectedValue.ToString()));
+                BindUserFxnSecurity();
+                ddlSecFunctions.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        private void BindUserFxnSecurity()
+        {
+            if (hfUserId.Value != null)
+            {
+                DataTable dt = new DataTable();
+                dt = UserSecurityData.GetUserFxnSecurity(Convert.ToInt32(hfUserId.Value));
+                gvSecFunctions.DataSource = dt;
+                gvSecFunctions.DataBind();
+            }
+            else
+            {
+                gvSecFunctions.DataSource = null;
+                gvSecFunctions.DataBind();
+                lblErrorMsg.Text = "Select User to view the user security functions";
+            }
+        }
+
+        protected void gvSecFunctions_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int rowIndex = e.RowIndex;
+                Label lblUserFxnSecurityId = (Label)gvSecFunctions.Rows[rowIndex].FindControl("lblUserFxnSecurityId");
+                if (lblUserFxnSecurityId != null)
+                {
+                    UserSecurityData.DeleteUserFxnSecurity(Convert.ToInt32(lblUserFxnSecurityId.Text));
+                    lblErrorMsg.Text = "User Security Function was deleted successfully";
+                    BindUserFxnSecurity();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
     }
 }
