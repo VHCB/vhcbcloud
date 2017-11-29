@@ -310,22 +310,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblProjectType;
         
         /// <summary>
-        /// txtCRDate control.
+        /// ddlCRDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCRDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCRDate;
         
         /// <summary>
-        /// txtCRDate_CalendarExtender control.
+        /// spnCreatedBy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender txtCRDate_CalendarExtender;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnCreatedBy;
         
         /// <summary>
         /// btnCRSubmit control.
@@ -443,6 +443,60 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvQuestionsForApproval;
+        
+        /// <summary>
+        /// pnlVoucherDet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlVoucherDet;
+        
+        /// <summary>
+        /// txtVoucher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVoucher;
+        
+        /// <summary>
+        /// txtVoucherDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVoucherDt;
+        
+        /// <summary>
+        /// txtVoucherDt_CalendarExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender txtVoucherDt_CalendarExtender;
+        
+        /// <summary>
+        /// btnAddVoucher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddVoucher;
+        
+        /// <summary>
+        /// gvVoucher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvVoucher;
         
         /// <summary>
         /// hfProjId control.

@@ -176,12 +176,15 @@
                             </td>
                             <td style="vertical-align: top"><span class="labelClass">Check Request Date:</span></td>
                             <td>
-                                <asp:TextBox ID="txtCRDate" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                <asp:DropDownList ID="ddlCRDate" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>
+
+                                <%--  <asp:TextBox ID="txtCRDate" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender ID="txtCRDate_CalendarExtender" runat="server" TargetControlID="txtCRDate">
-                                </ajaxToolkit:CalendarExtender>
+                                </ajaxToolkit:CalendarExtender>--%>
                             </td>
-                            <td style="vertical-align: top">&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td style="vertical-align: top"><span class="labelClass">Created By:</span></td>
+                            <td><span class="labelClass" runat="server" id="spnCreatedBy"></span></td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
@@ -397,6 +400,60 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:CommandField ShowEditButton="True" />
+                        </Columns>
+                        <FooterStyle CssClass="footerStyle" />
+                    </asp:GridView>
+                    <br />
+                </div>
+            </div>
+            <div class="panel panel-default" runat="server" id="pnlVoucherDet" visible="false">
+                <div class="panel-heading">Voucher Details</div>
+                <div class="panel-body">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="height: 19px">
+                                <span class="labelClass">Voucher #:</span>
+                            </td>
+                            <td style="height: 19px">
+                                <asp:TextBox ID="txtVoucher" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                            </td>
+                            <td style="height: 19px"><span class="labelClass">Voucher Date:</span></td>
+                            <td style="height: 19px">
+                                <asp:TextBox ID="txtVoucherDt" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                <ajaxToolkit:CalendarExtender ID="txtVoucherDt_CalendarExtender" runat="server" TargetControlID="txtVoucherDt">
+                                </ajaxToolkit:CalendarExtender>
+                            </td>
+
+                        </tr>
+                    </table>
+                    <br />
+                    <asp:Button ID="btnAddVoucher" runat="server" class="btn btn-info" Text="Submit" OnClick="btnAddVoucher_Click" />
+                    <br />
+                    <br />
+                    <asp:GridView ID="gvVoucher" runat="server" AllowPaging="false" AutoGenerateColumns="False" CssClass="gridView"
+                        EnableTheming="True" GridLines="None" PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="100%">
+                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                        <HeaderStyle CssClass="headerStyle" />
+                        <PagerSettings FirstPageText="&amp;lt;" LastPageText="&amp;gt;" Mode="NumericFirstLast" PageButtonCount="5" />
+                        <RowStyle CssClass="rowStyle" />
+                        <FooterStyle CssClass="footerStyleTotals" />
+                        <Columns>
+                            <asp:TemplateField HeaderText="Voucher Date" SortExpression="crdate">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblInitDate" runat="Server" Text='<%# Eval("paiddate", "{0:M-dd-yyyy}")  %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Voucher#" SortExpression="Voucher#">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblVoucher" runat="Server" Text='<%# Eval("vouchernum") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Staff Name" SortExpression="staffid">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblStaffId0" runat="Server" Text='<%# Eval("staffid") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
                         </Columns>
                         <FooterStyle CssClass="footerStyle" />
                     </asp:GridView>
