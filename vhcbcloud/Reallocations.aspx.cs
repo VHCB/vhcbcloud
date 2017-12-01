@@ -479,10 +479,13 @@ namespace vhcbcloud
                 lblAvailFund.Text = "";
                 if (ddlRFromFundType.Items.Count > 1)
                 {
+                    txtRtoFundType.Text = "";
                     ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
                 }
                 else if (ddlRFromFundType.Items.Count == 1)
                 {
+                    txtRtoFundType.Text = ddlRFromFundType.SelectedItem.ToString();
+
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                     if (dtable.Rows.Count > 0)
                     {

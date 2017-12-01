@@ -374,6 +374,69 @@ namespace VHCBCommon.DataAccessLayer
             return isDuplicate;
         }
 
+
+        public static void AddDeCommitmentTransDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddDeCommitmentTransDetails";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void AddDeCommitmentTransDetailsWithLandPermit(int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit, string useFarmId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddDeCommitmentTransDetailsWithLandPermit";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("LandUsePermit", usePermit));
+                command.Parameters.Add(new SqlParameter("LandUseFarmId", Convert.ToInt32(useFarmId)));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void AddCommitmentTransDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -2308,7 +2371,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType,
-            int lkStatus, int UserId, bool correction = false)
+            int lkStatus, int UserId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtStatus = new DataTable();
@@ -2323,7 +2386,6 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("payeeApplicant", payeeAppl));
                 command.Parameters.Add(new SqlParameter("commitmentType", CommitmentType));
                 command.Parameters.Add(new SqlParameter("lkStatus", lkStatus));
-                command.Parameters.Add(new SqlParameter("correction", correction));
                 command.Parameters.Add(new SqlParameter("UserId", UserId));
 
                 using (connection)

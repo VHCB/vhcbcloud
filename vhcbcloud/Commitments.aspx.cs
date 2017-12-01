@@ -546,13 +546,12 @@ namespace vhcbcloud
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, granteeId, "Board Commitment",
-                    TRANS_PENDING_STATUS, GetUserId(), cbCorrection.Checked);
+                    TRANS_PENDING_STATUS, GetUserId());
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
                 txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
-                cbCorrection.Checked = false;
 
                 CommonHelper.EnableButton(btnCommitmentSubmit);
                 CommonHelper.DisableButton(btnTransactionSubmit);

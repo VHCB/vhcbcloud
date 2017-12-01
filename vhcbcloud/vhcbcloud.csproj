@@ -113,7 +113,7 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi, Version=2017.1.0.101, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+    <Reference Include="WebReportsApi, Version=2016.3.0.104, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Exago\eWebReportsAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
@@ -276,15 +276,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
+    <Content Include="ProjectCheckRequestNew.aspx" />
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
-    <Content Include="Scripts\accounting.js" />
     <Content Include="Scripts\CurrencyController.js" />
     <Content Include="Scripts\NumericController.js" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
-    <Content Include="SQL\Americorpsmembers.sql" />
     <Content Include="SQL\ConservationAct250.sql" />
     <Content Include="SQL\ConservationAppraisals.sql" />
     <Content Include="SQL\ConservationAttributes.sql" />
@@ -302,7 +301,6 @@
     <Content Include="SQL\FundMaintenance.sql" />
     <Content Include="SQL\GrantMaintenance.sql" />
     <Content Include="SQL\HomeOwnerShip.sql" />
-    <Content Include="SQL\HOPWAMaintenance.sql" />
     <Content Include="SQL\HousingAttributes.sql" />
     <Content Include="SQL\HousingFederalPrograms.sql" />
     <Content Include="SQL\HousingInfo.sql" />
@@ -327,7 +325,7 @@
     <Content Include="PTConvertScripts\PostCopyScripts.sql" />
     <Content Include="Reallocations.aspx" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\WebForms\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -899,6 +897,13 @@
     </Compile>
     <Compile Include="ProjectCheckRequest.aspx.designer.cs">
       <DependentUpon>ProjectCheckRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCheckRequestNew.aspx.cs">
+      <DependentUpon>ProjectCheckRequestNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCheckRequestNew.aspx.designer.cs">
+      <DependentUpon>ProjectCheckRequestNew.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProjectDesc.aspx.cs">
       <DependentUpon>ProjectDesc.aspx</DependentUpon>

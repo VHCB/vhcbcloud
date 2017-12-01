@@ -18,7 +18,6 @@ namespace vhcbcloud
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
-            lblErrorMsg.Text = "";
 
             if (!IsPostBack)
             {
@@ -47,7 +46,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: BindStatus: " + ex.Message;
+                LogMessage("ProjectCheckRequest: BindStatus: " + ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -118,7 +117,7 @@ namespace vhcbcloud
                     if (ddlPayee.Items.Count == 0)
                     {
                         dvMessage.Visible = true;
-                        lblErrorMsg.Text = "Add a payee to this project before proceeding with disbursement";
+                        LogMessage("Add a payee to this project before proceeding with disbursement");
                         return;
                     }
                     btnCRSubmit.Text = "Submit";
@@ -158,7 +157,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -221,7 +220,7 @@ namespace vhcbcloud
 
                     if (!isDecimal || Convert.ToDecimal(((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim()) <= 0)
                     {
-                        lblErrorMsg.Text = "Select a valid transaction amount";
+                        LogMessage("Select a valid transaction amount");
                         ((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Focus();
                         return;
                     }
@@ -237,12 +236,12 @@ namespace vhcbcloud
 
                 if (amount == allowed_amount)
                 {
-                    lblErrorMsg.Text = "Transaction is complete, more funds not allowed";
+                    LogMessage("Transaction is complete, more funds not allowed");
                 }
                 else if (amount > allowed_amount)
                 {
                     //amount = allowed_amount;
-                    lblErrorMsg.Text = "Detail amount can't be more than transaction amount";
+                    LogMessage("Detail amount can't be more than transaction amount");
                     return;
                 }
                 else if (amount < allowed_amount)
@@ -260,7 +259,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: gvPTransDetails_RowUpdating: " + ex.Message); lblErrorMsg.Focus();
             }
 
         }
@@ -328,11 +327,11 @@ namespace vhcbcloud
                 if (lblDetailId != null)
                     FinancialTransactions.DeleteTransactionDetail(Convert.ToInt32(lblDetailId.Text));
                 BindPCRTransDetails();
-                lblErrorMsg.Text = "Transaction detail was successfully deleted";
+                LogMessage("Transaction detail was successfully deleted");
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: Delete detail: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: Delete detail: " + ex.Message); lblErrorMsg.Focus();
             }
         }
         #endregion
@@ -427,7 +426,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: btnPCRTransDetails_Click: " + ex.Message); lblErrorMsg.Focus();
             }
         }
 
@@ -459,6 +458,7 @@ namespace vhcbcloud
                         {
                             totFundAmt += Convert.ToDecimal(dtPCRTranDetails.Rows[i]["Amount"].ToString());
                         }
+                        totFundAmt = -totFundAmt;
                     }
 
                     totBalAmt = tranAmount - totFundAmt;
@@ -504,7 +504,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = Pagename + ": BindPCRTransDetails: " + ex.Message;
+                LogMessage(Pagename + ": BindPCRTransDetails: " + ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -702,7 +702,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: rdBtnSelect_CheckedChanged: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: rdBtnSelect_CheckedChanged: " + ex.Message); lblErrorMsg.Focus();
             }
         }
 
@@ -810,7 +810,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
             }
         }
 
@@ -881,7 +881,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: BindPayee: " + ex.Message;
+                LogMessage("ProjectCheckRequest: BindPayee: " + ex.Message);
                 lblErrorMsg.Focus();
             }
 
@@ -911,7 +911,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
 
@@ -932,7 +932,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: BindStatus: " + ex.Message;
+                LogMessage("ProjectCheckRequest: BindStatus: " + ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -956,7 +956,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -977,7 +977,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -1008,7 +1008,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -1075,32 +1075,32 @@ namespace vhcbcloud
             #region Validations
             //if (ddlProjFilter.Items.Count > 1 && ddlProjFilter.SelectedIndex == 0)
             //{
-            //    lblErrorMsg.Text = "Select Project#";
+            //    LogMessage("Select Project#";
             //    ddlProjFilter.Focus();
             //    return;
             //}
             if (txtProjNum.Text == "")
             {
-                lblErrorMsg.Text = "Select Project#";
+                LogMessage("Select Project#");
                 return;
             }
             if (txtTransDate.Text == "")
             {
-                lblErrorMsg.Text = "Select Transaction Date";
+                LogMessage("Select Transaction Date");
                 txtTransDate.Focus();
                 return;
             }
 
-            //if (txtCRDate.Text == "")
-            //{
-            //    lblErrorMsg.Text = "Select Check Request Date";
-            //    txtCRDate.Focus();
-            //    return;
-            //}
-
-            if(ddlCRDate.SelectedIndex == -1)
+            if (ddlCRDate.SelectedIndex == -1)
             {
-                lblErrorMsg.Text = "Select Check Request Date";
+               LogMessage("Select Check Request Date");
+                ddlCRDate.Focus();
+                return;
+            }
+
+            if (ddlCRDate.SelectedIndex == -1)
+            {
+                LogMessage("Select Check Request Date");
                 ddlCRDate.Focus();
                 return;
             }
@@ -1112,7 +1112,7 @@ namespace vhcbcloud
 
                 if (!isDateTime)
                 {
-                    lblErrorMsg.Text = "Select a valid Transaction Date";
+                    LogMessage("Select a valid Transaction Date");
                     txtTransDate.Focus();
                     return;
                 }
@@ -1125,7 +1125,7 @@ namespace vhcbcloud
 
             //    if (!isDateTime)
             //    {
-            //        lblErrorMsg.Text = "Select valid Check Request Date";
+            //        LogMessage("Select valid Check Request Date";
             //        txtCRDate.Focus();
             //        return;
             //    }
@@ -1133,35 +1133,35 @@ namespace vhcbcloud
 
             if (ddlPayee.Items.Count > 1 && ddlPayee.SelectedIndex == 0)
             {
-                lblErrorMsg.Text = "Select Payee";
+                LogMessage("Select Payee");
                 ddlPayee.Focus();
                 return;
             }
             if (ddlPayee.Items.Count == 0)
             {
-                lblErrorMsg.Text = "Add a payee to this project before proceed with disbursement";
+                LogMessage("Add a payee to this project before proceed with disbursement");
                 return;
             }
             if (ddlProgram.Items.Count > 1 && ddlProgram.SelectedIndex == 0)
             {
-                lblErrorMsg.Text = "Select Program";
+                LogMessage("Select Program");
                 ddlProgram.Focus();
                 return;
             }
             if (ddlProgram.Items.Count == 0)
             {
-                lblErrorMsg.Text = "Add a program to this project before proceed with disbursement";
+                LogMessage("Add a program to this project before proceed with disbursement");
                 return;
             }
             //else if (ddlStatus.Items.Count > 1 && ddlStatus.SelectedIndex == 0)
             //{
-            //    lblErrorMsg.Text = "Select Status";
+            //    LogMessage("Select Status";
             //    ddlStatus.Focus();
             //    return;
             //}
             //else if (lbNOD.Items.Count > 1 && lbNOD.SelectedIndex == -1)
             //{
-            //    lblErrorMsg.Text = "Select NOD";
+            //    LogMessage("Select NOD";
             //    lbNOD.Focus();
             //    return;
             //}
@@ -1170,7 +1170,7 @@ namespace vhcbcloud
             {
                 if (txtEligibleAmt.Text.Trim() == "")
                 {
-                    lblErrorMsg.Text = "Select Eligible Amount";
+                    LogMessage("Select Eligible Amount");
                     txtEligibleAmt.Focus();
                     return;
                 }
@@ -1181,7 +1181,7 @@ namespace vhcbcloud
 
                     if (!isDecimal || Convert.ToDecimal(txtEligibleAmt.Text) <= 0)
                     {
-                        lblErrorMsg.Text = "Select a valid Eligible amount";
+                        LogMessage("Select a valid Eligible amount");
                         txtEligibleAmt.Focus();
                         return;
                     }
@@ -1190,14 +1190,14 @@ namespace vhcbcloud
 
             if (txtEligibleAmt.Visible && ddlMatchingGrant.Items.Count > 1 && ddlMatchingGrant.SelectedIndex == 0)
             {
-                lblErrorMsg.Text = "Select Matching Grant";
+                LogMessage("Select Matching Grant");
                 ddlMatchingGrant.Focus();
                 return;
             }
 
             if (txtDisbursementAmt.Text.Trim() == "")
             {
-                lblErrorMsg.Text = "Select Disbursement Amount";
+                LogMessage("Select Disbursement Amount");
                 txtDisbursementAmt.Focus();
                 return;
             }
@@ -1208,7 +1208,7 @@ namespace vhcbcloud
 
                 if (!isDecimal || Convert.ToDecimal(txtDisbursementAmt.Text) <= 0)
                 {
-                    lblErrorMsg.Text = "Select a valid Disbursement amount";
+                    LogMessage("Select a valid Disbursement amount");
                     txtDisbursementAmt.Focus();
                     return;
                 }
@@ -1289,6 +1289,7 @@ namespace vhcbcloud
                     }
                     LogMessage("Successfully Saved Check Request");
                     rdBtnSelect.SelectedIndex = 1;
+                    PopulatePCRForm();
                 }
                 else
                 {
@@ -1351,7 +1352,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: btnCRSubmit_Click: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: btnCRSubmit_Click: " + ex.Message); lblErrorMsg.Focus();
             }
 
         }
@@ -1419,10 +1420,10 @@ namespace vhcbcloud
             dvMessage.Visible = true;
             if (message == "")
             {
-                lblErrorMsg.Text = Pagename + ": " + method + ": Error Message: " + error;
+                LogMessage(Pagename + ": " + method + ": Error Message: " + error);
             }
             else
-                lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+                LogMessage(Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error);
         }
 
         private void LogMessage(string message)
@@ -1459,7 +1460,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = ex.Message;
+                LogMessage(ex.Message);
                 lblErrorMsg.Focus();
             }
         }
@@ -1468,7 +1469,7 @@ namespace vhcbcloud
         {
             if (ddlPCRQuestions.Items.Count > 1 && ddlPCRQuestions.SelectedIndex == 0)
             {
-                lblErrorMsg.Text = "Select PCR Question";
+                LogMessage("Select PCR Question");
                 ddlPCRQuestions.Focus();
                 return;
             }
@@ -1508,9 +1509,9 @@ namespace vhcbcloud
                     }
                 }
 
-                if (approvals == dt.Rows.Count)
+                if (approvals != 0  && approvals == dt.Rows.Count)
                 {
-                    pnlVoucherDet.Visible = true;
+                    CheckVoucherAccess();
                 }
                 else
                 {
@@ -1519,7 +1520,7 @@ namespace vhcbcloud
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message; lblErrorMsg.Focus();
+                LogMessage("ProjectCheckRequest: BindPCRQuestionsForApproval: " + ex.Message); lblErrorMsg.Focus();
             }
             finally
             {
@@ -1527,6 +1528,18 @@ namespace vhcbcloud
                 //{
                 //    btnNewPCR.Visible = true;
                 //}
+            }
+        }
+
+        private void CheckVoucherAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in  dt.Rows)
+            {
+                if(row["FxnID"].ToString() == "26807")
+                    pnlVoucherDet.Visible = true;
             }
         }
 
@@ -1604,7 +1617,7 @@ namespace vhcbcloud
 
                 //    if (!isDecimal || Convert.ToDecimal(((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim()) <= 0)
                 //    {
-                //        lblErrorMsg.Text = "Select a valid transaction amount";
+                //        LogMessage("Select a valid transaction amount";
                 //        ((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Focus();
                 //        return;
                 //    }
@@ -1620,12 +1633,12 @@ namespace vhcbcloud
 
                 //if (amount == allowed_amount)
                 //{
-                //    lblErrorMsg.Text = "Transaction is complete, more funds not allowed";
+                //    LogMessage("Transaction is complete, more funds not allowed";
                 //}
                 //else if (amount > allowed_amount)
                 //{
                 //    amount = allowed_amount;
-                //    lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
+                //    LogMessage("Amount auto adjusted to available fund amount";
                 //}
                 //else if (amount < allowed_amount)
                 //{
@@ -1695,17 +1708,17 @@ namespace vhcbcloud
                     }
                 }
 
-                DataTable dt = new DataTable();
-                dt = ProjectCheckRequestData.UpdateVoucherNumber(int.Parse(this.hfPCRId.Value), txtVoucher.Text, Convert.ToDateTime(txtVoucherDt.Text), GetUserId());
+                DataTable dtVouchers = new DataTable();
+                dtVouchers = ProjectCheckRequestData.UpdateVoucherNumber(int.Parse(this.hfPCRId.Value), txtVoucher.Text, Convert.ToDateTime(txtVoucherDt.Text), GetUserId());
 
-                gvVoucher.DataSource = dt;
-                gvVoucher.DataBind();
+                BindVoucher();
+
 
                 //btnNewPCR.Visible = true;
             }
             catch (Exception ex)
             {
-                lblErrorMsg.Text = "ProjectCheckRequest: Add voucher: " + ex.Message;
+                LogMessage("ProjectCheckRequest: Add voucher: " + ex.Message);
                 lblErrorMsg.Focus();
             }
         }

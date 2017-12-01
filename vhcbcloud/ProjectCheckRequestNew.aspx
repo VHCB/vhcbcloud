@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Project Check Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="ProjectCheckRequestNew.aspx.cs" Inherits="vhcbcloud.ProjectCheckRequestNew" %>
+    MaintainScrollPositionOnPostback="true" CodeBehind="ProjectCheckRequestNew.aspx.cs" Inherits="vhcbcloud.ProjectCheckRequestNew" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix" id="vhcb">
@@ -430,7 +430,7 @@
                     <asp:Button ID="btnAddVoucher" runat="server" class="btn btn-info" Text="Submit" OnClick="btnAddVoucher_Click" />
                     <br />
                     <br />
-                    <asp:GridView ID="gvVoucher" runat="server" AllowPaging="false" AutoGenerateColumns="False" CssClass="gridView"
+                    <asp:GridView ID="gvVoucher" runat="server" Visible="false" AllowPaging="false" AutoGenerateColumns="False" CssClass="gridView"
                         EnableTheming="True" GridLines="None" PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="100%">
                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
