@@ -176,6 +176,7 @@
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
     <Content Include="Applicant.aspx" />
+    <Content Include="CashRefundnew.aspx" />
     <Content Include="CashRefund_old.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="ConservationAct250.aspx" />
@@ -433,6 +434,13 @@
     </Compile>
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashRefundnew.aspx.cs">
+      <DependentUpon>CashRefundnew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashRefundnew.aspx.designer.cs">
+      <DependentUpon>CashRefundnew.aspx</DependentUpon>
     </Compile>
     <Compile Include="CashRefund_old.aspx.cs">
       <DependentUpon>CashRefund_old.aspx</DependentUpon>
