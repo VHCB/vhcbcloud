@@ -394,7 +394,7 @@
                         </div>
 
                         <div class="panel-body" id="dvMilestoneGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
@@ -773,7 +773,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAddressGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
@@ -904,7 +904,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"
@@ -1125,6 +1125,9 @@
         </div>
     </div>
     <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="Scripts/jquery.min.js"></script> 
+    <script type="text/javascript" src="Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="Scripts/gridviewScroll.min.js"></script>
     <script language="javascript">
         function SetContextKey() {
             $find('<%=ae_txtStreetNo.ClientID%>').set_contextKey($get("<%=txtStreetNo.ClientID %>").value);
@@ -1219,13 +1222,23 @@
             $('#<%= txtProjNum.ClientID%>').blur(function () {
                 IsProjectNumberExist();
             });
-
+            gridviewScroll(<%=gvMilestone.ClientID%>);
+            gridviewScroll(<%=gvAddress.ClientID%>);
+            gridviewScroll(<%=gvEntity.ClientID%>);
+        
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');
                 RefreshGrids();
             });--%>
         });
 
+        function gridviewScroll(gridId) {
+            $(gridId).gridviewScroll({
+                width: 981,
+                height: 100
+            });
+        }
+       
         function PopupAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjectId.ClientID%>").val())
         };

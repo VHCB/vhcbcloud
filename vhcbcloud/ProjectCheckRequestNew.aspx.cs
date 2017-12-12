@@ -121,6 +121,7 @@ namespace vhcbcloud
                         return;
                     }
                     btnCRSubmit.Text = "Submit";
+                    spnCreatedBy.InnerHtml = Context.User.Identity.GetUserName();
                 }
                 else
                 {
@@ -230,7 +231,7 @@ namespace vhcbcloud
                 int transType = Convert.ToInt32(((DropDownList)gvPTransDetails.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvPTransDetails.Rows[rowIndex].FindControl("lblDetId")).Text);
 
-                decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
+                decimal old_amount = -Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
                 decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
 
@@ -252,7 +253,7 @@ namespace vhcbcloud
                         //DisableButton(btnSubmit);
                     }
                 }
-                FinancialTransactions.UpdateTransDetails(detailId, transType, amount);
+                FinancialTransactions.UpdateTransDetails(detailId, transType, -amount);
 
                 gvPTransDetails.EditIndex = -1;
                 BindPCRTransDetails();
@@ -1091,19 +1092,19 @@ namespace vhcbcloud
                 return;
             }
 
-            if (ddlCRDate.SelectedIndex == -1)
-            {
-               LogMessage("Select Check Request Date");
-                ddlCRDate.Focus();
-                return;
-            }
-
-            if (ddlCRDate.SelectedIndex == -1)
+            if (ddlCRDate.SelectedIndex == 0)
             {
                 LogMessage("Select Check Request Date");
                 ddlCRDate.Focus();
                 return;
             }
+
+            //if (ddlCRDate.SelectedIndex == -1)
+            //{
+            //    LogMessage("Select Check Request Date");
+            //    ddlCRDate.Focus();
+            //    return;
+            //}
 
             if (txtTransDate.Text.Trim() != "")
             {
@@ -1303,6 +1304,8 @@ namespace vhcbcloud
                         decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS, CRDate);
 
+                        hfTransAmt.Value = txtDisbursementAmt.Text;
+
                         if (dtPCR.Rows.Count > 0)
                         {
                             pcr.TransID = Convert.ToInt32(dtPCR.Rows[0]["TransID"].ToString());
@@ -1325,6 +1328,7 @@ namespace vhcbcloud
                                 }
                             }
                             //BindTransDate(dtPCR);
+                            BindPCRTransDetails();
                             LogMessage("Successfully Updated Check Request");
                         }
                         else
@@ -1384,7 +1388,7 @@ namespace vhcbcloud
                 ddlMatchingGrant.Enabled = false;
             }
             txtNotes.Enabled = false;
-            txtDisbursementAmt.Enabled = false;
+            //txtDisbursementAmt.Enabled = false;
         }
 
         protected int GetUserId()
@@ -1509,7 +1513,7 @@ namespace vhcbcloud
                     }
                 }
 
-                if (approvals != 0  && approvals == dt.Rows.Count)
+                if (approvals != 0 && approvals == dt.Rows.Count)
                 {
                     CheckVoucherAccess();
                 }
@@ -1536,9 +1540,9 @@ namespace vhcbcloud
             DataTable dt = new DataTable();
             dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
 
-            foreach (DataRow row in  dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
-                if(row["FxnID"].ToString() == "26807")
+                if (row["FxnID"].ToString() == "26807")
                     pnlVoucherDet.Visible = true;
             }
         }
@@ -1713,8 +1717,14 @@ namespace vhcbcloud
 
                 BindVoucher();
 
+                LogMessage("Check Request Finalized Successfully");
 
-                //btnNewPCR.Visible = true;
+                btnCRSubmit.Visible = false;
+                btnPCRTransDetails.Visible = false;
+                btnApprovalsSubmit.Visible = false;
+                btnAddVoucher.Visible = false;
+
+                btnNewPCR.Visible = true;
             }
             catch (Exception ex)
             {
@@ -1748,6 +1758,11 @@ namespace vhcbcloud
                 LogMessage("ProjectCheckRequest: Bind voucher: " + ex.Message); lblErrorMsg.Focus();
             }
 
+        }
+
+        protected void btnNewPCR_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("projectcheckrequestnew.aspx");
         }
     }
 }

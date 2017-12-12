@@ -282,6 +282,8 @@
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
     <Content Include="Scripts\CurrencyController.js" />
+    <Content Include="Scripts\gridviewScroll.min.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\NumericController.js" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />

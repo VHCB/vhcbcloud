@@ -304,7 +304,7 @@
                                     <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount") %>'></asp:TextBox>
+                                    <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("PosAmount") %>'></asp:TextBox>
                                 </EditItemTemplate>
                                 <FooterTemplate>
                                     <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
@@ -460,6 +460,9 @@
                     <br />
                 </div>
             </div>
+             <br />
+                            <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
+                            <br />
         </div>
         <asp:HiddenField ID="hfProjId" runat="server" />
         <asp:HiddenField ID="hfTransId" runat="server" />
