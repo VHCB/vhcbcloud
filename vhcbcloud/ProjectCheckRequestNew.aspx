@@ -192,6 +192,7 @@
                         <tr>
                             <td colspan="6" style="height: 5px">
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
+                                &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false" />
                             </td>
                         </tr>
                     </table>
@@ -406,6 +407,7 @@
                     <br />
                 </div>
             </div>
+
             <div class="panel panel-default" runat="server" id="pnlVoucherDet" visible="false">
                 <div class="panel-heading">Voucher Details</div>
                 <div class="panel-body">

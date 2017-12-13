@@ -478,6 +478,7 @@ namespace vhcbcloud
                         tblFundDetails.Visible = false;
                         DisableButton(btnPCRTransDetails);
                         //EnableButton(btnSubmit);
+                        AddDefaultPCRQuestions();
                         BindPCRQuestionsForApproval();
                     }
                     else
@@ -507,6 +508,20 @@ namespace vhcbcloud
             {
                 LogMessage(Pagename + ": BindPCRTransDetails: " + ex.Message);
                 lblErrorMsg.Focus();
+            }
+        }
+
+        protected void AddDefaultPCRQuestions()
+        {
+            try
+            {
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId());
+                BindPCRQuestionsForApproval();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Focus();
+                lblErrorMsg.Text = "Exception arised while adding default PCR questions: " + ex.Message;
             }
         }
 
@@ -560,6 +575,7 @@ namespace vhcbcloud
                 BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
 
                 PopulateForm();
+                CheckDeletePCRAccess();
             }
         }
 
@@ -1015,6 +1031,11 @@ namespace vhcbcloud
         }
 
         protected void rdBtnSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            rdBtnNewExistChanged();
+        }
+
+        private void rdBtnNewExistChanged()
         {
             //pnlFund.Visible = false;
             pnlApprovals.Visible = false;
@@ -1763,6 +1784,49 @@ namespace vhcbcloud
         protected void btnNewPCR_Click(object sender, EventArgs e)
         {
             Response.Redirect("projectcheckrequestnew.aspx");
+        }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProjectCheckRequestData.PCR_Delete(Convert.ToInt32(hfPCRId.Value));
+
+                rdBtnSelect.SelectedIndex = 0;
+                pnlApprovals.Visible = false;
+                pnlDisbursement.Visible = false;
+                ClearPCRForm();
+                ddlDate.Visible = false;
+                txtTransDate.Visible = true;
+                ClearHiddenFieldValues();
+                DisplayControls("");
+                txtProjNum.Text = "";
+                ddlCRDate.SelectedIndex = -1;
+
+                EnablePCR();
+                txtProjNum.Visible = true;
+                btnCRSubmit.Visible = true;
+
+                LogMessage("Project check request was successfully deleted");
+                lblErrorMsg.Focus();
+            }
+            catch (Exception ex)
+            {
+                LogMessage("btnDelete_Click" + ex.Message);
+                lblErrorMsg.Focus();
+            }
+        }
+
+        private void CheckDeletePCRAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "26816")
+                    btnDelete.Visible = true;
+            }
         }
     }
 }
