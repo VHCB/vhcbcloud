@@ -421,25 +421,25 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblAdminSubMilestone" runat="Server" Text='<%# Eval("SubEvent") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
+                                            <ItemStyle Width="130px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Prog MS">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgramMilestone" runat="Server" Text='<%# Eval("ProgEvent") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Prog Sub MS">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProgramSubMilestone" runat="Server" Text='<%# Eval("ProgSubEvent") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
+                                            <ItemStyle Width="100px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="100px" />
+                                            <ItemStyle Width="80px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
@@ -451,7 +451,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="150px" />
+                                            <ItemStyle Width="130px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
