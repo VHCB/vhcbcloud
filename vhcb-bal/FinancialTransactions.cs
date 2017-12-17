@@ -3280,5 +3280,114 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static DataTable GetExistingAdjustmentByProjId(string ProjId)
+        {
+            DataTable dtTranDetails = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("projId", Convert.ToInt32(ProjId)));
+                command.CommandText = "GetExistingAdjustmentByProjId";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTranDetails = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTranDetails;
+        }
+
+        public static void SubmitAdjustmentTransaction(int ProjId, decimal TransAmt,
+            int FundId, int FundTtransType, string Comment, int UserID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "SubmitAdjustmentTransaction";
+
+                command.Parameters.Add(new SqlParameter("ProjId", ProjId));
+                command.Parameters.Add(new SqlParameter("TransAmt", TransAmt));
+                command.Parameters.Add(new SqlParameter("FundId", FundId));
+                command.Parameters.Add(new SqlParameter("FundTtransType", FundTtransType));
+                //command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
+                command.Parameters.Add(new SqlParameter("Comment", Comment));
+                command.Parameters.Add(new SqlParameter("UserID", UserID));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void UpdaeAdjustmentTransaction(int Transid, int DetailId, int ProjId, decimal TransAmt,
+            int FundId, int FundTtransType, string Comment, int UserID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                object returnMsg = "";
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdaeAdjustmentTransaction";
+
+                command.Parameters.Add(new SqlParameter("Transid", Transid));
+                command.Parameters.Add(new SqlParameter("DetailId", DetailId));
+                command.Parameters.Add(new SqlParameter("ProjId", ProjId));
+                command.Parameters.Add(new SqlParameter("TransAmt", TransAmt));
+                command.Parameters.Add(new SqlParameter("FundId", FundId));
+                command.Parameters.Add(new SqlParameter("FundTtransType", FundTtransType));
+                //command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
+                command.Parameters.Add(new SqlParameter("Comment", Comment));
+                command.Parameters.Add(new SqlParameter("UserID", UserID));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }

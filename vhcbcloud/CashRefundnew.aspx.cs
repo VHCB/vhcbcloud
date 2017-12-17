@@ -99,6 +99,7 @@ namespace vhcbcloud
         private void BindPCRTransDetails()
         {
             txtTransDate.Text = "";
+
             try
             {
                 DataTable dtTranDetails = new DataTable();
@@ -199,7 +200,7 @@ namespace vhcbcloud
             try
             {
                 FinancialTransactions.SubmitVoidTransaction(DataUtils.GetInt(hfTransId.Value));
-
+                BindFinalizeTransGrid();
                 LogMessage("Successfully Void Check");
             }
             catch (Exception ex)

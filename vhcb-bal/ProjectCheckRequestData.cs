@@ -996,7 +996,6 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-
         public static decimal GetPCRDisbursemetDetailTotal(int ProjectCheckReqID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1098,6 +1097,7 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
     }
 
     public class PCRDetails
