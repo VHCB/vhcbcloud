@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using Microsoft.AspNet.Identity;
+
 
 namespace vhcbcloud
 {
@@ -199,7 +201,7 @@ namespace vhcbcloud
         {
             try
             {
-                FinancialTransactions.SubmitVoidTransaction(DataUtils.GetInt(hfTransId.Value));
+                FinancialTransactions.SubmitVoidTransaction(DataUtils.GetInt(hfTransId.Value), GetUserId());
                 BindFinalizeTransGrid();
                 LogMessage("Successfully Void Check");
             }
@@ -208,7 +210,22 @@ namespace vhcbcloud
                 LogError(Pagename, "btnSubmitVoid_Click", "", ex.Message);
             }
         }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
     }
+
+ 
 
     public class SelectedFinalizeTranDetails
     {
