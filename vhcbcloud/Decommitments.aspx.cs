@@ -372,11 +372,11 @@ namespace vhcbcloud
                         }
 
                         FinancialTransactions.AddDeCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), - currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                     }
                     else
                         FinancialTransactions.AddDeCommitmentTransDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), - currentTranFudAmount);
 
 
 
