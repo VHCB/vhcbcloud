@@ -1041,7 +1041,8 @@ begin
 
 	if ( @financial_transaction_action_id = 236)
 	begin
-		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, (select crdate from projectcheckreq where ProjectCheckReqID = trans.ProjectCheckReqID  and projectid = @project_id) as TransactionDate, trans.TransAmt, v.description as LkTransactionDesc--, trans.LkTransaction, v.*
+		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, (select crdate from projectcheckreq where ProjectCheckReqID = trans.ProjectCheckReqID  and projectid = @project_id) as TransactionDate, trans.TransAmt, 
+		v.description as LkTransactionDesc--, trans.LkTransaction, v.*
 		from Trans trans(nolock)
 		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
 		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
@@ -1066,10 +1067,13 @@ begin
 	end
 	else 
 	begin
-		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, v.description as LkTransactionDesc--, trans.LkTransaction, v.*
+		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, 
+			v.description as LkTransactionDesc, --, trans.LkTransaction, v.*
+			ui.Fname + ' ' + ui.Lname as UserName
 		from Trans trans(nolock)
 		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
 		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
+		left join userinfo ui(nolock) on ui.UserId = trans.UserId
 		where trans.TransId in (
 			select t.TransId from (
 			select trans.TransId as TransId, trans.TransAmt,
