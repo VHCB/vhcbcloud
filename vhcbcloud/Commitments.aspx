@@ -296,7 +296,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                                            <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                                         </ItemTemplate>
                                                         <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>

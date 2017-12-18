@@ -176,19 +176,31 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
-
-                //if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
-                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
                 }
                 else
                 {
                     lblUsePermit.Visible = false;
                     ddlUsePermit.Visible = false;
                 }
+
+                //BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+
+                ////if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
+                //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                //{
+                //    lblUsePermit.Visible = true;
+                //    ddlUsePermit.Visible = true;
+                //}
+                //else
+                //{
+                //    lblUsePermit.Visible = false;
+                //    ddlUsePermit.Visible = false;
+                //}
             }
             else
             {
@@ -223,19 +235,31 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
-
-                //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                if(ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
                 }
                 else
                 {
                     lblUsePermit.Visible = false;
                     ddlUsePermit.Visible = false;
                 }
+
+                //BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+
+               
+                //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                //{
+                //    lblUsePermit.Visible = true;
+                //    ddlUsePermit.Visible = true;
+                //}
+                //else
+                //{
+                //    lblUsePermit.Visible = false;
+                //    ddlUsePermit.Visible = false;
+                //}
             }
             else
             {
@@ -245,6 +269,26 @@ namespace vhcbcloud
                 txtAmt.Text = "";
                 //ClearDetailSelection();
             }
+        }
+
+        protected void BindUsePermitNew(int FundId)
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetAllLandUsePermitNew(FundId);
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
         }
 
         private void ClearTransactionDetailForm()
@@ -452,16 +496,18 @@ namespace vhcbcloud
                     }
 
                     if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString())))
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), ddlUsePermit.SelectedIndex == 0 ? "" : ddlUsePermit.SelectedValue.ToString()))
                     {
-                        lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                        //lblErrorMsg.Text = "Same fund and same transaction type is already submitted for this transaction. Please select different selection";
+                        lblErrorMsg.Text = "Same transaction already exist. Please select different selection";
                         return;
                     }
 
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
 
                     //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                    if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                         {
@@ -471,11 +517,13 @@ namespace vhcbcloud
                         }
 
                         FinancialTransactions.AddCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount, 
+                        ddlUsePermit.SelectedItem.Text, 
+                        ddlUsePermit.SelectedValue.ToString());
                     }
                     else
                         FinancialTransactions.AddCommitmentTransDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount);
 
                     BindFundDetails(transId);
                     ClearTransactionDetailForm();

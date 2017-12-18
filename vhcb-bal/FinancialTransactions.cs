@@ -290,7 +290,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtable;
         }
 
-        public static bool IsDuplicateFundDetailPerTransaction(int transid, int fundid, int fundtranstype)
+        public static bool IsDuplicateFundDetailPerTransaction(int transid, int fundid, int fundtranstype, string UsePermit = "")
         {
             bool isDuplicate = false;
             DataTable dtable = null;
@@ -303,6 +303,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("transid", transid));
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("UsePermit", UsePermit));
 
                 using (connection)
                 {
@@ -1752,6 +1753,41 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetAllLandUsePermitNew(int FundId)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAllLandUsePermitNew";
+                command.Parameters.Add(new SqlParameter("FundId", FundId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
+
         public static DataTable GetLandUsePermit(int projectId)
         {
             DataTable dtBCommit = null;
@@ -1859,7 +1895,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
-        public static DataTable GetAvailableFundsPerProjAcctFundtype(int projectId, string account, int fundtypeId)
+        public static DataTable GetAvailableFundsPerProjAcctFundtype(int projectId, string account, int fundtypeId, string LandUsePermitID = "")
         {
             DataTable dtBCommit = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1871,6 +1907,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("projectId", projectId));
                 command.Parameters.Add(new SqlParameter("account", account));
                 command.Parameters.Add(new SqlParameter("fundtypeId", fundtypeId));
+                command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
+
                 using (connection)
                 {
                     connection.Open();

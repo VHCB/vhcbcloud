@@ -258,7 +258,7 @@
                                                     <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                 </td>
                                                 <td style="width: 20%; float: left">
-                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 15%; float: left">
@@ -306,7 +306,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                                 </ItemTemplate>
                                                 <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
