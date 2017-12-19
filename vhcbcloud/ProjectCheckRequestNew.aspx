@@ -192,7 +192,8 @@
                         <tr>
                             <td colspan="6" style="height: 5px">
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
-                                &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false" />
+                                &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false" 
+                                    OnClientClick="return confirm('Are you sure you wish to delete the entire Check Request?');" />
                             </td>
                         </tr>
                     </table>

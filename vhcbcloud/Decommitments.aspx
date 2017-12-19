@@ -243,7 +243,7 @@
                                                 </td>
                                                 <td style="width: 15%; float: left"><span class="labelClass">Trans Type :</span></td>
                                                 <td style="width: 25%; float: left">
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
+                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9" AutoPostBack="true" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>

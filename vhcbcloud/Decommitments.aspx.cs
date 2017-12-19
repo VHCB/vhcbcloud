@@ -123,6 +123,7 @@ namespace vhcbcloud
         protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataTable dtable = new DataTable();
+
             if (ddlAcctNum.SelectedIndex != 0)
             {
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
@@ -139,28 +140,124 @@ namespace vhcbcloud
                 //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
                 //}
 
+                if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
+                }
+                else
+                {
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
+
                 ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjAcct(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text);
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
+
                 if (ddlTransType.Items.Count > 1)
                     ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    if (ddlTransType.Items.Count < 1)
+                    {
+                        lblErrorMsg.Text = "No transaction types found for this fund and hence this fund can't be used for disbursement";
+                        return;
+                    }
+                    lblErrorMsg.Text = "";
+
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                      ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                      ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+
+                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                        lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+                    else
+                        lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+
+                }
+            }
+            else
+            {
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                lblFundName.Text = "";
+                txtAmt.Text = "";
+                //ClearDetailSelection();
+            }
+        }
+
+        protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtable = new DataTable();
+            if (ddlFundName.SelectedIndex != 0)
+            {
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                lblFundName.Text = "";
+                lblErrorMsg.Text = "";
+
+                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+                lblFundName.Text = dtable.Rows[0]["name"].ToString();
+
+                ddlAcctNum.SelectedValue = ddlFundName.SelectedValue;
+
+                //if (lblFundName.Text.ToLower().Contains("hopwa"))
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
+                //}
+                //else
+                //{
+                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
+                //}
 
                 if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
-                    BindUsePermitNew(DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
+                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
                 }
                 else
                 {
+                    ddlUsePermit.Items.Clear();
                     lblUsePermit.Visible = false;
                     ddlUsePermit.Visible = false;
                 }
 
-                //BindUsePermit(Convert.ToInt32(hfProjId.Value));
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjAcct(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text);
+                ddlTransType.DataValueField = "typeid";
+                ddlTransType.DataTextField = "fundtype";
+                ddlTransType.DataBind();
 
-                ////if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                if (ddlTransType.Items.Count > 1)
+                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    if (ddlTransType.Items.Count < 1)
+                    {
+                        lblErrorMsg.Text = "No transaction types found for this fund and hence this fund can't be used for disbursement";
+                        return;
+                    }
+                    lblErrorMsg.Text = "";
+
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                      ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                      ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+
+                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                        lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+                    else
+                        lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+
+                }
+
+                //BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+
+                ////if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
                 //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                 //{
                 //    lblUsePermit.Visible = true;
@@ -178,6 +275,7 @@ namespace vhcbcloud
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
                 lblFundName.Text = "";
                 txtAmt.Text = "";
+                lblErrorMsg.Text = "";
                 //ClearDetailSelection();
             }
         }
@@ -330,19 +428,6 @@ namespace vhcbcloud
                     }
                 }
 
-                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text, 
-                    Convert.ToInt32(ddlTransType.SelectedValue.ToString()), ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
-
-                if (dtAvailFunds != null)
-                {
-                    if (dtAvailFunds.Rows.Count > 0)
-                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
-                        {
-                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund. ";// However the transaction is still added.";
-                            return;
-                        }
-                }
-
                 decimal currentTranAmount = 0;
                 decimal currentTranFudAmount = 0;
                 decimal currentBalAmount = 0;
@@ -381,9 +466,7 @@ namespace vhcbcloud
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         CommonHelper.EnableButton(btnDecommitmentSubmit);
                     }
-                    DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
-                    //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                    //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+
                     if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
@@ -392,14 +475,38 @@ namespace vhcbcloud
                             ddlUsePermit.Focus();
                             return;
                         }
+                    }
 
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), 
+                        ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()), 
+                        ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+
+                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                    {
+                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
+                        {
+                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund. ";// However the transaction is still added.";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat("0.00") + " for the selected Fund. ";
+                        return;
+                    }
+
+                    //DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+                    //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
+                    //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                    {
                         FinancialTransactions.AddDeCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), - currentTranFudAmount, 
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount,
                         ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                     }
                     else
                         FinancialTransactions.AddDeCommitmentTransDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), - currentTranFudAmount);
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount);
 
 
 
@@ -1024,101 +1131,12 @@ namespace vhcbcloud
             }
         }
 
-        protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataTable dtable = new DataTable();
-            if (ddlFundName.SelectedIndex != 0)
-            {
-                ddlTransType.Items.Clear();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
-                lblFundName.Text = "";                
-                lblErrorMsg.Text = "";
-
-                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
-                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
-                lblFundName.Text = dtable.Rows[0]["name"].ToString();
-
-                ddlAcctNum.SelectedValue = ddlFundName.SelectedValue;
-
-                //if (lblFundName.Text.ToLower().Contains("hopwa"))
-                //{
-                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwa");
-                //}
-                //else
-                //{
-                //    ddlTransType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransNonHopwa");
-                //}
-
-                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjAcct(Convert.ToInt32(hfProjId.Value), ddlAcctNum.SelectedItem.Text);
-                ddlTransType.DataValueField = "typeid";
-                ddlTransType.DataTextField = "fundtype";
-                ddlTransType.DataBind();
-
-                if (ddlTransType.Items.Count > 1)
-                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
-                else
-                {
-                    if (ddlTransType.Items.Count < 1)
-                    {
-                        lblErrorMsg.Text = "No transaction types found for this fund and hence this fund can't be used for disbursement";
-                        return;
-                    }
-                    lblErrorMsg.Text = "";
-
-                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
-                      ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
-                      ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
-
-                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
-                            lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
-                        else
-                            lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
-
-                }
-
-                if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
-                {
-                    lblUsePermit.Visible = true;
-                    ddlUsePermit.Visible = true;
-                    BindUsePermitNew(DataUtils.GetInt(ddlAcctNum.SelectedItem.ToString()));
-                }
-                else
-                {
-                    lblUsePermit.Visible = false;
-                    ddlUsePermit.Visible = false;
-                }
-
-                //BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
-
-                ////if (ddlFundName.SelectedValue.ToString() == strLandUsePermit)
-                //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
-                //{
-                //    lblUsePermit.Visible = true;
-                //    ddlUsePermit.Visible = true;
-                //}
-                //else
-                //{
-                //    lblUsePermit.Visible = false;
-                //    ddlUsePermit.Visible = false;
-                //}
-            }
-            else
-            {
-                ddlTransType.Items.Clear();
-                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
-                lblFundName.Text = "";
-                txtAmt.Text = "";
-                lblErrorMsg.Text = "";
-                //ClearDetailSelection();
-            }
-        }
-
-        protected void BindUsePermitNew(int FundId)
+        protected void BindUsePermitNew(int ProjectId, int FundId)
         {
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetAllLandUsePermitNew(FundId);
+                dtable = FinancialTransactions.GetAllLandUsePermitForDecommitment(ProjectId, FundId);
                 ddlUsePermit.DataSource = dtable;
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";
@@ -1177,8 +1195,8 @@ namespace vhcbcloud
 
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), 
-                ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()), 
+            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
                 ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
 
             if (dtAvailFunds != null)
@@ -1190,14 +1208,17 @@ namespace vhcbcloud
 
         protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
-                    ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
-                    ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+            if (ddlTransType.SelectedIndex > 0)
+            {
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                        ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                        ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
 
-            if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
-                lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
-            else
-                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+                if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                    lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+                else
+                    lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+            }
         }
     }
 
