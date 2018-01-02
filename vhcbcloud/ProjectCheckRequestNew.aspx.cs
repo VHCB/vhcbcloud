@@ -34,6 +34,74 @@ namespace vhcbcloud
             HandleCustomPostbackEvent(ctrlName, args);
         }
 
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+
+                        //if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //{
+                        //    //RoleViewOnlyExceptAddNewItem();
+                        //    hfIsVisibleBasedOnRole.Value = "false";
+                        //}
+                        //else
+                        //{
+                        //    hfIsVisibleBasedOnRole.Value = "true";
+                        //}
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnly()
+        {
+            btnCRSubmit.Visible = false;
+            btnDelete.Visible = false;
+            btnPCRTransDetails.Visible = false;
+            btnApprovalsSubmit.Visible = false;
+            btnAddVoucher.Visible = false;
+            ddlCRDate.Enabled = false;
+        }
+
         protected void BindCRDates()
         {
             try
@@ -94,6 +162,7 @@ namespace vhcbcloud
             if (dt != null && dt.Rows.Count > 0)
             {
                 hfProjId.Value = dt.Rows[0][0].ToString();
+                GetRoleAccess();
                 ClearPCRForm();
                 SetAvailableFunds();
 
@@ -169,7 +238,24 @@ namespace vhcbcloud
             {
                 lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(0);
 
-                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+                string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+                if (account == "420" || account == "415")
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(account));
+                }
+                else
+                {
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
+
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()), 
+                    Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+
                 ddlTransType.DataValueField = "typeid";
                 ddlTransType.DataTextField = "fundtype";
                 ddlTransType.DataBind();
@@ -179,12 +265,19 @@ namespace vhcbcloud
 
                 if (ddlTransType.Items.Count == 1)
                 {
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value.ToString()), Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-                    if (dtable != null && dtable.Rows.Count > 0)
-                    {
-                        hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
-                        lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
-                    }
+                    //DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value.ToString()), 
+                    //    Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+                    //if (dtable != null && dtable.Rows.Count > 0)
+                    //{
+                    //    hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
+                    //    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
+                    //}
+
+                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
+                    hfAvFunds.Value = "0";
+
+                    SetAvailFundsByProjectAccountPermitTransType();
                 }
             }
             else
@@ -193,14 +286,38 @@ namespace vhcbcloud
             }
         }
 
+        protected void BindUsePermitNew(int ProjectId, int FundId)
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetAllLandUsePermitForDecommitment(ProjectId, FundId);
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
+        }
+
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
+            hfAvFunds.Value = "0";
+
             if (ddlTransType.Items.Count > 1)
             {
                 if (ddlTransType.SelectedIndex != 0)
                 {
                     DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value.ToString()),
                         Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+
                     hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
                     lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
                 }
@@ -257,6 +374,7 @@ namespace vhcbcloud
 
                 gvPTransDetails.EditIndex = -1;
                 BindPCRTransDetails();
+                SetAvailableFunds();
             }
             catch (Exception ex)
             {
@@ -328,6 +446,7 @@ namespace vhcbcloud
                 if (lblDetailId != null)
                     FinancialTransactions.DeleteTransactionDetail(Convert.ToInt32(lblDetailId.Text));
                 BindPCRTransDetails();
+                SetAvailableFunds();
                 LogMessage("Transaction detail was successfully deleted");
             }
             catch (Exception ex)
@@ -359,6 +478,18 @@ namespace vhcbcloud
                     return;
                 }
 
+                string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+                if (account == "420" || account == "415")
+                {
+                    if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                    {
+                        LogMessage("Select Use Permit");
+                        ddlUsePermit.Focus();
+                        return;
+                    }
+                }
+
                 if (txtTransDetailAmt.Text.Trim() == "")
                 {
                     LogMessage("Select Amount");
@@ -386,6 +517,7 @@ namespace vhcbcloud
                         }
                     }
                 }
+
                 #endregion
 
                 decimal currentTranAmount = 0;
@@ -419,10 +551,20 @@ namespace vhcbcloud
                         return;
                     }
 
-                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                    if (account == "420" || account == "415")
+                    {
+                        ProjectCheckRequestData.AddPCRTransactionFundDetailsWithLandUsePermit(transId, Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, Convert.ToInt32(hfProjId.Value), 
+                        ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
+                    }
+                    else
+                        ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()),
+                         int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, Convert.ToInt32(hfProjId.Value));
+
                     //AddDefaultPCRQuestions();
                     BindPCRTransDetails();
                     ClearTransactionDetailForm();
+                    SetAvailableFunds();
                 }
             }
             catch (Exception ex)
@@ -530,6 +672,7 @@ namespace vhcbcloud
             if (ddlFundTypeCommitments.Items.Count >= 0) ddlFundTypeCommitments.SelectedIndex = 0;
 
             ddlTransType.Items.Clear();
+            ddlUsePermit.Items.Clear();
             ddlTransType.DataSource = null;
             ddlTransType.DataBind();
 
@@ -550,6 +693,8 @@ namespace vhcbcloud
                 this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
                 this.hfTransAmt.Value = dtEPCR.Rows[0]["TransAmt"].ToString();
                 this.hfProjId.Value = dtEPCR.Rows[0]["ProjectID"].ToString();
+                this.hfCreatedById.Value = dtEPCR.Rows[0]["CreatedById"].ToString();
+
                 ifProjectNotes.Src = "ProjectNotes.aspx?pcrid=" + hfPCRId.Value + "&ProjectId=" + hfProjId.Value;
                 this.lblProjName.Text = dtEPCR.Rows[0]["Project_name"].ToString();
                 hfProjName.Value = dtEPCR.Rows[0]["Project_name"].ToString();
@@ -563,6 +708,13 @@ namespace vhcbcloud
 
                 btnCRSubmit.Text = "Update";
                 btnCRSubmit.Visible = true;
+
+                if (dtEPCR.Rows[0]["CreatedById"].ToString() != GetUserId().ToString())
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
                 //EnableButton(btnPCRTransDetails);
                 //DisableButton(btnCRSubmit);
                 BindPCRTransDetails();
@@ -1008,6 +1160,7 @@ namespace vhcbcloud
             hfProjName.Value = "";
             hfProjId.Value = "";
             hfAvFunds.Value = "";
+            hfCreatedById.Value = "";
         }
 
         protected void BindPCRItemsData()
@@ -1711,6 +1864,20 @@ namespace vhcbcloud
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                LinkButton linkButton = (e.Row.FindControl("lbEdit") as LinkButton);
+                HiddenField hfRowNumber = (e.Row.FindControl("hfRowNumber") as HiddenField);
+
+                if (linkButton != null)
+                {
+                    if (hfRowNumber.Value == "1" && GetUserId().ToString() == hfCreatedById.Value)
+                        linkButton.Visible = true;
+                    else if (hfRowNumber.Value == "2" && CheckFxnAccess("26820"))
+                        linkButton.Visible = true;
+                    else if (hfRowNumber.Value == "3" && CheckFxnAccess("26821"))
+                        linkButton.Visible = true;
+                    else
+                        linkButton.Visible = false;
+                }
 
             }
         }
@@ -1826,7 +1993,69 @@ namespace vhcbcloud
             {
                 if (row["FxnID"].ToString() == "26816")
                     btnDelete.Visible = true;
+
+                if (row["FxnID"].ToString() == "26820")
+                   hfSecondQuestionAccess.Value = "true";
+
+                if (row["FxnID"].ToString() == "26821")
+                    hfLegalQuestionAccess.Value = "true";
             }
+
+            if (!btnDelete.Visible)
+            {
+                if (GetUserId().ToString() == hfCreatedById.Value)
+                    btnDelete.Visible = true;
+            }
+        }
+
+        private bool CheckFxnAccess(string FxnID)
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == FxnID)
+                    return true;
+            }
+            return false;
+        }
+
+        protected void ddlCRDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string PCRID = this.hfPCRId.Value;
+            DateTime CRDate = DateTime.Parse(ddlCRDate.SelectedValue.ToString());
+
+            if (PCRID != null && PCRID != "" && int.Parse(PCRID) != 0)
+                ProjectCheckRequestData.PCR_Update_CheckReqDate(int.Parse(PCRID), CRDate);
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
+            hfAvFunds.Value = "0";
+
+            if (ddlTransType.SelectedIndex > 0)
+            {
+                SetAvailFundsByProjectAccountPermitTransType();
+            }
+        }
+
+        private void SetAvailFundsByProjectAccountPermitTransType()
+        {
+            string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                 account, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
+                 ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+
+            if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+            {
+                hfAvFunds.Value = dtAvailFunds.Rows[0]["availFunds"].ToString();
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString());
+            }
+            else
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
         }
     }
 }

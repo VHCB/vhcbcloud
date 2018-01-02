@@ -187,6 +187,11 @@ namespace vhcbcloud
                 lblFundName.Text = "";
                 txtAmt.Text = "";
                 //ClearDetailSelection();
+                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+                ddlFundName.SelectedIndex = 0;
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
             }
         }
 
@@ -277,6 +282,11 @@ namespace vhcbcloud
                 txtAmt.Text = "";
                 lblErrorMsg.Text = "";
                 //ClearDetailSelection();
+                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+                ddlAcctNum.SelectedIndex = 0;
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
             }
         }
 
@@ -342,6 +352,8 @@ namespace vhcbcloud
 
                     if (totBalAmt == 0)
                     {
+                        //pnlTranDetails.Visible = false;
+
                         tblFundDet.Visible = false;
                         btnDecommitmentSubmit.Visible = false;
                         CommonHelper.DisableButton(btnDecommitmentSubmit);
@@ -364,6 +376,14 @@ namespace vhcbcloud
 
                     if (lblBalAmt.Text != "$0.00")
                         lblErrorMsg.Text = "The transaction balance amount must be zero prior to leaving this page";
+                }
+                else
+                {
+                    tblFundDet.Visible = true;
+                    btnDecommitmentSubmit.Visible = true;
+                    CommonHelper.DisableButton(btnTransactionSubmit);
+                    CommonHelper.EnableButton(btnDecommitmentSubmit);
+                    btnNewTransaction.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -599,6 +619,8 @@ namespace vhcbcloud
                 gvBCommit.DataBind();
 
                 pnlTranDetails.Visible = true;
+                tblFundDet.Visible = true;
+                btnDecommitmentSubmit.Visible = true;
                 ClearTransactionDetailForm();
 
                 CommonHelper.EnableButton(btnDecommitmentSubmit);
@@ -712,6 +734,7 @@ namespace vhcbcloud
                 {
                     CommonHelper.EnableButton(btnTransactionSubmit);
                     btnNewTransaction.Visible = false;
+                    pnlTranDetails.Visible = false;
                 }
 
             }

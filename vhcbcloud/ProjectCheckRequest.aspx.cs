@@ -1399,7 +1399,7 @@ namespace vhcbcloud
                         return;
                     }
 
-                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                    //ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
                     AddDefaultPCRQuestions();
                     BindPCRTransDetails();
                     ClearTransactionDetailForm();

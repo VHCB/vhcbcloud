@@ -726,6 +726,35 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void PCR_Update_CheckReqDate(int PRCID, DateTime CRDate)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Update_CheckReqDate";
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", PRCID));
+                command.Parameters.Add(new SqlParameter("CRDate", CRDate));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable UpdateVoucherNumber(int PCRID, string VoucherNum, DateTime CrDate, int userid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -906,7 +935,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
+        public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, int ProjectId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -918,6 +947,41 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void AddPCRTransactionFundDetailsWithLandUsePermit(int transid, int fundid, int fundtranstype, decimal fundamount, int ProjectID,
+            string usePermit, string useFarmId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Trans_Detail_LansUsePermit_Submit";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("LandUsePermit", usePermit));
+                command.Parameters.Add(new SqlParameter("LandUseFarmId", Convert.ToInt32(useFarmId)));
 
                 using (connection)
                 {

@@ -400,6 +400,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Label lblCommittedAvailFunds;
         
         /// <summary>
+        /// lblUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsePermit;
+        
+        /// <summary>
+        /// ddlUsePermit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsePermit;
+        
+        /// <summary>
         /// btnPCRTransDetails control.
         /// </summary>
         /// <remarks>
@@ -526,6 +544,33 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.HiddenField hfProjId;
         
         /// <summary>
+        /// hfCreatedById control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfCreatedById;
+        
+        /// <summary>
+        /// hfSecondQuestionAccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSecondQuestionAccess;
+        
+        /// <summary>
+        /// hfLegalQuestionAccess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfLegalQuestionAccess;
+        
+        /// <summary>
         /// hfTransId control.
         /// </summary>
         /// <remarks>
@@ -587,5 +632,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEditPCRId;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

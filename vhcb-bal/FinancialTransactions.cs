@@ -3471,5 +3471,39 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static string GetAccountNumberByFundId(int fundid)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetAccountNumberByFundId";
+
+                        command.Parameters.Add(new SqlParameter("fundid", fundid));
+
+
+                        SqlParameter parmMessage = new SqlParameter("@account", SqlDbType.NVarChar, 20);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                        return  command.Parameters["@account"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

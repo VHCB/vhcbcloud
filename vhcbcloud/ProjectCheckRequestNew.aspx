@@ -176,7 +176,7 @@
                             </td>
                             <td style="vertical-align: top"><span class="labelClass">Check Request Date:</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlCRDate" CssClass="clsDropDown" runat="server">
+                                <asp:DropDownList ID="ddlCRDate" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCRDate_SelectedIndexChanged">
                                 </asp:DropDownList>
 
                                 <%--  <asp:TextBox ID="txtCRDate" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
@@ -192,7 +192,7 @@
                         <tr>
                             <td colspan="6" style="height: 5px">
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
-                                &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false" 
+                                &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false"
                                     OnClientClick="return confirm('Are you sure you wish to delete the entire Check Request?');" />
                             </td>
                         </tr>
@@ -244,6 +244,20 @@
                             <td colspan="5" style="height: 5px"></td>
                         </tr>
                         <tr>
+                            <td>
+                                <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                            <td>
+                                <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
+                                </asp:DropDownList>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="height: 5px"></td>
+                        </tr>
+                        <tr>
                             <td colspan="5" style="height: 5px">
                                 <asp:Button ID="btnPCRTransDetails" runat="server" Text="Add" Enabled="true" class="btn btn-info" OnClick="btnPCRTransDetails_Click" />
                                 <br />
@@ -282,7 +296,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                 </ItemTemplate>
                                 <FooterTemplate>
                                     <asp:Label ID="lblFooterAmount" runat="server" Text=""></asp:Label>
@@ -327,10 +341,18 @@
                                     <asp:Label ID="lblDetId" runat="Server" Text='<%# Eval("detailid") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ShowEditButton="True" />
+                            <asp:TemplateField ShowHeader="False">
+                                <EditItemTemplate>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                    &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                </EditItemTemplate>
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField ShowHeader="False">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete?');" Text="Delete"></asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButton11" runat="server" CausesValidation="False" CommandName="Delete" OnClientClick="return confirm('Are you sure you want to delete?');" Text="Delete" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -379,6 +401,7 @@
                                     <asp:Label ID="lblQuestion" runat="Server" Text='<%# Eval("Description") %>' />
                                     <asp:HiddenField ID="hfProjectCheckReqQuestionID" runat="server" Value='<%#Eval("ProjectCheckReqQuestionID")%>' />
                                     <asp:HiddenField ID="hfLKPCRQId" runat="server" Value='<%#Eval("LkPCRQuestionsID")%>' />
+                                    <asp:HiddenField ID="hfRowNumber" runat="server" Value='<%#Eval("rowNumber")%>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Approved" SortExpression="Approved">
@@ -401,7 +424,16 @@
                                     <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:M-dd-yyyy}") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ShowEditButton="True" />
+                            <%--<asp:CommandField ShowEditButton="True" />--%>
+                            <asp:TemplateField ShowHeader="False">
+                                <EditItemTemplate>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                    &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                </EditItemTemplate>
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="lbEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                         </Columns>
                         <FooterStyle CssClass="footerStyle" />
                     </asp:GridView>
@@ -463,11 +495,14 @@
                     <br />
                 </div>
             </div>
-             <br />
-                            <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
-                            <br />
+            <br />
+            <asp:Button ID="btnNewPCR" runat="server" class="btn btn-info" Text="New Check Request" Visible="False" OnClick="btnNewPCR_Click" />
+            <br />
         </div>
         <asp:HiddenField ID="hfProjId" runat="server" />
+        <asp:HiddenField ID="hfCreatedById" runat="server" />
+        <asp:HiddenField ID="hfSecondQuestionAccess" runat="server" Value="false" />
+        <asp:HiddenField ID="hfLegalQuestionAccess" runat="server" Value="false" />
         <asp:HiddenField ID="hfTransId" runat="server" />
         <asp:HiddenField ID="hfTransAmt" runat="server" Value="0" />
         <asp:HiddenField ID="hfBalAmt" runat="server" Value="0" />
@@ -475,6 +510,7 @@
         <asp:HiddenField ID="hfProjName" runat="server" />
         <asp:HiddenField ID="hfAvFunds" runat="server" />
         <asp:HiddenField ID="hfEditPCRId" runat="server" />
+        <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
     </div>
     <script type="text/javascript">
         function PopupNewAwardSummary() {
