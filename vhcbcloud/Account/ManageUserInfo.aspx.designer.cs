@@ -13,6 +13,51 @@ namespace vhcbcloud.Account {
     public partial class ManageUserInfo {
         
         /// <summary>
+        /// lblErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        
+        /// <summary>
+        /// dvNewUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewUser;
+        
+        /// <summary>
+        /// cbAddUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddUser;
+        
+        /// <summary>
+        /// dvNewUserForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewUserForm;
+        
+        /// <summary>
+        /// Panel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel2;
+        
+        /// <summary>
         /// txtFname control.
         /// </summary>
         /// <remarks>
@@ -67,15 +112,6 @@ namespace vhcbcloud.Account {
         protected global::System.Web.UI.WebControls.TextBox txtCPassword;
         
         /// <summary>
-        /// ddlSecurityGroup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSecurityGroup;
-        
-        /// <summary>
         /// ddlVHCBProgram control.
         /// </summary>
         /// <remarks>
@@ -85,13 +121,13 @@ namespace vhcbcloud.Account {
         protected global::System.Web.UI.WebControls.DropDownList ddlVHCBProgram;
         
         /// <summary>
-        /// lblErrorMsg control.
+        /// ddlSecurityGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSecurityGroup;
         
         /// <summary>
         /// btnUserInfoSubmit control.
@@ -103,13 +139,22 @@ namespace vhcbcloud.Account {
         protected global::System.Web.UI.WebControls.Button btnUserInfoSubmit;
         
         /// <summary>
-        /// pnlFund control.
+        /// dvNewUserGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlFund;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewUserGrid;
+        
+        /// <summary>
+        /// Panel11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel11;
         
         /// <summary>
         /// gvUserInfo control.
