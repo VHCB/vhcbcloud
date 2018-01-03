@@ -73,15 +73,15 @@ namespace vhcbcloud
                     else
                     {
 
-                        //if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        //{
-                        //    //RoleViewOnlyExceptAddNewItem();
-                        //    hfIsVisibleBasedOnRole.Value = "false";
-                        //}
-                        //else
-                        //{
-                        //    hfIsVisibleBasedOnRole.Value = "true";
-                        //}
+                        DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
+                        if (dtEPCR.Rows.Count > 0)
+                        {
+                            if (dtEPCR.Rows[0]["CreatedById"].ToString() != GetUserId().ToString())
+                            {
+                                RoleViewOnly();
+                                hfIsVisibleBasedOnRole.Value = "false";
+                            }
+                        }
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
@@ -253,7 +253,7 @@ namespace vhcbcloud
                     ddlUsePermit.Visible = false;
                 }
 
-                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()), 
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()),
                     Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
 
                 ddlTransType.DataValueField = "typeid";
@@ -554,7 +554,7 @@ namespace vhcbcloud
                     if (account == "420" || account == "415")
                     {
                         ProjectCheckRequestData.AddPCRTransactionFundDetailsWithLandUsePermit(transId, Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, Convert.ToInt32(hfProjId.Value), 
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount, Convert.ToInt32(hfProjId.Value),
                         ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                     }
                     else
@@ -707,13 +707,7 @@ namespace vhcbcloud
                 lblProjectType.Text = dt.Rows[0][2].ToString();
 
                 btnCRSubmit.Text = "Update";
-                btnCRSubmit.Visible = true;
-
-                if (dtEPCR.Rows[0]["CreatedById"].ToString() != GetUserId().ToString())
-                {
-                    RoleViewOnly();
-                    hfIsVisibleBasedOnRole.Value = "false";
-                }
+                //btnCRSubmit.Visible = true;
 
                 //EnableButton(btnPCRTransDetails);
                 //DisableButton(btnCRSubmit);
@@ -1995,7 +1989,7 @@ namespace vhcbcloud
                     btnDelete.Visible = true;
 
                 if (row["FxnID"].ToString() == "26820")
-                   hfSecondQuestionAccess.Value = "true";
+                    hfSecondQuestionAccess.Value = "true";
 
                 if (row["FxnID"].ToString() == "26821")
                     hfLegalQuestionAccess.Value = "true";
