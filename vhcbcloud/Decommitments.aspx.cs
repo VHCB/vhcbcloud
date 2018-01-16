@@ -339,7 +339,7 @@ namespace vhcbcloud
                         }
                     }
 
-                    totBalAmt = tranAmount + (-totFundAmt);
+                    totBalAmt = tranAmount + (totFundAmt);
 
                     hfBalAmt.Value = (-totBalAmt).ToString();
 
@@ -521,12 +521,14 @@ namespace vhcbcloud
                     if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
                         FinancialTransactions.AddDeCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount,
+                        //Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount,
+                        Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount,
                         ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                     }
                     else
                         FinancialTransactions.AddDeCommitmentTransDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
-                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount);
+                            //Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount);
+                            Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount);
 
 
 
@@ -609,8 +611,11 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "";
                 decimal TransAmount = Convert.ToDecimal(txtTotAmt.Text);
 
-                this.hfTransAmt.Value = (-TransAmount).ToString();
-                this.hfBalAmt.Value = (-TransAmount).ToString();
+                //this.hfTransAmt.Value = (-TransAmount).ToString();
+                //this.hfBalAmt.Value = (-TransAmount).ToString();
+
+                this.hfTransAmt.Value = (TransAmount).ToString();
+                this.hfBalAmt.Value = (TransAmount).ToString();
 
                 //if (pnlTranDetails.Visible)
                 //    ClearTransactionDetailForm();
@@ -634,6 +639,7 @@ namespace vhcbcloud
 
                 DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
                     -TransAmount, granteeId, rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
+                    //TransAmount, granteeId, rdBtnFinancial.SelectedIndex == 0 ? "Board Commitment" : "Board DeCommitment",
                     TRANS_PENDING_STATUS, GetUserId());
 
                 gvPTrans.DataSource = dtTrans;
@@ -691,12 +697,13 @@ namespace vhcbcloud
                             ViewState["SelectedTransId"] = hf.Value;
                             hfTransId.Value = hf.Value;
                         }
-                        HiddenField hfAmt = (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
+                        HiddenField hfAmt =  (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
                         if (hfAmt != null)
                         {
-                            ViewState["TransAmt"] = hfAmt.Value;
-                            hfTransAmt.Value = hfAmt.Value;
-                            hfBalAmt.Value = hfAmt.Value;
+                            var Amount = -DataUtils.GetDecimal(hfAmt.Value);
+                            ViewState["TransAmt"] = Amount;
+                            hfTransAmt.Value = Amount.ToString();
+                            hfBalAmt.Value = Amount.ToString();
                         }
                         break;
                     }

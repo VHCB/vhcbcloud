@@ -431,7 +431,7 @@
                                     &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lbEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                    <asp:LinkButton ID="lbEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# CheckIsVisible() %>'></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -511,6 +511,7 @@
         <asp:HiddenField ID="hfAvFunds" runat="server" />
         <asp:HiddenField ID="hfEditPCRId" runat="server" />
         <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+        <asp:HiddenField ID="hfIsAllApproved" runat="server" Value="false" />
     </div>
     <script type="text/javascript">
         function PopupNewAwardSummary() {

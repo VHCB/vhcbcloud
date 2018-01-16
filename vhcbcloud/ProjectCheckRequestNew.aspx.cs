@@ -36,7 +36,14 @@ namespace vhcbcloud
 
         protected bool GetIsVisibleBasedOnRole()
         {
-            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+            bool IsShow = DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+
+            if(IsShow)
+            {
+                IsShow = !DataUtils.GetBool(hfIsAllApproved.Value); ;
+            }
+
+            return IsShow;
         }
 
         protected void GetRoleAccess()
@@ -688,6 +695,8 @@ namespace vhcbcloud
             DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
             if (dtEPCR.Rows.Count > 0)
             {
+                CheckDeletePCRAccess();
+                hfIsAllApproved.Value =  dtEPCR.Rows[0]["AllApproved"].ToString();
 
                 this.hfPCRId.Value = dtEPCR.Rows[0]["ProjectCheckReqId"].ToString();
                 this.hfTransId.Value = dtEPCR.Rows[0]["transid"].ToString();
@@ -721,7 +730,6 @@ namespace vhcbcloud
                 BindFundTypeCommitments(Convert.ToInt32(hfProjId.Value));
 
                 PopulateForm();
-                CheckDeletePCRAccess();
             }
         }
 
@@ -1155,6 +1163,7 @@ namespace vhcbcloud
             hfProjId.Value = "";
             hfAvFunds.Value = "";
             hfCreatedById.Value = "";
+            hfIsAllApproved.Value = "false";
         }
 
         protected void BindPCRItemsData()
@@ -1683,6 +1692,12 @@ namespace vhcbcloud
 
                 if (approvals != 0 && approvals == dt.Rows.Count)
                 {
+                    btnCRSubmit.Visible = false;
+                    btnDelete.Visible = false;
+                    btnPCRTransDetails.Visible = false;
+                    btnApprovalsSubmit.Visible = false;
+                    ddlCRDate.Enabled = false;
+
                     CheckVoucherAccess();
                 }
                 else
@@ -1861,7 +1876,7 @@ namespace vhcbcloud
                 LinkButton linkButton = (e.Row.FindControl("lbEdit") as LinkButton);
                 HiddenField hfRowNumber = (e.Row.FindControl("hfRowNumber") as HiddenField);
 
-                if (linkButton != null)
+                if (linkButton != null && linkButton.Visible)
                 {
                     if (hfRowNumber.Value == "1" && GetUserId().ToString() == hfCreatedById.Value)
                         linkButton.Visible = true;
@@ -1905,8 +1920,18 @@ namespace vhcbcloud
                 btnPCRTransDetails.Visible = false;
                 btnApprovalsSubmit.Visible = false;
                 btnAddVoucher.Visible = false;
+                btnDelete.Visible = false;
 
                 btnNewPCR.Visible = true;
+
+                foreach (ListItem item in ddlStatus.Items)
+                {
+                    if (item.Value.ToString() == "262")
+                    {
+                        ddlStatus.ClearSelection();
+                        item.Selected = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2050,6 +2075,11 @@ namespace vhcbcloud
             }
             else
                 lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
+        }
+
+        protected bool CheckIsVisible()
+        {
+            return !DataUtils.GetBool(hfIsAllApproved.Value);
         }
     }
 }

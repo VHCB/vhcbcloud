@@ -182,6 +182,36 @@ namespace VHCBCommon.DataAccessLayer
             return ds;
         }
 
+        public static DataSet GetAwardSummary(int projectId)
+        {
+            DataSet ds = new DataSet();
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "getAwardSummary";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+               
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return ds;
+        }
+
         public static DataTable GetCommittedFundByProject(int projectId)
         {
             DataTable dtable = null;
