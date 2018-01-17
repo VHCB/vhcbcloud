@@ -273,7 +273,8 @@ namespace vhcbcloud
         public static string[] GetAssignmentProjectslist(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            //dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -288,7 +289,8 @@ namespace vhcbcloud
         public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            //dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
