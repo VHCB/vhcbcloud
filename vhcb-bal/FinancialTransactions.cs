@@ -609,7 +609,7 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "AddStaffAssignment";
+                command.CommandText = "AddStaffAssignmentNew"; // "AddStaffAssignment";
                 command.Parameters.Add(new SqlParameter("FromProjectId", FromProjectId));
                 command.Parameters.Add(new SqlParameter("ToProjectId", ToProjectId));
                 command.Parameters.Add(new SqlParameter("transDate", transDate));

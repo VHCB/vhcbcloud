@@ -42,7 +42,7 @@
                                         <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundType">
+                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundTransTypeName">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundTransTypeName") %>' />
                                     </ItemTemplate>
@@ -116,7 +116,7 @@
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransDate", "{0:M-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                  <asp:TemplateField HeaderText="Project Name" SortExpression="ProjectName">
+                                  <asp:TemplateField HeaderText="Project" SortExpression="ProjectName">
                                     <ItemTemplate>
                                         <asp:Label ID="Label2" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                     </ItemTemplate>
@@ -178,7 +178,7 @@
         function gridviewScroll(gridId) {
             $(gridId).gridviewScroll({
                 width: 980,
-                height: 250
+                height: 500
             });
         }
 
