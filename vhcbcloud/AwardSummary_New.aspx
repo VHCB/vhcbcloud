@@ -24,8 +24,8 @@
                     </p>
                     <asp:Panel runat="server" ID="Panel1" Width="100%" Height="300px" ScrollBars="None">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                            OnRowCreated="gvCurrentAwdStatus_RowCreated"
-                            ShowFooter="False" Width="100%" AllowSorting="True" OnSorting="gvCurrentAwdStatus_Sorting">
+                          
+                            ShowFooter="True" Width="100%" AllowSorting="True" OnSorting="gvCurrentAwdStatus_Sorting">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
@@ -46,6 +46,9 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundTransTypeName") %>' />
                                     </ItemTemplate>
+                                     <FooterTemplate>
+                                                    Totals :
+                                                </FooterTemplate>
                                 </asp:TemplateField>
 
                                 <asp:TemplateField HeaderText="Commited" SortExpression="FinalCommited">
@@ -77,7 +80,7 @@
 
                                  <asp:TemplateField HeaderText="Pending" SortExpression="Pending">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("Pending ", "{0:C2}") %>' />
+                                        <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("Pending", "{0:C2}") %>' />
                                     </ItemTemplate>
                                     <FooterTemplate>
                                         <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
@@ -95,7 +98,7 @@
                 <div class="panel-body">
                     <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="400px" ScrollBars="None">
                         <asp:GridView ID="gvTransDetail" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                            AllowPaging="false" Width="100%" AllowSorting="True" OnSorting="gvTransDetail_Sorting">
+                            AllowPaging="false" Width="100%" AllowSorting="True" OnSorting="gvTransDetail_Sorting" OnRowDataBound="gvTransDetail_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <HeaderStyle CssClass="headerStyle" />
                             <RowStyle CssClass="rowStyle" />
@@ -178,7 +181,7 @@
         function gridviewScroll(gridId) {
             $(gridId).gridviewScroll({
                 width: 980,
-                height: 500
+                height: 400
             });
         }
 
