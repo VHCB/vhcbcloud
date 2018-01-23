@@ -3429,7 +3429,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void SubmitAdjustmentTransaction(int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3446,6 +3446,7 @@ namespace VHCBCommon.DataAccessLayer
                 //command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
+                command.Parameters.Add(new SqlParameter("LkTransaction", LkTransaction));
 
                 using (connection)
                 {
@@ -3465,7 +3466,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdaeAdjustmentTransaction(int Transid, int DetailId, int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3484,6 +3485,7 @@ namespace VHCBCommon.DataAccessLayer
                 //command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
+                command.Parameters.Add(new SqlParameter("LkTransaction", LkTransaction));
 
                 using (connection)
                 {

@@ -337,7 +337,8 @@ namespace vhcbcloud
                 if (btnSubmit.Text.ToLower() == "submit")
                 {
                     FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
-                        DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId());
+                        DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue));
 
                     LogMessage("Successfully Added Adjustment");
 
@@ -348,7 +349,8 @@ namespace vhcbcloud
                 {
                     FinancialTransactions.UpdaeAdjustmentTransaction(DataUtils.GetInt(hfTransId.Value), DataUtils.GetInt(hfDetailId.Value), 
                         DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
-                        DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId());
+                        DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue));
 
                     LogMessage("Updated Adjustment");
                 }

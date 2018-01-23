@@ -342,6 +342,11 @@ namespace vhcbcloud
                 {
                     e.Row.BackColor = System.Drawing.Color.LightBlue;
                 }
+
+                if (DataUtils.GetBool(drv["Adjust"].ToString()))
+                {
+                    e.Row.BackColor = System.Drawing.Color.Orange;
+                }
                 //else
                 //{
                 //    e.Row.BackColor = System.Drawing.Color.Green;

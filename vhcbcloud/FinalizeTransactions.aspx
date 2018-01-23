@@ -51,7 +51,7 @@
                                 <td style="height: 8px;" colspan="5"></td>
                             </tr>
                             <tr>
-                                <td style="width: 20%; float: left;"><span class="labelClass">Board Financial Transactions :</span></td>
+                                <td style="width: 20%; float: left;"><span class="labelClass">Financial Transactions :</span></td>
                                 <td style="width: 20%; float: left">
                                     <asp:DropDownList ID="ddlFinancialTrans" runat="server" CssClass="clsDropDown" Width="161px">
                                         <%--  <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>

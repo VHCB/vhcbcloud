@@ -199,7 +199,6 @@
     <Content Include="ExistingAssignments.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
-    <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Commitments.aspx" />
     <Content Include="Decommitments.aspx" />
@@ -592,13 +591,6 @@
     </Compile>
     <Compile Include="FinalizeTransactions.aspx.designer.cs">
       <DependentUpon>FinalizeTransactions.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="awardsummary.aspx.cs">
-      <DependentUpon>awardsummary.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="awardsummary.aspx.designer.cs">
-      <DependentUpon>awardsummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
