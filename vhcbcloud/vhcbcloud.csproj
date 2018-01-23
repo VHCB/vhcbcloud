@@ -177,7 +177,7 @@
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
     <Content Include="Applicant.aspx" />
-    <Content Include="AwardSummary_New.aspx" />
+    <Content Include="AwardSummary.aspx" />
     <Content Include="CashRefundnew.aspx" />
     <Content Include="CashRefund_old.aspx" />
     <Content Include="CheckRequestDates.aspx" />
@@ -445,12 +445,12 @@
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AwardSummary_New.aspx.cs">
-      <DependentUpon>AwardSummary_New.aspx</DependentUpon>
+    <Compile Include="AwardSummary.aspx.cs">
+      <DependentUpon>AwardSummary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AwardSummary_New.aspx.designer.cs">
-      <DependentUpon>AwardSummary_New.aspx</DependentUpon>
+    <Compile Include="AwardSummary.aspx.designer.cs">
+      <DependentUpon>AwardSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="CashRefundnew.aspx.cs">
       <DependentUpon>CashRefundnew.aspx</DependentUpon>

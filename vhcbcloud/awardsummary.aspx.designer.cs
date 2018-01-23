@@ -10,7 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class awardsummary {
+    public partial class AwardSummary {
         
         /// <summary>
         /// lblProjId control.

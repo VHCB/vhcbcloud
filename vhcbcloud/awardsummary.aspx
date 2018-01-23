@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="awardsummary.aspx.cs" Inherits="vhcbcloud.awardsummary" %>
+﻿<%@ Page Title="Award Summary" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AwardSummary.aspx.cs" Inherits="vhcbcloud.AwardSummary" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron clearfix">
@@ -22,35 +22,19 @@
                         <asp:ImageButton ID="AwardSummaryReport" ImageUrl="~/Images/print.png" ToolTip="Award Summary Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="AwardSummaryReport_Click" />
                     </p>
-                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="200px" ScrollBars="Vertical">
+                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="300px" ScrollBars="None">
                         <asp:GridView ID="gvCurrentAwdStatus" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                            OnRowCreated="gvCurrentAwdStatus_RowCreated"
-                            ShowFooter="True" Width="90%" AllowSorting="True" OnSorting="gvCurrentAwdStatus_Sorting">
+                          
+                            ShowFooter="True" Width="100%" AllowSorting="True" OnSorting="gvCurrentAwdStatus_Sorting">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                             <HeaderStyle CssClass="headerStyle" />
                             <RowStyle CssClass="rowStyle" />
                             <FooterStyle CssClass="footerStyleTotals" />
                             <Columns>
-
-                                <asp:TemplateField HeaderText="Reallocate To">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblReallocateTo" runat="Server" Text='<%# Eval("ProjectName") %>' />
-                                    </ItemTemplate>
-                                    <FooterTemplate>
-                                        Totals :
-                                    </FooterTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
-                                    <ItemTemplate>
-                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("fundid")%>' />
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Account" SortExpression="account">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundAcct" runat="Server" Text='<%# Eval("account") %>' />
+                                        <asp:Label ID="lblFundAcct" runat="Server" Text='<%# Eval("Account") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Fund" SortExpression="FundName">
@@ -58,56 +42,49 @@
                                         <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundType">
+                                <asp:TemplateField HeaderText="Fund Type" SortExpression="FundTransTypeName">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
+                                        <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundTransTypeName") %>' />
                                     </ItemTemplate>
+                                     <FooterTemplate>
+                                                    Totals :
+                                                </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pending Committed" SortExpression="pendingamount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+
+                                <asp:TemplateField HeaderText="Commited" SortExpression="FinalCommited">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("pendingamount", "{0:C2}") %>' />
+                                        <asp:Label ID="lblCommitedAmt" runat="Server" Text='<%# Eval("FinalCommited", "{0:C2}") %>' />
                                     </ItemTemplate>
-                                    <FooterTemplate>
-                                        <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
+                                     <FooterTemplate>
+                                        <asp:Label ID="lblCommited" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Committed" SortExpression="CommitmentAmount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                
+                                 <asp:TemplateField HeaderText="Disbursed" SortExpression="Disbursed">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblCommitAmt" runat="Server" Text='<%# Eval("commitmentamount", "{0:C2}") %>' />
+                                        <asp:Label ID="lblDisbursedAmt" runat="Server" Text='<%# Eval("Disbursed", "{0:C2}") %>' />
                                     </ItemTemplate>
                                     <FooterTemplate>
-                                        <asp:Label ID="lblCommit" runat="server" Text=""></asp:Label>
+                                        <asp:Label ID="lblDisbursed" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Pending Disburse" SortExpression="expendedamount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                 <asp:TemplateField HeaderText="Balance" SortExpression="Balanced">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblExpendAmd" runat="Server" Text='<%# Eval("expendedamount", "{0:C2}") %>' />
-                                    </ItemTemplate>
-                                    <FooterTemplate>
-                                        <asp:Label ID="lblExpend" runat="server" Text=""></asp:Label>
-                                    </FooterTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Final Disburse" SortExpression="finaldisbursedamount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblFinalExpendAmt" runat="Server" Text='<%# Eval("finaldisbursedamount", "{0:C2}") %>' />
-                                    </ItemTemplate>
-                                    <FooterTemplate>
-                                        <asp:Label ID="lblFinalExpend" runat="server" Text=""></asp:Label>
-                                    </FooterTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Provisional Balance" SortExpression="balance" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("balance", "{0:C2}") %>' />
+                                        <asp:Label ID="lblBalanceAmt" runat="Server" Text='<%# Eval("Balanced ", "{0:C2}") %>' />
                                     </ItemTemplate>
                                     <FooterTemplate>
                                         <asp:Label ID="lblBalance" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Fund Id" SortExpression="FundID" Visible="false">
+
+                                 <asp:TemplateField HeaderText="Pending" SortExpression="Pending">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundId" runat="Server" Text='<%# Eval("FundID") %>' />
+                                        <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("Pending", "{0:C2}") %>' />
                                     </ItemTemplate>
+                                    <FooterTemplate>
+                                        <asp:Label ID="lblPending" runat="server" Text=""></asp:Label>
+                                    </FooterTemplate>
                                 </asp:TemplateField>
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
@@ -119,22 +96,22 @@
                 </div>
                 <div class="panel-heading">Transaction Detail</div>
                 <div class="panel-body">
-                    <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="350px" ScrollBars="Vertical">
+                    <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="400px" ScrollBars="None">
                         <asp:GridView ID="gvTransDetail" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
-                            AllowPaging="false" Width="90%" AllowSorting="True" OnSorting="gvTransDetail_Sorting">
+                            AllowPaging="false" Width="100%" AllowSorting="True" OnSorting="gvTransDetail_Sorting" OnRowDataBound="gvTransDetail_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                             <HeaderStyle CssClass="headerStyle" />
                             <RowStyle CssClass="rowStyle" />
                             <Columns>
-                                <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
+                               <%-- <asp:TemplateField ItemStyle-HorizontalAlign="Center" Visible="false" HeaderText="Select">
                                     <ItemTemplate>
-                                        <asp:HiddenField ID="HiddenField1" runat="server" Value='<%#Eval("fundid")%>' />
+                                        <asp:HiddenField ID="HiddenField2" runat="server" Value='<%#Eval("fundid")%>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                </asp:TemplateField>
+                                </asp:TemplateField>--%>
                                 <asp:TemplateField HeaderText="Fund Acct" SortExpression="account">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundAcct" runat="Server" Text='<%# Eval("account") %>' />
+                                        <asp:Label ID="Label1" runat="Server" Text='<%# Eval("account") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Date" SortExpression="TransDate">
@@ -142,14 +119,19 @@
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransDate", "{0:M-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Fund Name" SortExpression="name">
+                                  <asp:TemplateField HeaderText="Project" SortExpression="ProjectName">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblfundName" runat="Server" Text='<%# Eval("name") %>' />
+                                        <asp:Label ID="Label2" runat="Server" Text='<%# Eval("ProjectName") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Fund Name" SortExpression="FundName">
+                                    <ItemTemplate>
+                                        <asp:Label ID="Label2" runat="Server" Text='<%# Eval("FundName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Fund Type" SortExpression="FundType">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
+                                        <asp:Label ID="Label3" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Transaction" SortExpression="Transaction">
@@ -157,14 +139,14 @@
                                         <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("Transaction") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Status" SortExpression="lkstatus">
+                                <asp:TemplateField HeaderText="Status" SortExpression="Status">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblStatus" runat="Server" Text='<%# Eval("lkstatus") %>' />
+                                        <asp:Label ID="lblStatus" runat="Server" Text='<%# Eval("Status") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Detail" SortExpression="detail">
+                                <asp:TemplateField HeaderText="Detail" SortExpression="Amount">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("detail", "{0:C2}") %>' />
+                                        <asp:Label ID="lblDetail" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -178,6 +160,10 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="Scripts/jquery.min.js"></script> 
+    <script type="text/javascript" src="Scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="Scripts/gridviewScroll.min.js"></script>
+
     <script type="text/javascript">
         function OnContactSelected(source, eventArgs) {
 
@@ -185,7 +171,19 @@
 
              document.getElementById(hdnValueID).value = eventArgs.get_value();
              __doPostBack(hdnValueID, "");
-         }
+        }
+
+        $(document).ready(function () {
+            gridviewScroll(<%=gvCurrentAwdStatus.ClientID%>);
+            gridviewScroll(<%=gvTransDetail.ClientID%>);
+        });
+
+        function gridviewScroll(gridId) {
+            $(gridId).gridviewScroll({
+                width: 980,
+                height: 400
+            });
+        }
+
     </script>
 </asp:Content>
-
