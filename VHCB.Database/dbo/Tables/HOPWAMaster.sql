@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[HOPWAMaster] (
+    [HOPWAID]           INT            IDENTITY (1, 1) NOT NULL,
+    [ProjectID]         INT            NULL,
+    [UUID]              NVARCHAR (6)   NOT NULL,
+    [HHincludes]        NVARCHAR (6)   NULL,
+    [PrimaryASO]        INT            NULL,
+    [FundID]            INT            NULL,
+    [Year]              INT            NULL,
+    [WithHIV]           INT            NULL,
+    [InHousehold]       INT            NULL,
+    [Minors]            INT            NULL,
+    [Gender]            INT            NULL,
+    [Age]               INT            NULL,
+    [Ethnic]            INT            NULL,
+    [Race]              INT            NULL,
+    [LivingSituationId] INT            NULL,
+    [SpecNeeds]         INT            NULL,
+    [GMI]               INT            NULL,
+    [AMI]               INT            NULL,
+    [Beds]              INT            NULL,
+    [Notes]             NVARCHAR (MAX) NULL,
+    [PrevHOPWAID]       INT            NULL,
+    [RowisActive]       BIT            CONSTRAINT [DF_HOPWAMaster_RowisActive] DEFAULT ((1)) NOT NULL,
+    [DateModified]      DATETIME       CONSTRAINT [DF_HOPWAMaster_DateModified] DEFAULT (getdate()) NOT NULL,
+    CONSTRAINT [PK_HOPWAMaster] PRIMARY KEY CLUSTERED ([HOPWAID] ASC)
+);
+
