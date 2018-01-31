@@ -16,7 +16,7 @@ namespace vhcbcloud
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
             if (!IsPostBack)
             {
                 rdBtnSelection.SelectedIndex = 0;
@@ -436,16 +436,20 @@ namespace vhcbcloud
                 ddlUsePermit.DataValueField = "Act250FarmId";
                 ddlUsePermit.DataTextField = "UsePermit";
                 ddlUsePermit.DataBind();
+
                 if (ddlUsePermit.Items.Count > 1)
                     ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
-
+                else
+                {
+                    SetAvailableFundsLabel();
+                }
             }
             catch (Exception ex)
             {
                 lblRErrorMsg.Text = ex.Message;
             }
         }
-            protected void BindToUsePermit(int projId)
+        protected void BindToUsePermit(int projId)
         {
             try
             {
@@ -475,8 +479,10 @@ namespace vhcbcloud
                 ddlRFromFundType.DataValueField = "typeid";
                 ddlRFromFundType.DataTextField = "fundtype";
                 ddlRFromFundType.DataBind();
+
                 lblAvailVisibleFund.Text = "";
                 lblAvailFund.Text = "";
+
                 if (ddlRFromFundType.Items.Count > 1)
                 {
                     txtRtoFundType.Text = "";
@@ -486,35 +492,33 @@ namespace vhcbcloud
                 {
                     txtRtoFundType.Text = ddlRFromFundType.SelectedItem.ToString();
 
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
-                    if (dtable.Rows.Count > 0)
-                    {
-                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
-                        lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
-                    }
-                    if (rdBtnSelection.SelectedIndex>0)
-                    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+                    DataTable dtFundDet = new DataTable();
+                    dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
 
+                    if (dtFundDet.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    {
+                        lblUsePermit.Visible = true;
+                        ddlUsePermit.Visible = true;
+                        string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlRFromFund.SelectedValue.ToString()));
+                        PopulateUsePermit(DataUtils.GetInt(hfProjId.Value), account,
+                            DataUtils.GetInt(ddlRFromFundType.SelectedValue.ToString()));
+                    }
+                    else
+                    {
+                        ddlUsePermit.Items.Clear();
+                        lblUsePermit.Visible = false;
+                        ddlUsePermit.Visible = false;
+                        SetAvailableFundsLabel();
+                    }
+
+                    if (rdBtnSelection.SelectedIndex > 0)
+                        BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                 }
 
-                BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
+                //BindUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
                 //BindToUsePermit(hfProjId.Value != "" ? Convert.ToInt32(hfProjId.Value) : 0);
 
-                DataTable dtFundDet = new DataTable();
-                dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
-                if (dtFundDet.Rows[0]["mitfund"].ToString().ToLower() == "true")
-                {
-                    lblUsePermit.Visible = true;
-                    ddlUsePermit.Visible = true;
-                }
-                else
-                {
-                    lblUsePermit.Visible = false;
-                    ddlUsePermit.Visible = false;
-                }
-
                 if (txtToProjNum.Text != "")
-                    //if (ddlRToProj.SelectedValue != ddlRFromProj.SelectedValue)
                     if (txtToProjNum.Text != txtFromProjNum.Text)
                     {
                         ddlRToFund.SelectedValue = ddlRFromFund.SelectedValue;
@@ -522,6 +526,67 @@ namespace vhcbcloud
                     }
                     else
                         ddlRToFund.Enabled = true;
+            }
+            else
+            {
+                //txtRtoFundType.Text = "";
+                ddlRFromFundType.Items.Clear();
+                txtRtoFundType.Text = "";
+
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
+
+                ddlToUsePermit.Items.Clear();
+                lblToUsePermit.Visible = false;
+                ddlToUsePermit.Visible = false;
+
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+                lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
+            }
+        }
+
+        protected void PopulateUsePermit(int ProjectId, string AccountId, int FundTransType)
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetLandUsePermit(ProjectId, AccountId, FundTransType);
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    SetAvailableFundsLabel();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblRErrorMsg.Text = ex.Message;
+            }
+
+        }
+
+        private void SetAvailableFundsLabel()
+        {
+            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
+                                DataUtils.GetInt(ddlRFromFund.SelectedValue.ToString()),
+                                DataUtils.GetInt(ddlRFromFundType.SelectedValue.ToString()),
+                                ddlUsePermit.SelectedValue.ToString());
+
+            if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+            {
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()));
+                lblAvailFund.Text = Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()).ToString();
+            }
+            else
+            {
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+                lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
             }
         }
 
@@ -533,18 +598,39 @@ namespace vhcbcloud
                 {
                     txtRtoFundType.Text = ddlRFromFundType.SelectedItem.ToString();
 
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
-                    if (dtable.Rows.Count > 0)
+                    DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(DataUtils.GetInt(ddlRFromFund.SelectedValue.ToString()));
+
+                    if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                     {
-                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
-                        lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
+                        lblUsePermit.Visible = true;
+                        ddlUsePermit.Visible = true;
+                        string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlRFromFund.SelectedValue.ToString()));
+                        PopulateUsePermit(DataUtils.GetInt(hfProjId.Value), account,
+                            DataUtils.GetInt(ddlRFromFundType.SelectedValue.ToString()));
                     }
+                    else
+                    {
+                        ddlUsePermit.Items.Clear();
+                        lblUsePermit.Visible = false;
+                        ddlUsePermit.Visible = false;
+
+                        if (ddlRFromFundType.SelectedIndex > 0)
+                        {
+                            SetAvailableFundsLabel();
+                        }
+                    }
+
                     if (rdBtnSelection.SelectedIndex > 0)
                         BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()), Convert.ToInt32(ddlRFromFundType.SelectedValue.ToString()));
                 }
                 else
                 {
                     txtRtoFundType.Text = "";
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+                    lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
                 }
             }
         }
@@ -1155,8 +1241,8 @@ namespace vhcbcloud
         {
             gvReallocate.EditIndex = e.NewEditIndex;
             Label lblGuid = (Label)gvReallocate.Rows[e.NewEditIndex].FindControl("lblProjGuid");
-           
-            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()),lblGuid.Text);
+
+            BindGvReallocate(Convert.ToInt32(hfProjId.Value.ToString()), lblGuid.Text);
             if (btnNewTransaction.Visible == true)
             {
                 btnNewTransaction.Visible = false;
@@ -1174,7 +1260,7 @@ namespace vhcbcloud
 
         protected void gvReallocate_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            
+
             Label lblGuid = (Label)gvReallocate.Rows[e.RowIndex].FindControl("lblProjGuid");
 
             FinancialTransactions.DeleteReallocationsByGUID(lblGuid.Text);
@@ -1184,7 +1270,7 @@ namespace vhcbcloud
 
         protected void gvReallocate_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-           
+
         }
 
         protected int GetUserId()
@@ -1197,6 +1283,14 @@ namespace vhcbcloud
             catch (Exception)
             {
                 return 0;
+            }
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlRFromFundType.SelectedIndex > 0)
+            {
+                SetAvailableFundsLabel();
             }
         }
     }

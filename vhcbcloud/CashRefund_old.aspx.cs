@@ -319,7 +319,7 @@ namespace vhcbcloud
                         lblErrorMsg.Text = "Amount auto adjusted to available fund amount";
                     }
 
-                    FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                    FinancialTransactions.AddProjectFundDetails( transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                         Convert.ToInt32(ddlTransType.SelectedValue.ToString()), -currentTranFudAmount);
 
                     BindFundDetails(transId);

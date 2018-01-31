@@ -536,7 +536,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
+        public static void AddProjectFundDetails(int ProjectId, int transid, int fundid, int fundtranstype, decimal fundamount)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -544,6 +544,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddProjectFundDetails";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                 command.Parameters.Add(new SqlParameter("transid", transid));
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
@@ -566,7 +567,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddProjectFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit, string useFarmId)
+        public static void AddProjectFundDetails(int ProjectId, int transid, int fundid, int fundtranstype, decimal fundamount, string usePermit, string useFarmId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -574,6 +575,7 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "AddProjectFundDetailsWithLandPermit";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                 command.Parameters.Add(new SqlParameter("transid", transid));
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
@@ -1854,6 +1856,43 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetLandUsePermit(int ProjectId, string AccountId, int FundTransType)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLandUsePermitNew";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                command.Parameters.Add(new SqlParameter("AccountId", AccountId));
+                command.Parameters.Add(new SqlParameter("FundTransType", FundTransType));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
 
         public static DataTable GetLandUsePermit(int projectId)
         {
@@ -2001,6 +2040,46 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetAvailableFundAmount(int projectId, int fundId, int fundTransType, string LandUsePermitID)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAvailableFundAmount";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("fundId", fundId));
+                command.Parameters.Add(new SqlParameter("fundTransType", fundTransType));
+
+                if (LandUsePermitID != "NA" && LandUsePermitID != "")
+                command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
 
         public static DataTable GetCommittedFundNames(int projectId)
         {
@@ -3429,7 +3508,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void SubmitAdjustmentTransaction(int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3447,6 +3526,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
                 command.Parameters.Add(new SqlParameter("LkTransaction", LkTransaction));
+
+                if(LandUsePermitId !=0)
+                command.Parameters.Add(new SqlParameter("LandUsePermitId", LandUsePermitId));
 
                 using (connection)
                 {
@@ -3466,7 +3548,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdaeAdjustmentTransaction(int Transid, int DetailId, int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3486,6 +3568,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
                 command.Parameters.Add(new SqlParameter("LkTransaction", LkTransaction));
+
+                if (LandUsePermitId != 0)
+                    command.Parameters.Add(new SqlParameter("LandUsePermitId", LandUsePermitId));
 
                 using (connection)
                 {

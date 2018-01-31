@@ -176,7 +176,8 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+               // if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -235,7 +236,8 @@ namespace vhcbcloud
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
 
-                if(ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                //if(ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                if (DataUtils.GetBool(dtable.Rows[0]["mitfund"].ToString()))
                 {
                     lblUsePermit.Visible = true;
                     ddlUsePermit.Visible = true;
@@ -506,8 +508,8 @@ namespace vhcbcloud
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
 
                     //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
-                    //if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
-                    if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
+                    if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                    //if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                         {

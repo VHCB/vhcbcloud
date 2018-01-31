@@ -179,7 +179,6 @@
     <Content Include="Applicant.aspx" />
     <Content Include="AwardSummary.aspx" />
     <Content Include="CashRefundnew.aspx" />
-    <Content Include="CashRefund_old.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="ConservationAct250.aspx" />
     <Content Include="CashRefund.aspx" />
@@ -191,7 +190,6 @@
     <Content Include="Conservation\ConservationStewardship.aspx" />
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
-    <Content Include="Decommitments_old.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
@@ -459,13 +457,6 @@
     <Compile Include="CashRefundnew.aspx.designer.cs">
       <DependentUpon>CashRefundnew.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CashRefund_old.aspx.cs">
-      <DependentUpon>CashRefund_old.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CashRefund_old.aspx.designer.cs">
-      <DependentUpon>CashRefund_old.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CheckRequestDates.aspx.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -535,13 +526,6 @@
     </Compile>
     <Compile Include="Conservation\ConservationSummary.aspx.designer.cs">
       <DependentUpon>ConservationSummary.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Decommitments_old.aspx.cs">
-      <DependentUpon>Decommitments_old.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Decommitments_old.aspx.designer.cs">
-      <DependentUpon>Decommitments_old.aspx</DependentUpon>
     </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>

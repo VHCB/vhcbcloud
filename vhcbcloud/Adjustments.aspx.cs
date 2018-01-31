@@ -91,7 +91,9 @@ namespace vhcbcloud
                     hfTransId.Value = "";
                     hfDetailId.Value = "";
                 }
-
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
             }
             catch (Exception ex)
             {
@@ -248,13 +250,51 @@ namespace vhcbcloud
                 ddlTransType.DataTextField = "Description";
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+
+                if (DataUtils.GetInt(hfProjId.Value) != 0 &&  DataUtils.GetBool(dtable.Rows[0]["mitfund"].ToString()))
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(ddlFundNum.SelectedItem.ToString()));
+                }
+                else
+                {
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
             }
             else
             {
                 ddlTransType.Items.Clear();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
                 lblFundName.Text = "";
+
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
             }
+        }
+
+        protected void BindUsePermitNew(int ProjectId, int FundId)
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetAllLandUsePermitForDecommitment(ProjectId, FundId);
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
         }
 
         protected void ddlFundNum_SelectedIndexChanged(object sender, EventArgs e)
@@ -285,12 +325,29 @@ namespace vhcbcloud
                 ddlTransType.DataTextField = "Description";
                 ddlTransType.DataBind();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (DataUtils.GetInt(hfProjId.Value) != 0 && DataUtils.GetBool(dtable.Rows[0]["mitfund"].ToString()))
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(ddlFundNum.SelectedItem.ToString()));
+                }
+                else
+                {
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+                }
             }
             else
             {
                 ddlTransType.Items.Clear();
                 ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
                 lblFundName.Text = "";
+
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
             }
         }
 
@@ -298,6 +355,20 @@ namespace vhcbcloud
         {
             try
             {
+                if (ddlTransaction.SelectedIndex == 0)
+                {
+                    LogMessage("Select Board/Cash Transaction");
+                    ddlTransaction.Focus();
+                    return;
+                }
+
+                if (ddlLKTransaction.SelectedIndex == 0)
+                {
+                    LogMessage("Select Type (Lktransaction)");
+                    ddlLKTransaction.Focus();
+                    return;
+                }
+
                 if (txtProjNum.Text == "")
                 {
                     LogMessage("Select Project#");
@@ -324,6 +395,13 @@ namespace vhcbcloud
                     return;
                 }
 
+                if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                {
+                    LogMessage("Select Use Permit");
+                    ddlUsePermit.Focus();
+                    return;
+                }
+
                 decimal n;
                 bool isDecimal = decimal.TryParse(txtAmt.Text.Trim(), out n);
 
@@ -338,7 +416,7 @@ namespace vhcbcloud
                 {
                     FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
-                        DataUtils.GetInt(ddlLKTransaction.SelectedValue));
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
 
                     LogMessage("Successfully Added Adjustment");
 
@@ -350,7 +428,7 @@ namespace vhcbcloud
                     FinancialTransactions.UpdaeAdjustmentTransaction(DataUtils.GetInt(hfTransId.Value), DataUtils.GetInt(hfDetailId.Value), 
                         DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
-                        DataUtils.GetInt(ddlLKTransaction.SelectedValue));
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
 
                     LogMessage("Updated Adjustment");
                 }
@@ -385,6 +463,15 @@ namespace vhcbcloud
             ddlTransType.SelectedIndex = -1;
             txtAmt.Text = "";
             txtComments.Text = "";
+
+            ddlUsePermit.Items.Clear();
+            lblUsePermit.Visible = false;
+            ddlUsePermit.Visible = false;
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

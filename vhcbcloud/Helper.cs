@@ -97,5 +97,34 @@ namespace vhcbcloud
             sb.Append("</script>");
             return sb.ToString();
         }
+
+        public static string GetExagoURLForPCR(string ProjectCheckRequestID, string ReportName)
+        {
+            string URL = string.Empty;
+            Api api = new Api(@"/eWebReports");
+
+            // Set the action to execute the report
+            api.Action = wrApiAction.ExecuteReport;
+            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("PCRID");
+            parameter.Value = ProjectCheckRequestID;
+            parameter.IsHidden = true;
+
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\Check Request\" + ReportName);
+
+            //report.ExportType = wrExportType.Html;
+            //report.ShowStatus = true;
+            api.ReportObjectFactory.SaveToApi(report);
+            URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<script type = 'text/javascript'>");
+            sb.Append("window.open('");
+            sb.Append(URL);
+            //sb.Append("');");
+            //sb.Append("', '_blank', 'width=600,height=600');");
+            sb.Append("', '_blank');");
+            sb.Append("</script>");
+            return sb.ToString();
+        }
     }
 }

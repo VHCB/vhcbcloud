@@ -239,60 +239,6 @@ namespace vhcbcloud
             }
         }
 
-        protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlFundTypeCommitments.SelectedIndex != 0)
-            {
-                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(0);
-
-                string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
-
-                if (account == "420" || account == "415")
-                {
-                    lblUsePermit.Visible = true;
-                    ddlUsePermit.Visible = true;
-                    BindUsePermitNew(DataUtils.GetInt(hfProjId.Value), DataUtils.GetInt(account));
-                }
-                else
-                {
-                    ddlUsePermit.Items.Clear();
-                    lblUsePermit.Visible = false;
-                    ddlUsePermit.Visible = false;
-                }
-
-                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()),
-                    Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
-
-                ddlTransType.DataValueField = "typeid";
-                ddlTransType.DataTextField = "fundtype";
-                ddlTransType.DataBind();
-
-                if (ddlTransType.Items.Count > 1)
-                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
-
-                if (ddlTransType.Items.Count == 1)
-                {
-                    //DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value.ToString()), 
-                    //    Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
-
-                    //if (dtable != null && dtable.Rows.Count > 0)
-                    //{
-                    //    hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
-                    //    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
-                    //}
-
-                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
-                    hfAvFunds.Value = "0";
-
-                    SetAvailFundsByProjectAccountPermitTransType();
-                }
-            }
-            else
-            {
-                ddlTransType.Items.Clear();
-            }
-        }
-
         protected void BindUsePermitNew(int ProjectId, int FundId)
         {
             try
@@ -313,22 +259,102 @@ namespace vhcbcloud
 
         }
 
-        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
-            hfAvFunds.Value = "0";
-
-            if (ddlTransType.Items.Count > 1)
+            if (ddlFundTypeCommitments.SelectedIndex != 0)
             {
-                if (ddlTransType.SelectedIndex != 0)
-                {
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundTransType(Convert.ToInt32(hfProjId.Value.ToString()),
-                        Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()), Convert.ToInt32(ddlTransType.SelectedValue.ToString()));
+                lblErrorMsg.Text = "";
+                ddlTransType.Items.Clear();
+                ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
 
-                    hfAvFunds.Value = dtable.Rows[0]["balance"].ToString();
-                    lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
+                DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+                //string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+
+                ddlTransType.DataSource = FinancialTransactions.GetAvailableTransTypesPerProjFundId(Convert.ToInt32(hfProjId.Value.ToString()),
+                    Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString())); ;
+
+                ddlTransType.DataValueField = "typeid";
+                ddlTransType.DataTextField = "fundtype";
+                ddlTransType.DataBind();
+
+                if (ddlTransType.Items.Count > 1)
+                    ddlTransType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (ddlTransType.Items.Count == 1)
+                {
+                    SetAvailableFundsLabel();
+                    //SetAvailFundsByProjectAccountPermitTransType();
                 }
             }
+            else
+            {
+                ddlTransType.Items.Clear();
+            }
+        }
+
+        protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundTypeCommitments.SelectedValue.ToString()));
+            lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
+            string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
+
+            if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+            {
+                lblUsePermit.Visible = true;
+                ddlUsePermit.Visible = true;
+                PopulateUsePermit(DataUtils.GetInt(hfProjId.Value), account,
+                           DataUtils.GetInt(ddlTransType.SelectedValue.ToString()));
+            }
+            else
+            {
+                ddlUsePermit.Items.Clear();
+                lblUsePermit.Visible = false;
+                ddlUsePermit.Visible = false;
+
+                if (ddlTransType.SelectedIndex > 0)
+                {
+                    SetAvailableFundsLabel();
+                }
+            }  
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlTransType.SelectedIndex > 0)
+            {
+                SetAvailableFundsLabel();
+            }
+        }
+
+        protected void PopulateUsePermit(int ProjectId, string AccountId, int FundTransType)
+        {
+            try
+            {
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetLandUsePermit(ProjectId, AccountId, FundTransType);
+                ddlUsePermit.DataSource = dtable;
+                ddlUsePermit.DataValueField = "Act250FarmId";
+                ddlUsePermit.DataTextField = "UsePermit";
+                ddlUsePermit.DataBind();
+
+                if (ddlUsePermit.Items.Count > 1)
+                    ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    SetAvailableFundsLabel();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+
         }
 
         #region gvPTransDetails
@@ -629,12 +655,14 @@ namespace vhcbcloud
                         //EnableButton(btnSubmit);
                         AddDefaultPCRQuestions();
                         BindPCRQuestionsForApproval();
+                        ImgPrintPCR.Visible = true;
                     }
                     else
                     {
                         tblFundDetails.Visible = true;
                         EnableButton(btnPCRTransDetails);
                         pnlApprovals.Visible = false;
+                        ImgPrintPCR.Visible = false;
                     }
 
                     if (lblBalAmt.Text != "$0.00")
@@ -2049,17 +2077,6 @@ namespace vhcbcloud
                 ProjectCheckRequestData.PCR_Update_CheckReqDate(int.Parse(PCRID), CRDate);
         }
 
-        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
-            hfAvFunds.Value = "0";
-
-            if (ddlTransType.SelectedIndex > 0)
-            {
-                SetAvailFundsByProjectAccountPermitTransType();
-            }
-        }
-
         private void SetAvailFundsByProjectAccountPermitTransType()
         {
             string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
@@ -2080,6 +2097,30 @@ namespace vhcbcloud
         protected bool CheckIsVisible()
         {
             return !DataUtils.GetBool(hfIsAllApproved.Value);
+        }
+
+        protected void ImgPrintPCR_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURLForPCR(hfPCRId.Value, "Check_Request_Final"));
+        }
+
+        private void SetAvailableFundsLabel()
+        {
+            hfAvFunds.Value = "0";
+
+           DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
+                                DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()),
+                                DataUtils.GetInt(ddlTransType.SelectedValue.ToString()),
+                                ddlUsePermit.SelectedValue.ToString());
+
+            if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+            {
+                hfAvFunds.Value = dtAvailFunds.Rows[0]["Balanced"].ToString();
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString());
+            }
+            else
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
         }
     }
 }

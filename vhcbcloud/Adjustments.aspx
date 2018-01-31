@@ -119,9 +119,16 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass">Amount $</span></td>
-                            <td colspan="5">
+                             <td><span class="labelClass">Amount $</span></td>
+                            <td>
                                 <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
+                                </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>

@@ -194,6 +194,8 @@
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
                                 &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false"
                                     OnClientClick="return confirm('Are you sure you wish to delete the entire Check Request?');" />
+                                &nbsp;<asp:ImageButton ID="ImgPrintPCR" ImageUrl="~/Images/print.png" ToolTip="PCR Report" Visible="false"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgPrintPCR_Click" />
                             </td>
                         </tr>
                     </table>

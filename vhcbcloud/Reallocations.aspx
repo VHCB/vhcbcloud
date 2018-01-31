@@ -133,7 +133,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 10%; float: left"><asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
-                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
                                                     </asp:DropDownList></td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
@@ -169,7 +169,7 @@
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
-                                            <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server"><%--AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged"--%>
+                                            <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged">
                                             </asp:DropDownList></td>
                                     </tr>
                                     <tr>
@@ -241,7 +241,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                                <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                             </ItemTemplate>
                                             <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>
