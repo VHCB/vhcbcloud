@@ -5,6 +5,7 @@
     [LkGrantAgency] INT            NULL,
     [LkGrantSource] INT            NULL,
     [Grantor]       NVARCHAR (20)  NULL,
+    [Fund]          INT            NULL,
     [AwardNum]      NVARCHAR (25)  NULL,
     [AwardAmt]      MONEY          NULL,
     [BeginDate]     DATETIME       NULL,
@@ -17,6 +18,7 @@
     [FedFunds]      BIT            NULL,
     [FedSignDate]   DATE           NULL,
     [Fundsrec]      BIT            NULL,
+    [DrawDown]      BIT            CONSTRAINT [DF_GrantInfo_DrawDown] DEFAULT ((0)) NOT NULL,
     [Match]         BIT            NULL,
     [Admin]         BIT            NULL,
     [Notes]         NVARCHAR (MAX) NULL,
@@ -24,6 +26,8 @@
     [DateModified]  DATETIME       CONSTRAINT [DF_GrantInfo_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_GrantInfo] PRIMARY KEY CLUSTERED ([GrantinfoID] ASC)
 );
+
+
 
 
 GO

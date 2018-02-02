@@ -682,7 +682,6 @@
     <Build Include="dbo\Stored Procedures\RPT_AllProjectHouseSU.sql" />
     <Build Include="dbo\Stored Procedures\RPT_AllProjectConserveSU.sql" />
     <Build Include="dbo\Stored Procedures\RelatedProjects.sql" />
-    <Build Include="dbo\Stored Procedures\ProjNames.sql" />
     <Build Include="dbo\Stored Procedures\ProjectSearch.sql" />
     <Build Include="dbo\Stored Procedures\PopulateImportBudgetPeriodDropDown.sql" />
     <Build Include="dbo\Stored Procedures\PopulateHousingImportBudgetPeriodDropDown.sql" />
@@ -1147,14 +1146,6 @@
     <Build Include="dbo\Stored Procedures\deleteDetail.sql" />
     <Build Include="dbo\Stored Procedures\DeleteAssignmentDetailByGUID.sql" />
     <Build Include="dbo\Stored Procedures\ClearNODAndItems.sql" />
-    <Build Include="dbo\Stored Procedures\CheckRequest.sql" />
-    <Build Include="dbo\Stored Procedures\CheckReqDetail.sql" />
-    <Build Include="dbo\Stored Procedures\CalcTotRequest_.sql" />
-    <Build Include="dbo\Stored Procedures\CalcTotAcres.sql" />
-    <Build Include="dbo\Stored Procedures\CalcMasterProject.sql" />
-    <Build Include="dbo\Stored Procedures\CalcHOMERentUnits.sql" />
-    <Build Include="dbo\Stored Procedures\CalcHOMEBedUnits.sql" />
-    <Build Include="dbo\Stored Procedures\CalcEasementValue.sql" />
     <Build Include="dbo\Stored Procedures\AddYearQuarter.sql" />
     <Build Include="dbo\Stored Procedures\AddUsersToSecurityGroup.sql" />
     <Build Include="dbo\Stored Procedures\AddUserPageSecurity.sql" />
@@ -1299,6 +1290,27 @@
     <Build Include="dbo\Stored Procedures\ActivateFund.sql" />
     <Build Include="dbo\Stored Procedures\ActivateFinancialTransByTransId.sql" />
     <Build Include="dbo\User Defined Types\QuestionAnswers.sql" />
+    <Build Include="dbo\Views\VW_VHCBHousing_Affordability_1.sql" />
+    <Build Include="dbo\Views\VW_RPT_Finance_Data_1.sql" />
+    <Build Include="dbo\Views\VW_Reallocation_OtherProjects_1.sql" />
+    <Build Include="dbo\Views\VW_Project_Demographics.sql" />
+    <Build Include="dbo\Views\VW_Housing Affordability_1.sql" />
+    <Build Include="dbo\Views\VW_GrantInfoPayment_1.sql" />
+    <Build Include="dbo\Views\VW_FHCheckReqVDate_1.sql" />
+    <Build Include="dbo\Views\VW_FHCheckRequest_1.sql" />
+    <Build Include="dbo\Views\VW_Committed_LandUsePermit.sql" />
+    <Build Include="dbo\Views\VW_Check Request Approvals_1.sql" />
+    <Build Include="dbo\Views\VW_AllFinancialTransactions_1.sql" />
+    <Build Include="dbo\Views\VW_ALL_Financial Transactions_1.sql" />
+    <Build Include="dbo\Views\Project table data_1.sql" />
+    <Build Include="dbo\Views\dbo_1.VW_Check Request-old.sql" />
+    <Build Include="dbo\Functions\fnGetPrimaryApplicantName.sql" />
+    <Build Include="dbo\Stored Procedures\GetLandUsePermitNew.sql" />
+    <Build Include="dbo\Stored Procedures\GetGrantInfoDetailsByFund_1.sql" />
+    <Build Include="dbo\Stored Procedures\GetFundTypeData_1.sql" />
+    <Build Include="dbo\Stored Procedures\getFinanceRecords.sql" />
+    <Build Include="dbo\Stored Procedures\GetAvailableFundAmount.sql" />
+    <Build Include="dbo\Stored Procedures\GetAllFundsByProjectProgram.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SandBoxDataCompare.scmp" />

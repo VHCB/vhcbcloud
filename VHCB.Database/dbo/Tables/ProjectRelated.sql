@@ -4,11 +4,14 @@
     [RelProjectID]     INT        NOT NULL,
     [Related$]         MONEY      CONSTRAINT [DF_ProjectRelated_Related$] DEFAULT ((0)) NOT NULL,
     [LkRelreason]      INT        NULL,
+    [DualGoal]         BIT        CONSTRAINT [DF_ProjectRelated_DualGoal] DEFAULT ((0)) NOT NULL,
     [DateModified]     DATETIME   CONSTRAINT [DF_ProjectRelated_DateModified] DEFAULT (getdate()) NOT NULL,
     [RowVersion]       ROWVERSION NOT NULL,
-    [RowIsActive]      BIT        DEFAULT ((1)) NULL,
+    [RowIsActive]      BIT        CONSTRAINT [DF__ProjectRe__RowIs__70B86AB0] DEFAULT ((1)) NULL,
     CONSTRAINT [PK_ProjectRelated] PRIMARY KEY CLUSTERED ([ProjectRelatedID] ASC)
 );
+
+
 
 
 GO

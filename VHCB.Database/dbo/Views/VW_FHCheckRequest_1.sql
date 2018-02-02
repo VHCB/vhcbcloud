@@ -1,13 +1,9 @@
-﻿CREATE VIEW dbo.[VWLK_Primary Applicant]
+﻿CREATE VIEW dbo.VW_FHCheckRequest
 AS
-SELECT     dbo.ProjectApplicant.ProjectId, dbo.AppName.Applicantname AS [Primary Applicant], dbo.ApplicantAppName.DefName
-FROM         dbo.ApplicantAppName INNER JOIN
-                      dbo.AppName ON dbo.ApplicantAppName.AppNameID = dbo.AppName.AppNameID AND dbo.AppName.RowIsActive = 1 INNER JOIN
-                      dbo.ProjectApplicant ON dbo.ApplicantAppName.ApplicantID = dbo.ProjectApplicant.ApplicantId AND dbo.ProjectApplicant.RowIsActive = 1 AND 
-                      dbo.ProjectApplicant.LkApplicantRole = '358'
-WHERE     (dbo.ApplicantAppName.DefName = 1)
+SELECT DISTINCT FHCheckReqID, ProjectNumb + ' ' + Applicantname + ' ' + CONVERT(Nvarchar, VoucherDate, 1) AS NumGrantDate
+FROM         dbo.FHCheckRequest
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VWLK_Primary Applicant';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_FHCheckRequest';
 
 
 GO
@@ -82,35 +78,15 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "ApplicantAppName"
-            Begin Extent = 
-               Top = 182
-               Left = 18
-               Bottom = 290
-               Right = 199
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "AppName"
-            Begin Extent = 
-               Top = 18
-               Left = 385
-               Bottom = 126
-               Right = 538
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "ProjectApplicant"
+         Begin Table = "FHCheckRequest"
             Begin Extent = 
                Top = 6
                Left = 38
                Bottom = 114
-               Right = 207
+               Right = 190
             End
             DisplayFlags = 280
-            TopColumn = 4
+            TopColumn = 0
          End
       End
    End
@@ -121,8 +97,8 @@ Begin DesignProperties =
       End
       Begin ColumnWidths = 9
          Width = 284
-         Width = 1500
-         Width = 3150
+         Width = 1320
+         Width = 4020
          Width = 1500
          Width = 1500
          Width = 1500
@@ -149,7 +125,5 @@ Begin DesignProperties =
       End
    End
 End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VWLK_Primary Applicant';
-
-
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_FHCheckRequest';
 

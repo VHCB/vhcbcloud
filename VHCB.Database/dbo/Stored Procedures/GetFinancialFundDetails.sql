@@ -93,7 +93,7 @@ Begin
 		order by p.Proj_num
 	
 	select projectid, fundid, account, lktranstype, FundType, FundName, Projnum, ProjectName, FundAbbrv, 
-				   sum(isnull( commitmentamount,0)) as commitmentamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) - (ISNULL( expendedamount, 0))) - isnull(pendingamount, 0)) as balance,
+				   sum(isnull( commitmentamount,0)) as commitmentamount, sum( ISNULL( expendedamount,0)) as expendedamount, sum((isnull(commitmentamount,0) + (ISNULL( expendedamount, 0)))) as balance,
 			   sum(isnull(pendingamount, 0)) as pendingamount, max(Date) as [date]
 	from @tempFundCommit
 	group by projectid, fundid,account, lktranstype,FundType, FundName, FundAbbrv, Projnum, ProjectName

@@ -42,7 +42,7 @@ begin
 	begin
 		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, 
 			v.description as LkTransactionDesc, --, trans.LkTransaction, v.*
-			ui.Fname + ' ' + ui.Lname as UserName
+			ui.Fname + ' ' + ui.Lname as UserName, trans.adjust
 		from Trans trans(nolock)
 		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
 		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
@@ -59,7 +59,7 @@ begin
 		union
 		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.ReallAssignAmt, 
 		v.description as LkTransactionDesc, --, trans.LkTransaction, v.*
-		ui.Fname + ' ' + ui.Lname as UserName
+		ui.Fname + ' ' + ui.Lname as UserName, trans.adjust
 		from Trans trans(nolock)
 		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
 		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction

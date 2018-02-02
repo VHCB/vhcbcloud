@@ -4,11 +4,12 @@
 )
 as
 begin
-
+--getAwardSummary 6586
 	declare @tempFundSummary table 
 	(
 			ProjectId			int null,
 			ProjectName			varchar(50) null,
+			ProjectNumber		varchar(12) null,
 			Account				int null,
 			FundId				int null,
 			FundName			varchar(50) null,
@@ -34,8 +35,8 @@ begin
 			PendingAdjustmentAmount	money null default(0)
 	)
 
-	insert into @tempFundSummary(ProjectId, ProjectName, Account, FundId, FundName, FundTransTypeName, FundTransType, LandUsePermitId, UsePermit)
-	select p.projectid, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
+	insert into @tempFundSummary(ProjectId, ProjectName, ProjectNumber, Account, FundId, FundName, FundTransTypeName, FundTransType, LandUsePermitId, UsePermit)
+	select p.projectid, lv.Description, p.Proj_num, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
 	from trans tr(nolock)
 	join detail d(nolock) on tr.transid = d.TransId
 	join fund f(nolock) on f.fundid = d.fundid
@@ -45,9 +46,9 @@ begin
 	left join LkTransType_v ttv(nolock) on d.lktranstype = ttv.typeid	
 	left join Act250Farm act(nolock) on act.Act250FarmId = isnull(d.LandUsePermitID, '')
 	where tr.ProjectID = @ProjectID and tr.LkStatus in (261, 262) and tr.RowIsActive = 1 and d.RowIsActive = 1 and tr.Balanced = 1 and pn.DefName =1
-	group by p.projectid, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
+	group by p.projectid, lv.Description, p.Proj_num, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
 
-
+	--select * from @tempFundSummary
 	--Final
 	update tt set tt.FinalCommitmentAmount = temp.CommitmentAmount
 	from @tempFundSummary tt
@@ -142,7 +143,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where  tr.ProjectID = @ProjectID and tr.LkStatus = 261 and tr.LkTransaction = 238 and tr.Adjust = 0
+		where  tr.ProjectID = @ProjectID and tr.LkStatus = 261 and tr.LkTransaction = 238 and tr.Adjust = 0  and tr.Balanced = 1
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -154,7 +155,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 239 and tr.Adjust = 0
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 239 and tr.Adjust = 0  and tr.Balanced = 1
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -166,7 +167,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 240 and tr.Adjust = 0
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 240 and tr.Adjust = 0  and tr.Balanced = 1
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -178,7 +179,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 26552 and tr.Adjust = 0 --and d.Amount < 0
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 26552 and tr.Adjust = 0  and tr.Balanced = 1 --and d.Amount < 0
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -190,7 +191,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 236 and tr.Adjust = 0
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 236 and tr.Adjust = 0  and tr.Balanced = 1
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -202,7 +203,7 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 237 and tr.Adjust = 0
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.LkTransaction = 237 and tr.Adjust = 0 and tr.Balanced = 1
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
@@ -214,13 +215,15 @@ begin
 		from trans tr(nolock)
 		join Detail d(nolock) on tr.transid = d.TransId
 		join @tempFundSummary t on t.FundId = d.FundId and t.FundTransType = d.LkTransType and isnull(t.LandUsePermitId, '') = isnull(d.LandUsePermitId, '')
-		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.Adjust = 1 --tr.LkTransaction = 26733 
+		where tr.ProjectID = @ProjectID  and tr.LkStatus = 261 and tr.Adjust = 1  and tr.Balanced = 1 --tr.LkTransaction = 26733 
 		group by  d.FundId, d.lkTransType, isnull(d.LandUsePermitID, '')
 	) temp on temp.FundId = tt.FundId and temp.LkTransType = tt.FundTransType and temp.LandUsePermitID = tt.LandUsePermitId
 
 	--select * from @tempFundSummary
 
-	select ProjectId, Account, FundId, FundName + ' ' + UsePermit as FundName, FundTransTypeName, FundTransType, LandUsePermitId, 
+	select ProjectId, Account, FundId, 
+		case when isnull(UsePermit, '') = '' then FundName else FundName + ' - ' + isnull(UsePermit, '') end as FundName, 
+		FundTransTypeName, FundTransType, LandUsePermitId, 
 		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) as FinalCommited,
 		(FinalDisbursementAmount + FinalRefundAmount) as Disbursed,
 		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) - abs((FinalDisbursementAmount + FinalRefundAmount)) Balanced,

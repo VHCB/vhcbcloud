@@ -1,13 +1,33 @@
-﻿CREATE VIEW dbo.[VWLK_Primary Applicant]
+﻿CREATE VIEW dbo.[VW_Housing Affordability]
 AS
-SELECT     dbo.ProjectApplicant.ProjectId, dbo.AppName.Applicantname AS [Primary Applicant], dbo.ApplicantAppName.DefName
-FROM         dbo.ApplicantAppName INNER JOIN
-                      dbo.AppName ON dbo.ApplicantAppName.AppNameID = dbo.AppName.AppNameID AND dbo.AppName.RowIsActive = 1 INNER JOIN
-                      dbo.ProjectApplicant ON dbo.ApplicantAppName.ApplicantID = dbo.ProjectApplicant.ApplicantId AND dbo.ProjectApplicant.RowIsActive = 1 AND 
-                      dbo.ProjectApplicant.LkApplicantRole = '358'
-WHERE     (dbo.ApplicantAppName.DefName = 1)
+SELECT     dbo.Project.Proj_num, dbo.VWLK_ProjectNames.Description, dbo.VWLK_ApplicantName.ApplicantAbbrv
+FROM         dbo.ProjectUnitChar INNER JOIN
+                      dbo.VWLK_HouseUnitMultiType ON dbo.ProjectUnitChar.LkUnitChar = dbo.VWLK_HouseUnitMultiType.TypeID RIGHT OUTER JOIN
+                      dbo.VWLK_ApplicantName RIGHT OUTER JOIN
+                      dbo.Project ON dbo.VWLK_ApplicantName.ProjectId = dbo.Project.ProjectId ON dbo.ProjectUnitChar.ProjectId = dbo.Project.ProjectId LEFT OUTER JOIN
+                      dbo.VWLK_ProjectNames ON dbo.Project.ProjectId = dbo.VWLK_ProjectNames.ProjectID
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 1, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VWLK_Primary Applicant';
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_Housing Affordability';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'olumn = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_Housing Affordability';
 
 
 GO
@@ -16,7 +36,7 @@ Begin DesignProperties =
    Begin PaneConfigurations = 
       Begin PaneConfiguration = 0
          NumPanes = 4
-         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+         Configuration = "(H (1[45] 4[16] 2[20] 3) )"
       End
       Begin PaneConfiguration = 1
          NumPanes = 3
@@ -82,35 +102,55 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "ApplicantAppName"
-            Begin Extent = 
-               Top = 182
-               Left = 18
-               Bottom = 290
-               Right = 199
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "AppName"
-            Begin Extent = 
-               Top = 18
-               Left = 385
-               Bottom = 126
-               Right = 538
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "ProjectApplicant"
+         Begin Table = "Project"
             Begin Extent = 
                Top = 6
                Left = 38
                Bottom = 114
-               Right = 207
+               Right = 189
             End
             DisplayFlags = 280
-            TopColumn = 4
+            TopColumn = 0
+         End
+         Begin Table = "VWLK_ProjectNames"
+            Begin Extent = 
+               Top = 155
+               Left = 36
+               Bottom = 248
+               Right = 187
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "ProjectUnitChar"
+            Begin Extent = 
+               Top = 13
+               Left = 241
+               Bottom = 121
+               Right = 408
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "VWLK_HouseUnitMultiType"
+            Begin Extent = 
+               Top = 18
+               Left = 432
+               Bottom = 96
+               Right = 583
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "VWLK_ApplicantName"
+            Begin Extent = 
+               Top = 147
+               Left = 242
+               Bottom = 255
+               Right = 395
+            End
+            DisplayFlags = 280
+            TopColumn = 0
          End
       End
    End
@@ -122,7 +162,7 @@ Begin DesignProperties =
       Begin ColumnWidths = 9
          Width = 284
          Width = 1500
-         Width = 3150
+         Width = 1500
          Width = 1500
          Width = 1500
          Width = 1500
@@ -133,23 +173,5 @@ Begin DesignProperties =
    End
    Begin CriteriaPane = 
       Begin ColumnWidths = 11
-         Column = 1440
-         Alias = 900
-         Table = 1170
-         Output = 720
-         Append = 1400
-         NewValue = 1170
-         SortType = 1350
-         SortOrder = 1410
-         GroupBy = 1350
-         Filter = 1350
-         Or = 1350
-         Or = 1350
-         Or = 1350
-      End
-   End
-End
-', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VWLK_Primary Applicant';
-
-
+         C', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_Housing Affordability';
 

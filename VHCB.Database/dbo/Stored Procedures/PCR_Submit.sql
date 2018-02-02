@@ -30,8 +30,8 @@ begin transaction
 
 	set @ProjectCheckReqID = @@IDENTITY
 
-	insert into Trans(ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus)
-	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus)
+	insert into Trans(ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus, UserID)
+	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus, @UserID)
 
 	set @TransID = @@IDENTITY
 

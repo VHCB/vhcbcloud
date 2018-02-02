@@ -9,5 +9,5 @@ Begin
 	isnull(t.Comment, '') as Comments
 	from Trans t(nolock) 
 	join Detail d(nolock) on d.TransId = t.TransId
-	where t.ProjectID = @projId and LkTransaction = 26733 and LkStatus = 261
+	where t.ProjectID = @projId and Adjust = 1 and t.LkStatus = 261
 End

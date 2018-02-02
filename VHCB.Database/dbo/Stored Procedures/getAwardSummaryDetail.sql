@@ -8,6 +8,7 @@ begin
 	declare @tempFundSummary table 
 	(
 			ProjectId			int null,
+			DetailID			int null,
 			ProjectName			varchar(50) null,
 			Account				int null,
 			FundId				int null,
@@ -34,8 +35,8 @@ begin
 			PendingAdjustmentAmount	money null default(0)
 	)
 
-	insert into @tempFundSummary(ProjectId, ProjectName, Account, FundId, FundName, FundTransTypeName, FundTransType, LandUsePermitId, UsePermit)
-	select p.projectid, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
+	insert into @tempFundSummary(ProjectId, DetailID, ProjectName, Account, FundId, FundName, FundTransTypeName, FundTransType, LandUsePermitId, UsePermit)
+	select p.projectid, d.DetailID, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
 	from trans tr(nolock)
 	join detail d(nolock) on tr.transid = d.TransId
 	join fund f(nolock) on f.fundid = d.fundid
@@ -45,7 +46,7 @@ begin
 	left join LkTransType_v ttv(nolock) on d.lktranstype = ttv.typeid	
 	left join Act250Farm act(nolock) on act.Act250FarmId = isnull(d.LandUsePermitID, '')
 	where tr.ProjectID = @ProjectID and tr.LkStatus in (261, 262) and tr.RowIsActive = 1 and d.RowIsActive = 1 and tr.Balanced = 1 and pn.DefName =1
-	group by p.projectid, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
+	group by p.projectid, d.DetailID, lv.Description, f.account, d.FundId, f.name, ttv.description, d.lkTransType, isnull(d.LandUsePermitID, ''), isnull(act. UsePermit, '')
 
 
 	--Final
@@ -220,12 +221,12 @@ begin
 
 	--select * from @tempFundSummary
 
-	select ProjectId, Account, FundId, FundName + ' ' + UsePermit as FundName, FundTransTypeName, FundTransType, LandUsePermitId, 
-		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) as FinalCommited,
-		(FinalDisbursementAmount + FinalRefundAmount) as Disbursed,
-		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) - abs((FinalDisbursementAmount + FinalRefundAmount)) Balanced,
-		(PendingCommitmentAmount + PendingDecommitmentAmount + PendingReallocationAmount + PendingAssignmentAmount + PendingAdjustmentAmount) + (PendingDisbursementAmount + PendingRefundAmount)as Pending
-	from @tempFundSummary order by FundId
+--	select ProjectId, Account, FundId, FundName + ' ' + UsePermit as FundName, FundTransTypeName, FundTransType, LandUsePermitId, 
+--		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) as FinalCommited,
+--		(FinalDisbursementAmount + FinalRefundAmount) as Disbursed,
+--		(FinalCommitmentAmount + FinalDecommitmentAmount + FinalReallocationAmount + FinalAssignmentAmount + FinalAdjustmentAmount) - abs((FinalDisbursementAmount + FinalRefundAmount)) Balanced,
+--		(PendingCommitmentAmount + PendingDecommitmentAmount + PendingReallocationAmount + PendingAssignmentAmount + PendingAdjustmentAmount) + (PendingDisbursementAmount + PendingRefundAmount)as Pending
+--	from @tempFundSummary order by FundId
 
 	select p.Proj_num + ' - ' +	lv.Description  as ProjectName, t.date as TransDate,
 		f.Account,
@@ -234,6 +235,7 @@ begin
 		lv2.Description as 'Status', 
 		lv1.Description as 'Transaction',  
 		d.Amount, 
+		d.DetailID,
 		0 as IsDifferentProject,
 		t.Adjust
 	from trans t(nolock)
@@ -256,6 +258,7 @@ begin
 		lv2.Description as 'Status', 
 		lv1.Description as 'Transaction',  
 		d.Amount, 
+		d.DetailID,
 		1 as IsDifferentProject,
 		t.Adjust
 	from TransAssign ta(nolock)

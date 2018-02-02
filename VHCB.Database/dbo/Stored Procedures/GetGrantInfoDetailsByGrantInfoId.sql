@@ -10,7 +10,7 @@ Begin
 	SELECT gi.GrantinfoID
       ,gi.GrantName
       ,gi.VHCBName
-      --,gi.LkGrantor
+      ,gi.LkGrantor
       ,gi.LkGrantSource
       ,gi.AwardNum
       ,ROUND(gi.AwardAmt,2) as AwardAmt
