@@ -19,16 +19,15 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @leve
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'   End
-            DisplayFlags = 280
+EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'           DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "Project"
+         Begin Table = "VWLK_ApplicantRole"
             Begin Extent = 
-               Top = 163
-               Left = 826
+               Top = 193
+               Left = 24
                Bottom = 271
-               Right = 977
+               Right = 175
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -86,6 +85,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'   End
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_ProjectApplicantAddress';
+
+
 
 
 GO
@@ -160,6 +161,16 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
+         Begin Table = "Project"
+            Begin Extent = 
+               Top = 163
+               Left = 826
+               Bottom = 271
+               Right = 977
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
          Begin Table = "ProjectApplicant"
             Begin Extent = 
                Top = 6
@@ -169,16 +180,6 @@ Begin DesignProperties =
             End
             DisplayFlags = 280
             TopColumn = 7
-         End
-         Begin Table = "ApplicantAddress"
-            Begin Extent = 
-               Top = 167
-               Left = 242
-               Bottom = 275
-               Right = 416
-            End
-            DisplayFlags = 280
-            TopColumn = 0
          End
          Begin Table = "Address"
             Begin Extent = 
@@ -190,22 +191,32 @@ Begin DesignProperties =
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "Applicant"
+         Begin Table = "ApplicantAddress"
             Begin Extent = 
-               Top = 8
-               Left = 360
-               Bottom = 116
-               Right = 524
+               Top = 167
+               Left = 242
+               Bottom = 275
+               Right = 416
             End
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "VWLK_ApplicantRole"
+         Begin Table = "Applicant"
             Begin Extent = 
-               Top = 193
-               Left = 24
-               Bottom = 271
-               Right = 175
+               Top = 21
+               Left = 286
+               Bottom = 129
+               Right = 450
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "ApplicantAppName"
+            Begin Extent = 
+               Top = 166
+               Left = 536
+               Bottom = 274
+               Right = 717
             End
             DisplayFlags = 280
             TopColumn = 0
@@ -217,14 +228,7 @@ Begin DesignProperties =
                Bottom = 131
                Right = 983
             End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
-         Begin Table = "ApplicantAppName"
-            Begin Extent = 
-               Top = 166
-               Left = 536
-               Bottom = 274
-               Right = 717
-         ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_ProjectApplicantAddress';
+ ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_ProjectApplicantAddress';
+
+
 

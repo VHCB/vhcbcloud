@@ -1296,6 +1296,8 @@
     <Build Include="dbo\Stored Procedures\getFinanceRecords.sql" />
     <Build Include="dbo\Stored Procedures\GetAvailableFundAmount.sql" />
     <Build Include="dbo\Stored Procedures\GetAllFundsByProjectProgram.sql" />
+    <Build Include="dbo\Views\VW_All_Entities.sql" />
+    <Build Include="dbo\Views\Project_Applicants.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SandBoxDataCompare.scmp" />
