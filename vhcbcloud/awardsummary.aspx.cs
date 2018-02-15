@@ -116,7 +116,10 @@ namespace vhcbcloud
                 gvCurrentAwdStatus.DataSource = dtAwdStatus;
                 gvCurrentAwdStatus.DataBind();
 
-                gvTransDetail.DataSource = dtTransDetail;
+                DataView detailView = dtTransDetail.DefaultView;
+                detailView.Sort = "DetailId DESC";
+
+                gvTransDetail.DataSource = detailView;
                 gvTransDetail.DataBind();
                 SetSummaryGridTotals(dtAwdStatus);
 
@@ -330,7 +333,7 @@ namespace vhcbcloud
         protected void AwardSummaryReport_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
-                    "script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award Summary"));
+                    "script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award_Summary_Complete"));
         }
 
         protected void gvTransDetail_RowDataBound(object sender, GridViewRowEventArgs e)

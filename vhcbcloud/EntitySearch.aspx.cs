@@ -1,0 +1,120 @@
+﻿using DataAccessLayer;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using VHCBCommon.DataAccessLayer;
+
+namespace vhcbcloud
+{
+    public partial class EntitySearch : System.Web.UI.Page
+    {
+        string Pagename = "EntitySearch";
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            dvMessage.Visible = false;
+            lblErrorMsg.Text = "";
+            if (!IsPostBack)
+            {
+                BindControls();
+                dvIndiSearchResultsGrid.Visible = false;
+                dvOrgSearchResultsGrid.Visible = false;
+            }
+        }
+
+        private void BindControls()
+        {
+            BindLookUP(ddlEntityRole, 170);
+        }
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+        protected void btnEntitySearch_Click(object sender, EventArgs e)
+        {
+            dvOrgSearchResultsGrid.Visible = false;
+            dvIndiSearchResultsGrid.Visible = false;
+
+            DataTable dtTable = EntityMaintenanceData.EntitySearchByRole(DataUtils.GetInt(ddlEntityRole.SelectedValue), txtEntityName.Text);
+
+            if (ddlEntityRole.SelectedValue == "26242") //Organization
+            {
+                dvOrgSearchResultsGrid.Visible = true;
+                gvOrgSearchresults.DataSource = dtTable;
+                gvOrgSearchresults.DataBind();
+            }
+            if (ddlEntityRole.SelectedValue == "26243") //Individual
+            {
+                dvIndiSearchResultsGrid.Visible = true;
+                gvIndSearchresults.DataSource = dtTable;
+                gvIndSearchresults.DataBind();
+            }
+            
+        }
+
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            ddlEntityRole.SelectedIndex = -1;
+            txtEntityName.Text = "";
+            dvIndiSearchResultsGrid.Visible = false;
+            dvOrgSearchResultsGrid.Visible = false;
+        }
+
+        private void LogError(string pagename, string method, string message, string error)
+        {
+            dvMessage.Visible = true;
+            if (message == "")
+            {
+                lblErrorMsg.Text = Pagename + ": " + method + ": Error Message: " + error;
+            }
+            else
+                lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+        }
+
+        private void LogMessage(string message)
+        {
+            dvMessage.Visible = true;
+            lblErrorMsg.Text = message;
+        }
+
+        protected void gvOrgSearchresults_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "SelectProject")
+            {
+                int index = Convert.ToInt32(e.CommandArgument.ToString());
+                string ApplicantId = ((Label)gvOrgSearchresults.Rows[index].FindControl("lblApplicantId")).Text;
+                string EntityRole = ((Label)gvOrgSearchresults.Rows[index].FindControl("lblEntityRole")).Text;
+
+                Response.Redirect("EntityMaintenance.aspx?ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
+            }
+        }
+
+        protected void gvIndSearchresults_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "SelectProject")
+            {
+                int index = Convert.ToInt32(e.CommandArgument.ToString());
+                string ApplicantId = ((Label)gvIndSearchresults.Rows[index].FindControl("lblApplicantId")).Text;
+                string EntityRole = ((Label)gvIndSearchresults.Rows[index].FindControl("lblEntityRole")).Text;
+
+                Response.Redirect("EntityMaintenance.aspx?ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
+            }
+        }
+    }
+}

@@ -136,8 +136,9 @@ namespace vhcbcloud
             {
                 hfReallocateGuid.Value = "";
                 hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
+                hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
 
-                ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
+                ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value)); //FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(ddlRFromProj.SelectedValue.ToString()));
                 ddlRFromFund.DataValueField = "fundid";
                 ddlRFromFund.DataTextField = "name";
                 ddlRFromFund.DataBind();
@@ -145,7 +146,6 @@ namespace vhcbcloud
                 txtRfromDate.Text = DateTime.Now.ToShortDateString();
                 ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
                 BindAllFunds();
-                hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
 
                 ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
 
@@ -249,7 +249,7 @@ namespace vhcbcloud
             hfReallocateGuid.Value = "";
             hfTransId.Value = ""; hfRFromTransId.Value = ""; hfBalAmt.Value = ""; hfTransAmt.Value = "";
             txtRfromAmt.Text = "";
-            ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(hfProjId.Value));
+            ddlRFromFund.DataSource = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value)); //FinancialTransactions.GetCommittedFundByProject(Convert.ToInt32(hfProjId.Value));
             ddlRFromFund.DataValueField = "fundid";
             ddlRFromFund.DataTextField = "name";
             ddlRFromFund.DataBind();
@@ -459,23 +459,34 @@ namespace vhcbcloud
                 ddlRFromFundType.DataValueField = "typeid";
                 ddlRFromFundType.DataTextField = "fundtype";
                 ddlRFromFundType.DataBind();
+
                 lblAvailVisibleFund.Text = "";
                 lblAvailFund.Text = "";
-                if (ddlRFromFundType.Items.Count > 1)
-                {
-                    ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
-                }
-                else if (ddlRFromFundType.Items.Count == 1)
-                {
-                    DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
-                    if (dtable.Rows.Count > 0)
-                    {
-                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
-                        lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
-                    }
-                    if (rdBtnSelection.SelectedIndex>0)
-                    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
 
+                if (ddlRFromFundType.Items.Count > 1)
+                    ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
+                else
+                {
+                    if (ddlRFromFundType.Items.Count < 1)
+                    {
+                        lblRErrorMsg.Text = "No transaction types found for this fund and hence this fund can't be used for disbursement";
+                        return;
+                    }
+                    lblRErrorMsg.Text = "";
+
+                    SetAvailableFundsLabel();
+
+                    //DataTable dtable = FinancialTransactions.GetCommittedFundDetailsByFundId(Convert.ToInt32(hfProjId.Value), 
+                    //    Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
+
+                    //if (dtable.Rows.Count > 0)
+                    //{
+                    //    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()));
+                    //    lblAvailFund.Text = Convert.ToDecimal(dtable.Rows[0]["balance"].ToString()).ToString();
+                    //}
+
+                    //if (rdBtnSelection.SelectedIndex>0)
+                    //    BindGvReallocate(Convert.ToInt32(hfProjId.Value), Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                 }
 
                 if (txtToProjNum.Text != "")
@@ -487,6 +498,18 @@ namespace vhcbcloud
                     }
                     else
                         ddlRToFund.Enabled = true;
+            }
+            else
+            {
+                ddlRFromFundType.Items.Clear();
+                ddlRFromFundType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                txtRfromAmt.Text = "";
+                lblRErrorMsg.Text = "";
+                //ClearDetailSelection();
+
+                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+                lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
             }
         }
 

@@ -66,7 +66,8 @@ namespace vhcbcloud
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
+                //dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
+                dtable = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
                 //dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
@@ -74,8 +75,8 @@ namespace vhcbcloud
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
-                dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
+                //dtable = new DataTable();
+                //dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
@@ -166,7 +167,7 @@ namespace vhcbcloud
                     hfProjId.Value = dt.Rows[0][0].ToString();
                     pnlTranDetails.Visible = false;
                     lblRErrorMsg.Text = "";
-
+                    BindFundAccounts();
                     gvReallocate.DataSource = null;
                     gvReallocate.DataBind();
 
@@ -1084,7 +1085,7 @@ namespace vhcbcloud
                             Convert.ToInt32(hfTransTypeId.Value.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
                         }
                         else
-                            FinancialTransactions.AddProjectFundDetails(DataUtils.GetInt(hfProjId.Value), transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                            FinancialTransactions.AddProjectFundDetailsReallocation(DataUtils.GetInt(hfProjId.Value), transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                                 Convert.ToInt32(hfTransTypeId.Value.ToString()), currentTranFudAmount);
 
                         ClearTransactionDetailForm();

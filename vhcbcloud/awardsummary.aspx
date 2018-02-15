@@ -51,7 +51,7 @@
                                                 </FooterTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Commited" SortExpression="FinalCommited">
+                                <asp:TemplateField HeaderText="Commited" SortExpression="FinalCommited" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCommitedAmt" runat="Server" Text='<%# Eval("FinalCommited", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -60,7 +60,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
                                 
-                                 <asp:TemplateField HeaderText="Disbursed" SortExpression="Disbursed">
+                                 <asp:TemplateField HeaderText="Disbursed" SortExpression="Disbursed" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblDisbursedAmt" runat="Server" Text='<%# Eval("Disbursed", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -69,7 +69,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                 <asp:TemplateField HeaderText="Balance" SortExpression="Balanced">
+                                 <asp:TemplateField HeaderText="Balance" SortExpression="Balanced" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblBalanceAmt" runat="Server" Text='<%# Eval("Balanced ", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -78,7 +78,7 @@
                                     </FooterTemplate>
                                 </asp:TemplateField>
 
-                                 <asp:TemplateField HeaderText="Pending" SortExpression="Pending">
+                                 <asp:TemplateField HeaderText="Pending" SortExpression="Pending" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPendingAmt" runat="Server" Text='<%# Eval("Pending", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="panel-heading">Transaction Detail</div>
                 <div class="panel-body">
-                    <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="400px" ScrollBars="None">
+                    <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="600px" ScrollBars="None">
                         <asp:GridView ID="gvTransDetail" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True" GridLines="None"
                             AllowPaging="false" Width="100%" AllowSorting="True" OnSorting="gvTransDetail_Sorting" OnRowDataBound="gvTransDetail_RowDataBound">
                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -175,7 +175,7 @@
 
         $(document).ready(function () {
             gridviewScroll(<%=gvCurrentAwdStatus.ClientID%>);
-            gridviewScroll(<%=gvTransDetail.ClientID%>);
+            gridviewScrollDetail(<%=gvTransDetail.ClientID%>);
         });
 
         function gridviewScroll(gridId) {
@@ -185,5 +185,11 @@
             });
         }
 
+        function gridviewScrollDetail(gridId) {
+            $(gridId).gridviewScroll({
+                width: 980,
+                height: 600
+            });
+        }
     </script>
 </asp:Content>

@@ -457,7 +457,7 @@
                             <td style="height: 19px"><span class="labelClass">Voucher Date:</span></td>
                             <td style="height: 19px">
                                 <asp:TextBox ID="txtVoucherDt" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
-                                <ajaxToolkit:CalendarExtender ID="txtVoucherDt_CalendarExtender" runat="server" TargetControlID="txtVoucherDt">
+                                <ajaxToolkit:CalendarExtender ID="txtVoucherDt_CalendarExtender" runat="server" TargetControlID="txtVoucherDt" OnClientDateSelectionChanged="checkDate">
                                 </ajaxToolkit:CalendarExtender>
                             </td>
 
@@ -516,6 +516,14 @@
         <asp:HiddenField ID="hfIsAllApproved" runat="server" Value="false" />
     </div>
     <script type="text/javascript">
+        function checkDate(sender, args) {
+            if (sender._selectedDate > new Date()) {
+                alert("You cannot select a day greater than today!");
+                sender._selectedDate = new Date();
+                // set the date back to the current date
+                sender._textbox.set_Value(sender._selectedDate.format(sender._format))
+            }
+        }
         function PopupNewAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjId.ClientID%>").val())
         };

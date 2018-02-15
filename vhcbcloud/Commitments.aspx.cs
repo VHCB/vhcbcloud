@@ -131,7 +131,8 @@ namespace vhcbcloud
             try
             {
                 DataTable dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
+                dtable = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
+                //dtable = FinancialTransactions.GetDataTableByProcName("GetFundAccounts");
                 //dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
@@ -139,8 +140,8 @@ namespace vhcbcloud
                 ddlAcctNum.DataBind();
                 ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
-                dtable = new DataTable();
-                dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
+                //dtable = new DataTable();
+                //dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";

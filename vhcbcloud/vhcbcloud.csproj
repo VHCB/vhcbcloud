@@ -193,6 +193,7 @@
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
+    <Content Include="EntitySearch.aspx" />
     <Content Include="EventMaintenance.aspx" />
     <Content Include="ExistingAssignments.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
@@ -547,6 +548,13 @@
     </Compile>
     <Compile Include="EntityNotes.aspx.designer.cs">
       <DependentUpon>EntityNotes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EntitySearch.aspx.cs">
+      <DependentUpon>EntitySearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EntitySearch.aspx.designer.cs">
+      <DependentUpon>EntitySearch.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventMaintenance.aspx.cs">
       <DependentUpon>EventMaintenance.aspx</DependentUpon>

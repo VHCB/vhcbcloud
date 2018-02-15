@@ -76,7 +76,7 @@ namespace vhcbcloud
 
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;
-            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("Proj_num");
+            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("Projnum");
             parameter.Value = Projnum;
             parameter.IsHidden = true;
 

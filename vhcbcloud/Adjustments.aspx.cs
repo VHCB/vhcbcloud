@@ -216,6 +216,7 @@ namespace vhcbcloud
 
                 dtable = new DataTable();
                 dtable = FinancialTransactions.GetDataTableByProcName("GetFundNames");
+                //dtable = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
                 ddlFundName.DataSource = dtable;
                 ddlFundName.DataValueField = "fundid";
                 ddlFundName.DataTextField = "name";
@@ -414,11 +415,14 @@ namespace vhcbcloud
 
                 if (btnSubmit.Text.ToLower() == "submit")
                 {
-                    FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
+                    AdjustmentResult objAdjustmentResult = FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
                         DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
 
                     LogMessage("Successfully Added Adjustment");
+
+                    hfTransId.Value = objAdjustmentResult.TransId.ToString();
+                    hfDetailId.Value = objAdjustmentResult.DetailId.ToString();
 
                     rdBtnSelect.SelectedIndex = 1;
                     btnSubmit.Text = "Update";

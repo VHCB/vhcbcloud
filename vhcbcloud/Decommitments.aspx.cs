@@ -93,7 +93,8 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             try
             {
-                dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
+                //dtable = FinancialTransactions.GetCommittedFundAccounts(Convert.ToInt32(hfProjId.Value));
+                dtable = FinancialTransactions.GetCommittedFundNames(Convert.ToInt32(hfProjId.Value));
                 ddlAcctNum.DataSource = dtable;
                 ddlAcctNum.DataValueField = "fundid";
                 ddlAcctNum.DataTextField = "account";
@@ -318,15 +319,15 @@ namespace vhcbcloud
                     }
 
                     //if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
-                        if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
-                        {
-                            lblErrorMsg.Text = "Select Use Permit";
-                            ddlUsePermit.Focus();
-                            return;
-                        }
+                    if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
+                    {
+                        lblErrorMsg.Text = "Select Use Permit";
+                        ddlUsePermit.Focus();
+                        return;
+                    }
 
-                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value), 
-                        ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()), 
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
+                        ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
                         ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
 
                     if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
@@ -503,11 +504,13 @@ namespace vhcbcloud
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
-            lblAvailVisibleFund.Text = "";
+            //lblAvailVisibleFund.Text = "";
             ClearTransactionDetailForm();
             GetSelectedTransId(gvPTrans);
             BindFundDetails(GetTransId());
             pnlTranDetails.Visible = true;
+
+
         }
 
         private void GetSelectedTransId(GridView gvFGM)
@@ -525,7 +528,7 @@ namespace vhcbcloud
                             ViewState["SelectedTransId"] = hf.Value;
                             hfTransId.Value = hf.Value;
                         }
-                        HiddenField hfAmt =  (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
+                        HiddenField hfAmt = (HiddenField)gvFGM.Rows[i].Cells[2].FindControl("HiddenField2");
                         if (hfAmt != null)
                         {
                             var Amount = -DataUtils.GetDecimal(hfAmt.Value);
@@ -758,23 +761,39 @@ namespace vhcbcloud
             {
                 lblAvailFund.Text = "";
                 lblAvailVisibleFund.Text = "";
+
                 if (dt.Rows.Count != 0)
                 {
                     hfProjId.Value = dt.Rows[0][0].ToString();
 
-                    DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
-                    if (dr != null)
-                        if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
-                        {
-                            lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                            lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
-                            //.ToString("#.##");
-                        }
-                        else
-                        {
-                            lblAvailFund.Text = "0.00";
-                            lblAvailVisibleFund.Text = "0.00";
-                        }
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmountByProjectId(Convert.ToInt32(hfProjId.Value));
+
+                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                    {
+                        lblAvailFund.Text = Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()).ToString("#.##");
+                        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString());
+                    }
+                    else
+                    {
+                        lblAvailFund.Text = "0.00";
+                        lblAvailVisibleFund.Text = "0.00";
+                    }
+
+
+                    //DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
+
+                    //if (dr != null)
+                    //    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                    //    {
+                    //        lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
+                    //        lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                    //        //.ToString("#.##");
+                    //    }
+                    //    else
+                    //    {
+                    //        lblAvailFund.Text = "0.00";
+                    //        lblAvailVisibleFund.Text = "0.00";
+                    //    }
 
                     pnlTranDetails.Visible = false;
                     lblErrorMsg.Text = "";
@@ -1217,31 +1236,43 @@ namespace vhcbcloud
 
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
-
-            if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+            lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+            if (ddlTransType.SelectedIndex > 0)
             {
-                lblUsePermit.Visible = true;
-                ddlUsePermit.Visible = true;
-                PopulateUsePermit(DataUtils.GetInt(hfProjId.Value), ddlAcctNum.SelectedItem.ToString(),
-                           DataUtils.GetInt(ddlTransType.SelectedValue.ToString()));
+                DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
+
+                if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
+                {
+                    lblUsePermit.Visible = true;
+                    ddlUsePermit.Visible = true;
+                    PopulateUsePermit(DataUtils.GetInt(hfProjId.Value), ddlAcctNum.SelectedItem.ToString(),
+                               DataUtils.GetInt(ddlTransType.SelectedValue.ToString()));
+                }
+                else
+                {
+                    ddlUsePermit.Items.Clear();
+                    lblUsePermit.Visible = false;
+                    ddlUsePermit.Visible = false;
+
+                    if (ddlTransType.SelectedIndex > 0)
+                    {
+                        SetAvailableFundsLabel();
+                    }
+                }
             }
             else
             {
+                lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
                 ddlUsePermit.Items.Clear();
                 lblUsePermit.Visible = false;
                 ddlUsePermit.Visible = false;
-
-                if (ddlTransType.SelectedIndex > 0)
-                {
-                    SetAvailableFundsLabel();
-                }
             }
         }
 
         protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlTransType.SelectedIndex > 0)
+            lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+            if (ddlUsePermit.SelectedIndex > 0)
             {
                 SetAvailableFundsLabel();
             }
