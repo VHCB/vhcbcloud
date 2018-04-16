@@ -65,10 +65,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Milestones</h3>
+                                        <h3 class="panel-title">Status Point</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Milestone" />
+                                        <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Status Point" />
                                     </td>
                                 </tr>
                             </table>
@@ -78,7 +78,7 @@
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 43px"><span class="labelClass">Milestone</span></td>
+                                        <td style="width: 43px"><span class="labelClass">Status Point</span></td>
                                         <td style="width: 93px">
                                             <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
@@ -283,7 +283,7 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Milestone">
+                                        <asp:TemplateField HeaderText="Status Point">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("MilestoneDesc") %>' />
                                             </ItemTemplate>

@@ -149,9 +149,9 @@ namespace vhcbcloud
 
             if (ddlTransaction.SelectedItem.Value == "Cash")
             {
-                ddlLKTransaction.Items.Insert(0, new ListItem("Select", "NA"));
-                ddlLKTransaction.Items.Insert(1, new ListItem("Disbursement", "236"));
-                ddlLKTransaction.Items.Insert(2, new ListItem("Refund", "237"));
+                //ddlLKTransaction.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlLKTransaction.Items.Insert(0, new ListItem("Disbursement", "236"));
+                //ddlLKTransaction.Items.Insert(2, new ListItem("Refund", "237"));
             }
             else
             {

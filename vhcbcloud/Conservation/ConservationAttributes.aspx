@@ -55,6 +55,195 @@
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>
+                <div class="panel-width" runat="server" id="dvNewLegalInterest">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Legal Interest</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddLegalInterest" runat="server" Text="Add New Legal Interest" />
+                                        <asp:ImageButton ID="ImgConservationLegalInterest" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Interest Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalInterest_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvLegalInterestForm">
+                            <asp:Panel runat="server" ID="Panel13">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Legal Interest:</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlLegalInterest" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="btnAddLegalInterest" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddLegalInterest_Click" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div id="dvLegalInterestWarning" runat="server" visible="false">
+                            <p class="bg-info">
+                                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                <asp:Label runat="server" ID="lblLegalInterestWarning" class="labelClass"></asp:Label>
+                            </p>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvLegalInterestGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel14" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvLegalInterest" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvLegalInterest_RowEditing" OnRowCancelingEdit="gvLegalInterest_RowCancelingEdit" OnRowUpdating="gvLegalInterest_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ConserveLegInterestID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveLegInterestID" runat="Server" Text='<%# Eval("ConserveLegInterestID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Legal Interest">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLegalInterest" runat="Server" Text='<%# Eval("LegalInterest") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewLegalMechanism">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Legal Mechanism</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddLegalMechanism" runat="server" Text="Add New Legal Mechanism" />
+                                        <asp:ImageButton ID="ImgConservationLegalMechanism" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Mechanism Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalMechanism_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvLegalMechanismForm">
+                            <asp:Panel runat="server" ID="Panel15">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Legal Mechanism:</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlLegalMechanism" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="btnAddLegalMechanism" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddLegalMechanism_Click" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div id="dvLegalMechanismWarning" runat="server" visible="false">
+                            <p class="bg-info">
+                                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                <asp:Label runat="server" ID="lblLegalMechanismWarning" class="labelClass"></asp:Label>
+                            </p>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvLegalMechanismGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel16" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvLegalMechanism" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvLegalMechanism_RowEditing" OnRowCancelingEdit="gvLegalMechanism_RowCancelingEdit" OnRowUpdating="gvLegalMechanism_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ConserveLegMechID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveLegMechID" runat="Server" Text='<%# Eval("ConserveLegMechID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Legal Mechanism">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLegalMechanism" runat="Server" Text='<%# Eval("LegalMechanism") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="panel-width" runat="server" id="dvNewAttribute">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
@@ -587,188 +776,12 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="panel-width" runat="server" id="dvNewLegalInterest">
-                    <div class="panel panel-default" style="margin-bottom: 2px;">
-                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Legal Interest</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddLegalInterest" runat="server" Text="Add New Legal Interest" />
-                                        <asp:ImageButton ID="ImgConservationLegalInterest" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Interest Report"
-                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalInterest_Click" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvLegalInterestForm">
-                            <asp:Panel runat="server" ID="Panel13">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass">Legal Interest:</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlLegalInterest" CssClass="clsDropDownLong" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 100px"></td>
-                                        <td style="width: 180px">
-                                            <asp:Button ID="btnAddLegalInterest" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddLegalInterest_Click" />
-                                        </td>
-                                        <td style="width: 170px"></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvLegalInterestGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel14" Width="100%" Height="100px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvLegalInterest" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvLegalInterest_RowEditing" OnRowCancelingEdit="gvLegalInterest_RowCancelingEdit" OnRowUpdating="gvLegalInterest_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="ConserveLegInterestID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblConserveLegInterestID" runat="Server" Text='<%# Eval("ConserveLegInterestID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Legal Interest">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblLegalInterest" runat="Server" Text='<%# Eval("LegalInterest") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="500px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
-                                            <ItemStyle Width="350px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField ShowHeader="False">
-                                            <EditItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
-                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
-                                            </EditItemTemplate>
-                                            <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel-width" runat="server" id="dvNewLegalMechanism">
-                    <div class="panel panel-default" style="margin-bottom: 2px;">
-                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td>
-                                        <h3 class="panel-title">Legal Mechanism</h3>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddLegalMechanism" runat="server" Text="Add New Legal Mechanism" />
-                                        <asp:ImageButton ID="ImgConservationLegalMechanism" ImageUrl="~/Images/print.png" ToolTip="Conservation Legal Mechanism Report"
-                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationLegalMechanism_Click" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvLegalMechanismForm">
-                            <asp:Panel runat="server" ID="Panel15">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 140px"><span class="labelClass">Legal Mechanism:</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlLegalMechanism" CssClass="clsDropDownLong" runat="server">
-                                            </asp:DropDownList>
-                                        </td>
-                                        <td style="width: 100px"></td>
-                                        <td style="width: 180px">
-                                            <asp:Button ID="btnAddLegalMechanism" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddLegalMechanism_Click" />
-                                        </td>
-                                        <td style="width: 170px"></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-                                </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvLegalMechanismGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel16" Width="100%" Height="100px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvLegalMechanism" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvLegalMechanism_RowEditing" OnRowCancelingEdit="gvLegalMechanism_RowCancelingEdit" OnRowUpdating="gvLegalMechanism_RowUpdating">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="ConserveLegMechID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblConserveLegMechID" runat="Server" Text='<%# Eval("ConserveLegMechID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Legal Mechanism">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblLegalMechanism" runat="Server" Text='<%# Eval("LegalMechanism") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="500px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
-                                            <ItemStyle Width="350px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField ShowHeader="False">
-                                            <EditItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
-                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
-                                            </EditItemTemplate>
-                                            <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfConserveId" runat="server" />
-      <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {

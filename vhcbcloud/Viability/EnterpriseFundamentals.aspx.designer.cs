@@ -292,15 +292,6 @@ namespace vhcbcloud.Viability {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtEventDate;
         
         /// <summary>
-        /// txtYear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtYear;
-        
-        /// <summary>
         /// txtFamilyFTEmp control.
         /// </summary>
         /// <remarks>

@@ -179,7 +179,15 @@ namespace vhcbcloud.Viability
             if (EnterpriseType != "Viability Farm Enterprise")
             {
                 dvAcres.Visible = false;
+                tblAcres.Visible = false;
             }
+
+            if (EnterpriseType == "Forest Landowner")
+            {
+                dvAcres.Visible = true;
+                tblForectAcres.Visible = true;
+            }
+
             LoadAcresForm();
         }
 
@@ -415,14 +423,17 @@ namespace vhcbcloud.Viability
                 {
                     int EnterpriseAcresId = DataUtils.GetInt(hfEnterpriseAcresId.Value);
                     EnterpriseInfoData.UpdateEnterpriseAcres(EnterpriseAcresId, DataUtils.GetInt(txtAcresInProd.Text),
-                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text));
 
                     LogMessage("Acers updated successfully");
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, DataUtils.GetInt(txtAcresInProd.Text),
-                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, 
+                        DataUtils.GetInt(txtAcresInProd.Text),
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text));
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
                         LogMessage("Accres already exist as in-active");

@@ -22,7 +22,7 @@
                             <td>
                                 <asp:RadioButtonList ID="rdBtnSelection" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
                                     OnSelectedIndexChanged="rdBtnSelection_SelectedIndexChanged">
-                                    <asp:ListItem>New    </asp:ListItem>
+                                    <asp:ListItem Enabled="false">New    </asp:ListItem>
                                     <asp:ListItem Selected="True">Existing</asp:ListItem>
                                 </asp:RadioButtonList></td>
                             <td style="text-align: right;">
@@ -744,7 +744,7 @@
                                         <td style="width: 270px">
                                             <asp:CheckBox ID="cbActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" />
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Lattitude</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Latitude</span></td>
                                         <td>
                                             <asp:TextBox ID="txtLattitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
@@ -923,7 +923,7 @@
                                         <asp:TemplateField HeaderText="Project Applicant Id">
                                             <ItemTemplate>
                                                 <asp:HyperLink ID="HyperLink1" runat="server" target='_blank' 
-                                                    NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'><%# Eval("ApplicantId") %></asp:HyperLink>
+                                                    NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?IsSearch=true&ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'><%# Eval("ApplicantId") %></asp:HyperLink>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Entity Name">
@@ -985,6 +985,14 @@
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="w9" Visible="false">
+                                           <ItemTemplate>
+                                                <asp:CheckBox ID="chkw9" Enabled="false" runat="server" Checked='<%# Eval("w9") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkw9" runat="server" Checked='<%# Eval("w9") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -1023,16 +1031,16 @@
                                                 CompletionInterval="100" ServiceMethod="GetProjectNumbersWithName" OnClientItemSelected="GetRelatedProjectName">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-                                        <td style="width: 170px">
+                                        <td style="width: 230px">
                                             <span class="labelClass">
                                                 <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px" ReadOnly="true"></asp:TextBox>
                                             </span>
                                         </td>
+                                        <td style="width: 200px"> <asp:CheckBox ID="chkDualGoal" runat="server" Text="Dual Goal" /></td>
+                                        <td></td>
                                         <td style="width: 300px">
                                             <asp:Button ID="btnAddRelatedProject" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddRelatedProject_Click" />
                                         </td>
-                                        <td style="width: 270px"></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -1066,6 +1074,14 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                             </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Dual Goal">
+                                            <ItemTemplate>
+                                                 <asp:CheckBox ID="chkDualGoalD" Enabled="false" runat="server" Checked='<%# Eval("DualGoal") %>' />
+                                            </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkDualGoal" runat="server" Checked='<%# Eval("DualGoal") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Program">
                                             <ItemTemplate>

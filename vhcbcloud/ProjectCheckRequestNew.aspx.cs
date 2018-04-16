@@ -28,10 +28,25 @@ namespace vhcbcloud
                 BindCRDates();
                 pnlDisbursement.Visible = false;
             }
+            //CheckNewCRAccess();
             var ctrlName = Request.Params[Page.postEventSourceID];
             var args = Request.Params[Page.postEventArgumentID];
 
             HandleCustomPostbackEvent(ctrlName, args);
+        }
+
+        private void CheckNewCRAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+            
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27578")
+                    rdBtnSelect.Items[0].Enabled = false;
+            }
+            if (!rdBtnSelect.Items[0].Enabled)
+                rdBtnSelect.SelectedIndex = 1;
         }
 
         protected bool GetIsVisibleBasedOnRole()
@@ -656,6 +671,7 @@ namespace vhcbcloud
                 decimal tranAmount = 0;
                 decimal totFundAmt = 0;
                 decimal totBalAmt = 0;
+                hfSecondapproval.Value = "false";
 
                 if (dtPCRTranDetails.Rows.Count > 0)
                 {
@@ -669,6 +685,9 @@ namespace vhcbcloud
                     {
                         for (int i = 0; i < dtPCRTranDetails.Rows.Count; i++)
                         {
+                            if (Convert.ToBoolean(dtPCRTranDetails.Rows[i]["Secondapproval"].ToString()))
+                                hfSecondapproval.Value = "true";
+
                             totFundAmt += Convert.ToDecimal(dtPCRTranDetails.Rows[i]["Amount"].ToString());
                         }
                         totFundAmt = -totFundAmt;
@@ -729,7 +748,8 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId());
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value),
+                    GetUserId(), DataUtils.GetBool(hfSecondapproval.Value));
                 BindPCRQuestionsForApproval();
             }
             catch (Exception ex)
@@ -929,6 +949,7 @@ namespace vhcbcloud
 
 
                 chkLegalReview.Enabled = true;
+                //CheckLegalReviewAccess();
                 chkLCB.Enabled = true;
                 lbNOD.Enabled = true;
                 txtNotes.Enabled = true;
@@ -1052,32 +1073,40 @@ namespace vhcbcloud
 
         private void DisplayControls(string SelectedText)
         {
-            if (SelectedText != "Viability")
-            {
-                lblAmtEligibleForMatch.Visible = false;
-                txtEligibleAmt.Visible = false;
-                ddlMatchingGrant.Visible = false;
-                lblMatchingGrant.Visible = false;
-            }
-            else
-            {
-                lblAmtEligibleForMatch.Visible = true;
-                txtEligibleAmt.Visible = true;
-                ddlMatchingGrant.Visible = true;
-                lblMatchingGrant.Visible = true;
-            }
+            lblAmtEligibleForMatch.Visible = false;
+            txtEligibleAmt.Visible = false;
+            ddlMatchingGrant.Visible = false;
+            lblMatchingGrant.Visible = false;
+
+            //if (SelectedText != "Viability")
+            //{
+            //    lblAmtEligibleForMatch.Visible = false;
+            //    txtEligibleAmt.Visible = false;
+            //    ddlMatchingGrant.Visible = false;
+            //    lblMatchingGrant.Visible = false;
+            //}
+            //else
+            //{
+            //    lblAmtEligibleForMatch.Visible = true;
+            //    txtEligibleAmt.Visible = true;
+            //    ddlMatchingGrant.Visible = true;
+            //    lblMatchingGrant.Visible = true;
+            //}
         }
 
         private void SetAvailableFunds()
         {
-            DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(DataUtils.GetInt(hfProjId.Value));
+           // DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(DataUtils.GetInt(hfProjId.Value));
+            DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmountByProjectId(Convert.ToInt32(hfProjId.Value));
 
-            if (dr != null)
+            if (dtAvailFunds != null && dtAvailFunds.Rows[0] != null)
             {
-                if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
+                DataRow dr = dtAvailFunds.Rows[0];
+
+                if (dr["Balanced"].ToString() != "" && Convert.ToDecimal(dr["Balanced"].ToString()) > 0)
                 {
-                    lblAvailFund.Text = Convert.ToDecimal(dr["availFund"].ToString()).ToString("#.##");
-                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["availFund"].ToString()));
+                    lblAvailFund.Text = Convert.ToDecimal(dr["Balanced"].ToString()).ToString("#.##");
+                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dr["Balanced"].ToString()));
                     //.ToString("#.##");
                 }
                 else
@@ -1940,18 +1969,34 @@ namespace vhcbcloud
             {
                 LinkButton linkButton = (e.Row.FindControl("lbEdit") as LinkButton);
                 HiddenField hfRowNumber = (e.Row.FindControl("hfRowNumber") as HiddenField);
+                HiddenField hfLKPCRQId = (e.Row.FindControl("hfLKPCRQId") as HiddenField);
 
-                if (linkButton != null && linkButton.Visible)
+                if (hfLKPCRQId != null && linkButton != null && linkButton.Visible)
                 {
-                    if (hfRowNumber.Value == "1" && GetUserId().ToString() == hfCreatedById.Value)
+                    if (hfLKPCRQId.Value == "3" && GetUserId().ToString() == hfCreatedById.Value)
                         linkButton.Visible = true;
-                    else if (hfRowNumber.Value == "2" && CheckFxnAccess("26820"))
+                    else if (hfLKPCRQId.Value == "5" && CheckFxnAccess("26820"))
                         linkButton.Visible = true;
-                    else if (hfRowNumber.Value == "3" && CheckFxnAccess("26821"))
+                    else if (hfLKPCRQId.Value == "7" && CheckFxnAccess("26821"))
+                        linkButton.Visible = true;
+                    else if (hfLKPCRQId.Value == "8" && GetUserId().ToString() != hfCreatedById.Value 
+                        && DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
                         linkButton.Visible = true;
                     else
                         linkButton.Visible = false;
                 }
+
+                //if (linkButton != null && linkButton.Visible)
+                //{
+                //    if (hfRowNumber.Value == "1" && GetUserId().ToString() == hfCreatedById.Value)
+                //        linkButton.Visible = true;
+                //    else if (hfRowNumber.Value == "2" && CheckFxnAccess("26820"))
+                //        linkButton.Visible = true;
+                //    else if (hfRowNumber.Value == "3" && CheckFxnAccess("26821"))
+                //        linkButton.Visible = true;
+                //    else
+                //        linkButton.Visible = false;
+                //}
 
             }
         }
@@ -2151,16 +2196,28 @@ namespace vhcbcloud
         private void SetAvailableFundsLabel()
         {
             hfAvFunds.Value = "0";
+            decimal currentTransAmount = 0;
 
             DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
                                  DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()),
                                  DataUtils.GetInt(ddlTransType.SelectedValue.ToString()),
                                  ddlUsePermit.SelectedValue.ToString());
 
+            DataTable dtCurrentTransAmount = FinancialTransactions.GetCurrentTranAvailableFundAmount(Convert.ToInt32(hfTransId.Value),
+                                DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()),
+                                DataUtils.GetInt(ddlTransType.SelectedValue.ToString()),
+                                ddlUsePermit.SelectedValue.ToString());
+
+            if (dtCurrentTransAmount != null && dtCurrentTransAmount.Rows.Count > 0)
+                currentTransAmount = DataUtils.GetDecimal(dtCurrentTransAmount.Rows[0]["amount"].ToString());
+
             if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
             {
-                hfAvFunds.Value = dtAvailFunds.Rows[0]["Balanced"].ToString();
-                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString());
+                decimal AvailFunds = DataUtils.GetDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString());
+                decimal CurrentAvailFunds = AvailFunds - currentTransAmount;
+
+                hfAvFunds.Value = CurrentAvailFunds.ToString(); // dtAvailFunds.Rows[0]["Balanced"].ToString();
+                lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat(CurrentAvailFunds.ToString());
             }
             else
                 lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");

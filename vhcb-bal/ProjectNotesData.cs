@@ -217,5 +217,107 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
+
+        public static void AddAct250Notes(string UsePermit, int LkCategory, string UserName, string Notes,
+            DateTime Date, string URL)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddAct250Notes";
+
+                        //5 Parameters 
+                        command.Parameters.Add(new SqlParameter("UsePermit", UsePermit));
+                        command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
+                        command.Parameters.Add(new SqlParameter("UserName", UserName));
+                        command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateAct250Notes(int Act250NotesID, int LkCategory, string Notes, string URL, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateAct250Notes";
+
+                        //12 Parameters
+                        command.Parameters.Add(new SqlParameter("Act250NotesID", Act250NotesID));
+                        command.Parameters.Add(new SqlParameter("LkCategory", LkCategory));
+                        //command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetAct250NotesList(bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetAct250NotesList";
+                        //command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
     }
 }

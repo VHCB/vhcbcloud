@@ -13,7 +13,7 @@
                             <td>
                                 <asp:RadioButtonList ID="rdBtnSelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSelect_SelectedIndexChanged">
-                                    <asp:ListItem Selected="true"> New &nbsp;</asp:ListItem>
+                                    <asp:ListItem Enabled="true" Selected="True"> New &nbsp;</asp:ListItem>
                                     <asp:ListItem> Existing &nbsp;</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
@@ -23,6 +23,8 @@
                                 &nbsp;<asp:ImageButton ID="imgNewAwardSummary" runat="server" ImageUrl="~/Images/$$.png" OnClientClick="PopupNewAwardSummary(); return false;" Style="border: none;" Text="Award Summary" ToolTip="Award summary" Visible="true" />
                                 <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false" OnClientClick="PopupExistingAwardSummary(); return false;" />
                                 &nbsp;<asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;" />
+                                &nbsp;<asp:ImageButton ID="ImgPrintPCR" ImageUrl="~/Images/print.png" ToolTip="PCR Report" Visible="false"
+                                            Style="border: none;" runat="server" OnClick="ImgPrintPCR_Click" />
                             </td>
                         </tr>
                     </table>
@@ -141,7 +143,8 @@
                         <tr>
                             <td><span class="labelClass">Disbursement $:</span></td>
                             <td>
-                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxMoney" onkeyup='toDisburAmtFormatter(value)' runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                <%--onkeyup='toDisburAmtFormatter(value)'--%>
                             </td>
                             <td><span class="labelClass">Available Funds:</span></td>
                             <td colspan="3">
@@ -194,8 +197,7 @@
                                 <asp:Button ID="btnCRSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnCRSubmit_Click" />
                                 &nbsp;<asp:Button ID="btnDelete" runat="server" Text="Delete" class="btn btn-info" OnClick="btnDelete_Click" Visible="false"
                                     OnClientClick="return confirm('Are you sure you wish to delete the entire Check Request?');" />
-                                &nbsp;<asp:ImageButton ID="ImgPrintPCR" ImageUrl="~/Images/print.png" ToolTip="PCR Report" Visible="false"
-                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgPrintPCR_Click" />
+                                &nbsp;
                             </td>
                         </tr>
                     </table>
@@ -369,7 +371,7 @@
                 <div class="panel-body">
                     <table style="width: 100%">
                         <tr>
-                            <td><span class="labelClass">Question :</span></td>
+                            <td><span class="labelClass">Additional Approvals :</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlPCRQuestions" CssClass="clsDropDown" runat="server" Width="250px">
                                 </asp:DropDownList><%-- <span class="labelClass">Approved By :</span>--%><%-- <b><span class="labelClass"><%: Context.User.Identity.GetUserName()  %></span></b>--%><%--<span class="labelClass">Date :</span>--%><%-- <span class="labelClass"><%:DateTime.Now.ToString() %></span>--%></td>
@@ -514,8 +516,16 @@
         <asp:HiddenField ID="hfEditPCRId" runat="server" />
         <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
         <asp:HiddenField ID="hfIsAllApproved" runat="server" Value="false" />
+        <asp:HiddenField ID="hfSecondapproval" runat="server" Value="false" />
     </div>
     <script type="text/javascript">
+        $(document).ready(function () {
+            toCurrencyControl($('#<%= txtDisbursementAmt.ClientID%>').val(), $('#<%= txtDisbursementAmt.ClientID%>'));
+            $('#<%= txtDisbursementAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtDisbursementAmt.ClientID%>').val(), $('#<%= txtDisbursementAmt.ClientID%>'));
+            });
+        });
+
         function checkDate(sender, args) {
             if (sender._selectedDate > new Date()) {
                 alert("You cannot select a day greater than today!");
@@ -542,6 +552,7 @@
             currency: 'USD',
             minimumFractionDigits: 2,
         });
+
         toDisburAmtFormatter = value => {
             const digits = this.getDigitsFromValue(value);
             const digitsWithPadding = this.padDigits(digits);

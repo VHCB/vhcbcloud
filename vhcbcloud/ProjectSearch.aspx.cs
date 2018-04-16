@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,6 +32,8 @@ namespace vhcbcloud
                 gvSearchresults.Columns[4].HeaderText = "Applicant Name";
             else
                 gvSearchresults.Columns[4].HeaderText = "Entity Name";
+
+            CheckNewProjectAccess();
         }
 
         private void ProjectNotesSetUp()
@@ -333,6 +336,31 @@ namespace vhcbcloud
             //ddlPrimaryApplicant.DataTextField = "Applicantname";
             //ddlPrimaryApplicant.DataBind();
             //ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        }
+
+        private void CheckNewProjectAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27454")
+                    btnNewProject1.Enabled = true;
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

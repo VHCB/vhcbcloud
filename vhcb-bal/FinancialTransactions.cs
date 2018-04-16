@@ -1819,6 +1819,41 @@ namespace VHCBCommon.DataAccessLayer
             return dtBCommit;
         }
 
+        public static DataTable GetAllLandUsePermitList()
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAllLandUsePermitList";
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
+
         public static DataTable GetAllLandUsePermit(int projectId)
         {
             DataTable dtBCommit = null;
@@ -2128,6 +2163,51 @@ namespace VHCBCommon.DataAccessLayer
 
                 if (LandUsePermitID != "NA" && LandUsePermitID != "")
                 command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtBCommit = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtBCommit;
+        }
+
+        public static DataTable GetCurrentTranAvailableFundAmount(int TransId, int fundId, int fundTransType, string LandUsePermitID)
+        {
+            DataTable dtBCommit = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetCurrentTranAvailableFundAmount";
+                command.Parameters.Add(new SqlParameter("TransId", TransId));
+
+                if (fundId != 0)
+                    command.Parameters.Add(new SqlParameter("fundId", fundId));
+
+                if (fundTransType != 0)
+                    command.Parameters.Add(new SqlParameter("fundTransType", fundTransType));
+
+                if (LandUsePermitID != "NA" && LandUsePermitID != "")
+                    command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
 
                 using (connection)
                 {
@@ -3737,6 +3817,37 @@ namespace VHCBCommon.DataAccessLayer
 
                         command.ExecuteNonQuery();
                         return  command.Parameters["@account"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DateTime GetSetupDate()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "getSetupDate";
+
+                        SqlParameter parmMessage = new SqlParameter("@AcctEffectiveDate", SqlDbType.DateTime);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                        return DateTime.Parse(command.Parameters["@AcctEffectiveDate"].Value.ToString());
                     }
                 }
             }

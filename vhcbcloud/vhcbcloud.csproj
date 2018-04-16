@@ -173,6 +173,7 @@
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />
+    <Content Include="Act250Notes.aspx" />
     <Content Include="Adjustments.aspx" />
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
@@ -415,6 +416,13 @@
     </Compile>
     <Compile Include="Account\SetPassword.aspx.designer.cs">
       <DependentUpon>SetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Act250Notes.aspx.cs">
+      <DependentUpon>Act250Notes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Act250Notes.aspx.designer.cs">
+      <DependentUpon>Act250Notes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Adjustments.aspx.cs">
       <DependentUpon>Adjustments.aspx</DependentUpon>

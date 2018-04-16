@@ -206,7 +206,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFinancialJobs(int ProjectId, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, decimal Networth)
         {
             try
             {
@@ -257,7 +257,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFinancialJobs(int EnterFinancialJobsID, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, int FamilyEmp, int NonFamilyEmp, decimal Networth, bool RowIsActive)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, decimal Networth, bool RowIsActive)
         {
             try
             {

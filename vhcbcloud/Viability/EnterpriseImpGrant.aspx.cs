@@ -416,9 +416,10 @@ namespace vhcbcloud.Viability
             int rowIndex = e.RowIndex;
 
             int EnterpriseGrantMatchID = DataUtils.GetInt(((Label)gvGrantMatch.Rows[rowIndex].FindControl("lblEnterpriseGrantMatchID")).Text);
+            decimal GrantAmt = DataUtils.GetDecimal(((TextBox)gvGrantMatch.Rows[rowIndex].FindControl("txtGrantAmt")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvGrantMatch.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            EnterpriseImpGrantData.UpdateEnterpriseGrantMatch(EnterpriseGrantMatchID, RowIsActive);
+            EnterpriseImpGrantData.UpdateEnterpriseGrantMatch(EnterpriseGrantMatchID, GrantAmt, RowIsActive);
             gvGrantMatch.EditIndex = -1;
 
             BindGrantMatchGrid();

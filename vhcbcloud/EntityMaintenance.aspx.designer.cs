@@ -355,6 +355,24 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.MaskedEditExtender ameCellPhoneNumber;
         
         /// <summary>
+        /// lblW9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblW9;
+        
+        /// <summary>
+        /// ckbW9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ckbW9;
+        
+        /// <summary>
         /// spnDefaultRole control.
         /// </summary>
         /// <remarks>
@@ -1163,5 +1181,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectEventID;
+        
+        /// <summary>
+        /// hfIsCreated control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsCreated;
     }
 }

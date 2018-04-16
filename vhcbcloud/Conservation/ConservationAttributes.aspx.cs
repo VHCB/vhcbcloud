@@ -237,7 +237,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlAttribute, 6);
             BindLookUP(ddlAffordability, 54);
             BindLookUP(ddlPA, 28);
-            BindLookUP(ddlAltEnergy, 3);
+            BindLookUP(ddlAltEnergy, 259);
             //BindLookUP(ddlBufferType, 5);
             BindLookUP(ddlOT, 45);
             BindLookUP(ddlLegalInterest, 80);
@@ -766,12 +766,18 @@ namespace vhcbcloud.Conservation
 
                 if (dt.Rows.Count > 0)
                 {
+                    dvLegalInterestWarning.Visible = false;
+                    lblLegalInterestWarning.Text = "";
+
                     dvLegalInterestGrid.Visible = true;
                     gvLegalInterest.DataSource = dt;
                     gvLegalInterest.DataBind();
                 }
                 else
                 {
+                    dvLegalInterestWarning.Visible = true;
+                    lblLegalInterestWarning.Text = "At least 1 record MUST be entered";
+
                     dvLegalInterestGrid.Visible = false;
                     gvLegalInterest.DataSource = null;
                     gvLegalInterest.DataBind();
@@ -869,12 +875,18 @@ namespace vhcbcloud.Conservation
 
                 if (dt.Rows.Count > 0)
                 {
+                    dvLegalMechanismWarning.Visible = false;
+                    lblLegalMechanismWarning.Text = "";
+
                     dvLegalMechanismGrid.Visible = true;
                     gvLegalMechanism.DataSource = dt;
                     gvLegalMechanism.DataBind();
                 }
                 else
                 {
+                    dvLegalMechanismWarning.Visible = true;
+                    lblLegalMechanismWarning.Text = "At least 1 record MUST be entered";
+
                     dvLegalMechanismGrid.Visible = false;
                     gvLegalMechanism.DataSource = null;
                     gvLegalMechanism.DataBind();

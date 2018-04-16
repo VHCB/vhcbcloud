@@ -170,13 +170,13 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Federal Funds</span></td>
-                                        <td>
-                                            <asp:CheckBox ID="cbFederalFunds" runat="server" />
-                                        </td>
-                                        <td><span class="labelClass">Admin</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Admin</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbAdmin" runat="server" />
+                                        </td>
+                                        <td><span class="labelClass">Admin Amount</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtAdminAmt" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
                                         </td>
                                         <td><span class="labelClass">Match</span></td>
                                         <td>
@@ -187,13 +187,24 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Funds Received/Available</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Match Amount</span></td>
                                         <td>
-                                            <asp:CheckBox ID="cbFundsReceived" runat="server" />
+                                            <asp:TextBox ID="txtMatchAmt" CssClass="clsTextBoxBlueSm" Width="100px" Height="22px" runat="server"></asp:TextBox>
                                         </td>
-                                        <td><span class="labelClass">Active</span></td>
+                                        <td><span class="labelClass">DrawDown</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkDrawDown" runat="server"  />
+                                        </td>
+                                        <td><span class="labelClass"></span></td>
+                                        <td></td>
+                                    </tr>
+                                     <tr>
+                                        <td style="width: 150px"><span class="labelClass">Active</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbFundActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                        <td><span class="labelClass"></span></td>
+                                        <td>
                                         </td>
                                         <td><span class="labelClass"></span></td>
                                         <td></td>
@@ -594,7 +605,17 @@
     <script language="javascript">
         $(document).ready(function () {
             toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val(), $('#<%= txtAwardAmt.ClientID%>'));
+            toCurrencyControl($('#<%= txtAdminAmt.ClientID%>').val(), $('#<%= txtAdminAmt.ClientID%>'));
+            toCurrencyControl($('#<%= txtMatchAmt.ClientID%>').val(), $('#<%= txtMatchAmt.ClientID%>'));
             
+            $('#<%= txtAdminAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtAdminAmt.ClientID%>').val(), $('#<%= txtAdminAmt.ClientID%>'));
+            });
+
+            $('#<%= txtMatchAmt.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtMatchAmt.ClientID%>').val(), $('#<%= txtMatchAmt.ClientID%>'));
+            });
+
             $('#<%= txtFyAmt.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtFyAmt.ClientID%>').val(), $('#<%= txtFyAmt.ClientID%>'));
             });
@@ -602,6 +623,24 @@
              $('#<%= txtAwardAmt.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtAwardAmt.ClientID%>').val(), $('#<%= txtAwardAmt.ClientID%>'));
             });
+
+            if($('#<%= cbAdmin.ClientID%>').is(':checked'))
+                $('#<%= txtAdminAmt.ClientID%>').attr("readonly", false)
+            else
+                $('#<%= txtAdminAmt.ClientID%>').attr("readonly", true)
+
+            $('#<%= cbAdmin.ClientID%>').click(function () {
+                $('#<%= txtAdminAmt.ClientID%>').attr("readonly", !this.checked);
+            }).change();
+
+            if($('#<%= cbMatch.ClientID%>').is(':checked'))
+                $('#<%= txtMatchAmt.ClientID%>').attr("readonly", false)
+            else
+                $('#<%= txtMatchAmt.ClientID%>').attr("readonly", true)
+
+             $('#<%= cbMatch.ClientID%>').click(function () {
+                $('#<%= txtMatchAmt.ClientID%>').attr("readonly", !this.checked);
+             }).change();
 
             //$("input[id*=txtFyAmount]").keyup(function () {
             //    toCurrencyControl($('input[id*=txtFyAmount]').val(), $('input[id*=txtFyAmount]'));

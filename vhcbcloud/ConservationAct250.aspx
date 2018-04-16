@@ -17,7 +17,7 @@
                             <td style="text-align: right">
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary" Style="border: none; vertical-align: middle;"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
-                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
+                                <asp:ImageButton ID="btnProjectNotes" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Act250 Notes" Text="Act250 Notes" Style="border: none; vertical-align: middle;" />
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true"
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
@@ -33,7 +33,7 @@
                 </ajaxToolkit:ModalPopupExtender>
 
                 <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
-                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="../ProjectNotes.aspx" runat="server"></iframe>
+                    <iframe style="width: 750px; height: 600px;" id="ifProjectNotes" src="~/Act250Notes.aspx" runat="server"></iframe>
                     <br />
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
@@ -64,7 +64,7 @@
                                         <td style="width: 117px"><span class="labelClass">Type</span></td>
                                         <td style="width: 194px">
                                             <asp:DropDownList ID="ddlFarmType" CssClass="clsDropDown" runat="server">
-                                                 <asp:ListItem Value="NA">Select</asp:ListItem>
+                                                <asp:ListItem Value="NA">Select</asp:ListItem>
                                                 <asp:ListItem Value="144">Housing</asp:ListItem>
                                                 <asp:ListItem Value="145">Conservation</asp:ListItem>
                                             </asp:DropDownList>
@@ -149,12 +149,14 @@
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtURL" CssClass="clsTextBoxBlueSm" runat="server" Width="161px"></asp:TextBox>
                                         </td>
-                                        <td style="width: 134px">Active:</td>
+                                        <td style="width: 134px"><span class="labelClass">Fund</span></td>
                                         <td class="modal-sm" style="width: 115px">
-                                            <asp:CheckBox ID="chkAct250Active" Enabled="false" runat="server" Checked="true" />
+                                            <asp:DropDownList ID="ddlFundName" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
                                         </td>
-                                        <td style="width: 163px"></td>
-                                        <td></td>
+                                        <td style="width: 163px"><span class="labelClass">Active:</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkAct250Active" Enabled="false" runat="server" Checked="true" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -214,7 +216,7 @@
                                                 <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="URL">
+                                        <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
                                                 <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
                                             </ItemTemplate>
@@ -268,6 +270,10 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtDevPaymentReceived" TargetControlID="txtDevPaymentReceived">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
+                                        <td style="width: 50px"><span class="labelClass" runat="server" id="spnUnits" visible="false">Unit#(s)</span></td>
+                                        <td class="modal-sm" style="width: 148px">
+                                            <asp:TextBox ID="txtUnits" CssClass="clsTextBoxBlueSm" runat="server" Visible="false" Width="97px"></asp:TextBox>
+                                        </td>
                                         <td style="width: 50px"><span class="labelClass">Active</span></td>
                                         <td class="modal-sm" style="width: 70px">
                                             <asp:CheckBox ID="chkUnitActive" runat="server" Enabled="false" Checked="true" />
@@ -316,8 +322,9 @@
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 Grand Total :
-                                           
                                             </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                            <FooterStyle Width="200px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="AmtRec" ItemStyle-HorizontalAlign="Right"
                                             FooterStyle-HorizontalAlign="Right">
@@ -331,14 +338,22 @@
                                             <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterTotalAmtRec" Text=""></asp:Label>
                                             </FooterTemplate>
-                                            <ItemStyle Width="60px" />
-                                            <FooterStyle Width="60px" />
+                                            <ItemStyle Width="100px" />
+                                            <FooterStyle Width="100px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="" ItemStyle-HorizontalAlign="Right">
+
+                                        <asp:TemplateField HeaderText="Units" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
+                                                <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("Units") %>' />
                                             </ItemTemplate>
-                                            <ItemStyle Width="200px" />
-                                            <FooterStyle Width="200px" />
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtUnits" CssClass="clsTextBoxBlueSm" runat="server"
+                                                    Text='<%# Eval("Units") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="100px" />
+                                            <FooterStyle Width="60px" />
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
@@ -495,7 +510,7 @@
                         </div>
 
                         <div class="panel-body" id="dvVHCBProjectsgrid" runat="server">
-                            <div id="dvVHCBProjectsWarning" runat="server">
+                            <div id="dvVHCBProjectsWarning" runat="server" visible="false">
                                 <p class="bg-info">
                                     &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     <asp:Label runat="server" ID="lblVHCBProjectsWarning" class="labelClass"></asp:Label>
@@ -620,7 +635,7 @@
 
                 $('#<%= txtAntFunds.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtAntFunds.ClientID%>').val(), $('#<%= txtAntFunds.ClientID%>'));
-                 });
+                });
 
                 //$("input[id*=txtAnticipatedFunds1]").keyup(function () {
                 //    toCurrencyControl($('input[id*=txtAnticipatedFunds1]').val(), $('input[id*=txtAnticipatedFunds1]'));

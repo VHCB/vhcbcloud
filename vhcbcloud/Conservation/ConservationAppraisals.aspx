@@ -116,9 +116,12 @@
                                 </tr>
                                 <tr>
                                     <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
-                                    <td colspan="5">
+                                    <td>
                                         <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
                                     </td>
+                                    <td><span class="labelClass">Type</span>
+                                    </td>
+                                    <td><asp:DropDownList ID="ddlType" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>

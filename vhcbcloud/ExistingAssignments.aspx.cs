@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,7 +17,10 @@ namespace vhcbcloud
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                CheckPageAccess();
+            }
         }
 
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
@@ -615,6 +619,46 @@ namespace vhcbcloud
         {
             lblRErrorMsg.Visible = true;
             lblRErrorMsg.Text = message;
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        private void CheckPageAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetuserPageSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["pageid"].ToString() == "26725")
+                    rdBtnFinancial.Items[0].Enabled = false;
+                if (row["pageid"].ToString() == "26780")
+                    rdBtnFinancial.Items[1].Enabled = false;
+                if (row["pageid"].ToString() == "27455")
+                    rdBtnFinancial.Items[2].Enabled = false;
+                if (row["pageid"].ToString() == "27456")
+                    rdBtnFinancial.Items[3].Enabled = false;
+            }
+
+            //if (rdBtnFinancial.Items[0].Enabled)
+            //    rdBtnFinancial.Items[0].Selected = true;
+            //if (rdBtnFinancial.Items[1].Enabled)
+            //    rdBtnFinancial.Items[1].Selected = true;
+            //if (rdBtnFinancial.Items[2].Enabled)
+            //    rdBtnFinancial.Items[2].Selected = true;
+            if (rdBtnFinancial.Items[3].Enabled)
+                rdBtnFinancial.Items[3].Selected = true;
         }
     }
 }

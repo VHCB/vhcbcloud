@@ -54,7 +54,7 @@
                                 </asp:DropDownList>
                             </td>
                             <td>
-                                <span class="labelClass">Type (Lktransaction)</span>
+                                <span class="labelClass">Type</span>
                             </td>
                             <td>
                                 <asp:DropDownList ID="ddlLKTransaction" CssClass="clsDropDown" runat="server" Visible="true" AutoPostBack="true"

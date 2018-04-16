@@ -49,12 +49,12 @@ namespace vhcbcloud.Account
             {
                 if (Session["SortExp"] == null)
                 {
-                    gvUserInfo.DataSource = AccountData.GetUserInfo();
+                    gvUserInfo.DataSource = AccountData.GetUserInfo(cbActiveOnly.Checked);
                     gvUserInfo.DataBind();
                 }
                 else
                 {
-                    DataTable table = AccountData.GetUserInfo();
+                    DataTable table = AccountData.GetUserInfo(cbActiveOnly.Checked);
                     DataView view = table.DefaultView;
                     view.Sort = Session["SortExp"].ToString();
                     gvUserInfo.DataSource = view.ToTable();
@@ -104,7 +104,7 @@ namespace vhcbcloud.Account
                 lblErrorMsg.Text = ex.Message;
             }
         }
-        
+
         protected void ClearFields()
         {
             txtFname.Text = "";
@@ -116,6 +116,16 @@ namespace vhcbcloud.Account
             ddlSecurityGroup.SelectedIndex = -1;
             btnUserInfoSubmit.Text = "Submit";
             cbAddUser.Checked = false;
+
+            spnPrimaryApplicant.Visible = false;
+            spnProjectNum.Visible = false;
+            txtPrimaryApplicant.Visible = false;
+            txtProjectNum.Visible = false;
+
+            txtPrimaryApplicant.Text = "";
+            txtProjectNum.Text = "";
+            chkActive.Checked = true;
+
         }
 
         protected void btnUserInfoSubmit_Click(object sender, EventArgs e)
@@ -136,21 +146,21 @@ namespace vhcbcloud.Account
 
                 if (btnUserInfoSubmit.Text.ToLower() == "submit")
                 {
-                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp);
+                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text );
                     BindUserInfo();
                     ClearFields();
                     lblErrorMsg.Text = "User Information added successfully";
                 }
                 else
                 {
-                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp);
+                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, chkActive.Checked);
 
                     gvUserInfo.EditIndex = -1;
                     BindUserInfo();
                     ClearFields();
                     lblErrorMsg.Text = "User information updated successfully.";
                 }
-                    
+
             }
             catch (Exception ex)
             {
@@ -181,8 +191,6 @@ namespace vhcbcloud.Account
         {
             try
             {
-
-
                 int rowIndex = e.RowIndex;
 
                 int UserlId = Convert.ToInt32(((Label)gvUserInfo.Rows[rowIndex].FindControl("lblUserId")).Text);
@@ -192,9 +200,9 @@ namespace vhcbcloud.Account
                 string strEmail = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtEmail")).Text.Trim();
                 string strPassword = ((TextBox)gvUserInfo.Rows[rowIndex].FindControl("txtPassword")).Text.Trim();
                 int dfltPgr = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedValue.ToString()) : 0;
-
                 int dflSecGrp = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedValue.ToString()) : 0;
-                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp);
+
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp, "", "", chkActive.Checked);
 
                 gvUserInfo.EditIndex = -1;
                 BindUserInfo();
@@ -210,7 +218,7 @@ namespace vhcbcloud.Account
         {
             GridViewSortExpression = e.SortExpression;
             int pageIndex = 0;
-            gvUserInfo.DataSource = SortDataTable(AccountData.GetUserInfo(), false);
+            gvUserInfo.DataSource = SortDataTable(AccountData.GetUserInfo(cbActiveOnly.Checked), false);
             gvUserInfo.DataBind();
             gvUserInfo.PageIndex = pageIndex;
         }
@@ -228,7 +236,8 @@ namespace vhcbcloud.Account
                 {
                     e.Row.Cells[6].Controls[0].Visible = false;
 
-                    HiddenField hfUserId = (e.Row.FindControl("HiddenField1") as HiddenField);
+                    HiddenField hfUserId1 = (e.Row.FindControl("HiddenField1") as HiddenField);
+                    hfUserId.Value = hfUserId1.Value;
                     DataRow dr = AccountData.GetUserInfoById(DataUtils.GetInt(hfUserId.Value));
 
                     txtFname.Text = dr["Fname"].ToString();
@@ -238,6 +247,25 @@ namespace vhcbcloud.Account
                     txtCPassword.Text = dr["password"].ToString();
                     PopulateDropDown(ddlVHCBProgram, dr["DfltPrg"].ToString());
                     PopulateDropDown(ddlSecurityGroup, dr["securityLevel"].ToString());
+                    chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+
+                    if (ddlSecurityGroup.SelectedItem.ToString() == "Americorps Member")
+                    {
+                        spnPrimaryApplicant.Visible = true;
+                        spnProjectNum.Visible = true;
+                        txtPrimaryApplicant.Visible = true;
+                        txtProjectNum.Visible = true;
+                    }
+                    else
+                    {
+                        spnPrimaryApplicant.Visible = false;
+                        spnProjectNum.Visible = false;
+                        txtPrimaryApplicant.Visible = false;
+                        txtProjectNum.Visible = false;
+                    }
+
+                    txtProjectNum.Text = dr["ProjeNumber"].ToString();
+                    txtPrimaryApplicant.Text = dr["ApplicantName"].ToString();
                 }
             }
         }
@@ -343,7 +371,18 @@ namespace vhcbcloud.Account
 
         protected void ddlSecurityGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+            spnPrimaryApplicant.Visible = false;
+            spnProjectNum.Visible = false;
+            txtPrimaryApplicant.Visible = false;
+            txtProjectNum.Visible = false;
+
+            if (ddlSecurityGroup.SelectedItem.ToString() == "Americorps Member")
+            {
+                spnPrimaryApplicant.Visible = true;
+                spnProjectNum.Visible = true;
+                txtPrimaryApplicant.Visible = true;
+                txtProjectNum.Visible = true;
+            }
         }
         private void GetSelectedUserId(GridView gvFGM)
         {
@@ -390,7 +429,7 @@ namespace vhcbcloud.Account
                     lblErrorMsg.Text = "Please select page to add an action";
                     return;
                 }
-                
+
                 UserSecurityData.AddUserPageSecurity(Convert.ToInt32(hfUserId.Value), Convert.ToInt32(ddlPage.SelectedValue.ToString()));
                 BindUserPageSecurity();
             }
@@ -474,6 +513,51 @@ namespace vhcbcloud.Account
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumbersWithPrimaryApplicant(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+            dt = ProjectSearchData.GetProjectNumbersWithPrimaryApplicant(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string str = AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dt.Rows[i]["proj_num"].ToString(),
+                   dt.Rows[i]["PrimaryApplicantName"].ToString());
+                ProjNumbers.Add(str);
+
+                //ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetApplicants(string prefixText, int count)
+        {
+            DataTable dt = new DataTable();
+
+            dt = EntityData.GetApplicantsEx("GetPrimaryApplicantsAutoEx", prefixText);
+
+            List<string> Applicants = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+            }
+            return Applicants.ToArray();
+
+            //ddlPrimaryApplicant.DataValueField = "appnameid";
+            //ddlPrimaryApplicant.DataTextField = "Applicantname";
+            //ddlPrimaryApplicant.DataBind();
+            //ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        }
+
+        protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            BindUserInfo();
         }
     }
 }

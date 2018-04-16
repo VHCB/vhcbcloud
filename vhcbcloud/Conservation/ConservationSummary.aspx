@@ -84,8 +84,8 @@
                                     <td>
                                         <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><span class="labelClass">Geographic Significance:</span></td>
+                                    <td><asp:DropDownList ID="ddlGeoSignificance" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                     <%-- <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>

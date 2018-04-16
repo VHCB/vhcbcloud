@@ -170,6 +170,7 @@ namespace vhcbcloud.Conservation
                 txtFarmResident.Text= drConserve["FarmResident"].ToString();
                 txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
                 pctWooded.InnerText = "0";
+                PopulateDropDown(ddlGeoSignificance, drConserve["GeoSignificance"].ToString());
                 //pctPrime.InnerText = "0";
                 //pctState.InnerText = "0";
                 //otherAcres.InnerText = "0";
@@ -285,6 +286,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlAcreageDescription, 97);
             BindLookUP(ddlWatershed, 143);
             BindLookUP(ddlWaterBody, 140);
+            BindLookUP(ddlGeoSignificance, 255);
         }
 
         private void BindPrimaryStewardOrganization()
@@ -356,7 +358,8 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text), 
-                DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId());
+                DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId(),
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()));
 
             BindConConserveForm();
 

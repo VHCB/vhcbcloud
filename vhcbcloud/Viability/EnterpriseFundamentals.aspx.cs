@@ -367,11 +367,12 @@ namespace vhcbcloud.Viability
                     int EnterFinancialJobsID = DataUtils.GetInt(hfEnterFinancialJobsID.Value);
                     EnterpriseFundamentalsData.UpdateEnterpriseFinancialJobs(EnterFinancialJobsID, 
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
-                        txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")), 
+                        "", //txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text), 
+                        DataUtils.GetDecimal(txtGrossPayroll.Text), 
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text), 
                         chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
@@ -382,11 +383,12 @@ namespace vhcbcloud.Viability
                 {
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFinancialJobs(ProjectId,
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
-                        txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), 
-                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")));
+                        "",//txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text), 
+                        DataUtils.GetDecimal(txtGrossPayroll.Text), 
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtNetworth.Text));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -408,26 +410,27 @@ namespace vhcbcloud.Viability
         private void EventProgramSelection()
         {
             ddlMilestone.Items.Clear();
+            BindLookUP(ddlMilestone, 247);
 
-            if (hfProjectProgram.Value == "Admin")
-                BindLookUP(ddlMilestone, 157);
-            else if (hfProjectProgram.Value == "Housing")
-                BindLookUP(ddlMilestone, 160);
-            else if (hfProjectProgram.Value == "Conservation")
-                BindLookUP(ddlMilestone, 159);
-            else if (hfProjectProgram.Value == "Lead")
-                BindLookUP(ddlMilestone, 158);
-            else if (hfProjectProgram.Value == "Americorps")
-                BindLookUP(ddlMilestone, 161);
-            else if (hfProjectProgram.Value == "Viability")
-                BindLookUP(ddlMilestone, 162);
+            //if (hfProjectProgram.Value == "Admin")
+            //    BindLookUP(ddlMilestone, 157);
+            //else if (hfProjectProgram.Value == "Housing")
+            //    BindLookUP(ddlMilestone, 160);
+            //else if (hfProjectProgram.Value == "Conservation")
+            //    BindLookUP(ddlMilestone, 159);
+            //else if (hfProjectProgram.Value == "Lead")
+            //    BindLookUP(ddlMilestone, 158);
+            //else if (hfProjectProgram.Value == "Americorps")
+            //    BindLookUP(ddlMilestone, 161);
+            //else if (hfProjectProgram.Value == "Viability")
+            //    BindLookUP(ddlMilestone, 162);
             //else if (ddlEventProgram.SelectedItem.ToString() == "Healthy Homes")
             //    BindLookUP(ddlEvent, 159);
-            else
-            {
-                ddlMilestone.Items.Clear();
-                ddlMilestone.Items.Insert(0, new ListItem("Select", "NA"));
-            }
+            //else
+            //{
+            //    ddlMilestone.Items.Clear();
+            //    ddlMilestone.Items.Insert(0, new ListItem("Select", "NA"));
+            //}
         }
 
         private void BindFinJobsGrid()
@@ -477,7 +480,7 @@ namespace vhcbcloud.Viability
             cbAddMilestone.Checked = false;
             ddlMilestone.SelectedIndex = -1;
             txtMSDate.Text = "";
-            txtYear.Text = "";
+            //txtYear.Text = "";
             txtGrossSales.Text = "";
             txtNetIncome.Text = "";
             txtGrossPayroll.Text = "";
@@ -511,14 +514,14 @@ namespace vhcbcloud.Viability
                         DataRow dr = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsById(DataUtils.GetInt(lblEnterFinancialJobsID.Text));
 
                         hfEnterFinancialJobsID.Value = lblEnterFinancialJobsID.Text;
-
-                        PopulateDropDown(ddlMilestone, dr["MilestoneID"].ToString());
+                        
+                        PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
                         
                         //cbVHFAInv.Checked = DataUtils.GetBool(dr["vhfa"].ToString()); ;
                         //cbRDLoan.Checked = DataUtils.GetBool(dr["RDLoan"].ToString()); ;
 
                         txtMSDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
-                        txtYear.Text = dr["Year"].ToString() ?? "";
+                        //txtYear.Text = dr["Year"].ToString() ?? "";
                         txtGrossSales.Text = dr["GrossSales"].ToString() ?? "";
                         txtNetIncome.Text = dr["Netincome"].ToString() ?? "";
                         txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
@@ -526,7 +529,7 @@ namespace vhcbcloud.Viability
                         txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
                         txtNetworth.Text = dr["Networth"].ToString() ?? "";
 
-                        spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) + DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
+                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyEmp"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyEmp"].ToString())).ToString();
 
                         chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         chkActive.Enabled = true;

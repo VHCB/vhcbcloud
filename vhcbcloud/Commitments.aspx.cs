@@ -24,7 +24,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                //txtProjNum.Focus();
+                CheckPageAccess();
             }
         }
 
@@ -576,6 +576,15 @@ namespace vhcbcloud
                 {
                     lblErrorMsg.Text = "Select an existing project to make a commitment";
                     txtProjNum.Focus();
+                    return;
+                }
+
+                DateTime AcctEffectiveDate = FinancialTransactions.GetSetupDate();
+
+                if(AcctEffectiveDate > Convert.ToDateTime(txtTransDate.Text))
+                {
+                    lblErrorMsg.Text = "Trans date should not be lessthan Acct Effective Date " + AcctEffectiveDate.ToShortDateString();
+                    txtTransDate.Focus();
                     return;
                 }
 
@@ -1147,6 +1156,33 @@ namespace vhcbcloud
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
             Response.Redirect("commitments.aspx");
+        }
+
+        private void CheckPageAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetuserPageSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["pageid"].ToString() == "26725")
+                    rdBtnFinancial.Items[0].Enabled = false;
+                if (row["pageid"].ToString() == "26780")
+                    rdBtnFinancial.Items[1].Enabled = false;
+                if (row["pageid"].ToString() == "27455")
+                    rdBtnFinancial.Items[2].Enabled = false;
+                if (row["pageid"].ToString() == "27456")
+                    rdBtnFinancial.Items[3].Enabled = false;
+            }
+
+            if (rdBtnFinancial.Items[0].Enabled)
+                rdBtnFinancial.Items[0].Selected = true;
+            else if (rdBtnFinancial.Items[1].Enabled)
+                Response.Redirect("Decommitments.aspx");
+            else if (rdBtnFinancial.Items[2].Enabled)
+                Response.Redirect("Reallocations.aspx");
+            else if (rdBtnFinancial.Items[3].Enabled)
+                Response.Redirect("Assignments.aspx");
         }
     }
 }

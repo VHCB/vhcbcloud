@@ -58,6 +58,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
         
         /// <summary>
+        /// ImgPrintPCR control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgPrintPCR;
+        
+        /// <summary>
         /// mpExtender control.
         /// </summary>
         /// <remarks>
@@ -344,15 +353,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDelete;
-        
-        /// <summary>
-        /// ImgPrintPCR control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImgPrintPCR;
         
         /// <summary>
         /// pnlDisbursement control.
@@ -659,5 +659,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfIsAllApproved;
+        
+        /// <summary>
+        /// hfSecondapproval control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfSecondapproval;
     }
 }

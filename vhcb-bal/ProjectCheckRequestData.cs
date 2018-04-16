@@ -826,7 +826,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid)
+        public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid, bool Secondapproval)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -836,6 +836,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
                 command.Parameters.Add(new SqlParameter("staffId", staffid));
+                command.Parameters.Add(new SqlParameter("Secondapproval", Secondapproval));
+
                 command.CommandText = "AddDefaultPCRQuestions";
                 using (connection)
                 {

@@ -300,6 +300,9 @@
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
                                                 </ItemTemplate>
+                                                 <EditItemTemplate>
+                                                    <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("FundId") %>' Visible="false"></asp:TextBox>
+                                                     </EditItemTemplate>
                                                 <FooterTemplate>
                                                     Running Total :
                                                 </FooterTemplate>

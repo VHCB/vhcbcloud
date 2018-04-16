@@ -26,7 +26,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-
+                CheckPageAccess();
             }
         }
         protected void Page_PreInit(Object sender, EventArgs e)
@@ -326,15 +326,16 @@ namespace vhcbcloud
                         return;
                     }
 
-                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundsPerProjAcctFundtype(Convert.ToInt32(hfProjId.Value),
-                        ddlAcctNum.SelectedItem.Text, Convert.ToInt32(ddlTransType.SelectedValue.ToString()),
-                        ddlUsePermit.SelectedValue.ToString() == "NA" ? "" : ddlUsePermit.SelectedValue.ToString());
+                    DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
+                               DataUtils.GetInt(ddlAcctNum.SelectedValue.ToString()),
+                               DataUtils.GetInt(ddlTransType.SelectedValue.ToString()),
+                               ddlUsePermit.SelectedValue.ToString());
 
                     if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
                     {
-                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["availFunds"].ToString()))
+                        if (Convert.ToDecimal(txtAmt.Text) > Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()))
                         {
-                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["availFunds"].ToString()) + " for the selected Fund. ";// However the transaction is still added.";
+                            lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString()) + " for the selected Fund. ";// However the transaction is still added.";
                             return;
                         }
                     }
@@ -435,6 +436,15 @@ namespace vhcbcloud
                         txtTotAmt.Focus();
                         return;
                     }
+                }
+
+                DateTime AcctEffectiveDate = FinancialTransactions.GetSetupDate();
+
+                if (AcctEffectiveDate > Convert.ToDateTime(txtTransDate.Text))
+                {
+                    lblErrorMsg.Text = "Trans date should not be lessthan Acct Effective Date " + AcctEffectiveDate.ToShortDateString();
+                    txtTransDate.Focus();
+                    return;
                 }
 
                 lblErrorMsg.Text = "";
@@ -620,10 +630,30 @@ namespace vhcbcloud
                 decimal amount = Convert.ToDecimal(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAmount")).Text);
                 int transType = Convert.ToInt32(((DropDownList)gvBCommit.Rows[rowIndex].FindControl("ddlTransType")).SelectedValue.ToString());
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
-
+                int AcctNum = Convert.ToInt32(((TextBox)gvBCommit.Rows[rowIndex].FindControl("txtAcctNum")).Text);
+                
                 decimal old_amount = -Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
-                decimal bal_amount = Convert.ToDecimal(hfBalAmt.Value);
+                decimal bal_amount = -Convert.ToDecimal(hfBalAmt.Value);
                 decimal allowed_amount = old_amount + bal_amount;
+
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
+                              AcctNum,
+                              transType,
+                              "");
+
+                if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                {
+                    if (amount > Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()))
+                    {
+                        lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString()) + " for the selected Fund. ";// However the transaction is still added.";
+                        return;
+                    }
+                }
+                else
+                {
+                    lblErrorMsg.Text = "Detail amount can not be more than available funds : " + CommonHelper.myDollarFormat("0.00") + " for the selected Fund. ";
+                    return;
+                }
 
                 if (amount == allowed_amount)
                 {
@@ -768,7 +798,7 @@ namespace vhcbcloud
 
                     DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmountByProjectId(Convert.ToInt32(hfProjId.Value));
 
-                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                    if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0 && dtAvailFunds.Rows[0]["Balanced"].ToString() != "")
                     {
                         lblAvailFund.Text = Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()).ToString("#.##");
                         lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString());
@@ -1289,6 +1319,33 @@ namespace vhcbcloud
                 lblAvDetailFund.Text = CommonHelper.myDollarFormat(dtAvailFunds.Rows[0]["Balanced"].ToString());
             else
                 lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
+        }
+
+        private void CheckPageAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetuserPageSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["pageid"].ToString() == "26725")
+                    rdBtnFinancial.Items[0].Enabled = false;
+                if (row["pageid"].ToString() == "26780")
+                    rdBtnFinancial.Items[1].Enabled = false;
+                if (row["pageid"].ToString() == "27455")
+                    rdBtnFinancial.Items[2].Enabled = false;
+                if (row["pageid"].ToString() == "27456")
+                    rdBtnFinancial.Items[3].Enabled = false;
+            }
+
+            //if (rdBtnFinancial.Items[0].Enabled)
+            //    rdBtnFinancial.Items[0].Selected = true;
+            if (rdBtnFinancial.Items[1].Enabled)
+                rdBtnFinancial.Items[1].Selected = true;
+            else if (rdBtnFinancial.Items[2].Enabled)
+                Response.Redirect("Reallocations.aspx");
+            else if (rdBtnFinancial.Items[3].Enabled)
+                Response.Redirect("Assignments.aspx");
         }
     }
 

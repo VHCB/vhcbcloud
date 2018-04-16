@@ -671,7 +671,7 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId());
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId(), false);
                 BindPCRQuestionsForApproval();
             }
             catch (Exception ex)

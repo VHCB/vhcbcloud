@@ -12,6 +12,7 @@ using VHCBCommon.DataAccessLayer;
 using VHCBCommon.DataAccessLayer.Housing;
 using VHCBCommon.DataAccessLayer.Lead;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace vhcbcloud.Housing
 { 
@@ -599,9 +600,16 @@ namespace vhcbcloud.Housing
                 if (btnAddOwner.Text == "Submit")
                 {
                     HomeOwnershipResult objHomeOwnershipResult = HomeOwnershipData.AddProjectHomeOwnership(DataUtils.GetInt(hfHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
-                        DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text));
+                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, 
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBGrant.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtOwnerAppAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtCapitalImpAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtPurchase.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtStewardCont.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBAsstLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBRehabLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDate(txtPurchaseDate.Text));
 
                     ClearOwnerForm();
                     BindHomeOwnersGrid();
@@ -616,9 +624,17 @@ namespace vhcbcloud.Housing
                 else
                 {
                     HomeOwnershipData.UpdateProjectHomeOwnership(DataUtils.GetInt(hfProjectHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
-                        DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text),chkOwnerActive.Checked);
+                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, 
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBGrant.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtOwnerAppAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtCapitalImpAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtPurchase.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtStewardCont.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBAsstLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBRehabLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDate(txtPurchaseDate.Text),
+                        chkOwnerActive.Checked);
 
                     gvOwner.EditIndex = -1;
                     BindHomeOwnersGrid();

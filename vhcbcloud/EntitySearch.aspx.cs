@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,6 +25,7 @@ namespace vhcbcloud
                 dvIndiSearchResultsGrid.Visible = false;
                 dvOrgSearchResultsGrid.Visible = false;
             }
+            CheckNewEntityAccess();
         }
 
         private void BindControls()
@@ -101,7 +103,7 @@ namespace vhcbcloud
                 string ApplicantId = ((Label)gvOrgSearchresults.Rows[index].FindControl("lblApplicantId")).Text;
                 string EntityRole = ((Label)gvOrgSearchresults.Rows[index].FindControl("lblEntityRole")).Text;
 
-                Response.Redirect("EntityMaintenance.aspx?ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
+                Response.Redirect("EntityMaintenance.aspx?IsSearch=true&ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
             }
         }
 
@@ -113,7 +115,45 @@ namespace vhcbcloud
                 string ApplicantId = ((Label)gvIndSearchresults.Rows[index].FindControl("lblApplicantId")).Text;
                 string EntityRole = ((Label)gvIndSearchresults.Rows[index].FindControl("lblEntityRole")).Text;
 
-                Response.Redirect("EntityMaintenance.aspx?ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
+                Response.Redirect("EntityMaintenance.aspx?IsSearch=true&ApplicantId=" + ApplicantId + "&Role=" + EntityRole);
+            }
+        }
+
+
+        protected void rdBtnAction1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rdBtnAction1.SelectedValue.ToLower() == "existing")
+            {
+
+            }
+            else
+            {
+                Response.Redirect("EntityMaintenance.aspx", true);
+            }
+        }
+
+        private void CheckNewEntityAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27453")
+                    rdBtnAction1.Items[0].Enabled = true;
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
     }

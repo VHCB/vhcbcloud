@@ -171,7 +171,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dt;
         }
 
-        public static void UpdateEnterpriseGrantMatch(int EnterpriseGrantMatchID, bool RowIsActive)
+        public static void UpdateEnterpriseGrantMatch(int EnterpriseGrantMatchID, decimal GrantAmt, bool RowIsActive)
         {
             try
             {
@@ -187,6 +187,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         //4 Parameters
                         command.Parameters.Add(new SqlParameter("EnterpriseGrantMatchID", EnterpriseGrantMatchID));
+                        command.Parameters.Add(new SqlParameter("GrantAmt", GrantAmt));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

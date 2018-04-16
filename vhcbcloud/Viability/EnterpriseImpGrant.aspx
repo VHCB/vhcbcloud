@@ -41,7 +41,7 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td style="height: 5px"><span class="labelClass">Other Names</span></td>
+                            <td style="height: 5px"><span class="labelClass">Owner/Operator</span></td>
                             <td  style="height: 5px" colspan="5">
                                  <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
                              </td>
@@ -142,10 +142,10 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Grant Match</h3>
+                                                <h3 class="panel-title">Match Amount</h3>
                                             </td>
                                             <td style="text-align: right">
-                                                <asp:CheckBox ID="cbAddGrantmatch" runat="server" Text="Add New Grant Match" />
+                                                <asp:CheckBox ID="cbAddGrantmatch" runat="server" Text="Add New Match Amount" />
                                             </td>
                                         </tr>
                                     </table>
@@ -207,6 +207,9 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblGrantAmount" runat="Server" Text='<%# Eval("GrantAmt", "{0:C2}") %>' />
                                                     </ItemTemplate>
+                                                     <EditItemTemplate>
+                                                        <asp:TextBox ID="txtGrantAmt" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" Text='<%# Eval("GrantAmt") %>'></asp:TextBox>
+                                                    </EditItemTemplate>
                                                     <FooterTemplate>
                                                         <asp:Label ID="lblFooterAmount" runat="server" Text=""></asp:Label>
                                                     </FooterTemplate>

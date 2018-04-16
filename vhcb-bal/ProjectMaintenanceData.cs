@@ -674,7 +674,7 @@ namespace DataAccessLayer
         #endregion
 
 
-        public static ProjectMaintResult AddRelatedProject(int ProjectId, int RelProjectId)
+        public static ProjectMaintResult AddRelatedProject(int ProjectId, int RelProjectId, bool IsDualGoal)
         {
             try
             {
@@ -691,6 +691,7 @@ namespace DataAccessLayer
                         //2 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("RelProjectId", RelProjectId));
+                        command.Parameters.Add(new SqlParameter("IsDualGoal", IsDualGoal));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -719,7 +720,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateRelatedProject(int ProjectId, int RelProjectId, bool RowIsActive)
+        public static void UpdateRelatedProject(int ProjectId, int RelProjectId, bool DualGoal, bool RowIsActive)
         {
             try
             {
@@ -736,6 +737,7 @@ namespace DataAccessLayer
                         //3 Parameters
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("RelProjectId", RelProjectId));
+                        command.Parameters.Add(new SqlParameter("DualGoal", DualGoal));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

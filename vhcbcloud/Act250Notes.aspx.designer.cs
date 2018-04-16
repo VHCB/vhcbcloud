@@ -10,70 +10,16 @@
 namespace vhcbcloud {
     
     
-    public partial class EntitySearch {
+    public partial class Act250Notes {
         
         /// <summary>
-        /// mpExtender control.
+        /// cbActiveOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender mpExtender;
-        
-        /// <summary>
-        /// pnlProjectNotes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlProjectNotes;
-        
-        /// <summary>
-        /// ifProjectNotes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe ifProjectNotes;
-        
-        /// <summary>
-        /// btnClose control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClose;
-        
-        /// <summary>
-        /// rdBtnAction1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnAction1;
-        
-        /// <summary>
-        /// btnProjectNotes1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes1;
-        
-        /// <summary>
-        /// btnNewProject1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnNewProject1;
+        protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
         
         /// <summary>
         /// dvMessage control.
@@ -85,67 +31,103 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
         
         /// <summary>
-        /// lblErrorMsg control.
+        /// lblErrorMsg1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg1;
         
         /// <summary>
-        /// dvEntityRole control.
+        /// pnlProjectInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
+        protected global::System.Web.UI.WebControls.Panel pnlProjectInfo;
         
         /// <summary>
-        /// ddlEntityRole control.
+        /// ddlLandUsePermitNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEntityRole;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLandUsePermitNum;
         
         /// <summary>
-        /// txtEntityName control.
+        /// ddlCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEntityName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategory;
         
         /// <summary>
-        /// btnEntitySearch control.
+        /// txtProjectNotesDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEntitySearch;
+        protected global::System.Web.UI.WebControls.TextBox txtProjectNotesDate;
         
         /// <summary>
-        /// btnClear control.
+        /// ce_txtProjectNotesDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClear;
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtProjectNotesDate;
         
         /// <summary>
-        /// dvOrgSearchResultsGrid control.
+        /// cbActive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvOrgSearchResultsGrid;
+        protected global::System.Web.UI.WebControls.CheckBox cbActive;
+        
+        /// <summary>
+        /// txtNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNotes;
+        
+        /// <summary>
+        /// txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtURL;
+        
+        /// <summary>
+        /// btnSubmitNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmitNotes;
+        
+        /// <summary>
+        /// dvProjectNotesGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectNotesGrid;
         
         /// <summary>
         /// Panel9 control.
@@ -157,39 +139,21 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel9;
         
         /// <summary>
-        /// gvOrgSearchresults control.
+        /// gvAct250Notes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvOrgSearchresults;
+        protected global::System.Web.UI.WebControls.GridView gvAct250Notes;
         
         /// <summary>
-        /// dvIndiSearchResultsGrid control.
+        /// hfAct250NotesID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvIndiSearchResultsGrid;
-        
-        /// <summary>
-        /// Panel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
-        
-        /// <summary>
-        /// gvIndSearchresults control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvIndSearchresults;
+        protected global::System.Web.UI.WebControls.HiddenField hfAct250NotesID;
     }
 }

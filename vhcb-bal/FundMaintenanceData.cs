@@ -120,7 +120,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static AddFund AddFund(string name, string abbrv, int LkFundType, string account, 
-            int LkAcctMethod, string DeptID, string VHCBCode, bool IsMitigationFund)
+            int MIPFundNum, string DeptID, string VHCBCode, bool IsMitigationFund, bool Secondapproval)
         {
             try
             {
@@ -137,8 +137,9 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("abbrv", abbrv));
                         command.Parameters.Add(new SqlParameter("LkFundType", LkFundType));
                         command.Parameters.Add(new SqlParameter("account", account));
-                        command.Parameters.Add(new SqlParameter("LkAcctMethod", LkAcctMethod));
+                        command.Parameters.Add(new SqlParameter("MIPFundNum", MIPFundNum));
                         command.Parameters.Add(new SqlParameter("IsMitigationFund", IsMitigationFund));
+                        command.Parameters.Add(new SqlParameter("Secondapproval", Secondapproval));
 
                         if (DeptID != "NA")
                             command.Parameters.Add(new SqlParameter("DeptID", DeptID));
@@ -174,7 +175,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateFund(int FundId, string abbrv, int LkFundType, string account,
-            int LkAcctMethod, string DeptID, string VHCBCode, bool IsRowActive, bool IsMitigationFund)
+            int MIPFundNum, string DeptID, string VHCBCode, bool IsRowActive, bool IsMitigationFund, 
+            bool Secondapproval)
         {
             try
             {
@@ -193,10 +195,11 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("abbrv", abbrv));
                         command.Parameters.Add(new SqlParameter("LkFundType", LkFundType));
                         command.Parameters.Add(new SqlParameter("account", account));
-                        command.Parameters.Add(new SqlParameter("LkAcctMethod", LkAcctMethod));
+                        command.Parameters.Add(new SqlParameter("MIPFundNum", MIPFundNum));
                         command.Parameters.Add(new SqlParameter("DeptID", DeptID));
                         command.Parameters.Add(new SqlParameter("VHCBCode", VHCBCode));
                         command.Parameters.Add(new SqlParameter("IsMitigationFund", IsMitigationFund));
+                        command.Parameters.Add(new SqlParameter("Secondapproval", Secondapproval));
                         command.Parameters.Add(new SqlParameter("IsRowActive", IsRowActive));
 
                         command.CommandTimeout = 60 * 5;

@@ -43,7 +43,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static ConservationAct250Result AddAct250Farm(string UsePermit, int LkTownDev, int CDist, int Type, 
             string DevName, int Primelost, int Statelost, int TotalAcreslost,int AcresDevelop, int Developer, decimal AntFunds, 
-            DateTime MitDate, string URL)
+            DateTime MitDate, string URL, int FundID)
         {
             try
             {
@@ -70,6 +70,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AntFunds", AntFunds));
                         command.Parameters.Add(new SqlParameter("MitDate", MitDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MitDate));
                         command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("FundID", FundID));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -100,7 +101,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateAct250Farm(int Act250FarmID, int LkTownDev, int CDist, int Type,
             string DevName, int Primelost, int Statelost, int TotalAcreslost, int AcresDevelop, int Developer, decimal AntFunds,
-            DateTime MitDate, string URL, bool IsRowIsActive)
+            DateTime MitDate, string URL, int FundID, bool IsRowIsActive)
         {
             try
             {
@@ -128,6 +129,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("MitDate", MitDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MitDate));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         command.Parameters.Add(new SqlParameter("URL", URL));
+                        command.Parameters.Add(new SqlParameter("FundID", FundID));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -211,7 +213,8 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static ConservationAct250Result AddAct250DevPay(int Act250FarmID, decimal AmtRec, DateTime DateRec)
+        public static ConservationAct250Result AddAct250DevPay(int Act250FarmID, decimal AmtRec, 
+            DateTime DateRec, string Units)
         {
             try
             {
@@ -228,6 +231,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Act250FarmID", Act250FarmID));
                         command.Parameters.Add(new SqlParameter("AmtRec", AmtRec));
                         command.Parameters.Add(new SqlParameter("DateRec", DateRec.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateRec));
+                        command.Parameters.Add(new SqlParameter("Units", Units));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -256,7 +260,8 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateAct250DevPay(int Act250PayID, decimal AmtRec, DateTime DateRec, bool IsRowIsActive)
+        public static void UpdateAct250DevPay(int Act250PayID, decimal AmtRec, DateTime DateRec, 
+            string Units, bool IsRowIsActive)
         {
             try
             {
@@ -273,7 +278,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Act250PayID", Act250PayID));
                         command.Parameters.Add(new SqlParameter("AmtRec", AmtRec));
                         command.Parameters.Add(new SqlParameter("DateRec", DateRec.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateRec));
-
+                        command.Parameters.Add(new SqlParameter("Units", Units));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
 
                         command.CommandTimeout = 60 * 5;

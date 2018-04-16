@@ -20,6 +20,7 @@
                                 </td>
                                 <td style="text-align: right">
                                     <asp:CheckBox ID="cbAddUser" runat="server" Text="Add New User" />
+                                    <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                 </td>
                             </tr>
                         </table>
@@ -110,6 +111,42 @@
                                         <asp:DropDownList ID="ddlSecurityGroup" CssClass="clsDropDown" AutoPostBack="true" runat="server" onclick="needToConfirm = false;"
                                             OnSelectedIndexChanged="ddlSecurityGroup_SelectedIndexChanged">
                                         </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 4px" colspan="2" />
+                                </tr>
+                                 <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="spnProjectNum" visible="false">Project #</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:TextBox ID="txtProjectNum" CssClass="clsTextBoxBlue1" runat="server" Visible="false"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtProjectNum" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetProjectNumbersWithPrimaryApplicant" OnClientItemSelected="GetPrimaryApplicantName">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td style="height: 4px" colspan="2" />
+                                </tr>
+                                 <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="spnPrimaryApplicant" visible="false">Primary Applicant</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:TextBox ID="txtPrimaryApplicant" CssClass="clsTextBoxBlue1" runat="server" Visible="false" ReadOnly="True"></asp:TextBox>
+                                        <%--<ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtPrimaryApplicant"
+                                        MinimumPrefixLength="1" UseContextKey="false"
+                                        EnableCaching="true" CompletionSetCount="1"
+                                        CompletionInterval="100" ServiceMethod="GetApplicants" OnClientPopulated="onListPopulated">
+                                    </ajaxToolkit:AutoCompleteExtender>--%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 4px" colspan="2" />
+                                </tr>
+                                 <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="Span1">Active</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:CheckBox ID="chkActive" runat="server" Checked="true" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -224,7 +261,12 @@
                                             <asp:TextBox ID="txtDfltPrg" runat="Server" Visible="false" Text='<%# Eval("description") %>' />
                                         </EditItemTemplate>--%>
                                     </asp:TemplateField>
-
+                                    <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
                                    <%-- <asp:CommandField ShowEditButton="True" ValidationGroup="EditValidationControls" />--%>
                                      <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
@@ -407,8 +449,8 @@
             }
         }
     </script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../Scripts/gridviewScroll.min.js"></script>
 
     <script language="javascript">
@@ -416,7 +458,17 @@
            gridviewScroll(<%=gvUserInfo.ClientID%>);
         });
 
-        
+        <%--function onListPopulated() {
+            var completionList = $find('<%=AutoCompleteExtender1.ClientID%>').get_completionList();
+            completionList.style.width = 'auto';
+            //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }--%>
+
+        function GetPrimaryApplicantName(source, eventArgs) {
+            //var relatedProjectArray = eventArgs.get_value().split('~');
+            //$('#<%=txtPrimaryApplicant.ClientID%>').val(relatedProjectArray[0]);
+            $('#<%=txtPrimaryApplicant.ClientID%>').val(eventArgs.get_value());
+        }
 
          function gridviewScroll(gridId) {
             $(gridId).gridviewScroll({

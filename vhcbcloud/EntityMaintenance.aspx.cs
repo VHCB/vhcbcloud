@@ -29,17 +29,43 @@ namespace vhcbcloud
             {
                 BindControls();
                 DisplayPanels();
-                if (Request.QueryString["ApplicantId"] != "")
-                {
 
+                if (Request.QueryString["ApplicantId"] != null && Request.QueryString["ApplicantId"] != "")
+                {
                     PopulateEntity(DataUtils.GetInt(Request.QueryString["ApplicantId"]), DataUtils.GetInt(Request.QueryString["Role"]));
                 }
+                CheckW9Access();
+                CheckNewEntityAccess();
+            }
+        }
+
+        private void CheckW9Access()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27448")
+                    ckbW9.Enabled = true;
+            }
+        }
+
+        private void CheckNewEntityAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27453")
+                    rdBtnAction.Items[0].Enabled = true;
             }
         }
 
         //private void HandleCustomPostbackEvent(string ctrlName, string args)
         //{
-            
+
         //    if (ctrlName == txtEntityDDL.UniqueID && args == "OnBlur")
         //    {
         //        EntitySelectionChanged();
@@ -310,14 +336,16 @@ namespace vhcbcloud
             ClearForm();
             hfApplicatId.Value = "";
 
-            if (rdBtnAction.SelectedValue.ToLower() == "existing")
+            if (hfIsCreated.Value != "true" && rdBtnAction.SelectedValue.ToLower() == "existing" && Request.QueryString["IsSearch"] == null)
             {
                 cbActiveOnly.Visible = true;
+                Response.Redirect("EntitySearch.aspx", true);
             }
-            else
+            if (rdBtnAction.SelectedValue.ToLower() == "new" && Request.QueryString["IsSearch"] != null)
             {
-                cbActiveOnly.Visible = false;
+                Response.Redirect("EntityMaintenance.aspx", true);
             }
+            hfIsCreated.Value = "fasle";
         }
 
         protected void ddlEntityRole_SelectedIndexChanged(object sender, EventArgs e)
@@ -512,6 +540,7 @@ namespace vhcbcloud
         {
             if (IsEntityFormValid())
             {
+                hfIsCreated.Value = "true";
                 if (btnEntitySubmit.Text == "Submit")
                 {
                     string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
@@ -524,7 +553,7 @@ namespace vhcbcloud
                             txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
-                            0, null, 1); //1=Individual
+                            0, null, 1, ckbW9.Checked); //1=Individual
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
@@ -548,7 +577,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
-                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2); //2=Organization
+                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked); //2=Organization
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -559,7 +588,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3); //3=Farm
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked); //3=Farm
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -584,7 +613,7 @@ namespace vhcbcloud
                            txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                            txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation);
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked);
                     ClearForm();
                     PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                     LogMessage("Entity Updated Successfully");
@@ -645,7 +674,8 @@ namespace vhcbcloud
                         if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                         {
                             dvAttachEntities.Visible = true;
-                            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                            //BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                            BindApplicants(26243, "individual", ddlIndividualApplicant);
                         }
                         else
                         {
@@ -730,6 +760,7 @@ namespace vhcbcloud
             txtAgrEdu.Text = drEntityData["AgEd"].ToString();
             txtYearsManagingForm.Text = drEntityData["YearsManagingFarm"].ToString();
             PopulateDropDown(ddlDefaultRole, drEntityData["AppRole"].ToString());
+            ckbW9.Checked = DataUtils.GetBool(drEntityData["w9"].ToString());
         }
 
         private void ClearForm()

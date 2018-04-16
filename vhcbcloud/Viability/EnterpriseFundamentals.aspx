@@ -186,10 +186,10 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Job/Financial Year</h3>
+                                                <h3 class="panel-title">Job Financial Date</h3>
                                             </td>
                                             <td style="text-align: right">
-                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Financial/Job" />
+                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Job Financial Date" />
                                             </td>
                                         </tr>
                                     </table>
@@ -200,7 +200,7 @@
                                         <table style="width: 100%">
                                             <tr>
                                                 <td>
-                                                    <span class="labelClass">Milestone</span>
+                                                    <span class="labelClass">Status Point</span>
                                                 </td>
                                                 <td>
                                                     <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0" TabIndex="1">
@@ -220,10 +220,10 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="labelClass">Year of Financial Data</span>
+                                                    <%--<span class="labelClass">Year of Financial Data</span>--%>
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>
+                                                    <%--<asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>--%>
                                                 </td>
                                                 <td>
                                                     <span class="labelClass">Family FTEs</span>
@@ -327,7 +327,7 @@
                                                         <asp:Label ID="lblEnterFinancialJobsID" runat="Server" Text='<%# Eval("EnterFinancialJobsID") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Milestone">
+                                                <asp:TemplateField HeaderText="Status Point">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("Milestone") %>' />
                                                     </ItemTemplate>
@@ -479,34 +479,34 @@
             $('#<%= txtNonFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtNonFamilyFTEmp.ClientID%>').val(), $('#<%= txtNonFamilyFTEmp.ClientID%>'));
             });--%>
-            $('#<%= txtYear.ClientID%>').keyup(function () {
+           <%-- $('#<%= txtYear.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtYear.ClientID%>').val(), $('#<%= txtYear.ClientID%>'));
-            });
+            });--%>
 
-            toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            //toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
             //accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val());
             //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val()));
 
-            toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-            toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
-            toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+            //toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+            //toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+            //toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
 
-           $('#<%= txtNetworth.ClientID%>').keyup(function () {
+          <%-- $('#<%= txtNetworth.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
-            });
+            });--%>
 
-           $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+           <%--$('#<%= txtGrossSales.ClientID%>').keyup(function () {
                 //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatColumn( $('#<%= txtGrossSales.ClientID%>').val(), "$ "));
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
-            });
+            });--%>
 
-            $('#<%= txtNetIncome.ClientID%>').keyup(function () {
+           <%-- $('#<%= txtNetIncome.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-            });
+            });--%>
 
-            $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
+           <%-- $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
-            });
+            });--%>
 
             $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 
@@ -533,7 +533,8 @@
             if (isNaN(NonFamilyFT)) {
                 var NonFamilyFT = 0;
             }
-
+            console.log(FamilyFT);
+            console.log(NonFamilyFT);
             var Total = FamilyFT + NonFamilyFT;
             $('#<%= spnTotalFulltime.ClientID%>').text(Total);
         };

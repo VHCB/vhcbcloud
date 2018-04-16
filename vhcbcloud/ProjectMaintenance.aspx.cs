@@ -55,7 +55,7 @@ namespace vhcbcloud
 
             if (DataUtils.GetInt(hfProjectId.Value) != 0)
                 GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
-
+            CheckNewProjectAccess();
             //DataTable dtMgr = UserSecurityData.GetManagerByProjId(DataUtils.GetInt(Request.QueryString["ProjectId"]));
             //if (dtMgr != null)
 
@@ -67,7 +67,7 @@ namespace vhcbcloud
             //    else
             //        chkApprove.Enabled = false;
         }
-        
+
         protected bool GetIsVisibleBasedOnRole()
         {
             return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
@@ -128,7 +128,7 @@ namespace vhcbcloud
             btnAddProjectName.Visible = false;
             btnAddRelatedProject.Visible = false;
             btnProjectSubmit.Visible = false;
-            btnProjectUpdate.Visible = false;            
+            btnProjectUpdate.Visible = false;
             chkApprove.Enabled = false;
         }
         protected void Page_PreInit(Object sender, EventArgs e)
@@ -143,9 +143,9 @@ namespace vhcbcloud
         protected void GetRoleAccess()
         {
             ddlProgram.Enabled = false;
-            
+
             DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
-            if(dr != null)
+            if (dr != null)
             {
                 if (ddlManager.SelectedValue == dr["userid"].ToString())
                     chkApprove.Enabled = true;
@@ -160,7 +160,7 @@ namespace vhcbcloud
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
-                    if (dr["dfltprg"].ToString() != hfProgramId.Value) 
+                    if (dr["dfltprg"].ToString() != hfProgramId.Value)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
@@ -621,7 +621,7 @@ namespace vhcbcloud
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
             chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
-           
+
             dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
             txtProjectName.Enabled = false;
@@ -690,7 +690,7 @@ namespace vhcbcloud
             DisplayControlsbasedOnSelection();
 
             dvUpdate.Visible = false;
-            
+
             //ProjectNames
             dvNewProjectName.Visible = false;
             //dvProjectName.Visible = false;
@@ -1395,6 +1395,8 @@ namespace vhcbcloud
                     TextBox txtLkApplicantRoleEntity = (e.Row.FindControl("txtLkApplicantRoleEntity") as TextBox);
                     CheckBox chkIsApplicantEntity = e.Row.FindControl("chkIsApplicant") as CheckBox;
                     CheckBox chkActiveEditEntity = e.Row.FindControl("chkActiveEditEntity") as CheckBox;
+                    CheckBox chkFinLegal = e.Row.FindControl("chkFinLegal") as CheckBox;
+                    CheckBox chkw9 = e.Row.FindControl("chkw9") as CheckBox;
 
                     if (txtLkApplicantRoleEntity != null)
                     {
@@ -1424,6 +1426,11 @@ namespace vhcbcloud
                             chkActiveEditEntity.Enabled = true;
                             ddlLkApplicantRoleEntity.Items.Remove(ddlLkApplicantRoleEntity.Items.FindByValue("358"));
                         }
+
+                        if (chkw9.Checked && CheckPayeeAccess())
+                            chkFinLegal.Enabled = true;
+                        else
+                            chkFinLegal.Enabled = false;
                     }
                 }
             }
@@ -1448,7 +1455,7 @@ namespace vhcbcloud
                     return;
                 }
 
-                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId);
+                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId, chkDualGoal.Checked);
 
                 if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
                     LogMessage("Related Project already exist as in-active");
@@ -1508,6 +1515,7 @@ namespace vhcbcloud
             //ddlRelatedProjects.SelectedIndex = -1;
             txtRelatedProjects.Text = "";
             txtRelatedProjectName.Text = "";
+            chkDualGoal.Checked = false;
         }
 
         //protected void cbRelatedProjects_CheckedChanged(object sender, EventArgs e)
@@ -1692,8 +1700,9 @@ namespace vhcbcloud
 
                 int RelProjectId = DataUtils.GetInt(((Label)gvRelatedProjects.Rows[rowIndex].FindControl("lblRelProjectId")).Text);
                 bool isActive = Convert.ToBoolean(((CheckBox)gvRelatedProjects.Rows[rowIndex].FindControl("chkActiveEditPR")).Checked);
+                bool DualGoal = Convert.ToBoolean(((CheckBox)gvRelatedProjects.Rows[rowIndex].FindControl("chkDualGoal")).Checked);
 
-                ProjectMaintenanceData.UpdateRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId, isActive);
+                ProjectMaintenanceData.UpdateRelatedProject(DataUtils.GetInt(hfProjectId.Value), RelProjectId, DualGoal, isActive);
 
                 gvRelatedProjects.EditIndex = -1;
 
@@ -2355,6 +2364,33 @@ namespace vhcbcloud
             BindMilestoneGrid();
 
             LogMessage("Milestone updated successfully");
+        }
+
+        private void CheckNewProjectAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27454")
+                    rdBtnSelection.Items[0].Enabled = true;
+            }
+            if (!rdBtnSelection.Items[0].Enabled)
+                rdBtnSelection.SelectedIndex = 1;
+        }
+
+        private bool CheckPayeeAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27447")
+                    return true;
+            }
+            return false;
         }
     }
 

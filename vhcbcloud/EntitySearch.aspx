@@ -1,12 +1,13 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntitySearch.aspx.cs" Inherits="vhcbcloud.EntitySearch" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
+     
     <div class="jumbotron">
 
         <table style="width: 100%;">
             <tr>
                 <td>
-                    <p class="lead">Entity Search</p>
+                   <p class="lead">Entity (Organization / Individual) </p>
                 </td>
             </tr>
         </table>
@@ -26,7 +27,13 @@
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="text-align: left">Search Options</td>
+                             <td>
+                                <asp:RadioButtonList ID="rdBtnAction1" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
+                                    OnSelectedIndexChanged="rdBtnAction1_SelectedIndexChanged">
+                                    <asp:ListItem Enabled="false">New</asp:ListItem>
+                                    <asp:ListItem Selected="True">Existing</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 &nbsp;

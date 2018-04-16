@@ -256,6 +256,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtURL;
         
         /// <summary>
+        /// ddlFundName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundName;
+        
+        /// <summary>
         /// chkAct250Active control.
         /// </summary>
         /// <remarks>
@@ -362,6 +371,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender ce_txtDevPaymentReceived;
+        
+        /// <summary>
+        /// spnUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnUnits;
+        
+        /// <summary>
+        /// txtUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtUnits;
         
         /// <summary>
         /// chkUnitActive control.

@@ -62,7 +62,7 @@
                                 &nbsp;
                                
                                 <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project"
-                                    Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
+                                    Text="New Project" Enabled="false" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
                             </td>
                         </tr>
                     </table>

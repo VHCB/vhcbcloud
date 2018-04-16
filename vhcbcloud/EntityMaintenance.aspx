@@ -13,14 +13,14 @@
                             <td>
                                 <asp:RadioButtonList ID="rdBtnAction" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
                                     OnSelectedIndexChanged="rdBtnAction_SelectedIndexChanged">
-                                    <asp:ListItem>New</asp:ListItem>
-                                    <asp:ListItem Selected="True">Existing</asp:ListItem>
+                                    <asp:ListItem Enabled="false">New</asp:ListItem>
+                                    <asp:ListItem>Existing</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
                             <td style="text-align: right;">
                                 <asp:ImageButton ID="btnProjectNotes1" Visible="false" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 &nbsp;
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" Visible="false" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
                     </table>
@@ -219,12 +219,28 @@
                                                 MaskType="Number" TargetControlID="txtCellPhone">
                                             </ajaxToolkit:MaskedEditExtender>
                                         </td>
-                                        <td><span class="labelClass" runat="server" id="spnDefaultRole">Default Role</span></td>
+                                        <td><span class="labelClass" runat="server" id="lblW9">W9</span></td>
                                         <td>
-                                            <asp:DropDownList ID="ddlDefaultRole" CssClass="clsDropDown" runat="server">
-                                            </asp:DropDownList></td>
+                                            <asp:CheckBox ID="ckbW9" CssClass="ChkBox" runat="server" Text="" Enabled="false" />
+                                           </td>
                                     </tr>
                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                      <tr>
+                                        <td>
+                                           <span class="labelClass" runat="server" id="spnDefaultRole">Default Role</span>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlDefaultRole" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
@@ -976,6 +992,8 @@
             <asp:HiddenField ID="hfFarmId" runat="server" />
             <asp:HiddenField ID="hfProjectId" runat="server" />
             <asp:HiddenField ID="hfProjectEventID" runat="server" />
+            <asp:HiddenField ID="hfIsCreated" runat="server" />
+            
         </div>
     </div>
     </div>

@@ -226,7 +226,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static void UpdateEnterpriseAcres(int EnterpriseAcresId, int AcresInProduction, int AcresOwned, int AcresLeased)
+        public static void UpdateEnterpriseAcres(int EnterpriseAcresId, int AcresInProduction, int AcresOwned, 
+            int AcresLeased, int ForestAcres, int TotalAcres)
         {
             try
             {
@@ -244,6 +245,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresInProduction", AcresInProduction));
                         command.Parameters.Add(new SqlParameter("AcresOwned", AcresOwned));
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
+                        command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
+                        command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -257,7 +260,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static ViabilityMaintResult AddEnterpriseAttributes(int ProjectID, int AcresInProduction, int AcresOwned, int AcresLeased)
+        public static ViabilityMaintResult AddEnterpriseAttributes(int ProjectID, int AcresInProduction, 
+            int AcresOwned, int AcresLeased, int ForestAcres, int TotalAcres)
         {
             try
             {
@@ -275,6 +279,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresInProduction", AcresInProduction));
                         command.Parameters.Add(new SqlParameter("AcresOwned", AcresOwned));
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
+                        command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
+                        command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;

@@ -73,7 +73,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetUserInfo()
+        public static DataTable GetUserInfo(bool IsActiveOnly)
         {
             DataTable dtUserInfo = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -82,6 +82,8 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetUserInfo";
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
                 using (connection)
                 {
                     connection.Open();
@@ -141,7 +143,8 @@ namespace VHCBCommon.DataAccessLayer
             return dtUserInfo;
         }
 
-        public static void AddUserInfo(string firstName, string lastName, string password, string email, int DfltPrg, int dfltSecGrp)
+        public static void AddUserInfo(string firstName, string lastName, string password, 
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -155,6 +158,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("email", email));
                 command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
                 command.Parameters.Add(new SqlParameter("dfltSecGrp", dfltSecGrp));
+                command.Parameters.Add(new SqlParameter("NumbProj", NumbProj));
+                command.Parameters.Add(new SqlParameter("HostSite", HostSite));
+                
                 using (connection)
                 {
                     connection.Open();
@@ -172,7 +178,8 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, string email, int DfltPrg, int dfltSecGrp)
+        public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, 
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool RowIsActive)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -187,6 +194,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("email", email));
                 command.Parameters.Add(new SqlParameter("DfltPrg", DfltPrg));
                 command.Parameters.Add(new SqlParameter("dfltSecGrp", dfltSecGrp));
+                command.Parameters.Add(new SqlParameter("NumbProj", NumbProj));
+                command.Parameters.Add(new SqlParameter("HostSite", HostSite));
+                command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                 using (connection)
                 {
