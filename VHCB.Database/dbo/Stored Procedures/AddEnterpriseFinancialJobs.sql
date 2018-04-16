@@ -7,8 +7,8 @@
 	@GrossSales		money,
 	@Netincome		money,
 	@GrossPayroll	money,
-	@FamilyEmp		int,
-	@NonFamilyEmp	int,
+	@FamilyEmp		decimal(18,2),
+	@NonFamilyEmp	decimal(18,2),
 	@Networth		money,
 	@isDuplicate	bit output,
 	@isActive		bit Output
@@ -24,10 +24,10 @@ begin transaction
     (
 		select 1
 		from EnterpriseFinancialJobs(nolock)
-		where ProjectID = @ProjectID and MilestoneID = @MilestoneID
+		where ProjectID = @ProjectID and StatusPt = @MilestoneID
     )
 	begin
-		insert into EnterpriseFinancialJobs(ProjectID, MilestoneID, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp, Networth)
+		insert into EnterpriseFinancialJobs(ProjectID, StatusPt, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp, Networth)
 		values(@ProjectID, @MilestoneID, @MSDate, @Year, @GrossSales, @Netincome, @GrossPayroll, @FamilyEmp, @NonFamilyEmp, @Networth)
 		
 		set @isDuplicate = 0
@@ -37,7 +37,7 @@ begin transaction
 	begin
 		select @isActive =  RowIsActive
 		from EnterpriseFinancialJobs(nolock)
-		where ProjectID = @ProjectID  and MilestoneID = @MilestoneID
+		where ProjectID = @ProjectID  and StatusPt = @MilestoneID
 	end
 
 	end try

@@ -1,5 +1,4 @@
-﻿
-create procedure dbo.GetEnterpriseFinancialJobsList
+﻿CREATE procedure dbo.GetEnterpriseFinancialJobsList
 (
 	@ProjectID		int,
 	@IsActiveOnly	bit
@@ -9,10 +8,10 @@ begin transaction
 --exec GetEnterpriseFinancialJobsList 1, 1
 	begin try
 	
-		select EnterFinancialJobsID, MilestoneID, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp, 
+		select EnterFinancialJobsID, StatusPt, MSDate, Year, GrossSales, Netincome, GrossPayroll, FamilyEmp, NonFamilyEmp, 
 		efj.RowIsActive, lv.Description as Milestone 
 		from EnterpriseFinancialJobs efj(nolock)
-		left join LookupValues lv(nolock) on lv.TypeID = efj.MilestoneID
+		left join LookupValues lv(nolock) on lv.TypeID = efj.StatusPt
 		where efj.ProjectID = @ProjectID
 			and (@IsActiveOnly = 0 or efj.RowIsActive = @IsActiveOnly)
 		order by EnterFinancialJobsID desc

@@ -1,6 +1,4 @@
-﻿
-
-create procedure dbo.AddGrantInfoV2
+﻿CREATE procedure dbo.AddGrantInfoV2
 (
 	@VHCBName		nvarchar(50),
 	@AwardAmt		decimal(16, 2),
@@ -17,6 +15,7 @@ create procedure dbo.AddGrantInfoV2
 	@FedFunds		bit,
 	@Admin			bit,
 	@Match			bit,
+	@DrawDown		bit,
 	@Fundsrec		bit,
 	@isDuplicate	bit output,
 	@isActive		bit Output
@@ -37,9 +36,9 @@ begin transaction
     )
 	begin
 		insert into Grantinfo(VHCBName, AwardAmt, BeginDate, EndDate, LkGrantAgency, GrantName, Admin, Match, Fundsrec,
-		ContactID, AwardNum, CFDA, LkGrantSource, Staff, Program, FedFunds)
+		ContactID, AwardNum, CFDA, LkGrantSource, Staff, Program, FedFunds, DrawDown)
 		values(@VHCBName, @AwardAmt, @BeginDate, @EndDate, @LkGrantAgency, @GrantName, @Admin, @Match, @Fundsrec,
-		@ContactID, @AwardNum, @CFDA, @LkGrantSource, @Staff, @Program, @FedFunds)
+		@ContactID, @AwardNum, @CFDA, @LkGrantSource, @Staff, @Program, @FedFunds, @DrawDown)
 		
 		set @isDuplicate = 0
 	end

@@ -1,14 +1,14 @@
-﻿
-create procedure dbo.GetRelatedProjectList
+﻿CREATE procedure dbo.GetRelatedProjectList
 (
 	@ProjectId		int,
 	@IsActiveOnly	bit
 ) as
 begin transaction
---exec GetRelatedProjectList 6588
+--exec GetRelatedProjectList 6588, 1
 	begin try
 
-	select  pr.RelProjectId, p.Proj_num, lv.Description as ProjectName, pr.RowIsActive, p.LkProgram, lv1.Description as Program
+	select  pr.RelProjectId, p.Proj_num, lv.Description as ProjectName, pr.RowIsActive, p.LkProgram, lv1.Description as Program, 
+		pr.DualGoal
 	from projectrelated pr(nolock)
 	join project p(nolock) on pr.RelProjectId = p.ProjectId
 	join projectname pn(nolock) on pr.RelProjectId = pn.ProjectID

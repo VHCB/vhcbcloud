@@ -8,6 +8,7 @@
     [EndDate]          DATE          NULL,
     [Individual]       BIT           CONSTRAINT [DF_Applicant_Individual] DEFAULT ((0)) NOT NULL,
     [FYend]            NVARCHAR (5)  NULL,
+    [W9]               BIT           CONSTRAINT [DF_Applicant_W9] DEFAULT ((0)) NOT NULL,
     [website]          NVARCHAR (75) NULL,
     [email]            NVARCHAR (75) NULL,
     [HomePhone]        NCHAR (10)    NULL,
@@ -23,6 +24,8 @@
     [DateModified]     DATETIME      CONSTRAINT [DF_Organization_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_Applicant] PRIMARY KEY CLUSTERED ([ApplicantId] ASC)
 );
+
+
 
 
 GO

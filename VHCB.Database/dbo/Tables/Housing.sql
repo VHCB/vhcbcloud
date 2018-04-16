@@ -11,10 +11,13 @@
     [Vermod]        INT      NULL,
     [ServSuppUnits] INT      CONSTRAINT [DF_Housing_ServSuppUnits] DEFAULT ((0)) NOT NULL,
     [AffordUnits]   INT      NULL,
+    [Bldgs]         INT      NULL,
     [RowIsActive]   BIT      CONSTRAINT [DF_Housing_RowIsActive] DEFAULT ((1)) NOT NULL,
     [DateModified]  DATETIME CONSTRAINT [DF_Housing_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_Housing] PRIMARY KEY CLUSTERED ([HousingID] ASC)
 );
+
+
 
 
 GO

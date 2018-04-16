@@ -4,19 +4,20 @@
     [Lname]           NCHAR (25)    NULL,
     [Username]        NVARCHAR (50) NULL,
     [password]        NVARCHAR (20) NULL,
-    [DBConnection]    INT           NULL,
     [email]           NVARCHAR (75) NULL,
     [question1]       NVARCHAR (75) NULL,
     [Answer1]         NVARCHAR (50) NULL,
     [DfltPrg]         INT           NULL,
     [securityLevel]   INT           CONSTRAINT [DF_UserInfo_securityLevel] DEFAULT ((3)) NOT NULL,
     [IsFirstTimeUser] BIT           CONSTRAINT [DF__UserInfo__IsFirs__66E41C5C] DEFAULT ((1)) NULL,
-    [NumbProj]        INT           CONSTRAINT [DF_UserInfo_NumbProj] DEFAULT ((0)) NOT NULL,
+    [NumbProj]        INT           CONSTRAINT [DF_UserInfo_NumbProj] DEFAULT ((0)) NULL,
     [HostSite]        INT           NULL,
     [RowIsActive]     BIT           CONSTRAINT [DF_UserInfo_RowIsActive] DEFAULT ((1)) NOT NULL,
     [DateModified]    DATETIME      CONSTRAINT [DF_UserInfo_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_UserInfo] PRIMARY KEY CLUSTERED ([UserId] ASC)
 );
+
+
 
 
 GO

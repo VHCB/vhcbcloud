@@ -1,9 +1,9 @@
-﻿
-create procedure dbo.AddAct250DevPay
+﻿CREATE procedure dbo.AddAct250DevPay
 (
 	@Act250FarmID	int, 
 	@AmtRec			money, 
 	@DateRec		datetime,
+	@Units			int,
 	@isDuplicate	bit output,
 	@isActive		bit Output
 ) as
@@ -23,8 +23,8 @@ begin transaction
 	)
 	begin
 
-		insert into Act250DevPay(Act250FarmID, AmtRec, DateRec)
-		values(@Act250FarmID, @AmtRec, @DateRec)
+		insert into Act250DevPay(Act250FarmID, AmtRec, DateRec, Units)
+		values(@Act250FarmID, @AmtRec, @DateRec, @Units)
 
 		set @isDuplicate = 0
 	end

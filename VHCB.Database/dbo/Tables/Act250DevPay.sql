@@ -1,13 +1,15 @@
 ﻿CREATE TABLE [dbo].[Act250DevPay] (
-    [Act250PayID]  INT      IDENTITY (1, 1) NOT NULL,
-    [Act250FarmID] INT      NULL,
-    [AmtRec]       MONEY    NULL,
-    [DateRec]      DATETIME NULL,
-    [Units]        TEXT     NULL,
-    [RowIsActive]  BIT      CONSTRAINT [DF_Act250DevPay_RowIsActive] DEFAULT ((1)) NOT NULL,
-    [DateModified] DATETIME CONSTRAINT [DF_Act250DevPay_DateModified] DEFAULT (getdate()) NOT NULL,
+    [Act250PayID]  INT           IDENTITY (1, 1) NOT NULL,
+    [Act250FarmID] INT           NULL,
+    [AmtRec]       MONEY         NULL,
+    [DateRec]      DATETIME      NULL,
+    [Units]        NVARCHAR (50) NULL,
+    [RowIsActive]  BIT           CONSTRAINT [DF_Act250DevPay_RowIsActive] DEFAULT ((1)) NOT NULL,
+    [DateModified] DATETIME      CONSTRAINT [DF_Act250DevPay_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_Act250DevPay] PRIMARY KEY CLUSTERED ([Act250PayID] ASC)
 );
+
+
 
 
 GO

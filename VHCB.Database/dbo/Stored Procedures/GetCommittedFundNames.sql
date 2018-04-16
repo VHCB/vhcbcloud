@@ -1,5 +1,4 @@
-﻿
-CREATE procedure [dbo].[GetCommittedFundNames]
+﻿CREATE procedure [dbo].[GetCommittedFundNames]
 (
 	@projectid int
 )
@@ -16,6 +15,6 @@ Begin
 		left join ReallocateLink(nolock) on fromProjectId = p.ProjectId
 		left join LkTransType_v ttv(nolock) on det.lktranstype = ttv.typeid
 		where p.projectid = @projectid and f.RowIsActive = 1
-			and tr.RowIsActive=1 and pn.DefName =1 
+			and tr.RowIsActive=1 and pn.DefName = 1 and tr.Balanced = 1 and tr.LkStatus = 262
 		order by f.name
 End

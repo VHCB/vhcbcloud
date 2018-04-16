@@ -238,7 +238,7 @@ begin
 		lv1.Description as 'Transaction',  
 		d.Amount, 
 		0 as IsDifferentProject,
-		t.Adjust
+		t.Adjust, d.DetailId
 	from trans t(nolock)
 	join detail d(nolock) on t.TransId = d.TransId
 	join fund f(nolock) on f.FundId = d.FundId
@@ -260,7 +260,7 @@ begin
 		lv1.Description as 'Transaction',  
 		d.Amount, 
 		1 as IsDifferentProject,
-		t.Adjust
+		t.Adjust,  d.DetailId
 	from TransAssign ta(nolock)
 	join trans t(nolock) on ta.ToTransID = t.TransId
 	join detail d(nolock) on t.TransId = d.TransId

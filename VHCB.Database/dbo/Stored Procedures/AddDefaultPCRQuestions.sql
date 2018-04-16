@@ -1,5 +1,4 @@
-﻿
-CREATE procedure AddDefaultPCRQuestions
+﻿CREATE procedure AddDefaultPCRQuestions
 (
 @IsLegal bit = 0,
 @ProjectCheckReqID	int,
@@ -14,18 +13,18 @@ Begin
 	if(@IsLegal = 0)
 		Begin
 
-			Insert into ProjectCheckReqQuestions (ProjectCheckReqID, LkPCRQuestionsID, Date, StaffID)
-			 (select @ProjectCheckReqID, typeId, getdate(), @staffid from LkPCRQuestions where Def= 1 and RowIsActive =1)
+			Insert into ProjectCheckReqQuestions (ProjectCheckReqID, LkPCRQuestionsID, Date)
+			 (select @ProjectCheckReqID, typeId, getdate() from LkPCRQuestions where Def= 1 and RowIsActive =1)
 
 			
 		End
 	else
 	begin
 
-		Insert into ProjectCheckReqQuestions (ProjectCheckReqID, LkPCRQuestionsID, Date, StaffID)
-			 (select @ProjectCheckReqID, typeId, getdate(), @staffid from LkPCRQuestions where Def= 1 and RowIsActive =1
+		Insert into ProjectCheckReqQuestions (ProjectCheckReqID, LkPCRQuestionsID, Date)
+			 (select @ProjectCheckReqID, typeId, getdate() from LkPCRQuestions where Def= 1 and RowIsActive =1
 			 union all
-			 select @ProjectCheckReqID, typeId, getdate(), @staffid from LkPCRQuestions where TypeID=7 and RowIsActive =1)
+			 select @ProjectCheckReqID, typeId, getdate() from LkPCRQuestions where TypeID=7 and RowIsActive =1)
 	end
 end
 end

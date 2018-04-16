@@ -1,15 +1,15 @@
-﻿
-create procedure dbo.UpdateEnterpriseGrantMatch
+﻿CREATE procedure dbo.UpdateEnterpriseGrantMatch
 (
 	@EnterpriseGrantMatchID int,
+	@GrantAmt			decimal(18, 2),
 	@RowIsActive		bit
 ) as
 begin transaction
-
+--exec UpdateEnterpriseGrantMatch 10, 0, 1
 	begin try
 	
 	update EnterpriseGrantMatch set 
-		 RowIsActive = @RowIsActive, DateModified = getdate()
+		 RowIsActive = @RowIsActive, GrantAmt = @GrantAmt, DateModified = getdate()
 	from EnterpriseGrantMatch 
 	where EnterpriseGrantMatchID = @EnterpriseGrantMatchID
 

@@ -7,8 +7,8 @@
 	@GrossSales		money,
 	@Netincome		money,
 	@GrossPayroll	money,
-	@FamilyEmp		int,
-	@NonFamilyEmp	int,
+	@FamilyEmp		decimal(18,2),
+	@NonFamilyEmp	decimal(18,2),
 	@Networth		money,
 	@RowIsActive		bit
 ) as
@@ -17,7 +17,7 @@ begin transaction
 	begin try
 	
 	update EnterpriseFinancialJobs set 
-		MilestoneID = @MilestoneID,
+		StatusPt = @MilestoneID,
 		MSDate = @MSDate,
 		Year = @Year,
 		GrossSales = @GrossSales,

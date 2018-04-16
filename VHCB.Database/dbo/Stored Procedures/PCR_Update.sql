@@ -42,7 +42,8 @@ begin
 		else
 		set @Balanced = 0
 
-		update Trans set ProjectID = ProjectID, Date = @InitDate, TransAmt = @Disbursement, PayeeApplicant = @Payee, LkTransaction = 236, LkStatus = @LkStatus,
+		update Trans set ProjectID = ProjectID, Date = @CrDate, --@InitDate, 
+		TransAmt = @Disbursement, PayeeApplicant = @Payee, LkTransaction = 236, LkStatus = @LkStatus,
 		Balanced = @Balanced
 		from Trans
 		where TransID = @TransID

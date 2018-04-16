@@ -10,9 +10,9 @@ begin
 	(
 			ProjectId			int null,
 			TransDate			datetime null,
-			ProjectName			varchar(50) null,
+			ProjectName			varchar(150) null,
 			ProjectNum			varchar(50) null,
-			Account				int null,
+			Account				varchar(10) null,
 			FundId				int null,
 			FundName			varchar(50) null,
 			FundTransTypeName	varchar(50) null,

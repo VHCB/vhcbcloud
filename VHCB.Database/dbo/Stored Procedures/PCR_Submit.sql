@@ -8,7 +8,7 @@
 	@MatchAmt	money, 
 	@LkFVGrantMatch	int, 
 	@Notes	nvarchar(2000), 
-	@Disbursement decimal(8,2),
+	@Disbursement money,
 	@Payee int,
 	@LkStatus int,
 	@UserID	int,
@@ -31,7 +31,8 @@ begin transaction
 	set @ProjectCheckReqID = @@IDENTITY
 
 	insert into Trans(ProjectID, ProjectCheckReqID, Date, TransAmt, PayeeApplicant, LkTransaction, LkStatus, UserID)
-	values(@ProjectID, @ProjectCheckReqID, @InitDate, @Disbursement, @Payee, 236, @LkStatus, @UserID)
+	values(@ProjectID, @ProjectCheckReqID, @CRDate, --@InitDate, 
+	@Disbursement, @Payee, 236, @LkStatus, @UserID)
 
 	set @TransID = @@IDENTITY
 

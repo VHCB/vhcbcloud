@@ -1,8 +1,8 @@
-﻿
-create procedure dbo.UpdateRelatedProject
+﻿CREATE procedure dbo.UpdateRelatedProject
 (
 	@ProjectId			int,
 	@RelProjectId		int,
+	@DualGoal			bit,
 	@RowIsActive		bit
 
 ) as
@@ -10,10 +10,10 @@ begin transaction
 
 	begin try
 
-	update projectrelated set RowIsActive = @RowIsActive
+	update projectrelated set RowIsActive = @RowIsActive, DualGoal = @DualGoal
 	where  ProjectID = @ProjectID and RelProjectId = @RelProjectId
 
-	update projectrelated set RowIsActive = @RowIsActive
+	update projectrelated set RowIsActive = @RowIsActive, DualGoal = @DualGoal
 	where  ProjectID = @RelProjectId and RelProjectId = @ProjectID
 
 	end try

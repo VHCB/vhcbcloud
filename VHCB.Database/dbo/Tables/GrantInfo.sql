@@ -20,12 +20,16 @@
     [Fundsrec]      BIT            NULL,
     [DrawDown]      BIT            CONSTRAINT [DF_GrantInfo_DrawDown] DEFAULT ((0)) NOT NULL,
     [Match]         BIT            NULL,
+    [MatchAmt]      MONEY          NULL,
     [Admin]         BIT            NULL,
+    [AdminAmt]      MONEY          NULL,
     [Notes]         NVARCHAR (MAX) NULL,
     [RowIsActive]   BIT            CONSTRAINT [DF_GrantInfo_RowIsActive] DEFAULT ((1)) NOT NULL,
     [DateModified]  DATETIME       CONSTRAINT [DF_GrantInfo_DateModified] DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_GrantInfo] PRIMARY KEY CLUSTERED ([GrantinfoID] ASC)
 );
+
+
 
 
 

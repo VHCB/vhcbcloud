@@ -1,4 +1,4 @@
-﻿create procedure PCR_Update_CheckReqDate
+﻿CREATE procedure PCR_Update_CheckReqDate
 (
 	@ProjectCheckReqID int,
 	@CrDate date
@@ -11,6 +11,9 @@ begin
 
 		update ProjectCheckReq set CRDate = @crDate
 		from ProjectCheckReq
+		where ProjectCheckReqID = @ProjectCheckReqID
+
+		update Trans set Date = @CrDate
 		where ProjectCheckReqID = @ProjectCheckReqID
 
 	end try

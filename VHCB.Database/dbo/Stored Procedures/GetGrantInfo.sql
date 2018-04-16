@@ -1,5 +1,4 @@
-﻿
-create procedure GetGrantInfo  
+﻿CREATE procedure GetGrantInfo  
 (
 	@GrantInfoId	int
 )
@@ -9,8 +8,8 @@ begin
 	begin try
 
 		select GrantName, VHCBName, LkGrantAgency, LkGrantSource, Grantor, AwardNum, 
-		convert(varchar(10), AwardAmt) AwardAmt, BeginDate, EndDate, Staff, ContactID, CFDA, Program, SignAgree, FedFunds, FedSignDate, Fundsrec, Match, 
-		Admin, Notes, RowIsActive, DateModified
+		convert(varchar(50), AwardAmt) AwardAmt, BeginDate, EndDate, Staff, ContactID, CFDA, Program, SignAgree, FedFunds, FedSignDate, Fundsrec, Match, 
+		Admin, Notes, DrawDown, RowIsActive, DateModified
 		from GrantInfo
 		where GrantinfoID = @GrantInfoId
 	

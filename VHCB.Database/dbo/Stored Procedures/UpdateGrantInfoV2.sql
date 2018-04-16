@@ -1,5 +1,4 @@
-﻿
-create procedure dbo.UpdateGrantInfoV2
+﻿CREATE procedure dbo.UpdateGrantInfoV2
 (
 	@GrantinfoID	int,
 	@VHCBName		nvarchar(50),
@@ -17,6 +16,7 @@ create procedure dbo.UpdateGrantInfoV2
 	@FedFunds		bit,
 	@Admin			bit,
 	@Match			bit,
+	@DrawDown		bit,
 	@Fundsrec		bit,
 	@RowIsActive	bit
 ) as
@@ -27,7 +27,7 @@ begin transaction
 		update Grantinfo set VHCBName = @VHCBName, AwardAmt = @AwardAmt, BeginDate = @BeginDate, EndDate = @EndDate, 
 		LkGrantAgency = @LkGrantAgency, GrantName = @GrantName, Admin = @Admin, Match = @Match, Fundsrec = @Fundsrec,
 		ContactID = @ContactID, AwardNum = @AwardNum, CFDA = @CFDA, LkGrantSource = @LkGrantSource, Staff = @Staff, 
-		Program = @Program, FedFunds = @FedFunds, RowIsActive = @RowIsActive
+		Program = @Program, FedFunds = @FedFunds, RowIsActive = @RowIsActive, DrawDown = @DrawDown
 		from Grantinfo where GrantinfoID = @GrantinfoID
 	end
 	end try

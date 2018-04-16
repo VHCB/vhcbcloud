@@ -1,8 +1,8 @@
 ﻿CREATE procedure GetAvailableFundAmount
 (
 	@projectid			int,
-	@fundId				int,
-	@fundTransType		int,
+	@fundId				int = null,
+	@fundTransType		int = null,
 	@LandUsePermitID	int = null
 )
 as

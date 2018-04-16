@@ -6,8 +6,11 @@
     [SubReq]       BIT            NULL,
     [RowIsActive]  BIT            CONSTRAINT [DF_LookupValues_RowIsActive] DEFAULT ((1)) NOT NULL,
     [DateModified] DATETIME       CONSTRAINT [DF_Table_1_DateeModified] DEFAULT (getdate()) NOT NULL,
+    [OldTypeID]    INT            NULL,
     CONSTRAINT [PK_LookupValues] PRIMARY KEY CLUSTERED ([TypeID] ASC)
 );
+
+
 
 
 GO

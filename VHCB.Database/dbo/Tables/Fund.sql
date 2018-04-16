@@ -9,6 +9,7 @@
     [VHCBCode]     NVARCHAR (25)  NULL,
     [Drawdown]     BIT            NULL,
     [MitFund]      BIT            CONSTRAINT [DF_Fund_MitFund] DEFAULT ((0)) NOT NULL,
+    [MIPFundnum]   NUMERIC (4)    NULL,
     [LkProgram]    INT            NULL,
     [RowIsActive]  BIT            CONSTRAINT [DF_Fund_RowIsActive] DEFAULT ((1)) NOT NULL,
     [DateModified] DATETIME       CONSTRAINT [DF_Fund_DateModified_1] DEFAULT (getdate()) NOT NULL,
@@ -16,6 +17,8 @@
     CONSTRAINT [PK_Fund_1] PRIMARY KEY CLUSTERED ([FundId] ASC),
     CONSTRAINT [FK_Fund_Fund] FOREIGN KEY ([FundId]) REFERENCES [dbo].[Fund] ([FundId])
 );
+
+
 
 
 

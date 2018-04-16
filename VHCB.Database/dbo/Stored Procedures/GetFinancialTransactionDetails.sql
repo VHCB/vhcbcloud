@@ -52,7 +52,24 @@ begin
 			and (trans.projectid = @project_id or (@project_id = -1 and trans.projectid is not null))
 			and (trans.LkTransaction = @financial_transaction_action_id or (@financial_transaction_action_id = -1 and trans.LkTransaction is not null))
 			and trans.LKStatus = 261 
-			and trans.LkTransaction != 26552
+			and trans.LkTransaction not in(236, 26552)
+			and trans.RowIsActive = 1 
+			and trans.Balanced = 1 
+			and pv.defname = 1  
+		union
+		select trans.TransId, pv.project_name ProjectName, pv.proj_num ProjectNumber, trans.Date as TransactionDate, trans.TransAmt, 
+			v.description as LkTransactionDesc, --, trans.LkTransaction, v.*
+			ui.Fname + ' ' + ui.Lname as UserName, trans.adjust
+		from Trans trans(nolock)
+		left join project_v  pv(nolock) on pv.project_id = trans.ProjectID
+		left join TransAction_v v(nolock) on v.typeid = trans.LkTransaction
+		left join userinfo ui(nolock) on ui.UserId = trans.UserId
+		where trans.Date >= @tran_start_date 
+			and trans. Date <= @tran_end_date  
+			and (trans.projectid = @project_id or (@project_id = -1 and trans.projectid is not null))
+			and (trans.LkTransaction = @financial_transaction_action_id or (@financial_transaction_action_id = -1 and trans.LkTransaction is not null))
+			and trans.LKStatus = 261 
+			and trans.LkTransaction = 236 and trans.Adjust = 1
 			and trans.RowIsActive = 1 
 			and trans.Balanced = 1 
 			and pv.defname = 1  

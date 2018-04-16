@@ -2,6 +2,7 @@
 (
 	@ProjectId			int,
 	@RelProjectId		int,
+	@IsDualGoal			bit,
 	@isDuplicate		bit output,
 	@isActive			bit Output
 
@@ -20,11 +21,11 @@ begin transaction
 			where ProjectID = @ProjectId and RelProjectID = @RelProjectId
         )
 		begin
-			insert into projectrelated(ProjectID, RelProjectID)
-			values(@ProjectId, @RelProjectId)
+			insert into projectrelated(ProjectID, RelProjectID, DualGoal)
+			values(@ProjectId, @RelProjectId, @IsDualGoal)
 
-			insert into projectrelated(ProjectID, RelProjectID)
-			values(@RelProjectId, @ProjectId)
+			insert into projectrelated(ProjectID, RelProjectID, DualGoal)
+			values(@RelProjectId, @ProjectId, @IsDualGoal)
 
 			set @isDuplicate = 0
 		end

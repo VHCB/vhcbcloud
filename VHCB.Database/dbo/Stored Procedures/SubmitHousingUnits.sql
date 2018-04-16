@@ -1,5 +1,4 @@
-﻿
-create procedure SubmitHousingUnits
+﻿CREATE procedure SubmitHousingUnits
 (
 	@HousingID		int,
 	@LkHouseCat		int,
@@ -10,7 +9,8 @@ create procedure SubmitHousingUnits
 	@UnitsRemoved	int,
 	@MHIP			int,
 	@IsSash			bit,
-	@ServSuppUnits	int	
+	@ServSuppUnits	int,
+	@Bldgs			int
 
 ) as
 begin transaction
@@ -19,7 +19,7 @@ begin transaction
 
 	update Housing set LkHouseCat = @LkHouseCat, TotalUnits = @Previous + @NewUnits - @UnitsRemoved, Hsqft = @Hsqft, 
 	Previous = @Previous, NewUnits = @NewUnits, UnitsRemoved = @UnitsRemoved, Vermod = @MHIP, Sash = @IsSash, 
-	ServSuppUnits = @ServSuppUnits
+	ServSuppUnits = @ServSuppUnits, Bldgs = @Bldgs
 	
 	from Housing(nolock) 
 	where HousingID = @HousingID

@@ -1,23 +1,24 @@
 ﻿CREATE VIEW dbo.VW_GetAllFinancialDetail
 AS
-SELECT     dbo.Trans.TransId, dbo.Detail.DetailID, dbo.Trans.Date, dbo.Trans.TransAmt, dbo.Detail.Amount AS [Detail Amount], dbo.Trans.ProjectCheckReqID, 
-                      dbo.VWLK_ProjectNames.Proj_num AS [Project Number], dbo.VWLK_ProjectNames.Description AS [Project Name], dbo.LookupValues.Description AS [TransAction], 
-                      LookupValues_1.Description AS Status, dbo.Trans.Balanced, dbo.Trans.Adjust AS Adjustment, dbo.AppName.Applicantname, dbo.Fund.name AS Fund, 
-                      LookupValues_2.Description AS TransType, dbo.UserInfo.Username, dbo.Act250Farm.UsePermit, dbo.Fund.account AS [Fund Acct]
-FROM         dbo.Fund INNER JOIN
-                      dbo.LookupValues AS LookupValues_1 INNER JOIN
-                      dbo.LookupValues INNER JOIN
-                      dbo.VWLK_ProjectNames INNER JOIN
-                      dbo.Detail ON dbo.VWLK_ProjectNames.ProjectID = dbo.Detail.ProjectID INNER JOIN
-                      dbo.Trans ON dbo.Detail.TransId = dbo.Trans.TransId ON dbo.LookupValues.TypeID = dbo.Trans.LkTransaction ON LookupValues_1.TypeID = dbo.Trans.LkStatus ON 
-                      dbo.Fund.FundId = dbo.Detail.FundId INNER JOIN
-                      dbo.LookupValues AS LookupValues_2 ON dbo.Detail.LkTransType = LookupValues_2.TypeID LEFT OUTER JOIN
-                      dbo.Act250Farm ON dbo.Detail.LandUsePermitID = dbo.Act250Farm.Act250FarmID LEFT OUTER JOIN
-                      dbo.UserInfo ON dbo.Trans.UserID = dbo.UserInfo.UserId LEFT OUTER JOIN
-                      dbo.AppName INNER JOIN
-                      dbo.ApplicantAppName ON dbo.AppName.AppNameID = dbo.ApplicantAppName.AppNameID ON dbo.Trans.PayeeApplicant = dbo.ApplicantAppName.ApplicantID
-WHERE     (dbo.VWLK_ProjectNames.DefName = 1) AND (dbo.Trans.RowIsActive = 1) AND (dbo.Trans.Balanced = 1) AND (dbo.Trans.RowIsActive = 1) AND 
-                      (dbo.Detail.RowIsActive = 1)
+SELECT     TOP (100) PERCENT dbo.Trans.TransId, dbo.Detail.DetailID, dbo.Trans.Date, dbo.Trans.TransAmt, dbo.Detail.Amount AS [Detail Amount], 
+                      dbo.Trans.ProjectCheckReqID, dbo.VWLK_ProjectNames.Proj_num AS [Project Number], dbo.VWLK_ProjectNames.Description AS [Project Name], 
+                      dbo.LookupValues.Description AS [TransAction], LookupValues_1.Description AS Status, dbo.Trans.Balanced, dbo.Trans.Adjust AS Adjustment, 
+                      dbo.AppName.Applicantname, dbo.Fund.name AS Fund, LookupValues_2.Description AS TransType, dbo.UserInfo.Username, dbo.Act250Farm.UsePermit, 
+                      dbo.Fund.account AS [Fund Acct], dbo.Fund.abbrv
+FROM         dbo.UserInfo RIGHT OUTER JOIN
+                      dbo.LookupValues AS LookupValues_1 RIGHT OUTER JOIN
+                      dbo.LookupValues RIGHT OUTER JOIN
+                      dbo.Trans ON dbo.LookupValues.TypeID = dbo.Trans.LkTransaction ON LookupValues_1.TypeID = dbo.Trans.LkStatus ON 
+                      dbo.UserInfo.UserId = dbo.Trans.UserID LEFT OUTER JOIN
+                      dbo.AppName RIGHT OUTER JOIN
+                      dbo.ApplicantAppName ON dbo.AppName.AppNameID = dbo.ApplicantAppName.AppNameID ON 
+                      dbo.Trans.PayeeApplicant = dbo.ApplicantAppName.ApplicantID FULL OUTER JOIN
+                      dbo.VWLK_ProjectNames RIGHT OUTER JOIN
+                      dbo.LookupValues AS LookupValues_2 RIGHT OUTER JOIN
+                      dbo.Detail ON LookupValues_2.TypeID = dbo.Detail.LkTransType LEFT OUTER JOIN
+                      dbo.Fund ON dbo.Detail.FundId = dbo.Fund.FundId ON dbo.VWLK_ProjectNames.ProjectID = dbo.Detail.ProjectID LEFT OUTER JOIN
+                      dbo.Act250Farm ON dbo.Detail.LandUsePermitID = dbo.Act250Farm.Act250FarmID ON dbo.Trans.TransId = dbo.Detail.TransId
+WHERE     (dbo.VWLK_ProjectNames.DefName = 1) AND (dbo.Trans.RowIsActive = 1) AND (dbo.Trans.RowIsActive = 1) AND (dbo.Detail.RowIsActive = 1)
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_DiagramPaneCount', @value = 2, @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_GetAllFinancialDetail';
 

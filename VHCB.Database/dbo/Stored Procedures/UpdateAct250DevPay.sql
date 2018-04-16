@@ -1,16 +1,16 @@
-﻿
-create procedure dbo.UpdateAct250DevPay
+﻿CREATE procedure dbo.UpdateAct250DevPay
 (
 	@Act250PayID	int, 
 	@AmtRec			money, 
 	@DateRec		datetime,
+	@Units			int,
 	@IsRowIsActive	bit
 ) as
 begin transaction
 
 	begin try
 
-	update Act250DevPay set AmtRec = @AmtRec, DateRec = @DateRec,
+	update Act250DevPay set AmtRec = @AmtRec, DateRec = @DateRec, Units = @Units,
 		RowIsActive = @IsRowIsActive, DateModified = getdate()
 	from Act250DevPay
 	where Act250PayID = @Act250PayID

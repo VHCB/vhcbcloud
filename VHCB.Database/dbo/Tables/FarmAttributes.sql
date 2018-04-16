@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[FarmAttributes_not used] (
+﻿CREATE TABLE [dbo].[FarmAttributes] (
     [FarmAttributeID]   INT      NOT NULL,
     [FarmID]            INT      NOT NULL,
     [LKFarmAttributeID] INT      NOT NULL,

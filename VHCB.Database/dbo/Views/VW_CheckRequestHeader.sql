@@ -3,7 +3,7 @@ AS
 SELECT     dbo.Project.Proj_num, dbo.LookupValues.Description AS Program, dbo.VWLK_ProjectNames.Description AS [Project Name], dbo.ProjectCheckReq.InitDate, 
                       dbo.ProjectCheckReq.LegalReview, dbo.ProjectCheckReq.MatchAmt, LookupValues_1.Description AS [Grant Match], dbo.ProjectCheckReq.Notes, 
                       dbo.ProjectCheckReq.LCB, dbo.ProjectCheckReq.ProjectID, dbo.ProjectCheckReq.Paiddate, dbo.AppName.Applicantname AS Payee, AppName_1.Applicantname, 
-                      dbo.ProjectCheckReq.Voucher#, LookupValues_2.Description AS Status, dbo.UserInfo.Username
+                      dbo.ProjectCheckReq.Voucher#, LookupValues_2.Description AS Status, dbo.UserInfo.Username, dbo.Applicant.Stvendid
 FROM         dbo.ProjectCheckReq INNER JOIN
                       dbo.Project ON dbo.ProjectCheckReq.ProjectID = dbo.Project.ProjectId INNER JOIN
                       dbo.LookupValues ON dbo.ProjectCheckReq.LkProgram = dbo.LookupValues.TypeID INNER JOIN
@@ -15,7 +15,8 @@ FROM         dbo.ProjectCheckReq INNER JOIN
                       dbo.ApplicantAppName AS ApplicantAppName_1 ON dbo.ProjectApplicant.ApplicantId = ApplicantAppName_1.ApplicantID INNER JOIN
                       dbo.AppName AS AppName_1 ON ApplicantAppName_1.AppNameID = AppName_1.AppNameID INNER JOIN
                       dbo.LookupValues AS LookupValues_2 ON dbo.Trans.LkStatus = LookupValues_2.TypeID INNER JOIN
-                      dbo.UserInfo ON dbo.ProjectCheckReq.UserID = dbo.UserInfo.UserId LEFT OUTER JOIN
+                      dbo.UserInfo ON dbo.ProjectCheckReq.UserID = dbo.UserInfo.UserId INNER JOIN
+                      dbo.Applicant ON dbo.ApplicantAppName.ApplicantID = dbo.Applicant.ApplicantId LEFT OUTER JOIN
                       dbo.LookupValues AS LookupValues_1 ON dbo.ProjectCheckReq.LkFVGrantMatch = LookupValues_1.TypeID
 WHERE     (dbo.ProjectApplicant.Defapp = 1)
 GO
@@ -67,16 +68,6 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'
             DisplayFlags = 280
             TopColumn = 0
          End
-         Begin Table = "LookupValues_1"
-            Begin Extent = 
-               Top = 144
-               Left = 331
-               Bottom = 252
-               Right = 482
-            End
-            DisplayFlags = 280
-            TopColumn = 0
-         End
          Begin Table = "UserInfo"
             Begin Extent = 
                Top = 205
@@ -87,6 +78,26 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'
             DisplayFlags = 280
             TopColumn = 0
          End
+         Begin Table = "LookupValues_1"
+            Begin Extent = 
+               Top = 144
+               Left = 331
+               Bottom = 252
+               Right = 482
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "Applicant"
+            Begin Extent = 
+               Top = 282
+               Left = 894
+               Bottom = 390
+               Right = 1058
+            End
+            DisplayFlags = 280
+            TopColumn = 13
+         End
       End
    End
    Begin SQLPane = 
@@ -94,8 +105,9 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'
    Begin DataPane = 
       Begin ParameterDefaults = ""
       End
-      Begin ColumnWidths = 16
+      Begin ColumnWidths = 17
          Width = 284
+         Width = 1500
          Width = 1500
          Width = 1500
          Width = 1500
@@ -132,6 +144,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_DiagramPane2', @value = N'
    End
 End
 ', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'VIEW', @level1name = N'VW_CheckRequestHeader';
+
+
 
 
 GO
