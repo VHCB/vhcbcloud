@@ -63,7 +63,6 @@
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\User Defined Types\" />
-    <Folder Include="Publish Profile" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\zip.sql" />
@@ -189,7 +188,6 @@
     <Build Include="dbo\Tables\FederalProjectInspection.sql" />
     <Build Include="dbo\Tables\FederalAfford.sql" />
     <Build Include="dbo\Tables\FarmProducts_not used.sql" />
-    <Build Include="dbo\Tables\FarmAttributes_not used.sql" />
     <Build Include="dbo\Tables\Farm.sql" />
     <Build Include="dbo\Tables\EntityNotes.sql" />
     <Build Include="dbo\Tables\EnterpriseServProviderData.sql" />
@@ -1298,11 +1296,16 @@
     <Build Include="dbo\Stored Procedures\GetAllFundsByProjectProgram.sql" />
     <Build Include="dbo\Views\VW_All_Entities.sql" />
     <Build Include="dbo\Views\Project_Applicants.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SandBoxDataCompare.scmp" />
-    <None Include="Publish Profile\VHCB.Database.PROD.publish.xml" />
-    <None Include="Publish Profile\VHCB.Database.QA.publish.xml" />
-    <None Include="Publish Profile\VHCB.Database.Rama.publish.xml" />
+    <Build Include="dbo\Tables\ProjectHouseTargetUnits.sql" />
+    <Build Include="dbo\Tables\ProjectHouseAffordTOUnits.sql" />
+    <Build Include="dbo\Tables\FarmProducts.sql" />
+    <Build Include="dbo\Tables\FarmAttributes.sql" />
+    <Build Include="dbo\Views\VW_RPT_CHeckReq_Needing_Voucher.sql" />
+    <Build Include="dbo\Functions\getDefaultAddress.sql" />
+    <Build Include="dbo\Stored Procedures\getAwardSummaryTrans.sql" />
+    <Build Include="dbo\Stored Procedures\getAwardSummaryDetails.sql" />
+    <Build Include="dbo\Stored Procedures\GetAvailableFundAmountByProjectId.sql" />
+    <Build Include="dbo\Stored Procedures\EntitySearchByRole.sql" />
+    <Build Include="dbo\Stored Procedures\AddProjectFundDetailsReallocation.sql" />
   </ItemGroup>
 </Project>
