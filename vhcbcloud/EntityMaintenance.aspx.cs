@@ -239,7 +239,7 @@ namespace vhcbcloud
             BindLookUP(ddlAttribute, 169);
             BindLookUP(ddlProduct, 12);
             BindLookUP(ddlDefaultRole, 56);
-
+            BindLookUP(ddlEntityRole1, 170);
             //Project Events
             //BindLookUP(ddlEventProgram, 34);
             //BindProjects(ddlEventProject);
@@ -573,8 +573,8 @@ namespace vhcbcloud
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
-                           null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, 
+                            txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
                            0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked); //2=Organization
@@ -667,7 +667,7 @@ namespace vhcbcloud
                         dvNewAttribute.Visible = true;
                         dvNewProduct.Visible = true;
                         dvAttachEntities.Visible = true;
-                        BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                        //BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
                     }
                     else
                     {
@@ -675,7 +675,7 @@ namespace vhcbcloud
                         {
                             dvAttachEntities.Visible = true;
                             //BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
-                            BindApplicants(26243, "individual", ddlIndividualApplicant);
+                            //BindApplicants(26243, "individual", ddlIndividualApplicant);
                         }
                         else
                         {
@@ -1091,17 +1091,17 @@ namespace vhcbcloud
 
         protected void btnAttachEntities_Click(object sender, EventArgs e)
         {
-            if (ddlIndividualApplicant.SelectedIndex == 0)
+            if (ddlEntityName1.SelectedIndex == 0)
             {
                 LogMessage("Select Applicant");
-                ddlIndividualApplicant.Focus();
+                ddlEntityName1.Focus();
                 return;
             }
 
             FormAttributeResult obAttributeResult = EntityMaintenanceData.AddApplicantApplicant(DataUtils.GetInt(hfApplicatId.Value),
-                DataUtils.GetInt(ddlIndividualApplicant.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlEntityName1.SelectedValue.ToString()));
 
-            ddlIndividualApplicant.SelectedIndex = -1;
+            ddlEntityName1.SelectedIndex = -1;
             cbAttachEntities.Checked = false;
 
             BindAttachEntitiesGrid();
@@ -1694,6 +1694,19 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ddlEntityRole1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string SelectedRole = ddlEntityRole1.SelectedValue.ToString();
+
+            //dvExistingEntities.Visible = true;
+            BindApplicants(DataUtils.GetInt(SelectedRole), ddlEntityRole1.SelectedItem.ToString(), ddlEntityName1);
+        }
+
+        protected void ddlEntityName1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

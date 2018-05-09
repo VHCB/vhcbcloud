@@ -106,14 +106,24 @@ namespace vhcbcloud.Account
             if (IsValidUser)
             {
                 Session["UserId"] = UserId.Text;
-
                 //if (IsFirstTimeUser)
                 //    Response.Redirect("SetPassword.aspx");
                 //else
                 //{
+
                 FormsAuthentication.SetAuthCookie(UserId.Text, RememberMe.Checked);
-                string url = FormsAuthentication.DefaultUrl;
-                if (Request["ReturnUrl"] != null) url = Request["ReturnUrl"];
+                string url = "";
+
+                DataRow dr = UserSecurityData.GetUserSecurity(UserId.Text);
+                if (dr != null && dr["usergroupid"].ToString() == "7")
+                    url = "../Americorps/ProgressReport.aspx";
+                else
+                {
+                    url = FormsAuthentication.DefaultUrl;
+                    if (Request["ReturnUrl"] != null)
+                        url = Request["ReturnUrl"];
+                }
+
                 Response.Redirect(url);
                 // }
                 //Response.Redirect("../BoardFinancialTransactions.aspx");

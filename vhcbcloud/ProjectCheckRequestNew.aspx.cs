@@ -39,7 +39,7 @@ namespace vhcbcloud
         {
             DataTable dt = new DataTable();
             dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
-            
+
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "27578")
@@ -71,6 +71,7 @@ namespace vhcbcloud
             {
                 if (dr["usergroupid"].ToString() == "0") // Admin Only
                 {
+                    hfIsAdmin.Value = "true";
                     hfIsVisibleBasedOnRole.Value = "true";
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
@@ -381,7 +382,7 @@ namespace vhcbcloud
             if (ddlUsePermit.SelectedIndex > 0)
             {
                 SetAvailableFundsLabel();
-            }  
+            }
         }
 
         protected void PopulateUsePermit(int ProjectId, string AccountId, int FundTransType)
@@ -1096,7 +1097,7 @@ namespace vhcbcloud
 
         private void SetAvailableFunds()
         {
-           // DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(DataUtils.GetInt(hfProjId.Value));
+            // DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(DataUtils.GetInt(hfProjId.Value));
             DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmountByProjectId(Convert.ToInt32(hfProjId.Value));
 
             if (dtAvailFunds != null && dtAvailFunds.Rows[0] != null)
@@ -1820,7 +1821,10 @@ namespace vhcbcloud
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "26807")
+                {
                     pnlVoucherDet.Visible = true;
+                    btnAddVoucher.Visible = true;
+                }
             }
         }
 
@@ -1846,15 +1850,23 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
+                bool isPC = false;
+
                 bool isApproved = Convert.ToBoolean(((CheckBox)gvQuestionsForApproval.Rows[rowIndex].FindControl("cbApproved")).Checked);
 
 
                 int ProjectCheckReqQuestionid = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfProjectCheckReqQuestionID")).Value);
                 int lkPCRQId = Convert.ToInt32(((HiddenField)gvQuestionsForApproval.Rows[rowIndex].FindControl("hfLKPCRQId")).Value);
 
+                if(lkPCRQId ==7)
+                {
+                    isPC = Convert.ToBoolean(((CheckBox)gvQuestionsForApproval.Rows[rowIndex].FindControl("cbPC")).Checked);
+                }
+
                 if (!isApproved)
                 {
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, isPC,
+                        GetUserId());
                     return;
                 }
 
@@ -1888,7 +1900,7 @@ namespace vhcbcloud
                 }
 
                 if (isApproved)
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, isPC, GetUserId());
 
 
                 //if (((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")
@@ -1962,6 +1974,14 @@ namespace vhcbcloud
                             else
                                 cbApproved.Checked = true;
                     }
+
+                    CheckBox cbPC = (e.Row.FindControl("cbPC") as CheckBox);
+                    HiddenField hfLKPCRQId = (e.Row.FindControl("hfLKPCRQId") as HiddenField);
+
+                    if (hfLKPCRQId.Value == "7" && CheckFxnAccess("27471"))
+                    {
+                        cbPC.Visible = true;
+                    }
                 }
             }
 
@@ -1970,16 +1990,23 @@ namespace vhcbcloud
                 LinkButton linkButton = (e.Row.FindControl("lbEdit") as LinkButton);
                 HiddenField hfRowNumber = (e.Row.FindControl("hfRowNumber") as HiddenField);
                 HiddenField hfLKPCRQId = (e.Row.FindControl("hfLKPCRQId") as HiddenField);
-
+               
                 if (hfLKPCRQId != null && linkButton != null && linkButton.Visible)
                 {
-                    if (hfLKPCRQId.Value == "3" && GetUserId().ToString() == hfCreatedById.Value)
+                    if (DataUtils.GetBool(hfIsAdmin.Value))
                         linkButton.Visible = true;
+                    else if (hfLKPCRQId.Value == "3")
+                    {
+                        if (GetUserId().ToString() == hfCreatedById.Value && (CheckFxnAccess("27453") || CheckFxnAccess("27454")))
+                            linkButton.Visible = false;
+                        else if (GetUserId().ToString() == hfCreatedById.Value || DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                            linkButton.Visible = true;
+                    }
                     else if (hfLKPCRQId.Value == "5" && CheckFxnAccess("26820"))
                         linkButton.Visible = true;
-                    else if (hfLKPCRQId.Value == "7" && CheckFxnAccess("26821"))
+                    else if (hfLKPCRQId.Value == "7" && CheckFxnAccess("27471"))
                         linkButton.Visible = true;
-                    else if (hfLKPCRQId.Value == "8" && GetUserId().ToString() != hfCreatedById.Value 
+                    else if (hfLKPCRQId.Value == "8" && GetUserId().ToString() != hfCreatedById.Value
                         && DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
                         linkButton.Visible = true;
                     else
@@ -2017,7 +2044,7 @@ namespace vhcbcloud
                         txtVoucherDt.Focus();
                         return;
                     }
-                    else if(dtime > DateTime.Today)
+                    else if (dtime > DateTime.Today)
                     {
                         LogMessage("You cannot select a day greater than today!");
                         txtVoucherDt.Focus();

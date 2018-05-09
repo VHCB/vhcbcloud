@@ -406,7 +406,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static Result AddProjectSurfaceWaters(int ProjectId, int LKWaterShed, string SubWaterShed, int LKWaterBody, 
+        public static Result AddProjectSurfaceWaters(int ProjectId, int LKWaterShed, int SubWaterShed, int LKWaterBody, 
             int FrontageFeet, string OtherWater, int Riparian)
         {
             try
@@ -456,7 +456,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateProjectSurfaceWaters(int SurfaceWatersID, string SubWaterShed, int LKWaterBody, int FrontageFeet, 
+        public static void UpdateProjectSurfaceWaters(int SurfaceWatersID, int SubWaterShed, int LKWaterBody, int FrontageFeet, 
             string OtherWater, int Riparian, bool RowIsActive)
         {
             try

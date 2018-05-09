@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebReports.Api;
+using WebReports.Api.Data;
 using WebReports.Api.Reports;
 
 namespace vhcbcloud
@@ -15,6 +16,13 @@ namespace vhcbcloud
         {
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
+
+            //string newConnString = "server=192.168.100.12;uid=pete;pwd=pete123!;database=VHCBsandbox";
+            //DataSource ds = api.DataSources.GetDataSource("VHCBSandBox");
+            //ds.DataConnStr = newConnString;
+
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;
@@ -45,6 +53,9 @@ namespace vhcbcloud
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
 
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;
             WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("RecID");
@@ -74,6 +85,9 @@ namespace vhcbcloud
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
 
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;
             WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("Projnum");
@@ -102,6 +116,9 @@ namespace vhcbcloud
         {
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
+
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 
             // Set the action to execute the report
             api.Action = wrApiAction.ExecuteReport;

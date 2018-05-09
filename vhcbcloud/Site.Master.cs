@@ -114,17 +114,25 @@ namespace vhcbcloud
         {
             DataTable dtable = default(DataTable);
             var sb = new StringBuilder();
-            if (Session["UserMenuDetails"] == null)
+            
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if (dr != null && dr["usergroupid"].ToString() == "7")
             {
-                dtable = UserSecurityData.GetMenuDetailsByUser(GetUserId());
-                //dtable = UserSecurityData.GetMenuDetailsByUser(7);
-                Session["UserMenuDetails"] = dtable;
+                Session["UserMenuDetails"] = null;
             }
             else
-                dtable = (DataTable)Session["UserMenuDetails"];
-            DataRow[] parentMenus = dtable.Select("ParentID = 0");
-            
-            strMenuText = GenerateUL(parentMenus, dtable, sb, false);
+            {
+                if (Session["UserMenuDetails"] == null)
+                {
+                    dtable = UserSecurityData.GetMenuDetailsByUser(GetUserId());
+                    //dtable = UserSecurityData.GetMenuDetailsByUser(7);
+                    Session["UserMenuDetails"] = dtable;
+                }
+                else
+                    dtable = (DataTable)Session["UserMenuDetails"];
+                DataRow[] parentMenus = dtable.Select("ParentID = 0");
+                strMenuText = GenerateUL(parentMenus, dtable, sb, false);
+            }
         }
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {

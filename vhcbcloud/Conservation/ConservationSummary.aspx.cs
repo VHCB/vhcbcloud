@@ -287,6 +287,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlWatershed, 143);
             BindLookUP(ddlWaterBody, 140);
             BindLookUP(ddlGeoSignificance, 255);
+            BindLookUP(ddlSubwatershed, 261);
         }
 
         private void BindPrimaryStewardOrganization()
@@ -640,7 +641,9 @@ namespace vhcbcloud.Conservation
             {
                 int SurfaceWatersId = Convert.ToInt32(hfSurfaceWatersId.Value);
 
-                ConservationSummaryData.UpdateProjectSurfaceWaters(SurfaceWatersId, txtSubwatershed.Text, DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()),
+                ConservationSummaryData.UpdateProjectSurfaceWaters(SurfaceWatersId, 
+                    DataUtils.GetInt(ddlSubwatershed.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()),
                     DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text, DataUtils.GetInt(txtRiparianBuffer.Text), cbActive.Checked);
 
                 hfSurfaceWatersId.Value = "";
@@ -652,7 +655,8 @@ namespace vhcbcloud.Conservation
             else
             {
                 Result objResult = ConservationSummaryData.AddProjectSurfaceWaters(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlWatershed.SelectedValue.ToString()), txtSubwatershed.Text,
+                DataUtils.GetInt(ddlWatershed.SelectedValue.ToString()),
+                DataUtils.GetInt(ddlSubwatershed.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()), DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text,
                 DataUtils.GetInt(txtRiparianBuffer.Text));
 
@@ -677,7 +681,7 @@ namespace vhcbcloud.Conservation
             ddlWaterBody.SelectedIndex = -1;
             txtOtherStream.Text = "";
             txtFrontageFeet.Text = "";
-            txtSubwatershed.Text = "";
+            ddlSubwatershed.SelectedIndex = -1;
             txtRiparianBuffer.Text = "";
             cbAddSurfaceWaters.Checked = false;
         }
@@ -705,7 +709,7 @@ namespace vhcbcloud.Conservation
                         DataRow dr = ConservationSummaryData.GetProjectSurfaceWatersById(Convert.ToInt32(lblSurfaceWatersID.Text));
 
                         PopulateDropDown(ddlWatershed, dr["LKWaterShed"].ToString());
-                        txtSubwatershed.Text = dr["SubWaterShed"].ToString();
+                        PopulateDropDown(ddlSubwatershed, dr["SubWaterShed"].ToString());
                         PopulateDropDown(ddlWaterBody, dr["LKWaterBody"].ToString());
                         txtFrontageFeet.Text = dr["FrontageFeet"].ToString();
                         txtOtherStream.Text = dr["OtherWater"].ToString();

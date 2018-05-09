@@ -149,6 +149,8 @@ namespace vhcbcloud.Viability
 
         private void PopulateProjectDetails()
         {
+            int TypeId = 0;
+
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
@@ -160,8 +162,20 @@ namespace vhcbcloud.Viability
             GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
 
             spnEnterPriseType.InnerText = EnterpriseType;
-            BindSubLookUP(ddlPrimaryProduct, DataUtils.GetInt(dr["LkProjectType"].ToString()));
-            BindSubLookUP(ddlProducts, EnterpriseTypeId);
+
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
+                TypeId = 375;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
+                TypeId = 376;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
+                TypeId = 377;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
+                TypeId = 378;
+            else
+                TypeId = 0;
+
+            BindSubLookUP(ddlPrimaryProduct, TypeId);
+            BindSubLookUP(ddlProducts, TypeId);
 
             BindLookUP(ddlAttribute, AttributeTypeId);
 

@@ -149,7 +149,7 @@ namespace vhcbcloud
 
             if (ddlTransaction.SelectedItem.Value == "Cash")
             {
-                //ddlLKTransaction.Items.Insert(0, new ListItem("Select", "NA"));
+                ddlLKTransaction.Items.Insert(0, new ListItem("Select", "NA"));
                 ddlLKTransaction.Items.Insert(0, new ListItem("Disbursement", "236"));
                 //ddlLKTransaction.Items.Insert(2, new ListItem("Refund", "237"));
             }
@@ -415,7 +415,8 @@ namespace vhcbcloud
 
                 if (btnSubmit.Text.ToLower() == "submit")
                 {
-                    AdjustmentResult objAdjustmentResult = FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
+                    AdjustmentResult objAdjustmentResult = FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), 
+                        DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
                         DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
 

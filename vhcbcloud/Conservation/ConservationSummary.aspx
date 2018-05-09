@@ -430,7 +430,8 @@
                                             <span class="labelClass">Subwatershed</span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtSubwatershed" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
+                                             <asp:DropDownList ID="ddlSubwatershed" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Water Body</span></td>
                                         <td>

@@ -286,6 +286,7 @@
     <Content Include="Scripts\gridviewScroll.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\NumericController.js" />
+    <Content Include="Setup.aspx" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
     <Content Include="SQL\ConservationAct250.sql" />
@@ -979,6 +980,13 @@
     </Compile>
     <Compile Include="Reallocations.aspx.designer.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup.aspx.cs">
+      <DependentUpon>Setup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup.aspx.designer.cs">
+      <DependentUpon>Setup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

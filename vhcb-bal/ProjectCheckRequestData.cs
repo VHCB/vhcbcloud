@@ -1100,7 +1100,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdatePCRQuestionsApproval(int ProjectCheckReqQuestionid, bool isApproved, int UserID)
+        public static void UpdatePCRQuestionsApproval(int ProjectCheckReqQuestionid, bool isApproved, bool isPC, int UserID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -1112,6 +1112,7 @@ namespace VHCBCommon.DataAccessLayer
 
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqQuestionid", ProjectCheckReqQuestionid));
                 command.Parameters.Add(new SqlParameter("Approved", isApproved));
+                command.Parameters.Add(new SqlParameter("PaperCheck", isPC));
                 command.Parameters.Add(new SqlParameter("StaffID", UserID));
 
                 using (connection)

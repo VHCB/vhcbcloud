@@ -1682,7 +1682,7 @@ namespace vhcbcloud
 
                 if (!isApproved)
                 {
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, false, GetUserId());
                     return;
                 }
 
@@ -1716,7 +1716,7 @@ namespace vhcbcloud
                 }
 
                 if (isApproved)
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, false, GetUserId());
 
 
                 //if (((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")

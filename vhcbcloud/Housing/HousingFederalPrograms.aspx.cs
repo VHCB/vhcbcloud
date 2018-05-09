@@ -371,16 +371,22 @@ namespace vhcbcloud.Housing
                 hfHousingID.Value = drHousing["HousingID"].ToString();
             }
 
-            if (hfProjectFedProgram.Value.ToLower() == "home")
+            if (hfProjectFedProgram.Value.ToLower() == "home" || hfProjectFedProgram.Value.ToLower() == "nsp")
             {
-                spnFormTitle.InnerText = "HOME";
-                cbAddHomeAff.Text = "Add New HOME Income Restriction";
-                cbAddRentalAffordability.Text = "Add New HOME Rent Restriction";
-                cbAddUnitOccupancy.Text = "Add New HOME Unit Sizes";
-                spnUnitSizes.InnerText = "HOME Unit Sizes";
-                spnRentRest.InnerText = "HOME Rent Restrictions";
-                spnIncomeRest.InnerText = "HOME Income Restrictions";
-                spnIncomeRestrictionsLabel.InnerText = "HOME";
+                string labelText = "";
+                if(hfProjectFedProgram.Value.ToLower() == "home")
+                    labelText = "HOME";
+                else
+                    labelText = "NSP";
+
+                spnFormTitle.InnerText = labelText;
+                cbAddHomeAff.Text = "Add New " + labelText + " Income Restriction";
+                cbAddRentalAffordability.Text = "Add New " + labelText + " Rent Restriction";
+                cbAddUnitOccupancy.Text = "Add New " + labelText + " Unit Sizes";
+                spnUnitSizes.InnerText = labelText + " Unit Sizes";
+                spnRentRest.InnerText = labelText + " Rent Restrictions";
+                spnIncomeRest.InnerText = labelText + " Income Restrictions";
+                spnIncomeRestrictionsLabel.InnerText = labelText;
 
                 spnCHDORequest.Visible = true;
                 chkCHDO.Visible = spnCHDORequest.Visible = true;

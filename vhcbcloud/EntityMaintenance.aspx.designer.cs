@@ -211,15 +211,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
         
         /// <summary>
-        /// txtEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
-        
-        /// <summary>
         /// dvCommonForm control.
         /// </summary>
         /// <remarks>
@@ -371,6 +362,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckbW9;
+        
+        /// <summary>
+        /// txtEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
         
         /// <summary>
         /// spnDefaultRole control.
@@ -931,13 +931,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel6;
         
         /// <summary>
-        /// ddlIndividualApplicant control.
+        /// ddlEntityRole1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlIndividualApplicant;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEntityRole1;
+        
+        /// <summary>
+        /// ddlEntityName1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEntityName1;
         
         /// <summary>
         /// btnAttachEntities control.

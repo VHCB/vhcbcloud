@@ -408,9 +408,18 @@
                                     <asp:HiddenField ID="hfRowNumber" runat="server" Value='<%#Eval("rowNumber")%>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
+                            <asp:TemplateField HeaderText="PC" SortExpression="PC">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblPC" runat="Server" Text='<%# Eval("PaperCheckDisplay") %>' />
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:CheckBox ID="cbPC" runat="server" Checked='<%# Eval("PaperCheck") %>' Visible="false" />
+                                    <asp:Label ID="lbleditPC" Visible="false" runat="Server" Text='<%# Eval("PaperCheckDisplay") %>' />
+                                </EditItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="Approved" SortExpression="Approved">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblApproved" runat="Server" Text='<%# Eval("Approved") %>' />
+                                    <asp:Label ID="lblApproved" runat="Server" Text='<%# Eval("Approved") %>'  />
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:CheckBox ID="cbApproved" runat="server" Checked='<%# Eval("chkApproved") %>' />
@@ -517,6 +526,7 @@
         <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
         <asp:HiddenField ID="hfIsAllApproved" runat="server" Value="false" />
         <asp:HiddenField ID="hfSecondapproval" runat="server" Value="false" />
+        <asp:HiddenField ID="hfIsAdmin" runat="server" Value="false" />
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

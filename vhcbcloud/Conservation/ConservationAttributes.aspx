@@ -251,10 +251,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Attributes</h3>
+                                        <h3 class="panel-title">Perpetual Attributes</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Attribute" />
+                                        <asp:CheckBox ID="cbAddAttribute" runat="server" Text="Add New Perpetual Attribute" />
                                         <asp:ImageButton ID="ImgConservationAttributes" ImageUrl="~/Images/print.png" ToolTip="Conservation Attributes Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationAttributes_Click" />
                                     </td>
@@ -301,6 +301,100 @@
                                         <asp:TemplateField HeaderText="Conserve Attrib ID" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConserveAttribID" runat="Server" Text='<%# Eval("ConserveAttribID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Attribute">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAttribute" runat="Server" Text='<%# Eval("Attribute") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                            <%--<EditItemTemplate>
+                                                <asp:DropDownList ID="ddlAttributeE" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtLkConsAttrib" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LkConsAttrib") %>' Visible="false">
+                                                </asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewProjectAttribute">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Project Attributes</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddProjectAttribute" runat="server" Text="Add New Project Attribute" />
+                                        <asp:ImageButton ID="ImgConservationProjectAttributes" ImageUrl="~/Images/print.png" ToolTip="Conservation Project Attributes Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgConservationProjectAttributes_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvProjectAttributeForm">
+                            <asp:Panel runat="server" ID="Panel7">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Attribute</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlProjectAttribute" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="AddProjectAttribute" runat="server" Text="Add" class="btn btn-info" OnClick="AddProjectAttribute_Click" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvProjectAttributeGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel10" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvProjAttribute" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvProjAttribute_RowEditing" OnRowCancelingEdit="gvProjAttribute_RowCancelingEdit"
+                                    OnRowUpdating="gvProjAttribute_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Conserve Attrib ID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveAttribID" runat="Server" Text='<%# Eval("ConserveAttrib2ID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Attribute">
@@ -776,8 +870,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
+    </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfConserveId" runat="server" />
@@ -789,6 +883,11 @@
 
             $('#<%= cbAddAttribute.ClientID%>').click(function () {
                 $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvProjectAttributeForm.ClientID%>').toggle($('#<%= cbAddProjectAttribute.ClientID%>').is(':checked'));
+            $('#<%= cbAddProjectAttribute.ClientID%>').click(function () {
+                $('#<%= dvProjectAttributeForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvAffordabilityForm.ClientID%>').toggle($('#<%= cbAddAffMechanism.ClientID%>').is(':checked'));

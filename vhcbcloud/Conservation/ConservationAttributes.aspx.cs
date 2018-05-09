@@ -235,6 +235,7 @@ namespace vhcbcloud.Conservation
         private void BindControls()
         {
             BindLookUP(ddlAttribute, 6);
+            BindLookUP(ddlProjectAttribute, 260);
             BindLookUP(ddlAffordability, 54);
             BindLookUP(ddlPA, 28);
             BindLookUP(ddlAltEnergy, 259);
@@ -254,6 +255,7 @@ namespace vhcbcloud.Conservation
             BindOTGrid();
             BindLegalIntrestGrid();
             BindLegalMechanismGrid();
+            BindProjectAttributeGrid();
         }
 
         private void BindAttributeGrid()
@@ -938,6 +940,87 @@ namespace vhcbcloud.Conservation
         {
             ClientScript.RegisterStartupScript(this.GetType(),
                          "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Legal Mechanism"));
+        }
+
+        protected void ImgConservationProjectAttributes_Click(object sender, ImageClickEventArgs e)
+        {
+
+        }
+
+        protected void AddProjectAttribute_Click(object sender, EventArgs e)
+        {
+            if (ddlProjectAttribute.SelectedIndex == 0)
+            {
+                LogMessage("Select Project Attribute");
+                ddlProjectAttribute.Focus();
+                return;
+            }
+
+            AttributeResult obAttributeResult = ConservationAttributeData.AddConserveAttribProj(DataUtils.GetInt(hfConserveId.Value),
+                DataUtils.GetInt(ddlProjectAttribute.SelectedValue.ToString()));
+            ddlProjectAttribute.SelectedIndex = -1;
+            cbAddProjectAttribute.Checked = false;
+
+            BindProjectAttributeGrid();
+
+            if (obAttributeResult.IsDuplicate && !obAttributeResult.IsActive)
+                LogMessage("Project Attribute already exist as in-active");
+            else if (obAttributeResult.IsDuplicate)
+                LogMessage("ProjectAttribute already exist");
+            else
+                LogMessage("New Project Attribute added successfully");
+        }
+
+        private void BindProjectAttributeGrid()
+        {
+            try
+            {
+                DataTable dt = ConservationAttributeData.GetConserveAttribProjList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvProjectAttributeGrid.Visible = true;
+                    gvProjAttribute.DataSource = dt;
+                    gvProjAttribute.DataBind();
+                }
+                else
+                {
+                    dvProjectAttributeGrid.Visible = false;
+                    gvProjAttribute.DataSource = null;
+                    gvProjAttribute.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindProjectAttributeGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvProjAttribute_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvProjAttribute.EditIndex = e.NewEditIndex;
+            BindProjectAttributeGrid();
+        }
+
+        protected void gvProjAttribute_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvProjAttribute.EditIndex = -1;
+            BindProjectAttributeGrid();
+        }
+
+        protected void gvProjAttribute_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ConserveAttribID = DataUtils.GetInt(((Label)gvProjAttribute.Rows[rowIndex].FindControl("lblConserveAttribID")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvProjAttribute.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            ConservationAttributeData.UpdateConserveAttribProj(ConserveAttribID, RowIsActive);
+            gvProjAttribute.EditIndex = -1;
+
+            BindProjectAttributeGrid();
+
+            LogMessage("Project Attribute updated successfully");
         }
     }
 }

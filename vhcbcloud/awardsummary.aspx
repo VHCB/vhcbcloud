@@ -94,6 +94,7 @@
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>
                     </p>
                 </div>
+                <br />
                 <div class="panel-heading">Transaction Detail</div>
                 <div class="panel-body">
                     <asp:Panel runat="server" ID="pnlTransDet" Width="100%" Height="600px" ScrollBars="None">
@@ -181,7 +182,7 @@
         function gridviewScroll(gridId) {
             $(gridId).gridviewScroll({
                 width: 980,
-                height: 400
+                height: 350
             });
         }
 

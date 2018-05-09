@@ -119,7 +119,7 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                         <td><span class="labelClass">Role</span></td>
+                                        <td><span class="labelClass">Role</span></td>
                                         <td>
                                             <asp:DropDownList ID="ddlPosition" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
@@ -128,10 +128,10 @@
                                         <td>
                                             <asp:TextBox ID="txtTitle" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox></td>
                                         <td>
-                                            <span class="labelClass">Email</span>
+                                            <%-- <span class="labelClass">Email</span>--%>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>--%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -222,14 +222,20 @@
                                         <td><span class="labelClass" runat="server" id="lblW9">W9</span></td>
                                         <td>
                                             <asp:CheckBox ID="ckbW9" CssClass="ChkBox" runat="server" Text="" Enabled="false" />
-                                           </td>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                      <tr>
+                                    <tr>
                                         <td>
-                                           <span class="labelClass" runat="server" id="spnDefaultRole">Default Role</span>
+                                            <span class="labelClass">Email</span>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td>
+                                            <span class="labelClass" runat="server" id="spnDefaultRole">Default Role</span>
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="ddlDefaultRole" CssClass="clsDropDown" runat="server">
@@ -237,10 +243,8 @@
                                         </td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
@@ -249,7 +253,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="panel-width" runat="server" id="dvFarm">
                     <div class="panel panel-default" style="margin-bottom: 2px;">
@@ -745,9 +749,15 @@
                             <asp:Panel runat="server" ID="Panel6">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 180px"><span class="labelClass">Individual Applicant</span></td>
+                                        <td style="width: 180px"><span class="labelClass">Entity Role</span></td>
                                         <td style="width: 250px">
-                                            <asp:DropDownList ID="ddlIndividualApplicant" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlEntityRole1" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlEntityRole1_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 180px"><span class="labelClass">Applicant Name</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlEntityName1" CssClass="clsDropDown" runat="server"
+                                                OnSelectedIndexChanged="ddlEntityName1_SelectedIndexChanged" AutoPostBack="True">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"></td>
@@ -803,7 +813,7 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewMilestone">
-                   <div class="panel panel-default" style="margin-bottom: 2px;">
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
                         <div class="panel-heading" style="padding: 5px 5px 1px 5px">
                             <table style="width: 100%;">
                                 <tr>
@@ -822,7 +832,7 @@
 
                                 <div runat="server" id="dvEventMilestone">
                                     <div>
-                                       <%-- <table style="width: 100%">
+                                        <%-- <table style="width: 100%">
                                             <tr>
                                                 <td style="width: 128px"><span class="labelClass">Entity</span></td>
                                                 <td style="width: 222px">
@@ -993,7 +1003,7 @@
             <asp:HiddenField ID="hfProjectId" runat="server" />
             <asp:HiddenField ID="hfProjectEventID" runat="server" />
             <asp:HiddenField ID="hfIsCreated" runat="server" />
-            
+
         </div>
     </div>
     </div>
@@ -1105,61 +1115,61 @@
             $('#<%= dvProjectAddressForm.ClientID%>').toggle($('#<%= cbAddAddress.ClientID%>').is(':checked'));
             $('#<%= cbAddAddress.ClientID%>').click(function () {
                 $('#<%= dvProjectAddressForm.ClientID%>').toggle(this.checked);
-             }).change();
+            }).change();
 
 
             $('#<%= txtZip.ClientID%>').blur(function () {
                 getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
-             });
+            });
         });
 
-         function getLocation() {
-             getAddressInfoByZip(document.forms[0].zip.value);
-         }
+        function getLocation() {
+            getAddressInfoByZip(document.forms[0].zip.value);
+        }
 
-         function response(obj) {
-             console.log(obj);
-         }
-         function getAddressInfoByZip(zip) {
-             $('#<%= txtTown.ClientID%>').val('');
-            $('#<%= txtState.ClientID%>').val('');
-            $('#<%= txtCounty.ClientID%>').val('');
-            if (zip.length >= 5 && typeof google != 'undefined') {
-                var addr = {};
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ 'address': zip }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        if (results.length >= 1) {
-                            for (var ii = 0; ii < results[0].address_components.length; ii++) {
-                                var street_number = route = street = city = state = zipcode = country = formatted_address = '';
-                                var types = results[0].address_components[ii].types.join(",");
-                                if (types == "street_number") {
-                                    addr.street_number = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "route" || types == "point_of_interest,establishment") {
-                                    addr.route = results[0].address_components[ii].long_name;
-                                }
-                                if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
-                                    addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+        function response(obj) {
+            console.log(obj);
+        }
+        function getAddressInfoByZip(zip) {
+            $('#<%= txtTown.ClientID%>').val('');
+             $('#<%= txtState.ClientID%>').val('');
+             $('#<%= txtCounty.ClientID%>').val('');
+             if (zip.length >= 5 && typeof google != 'undefined') {
+                 var addr = {};
+                 var geocoder = new google.maps.Geocoder();
+                 geocoder.geocode({ 'address': zip }, function (results, status) {
+                     if (status == google.maps.GeocoderStatus.OK) {
+                         if (results.length >= 1) {
+                             for (var ii = 0; ii < results[0].address_components.length; ii++) {
+                                 var street_number = route = street = city = state = zipcode = country = formatted_address = '';
+                                 var types = results[0].address_components[ii].types.join(",");
+                                 if (types == "street_number") {
+                                     addr.street_number = results[0].address_components[ii].long_name;
+                                 }
+                                 if (types == "route" || types == "point_of_interest,establishment") {
+                                     addr.route = results[0].address_components[ii].long_name;
+                                 }
+                                 if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
+                                     addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
+                                     $('#<%= txtTown.ClientID%>').val(addr.city);
                                 }
                                 if (types == "administrative_area_level_1,political") {
                                     addr.state = results[0].address_components[ii].short_name;
                                     $('#<%= txtState.ClientID%>').val(addr.state);
-                            }
-                            if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
-                                addr.zipcode = results[0].address_components[ii].long_name;
-                            }
-                            if (types == "country,political") {
-                                addr.country = results[0].address_components[ii].long_name;
-                            }
-                            if (types == "administrative_area_level_2,political") {
-                                addr.county = results[0].address_components[ii].short_name;
-                                $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
                                 }
+                                if (types == "postal_code" || types == "postal_code_prefix,postal_code") {
+                                    addr.zipcode = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "country,political") {
+                                    addr.country = results[0].address_components[ii].long_name;
+                                }
+                                if (types == "administrative_area_level_2,political") {
+                                    addr.county = results[0].address_components[ii].short_name;
+                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
                             }
-                            addr.success = true;
-                            $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
+                        }
+                        addr.success = true;
+                        $('#<%= txtLattitude.ClientID%>').val(results[0].geometry.location.lat());
                             $('#<%= txtLongitude.ClientID%>').val(results[0].geometry.location.lng());
                             for (name in addr) {
                                 console.log('### google maps api ### ' + name + ': ' + addr[name]);
@@ -1177,7 +1187,7 @@
             }
         }
 
-       <%-- function onApplicantListPopulated() {
+        <%-- function onApplicantListPopulated() {
             var completionList = $find('<%=EntityAE.ClientID%>').get_completionList();
                     completionList.style.width = 'auto';
                 }--%>
