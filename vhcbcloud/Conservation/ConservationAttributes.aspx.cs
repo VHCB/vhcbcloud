@@ -944,7 +944,8 @@ namespace vhcbcloud.Conservation
 
         protected void ImgConservationProjectAttributes_Click(object sender, ImageClickEventArgs e)
         {
-
+            ClientScript.RegisterStartupScript(this.GetType(),
+             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Project Attributes"));
         }
 
         protected void AddProjectAttribute_Click(object sender, EventArgs e)

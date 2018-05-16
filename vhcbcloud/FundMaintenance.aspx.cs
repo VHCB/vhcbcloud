@@ -147,7 +147,7 @@ namespace vhcbcloud
                 cbFundActive.Enabled = true;
                 cbSecondapproval.Checked = DataUtils.GetBool(dr["Secondapproval"].ToString());
 
-                txtFundName.Enabled = false;
+                //txtFundName.Enabled = false;
 
                 btnSubmitFund.Text = "Update";
             }
@@ -224,7 +224,7 @@ namespace vhcbcloud
                     Convert.ToInt32(ddlFundType.SelectedValue.ToString()),
                     txtFundNum.Text, txtMIPFundNo.Text == "" ? 0 : Convert.ToInt32(txtMIPFundNo.Text),
                     ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked, 
-                    cbMitFund.Checked, cbSecondapproval.Checked);
+                    cbMitFund.Checked, cbSecondapproval.Checked, txtFundName.Text);
 
                 LogMessage("Fund updated successfully");
             }

@@ -42,8 +42,8 @@ namespace vhcbcloud
             //if (ProjectNotesData.IsNotesExist(PageId))
             //    btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
 
-                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
-                    "&PageId=" + PageId;
+            ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                "&PageId=" + PageId;
         }
 
         private void BindControls()
@@ -53,17 +53,36 @@ namespace vhcbcloud
             //BindPrimaryApplicants();
             BindProjectTowns();
             BindCounties();
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if (dr != null)
+            {
+                if (dr["dfltprg"].ToString() != "26170") //Skip Admin
+                    PopulateDropDown(ddlProgram, dr["dfltprg"].ToString());
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
         }
 
         protected void Page_PreInit(Object sender, EventArgs e)
-        {           
+        {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
             if (dt.Rows.Count > 0)
             {
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
-             
+
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -194,7 +213,7 @@ namespace vhcbcloud
 
             Session["lstSearchResultProjectId"] = lstProjectId;
 
-            if (dtSearchResults.Rows.Count > 0 && 
+            if (dtSearchResults.Rows.Count > 0 &&
                 ((txtProjNum.Text.IndexOf('-', 0) > -1 && txtProjNum.Text.Length == 12) ||
                 (txtProjNum.Text.IndexOf('-', 0) == -1 && txtProjNum.Text.Length == 10)))
                 Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + dtSearchResults.Rows[0]["ProjectId"].ToString());
@@ -308,7 +327,7 @@ namespace vhcbcloud
             List<string> ProjNumbers = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                ProjNumbers.Add("'" + dt.Rows[i][0].ToString()+"'");
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
         }

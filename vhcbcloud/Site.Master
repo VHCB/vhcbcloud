@@ -51,7 +51,7 @@
                             <span class="icon-bar"></span>
 
                         </button>
-                        <a class="navbar-brand" href="projectsearch.aspx">
+                        <a class="navbar-brand" href="projectsearch.aspx" runat="server" id="logoURL">
                             <img alt="" src="~/Images/vhcb_logo_1_rgb_sm.png" class="img-responsive img-rounded" runat="server" /></a>
                     </div>
                     <div class="navbar-collapse collapse">

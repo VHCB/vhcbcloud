@@ -50,6 +50,11 @@ namespace vhcbcloud
                 ddlYearQrtr.DataValueField = "ACYrQtrID";
                 ddlYearQrtr.DataSource = dtable;
                 ddlYearQrtr.DataBind();
+
+                DataRow drSetUpInfo = YearQuarterData.GetSetUpInfo();
+
+                PopulateDropDown(ddlYearQrtr, drSetUpInfo["ACReportQtr"].ToString());
+
                 DataTable dtUserDetails = YearQuarterData.GetUserDetailsByUserName(Context.User.Identity.Name);
                 txtFirstName.Text = dtUserDetails.Rows[0]["FName"].ToString().Trim();
                 txtLastName.Text = dtUserDetails.Rows[0]["LName"].ToString().Trim();
@@ -79,6 +84,18 @@ namespace vhcbcloud
              {
                  lblQuestionAnswerErrorMsg.Text = ex.Message;
              }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
         }
 
         protected void BindUserQuestionAnswerList()

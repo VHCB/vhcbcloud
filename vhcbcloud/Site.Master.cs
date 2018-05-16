@@ -119,6 +119,7 @@ namespace vhcbcloud
             if (dr != null && dr["usergroupid"].ToString() == "7")
             {
                 Session["UserMenuDetails"] = null;
+                logoURL.HRef = "";
             }
             else
             {

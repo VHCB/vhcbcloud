@@ -176,7 +176,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateFund(int FundId, string abbrv, int LkFundType, string account,
             int MIPFundNum, string DeptID, string VHCBCode, bool IsRowActive, bool IsMitigationFund, 
-            bool Secondapproval)
+            bool Secondapproval, string name)
         {
             try
             {
@@ -191,7 +191,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandText = "UpdateFund";
 
                         command.Parameters.Add(new SqlParameter("FundId", FundId));
-                        //command.Parameters.Add(new SqlParameter("name", name));
+                        command.Parameters.Add(new SqlParameter("name", name));
                         command.Parameters.Add(new SqlParameter("abbrv", abbrv));
                         command.Parameters.Add(new SqlParameter("LkFundType", LkFundType));
                         command.Parameters.Add(new SqlParameter("account", account));
