@@ -65,6 +65,11 @@ open NewCursor
 		insert into VHCB.dbo.ConserveUses(ConserveSUID, LkConUseVHCB, VHCBTotal) values(@ConserveSUID, 445, isnull(@cuvrcost, 0) +  isnull(@cuvrsite, 0) +  isnull(@cuvrres, 0) +
 		  isnull(@cuvrdev, 0) +  isnull(@cuvrhm, 0) + isnull(@cuvrcon, 0)+ isnull(@cuvroth, 0))
 
+		if(@cuvoth <> 0)
+		insert into VHCB.dbo.ConserveUses(ConserveSUID, LkConUseVHCB, VHCBTotal) values(@ConserveSUID, 27648, @cuvoth)
+
+		if(@cuooth <> 0)
+		insert into VHCB.dbo.ConserveUses(ConserveSUID, LkConUseVHCB, VHCBTotal) values(@ConserveSUID, 27649, @cuooth)
 
 		--OTHER
 		if(@cuoease <> 0)
