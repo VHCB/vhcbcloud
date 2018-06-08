@@ -486,21 +486,21 @@ namespace vhcbcloud.Conservation
                 return;
             }
 
-            if (txtDateOrdered.Text.Trim() == "")
-            {
-                LogMessage("Enter Date Ordered");
-                txtDateOrdered.Focus();
-                return;
-            }
-            else
-            {
-                if (!DataUtils.IsDateTime(txtDateOrdered.Text.Trim()))
-                {
-                    LogMessage("Enter valid Date Ordered");
-                    txtDateOrdered.Focus();
-                    return;
-                }
-            }
+            //if (txtDateOrdered.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Date Ordered");
+            //    txtDateOrdered.Focus();
+            //    return;
+            //}
+            //else
+            //{
+            //    if (!DataUtils.IsDateTime(txtDateOrdered.Text.Trim()))
+            //    {
+            //        LogMessage("Enter valid Date Ordered");
+            //        txtDateOrdered.Focus();
+            //        return;
+            //    }
+            //}
 
             string URL = txtURL.Text;
 
@@ -571,9 +571,11 @@ namespace vhcbcloud.Conservation
 
             if (string.IsNullOrWhiteSpace(txtPayAmount.Text.ToString()) == true)
             {
-                LogMessage("Enter Amount");
-                txtPayAmount.Focus();
-                return;
+                txtPayAmount.Text = "0";
+
+                //LogMessage("Enter Amount");
+                //txtPayAmount.Focus();
+                //return;
             }
 
             ConservationAppraisalsData.AddConservationAppraisalPay((DataUtils.GetInt(hfAppraisalInfoID.Value)),

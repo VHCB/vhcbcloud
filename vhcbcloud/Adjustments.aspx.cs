@@ -16,9 +16,10 @@ namespace vhcbcloud
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
-            txtTransDate.Text = DateTime.Now.ToShortDateString();
+            
             if (!IsPostBack)
             {
+                txtTransDate.Text = DateTime.Now.ToShortDateString();
                 BindTransaction();
                 BindFunds();
             }
@@ -49,7 +50,7 @@ namespace vhcbcloud
                 if (txtProjNum.Text != "")
                 {
                     lblProjName.Text = "";
-                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    //txtTransDate.Text = DateTime.Now.ToShortDateString();
                     ddlFundNum.SelectedIndex = -1;
                     ddlFundName.SelectedIndex = -1;
                     ddlTransType.SelectedIndex = -1;
@@ -418,7 +419,8 @@ namespace vhcbcloud
                     AdjustmentResult objAdjustmentResult = FinancialTransactions.SubmitAdjustmentTransaction(DataUtils.GetInt(hfProjId.Value), 
                         DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
-                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()),
+                        DataUtils.GetDate(txtTransDate.Text));
 
                     LogMessage("Successfully Added Adjustment");
 
@@ -433,7 +435,8 @@ namespace vhcbcloud
                     FinancialTransactions.UpdaeAdjustmentTransaction(DataUtils.GetInt(hfTransId.Value), DataUtils.GetInt(hfDetailId.Value), 
                         DataUtils.GetInt(hfProjId.Value), DataUtils.GetDecimal(txtAmt.Text),
                         DataUtils.GetInt(ddlFundNum.SelectedValue), DataUtils.GetInt(ddlTransType.SelectedValue), txtComments.Text, GetUserId(), 
-                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                        DataUtils.GetInt(ddlLKTransaction.SelectedValue), DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()), 
+                        DataUtils.GetDate(txtTransDate.Text));
 
                     LogMessage("Updated Adjustment");
                 }

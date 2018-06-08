@@ -3697,7 +3697,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static AdjustmentResult SubmitAdjustmentTransaction(int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId, 
+            DateTime TransDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3711,6 +3712,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("TransAmt", TransAmt));
                 command.Parameters.Add(new SqlParameter("FundId", FundId));
                 command.Parameters.Add(new SqlParameter("FundTtransType", FundTtransType));
+                command.Parameters.Add(new SqlParameter("TransDate", TransDate));
+                
                 //command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
@@ -3751,7 +3754,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdaeAdjustmentTransaction(int Transid, int DetailId, int ProjId, decimal TransAmt,
-            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId)
+            int FundId, int FundTtransType, string Comment, int UserID, int LkTransaction, int LandUsePermitId, 
+            DateTime TransDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3771,6 +3775,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Comment", Comment));
                 command.Parameters.Add(new SqlParameter("UserID", UserID));
                 command.Parameters.Add(new SqlParameter("LkTransaction", LkTransaction));
+                command.Parameters.Add(new SqlParameter("TransDate", TransDate));
 
                 if (LandUsePermitId != 0)
                     command.Parameters.Add(new SqlParameter("LandUsePermitId", LandUsePermitId));

@@ -1,10 +1,14 @@
 use PTConvert
 go
 
+--select HouseSUID, LkHouseSource, count(*) from VHCB.dbo.HouseSource
+--group by HouseSUID, LkHouseSource
+--having count(*) > 1
+
 --select * from VHCB.dbo.HouseSU
 ----4612
 --select * from VHCB.dbo.HouseSource
-----6053
+----5490
 truncate table VHCB.dbo.HouseSource
 delete from VHCB.dbo.HouseSU
 
@@ -42,29 +46,21 @@ open NewCursor
 	if(@hslead <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 518, @hslead)
 
-	if(@hsfed <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26499, @hsfed)
-
 	if(@hscdbg <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 519, @hscdbg)
+
+	if(isnull(@hsvclf, 0) + isnull(@hsbank, 0) + isnull(@hsvclf, 0) <> 0)
+	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26483, isnull(@hsvclf, 0) + isnull(@hsbank, 0) + isnull(@hsvclf, 0))
 
 	if(@hsvhfa <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26484, @hsvhfa)
 
-	if(@hsvclf <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26483, @hsvclf)
-
-	if(@hsbank <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26483, isnull(@hsbank, 0) + isnull(@hsvclf, 0))
-
-	if(@hsothfn <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26499, @hsothfn)
-
 	if(@hstxcr <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26478, @hstxcr)
+	
 
-	if(@hsoth <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26499, @hsoth)
+	if(@hsothfn + @hsfed + @hsoth <> 0)
+	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26499, @hsothfn + @hsfed + @hsoth)
 
 
 	FETCH NEXT FROM NewCursor INTO @HousingID, 

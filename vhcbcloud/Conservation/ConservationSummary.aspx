@@ -80,16 +80,18 @@
                                     <td>
                                         <asp:TextBox ID="txtEasements" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass">Primary Steward Organization:</span></td>
+                                    <%--<td><span class="labelClass">Primary Steward Organization:</span></td>
                                     <td>
                                         <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
-                                    </td>
+                                    </td>--%>
                                     <td><span class="labelClass">Geographic Significance:</span></td>
                                     <td><asp:DropDownList ID="ddlGeoSignificance" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                     <%-- <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>--%>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
 
                                 <tr>

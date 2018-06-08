@@ -1,6 +1,7 @@
 use PTConvert
 go
 --ProjectHouseAccessAdapt
+--ProjectHouseConsReuseRehab
 --Homeownership
 --ProjectHouseSubType
 --ProjectHouseSuppServ
@@ -20,6 +21,21 @@ where haccess <> 0
 go
 
 select * from VHCB.dbo.ProjectHouseAccessAdapt
+go
+
+truncate table VHCB.dbo.ProjectHouseConsReuseRehab
+go
+
+insert into VHCB.dbo.ProjectHouseConsReuseRehab(HousingID, LkUnitChar, Numunits)
+select h.HousingID, 26111, hntm
+from pthousingua ptHouse(nolock)
+join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hntm <> 0
+go
+
+select * from VHCB.dbo.ProjectHouseConsReuseRehab
 go
 
 truncate table VHCB.dbo.Homeownership
@@ -51,6 +67,7 @@ select * from  VHCB.dbo.Housing where LkHouseCat  = 42
 --854
 select * from  VHCB.dbo.Housing where LkHouseCat  = 43
 --854
+go
 
 update h set h.LkHouseCat  = 43 
 from pthousingua ptHouse(nolock)
@@ -61,9 +78,38 @@ where isnull(hrmh , 0) + isnull(hrmulti, 0) +
 	isnull(hrgh, 0) + isnull(hrlc, 0) +
 	isnull(hrsro, 0) + isnull(hrassist, 0) +
 	isnull(hrshelt, 0) + isnull(hoth, 0) > 0
+go
 
 truncate table VHCB.dbo.ProjectHouseSubType
 go
+
+insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+select h.HousingID, 26307, hosfd
+from pthousingua ptHouse(nolock)
+join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hosfd <> 0
+go
+
+insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+select h.HousingID, 26308, hosfc
+from pthousingua ptHouse(nolock)
+join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hosfc <> 0
+go
+
+insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+select h.HousingID, 163, hosfmh
+from pthousingua ptHouse(nolock)
+join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hosfmh <> 0
+go
+
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
 select h.HousingID, 163, hrmh

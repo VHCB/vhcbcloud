@@ -159,7 +159,7 @@ namespace vhcbcloud.Conservation
                 hfConserveId.Value = drConserve["ConserveID"].ToString();
                 PopulateDropDown(ddlConservationTrack, drConserve["LkConsTrack"].ToString());
                 txtEasements.Text = drConserve["NumEase"].ToString();
-                PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
+                //PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
                 //txtTotProjAcres.Text = drConserve["TotalAcres"].ToString();
                 txtWooded.Text = drConserve["Wooded"].ToString();
                 txtPrime.Text = drConserve["Prime"].ToString();
@@ -281,7 +281,7 @@ namespace vhcbcloud.Conservation
         private void BindControls()
         {
             BindLookUP(ddlConservationTrack, 7);
-            BindPrimaryStewardOrganization();
+            //BindPrimaryStewardOrganization();
             BindEasementHolder(ddlEasementHolder);
             BindLookUP(ddlAcreageDescription, 97);
             BindLookUP(ddlWatershed, 143);
@@ -294,12 +294,12 @@ namespace vhcbcloud.Conservation
         {
             try
             {
-                ddlPSO.Items.Clear();
-                ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
-                ddlPSO.DataValueField = "applicantid";
-                ddlPSO.DataTextField = "ApplicantName";
-                ddlPSO.DataBind();
-                ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
+                //ddlPSO.Items.Clear();
+                //ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
+                //ddlPSO.DataValueField = "applicantid";
+                //ddlPSO.DataTextField = "ApplicantName";
+                //ddlPSO.DataBind();
+                //ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -356,7 +356,8 @@ namespace vhcbcloud.Conservation
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ConservationSummaryData.SubmitConserve(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlConservationTrack.SelectedValue.ToString()),
-                DataUtils.GetInt(txtEasements.Text), DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 0,//DataUtils.GetInt(txtTotProjAcres.Text),
+                DataUtils.GetInt(txtEasements.Text), //DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
+                0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text), 
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId(),

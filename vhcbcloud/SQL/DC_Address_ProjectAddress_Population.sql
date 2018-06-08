@@ -28,3 +28,21 @@ open NewCursor
 
 Close NewCursor
 deallocate NewCursor
+
+select  a.Town, pttowns.town
+from VHCb.dbo.projectAddress pa(nolock)
+join VHCb.dbo.address a(nolock) on a.addressId = pa.addressId
+join MasterProj mp(nolock) on pa.ProjectId = mp.ProjectId
+join ptprojecttowns  pttowns(nolock) on pttowns.number = mp.Proj_num
+
+begin tran
+
+update a set a.Town = pttowns.town
+from VHCb.dbo.projectAddress pa(nolock)
+join VHCb.dbo.address a(nolock) on a.addressId = pa.addressId
+join MasterProj mp(nolock) on pa.ProjectId = mp.ProjectId
+join ptprojecttowns  pttowns(nolock) on pttowns.number = mp.Proj_num
+
+
+
+commit

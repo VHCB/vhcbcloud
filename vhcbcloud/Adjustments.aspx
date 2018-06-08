@@ -87,7 +87,9 @@
                             </td>
                             <td><span class="labelClass">Date :</span></td>
                             <td>
-                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" ReadOnly="True"></asp:TextBox>
+                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtTransDate">
+                                </ajaxToolkit:CalendarExtender>
                             </td>
                         </tr>
                         <tr>
@@ -119,7 +121,7 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                             <td><span class="labelClass">Amount $</span></td>
+                            <td><span class="labelClass">Amount $</span></td>
                             <td>
                                 <asp:TextBox ID="txtAmt" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                             </td>

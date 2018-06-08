@@ -30,9 +30,8 @@ namespace vhcbcloud.Conservation
 
             if (!IsPostBack)
             {
-                PopulateProjectDetails();
-
                 BindControls();
+                PopulateProjectDetails();
                 GetRoleAccess();
                 BindGrids();
             }
@@ -218,6 +217,16 @@ namespace vhcbcloud.Conservation
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
+
+            DataRow drConserve = ConservationSummaryData.GetConserveDetailsById(DataUtils.GetInt(hfProjectId.Value));
+            hfConserveId.Value = "";
+
+            if (drConserve != null)
+            {
+                hfConserveId.Value = drConserve["ConserveID"].ToString();
+                PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
+                btnSubmit.Text = "Update";
+            }
         }
 
         private void LogError(string pagename, string method, string message, string error)
@@ -254,8 +263,25 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlPlan, 142);
             //BindLookUP(ddlEvent, 146);
             BindLookUP(ddlProgramMilestone, 159);
+            BindPrimaryStewardOrganization();
         }
 
+        private void BindPrimaryStewardOrganization()
+        {
+            try
+            {
+                ddlPSO.Items.Clear();
+                ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
+                ddlPSO.DataValueField = "applicantid";
+                ddlPSO.DataTextField = "ApplicantName";
+                ddlPSO.DataBind();
+                ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindApplicants", "", ex.Message);
+            }
+        }
         private void BindGrids()
         {
             BindMajorGrid();
@@ -1459,6 +1485,18 @@ namespace vhcbcloud.Conservation
         {
             ClientScript.RegisterStartupScript(this.GetType(),
             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Major Amendments"));
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            ConservationSummaryData.SubmitPrimStewConserve(DataUtils.GetInt(hfProjectId.Value), 
+                            DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
+                            GetUserId());
+
+            if (btnSubmit.Text.ToLower() == "update")
+                LogMessage("Primary Steward Organization updated successfully");
+            else
+                LogMessage("Primary Steward Organization added successfully");
         }
 
         //protected void btnAddEvent_Click(object sender, EventArgs e)

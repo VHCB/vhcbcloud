@@ -18,13 +18,13 @@
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width: 171px"><span class="labelClass">Project #</span></td>
+                            <td style="width: 171px"></td>
                             <td style="width: 192px">
-                                <span class="labelClass" id="ProjectNum" runat="server"></span>
+                                
                             </td>
-                            <td><span class="labelClass">Name:</span></td>
+                            <td></td>
                             <td style="text-align: left">
-                                <span class="labelClass" id="ProjName" runat="server"></span>
+                                
                             </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
@@ -54,6 +54,35 @@
 
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
+                </div>
+                <div class="panel-width">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td><span class="labelClass">Project #:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="ProjectNum" runat="server"></span>
+                                    </td>
+                                    <td><span class="labelClass">Name:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="ProjName" runat="server"></span>
+                                    </td>
+                                     <td><span class="labelClass">Primary Steward Organization:</span></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                    </td>
+                                     <td>
+                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" style="height: 5px"></td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewMajor">
@@ -1091,6 +1120,7 @@
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfConserveId" runat="server" />
     <asp:HiddenField ID="hfConserveMajAmendID" runat="server" />
     <asp:HiddenField ID="hfConserveMinAmendID" runat="server" />
     <asp:HiddenField ID="hfConserveViolationsID" runat="server" />

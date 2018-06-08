@@ -38,14 +38,17 @@
                                             <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" Style="border: none;" runat="server" Text="Project Search" Visible="true"
                                                 OnClientClick="PopupProjectSearch(); return false;"></asp:ImageButton>
                                             &nbsp;
-                                        <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
-                                            OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
+                                       
+                                            <asp:ImageButton ID="imgNewAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="true"
+                                                OnClientClick="PopupNewAwardSummary(); return false;"></asp:ImageButton>
                                             <asp:ImageButton ID="imgExistingAwardSummary" ImageUrl="~/Images/$$.png" ToolTip="Award summary" Style="border: none;" runat="server" Text="Award Summary" Visible="false"
                                                 OnClientClick="PopupExistingAwardSummary(); return false;"></asp:ImageButton>
                                             &nbsp;
-                                <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
+                               
+                                            <asp:ImageButton ID="btnProjectNotes" ImageUrl="~/Images/notes.png" ToolTip="Notes" runat="server" Text="Project Notes" Style="border: none;"></asp:ImageButton>
                                             &nbsp;
-                                <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
+                               
+                                            <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                                         </td>
                                     </tr>
                                 </table>
@@ -129,12 +132,14 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                       <td style="height: 4px" colspan="6" />
+                                        <td style="height: 4px" colspan="6" />
                                     </tr>
                                     <tr>
-                                        <td style="width: 10%; float: left"><asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
-                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
-                                                    </asp:DropDownList></td>
+                                        <td style="width: 10%; float: left">
+                                            <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
+                                            </asp:DropDownList></td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
@@ -167,8 +172,19 @@
                                                 OnClientItemSelected="OnToProjectSelected" CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-                                        <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
-                                        <td style="width: 60%; float: left" colspan="3">
+                                        <td style="width: 10%; float: left">
+                                            <span class="labelClass">Fund # :</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlAcctNum" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAcctNum_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtAcctNum" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtAcctNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetFundAccountsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
+                                        <td style="width: 10%; float: left"><span class="labelClass">Fund Name:</span></td>
+                                        <td style="width: 20%; float: left" colspan="3">
                                             <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged">
                                             </asp:DropDownList></td>
                                     </tr>
@@ -178,23 +194,25 @@
                                     <tr>
                                         <td style="width: 10%; float: left"><span class="labelClass">Type :</span></td>
                                         <td style="width: 20%; float: left">
-                                           <%-- <asp:DropDownList ID="ddlRtoFundType" CssClass="clsDropDown" runat="server">
+                                            <%-- <asp:DropDownList ID="ddlRtoFundType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>--%>
                                             <asp:TextBox ID="txtRtoFundType" CssClass="clsTextBoxBlueSm" runat="server" Enabled="false"></asp:TextBox>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
                                         <td style="width: 60%; float: left" colspan="3">
-                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney"  onkeyup='toRToAmtFormatter(value)'  runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney" onkeyup='toRToAmtFormatter(value)' runat="server"></asp:TextBox>
                                         </td>
 
                                     </tr>
-                                     <tr>
-                                       <td style="height: 4px" colspan="6" />
+                                    <tr>
+                                        <td style="height: 4px" colspan="6" />
                                     </tr>
                                     <tr>
-                                        <td style="width: 10%; float: left"><asp:Label ID="lblToUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
-                                        <td style="width: 20%; float: left"> <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
-                                                    </asp:DropDownList></td>
+                                        <td style="width: 10%; float: left">
+                                            <asp:Label ID="lblToUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                            </asp:DropDownList></td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>
@@ -208,7 +226,7 @@
 
                                 <asp:GridView ID="gvReallocate" runat="server" AllowPaging="false" AllowSorting="true" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
                                     GridLines="None"
-                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit" 
+                                    PagerSettings-Mode="NextPreviousFirstLast" ShowFooter="True" Width="90%" OnRowCancelingEdit="gvReallocate_RowCancelingEdit"
                                     OnRowEditing="gvReallocate_RowEditing" OnRowDeleting="gvReallocate_RowDeleting" OnRowDataBound="gvReallocate_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -237,6 +255,7 @@
                                 </EditItemTemplate>--%>
                                             <FooterTemplate>
                                                 Running Total :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
@@ -261,6 +280,7 @@
                                     </EditItemTemplate>--%>
                                             <FooterTemplate>
                                                 Balance Amount :
+                                           
                                             </FooterTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Amount" SortExpression="Amount" ItemStyle-HorizontalAlign="Right"
@@ -269,7 +289,7 @@
                                                 <asp:Label ID="lblAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm"  Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
+                                                <asp:TextBox ID="txtAmount" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Amount", "{0:0.00}") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                             <FooterTemplate>
                                                 <asp:Label ID="lblFooterBalance" runat="server" Text=""></asp:Label>
@@ -401,43 +421,43 @@
 
             //inputElement.value = formatter.format(result);
             $('#<%= txtRfromAmt.ClientID%>').val(formatter.format(result));
-            };
+        };
 
         toRToAmtFormatter = value => {
-                const digits = this.getDigitsFromValue(value);
-                const digitsWithPadding = this.padDigits(digits);
+            const digits = this.getDigitsFromValue(value);
+            const digitsWithPadding = this.padDigits(digits);
 
-                let result = this.addDecimalToNumber(digitsWithPadding);
+            let result = this.addDecimalToNumber(digitsWithPadding);
 
-                var inputElement = document.getElementById("txtRToAmt");
+            var inputElement = document.getElementById("txtRToAmt");
 
-                //inputElement.value = "$" + result;
-                $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
+            //inputElement.value = "$" + result;
+            $('#<%= txtRToAmt.ClientID%>').val(formatter.format(result));
         };
-        getDigitsFromValue = (value) => {
-            return value.toString().replace(/\D/g, '');
-        };
+            getDigitsFromValue = (value) => {
+                return value.toString().replace(/\D/g, '');
+            };
 
-        padDigits = digits => {
-            const desiredLength = 3;
-            const actualLength = digits.length;
+            padDigits = digits => {
+                const desiredLength = 3;
+                const actualLength = digits.length;
 
-            if (actualLength >= desiredLength) {
-                return digits;
-            }
+                if (actualLength >= desiredLength) {
+                    return digits;
+                }
 
-            const amountToAdd = desiredLength - actualLength;
-            const padding = '0'.repeat(amountToAdd);
+                const amountToAdd = desiredLength - actualLength;
+                const padding = '0'.repeat(amountToAdd);
 
-            return padding + digits;
-        };
-        addDecimalToNumber = number => {
-            const centsStartingPosition = number.length - 2;
-            const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
-            const cents = number.substring(centsStartingPosition);
-            return `${dollars}.${cents}`;
-        };
-        removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
+                return padding + digits;
+            };
+            addDecimalToNumber = number => {
+                const centsStartingPosition = number.length - 2;
+                const dollars = this.removeLeadingZeros(number.substring(0, centsStartingPosition));
+                const cents = number.substring(centsStartingPosition);
+                return `${dollars}.${cents}`;
+            };
+            removeLeadingZeros = number => number.replace(/^0+([0-9]+)/, '$1');
 
     </script>
 </asp:Content>

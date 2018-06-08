@@ -341,11 +341,20 @@ namespace vhcbcloud
             //}
 
             //ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
-            ddlRToFund.DataSource = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
+            DataTable dtable = new DataTable();
+            dtable = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
+
+            ddlRToFund.DataSource = dtable;
             ddlRToFund.DataValueField = "fundid";
             ddlRToFund.DataTextField = "name";
             ddlRToFund.DataBind();
             ddlRToFund.Items.Insert(0, new ListItem("Select", "NA"));
+
+            ddlAcctNum.DataSource = dtable;
+            ddlAcctNum.DataValueField = "fundid";
+            ddlAcctNum.DataTextField = "account";
+            ddlAcctNum.DataBind();
+            ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
             if (txtToProjNum.Text != txtFromProjNum.Text)
             {
@@ -386,11 +395,19 @@ namespace vhcbcloud
                 //}
 
                 //ddlRToFund.DataSource = FinancialTransactions.GetDataTableByProcName("GetAllFunds");
-                ddlRToFund.DataSource = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
+                DataTable dtable = new DataTable();
+                dtable = FinancialTransactions.GetAllFundsByProjectProgram(DataUtils.GetInt(hfProjId.Value));
+                ddlRToFund.DataSource = dtable;
                 ddlRToFund.DataValueField = "fundid";
                 ddlRToFund.DataTextField = "name";
                 ddlRToFund.DataBind();
                 ddlRToFund.Items.Insert(0, new ListItem("Select", "NA"));
+
+                ddlAcctNum.DataSource = dtable;
+                ddlAcctNum.DataValueField = "fundid";
+                ddlAcctNum.DataTextField = "account";
+                ddlAcctNum.DataBind();
+                ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
 
                 if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
                 {
@@ -427,6 +444,12 @@ namespace vhcbcloud
                 ddlRToFund.DataTextField = "name";
                 ddlRToFund.DataBind();
                 ddlRToFund.Items.Insert(0, new ListItem("Select", "NA"));
+
+                ddlAcctNum.DataSource = dtable;
+                ddlAcctNum.DataValueField = "fundid";
+                ddlAcctNum.DataTextField = "account";
+                ddlAcctNum.DataBind();
+                ddlAcctNum.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
             {
@@ -692,11 +715,11 @@ namespace vhcbcloud
                     //ddlRtoFundType.DataBind();
                     //ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
 
-
-
                     DataTable dtFundDet = new DataTable();
                     dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
 
+                    ddlAcctNum.SelectedValue = ddlRToFund.SelectedValue;
+                   
                     if (dtFundDet.Rows[0]["mitfund"].ToString().ToLower() == "true")
                     {
                         lblToUsePermit.Visible = true;
@@ -1359,6 +1382,30 @@ namespace vhcbcloud
                 rdBtnFinancial.Items[2].Selected = true;
             else if (rdBtnFinancial.Items[3].Enabled)
                 Response.Redirect("Assignments.aspx");
+        }
+
+        protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataTable dtable = new DataTable();
+
+            if (ddlAcctNum.SelectedIndex != 0)
+            {
+                dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()));
+                
+                ddlRToFund.SelectedValue = ddlAcctNum.SelectedValue;
+
+                if (DataUtils.GetBool(dtable.Rows[0]["mitfund"].ToString()))
+                {
+                    lblToUsePermit.Visible = true;
+                    ddlToUsePermit.Visible = true;
+                    BindToUsePermit((DataUtils.GetInt(hfProjId.Value)));
+                }
+                else
+                {
+                    lblToUsePermit.Visible = false;
+                    ddlToUsePermit.Visible = false;
+                }
+            }
         }
     }
 }

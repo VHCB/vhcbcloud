@@ -8,7 +8,8 @@ namespace VHCBCommon.DataAccessLayer.Conservation
     public class ConservationSummaryData
     {
         #region Conserve
-        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, int PrimStew, decimal TotalAcres, decimal Wooded,
+        public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, //int PrimStew, 
+            decimal TotalAcres, decimal Wooded,
             decimal Prime, decimal Statewide, decimal Tillable, decimal Pasture, decimal Unmanaged, decimal FarmResident, decimal NaturalRec, 
             int UserID, int GeoSignificance)
         {
@@ -27,7 +28,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("LkConsTrack", LkConsTrack));
                         command.Parameters.Add(new SqlParameter("NumEase", NumEase));
-                        command.Parameters.Add(new SqlParameter("PrimStew", PrimStew));
+                        //command.Parameters.Add(new SqlParameter("PrimStew", PrimStew));
                         command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
                         command.Parameters.Add(new SqlParameter("Wooded", Wooded));
                         command.Parameters.Add(new SqlParameter("Prime", Prime));
@@ -40,6 +41,36 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
                         command.Parameters.Add(new SqlParameter("GeoSignificance", GeoSignificance));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SubmitPrimStewConserve(int ProjectId, int PrimStew, int UserID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "SubmitPrimStewConserve";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("PrimStew", PrimStew));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
 
                         command.CommandTimeout = 60 * 5;
 
