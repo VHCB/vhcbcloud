@@ -99,11 +99,10 @@
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
                                         <td style="width: 10%; float: left">
-                                            <span class="labelClass">Fund :</span>
+                                            
                                         </td>
                                         <td style="width: 30%; float: left">
-                                            <asp:DropDownList ID="ddlRFromFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRFromFund_SelectedIndexChanged">
-                                            </asp:DropDownList>
+                                            
                                             <%--<asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
 
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
@@ -111,6 +110,29 @@
                                             </ajaxToolkit:AutoCompleteExtender>--%>
                                         </td>
 
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 4px" colspan="6" />
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left">
+                                            <span class="labelClass">Fund # :</span>
+                                           </td>
+                                        <td style="width: 20%; float: left">
+                                             <asp:DropDownList ID="ddlAccountFrom" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAccountFrom_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtAcctNumFrom" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtAcctNumFrom" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetFundAccountsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
+                                        <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlRFromFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRFromFund_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 10%; float: left"></td>
+                                        <td style="width: 30%; float: left"></td>
                                     </tr>
                                     <tr>
                                         <td style="height: 4px" colspan="6" />
