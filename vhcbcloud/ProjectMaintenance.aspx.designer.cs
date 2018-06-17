@@ -769,15 +769,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtAddress2;
         
         /// <summary>
-        /// txtZip control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtZip;
-        
-        /// <summary>
         /// txtTown control.
         /// </summary>
         /// <remarks>
@@ -832,6 +823,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtState;
         
         /// <summary>
+        /// txtZip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtZip;
+        
+        /// <summary>
         /// cbDefaultAddress control.
         /// </summary>
         /// <remarks>
@@ -875,6 +875,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddAddress;
+        
+        /// <summary>
+        /// btnGetLatLong control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGetLatLong;
         
         /// <summary>
         /// dvAddressGrid control.

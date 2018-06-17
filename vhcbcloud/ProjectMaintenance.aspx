@@ -695,24 +695,15 @@
                                         <td style="width: 250px">
                                             <asp:TextBox ID="txtAddress2" CssClass="clsTextBoxBlue1" runat="server" MaxLength="60"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">Zip Code</span></td>
+                                        <td style="width: 100px"><span class="labelClass">Town</span></td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
+                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
+                                            
                                         </td>
                                         <td style="width: 170px">
-                                            <span class="labelClass">Town</span>
+                                            <span class="labelClass">Village</span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" style="height: 5px"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="width: 150px"><span class="labelClass">Village</span></td>
-                                        <td style="width: 250px">
                                             <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
                                             </asp:DropDownList>
                                             <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
@@ -721,15 +712,25 @@
                                                 CompletionInterval="100" ServiceMethod="GetAllVillages">
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">County</span></td>
-                                        <td style="width: 270px">
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">County</span></td>
+                                        <td style="width: 250px">
                                             <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                         </td>
+                                        <td style="width: 100px"><span class="labelClass">State</span></td>
+                                        <td style="width: 270px">
+                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
+                                        </td>
                                         <td style="width: 170px">
-                                            <span class="labelClass">State</span>
+                                            <span class="labelClass">Zip Code</span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
+                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -758,8 +759,11 @@
                                             <asp:TextBox ID="txtLongitude" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 150px">
-                                            <asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" /></td>
-                                        <td style="width: 250px"></td>
+                                            <asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" />
+                                        </td>
+                                        <td style="width: 250px">
+                                            <asp:Button ID="btnGetLatLong" runat="server" Text="Get Lat Long" class="btn btn-info" OnClick="btnGetLatLong_Click" />
+                                        </td>
                                         <td style="width: 150px"></td>
                                         <td style="width: 250px"></td>
                                         <td></td>

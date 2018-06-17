@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
@@ -131,6 +133,18 @@ namespace vhcbcloud
             btnProjectUpdate.Visible = false;
             chkApprove.Enabled = false;
         }
+
+        private void CheckCreateEventFxnAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27682")
+                    cbAddProjectEvent.Enabled = true;
+            }
+        }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -163,6 +177,7 @@ namespace vhcbcloud
                     if (dr["dfltprg"].ToString() != hfProgramId.Value)
                     {
                         RoleViewOnly();
+                        CheckCreateEventFxnAccess();
                         hfIsVisibleBasedOnRole.Value = "false";
                     }
                     else
@@ -177,6 +192,7 @@ namespace vhcbcloud
                     if (dr["dfltprg"].ToString() != hfProgramId.Value)
                     {
                         RoleViewOnly();
+                        CheckCreateEventFxnAccess();
                         hfIsVisibleBasedOnRole.Value = "false";
                     }
                     else
@@ -197,6 +213,7 @@ namespace vhcbcloud
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    CheckCreateEventFxnAccess();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }
@@ -2391,6 +2408,56 @@ namespace vhcbcloud
                     return true;
             }
             return false;
+        }
+
+        protected void btnGetLatLong_Click(object sender, EventArgs e)
+        {
+            if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+            {
+                LogMessage("Enter Street#");
+                txtStreetNo.Focus();
+            }
+            else if (txtAddress1.Text.Trim() == "")
+            {
+                LogMessage("Enter Address1");
+                txtAddress1.Focus();
+            }
+            else if (txtZip.Text.Trim() == "")
+            {
+                LogMessage("Enter Zip");
+                txtZip.Focus();
+            }
+            else if (txtTown.Text.Trim() == "")
+            {
+                LogMessage("Enter Town");
+                txtTown.Focus();
+            }
+            else if (txtState.Text.Trim() == "")
+            {
+                LogMessage("Enter State");
+                txtState.Focus();
+            }
+            else
+            {
+                //https://www.friism.com/c-and-google-geocoding-web-service-v3/
+                txtLattitude.Text = "";
+                txtLongitude.Text = "";
+
+                string address = string.Format("{0} {1}, {2}, {3}, {4}", txtStreetNo.Text, txtAddress1.Text, txtTown.Text, txtState.Text, txtZip.Text);
+                string url = string.Format("http://maps.google.com/maps/api/geocode/json?address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    txtLattitude.Text = res.Results[0].Geometry.Location.Lat.ToString();
+                    txtLongitude.Text = res.Results[0].Geometry.Location.Lng.ToString();
+                }
+            }
         }
     }
 

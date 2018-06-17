@@ -20,6 +20,16 @@ join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
 where haccess <> 0
 go
 
+insert into VHCB.dbo.ProjectHouseAccessAdapt(HousingID, LkUnitChar, Numunits)
+select h.HousingID, 552, hadapt
+from ptprojadapt apt(nolock)
+join ptapplctn ap(nolock) on ap.[key] = apt.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hadapt <> 0
+go
+
+
 select * from VHCB.dbo.ProjectHouseAccessAdapt
 go
 
@@ -84,16 +94,16 @@ truncate table VHCB.dbo.ProjectHouseSubType
 go
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 26307, hosfd
+select h.HousingID, 26307, hosfd + hoc
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hosfd <> 0
+where (hosfd <> 0 or hoc <> 0 )
 go
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 26308, hosfc
+select h.HousingID, 26306, hosfc
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
@@ -102,59 +112,49 @@ where hosfc <> 0
 go
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 163, hosfmh
+select h.HousingID, 163, hosfmh + hrmh
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hosfmh <> 0
+where ( hosfmh <> 0 or hrmh <> 0 )
 go
+
+--insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+--select h.HousingID, 163, hrmh
+--from pthousingua ptHouse(nolock)
+--join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+--join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+--join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+--where hrmh <> 0
+--go
 
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 163, hrmh
+select h.HousingID, 165, hrmulti + hrlc
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hrmh <> 0
+where (hrmulti <> 0 or hrlc <> 0)
 go
 
+--insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+--select h.HousingID, 165, hrlc
+--from pthousingua ptHouse(nolock)
+--join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+--join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+--join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+--where hrlc <> 0
+--go
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 165, hrmulti
+select h.HousingID, 166, hrgh + hrsro + hrassist
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hrmulti <> 0
-go
-
-insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 165, hrlc
-from pthousingua ptHouse(nolock)
-join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
-join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
-join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hrlc <> 0
-go
-
-insert into vhcb.dbo.ProjectVHCBPriorities(ProjectID, LkVHCBPriorities)
-select h.ProjectID, 27444
-from pthousingua ptHouse(nolock)
-join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
-join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
-join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hrlc <> 0
-go
-
-insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 166, hrgh
-from pthousingua ptHouse(nolock)
-join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
-join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
-join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hrgh <> 0
+where (hrgh <> 0 or hrsro <> 0 or hrassist <> 0 )
 go
 
 insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
@@ -166,16 +166,25 @@ join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
 where hrshelt <> 0
 go
 
-insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
-select h.HousingID, 170, hoth
+--insert into VHCB.dbo.ProjectHouseSubType(HousingID, LkHouseType, Units)
+--select h.HousingID, 170, hoth
+--from pthousingua ptHouse(nolock)
+--join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+--join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+--join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+--where hoth <> 0
+--go
+
+select * from VHCb.dbo.ProjectHouseSubType
+go
+
+insert into vhcb.dbo.ProjectVHCBPriorities(ProjectID, LkVHCBPriorities)
+select h.ProjectID, 27444
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where hoth <> 0
-go
-
-select * from VHCb.dbo.ProjectHouseSubType
+where hrlc <> 0
 go
 
 truncate table VHCB.dbo.ProjectHouseSuppServ
@@ -312,7 +321,7 @@ where acov50 <> 0
 go
 
 insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
-select h.HousingID, 185, acov60
+select h.HousingID, 185, acov60 + acov80
 from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
@@ -320,14 +329,14 @@ join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
 where acov60 <> 0
 go
 
-insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
-select h.HousingID, 185, acov80
-from pthousingua ptHouse(nolock)
-join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
-join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
-join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where acov80 <> 0
-go
+--insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
+--select h.HousingID, 185, acov80
+--from pthousingua ptHouse(nolock)
+--join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+--join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+--join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+--where acov80 <> 0
+--go
 
 insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
 select h.HousingID, 186, acov100
@@ -336,6 +345,16 @@ join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
 where acov100 <> 0
+go
+
+
+insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
+select h.HousingID, 187, hoth
+from pthousingua ptHouse(nolock)
+join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
+join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
+join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
+where hoth <> 0
 go
 
 select * from vhcb.dbo.ProjectHouseVHCBAfford

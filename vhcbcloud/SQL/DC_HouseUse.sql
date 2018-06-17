@@ -43,11 +43,13 @@ open NewCursor
 	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26106, @huvacq + @huoacq, 26106, 0)
 
 	if(@huvccon + @huvcmang + @huvchm + @huvcap + @huvcsite + @huvccost + @huvroth + @huvrcon + @huvrmang + @huvrhm + @huvrap + @huvrsite + @huvrcost + 
-	@huodev + @huocoth + @huoccon + @huocmang + @huochm + @huocap + @huocsite + @huoccost + @huoroth + @huorcon + @huormang + @huorhm + @huorap + @huorsite + @huorcost <> 0)
+	@huocoth + @huoccon + @huocmang + @huochm + @huocap + @huocsite + @huoccost + @huoroth + @huorcon + @huormang + @huorhm + @huorap + @huorsite + @huorcost + @huvcoth <> 0)
 	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26107, 
 		@huvccon + @huvcmang + @huvchm + @huvcap + @huvcsite + @huvccost + 
-		@huvroth + @huvrcon + @huvrmang + @huvrhm + @huvrap + @huvrsite + @huvrcost + @huodev + @huocoth + @huoccon + @huocmang + @huochm + @huocap + @huocsite + @huoccost + @huoroth + @huorcon +
-		@huormang + @huorhm + @huorap + @huorsite + @huorcost, 26107, 0)
+		@huvroth + @huvrcon + @huvrmang + @huvrhm + @huvrap + @huvrsite + 
+		@huvrcost + @huocoth + @huoccon + @huocmang + @huochm + 
+		@huocap + @huocsite + @huoccost + @huoroth + @huorcon +
+		@huormang + @huorhm + @huorap + @huorsite + @huorcost + @huvcoth, 26107, 0)
 
 	if(@huodev + @huvdev <> 0)
 	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26108, @huodev + @huvdev, 26108, 0)
@@ -55,12 +57,12 @@ open NewCursor
 	if(@huoreserve + @huvreserve <> 0)
 	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26109, @huoreserve + @huvreserve, 26109, 0)
 
-	if(@huosoth + @huosre + @huoscon + @huosfn + @huosmk + @huospf + @huosfee + @huvsre + @huvscon + @huvsfn + @huvsmk + @huvspf + @huvsfee <> 0)
+	if(@huosoth + @huosre + @huoscon + @huosfn + @huosmk + @huospf + @huosfee + @huvsre + @huvscon + @huvsfn + @huvsmk + @huvspf + @huvsfee + @huvsoth <> 0)
 	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26110, 
-		@huosoth + @huosre + @huoscon + @huosfn + @huosmk + @huospf + @huosfee + @huvsre + @huvscon + @huvsfn + @huvsmk + @huvspf + @huvsfee, 26110, 0)
-	
-	if(@huooth + @huoad + @huvoth + @huvad <> 0)
-	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 26891, @huooth + @huoad + @huvoth + @huvad, 26891, 0)
+		@huosoth + @huosre + @huoscon + @huosfn + @huosmk + @huospf + @huosfee + @huvsre + @huvscon + @huvsfn + @huvsmk + @huvspf + @huvsfee + @huvsoth, 26110, 0)
+
+	if( @huvad + @huvoth + @huoad + @huooth <> 0)
+	insert into VHCB.dbo.HouseUse(HouseSUID, LkHouseUseVHCB, VHCBTotal, LKHouseUseOther, OtherTotal) values(@HouseSUID, 27697, @huvad + @huvoth + @huoad + @huooth, 27697, 0)
 
 	FETCH NEXT FROM NewCursor INTO @HousingID, 
 	@huvacq, @huvrcost, @huvrmang, 
