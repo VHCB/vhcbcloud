@@ -223,13 +223,13 @@ namespace vhcbcloud.Viability
             AttributeTypeId = 0;
             EnterpriseType = "";
 
-            if (LkProjectType == 26399)
+            if (LkProjectType == 26851)
             {
                 AttributeTypeId = 169;
                 EnterpriseTypeId = 375;
                 EnterpriseType = "Viability Farm Enterprise";
             }
-            else if (LkProjectType == 26400)
+            else if (LkProjectType == 26852)
             {
                 AttributeTypeId = 202;
                 EnterpriseTypeId = 376;

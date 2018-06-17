@@ -1471,8 +1471,8 @@ namespace vhcbcloud.Housing
                     hfTargetEffWarning.Value = "0";
                     if (TotalUnits - totTargetUnits != 0)
                     {
-                        hfTargetEffWarning.Value = "1";
-                        WarningMessage(dvTargetEffWarning, lblTargetEffWarning, "Target Best Effort Units must be equal to Total Units.");
+                        //hfTargetEffWarning.Value = "1";
+                        //WarningMessage(dvTargetEffWarning, lblTargetEffWarning, "Target Best Effort Units must be equal to Total Units.");
                     }
                     else
                     {
