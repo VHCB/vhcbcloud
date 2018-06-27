@@ -2444,7 +2444,7 @@ namespace vhcbcloud
                 txtLongitude.Text = "";
 
                 string address = string.Format("{0} {1}, {2}, {3}, {4}", txtStreetNo.Text, txtAddress1.Text, txtTown.Text, txtState.Text, txtZip.Text);
-                string url = string.Format("http://maps.google.com/maps/api/geocode/json?address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
 
                 var request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
@@ -2454,8 +2454,9 @@ namespace vhcbcloud
 
                 if (res.Status == "OK")
                 {
-                    txtLattitude.Text = res.Results[0].Geometry.Location.Lat.ToString();
-                    txtLongitude.Text = res.Results[0].Geometry.Location.Lng.ToString();
+                    txtLattitude.Text = res.Results[0].Geometry.Location.Latitude.ToString();
+                    txtLongitude.Text = res.Results[0].Geometry.Location.Longitude.ToString();
+                    txtCounty.Text = res.Results[0].AddressComponents[3].LongName.ToString();
                 }
             }
         }

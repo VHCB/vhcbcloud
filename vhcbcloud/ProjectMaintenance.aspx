@@ -701,16 +701,10 @@
                                             
                                         </td>
                                         <td style="width: 170px">
-                                            <span class="labelClass">Village</span>
+                                            <span class="labelClass">State</span>
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
-                                            </asp:DropDownList>
-                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
-                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
-                                                EnableCaching="true" CompletionSetCount="1"
-                                                CompletionInterval="100" ServiceMethod="GetAllVillages">
-                                            </ajaxToolkit:AutoCompleteExtender>
+                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -718,19 +712,25 @@
                                     </tr>
 
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">County</span></td>
+                                        <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                         <td style="width: 250px">
+                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 100px"><span class="labelClass">County</span></td>
+                                        <td style="width: 270px">
                                             <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px"><span class="labelClass">State</span></td>
-                                        <td style="width: 270px">
-                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
-                                        </td>
                                         <td style="width: 170px">
-                                            <span class="labelClass">Zip Code</span>
+                                            <span class="labelClass">Village</span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="5"></asp:TextBox>
+                                             <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
+                                                EnableCaching="true" CompletionSetCount="1"
+                                                CompletionInterval="100" ServiceMethod="GetAllVillages">
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                     </tr>
                                     <tr>

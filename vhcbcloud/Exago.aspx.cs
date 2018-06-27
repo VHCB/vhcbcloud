@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VHCBCommon.DataAccessLayer;
 using WebReports.Api;
+using WebReports.Api.Roles;
 
 namespace vhcbcloud
 {
@@ -19,6 +22,11 @@ namespace vhcbcloud
                 string URL = string.Empty;
                 Api api = new Api(@"/eWebReports");
                 api.Action = wrApiAction.Home;
+
+                DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+
+                Role role = api.Roles.GetRole(dr["ExagoRole"].ToString());
+                role.Activate();
 
                 URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
 

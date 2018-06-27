@@ -326,7 +326,7 @@ from pthousingua ptHouse(nolock)
 join ptapplctn ap(nolock) on ap.[key] = ptHouse.applctnkey
 join MasterProj mp(nolock) on ap.[projkey] = mp.[key]
 join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
-where acov60 <> 0
+where acov60 + acov80 <> 0
 go
 
 --insert into VHCB.dbo.ProjectHouseVHCBAfford(HousingID, LkAffordunits, Numunits)
@@ -357,5 +357,5 @@ join  VHCB.dbo.Housing h(nolock) on mp.[ProjectId] = h.[ProjectID]
 where hoth <> 0
 go
 
-select * from vhcb.dbo.ProjectHouseVHCBAfford
+select * from vhcb.dbo.ProjectHouseVHCBAfford 
 go

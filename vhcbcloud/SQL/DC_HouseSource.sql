@@ -5,9 +5,9 @@ go
 --group by HouseSUID, LkHouseSource
 --having count(*) > 1
 
---select * from VHCB.dbo.HouseSU
-----4612
---select * from VHCB.dbo.HouseSource
+select * from VHCB.dbo.HouseSU
+--4612
+select * from VHCB.dbo.HouseSource
 ----5490
 truncate table VHCB.dbo.HouseSource
 delete from VHCB.dbo.HouseSU
@@ -49,8 +49,8 @@ open NewCursor
 	if(@hscdbg <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 519, @hscdbg)
 
-	if(isnull(@hsvclf, 0) + isnull(@hsbank, 0) + isnull(@hsvclf, 0) <> 0)
-	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26483, isnull(@hsvclf, 0) + isnull(@hsbank, 0) + isnull(@hsvclf, 0))
+	if(isnull(@hsvclf, 0) + isnull(@hsbank, 0) > 0)
+	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26483, isnull(@hsvclf, 0) + isnull(@hsbank, 0))
 
 	if(@hsvhfa <> 0)
 	insert into VHCB.dbo.HouseSource(HouseSUID, LkHouseSource, Total) values(@HouseSUID, 26484, @hsvhfa)
