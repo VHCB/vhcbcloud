@@ -11,6 +11,41 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class HOPWAMaintenanceData
     {
+        public static string GetHOPWAYearLabel(int Subtypeid)
+        {
+            DataTable dt = null;
+            string subDescription = string.Empty;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetHOPWAYearLabel";
+                        command.Parameters.Add(new SqlParameter("Subtypeid", Subtypeid));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            subDescription = ds.Tables[0].Rows[0]["SubDescription"].ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return subDescription;
+        }
+
         public static DataTable GetHOPWAMasterList(int ProjectId, bool IsActiveOnly)
         {
             DataTable dt = null;
@@ -79,7 +114,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static HOPWAmainttResult AddHOPWAMaster(string UUID, string HHincludes, int SpecNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age, 
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, int ProjectId, int LivingSituationId, int PrimaryASO)
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, int ProjectId, 
+            int LivingSituationId, int PrimaryASO, int PrevHOPWAID)
         {
             try
             {
@@ -106,10 +142,10 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AMI", AMI));
                         command.Parameters.Add(new SqlParameter("Beds", Beds));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
-                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId)); 
                         command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
                         command.Parameters.Add(new SqlParameter("PrimaryASO", PrimaryASO));
-
+                        command.Parameters.Add(new SqlParameter("PrevHOPWAID", PrevHOPWAID));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -211,7 +247,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateHOPWAMaster(int HOPWAID, string HHincludes, int SpecNeeds, int WithHIV, int InHousehold, int Minors, int Gender, int Age,
-            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool IsRowIsActive, int LivingSituationId)
+            int Ethnic, int Race, decimal GMI, decimal AMI, int Beds, string Notes, bool IsRowIsActive, 
+            int LivingSituationId, int PrevHOPWAID)
         {
             try
             {
@@ -239,6 +276,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AMI", AMI));
                         command.Parameters.Add(new SqlParameter("Beds", Beds));
                         command.Parameters.Add(new SqlParameter("Notes", Notes));
+                        command.Parameters.Add(new SqlParameter("PrevHOPWAID", PrevHOPWAID));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         command.Parameters.Add(new SqlParameter("LivingSituationId", LivingSituationId));
 

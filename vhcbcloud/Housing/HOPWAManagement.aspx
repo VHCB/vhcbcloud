@@ -162,6 +162,15 @@
                                         <td style="width: 170px"><span class="labelClass">Active</span></td>
                                         <td> <asp:CheckBox ID="cbHOPWAMaster" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" /></td>
                                     </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">PreviousID </span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtPreviosId" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
@@ -275,7 +284,7 @@
                                             <asp:DropDownList ID="ddlFund" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Yr1</span></td>
+                                        <td style="width: 170px"><span class="labelClass" id="lblYr1" runat="server">Yr1</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbYear1" CssClass="ChkBox" runat="server" Checked="false" />
                                         </td>
@@ -284,12 +293,12 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px"><span class="labelClass">Yr2</span></td>
+                                        <td style="width: 150px"><span class="labelClass" id="lblYr2" runat="server">Yr2</span></td>
                                         <td style="width: 250px">
                                             <asp:CheckBox ID="cbYear2" CssClass="ChkBox" runat="server" Checked="false" />
                                         </td>
                                         <td style="width: 107px">
-                                            <span class="labelClass">Yr3</span>
+                                            <span class="labelClass" id="lblYr3" runat="server">Yr3</span>
                                         </td>
                                         <td style="width: 270px">
                                             <asp:CheckBox ID="cbYear3" CssClass="ChkBox" runat="server" Checked="false" />

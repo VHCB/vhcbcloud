@@ -83,7 +83,8 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Age:</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                            <asp:DropDownList ID="ddlBldgAge" CssClass="clsDropDownLong" runat="server" Style="margin-left: 1"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>

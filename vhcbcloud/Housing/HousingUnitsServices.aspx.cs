@@ -1044,7 +1044,7 @@ namespace vhcbcloud.Housing
                     if (TotalUnits - totVHCBUnits != 0)
                     {
                         hfVHCBUnitWarning.Value = "1";
-                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Affordability Units must be equal to Total Units.");
+                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Units must be equal to Total Units.");
                     }
                     else
                     {

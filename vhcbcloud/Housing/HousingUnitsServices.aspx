@@ -819,10 +819,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">VHCB Covenant Affordability</h3>
+                                        <h3 class="panel-title">VHCB Covenant</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddVHCBAff" runat="server" Text="Add New VHCB Covenant Affordability" />
+                                        <asp:CheckBox ID="cbAddVHCBAff" runat="server" Text="Add New VHCB Covenant" />
                                         <asp:ImageButton ID="ImgVHCBAff" ImageUrl="~/Images/print.png" ToolTip="VHCB Affordability"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgVHCBAff_Click" />
                                     </td>

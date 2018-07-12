@@ -187,6 +187,7 @@ namespace vhcbcloud.Lead
             BindLookUP(ddlAppendixA, 152);
             BindLookUP(ddlEBlStatus, 153);
             BindLookUP(ddlIncomeStatus, 155);
+            BindLookUP(ddlBldgAge, 262);
         }
 
         private void BindAddresses()
@@ -304,7 +305,8 @@ namespace vhcbcloud.Lead
             if (btnAddBldgInfoSubmit.Text == "Submit")
             {
                 LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddProjectLeadBldg((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(txtBldgnumber.Text), 
-                    DataUtils.GetInt(ddlAddress.SelectedValue.ToString()), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlBldgAge.SelectedValue.ToString()), DataUtils.GetInt(ddlType.SelectedValue.ToString()), 
                     DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked, DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), 
                     txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()));
 
@@ -321,7 +323,7 @@ namespace vhcbcloud.Lead
             else
             {
                 ProjectLeadBuildingsData.UpdateProjectLeadBldg((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtBldgnumber.Text), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
-                  DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
+                  DataUtils.GetInt(ddlBldgAge.SelectedValue.ToString()), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
                   DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), 
                   DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()), chkBldgActive.Checked);
 
@@ -341,7 +343,7 @@ namespace vhcbcloud.Lead
 
             txtBldgnumber.Text = "";
             ddlAddress.SelectedIndex = -1;
-            txtAge.Text = "";
+            ddlBldgAge.SelectedIndex = -1;
             ddlType.SelectedIndex = -1;
             txtLHCUnits.Text = "";
             cbFloodHazardArea.Checked = false;
@@ -410,7 +412,9 @@ namespace vhcbcloud.Lead
 
                         txtBldgnumber.Text = dr["Building"].ToString();
                         PopulateDropDown(ddlAddress, dr["AddressID"].ToString());
-                        txtAge.Text = dr["Age"].ToString();
+                        //txtAge.Text = dr["Age"].ToString();
+                        PopulateDropDown(ddlBldgAge, dr["Age"].ToString());
+
                         PopulateDropDown(ddlType, dr["Type"].ToString());
                         txtLHCUnits.Text = dr["LHCUnits"].ToString();
                         cbFloodHazardArea.Checked = DataUtils.GetBool(dr["FloodHazard"].ToString());

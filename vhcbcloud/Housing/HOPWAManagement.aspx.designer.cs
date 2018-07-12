@@ -283,6 +283,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbHOPWAMaster;
         
         /// <summary>
+        /// txtPreviosId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPreviosId;
+        
+        /// <summary>
         /// txtNotes control.
         /// </summary>
         /// <remarks>
@@ -382,6 +391,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.DropDownList ddlFund;
         
         /// <summary>
+        /// lblYr1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblYr1;
+        
+        /// <summary>
         /// cbYear1 control.
         /// </summary>
         /// <remarks>
@@ -391,6 +409,15 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.CheckBox cbYear1;
         
         /// <summary>
+        /// lblYr2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblYr2;
+        
+        /// <summary>
         /// cbYear2 control.
         /// </summary>
         /// <remarks>
@@ -398,6 +425,15 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbYear2;
+        
+        /// <summary>
+        /// lblYr3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblYr3;
         
         /// <summary>
         /// cbYear3 control.

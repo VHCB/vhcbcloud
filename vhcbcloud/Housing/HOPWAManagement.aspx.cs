@@ -36,11 +36,19 @@ namespace vhcbcloud.Housing
             if (!IsPostBack)
             {
                 BindControls();
+                BindLabels();
                 DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(ProjectId));
                 spnPrimaryASO.InnerHtml = drProjectDetails["AppName"].ToString();
                 hfAppNameId.Value = drProjectDetails["AppNameId"].ToString();
                 BindHOPWAanMasterGrid();
             }
+        }
+
+        private void BindLabels()
+        {
+            lblYr1.InnerHtml = HOPWAMaintenanceData.GetHOPWAYearLabel(119);
+            lblYr2.InnerHtml = HOPWAMaintenanceData.GetHOPWAYearLabel(120);
+            lblYr3.InnerHtml = HOPWAMaintenanceData.GetHOPWAYearLabel(121);
         }
 
         private void GenerateTabs(string ProjectId)
@@ -94,7 +102,7 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlHOPWARace, 10);
             BindLookUP(ddlHOPWAEthnicity, 149);
             BindLookUP(ddlAgeGender, 231);
-            BindLookUP(ddlGender, 231);
+            BindLookUP(ddlGender, 267);// 231);
             BindLookUP(ddlSpecialNeeds, 245);
             BindLookUP(ddlLivingSituation, 234);
 
@@ -203,7 +211,8 @@ namespace vhcbcloud.Housing
                 HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAMaster(txtUUID.Text, txtHHIncludes.Text, DataUtils.GetInt(ddlSpecialNeeds.SelectedValue.ToString()), DataUtils.GetInt(txtWithHIV.Text),
                     DataUtils.GetInt(txtInHouseHold.Text), DataUtils.GetInt(txtMinors.Text), DataUtils.GetInt(ddlGender.Text), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlEthnicity.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlRace.SelectedValue.ToString()), DataUtils.GetInt(ddlGMI.SelectedValue.ToString()), DataUtils.GetInt(ddlAMI.SelectedValue.ToString()), DataUtils.GetInt(txtBeds.Text), txtNotes.Text, 
-                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()), DataUtils.GetInt(hfAppNameId.Value));
+                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()), 
+                    DataUtils.GetInt(hfAppNameId.Value), DataUtils.GetInt(txtPreviosId.Text));
 
                 if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
                     LogMessage("HOPWA UUID already exist as in-active");
@@ -221,7 +230,7 @@ namespace vhcbcloud.Housing
                 HOPWAMaintenanceData.UpdateHOPWAMaster(DataUtils.GetInt(hfHOPWAId.Value), txtHHIncludes.Text, DataUtils.GetInt(ddlSpecialNeeds.SelectedValue.ToString()), DataUtils.GetInt(txtWithHIV.Text),
                     DataUtils.GetInt(txtInHouseHold.Text), DataUtils.GetInt(txtMinors.Text), DataUtils.GetInt(ddlGender.Text), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlEthnicity.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlRace.SelectedValue.ToString()), DataUtils.GetInt(ddlGMI.SelectedValue.ToString()), DataUtils.GetInt(ddlAMI.SelectedValue.ToString()), DataUtils.GetInt(txtBeds.Text), txtNotes.Text,
-                    cbHOPWAMaster.Checked, DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString())); ;
+                    cbHOPWAMaster.Checked, DataUtils.GetInt(ddlLivingSituation.SelectedValue.ToString()), DataUtils.GetInt(txtPreviosId.Text)); ;
 
                 LogMessage("HOPWA Master updated successfully");
 
@@ -337,6 +346,7 @@ namespace vhcbcloud.Housing
                         PopulateDropDown(ddlLivingSituation, drHOPWAMasterDetails["LivingSituationId"].ToString());
                         txtBeds.Text = drHOPWAMasterDetails["Beds"].ToString();
                         txtNotes.Text = drHOPWAMasterDetails["Notes"].ToString();
+                        txtPreviosId.Text = drHOPWAMasterDetails["PrevHOPWAID"].ToString();
                         btnHOPWAMaster.Text = "Update";
 
                         cbHOPWAMaster.Checked = DataUtils.GetBool(drHOPWAMasterDetails["RowIsActive"].ToString()); ;
@@ -859,12 +869,20 @@ namespace vhcbcloud.Housing
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.Header)
+                {
+                    e.Row.Cells[6].Text = HOPWAMaintenanceData.GetHOPWAYearLabel(119);
+                    e.Row.Cells[7].Text = HOPWAMaintenanceData.GetHOPWAYearLabel(120);
+                    e.Row.Cells[8].Text = HOPWAMaintenanceData.GetHOPWAYearLabel(121);
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnProgram.Text = "Update";
                     cbAddProgram.Checked = true;
                     //Checking whether the Row is Data Row
+
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
                         e.Row.Cells[10].Controls[0].Visible = false;

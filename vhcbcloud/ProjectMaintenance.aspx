@@ -764,7 +764,7 @@
                                         <td style="width: 250px">
                                             <asp:Button ID="btnGetLatLong" runat="server" Text="Get Lat Long" class="btn btn-info" OnClick="btnGetLatLong_Click" />
                                         </td>
-                                        <td style="width: 150px"></td>
+                                        <td style="width: 150px"><asp:Button ID="btnGetAddress" runat="server" Text="Update Address from Lat/Long" class="btn btn-info" OnClick="btnGetAddress_Click" /></td>
                                         <td style="width: 250px"></td>
                                         <td></td>
                                         <td></td>
@@ -777,7 +777,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAddressGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
@@ -908,7 +908,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"

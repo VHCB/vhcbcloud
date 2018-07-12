@@ -72,5 +72,63 @@ namespace VHCBCommon.DataAccessLayer
                 throw ex;
             }
         }
+
+        public static void UpdateAcctEffectiveDateSetup(int SetupID, DateTime AcctEffectiveDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateAcctEffectiveDateSetup";
+
+                        command.Parameters.Add(new SqlParameter("SetupID", SetupID));
+                        command.Parameters.Add(new SqlParameter("AcctEffectiveDate", AcctEffectiveDate));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateAmericorpsSetup(int SetupID, int ACReportQtr)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateAmericorpsSetup";
+
+                        command.Parameters.Add(new SqlParameter("SetupID", SetupID));
+                        command.Parameters.Add(new SqlParameter("ACReportQtr", ACReportQtr));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -289,6 +289,9 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\NumericController.js" />
     <Content Include="Setup.aspx" />
+    <Content Include="SetUp\AccountSetup.aspx" />
+    <Content Include="SetUp\AmericorpsSetup.aspx" />
+    <Content Include="SetUp\HOPWASetup.aspx" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
     <Content Include="SQL\Americorpsmembers.sql" />
@@ -1009,6 +1012,27 @@
     </Compile>
     <Compile Include="Setup.aspx.designer.cs">
       <DependentUpon>Setup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\AccountSetup.aspx.cs">
+      <DependentUpon>AccountSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\AccountSetup.aspx.designer.cs">
+      <DependentUpon>AccountSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\AmericorpsSetup.aspx.cs">
+      <DependentUpon>AmericorpsSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\AmericorpsSetup.aspx.designer.cs">
+      <DependentUpon>AmericorpsSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\HOPWASetup.aspx.cs">
+      <DependentUpon>HOPWASetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\HOPWASetup.aspx.designer.cs">
+      <DependentUpon>HOPWASetup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

@@ -2422,11 +2422,11 @@ namespace vhcbcloud
                 LogMessage("Enter Address1");
                 txtAddress1.Focus();
             }
-            else if (txtZip.Text.Trim() == "")
-            {
-                LogMessage("Enter Zip");
-                txtZip.Focus();
-            }
+            //else if (txtZip.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Zip");
+            //    txtZip.Focus();
+            //}
             else if (txtTown.Text.Trim() == "")
             {
                 LogMessage("Enter Town");
@@ -2444,7 +2444,7 @@ namespace vhcbcloud
                 txtLongitude.Text = "";
 
                 string address = string.Format("{0} {1}, {2}, {3}, {4}", txtStreetNo.Text, txtAddress1.Text, txtTown.Text, txtState.Text, txtZip.Text);
-                string url = string.Format("https://maps.google.com/maps/api/geocode/json?address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
 
                 var request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
@@ -2454,9 +2454,102 @@ namespace vhcbcloud
 
                 if (res.Status == "OK")
                 {
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+                    txtCounty.Text = "";
+                    txtZip.Text = "";
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                    }
                     txtLattitude.Text = res.Results[0].Geometry.Location.Latitude.ToString();
                     txtLongitude.Text = res.Results[0].Geometry.Location.Longitude.ToString();
-                    txtCounty.Text = res.Results[0].AddressComponents[3].LongName.ToString();
+                }
+            }
+        }
+
+        protected void btnGetAddress_Click(object sender, EventArgs e)
+        {
+            if (txtLattitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Lattitude");
+                txtLattitude.Focus();
+            }
+            else if (txtLongitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Longitude");
+                txtLongitude.Focus();
+            }
+            else
+            {
+                txtStreetNo.Text = "";
+                txtAddress1.Text = "";
+                txtAddress2.Text = "";
+                txtTown.Text = "";
+                txtState.Text = "";
+                txtCounty.Text = "";
+                txtZip.Text = "";
+                txtVillage.Text = "";
+
+                string LatLong = string.Format("{0}, {1}", txtLattitude.Text, txtLongitude.Text);
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&latlng={0}&region=dk&sensor=false", HttpUtility.UrlEncode(LatLong));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+
+                        if (types == "street_number")
+                        {
+                            txtStreetNo.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "route" || types == "point_of_interest,establishment")
+                        {
+                            txtAddress1.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political")
+                        {
+                            txtTown.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_1,political")
+                        {
+                            txtState.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                        }
+                    }
                 }
             }
         }

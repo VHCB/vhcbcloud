@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -151,8 +152,7 @@ namespace vhcbcloud.Viability
                 PopulateDropDown(ddlFiscalYear, drEntFunDetails["FiscalYr"].ToString());
 
                 btnAddPlanInfo.Text = "Update";
-                dvNewFinJobs.Visible = true;
-                BindFinJobsGrid();
+                CheckFinancialJobAccess();
                 BindAttributeGrid();
             }
             else
@@ -162,6 +162,33 @@ namespace vhcbcloud.Viability
             }
         }
 
+        private void CheckFinancialJobAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "28686")
+                {
+                    dvNewFinJobs.Visible = true;
+                    BindFinJobsGrid();
+                }
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
         {
             foreach (ListItem item in ddl.Items)
