@@ -223,6 +223,10 @@ namespace vhcbcloud
             lblAvailVisibleFund.Text = "";
             hfProjId.Value = dt.Rows[0][0].ToString();
 
+            DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
+
+            lblProjName.Text = dtProjects.Rows.Count > 0 ? dtProjects.Rows[0]["Description"].ToString() : "";
+
             //DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
             //if (dr != null)
             //    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)

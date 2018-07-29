@@ -240,6 +240,10 @@ namespace vhcbcloud
             lblAvailVisibleFund.Text = "";
             hfProjId.Value = dt.Rows[0][0].ToString();
 
+            DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
+
+            lblProjName1.Text = dtProjects.Rows.Count > 0 ? dtProjects.Rows[0]["Description"].ToString() : "";
+
             //DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(int.Parse(hfProjId.Value));
             //if (dr != null)
             //    if (Convert.ToDecimal(dr["availFund"].ToString()) > 0)
@@ -355,6 +359,11 @@ namespace vhcbcloud
         private void getToDetails(DataTable dt)
         {
             hfToProjId.Value = dt.Rows[0][0].ToString();
+
+            DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfToProjId.Value));
+
+            lblProjName2.Text = dtProjects.Rows.Count > 0 ? dtProjects.Rows[0]["Description"].ToString() : "";
+
             //hfTransId.Value = ""; hfRFromTransId.Value = "";
             /*DO NOT Remove the below code*/
             //if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
@@ -397,7 +406,10 @@ namespace vhcbcloud
                 ddlRtoFundType.DataTextField = "Description";
                 ddlRtoFundType.DataBind();
                 ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
-                ddlRtoFundType.SelectedValue = ddlRFromFundType.SelectedValue;
+
+                if (ddlRFromFundType.SelectedValue != "")
+                    ddlRtoFundType.SelectedValue = ddlRFromFundType.SelectedValue;
+
                 ddlRtoFundType.Enabled = false;
             }
             else

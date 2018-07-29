@@ -42,7 +42,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static ConservationAct250Result AddAct250Farm(string UsePermit, int LkTownDev, int CDist, int Type, 
-            string DevName, int Primelost, int Statelost, int TotalAcreslost,int AcresDevelop, int Developer, decimal AntFunds, 
+            string DevName, decimal Primelost, decimal Statelost, decimal TotalAcreslost, decimal AcresDevelop, 
+            int Developer, decimal AntFunds, 
             DateTime MitDate, string URL, int FundID)
         {
             try
@@ -100,7 +101,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateAct250Farm(int Act250FarmID, int LkTownDev, int CDist, int Type,
-            string DevName, int Primelost, int Statelost, int TotalAcreslost, int AcresDevelop, int Developer, decimal AntFunds,
+            string DevName, decimal Primelost, decimal Statelost, decimal TotalAcreslost, decimal AcresDevelop, 
+            int Developer, decimal AntFunds,
             DateTime MitDate, string URL, int FundID, bool IsRowIsActive)
         {
             try

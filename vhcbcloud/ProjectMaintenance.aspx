@@ -171,6 +171,20 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px; height: 20px;"><span class="labelClass">Active: </span></td>
+                                        <td style="width: 250px; height: 20px;">
+                                            <asp:CheckBox ID="cbProjectActive" runat="server" Text="" />
+                                        </td>
+                                        <td style="width: 100px; text-align: left; height: 20px;"></td>
+                                        <td style="width: 270px; height: 20px;"></td>
+                                        <td style="width: 170px; text-align: left; height: 20px;"></td>
+                                        <td>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px">
                                             <asp:CheckBox ID="cbAddTBDAddress" runat="server" Checked="true" Text="Add default TBD address record" />
@@ -698,7 +712,7 @@
                                         <td style="width: 100px"><span class="labelClass">Town</span></td>
                                         <td style="width: 270px">
                                             <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
-                                            
+
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">State</span>
@@ -724,7 +738,7 @@
                                             <span class="labelClass">Village</span>
                                         </td>
                                         <td>
-                                             <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
+                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
                                             </asp:DropDownList>
                                             <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
@@ -764,7 +778,8 @@
                                         <td style="width: 250px">
                                             <asp:Button ID="btnGetLatLong" runat="server" Text="Get Lat Long" class="btn btn-info" OnClick="btnGetLatLong_Click" />
                                         </td>
-                                        <td style="width: 150px"><asp:Button ID="btnGetAddress" runat="server" Text="Update Address from Lat/Long" class="btn btn-info" OnClick="btnGetAddress_Click" /></td>
+                                        <td style="width: 150px">
+                                            <asp:Button ID="btnGetAddress" runat="server" Text="Update Address from Lat/Long" class="btn btn-info" OnClick="btnGetAddress_Click" /></td>
                                         <td style="width: 250px"></td>
                                         <td></td>
                                         <td></td>
@@ -926,7 +941,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Applicant Id">
                                             <ItemTemplate>
-                                                <asp:HyperLink ID="HyperLink1" runat="server" target='_blank' 
+                                                <asp:HyperLink ID="HyperLink1" runat="server" Target='_blank'
                                                     NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?IsSearch=true&ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'><%# Eval("ApplicantId") %></asp:HyperLink>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -990,7 +1005,7 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="w9" Visible="false">
-                                           <ItemTemplate>
+                                            <ItemTemplate>
                                                 <asp:CheckBox ID="chkw9" Enabled="false" runat="server" Checked='<%# Eval("w9") %>' />
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -1040,7 +1055,8 @@
                                                 <asp:TextBox ID="txtRelatedProjectName" CssClass="clsTextBoxBlueSm" runat="server" Width="150px" ReadOnly="true"></asp:TextBox>
                                             </span>
                                         </td>
-                                        <td style="width: 200px"> <asp:CheckBox ID="chkDualGoal" runat="server" Text="Dual Goal" /></td>
+                                        <td style="width: 200px">
+                                            <asp:CheckBox ID="chkDualGoal" runat="server" Text="Dual Goal" /></td>
                                         <td></td>
                                         <td style="width: 300px">
                                             <asp:Button ID="btnAddRelatedProject" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddRelatedProject_Click" />
@@ -1079,11 +1095,11 @@
                                                 <asp:Label ID="lblProjectName" runat="Server" Text='<%# Eval("ProjectName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Dual Goal">
+                                        <asp:TemplateField HeaderText="Dual Goal">
                                             <ItemTemplate>
-                                                 <asp:CheckBox ID="chkDualGoalD" Enabled="false" runat="server" Checked='<%# Eval("DualGoal") %>' />
+                                                <asp:CheckBox ID="chkDualGoalD" Enabled="false" runat="server" Checked='<%# Eval("DualGoal") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkDualGoal" runat="server" Checked='<%# Eval("DualGoal") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -1140,12 +1156,12 @@
                 <asp:HiddenField ID="hfProjectEventID" runat="server" />
                 <asp:HiddenField ID="hfIsVerified" runat="server" />
                 <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
-                
+
             </div>
         </div>
     </div>
     <script language="javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="Scripts/jquery.min.js"></script> 
+    <script type="text/javascript" src="Scripts/jquery.min.js"></script>
     <script type="text/javascript" src="Scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="Scripts/gridviewScroll.min.js"></script>
     <script language="javascript">
@@ -1258,7 +1274,7 @@
                 height: 100
             });
         }
-       
+
         function PopupAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjectId.ClientID%>").val())
         };

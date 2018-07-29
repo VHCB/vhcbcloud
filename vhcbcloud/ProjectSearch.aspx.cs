@@ -202,7 +202,7 @@ namespace vhcbcloud
             dvSearchResults.Visible = true;
             DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
-                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
+                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked);
 
             List<int> lstProjectId = new List<int>();
             Session["lstSearchResultProjectId"] = lstProjectId;
@@ -299,6 +299,7 @@ namespace vhcbcloud
             ddlTown.SelectedIndex = -1;
             ddlCounty.SelectedIndex = -1;
             ddlProjectType.SelectedIndex = -1;
+            cbProjectActive.Checked = true;
         }
 
         protected void gvSearchresults_RowDataBound(object sender, GridViewRowEventArgs e)

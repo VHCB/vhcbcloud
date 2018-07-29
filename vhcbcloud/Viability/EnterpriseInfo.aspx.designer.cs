@@ -391,6 +391,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtAcresLeased;
         
         /// <summary>
+        /// txtAccAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAccAcres;
+        
+        /// <summary>
         /// spnTotalAcres control.
         /// </summary>
         /// <remarks>

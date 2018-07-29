@@ -98,18 +98,18 @@
                                             <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtRfromDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 10%; float: left">
-                                            
+                                        <td style="width: 40%; float: left" colspan="2">
+                                             <asp:Label ID="lblProjName" runat="server" class="labelClass" Text=" "></asp:Label>
                                         </td>
-                                        <td style="width: 30%; float: left">
+                                       <%-- <td style="width: 30%; float: left">
                                             
-                                            <%--<asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
 
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                                                 OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
-                                            </ajaxToolkit:AutoCompleteExtender>--%>
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-
+--%>
                                     </tr>
                                     <tr>
                                         <td style="height: 4px" colspan="6" />

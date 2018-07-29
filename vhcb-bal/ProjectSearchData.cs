@@ -13,7 +13,7 @@ namespace DataAccessLayer
     public class ProjectSearchData
     {
         public static DataTable ProjectSearch(string ProjNum, string ProjectName, string AppName, string LKProgram,
-            string LKProjectType, string Town, string County, bool IsPrimaryApplicant)
+            string LKProjectType, string Town, string County, bool IsPrimaryApplicant, bool ActiveProject)
         {
             DataTable dt = null;
             try
@@ -45,6 +45,8 @@ namespace DataAccessLayer
                             command.Parameters.Add(new SqlParameter("County", County));
 
                         command.Parameters.Add(new SqlParameter("IsPrimaryApplicant", IsPrimaryApplicant));
+                        command.Parameters.Add(new SqlParameter("ActiveProject", ActiveProject));
+                        
 
                         command.CommandTimeout = 60 * 5;
 

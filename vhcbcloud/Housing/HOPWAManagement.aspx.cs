@@ -105,12 +105,29 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlGender, 267);// 231);
             BindLookUP(ddlSpecialNeeds, 245);
             BindLookUP(ddlLivingSituation, 234);
-
+            //BindLookUP(ddlTransactionType, 51);
             BindLookUP(ddlProgram, 244);
             
             BindLookUP(ddlPHPuse, 233);
             LoadFundNames();
             LoadExpenseDates();
+            LoadHOPWATransType();
+        }
+
+        private void LoadHOPWATransType()
+        {
+            try
+            {
+                ddlTransactionType.DataSource = FinancialTransactions.GetDataTableByProcName("GetLKTransHopwaWithException");
+                ddlTransactionType.DataValueField = "typeid";
+                ddlTransactionType.DataTextField = "Description";
+                ddlTransactionType.DataBind();
+                ddlTransactionType.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         private void LoadExpenseDates()
@@ -923,14 +940,17 @@ namespace vhcbcloud.Housing
 
             tblPHP.Visible = false;
             tblSTRMU.Visible = false;
+            PopulateDropDown(ddlTransactionType, "6344");
 
             if (objSelectedProgramInfo.ProgramName.ToString().ToUpper() == "PHP")
             {
                 tblPHP.Visible = true;
+                PopulateDropDown(ddlTransactionType, "6348");
             }
             else if (objSelectedProgramInfo.ProgramName.ToString().ToUpper() == "STRMU")
             {
                 tblSTRMU.Visible = true;
+                PopulateDropDown(ddlTransactionType, "6347");
             }
 
             dvNewExpenses.Visible = true;
@@ -996,7 +1016,8 @@ namespace vhcbcloud.Housing
             if (btnAddExpense.Text == "Add")
             {
                 HOPWAmainttResult objHOPWAmainttResult = HOPWAMaintenanceData.AddHOPWAExp(DataUtils.GetInt(hfProgramId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
-                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()));
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlTransactionType.SelectedValue.ToString()));
 
                 if (objHOPWAmainttResult.IsDuplicate && !objHOPWAmainttResult.IsActive)
                     LogMessage("Program Expenses already exist as in-active");
@@ -1012,7 +1033,8 @@ namespace vhcbcloud.Housing
             else
             {
                 HOPWAMaintenanceData.UpdateHOPWAExp(DataUtils.GetInt(hfExpId.Value), amount, cbRent.Checked, cbMortgage.Checked, cbUtilities.Checked,
-                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()), cbExpensesActive.Checked);
+                    DataUtils.GetInt(ddlPHPuse.SelectedValue.ToString()), DataUtils.GetDate(ddlExpensesDate.SelectedItem.Text), DataUtils.GetInt(ddlExpensesDate.SelectedValue.ToString()), cbExpensesActive.Checked,
+                    DataUtils.GetInt(ddlTransactionType.SelectedValue.ToString()));
 
                 LogMessage("Program Expenses updated successfully");
 
@@ -1036,6 +1058,22 @@ namespace vhcbcloud.Housing
             cbMortgage.Checked = false;
             cbUtilities.Checked = false;
             ddlPHPuse.SelectedIndex = -1;
+            ddlTransactionType.SelectedIndex = -1;
+
+            
+
+            if (hfProgramName.Value.ToUpper() == "PHP")
+            {
+                PopulateDropDown(ddlTransactionType, "6348");
+            }
+            else if (hfProgramName.Value.ToUpper() == "STRMU")
+            {
+                PopulateDropDown(ddlTransactionType, "6347");
+            }
+            else if(hfProgramName.Value.ToUpper() == "RA")
+            {
+                PopulateDropDown(ddlTransactionType, "6344");
+            }
         }
 
         protected void gvExpenses_RowEditing(object sender, GridViewEditEventArgs e)
@@ -1074,6 +1112,8 @@ namespace vhcbcloud.Housing
                         //txtExpensesDate.Text = drHOPWAMasterDetails["Date"].ToString();
                         PopulateDropDown(ddlExpensesDate, drHOPWAMasterDetails["DisbursementRecord"].ToString());
                         PopulateDropDown(ddlPHPuse, drHOPWAMasterDetails["PHPUse"].ToString());
+                        PopulateDropDown(ddlTransactionType, drHOPWAMasterDetails["TransType"].ToString());
+
                         //txtDisRecord.Text = drHOPWAMasterDetails["DisbursementRecord"].ToString();
                         spnDisRecord.InnerHtml = drHOPWAMasterDetails["DisbursementRecord"].ToString();
                         cbMortgage.Checked = DataUtils.GetBool(drHOPWAMasterDetails["Mortgage"].ToString());

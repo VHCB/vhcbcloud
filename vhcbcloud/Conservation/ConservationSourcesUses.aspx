@@ -215,7 +215,7 @@
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">VHCB</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlVHCBUses" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlVHCBUses" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlVHCBUses_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 100px">
@@ -223,11 +223,11 @@
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px"></asp:TextBox>
+                                            <asp:TextBox ID="txtVHCBUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px" Text="$0.00"></asp:TextBox>
                                         </td>
                                         <td style="width: 140px"><span class="labelClass">Other</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlOtherUses" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlOtherUses" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlOtherUses_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 100px">
@@ -235,7 +235,7 @@
                                             </span>
                                         </td>
                                         <td style="width: 180px">
-                                            <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px"></asp:TextBox>
+                                            <asp:TextBox ID="txtOtherUseAmount" CssClass="clsTextBoxBlue1" runat="server" style="width: 100px" Text="$0.00"></asp:TextBox>
                                         </td>
                                         <%--<td style="width: 100px">
                                             <span class="labelClass">Total $
@@ -275,7 +275,7 @@
                                                 <asp:Label ID="lblConserveUsesID" runat="Server" Text='<%# Eval("ConserveUsesID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="VHCB Use">
+                                        <asp:TemplateField HeaderText="Use">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblVHCBUseName" runat="Server" Text='<%# Eval("VHCBUseName") %>' />
                                             </ItemTemplate>

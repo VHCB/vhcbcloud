@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HOPWAManagement.aspx.cs" 
-    Inherits="vhcbcloud.Housing.HOPWAManagement" MaintainScrollPositionOnPostback="true" EnableEventValidation="false"%>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HOPWAManagement.aspx.cs"
+    Inherits="vhcbcloud.Housing.HOPWAManagement" MaintainScrollPositionOnPostback="true" EnableEventValidation="false" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron" id="vhcb">
@@ -22,7 +22,7 @@
                             <td style="text-align: left;">
                                 <span class="labelClass">Primary ASO: </span>&nbsp;&nbsp;&nbsp;
                                 <span class="labelClass" id="spnPrimaryASO" runat="server"></span>
-                                </td>
+                            </td>
                             <td style="text-align: right;">
                                 <asp:ImageButton ID="btnProjectNotes1" Visible="false" runat="server" ImageUrl="~/Images/notes.png" ToolTip="Project Notes" Text="Project Notes" Style="border: none; vertical-align: middle;" />
                                 &nbsp;
@@ -160,9 +160,10 @@
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Active</span></td>
-                                        <td> <asp:CheckBox ID="cbHOPWAMaster" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" /></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbHOPWAMaster" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" /></td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -225,7 +226,7 @@
                                                 <asp:Label ID="lblUUID" runat="Server" Text='<%# Eval("UUID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="HH Includes">
+                                        <asp:TemplateField HeaderText="HH Includes">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblHHIncludes" runat="Server" Text='<%# Eval("HHincludes") %>' />
                                             </ItemTemplate>
@@ -237,7 +238,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Notes">
                                             <ItemTemplate>
-                                                 <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
+                                                <asp:Label ID="lblNotes" runat="Server" ToolTip='<%# Eval("FullNotes") %>' Text='<%# Eval("Notes") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -327,9 +328,7 @@
                                             <asp:CheckBox ID="cbProgramActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
                                         </td>
                                         <td style="width: 170px"><span class="labelClass"></span></td>
-                                        <td>
-                                            
-                                        </td>
+                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -454,9 +453,9 @@
                                             <span class="labelClass">Date</span>
                                         </td>
                                         <td style="width: 172px">
-                                             <asp:DropDownList ID="ddlExpensesDate" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlExpensesDate" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
-                                           <%-- <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <%-- <asp:TextBox ID="txtExpensesDate" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender5" TargetControlID="txtExpensesDate">
                                             </ajaxToolkit:CalendarExtender>--%>
                                         </td>
@@ -508,23 +507,27 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                </table>
+                                <table style="width: 100%">
                                     <tr>
                                         <td style="width: 150px"><span class="labelClass">Active</span></td>
                                         <td style="width: 174px">
                                             <asp:CheckBox ID="cbExpensesActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
                                         </td>
                                         <td style="width: 107px">
-                                            <span class="labelClass"></span>
+                                            <span class="labelClass">Transaction Type</span>
                                         </td>
-                                        <td style="width: 172px"></td>
+                                        <td style="width: 172px">
+                                            <asp:DropDownList ID="ddlTransactionType" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
                                         <td style="width: 137px"><span class="labelClass"></span></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
-                                </table>
-                                <table style="width: 100%">
+
                                     <tr>
                                         <td>
                                             <asp:Button ID="btnAddExpense" runat="server" Text="Add" class="btn btn-info"
@@ -639,7 +642,7 @@
                         </div>
 
                         <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvHOPWARaceGrid" runat="server">
-                             <div id="dvHOPWARaceWarning" runat="server">
+                            <div id="dvHOPWARaceWarning" runat="server">
                                 <p class="bg-info">
                                     &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     <asp:Label runat="server" ID="lblHOPWARaceWarning" class="labelClass"></asp:Label>
@@ -671,7 +674,7 @@
                                                 <asp:DropDownList ID="ddlHOPWARace1" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtRaceId" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Race") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 Total :
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="500px" />--%>
@@ -684,7 +687,7 @@
                                                 <asp:TextBox ID="txtHouseHold1" runat="Server" CssClass="clsTextBoxBlueSm" MaxLength="4"
                                                     Text='<%# Eval("HouseholdNum") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterTotal" Text=""></asp:Label>
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="300px" />--%>
@@ -755,7 +758,7 @@
                         </div>
 
                         <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvHOPWAEthnicityGrid" runat="server">
-                             <div id="dvHOPWAEthnicityWarning" runat="server">
+                            <div id="dvHOPWAEthnicityWarning" runat="server">
                                 <p class="bg-info">
                                     &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     <asp:Label runat="server" ID="lblHOPWAEthnicityWarning" class="labelClass"></asp:Label>
@@ -787,7 +790,7 @@
                                                 <asp:DropDownList ID="ddlHOPWAEthnicity1" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtEthnicId" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Ethnic") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 Total :
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="500px" />--%>
@@ -800,7 +803,7 @@
                                                 <asp:TextBox ID="txtEthnicHH1" runat="Server" CssClass="clsTextBoxBlueSm" MaxLength="4"
                                                     Text='<%# Eval("EthnicNum") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterTotal" Text=""></asp:Label>
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="300px" />--%>
@@ -888,7 +891,7 @@
                                     <HeaderStyle CssClass="headerStyle" />
                                     <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                     <RowStyle CssClass="rowStyle" />
-                                     <FooterStyle CssClass="footerStyleTotals" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
                                         <asp:TemplateField HeaderText="HOPWAAgeId" Visible="false">
                                             <ItemTemplate>
@@ -903,7 +906,7 @@
                                                 <asp:DropDownList ID="ddlHOPWAAgeGender1" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                                 <asp:TextBox ID="txtAgeGenderId" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("GenderAgeID") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 Total :
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="500px" />--%>
@@ -916,7 +919,7 @@
                                                 <asp:TextBox ID="txtAgeNum1" runat="Server" CssClass="clsTextBoxBlueSm" MaxLength="4"
                                                     Text='<%# Eval("GANum") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                             <FooterTemplate>
+                                            <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterTotal" Text=""></asp:Label>
                                             </FooterTemplate>
                                             <%--<ItemStyle Width="300px" />--%>
@@ -954,11 +957,11 @@
         <asp:HiddenField ID="hfProgramName" runat="server" />
         <asp:HiddenField ID="hfProjectId" runat="server" />
         <asp:HiddenField ID="hfHouseHold" runat="server" />
-        
+
         <asp:HiddenField ID="hfHOPWARaceWarning" runat="server" />
         <asp:HiddenField ID="hfHOPWAEthnicityWarning" runat="server" />
         <asp:HiddenField ID="hfHOPWAAgeWarning" runat="server" />
-         <asp:HiddenField ID="hfAppNameId" runat="server" />
+        <asp:HiddenField ID="hfAppNameId" runat="server" />
     </div>
     <script language="javascript">
         $(document).ready(function () {
@@ -975,7 +978,7 @@
                 var x = $('#<%= ddlExpensesDate.ClientID%>').value;
                 console.log(x);
             });
-            
+
 
             $('#<%= txtAmount.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtAmount.ClientID%>').val(), $('#<%= txtAmount.ClientID%>'));

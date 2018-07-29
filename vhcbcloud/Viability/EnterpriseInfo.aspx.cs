@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Conservation;
 using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
@@ -438,23 +439,25 @@ namespace vhcbcloud.Viability
                     int EnterpriseAcresId = DataUtils.GetInt(hfEnterpriseAcresId.Value);
                     EnterpriseInfoData.UpdateEnterpriseAcres(EnterpriseAcresId, DataUtils.GetInt(txtAcresInProd.Text),
                         DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
-                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text));
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text),
+                        DataUtils.GetInt(txtAccAcres.Text));
 
-                    LogMessage("Acers updated successfully");
+                    LogMessage("Acres updated successfully");
                 }
                 else //add
                 {
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, 
                         DataUtils.GetInt(txtAcresInProd.Text),
                         DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
-                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text));
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text),
+                        DataUtils.GetInt(txtAccAcres.Text));
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
-                        LogMessage("Accres already exist as in-active");
+                        LogMessage("Acres already exist as in-active");
                     else if (objViabilityMaintResult.IsDuplicate)
-                        LogMessage("Accres already exist");
+                        LogMessage("Acres already exist");
                     else
-                        LogMessage("Accres added successfully");
+                        LogMessage("Acres added successfully");
                 }
                 LoadAcresForm();
             }
@@ -467,6 +470,10 @@ namespace vhcbcloud.Viability
         private void LoadAcresForm()
         {
             DataRow drEntImpGrant = EnterpriseInfoData.GetEnterpriseAcresById(DataUtils.GetInt(hfProjectId.Value));
+            //DataRow drTotalAcres = ConservationAppraisalsData.GetConserveTotalAcres(DataUtils.GetInt(hfProjectId.Value));
+
+            //txtAccAcres.Text = drTotalAcres != null ? drTotalAcres["TotAcres"].ToString() : "0";
+
             if (drEntImpGrant != null)
             {
                 hfEnterpriseAcresId.Value = drEntImpGrant["EnterpriseAcresId"].ToString();
@@ -475,6 +482,7 @@ namespace vhcbcloud.Viability
                 txtAcresLeased.Text = drEntImpGrant["AcresLeased"].ToString();
                 txtAcresOwned.Text = drEntImpGrant["AcresOwned"].ToString();
                 spnTotalAcres.InnerText = drEntImpGrant["TotalAcres"].ToString();
+                txtAccAcres.Text = drEntImpGrant["AccessAcres"].ToString(); 
                 btnAddAcres.Text = "Update";
             }
             else

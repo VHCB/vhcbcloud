@@ -171,8 +171,11 @@ namespace vhcbcloud
             {
                 ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250Farm(txtLandUsePermit.Text,
                     DataUtils.GetInt(ddlTown.SelectedValue.ToString()), DataUtils.GetInt(txtDistrictNo.Text),
-                    DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text, DataUtils.GetInt(txtPrimeSoilsAcresLost.Text),
-                    DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text), DataUtils.GetInt(txtAcresDeveloped.Text),
+                    DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text, 
+                    DataUtils.GetDecimal(txtPrimeSoilsAcresLost.Text),
+                    DataUtils.GetDecimal(txtStateSoilsAcresLost.Text), 
+                    DataUtils.GetDecimal(txtTotAcresLost.Text), 
+                    DataUtils.GetDecimal(txtAcresDeveloped.Text),
                     DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()));
@@ -191,8 +194,9 @@ namespace vhcbcloud
             {
                 ConservationAct250Data.UpdateAct250Farm(DataUtils.GetInt(hfAct250FarmID.Value), DataUtils.GetInt(ddlTown.SelectedValue.ToString()),
                     DataUtils.GetInt(txtDistrictNo.Text), DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text,
-                    DataUtils.GetInt(txtPrimeSoilsAcresLost.Text), DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text),
-                    DataUtils.GetInt(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(txtPrimeSoilsAcresLost.Text), DataUtils.GetDecimal(txtStateSoilsAcresLost.Text), 
+                    DataUtils.GetDecimal(txtTotAcresLost.Text),
+                    DataUtils.GetDecimal(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
                     chkAct250Active.Checked);

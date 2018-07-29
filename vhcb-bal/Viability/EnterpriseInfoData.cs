@@ -227,7 +227,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseAcres(int EnterpriseAcresId, int AcresInProduction, int AcresOwned, 
-            int AcresLeased, int ForestAcres, int TotalAcres)
+            int AcresLeased, int ForestAcres, int TotalAcres, int AccessAcres)
         {
             try
             {
@@ -247,6 +247,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
                         command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
                         command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
+                        command.Parameters.Add(new SqlParameter("AccessAcres", AccessAcres));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -261,7 +262,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseAttributes(int ProjectID, int AcresInProduction, 
-            int AcresOwned, int AcresLeased, int ForestAcres, int TotalAcres)
+            int AcresOwned, int AcresLeased, int ForestAcres, int TotalAcres, int AccessAcres)
         {
             try
             {
@@ -281,7 +282,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
                         command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
                         command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
-
+                        command.Parameters.Add(new SqlParameter("AccessAcres", AccessAcres));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);

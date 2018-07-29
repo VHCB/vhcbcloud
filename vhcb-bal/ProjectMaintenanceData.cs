@@ -133,7 +133,8 @@ namespace DataAccessLayer
             }
         }
 
-        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, string projName, int Goal, bool verified = false)
+        public static void UpdateProject(int ProjId, int LkProjectType, int LkProgram, int Manager, string appName, 
+            string projName, int Goal, bool IsActive, bool verified = false)
         {
             try
             {
@@ -158,6 +159,7 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("appName", appName));
                         command.Parameters.Add(new SqlParameter("Goal", Goal));
                         // command.Parameters.Add(new SqlParameter("projName", projName));
+                        command.Parameters.Add(new SqlParameter("IsActive", IsActive));
 
                         command.CommandTimeout = 60 * 5;
 

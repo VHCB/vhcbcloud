@@ -145,8 +145,8 @@
                                     <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                     </asp:DropDownList>
                                 </td>
-                                <td></td>
-                                <td></td>
+                                <td><span class="labelClass">Active</span></td>
+                                <td><asp:CheckBox ID="cbProjectActive" runat="server" Checked="true" Text="" /></td>
                                 <td></td>
                                 <td></td>
                             </tr>

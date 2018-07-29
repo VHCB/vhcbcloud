@@ -184,6 +184,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProjectType;
         
         /// <summary>
+        /// cbProjectActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbProjectActive;
+        
+        /// <summary>
         /// btnProjectSearch control.
         /// </summary>
         /// <remarks>

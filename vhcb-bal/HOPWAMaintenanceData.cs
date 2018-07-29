@@ -849,7 +849,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static HOPWAmainttResult AddHOPWAExp(int HOPWAProgramID, decimal Amount, bool Rent, bool Mortgage, bool Utilities, 
-            int PHPUse, DateTime Date, int DisbursementRecord)
+            int PHPUse, DateTime Date, int DisbursementRecord, int TransType)
         {
             try
             {
@@ -871,7 +871,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("PHPUse", PHPUse));
                         command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("DisbursementRecord", DisbursementRecord));
-
+                        command.Parameters.Add(new SqlParameter("TransType", TransType));
+                        
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -901,7 +902,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateHOPWAExp(int HOPWAExpID, decimal Amount, bool Rent, bool Mortgage, bool Utilities,
-            int PHPUse, DateTime Date, int DisbursementRecord, bool RowIsActive)
+            int PHPUse, DateTime Date, int DisbursementRecord, bool RowIsActive, int TransType)
         {
             try
             {
@@ -924,6 +925,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
                         command.Parameters.Add(new SqlParameter("DisbursementRecord", DisbursementRecord));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("TransType", TransType));
 
                         command.CommandTimeout = 60 * 5;
 

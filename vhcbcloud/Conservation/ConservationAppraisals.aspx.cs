@@ -145,15 +145,17 @@ namespace vhcbcloud.Conservation
         private void BindAppraisalValueForm()
         {
             DataRow drAppraisalValue = ConservationAppraisalsData.GetConservationAppraisalValueById(DataUtils.GetInt(hfProjectId.Value));
+            DataRow drTotalAcres = ConservationAppraisalsData.GetConserveTotalAcres(DataUtils.GetInt(hfProjectId.Value));
 
             dvNewAppraisalInfo.Visible = false;
+            txtTotalAcres.Text = drTotalAcres != null ? drTotalAcres["TotAcres"].ToString() : "0";
 
             if (drAppraisalValue != null)
             {
                 btnSubmit.Text = "Update";
                 hfAppraisalID.Value = drAppraisalValue["AppraisalID"].ToString();
                 txtFeeValue.Text = drAppraisalValue["FeeValue"].ToString();
-                txtTotalAcres.Text = drAppraisalValue["TotAcres"].ToString();
+                //txtTotalAcres.Text = drAppraisalValue["TotAcres"].ToString();
                 txtValueBefore.Text = drAppraisalValue["Apbef"].ToString();
                 txtValueafter.Text =drAppraisalValue["Apaft"].ToString();
                 txtValueofLandWithOption.Text = drAppraisalValue["Aplandopt"].ToString();
@@ -275,14 +277,17 @@ namespace vhcbcloud.Conservation
             //}
 
             decimal Easementvalue;
+            decimal EasementValuePerAcre = 0;
 
             if (txtFeeValue.Text == "")
                 Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", ""));
             else
                 Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
 
-
-            decimal EasementValuePerAcre = Easementvalue / DataUtils.GetInt(txtTotalAcres.Text);
+            if(DataUtils.GetDecimal(txtTotalAcres.Text) > 0)
+            {
+                EasementValuePerAcre = Easementvalue / DataUtils.GetDecimal(txtTotalAcres.Text);
+            }
 
             if (btnSubmit.Text == "Submit")
             {

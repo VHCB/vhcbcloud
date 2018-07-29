@@ -142,7 +142,11 @@ namespace vhcbcloud
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "27682")
+                {
                     cbAddProjectEvent.Enabled = true;
+                    btnAddMilestone.Visible = true;
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
             }
         }
         protected void Page_PreInit(Object sender, EventArgs e)
@@ -177,8 +181,8 @@ namespace vhcbcloud
                     if (dr["dfltprg"].ToString() != hfProgramId.Value)
                     {
                         RoleViewOnly();
-                        CheckCreateEventFxnAccess();
                         hfIsVisibleBasedOnRole.Value = "false";
+                        CheckCreateEventFxnAccess();
                     }
                     else
                     {
@@ -192,8 +196,8 @@ namespace vhcbcloud
                     if (dr["dfltprg"].ToString() != hfProgramId.Value)
                     {
                         RoleViewOnly();
-                        CheckCreateEventFxnAccess();
                         hfIsVisibleBasedOnRole.Value = "false";
+                        CheckCreateEventFxnAccess();
                     }
                     else
                     {
@@ -213,8 +217,8 @@ namespace vhcbcloud
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
-                    CheckCreateEventFxnAccess();
                     hfIsVisibleBasedOnRole.Value = "false";
+                    CheckCreateEventFxnAccess();
                 }
             }
         }
@@ -638,6 +642,7 @@ namespace vhcbcloud
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
             chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+            cbProjectActive.Checked = Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString());
 
             dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
@@ -845,7 +850,10 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()), chkApprove.Checked);
+                        txtPrimaryApplicant.Text, txtProjectName.Text, 
+                        DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
+                        cbProjectActive.Checked,
+                        chkApprove.Checked);
 
                     this.BindProjectEntityGrid();
 

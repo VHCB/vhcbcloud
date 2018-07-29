@@ -280,8 +280,8 @@
                                         <td class="modal-sm" style="width: 129px">
                                             <asp:TextBox ID="txtAcresLeased" CssClass="clsTextBoxBlue1" runat="server" Width="100px" TabIndex="2"></asp:TextBox>
                                         </td>
-                                        <td style="width: 129px"><span class="labelClass"></span></td>
-                                        <td style="width: 136px"></td>
+                                        <td style="width: 129px"><span class="labelClass">Access Acres</span></td>
+                                        <td style="width: 136px"><asp:TextBox ID="txtAccAcres" CssClass="clsTextBoxBlue1" runat="server" Width="100px" TabIndex="4"></asp:TextBox></td>
                                         <td style="width: 115px"><span class="labelClass"></span></td>
                                         <td style="width: 140px"></td>
                                         <td style="width: 100px"><span class="labelClass"></span></td>
@@ -476,8 +476,8 @@
             $('#<%= txtAcresLeased.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtAcresLeased.ClientID%>').val(), $('#<%= txtAcresLeased.ClientID%>'));
             });
-            $('#<%= txtAcresInProd.ClientID%>').keyup(function () {
-                toNumericControl($('#<%= txtAcresInProd.ClientID%>').val(), $('#<%= txtAcresInProd.ClientID%>'));
+            $('#<%= txtAccAcres.ClientID%>').keyup(function () {
+                toNumericControl($('#<%= txtAccAcres.ClientID%>').val(), $('#<%= txtAccAcres.ClientID%>'));
             });
 
             $('#<%= txtAcresOwned.ClientID%>').blur(function () {
@@ -486,12 +486,16 @@
             $('#<%= txtAcresLeased.ClientID%>').blur(function () {
                 CalculateTotalAcres();
             });
+            $('#<%= txtAccAcres.ClientID%>').blur(function () {
+                CalculateTotalAcres();
+            });
         });
 
         function CalculateTotalAcres() {
             var Owned = parseInt($('#<%=txtAcresOwned.ClientID%>').val(), 10);
             var Leased = parseInt($('#<%=txtAcresLeased.ClientID%>').val(), 10);
-
+            var Access = parseInt($('#<%=txtAccAcres.ClientID%>').val(), 10);
+            
             if (isNaN(Owned)) {
                 var Owned = 0;
             }
@@ -500,7 +504,11 @@
                 var Leased = 0;
             }
 
-            var Total = Owned + Leased;
+            if (isNaN(Access)) {
+                var Access = 0;
+            }
+
+            var Total = Owned + Leased + Access;
             $('#<%= spnTotalAcres.ClientID%>').text(Total);
             };
 

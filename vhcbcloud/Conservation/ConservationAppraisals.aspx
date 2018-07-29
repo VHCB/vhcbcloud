@@ -70,7 +70,7 @@
                                     </td>
                                     <td><span class="labelClass">Total Acres</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server" ReadOnly="true"></asp:TextBox>
                                     </td>
 
                                 </tr>
@@ -78,7 +78,7 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="labelClass">Fee Value</span></td>
+                                    <td><span class="labelClass">Fee Simple Value</span></td>
                                     <td>
                                         <asp:TextBox ID="txtFeeValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
@@ -510,7 +510,7 @@
                     <%--toCurrencyControl($('#<%= spEasementValue.ClientID%>').text(), $('#<%= spEasementValue.ClientID%>'));
                     toCurrencyControl($('#<%= spEasementValuePerAcre.ClientID%>').text(), $('#<%= spEasementValuePerAcre.ClientID%>'));--%>
 
-                    toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
+                    //toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     $('#<%= txtTotalCost.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     });
@@ -544,13 +544,17 @@
                 function CalEasementVal() {
                     var Before = parseFloat($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(",", ""), 10);
                     var After = parseFloat($('#<%=txtValueafter.ClientID%>').val().replace("$", "").replace(",", ""), 10);
-
+                    //console.log("Before: " + Before);
+                    //console.log("After: " + After);
                     var EasementVal = parseFloat(Before - After).toFixed(2);
+                    //console.log("EasementVal: " + EasementVal);
 
                     if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
                         $('#<%= spEasementValue.ClientID%>').html('$' + EasementVal);
-                    else
+                    else {
                         $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+                        //console.log("Final EasementValue: " + $('#<%=txtFeeValue.ClientID%>').val());
+                    }
 
                     CalEasementValPerAcre();
                 };
@@ -559,6 +563,8 @@
                     var Total = parseFloat($('#<%=txtTotalAcres.ClientID%>').val().replace("$", "").replace(",", ""), 10);
                     var Eval = parseFloat($('#<%=spEasementValue.ClientID%>').text().replace("$", "").replace(",", ""), 10);
                     var EasementValPerAcre = parseFloat(Eval / Total).toFixed(2);
+                    console.log("Total: " + Total);
+                    console.log("Eval: " + Eval);
 
                     $('#<%= spEasementValuePerAcre.ClientID%>').html('$' + EasementValPerAcre);
                 };

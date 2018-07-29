@@ -679,7 +679,7 @@ namespace vhcbcloud
                         }
                         else
                         {
-                            dvAttachEntities.Visible = false;
+                            dvAttachEntities.Visible = true;
                         }
 
                         dvNewAttribute.Visible = false;
