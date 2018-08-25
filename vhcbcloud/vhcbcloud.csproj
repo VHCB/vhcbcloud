@@ -1138,8 +1138,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="ExternalComponents\" />
+    <Folder Include="ExternalComponents\App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vhcb-bal\vhcbcommon.csproj">

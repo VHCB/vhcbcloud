@@ -279,10 +279,10 @@ namespace vhcbcloud.Conservation
             decimal Easementvalue;
             decimal EasementValuePerAcre = 0;
 
-            if (txtFeeValue.Text == "")
+            //if (txtFeeValue.Text == "")
                 Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", ""));
-            else
-                Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
+            //else
+                //Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
 
             if(DataUtils.GetDecimal(txtTotalAcres.Text) > 0)
             {

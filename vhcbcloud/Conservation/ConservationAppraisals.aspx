@@ -549,12 +549,12 @@
                     var EasementVal = parseFloat(Before - After).toFixed(2);
                     //console.log("EasementVal: " + EasementVal);
 
-                    if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
+                    //if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
                         $('#<%= spEasementValue.ClientID%>').html('$' + EasementVal);
-                    else {
-                        $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+                    //else {
+                        //$('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
                         //console.log("Final EasementValue: " + $('#<%=txtFeeValue.ClientID%>').val());
-                    }
+                    //}
 
                     CalEasementValPerAcre();
                 };
