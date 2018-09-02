@@ -110,7 +110,10 @@
                                 <tr>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
-                                    <td></td>
+                                    <td>
+                                        <asp:ImageButton ID="ImgMilestoneReport" ImageUrl="~/Images/print.png" ToolTip="Milestones Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgMilestoneReport_Click1" />
+                                    </td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

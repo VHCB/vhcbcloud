@@ -183,9 +183,9 @@
                             <asp:Panel runat="server" ID="Panel3" Width="100%" Height="170px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAct250Info" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvAct250Info_RowEditing" OnRowCancelingEdit="gvAct250Info_RowCancelingEdit"
-                                    OnRowDataBound="gvAct250Info_RowDataBound">
+                                    OnRowDataBound="gvAct250Info_RowDataBound" OnSorting="gvAct250Info_Sorting">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -205,13 +205,13 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Land Use Permit">
+                                        <asp:TemplateField HeaderText="Land Use Permit" SortExpression ="UsePermit">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
                                                 <asp:HiddenField ID="HiddenUsePermit" runat="server" Value='<%#Eval("UsePermit")%>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Developer">
+                                        <asp:TemplateField HeaderText="Developer" SortExpression="DeveloperName">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
                                             </ItemTemplate>
@@ -371,6 +371,73 @@
                         </div>
 
                     </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewPermitCommitments" visible="false">
+                    <div class="panel panel-default ">
+                     <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Permit Commitments</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                       
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    <div class="panel panel-default ">
+                        <div class="panel-body" id="dvPermitCommitmentsGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="170px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvPermitCommitments" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="false"
+                                    >
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Act250CommitID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAct250CommitID" runat="Server" Text='<%# Eval("Act250CommitID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProject" runat="Server" Text='<%# Eval("Project") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Transaction">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("TransactionName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Amount">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="DetailId">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDetailId" runat="Server" Text='<%# Eval("DetailId") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                        </div>
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewlandUsePermitFinancials" visible="false">

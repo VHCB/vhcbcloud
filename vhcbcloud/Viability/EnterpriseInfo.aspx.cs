@@ -165,13 +165,13 @@ namespace vhcbcloud.Viability
             spnEnterPriseType.InnerText = EnterpriseType;
 
             if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
-                TypeId = 375;
+                TypeId = 106;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
-                TypeId = 376;
+                TypeId = 265;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
-                TypeId = 377;
+                TypeId = 264;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
-                TypeId = 378;
+                TypeId = 263;
             else
                 TypeId = 0;
 

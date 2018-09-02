@@ -126,22 +126,34 @@ namespace vhcbcloud
             dvNewDeveloperPayments.Visible = false;
             dvNewlandUsePermitFinancials.Visible = false;
             dvNewVHCBProjects.Visible = false;
+            dvNewPermitCommitments.Visible = false;
 
             try
             {
-                DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
-
-                if (dt.Rows.Count > 0)
+                if (Session["SortExp"] == null)
                 {
-                    dvAct250InfoGrid.Visible = true;
-                    gvAct250Info.DataSource = dt;
+                    gvAct250Info.DataSource = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
                     gvAct250Info.DataBind();
                 }
                 else
                 {
-                    dvAct250InfoGrid.Visible = false;
-                    gvAct250Info.DataSource = null;
-                    gvAct250Info.DataBind();
+                    DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataView view = dt.DefaultView;
+                        view.Sort = Session["SortExp"].ToString();
+                        gvAct250Info.DataSource = view.ToTable();
+                        gvAct250Info.DataBind();
+
+                        dvAct250InfoGrid.Visible = true;
+                    }
+                    else
+                    {
+                        dvAct250InfoGrid.Visible = false;
+                        gvAct250Info.DataSource = null;
+                        gvAct250Info.DataBind();
+                    }
                 }
             }
             catch (Exception ex)
@@ -351,6 +363,35 @@ namespace vhcbcloud
 
             dvNewVHCBProjects.Visible = true;
             BindVHCBProjectsGrid();
+
+            BindPermitCommitmentsGrid();
+        }
+
+        private void BindPermitCommitmentsGrid()
+        {
+            try
+            {
+                DataTable dt = ConservationAct250Data.GetAct250PermitCommitList(DataUtils.GetInt(hfAct250FarmID.Value));
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvNewPermitCommitments.Visible = true;
+                    dvPermitCommitmentsGrid.Visible = true;
+                    gvPermitCommitments.DataSource = dt;
+                    gvPermitCommitments.DataBind();
+                }
+                else
+                {
+                    dvNewPermitCommitments.Visible = false;
+                    dvPermitCommitmentsGrid.Visible = false;
+                    gvPermitCommitments.DataSource = null;
+                    gvPermitCommitments.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindDeveloperPaymentsGrid", "", ex.Message);
+            }
         }
 
         private string GetAct250InfoSelectedRecordID(GridView gvAct250Info)
@@ -748,6 +789,69 @@ namespace vhcbcloud
             {
                 lblErrorMsg.Text = ex.Message;
             }
+        }
+
+        protected void gvAct250Info_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvAct250Info.DataSource = SortDataTable(ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked), false);
+            gvAct250Info.DataBind();
+            gvAct250Info.PageIndex = pageIndex;
+        }
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
         }
     }
 }

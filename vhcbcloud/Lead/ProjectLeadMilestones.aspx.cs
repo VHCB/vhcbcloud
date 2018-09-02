@@ -449,5 +449,11 @@ namespace vhcbcloud.Lead
             chkMilestoneActive.Checked = true;
             chkMilestoneActive.Enabled = false;
         }
+
+        protected void ImgMilestoneReport_Click1(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Lead Milestones"));
+        }
     }
 }
