@@ -206,7 +206,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static ViabilityMaintResult AddEnterpriseFinancialJobs(int ProjectId, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, decimal Networth)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, decimal Networth, decimal AccessFTE)
         {
             try
             {
@@ -230,6 +230,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
                         command.Parameters.Add(new SqlParameter("Networth", Networth));
+                        command.Parameters.Add(new SqlParameter("AccessFTE", AccessFTE));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -257,7 +258,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
         }
 
         public static void UpdateEnterpriseFinancialJobs(int EnterFinancialJobsID, int MilestoneID, DateTime MSDate, string Year,
-            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, decimal Networth, bool RowIsActive)
+            decimal GrossSales, decimal Netincome, decimal GrossPayroll, decimal FamilyEmp, decimal NonFamilyEmp, 
+            decimal Networth, decimal AccessFTE, bool RowIsActive)
         {
             try
             {
@@ -281,6 +283,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("FamilyEmp", FamilyEmp));
                         command.Parameters.Add(new SqlParameter("NonFamilyEmp", NonFamilyEmp));
                         command.Parameters.Add(new SqlParameter("Networth", Networth));
+                        command.Parameters.Add(new SqlParameter("AccessFTE", AccessFTE));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

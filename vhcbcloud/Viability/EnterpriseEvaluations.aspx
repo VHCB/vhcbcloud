@@ -224,8 +224,14 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6">
+                                        <td>
                                             <asp:DropDownList ID="ddlQuoteUse" CssClass="clsTextBoxBlueSm" Width="200px" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td>
+                                            <span class="labelClass">Name</span>
+                                        </td>
+                                        <td colspan="4">
+                                            <asp:TextBox ID="txtQuoteName" CssClass="clsTextBoxBlueSm" runat="server" Width="181px"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>

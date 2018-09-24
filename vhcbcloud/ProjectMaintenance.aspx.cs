@@ -850,7 +850,7 @@ namespace vhcbcloud
                 {
                     ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text, 
+                        txtPrimaryApplicant.Text, txtProjectName.Text,
                         DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
                         cbProjectActive.Checked,
                         chkApprove.Checked);
@@ -2203,6 +2203,8 @@ namespace vhcbcloud
         {
             gvMilestone.EditIndex = -1;
             BindMilestoneGrid();
+            ClearEntityAndCommonForm();
+            cbAddProjectEvent.Checked = false;
         }
 
         protected void gvMilestone_RowEditing(object sender, GridViewEditEventArgs e)
@@ -2213,7 +2215,42 @@ namespace vhcbcloud
 
         protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    ClearEntityAndCommonForm();
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMilestone.Text = "Update";
+                    cbAddProjectEvent.Checked = true;
 
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                        int ProjectEventID = DataUtils.GetInt(lblProjectEventID.Text);
+
+                        DataRow dr = ProjectMaintenanceData.GetProjectEventById(ProjectEventID);
+
+                        hfProjectEventID.Value = lblProjectEventID.Text;
+                        //Populate Edit Form
+                        PopulateDropDown(ddlAdminMilestone, dr["EventID"].ToString());
+                        PopulateDropDown(ddlProgramMilestone, dr["ProgEventID"].ToString());
+                        AdminMilestoneChanged();
+                        PopulateDropDown(ddlAdminSubMilestone, dr["SubEventID"].ToString());
+                        PopulateDropDown(ddlProgramSubMilestone, dr["ProgSubEventID"].ToString());
+
+                        txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                        txtURL.Text = dr["URL"].ToString();
+
+                        txtNotes.Text = dr["Note"].ToString();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvMilestone_RowDataBound", "", ex.Message);
+            }
         }
 
         protected void rdGrid_SelectedIndexChanged(object sender, EventArgs e)
@@ -2270,23 +2307,41 @@ namespace vhcbcloud
             if (!URL.Contains("http"))
                 URL = "http://" + URL;
 
-            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value),
+            if (btnAddMilestone.Text == "Add")
+            {
+                MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value),
                 null,
                 DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlAdminSubMilestone.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
                 0, 0,
                 DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
 
+                if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                    LogMessage("Milestone Event already exist as in-active");
+                else if (obMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist");
+                else
+                    LogMessage("New milestone added successfully");
+            }
+            else
+            {
+                ProjectMaintenanceData.UpdateProjectEvent2(DataUtils.GetInt(hfProjectEventID.Value),
+                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value),
+                null,
+                DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlAdminSubMilestone.SelectedValue.ToString()),
+                DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
+                0, 0,
+                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId(), true);
+
+                LogMessage("Milestone updated successfully");
+                hfProjectEventID.Value = "";
+                btnAddMilestone.Text = "Add";
+                gvMilestone.EditIndex = -1;
+            }
+
             ClearEntityAndCommonForm();
             cbAddProjectEvent.Checked = false;
             BindMilestoneGrid();
-
-            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
-                LogMessage("Milestone Event already exist as in-active");
-            else if (obMilestoneResult.IsDuplicate)
-                LogMessage("Milestone already exist");
-            else
-                LogMessage("New milestone added successfully");
         }
 
         private void ClearEntityAndCommonForm()
@@ -2298,7 +2353,7 @@ namespace vhcbcloud
             txtEventDate.Text = "";
             txtURL.Text = "";
             txtNotes.Text = "";
-
+            btnAddMilestone.Text = "Add";
             AdminMilestoneChanged();
             ProgramMilestoneChanged();
         }

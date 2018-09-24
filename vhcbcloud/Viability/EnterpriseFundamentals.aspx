@@ -207,7 +207,7 @@
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td>
-                                                    <span class="labelClass">Date</span>
+                                                    <span class="labelClass">Date of Financial Data</span>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtMSDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="7"></asp:TextBox>
@@ -259,11 +259,10 @@
                                                 <td>
                                                     <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox>
                                                 </td>
+                                                <td><span class="labelClass">Total FTEs from Access</span>
+                                                    </td>
                                                 <td>
-                                                    <span class="labelClass">Total FTEs</span>
-                                                </td>
-                                                <td>
-                                                    <span class="labelClass" id="spnTotalFulltime" runat="server"></span>
+                                                    <asp:TextBox ID="txtAccessFTE" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -277,9 +276,9 @@
                                                     <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
                                                 <td>
-                                                    <span class="labelClass"></span>
+                                                    <span class="labelClass">Total FTEs </span>
                                                 </td>
-                                                <td></td>
+                                                <td><span class="labelClass" id="spnTotalFulltime" runat="server"></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4" style="height: 6px"></td>

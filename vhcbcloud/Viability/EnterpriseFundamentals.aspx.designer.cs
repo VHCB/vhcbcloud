@@ -328,13 +328,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNetIncome;
         
         /// <summary>
-        /// spnTotalFulltime control.
+        /// txtAccessFTE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
+        protected global::System.Web.UI.WebControls.TextBox txtAccessFTE;
         
         /// <summary>
         /// txtNetworth control.
@@ -344,6 +344,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetworth;
+        
+        /// <summary>
+        /// spnTotalFulltime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
         
         /// <summary>
         /// txtGrossPayroll control.

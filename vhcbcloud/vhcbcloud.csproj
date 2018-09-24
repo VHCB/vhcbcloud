@@ -404,6 +404,7 @@
     <Content Include="SQL\UserSecurity.sql" />
     <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
+    <Content Include="TransferDisbursements.aspx" />
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability\EnterpriseEvaluations.aspx" />
     <Content Include="Viability\EnterpriseFundamentals.aspx" />
@@ -1083,6 +1084,13 @@
     </Compile>
     <Compile Include="TestExago.aspx.designer.cs">
       <DependentUpon>TestExago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransferDisbursements.aspx.cs">
+      <DependentUpon>TransferDisbursements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransferDisbursements.aspx.designer.cs">
+      <DependentUpon>TransferDisbursements.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurity.aspx.cs">
       <DependentUpon>UserSecurity.aspx</DependentUpon>

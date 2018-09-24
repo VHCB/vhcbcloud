@@ -399,7 +399,7 @@ namespace vhcbcloud.Viability
                         DataUtils.GetDecimal(txtNetIncome.Text), 
                         DataUtils.GetDecimal(txtGrossPayroll.Text), 
                         DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(txtNetworth.Text), 
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text),
                         chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
@@ -415,7 +415,7 @@ namespace vhcbcloud.Viability
                         DataUtils.GetDecimal(txtNetIncome.Text), 
                         DataUtils.GetDecimal(txtGrossPayroll.Text), 
                         DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text), 
-                        DataUtils.GetDecimal(txtNetworth.Text));
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -514,7 +514,9 @@ namespace vhcbcloud.Viability
             txtNetworth.Text = "";
             txtFamilyFTEmp.Text = "";
             txtNonFamilyFTEmp.Text = "";
+            txtAccessFTE.Text = "";
             chkActive.Enabled = false;
+            spnTotalFulltime.InnerHtml = "";
         }
 
         protected void gvFiniceJobs_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -552,11 +554,11 @@ namespace vhcbcloud.Viability
                         txtGrossSales.Text = dr["GrossSales"].ToString() ?? "";
                         txtNetIncome.Text = dr["Netincome"].ToString() ?? "";
                         txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
-                        txtFamilyFTEmp.Text = dr["FamilyEmp"].ToString() ?? "";
-                        txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
+                        txtFamilyFTEmp.Text = dr["FamilyFTE"].ToString() ?? "";
+                        txtNonFamilyFTEmp.Text = dr["NonFamilyFTE"].ToString() ?? "";
                         txtNetworth.Text = dr["Networth"].ToString() ?? "";
-
-                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyEmp"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyEmp"].ToString())).ToString();
+                        txtAccessFTE.Text = dr["AccessFTE"].ToString() ?? "";
+                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyFTE"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyFTE"].ToString())).ToString();
 
                         chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         chkActive.Enabled = true;

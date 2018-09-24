@@ -270,7 +270,8 @@ namespace vhcbcloud.Viability
                     DataUtils.GetDecimal(Regex.Replace(txtOtherReq.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtOtherRec.Text, "[^0-9a-zA-Z.]+", "")),
                     cbOtherPending.Checked,
-                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), ddlQuoteUse.SelectedItem.ToString());
+                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), 
+                    txtQuoteName.Text);
 
                 BindGrids();
                 ClearEntMilestoneForm();
@@ -296,7 +297,8 @@ namespace vhcbcloud.Viability
                     DataUtils.GetDecimal(Regex.Replace(txtOtherReq.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtOtherRec.Text, "[^0-9a-zA-Z.]+", "")),
                     cbOtherPending.Checked,
-                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), ddlQuoteUse.SelectedItem.ToString(),
+                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()),
+                    txtQuoteName.Text,
                     chkMilestoneActive.Checked);
 
                 gvEntMilestoneGrid.EditIndex = -1;
@@ -328,6 +330,7 @@ namespace vhcbcloud.Viability
             ddlQuoteUse.SelectedIndex = -1;
             chkMilestoneActive.Enabled = false;
             btnAddEntMilestone.Text = "Submit";
+            txtQuoteName.Text = "";
         }
 
         private void BindMilestonesGrid()
@@ -457,6 +460,7 @@ namespace vhcbcloud.Viability
             cbOtherPending.Checked = DataUtils.GetBool(dr["OtherPend"].ToString());
             txtSharedOutcome.Text = dr["SharedOutcome"].ToString();
             PopulateDropDown(ddlQuoteUse, dr["QuoteUse"].ToString());
+            txtQuoteName.Text = dr["QuoteName"].ToString();
             chkMilestoneActive.Enabled = true;
         }
 

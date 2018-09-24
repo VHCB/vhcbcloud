@@ -412,8 +412,10 @@
                                 <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
-                                    OnRowDataBound="gvMilestone_RowDataBound" OnRowUpdating="gvMilestone_RowUpdating">
+                                    OnRowEditing="gvMilestone_RowEditing" 
+                                    OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowDataBound="gvMilestone_RowDataBound" 
+                                    OnRowUpdating="gvMilestone_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -471,9 +473,9 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                            <%--<EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowEditButton="True" />
                                         <asp:CommandField ShowEditButton="True" Visible='<%# GetRoleAuth() %>' />--%>
@@ -1156,7 +1158,6 @@
                 <asp:HiddenField ID="hfProjectEventID" runat="server" />
                 <asp:HiddenField ID="hfIsVerified" runat="server" />
                 <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
-
             </div>
         </div>
     </div>

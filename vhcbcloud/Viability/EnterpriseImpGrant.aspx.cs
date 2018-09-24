@@ -35,6 +35,11 @@ namespace vhcbcloud.Viability
                 BindControls();
                 GetRoleAccess();
                 LoadForm();
+
+                BindGrantMatchGrid();
+                BindAttributeGrid();
+                BindFinJobsGrid();
+                BindGrantMatchGrid();
             }
             //GetRoleAuth();
         }
@@ -126,7 +131,6 @@ namespace vhcbcloud.Viability
 
         private void LoadForm()
         {
-            
             DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
             if (drEntImpGrant != null)
             {
@@ -144,8 +148,6 @@ namespace vhcbcloud.Viability
 
                 btnAddGrantApplication.Text = "Update";
                 dvGrantAward.Visible = true;
-                BindGrantMatchGrid();
-                BindAttributeGrid();
             }
             else
             {
@@ -198,6 +200,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
+            BindLookUP(ddlMilestone, 247);
             BindLookUP(ddlMatchDescription, 214);//214
             BindLookUP(ddlFYGrantRound, 220);
             BindLookUP(ddlAttribute, 228);
@@ -503,6 +506,168 @@ namespace vhcbcloud.Viability
             BindAttributeGrid();
 
             LogMessage("Attribute updated successfully");
+        }
+
+        protected void gvFiniceJobs_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvFiniceJobs.EditIndex = e.NewEditIndex;
+            BindFinJobsGrid();
+        }
+
+        protected void gvFiniceJobs_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvFiniceJobs.EditIndex = -1;
+            BindFinJobsGrid();
+            ClearFinJobsForm();
+
+            btnAddMilestone.Visible = true;
+            btnAddMilestone.Text = "Submit";
+        }
+
+        protected void gvFiniceJobs_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMilestone.Text = "Update";
+                    cbAddMilestone.Checked = true;
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMilestone.Visible = true;
+                    else
+                        btnAddMilestone.Visible = false;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[1].Visible = false;
+
+                        Label lblEnterFinancialJobsID = e.Row.FindControl("lblEnterFinancialJobsID") as Label;
+                        DataRow dr = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsById(DataUtils.GetInt(lblEnterFinancialJobsID.Text));
+
+                        hfEnterFinancialJobsID.Value = lblEnterFinancialJobsID.Text;
+
+                        PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
+
+                        //cbVHFAInv.Checked = DataUtils.GetBool(dr["vhfa"].ToString()); ;
+                        //cbRDLoan.Checked = DataUtils.GetBool(dr["RDLoan"].ToString()); ;
+
+                        txtMSDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
+                        //txtYear.Text = dr["Year"].ToString() ?? "";
+                        txtGrossSales.Text = dr["GrossSales"].ToString() ?? "";
+                        txtNetIncome.Text = dr["Netincome"].ToString() ?? "";
+                        txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
+                        txtFamilyFTEmp.Text = dr["FamilyFTE"].ToString() ?? "";
+                        txtNonFamilyFTEmp.Text = dr["NonFamilyFTE"].ToString() ?? "";
+                        txtNetworth.Text = dr["Networth"].ToString() ?? "";
+                        txtAccessFTE.Text = dr["AccessFTE"].ToString() ?? "";
+                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyFTE"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyFTE"].ToString())).ToString();
+
+                        chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        chkActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvFiniceJobs_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void btnAddMilestone_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
+
+                if (btnAddMilestone.Text.ToLower() == "update")
+                {
+                    int EnterFinancialJobsID = DataUtils.GetInt(hfEnterFinancialJobsID.Value);
+                    EnterpriseFundamentalsData.UpdateEnterpriseFinancialJobs(EnterFinancialJobsID,
+                        DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text),
+                        "", //txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text),
+                        chkActive.Checked);
+
+                    gvFiniceJobs.EditIndex = -1;
+
+                    LogMessage("Finalcial Job updated successfully");
+                }
+                else //add
+                {
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFinancialJobs(ProjectId,
+                        DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text),
+                        "",//txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text));
+
+
+                    if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                        LogMessage("Financial Job already exist as in-active");
+                    else if (objViabilityMaintResult.IsDuplicate)
+                        LogMessage("Financial Job already exist");
+                    else
+                        LogMessage("Financial Job added successfully");
+                }
+                ClearFinJobsForm();
+                BindFinJobsGrid();
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddMilestone_Click", "", ex.Message);
+            }
+        }
+
+        private void ClearFinJobsForm()
+        {
+            btnAddMilestone.Text = "Add";
+            cbAddMilestone.Checked = false;
+            ddlMilestone.SelectedIndex = -1;
+            txtMSDate.Text = "";
+            //txtYear.Text = "";
+            txtGrossSales.Text = "";
+            txtNetIncome.Text = "";
+            txtGrossPayroll.Text = "";
+            txtNetworth.Text = "";
+            txtFamilyFTEmp.Text = "";
+            txtNonFamilyFTEmp.Text = "";
+            txtAccessFTE.Text = "";
+            chkActive.Enabled = false;
+            spnTotalFulltime.InnerHtml = "";
+        }
+
+        private void BindFinJobsGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvFiniceJobsGrid.Visible = true;
+                    gvFiniceJobs.DataSource = dt;
+                    gvFiniceJobs.DataBind();
+                }
+                else
+                {
+                    dvFiniceJobsGrid.Visible = false;
+                    gvFiniceJobs.DataSource = null;
+                    gvFiniceJobs.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindFinJobsGrid", "", ex.Message);
+            }
         }
     }
 }

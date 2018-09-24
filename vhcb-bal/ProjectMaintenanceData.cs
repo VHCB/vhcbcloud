@@ -337,6 +337,38 @@ namespace DataAccessLayer
             return dt;
         }
 
+        public static DataRow GetPrimaryApplicantbyProjectId(int ProjectId)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPrimaryApplicantbyProjectId";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
         #region Project Address
 
         public static DataTable GetAddressDetails(string StreetNo)
@@ -1151,7 +1183,52 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-        
+
+        public static void UpdateProjectEvent2(int ProjectEventID, int ProjectID, int Prog, string AppName,
+            int EventID, int SubEventID, int ProgEventID, int ProgSubEventID, int EntityMSID, int EntitySubMSID,
+            DateTime Date, string Note, string URL, int UserID, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectEvent2";
+
+                        command.Parameters.Add(new SqlParameter("ProjectEventID", ProjectEventID));
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("Prog", Prog));
+                        command.Parameters.Add(new SqlParameter("EventID", EventID));
+                        command.Parameters.Add(new SqlParameter("SubEventID", SubEventID));
+                        command.Parameters.Add(new SqlParameter("Date", Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Date));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("UserID", UserID));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        command.Parameters.Add(new SqlParameter("URL", URL));
+                        
+                        command.Parameters.Add(new SqlParameter("ProgEventID", ProgEventID == 0 ? System.Data.SqlTypes.SqlInt32.Null : ProgEventID));
+                        command.Parameters.Add(new SqlParameter("ProgSubEventID", ProgSubEventID == 0 ? System.Data.SqlTypes.SqlInt32.Null : ProgSubEventID));
+
+                        command.Parameters.Add(new SqlParameter("EntityMSID", EntityMSID == 0 ? System.Data.SqlTypes.SqlInt32.Null : EntityMSID));
+                        command.Parameters.Add(new SqlParameter("EntitySubMSID", EntitySubMSID == 0 ? System.Data.SqlTypes.SqlInt32.Null : EntitySubMSID));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static void UpdateProjectEvent(int ProjectEventID, int ProjectId, int Prog, int ApplicantID, int EventID,
             int SubEventID, DateTime Date, string Note, int UserID, bool IsRowIsActive)
         {

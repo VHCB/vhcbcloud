@@ -1791,7 +1791,7 @@ namespace vhcbcloud
                     btnDelete.Visible = false;
                     btnPCRTransDetails.Visible = false;
                     btnApprovalsSubmit.Visible = false;
-                    ddlCRDate.Enabled = false;
+                    //ddlCRDate.Enabled = false;
 
                     CheckVoucherAccess();
                 }

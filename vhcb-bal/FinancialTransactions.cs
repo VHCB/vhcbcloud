@@ -3474,6 +3474,42 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
+        public static DataTable GetDisbursementTransactionDetails(int projectId, DateTime transStartDate, DateTime transEndDate)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtTrans = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetDisbursementTransactionDetails";
+                command.Parameters.Add(new SqlParameter("project_id", projectId));
+                command.Parameters.Add(new SqlParameter("tran_start_date", transStartDate));
+                command.Parameters.Add(new SqlParameter("tran_end_date", transEndDate));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtTrans = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtTrans;
+        }
         public static DataTable GetFinancialTransactionDetails(int TransId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -3509,6 +3545,32 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
+        public static void UpdateLoanImportTransactionStatus(int LoanImportID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateLoanImportTransactionStatus";
+                command.Parameters.Add(new SqlParameter("LoanImportID", LoanImportID));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
         public static void UpdateFinancialTransactionStatus(int TransId)
         {

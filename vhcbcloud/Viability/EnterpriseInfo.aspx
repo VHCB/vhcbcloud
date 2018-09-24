@@ -105,28 +105,25 @@
                                 </table>
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 255px"><span class="labelClass">How did you hear about the Viability Program?</span></td>
-                                        <td style="width: 19%">
+                                        <td class="modal-sm" style="width: 268px"><span class="labelClass">How did you hear about the Viability Program?</span></td>
+                                        <td colspan="3">
                                             <asp:DropDownList ID="ddlHearViability" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 11%"></td>
-                                        <td style="width: 17%"></td>
-                                        <td style="width: 13%"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td><span class="labelClass">Year Began Managing Business</span></td>
-                                        <td style="width: 19%">
+                                        <td class="modal-sm" style="width: 268px"><span class="labelClass">Year Began Managing Business</span></td>
+                                        <td style="width: 146px">
                                             <asp:TextBox ID="txtYearMangBusiness" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" Width="44px"></asp:TextBox>
                                             <%-- <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
                                             </ajaxToolkit:CalendarExtender>--%>
                                         </td>
-                                        <td style="width: 11%"></td>
-                                        <td style="width: 17%"></td>
-                                        <td style="width: 13%">
+                                        <td class="modal-sm" style="width: 169px"><span class="labelClass">Years Managed Business</span></td>
+                                        <td><span class="labelClass" id="spnYearsManagedBusiness" runat="server"></span></td>
+                                        <td>
                                             <asp:Button ID="btnAddEntInfo" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddEntInfo_Click" /></td>
                                     </tr>
                                     <tr>
@@ -489,7 +486,23 @@
             $('#<%= txtAccAcres.ClientID%>').blur(function () {
                 CalculateTotalAcres();
             });
+            $('#<%= txtYearMangBusiness.ClientID%>').blur(function () {
+                CalculateNumberOfYears();
+            });
         });
+
+        function CalculateNumberOfYears() {
+            var Year = parseInt($('#<%=txtYearMangBusiness.ClientID%>').val(), 10);
+            var currentYear = (new Date).getFullYear();
+
+            if (!isNaN(Year)) {
+                $('#<%= spnYearsManagedBusiness.ClientID%>').text(currentYear - Year);
+            }
+            else
+            {
+                $('#<%= spnYearsManagedBusiness.ClientID%>').text("");
+            }
+        };
 
         function CalculateTotalAcres() {
             var Owned = parseInt($('#<%=txtAcresOwned.ClientID%>').val(), 10);

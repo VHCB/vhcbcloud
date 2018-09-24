@@ -151,7 +151,7 @@ namespace vhcbcloud.Viability
         private void PopulateProjectDetails()
         {
             int TypeId = 0;
-
+            int ProjectTypeId = 0;
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
@@ -165,18 +165,30 @@ namespace vhcbcloud.Viability
             spnEnterPriseType.InnerText = EnterpriseType;
 
             if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
-                TypeId = 106;
+                TypeId = 375;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
-                TypeId = 265;
+                TypeId = 376;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
-                TypeId = 264;
+                TypeId = 378;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
-                TypeId = 263;
+                TypeId = 377;
             else
                 TypeId = 0;
 
             BindSubLookUP(ddlPrimaryProduct, TypeId);
-            BindSubLookUP(ddlProducts, TypeId);
+
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
+                ProjectTypeId = 106;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
+                ProjectTypeId = 263;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
+                ProjectTypeId = 264;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
+                ProjectTypeId = 265;
+            else
+                ProjectTypeId = 0;
+
+            BindLookUP(ddlProducts, ProjectTypeId);
 
             BindLookUP(ddlAttribute, AttributeTypeId);
 
@@ -189,6 +201,12 @@ namespace vhcbcloud.Viability
                 txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
                 btnAddEntInfo.Text = "Update";
                 txtOtherNames.Text = drow["OtherNames"].ToString();
+
+                if (DataUtils.GetInt(drow["YrManageBus"].ToString()) > 0)
+                {
+                    int noOfYears = DateTime.Now.Year - DataUtils.GetInt(drow["YrManageBus"].ToString());
+                    spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
+                }
             }
 
             if (EnterpriseType != "Viability Farm Enterprise")
@@ -579,7 +597,15 @@ namespace vhcbcloud.Viability
         protected void btnAddEntInfo_Click(object sender, EventArgs e)
         {
             EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtOtherNames.Text);
+                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, 
+                DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtOtherNames.Text);
+
+            spnYearsManagedBusiness.InnerHtml = "";
+            if (DataUtils.GetInt(txtYearMangBusiness.Text) > 0)
+            {
+                int noOfYears = DateTime.Now.Year - DataUtils.GetInt(txtYearMangBusiness.Text);
+                spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
+            }
         }
     }
 }

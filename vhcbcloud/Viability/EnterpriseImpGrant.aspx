@@ -136,6 +136,195 @@
                             </asp:Panel>
                         </div>
 
+                        <div class="panel-width" runat="server" id="dvNewFinJobs" visible="true">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <h3 class="panel-title">Job Financial Date</h3>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Job Financial Date" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body" runat="server" id="dvMilestoneForm">
+                                    <asp:Panel runat="server" ID="Panel3">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <span class="labelClass">Status Point</span>
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0" TabIndex="1">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Date of Financial Data</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtMSDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="7"></asp:TextBox>
+                                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtMSDate">
+                                                    </ajaxToolkit:CalendarExtender>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 12px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <%--<span class="labelClass">Year of Financial Data</span>--%>
+                                                </td>
+                                                <td>
+                                                    <%--<asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>--%>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Family FTEs</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server" TabIndex="8"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="labelClass">Gross Sales</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtGrossSales" CssClass="clsTextBoxBlue1" runat="server" TabIndex="3"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Non-Family FTEs</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtNonFamilyFTEmp" CssClass="clsTextBoxBlue1" runat="server" TabIndex="9"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="labelClass">Net Income</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox>
+                                                </td>
+                                                <td><span class="labelClass">Total FTEs from Access</span>
+                                                    </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtAccessFTE" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="labelClass">Net Worth</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Total FTEs </span>
+                                                </td>
+                                                <td><span class="labelClass" id="spnTotalFulltime" runat="server"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="labelClass">Gross Payroll</span>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtGrossPayroll" CssClass="clsTextBoxBlue1" runat="server" TabIndex="6"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <span class="labelClass">Active</span>
+                                                </td>
+                                                <td>
+                                                    <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked="true" TabIndex="10" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="height: 6px">
+                                                    <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" 
+                                                        OnClick="btnAddMilestone_Click" TabIndex="11" /></td>
+                                            </tr>
+                                        </table>
+                                    </asp:Panel>
+                                </div>
+
+                                <div class="panel-body" id="dvFiniceJobsGrid" runat="server">
+                                    <asp:Panel runat="server" ID="Panel9" Width="100%" Height="250px" ScrollBars="Vertical">
+                                        <asp:GridView ID="gvFiniceJobs" runat="server" AutoGenerateColumns="False"
+                                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
+                                            OnRowEditing="gvFiniceJobs_RowEditing" 
+                                            OnRowCancelingEdit="gvFiniceJobs_RowCancelingEdit" 
+                                            OnRowDataBound="gvFiniceJobs_RowDataBound">
+                                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                            <HeaderStyle CssClass="headerStyle" />
+                                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                            <RowStyle CssClass="rowStyle" />
+                                            <FooterStyle CssClass="footerStyleTotals" />
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="EnterFinancialJobsID" Visible="false">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblEnterFinancialJobsID" runat="Server" Text='<%# Eval("EnterFinancialJobsID") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Status Point">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("Milestone") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="MSDate">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblMSDate" runat="Server" Text='<%# Eval("MSDate", "{0:MM/dd/yyyy}") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Year">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblYear" runat="Server" Text='<%# Eval("Year") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Active">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:CheckBox ID="chkActiveEdit" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </EditItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField ShowHeader="False">
+                                                    <EditItemTemplate>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                        &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                                    </EditItemTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </asp:Panel>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="panel-width" runat="server" id="dvNewGrantMatch">
                             <div class="panel panel-default ">
                                 <div class="panel-heading ">
@@ -390,6 +579,7 @@
         <asp:HiddenField ID="hfProjectId" runat="server" />
         <asp:HiddenField ID="hfEnterImpGrantID" runat="server" />
         <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+        <asp:HiddenField ID="hfEnterFinancialJobsID" runat="server" />
 
         <script language="javascript">
             $(document).ready(function () {
@@ -405,10 +595,21 @@
                     $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
                 }).change();
 
-                toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
-                toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
-                toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
-                toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
+                $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
+
+                $('#<%= cbAddMilestone.ClientID%>').click(function () {
+                    $('#<%= dvMilestoneForm.ClientID%>').toggle(this.checked);
+                }).change();
+
+                $('#<%= txtFamilyFTEmp.ClientID%>').blur(function () {
+                    CalculateTotalFT();
+                });
+
+                $('#<%= txtNonFamilyFTEmp.ClientID%>').blur(function () {
+                    CalculateTotalFT();
+                });
+
+               
 
                 $('#<%= txtGrantAmt.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
@@ -431,15 +632,20 @@
                 $('#<%= txtProjCost.ClientID%>').blur(function () {
                     CalculateLivFund();
                 });
+
                 $('#<%= txtAwardAmount.ClientID%>').blur(function () {
                     CalculateLivFund();
                 });
+                toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
+                toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
+                toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
+                toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
             });
 
             function CalculateLivFund() {
                 var ProjCost = parseInt($('#<%=txtProjCost.ClientID%>').val(), 10);
                 var AwardAmount = parseInt($('#<%=txtAwardAmount.ClientID%>').val(), 10);
-
+                
                 if (isNaN(ProjCost)) {
                     var ProjCost = 0;
                 }
@@ -450,6 +656,24 @@
 
                 var LiveFund = ProjCost - AwardAmount;
                 $('#<%= spnLevFunds.ClientID%>').text(LiveFund);
+            };
+
+            function CalculateTotalFT() {
+            var FamilyFT = parseFloat($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
+            var NonFamilyFT = parseFloat($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
+
+            if (isNaN(FamilyFT)) {
+                var FamilyFT = 0;
+            }
+
+            if (isNaN(NonFamilyFT)) {
+                var NonFamilyFT = 0;
+            }
+            console.log("XXXX")
+            console.log(FamilyFT);
+            console.log(NonFamilyFT);
+            var Total = FamilyFT + NonFamilyFT;
+            $('#<%= spnTotalFulltime.ClientID%>').text(Total);
             };
 
             function PopupAwardSummary() {
