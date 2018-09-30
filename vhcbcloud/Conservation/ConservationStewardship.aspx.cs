@@ -365,8 +365,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtMajorURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddMajor.Text.ToLower() == "update")
             {
@@ -481,6 +481,30 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -605,8 +629,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtMinorURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddMinor.Text.ToLower() == "update")
             {
@@ -686,6 +710,30 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -870,8 +918,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtViolationURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddViolation.Text.ToLower() == "update")
             {
@@ -933,6 +981,30 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -1019,8 +1091,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtApprovalURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddApproval.Text.ToLower() == "update")
             {
@@ -1083,6 +1155,30 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -1233,8 +1329,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtPlanURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddPlan.Text.ToLower() == "update")
             {
@@ -1278,6 +1374,30 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -1365,10 +1485,12 @@ namespace vhcbcloud.Conservation
         {
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
-            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value),
+            if (btnAddMilestone.Text == "Add")
+            {
+                MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ProgramId),
                 null,
                 0, 0,
@@ -1376,17 +1498,34 @@ namespace vhcbcloud.Conservation
                 0, 0,
                 DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
 
+                if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                    LogMessage("Milestone Event already exist as in-active");
+                else if (obMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist");
+                else
+                    LogMessage("New milestone added successfully");
+            }
+            else
+            {
+                ProjectMaintenanceData.UpdateProjectEvent2(DataUtils.GetInt(hfProjectEventID.Value),
+                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ProgramId),
+                null,
+                0, null,
+                DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), 
+                DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
+                0, 0,
+                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId(), true);
+
+                LogMessage("Milestone updated successfully");
+                hfProjectEventID.Value = "";
+                btnAddMilestone.Text = "Add";
+                gvMilestone.EditIndex = -1;
+            }
+
             //ClearForm();
             ClearEntityAndCommonForm();
             cbAddMilestone.Checked = false;
             BindMilestoneGrid();
-
-            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
-                LogMessage("Milestone Event already exist as in-active");
-            else if (obMilestoneResult.IsDuplicate)
-                LogMessage("Milestone already exist");
-            else
-                LogMessage("New milestone added successfully");
         }
 
         private void ClearEntityAndCommonForm()
@@ -1402,6 +1541,8 @@ namespace vhcbcloud.Conservation
         protected void gvMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvMilestone.EditIndex = -1;
+            ClearEntityAndCommonForm();
+            cbAddMilestone.Checked = false;
             BindMilestoneGrid();
         }
 
@@ -1498,6 +1639,63 @@ namespace vhcbcloud.Conservation
             else
                 LogMessage("Primary Steward Organization added successfully");
         }
+
+        protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string URL = "";
+                HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                string DocumentId = anchorDocument.InnerHtml;
+
+                if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                {
+                    URL = "fda://document/" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else if (DocumentId != "")
+                {
+                    URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else
+                {
+                    anchorDocument.InnerHtml = "";
+                }
+            }
+
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            {
+                ClearEntityAndCommonForm();
+                CommonHelper.GridViewSetFocus(e.Row);
+                btnAddMilestone.Text = "Update";
+                cbAddMilestone.Checked = true;
+
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    e.Row.Cells[7].Controls[1].Visible = false;
+
+                    Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                    int ProjectEventID = DataUtils.GetInt(lblProjectEventID.Text);
+
+                    DataRow dr = ProjectMaintenanceData.GetProjectEventById(ProjectEventID);
+
+                    hfProjectEventID.Value = lblProjectEventID.Text;
+                    //Populate Edit Form
+                    
+                    PopulateDropDown(ddlProgramMilestone, dr["ProgEventID"].ToString());
+                    PopulateDropDown(ddlProgramSubMilestone, dr["ProgSubEventID"].ToString());
+
+                    txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                    txtURL.Text = dr["URL"].ToString();
+
+                    txtNotes.Text = dr["Note"].ToString();
+
+                }
+            }
+            }
 
         //protected void btnAddEvent_Click(object sender, EventArgs e)
         //{

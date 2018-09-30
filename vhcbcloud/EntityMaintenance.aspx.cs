@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
@@ -252,7 +253,7 @@ namespace vhcbcloud
             //EventProgramSelection();
         }
 
-        
+
 
         protected void BindProjects(DropDownList ddList)
         {
@@ -573,7 +574,7 @@ namespace vhcbcloud
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, 
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text,
                             txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
@@ -739,8 +740,8 @@ namespace vhcbcloud
                 txtHomePhone.Text = "";
             else
                 txtHomePhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["HomePhone"].ToString()));
-            
-            spnAcctNumber.InnerHtml = drEntityData["AppNameID"].ToString();  
+
+            spnAcctNumber.InnerHtml = drEntityData["AppNameID"].ToString();
             txtStateVendorId.Text = drEntityData["Stvendid"].ToString();
             txtApplicantName.Text = drEntityData["Applicantname"].ToString();
             txtFirstName.Text = drEntityData["Firstname"].ToString();
@@ -1552,7 +1553,9 @@ namespace vhcbcloud
         protected void gvEntityMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvEntityMilestone.EditIndex = -1;
+            cbAddMilestone.Checked = false;
             BindEntityMilestoneGrid();
+            EntityMilestoneChanged();
         }
 
         protected void gvEntityMilestone_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -1576,7 +1579,7 @@ namespace vhcbcloud
             {
                 DataTable dtMilestones = null;
 
-                dtMilestones = MilestoneData.GetEventMilestonesList(ddlEntityName.SelectedItem.ToString(), cbActiveOnly.Checked);
+                dtMilestones = MilestoneData.GetEventMilestonesList1(DataUtils.GetInt(ddlEntityName.SelectedItem.Value.ToString()), cbActiveOnly.Checked);
 
 
                 if (dtMilestones.Rows.Count > 0)
@@ -1602,30 +1605,50 @@ namespace vhcbcloud
         {
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
-            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), 
+            if (btnAddMilestone.Text == "Add")
+            {
+                MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone1(
+                DataUtils.GetInt(hfProjectId.Value),
                 0,
-                ddlEntityName.SelectedItem.ToString(),
+                ddlEntityName.SelectedItem.Value.ToString(),
                 //txtEntityDDL.Text,
                 0, 0,
-                0,0,
+                0, 0,
                 DataUtils.GetInt(ddlEntityMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlEntitySubMilestone.SelectedValue.ToString()),
                 DataUtils.GetDate(txtEventDate.Text), txtEntityMilestoneComments.Text, URL, GetUserId());
 
-            //ClearForm();
-            ClearEntityAndCommonForm();
-            cbAddMilestone.Checked = false;
-
+                cbAddMilestone.Checked = false;
                 BindEntityMilestoneGrid();
 
-            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
-                LogMessage("Milestone Event already exist as in-active");
-            else if (obMilestoneResult.IsDuplicate)
-                LogMessage("Milestone already exist");
+                if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                    LogMessage("Milestone Event already exist as in-active");
+                else if (obMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist");
+                else
+                    LogMessage("New milestone added successfully");
+            }
             else
-                LogMessage("New milestone added successfully");
+            {
+                ProjectMaintenanceData.UpdateProjectEvent3(DataUtils.GetInt(hfProjectEventID.Value),
+                   DataUtils.GetInt(hfProjectId.Value), 0,
+               ddlEntityName.SelectedItem.Value.ToString(),
+               0, null,
+               0, 0,
+               DataUtils.GetInt(ddlEntityMilestone.SelectedValue.ToString()), 
+               DataUtils.GetInt(ddlEntitySubMilestone.SelectedValue.ToString()),
+               DataUtils.GetDate(txtEventDate.Text), txtEntityMilestoneComments.Text, URL, GetUserId(), true);
+
+                LogMessage("Milestone updated successfully");
+                hfProjectEventID.Value = "";
+                btnAddMilestone.Text = "Add";
+                gvEntityMilestone.EditIndex = -1;
+            }
+            cbAddMilestone.Checked = false;
+            BindEntityMilestoneGrid();
+            EntityMilestoneChanged();
         }
 
         private void ClearEntityAndCommonForm()
@@ -1707,6 +1730,63 @@ namespace vhcbcloud
         protected void ddlEntityName1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void gvEntityMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string URL = "";
+                HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                string DocumentId = anchorDocument.InnerHtml;
+
+                if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                {
+                    URL = "fda://document/" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else if (DocumentId != "")
+                {
+                    URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else
+                {
+                    anchorDocument.InnerHtml = "";
+                }
+            }
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            {
+                ClearEntityAndCommonForm();
+                CommonHelper.GridViewSetFocus(e.Row);
+                btnAddMilestone.Text = "Update";
+                cbAddMilestone.Checked = true;
+
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    e.Row.Cells[8].Controls[0].Visible = false;
+
+                    Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                    int ProjectEventID = DataUtils.GetInt(lblProjectEventID.Text);
+
+                    DataRow dr = ProjectMaintenanceData.GetProjectEventById(ProjectEventID);
+
+                    hfProjectEventID.Value = lblProjectEventID.Text;
+                    //Populate Edit Form
+
+                    PopulateDropDown(ddlEntityMilestone, dr["EntityMSID"].ToString());
+                    EntityMilestoneChanged();
+                    PopulateDropDown(ddlEntitySubMilestone, dr["EntitySubMSID"].ToString());
+
+                    txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                    txtURL.Text = dr["URL"].ToString();
+
+                    txtEntityMilestoneComments.Text = dr["Note"].ToString();
+
+                }
+            }
         }
     }
 }

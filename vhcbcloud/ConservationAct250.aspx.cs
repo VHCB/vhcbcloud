@@ -174,10 +174,7 @@ namespace vhcbcloud
             string URL = txtURL.Text;
 
             if (URL != "")
-            {
-                if (!URL.Contains("http"))
-                    URL = "http://" + URL;
-            }
+                URL = URL.Split('/').Last();
 
             if (btnAddAct250Info.Text == "Submit")
             {
@@ -280,6 +277,30 @@ namespace vhcbcloud
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -289,7 +310,7 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[7].Controls[0].Visible = false;
 
                         Label lblAct250FarmID = e.Row.FindControl("lblAct250FarmID") as Label;
                         hfAct250FarmID.Value = lblAct250FarmID.Text;

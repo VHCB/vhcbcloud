@@ -276,7 +276,8 @@
                                 <asp:GridView ID="gvAppraisalInfo" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    OnRowEditing="gvAppraisalInfo_RowEditing" OnRowCancelingEdit="gvAppraisalInfo_RowCancelingEdit"
+                                    OnRowEditing="gvAppraisalInfo_RowEditing" 
+                                    OnRowCancelingEdit="gvAppraisalInfo_RowCancelingEdit"
                                     OnRowDataBound="gvAppraisalInfo_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -325,7 +326,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">

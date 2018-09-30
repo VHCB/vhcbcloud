@@ -475,8 +475,8 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        //e.Row.Cells[4].Controls[0].Visible = false;
-                        //e.Row.Cells[9].Controls[0].Visible = false;
+                        e.Row.Cells[9].Controls[0].Visible = false;
+
                         Label lblLoanDetailID = e.Row.FindControl("lblLoanDetailID") as Label;
                         DataRow dr = LoanMaintenanceData.GetLoanDetailsByLoanDetailId(Convert.ToInt32(lblLoanDetailID.Text));
 
