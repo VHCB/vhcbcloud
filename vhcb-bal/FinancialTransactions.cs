@@ -3695,7 +3695,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
-        public static void SubmitVoidTransaction(int TransId, int UserId)
+        public static void SubmitVoidTransaction(int TransId, int UserId, DateTime TransDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -3705,6 +3705,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "SubmitVoidTransaction";
                 command.Parameters.Add(new SqlParameter("transId", TransId));
                 command.Parameters.Add(new SqlParameter("UserId", UserId));
+                command.Parameters.Add(new SqlParameter("TransDate", TransDate));
 
                 using (connection)
                 {

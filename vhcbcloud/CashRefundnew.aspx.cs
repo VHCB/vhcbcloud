@@ -201,7 +201,7 @@ namespace vhcbcloud
         {
             try
             {
-                FinancialTransactions.SubmitVoidTransaction(DataUtils.GetInt(hfTransId.Value), GetUserId());
+                FinancialTransactions.SubmitVoidTransaction(DataUtils.GetInt(hfTransId.Value), GetUserId(), DataUtils.GetDate(txtTransDate.Text));
                 BindFinalizeTransGrid();
                 LogMessage("Successfully Void Check");
             }
