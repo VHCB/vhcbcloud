@@ -363,8 +363,8 @@ namespace vhcbcloud
                         CommonHelper.DisableButton(btnTransactionSubmit);
                         btnNewTransaction.Visible = true;
                         {
-                            lblProjName.Text = "";
-                            lblGrantee.Text = "";
+                            //lblProjName.Text = "";
+                            //lblGrantee.Text = "";
                         }
 
                     }
