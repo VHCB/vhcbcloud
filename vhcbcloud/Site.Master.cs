@@ -110,6 +110,7 @@ namespace vhcbcloud
             }
         }
         public String strMenuText = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             DataTable dtable = default(DataTable);
@@ -138,6 +139,7 @@ namespace vhcbcloud
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Session.Remove("UserMenuDetails");
+            Session.Remove("FirstName");
             Context.GetOwinContext().Authentication.SignOut();
         }
 

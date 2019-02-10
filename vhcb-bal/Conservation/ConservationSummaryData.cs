@@ -151,6 +151,39 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         #endregion Coserve
 
         #region EasementHolder
+        public static DataRow GetPrimarySteward(int ConserveID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "getPrimarySteward";
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataTable GetEasementHolder()
         {
             DataTable dt = null;
@@ -217,7 +250,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static Result AddConserveEholder(int ProjectId, int ApplicantId)
+        public static Result AddConserveEholder(int ProjectId, int ApplicantId, bool PrimeStew)
         {
             try
             {
@@ -233,6 +266,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
 
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
+                        command.Parameters.Add(new SqlParameter("PrimeStew", PrimeStew));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -261,7 +295,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateConserveEholder(int ConserveEholderID, bool RowIsActive)
+        public static void UpdateConserveEholder(int ConserveEholderID, bool RowIsActive, bool PrimarySteward)
         {
             try
             {
@@ -277,6 +311,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
 
                         command.Parameters.Add(new SqlParameter("ConserveEholderID", ConserveEholderID));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("PrimarySteward", PrimarySteward));
 
                         command.CommandTimeout = 60 * 5;
 

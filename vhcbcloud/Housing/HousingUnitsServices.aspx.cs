@@ -229,7 +229,8 @@ namespace vhcbcloud.Housing
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
                 txtBuildings.Text = drHousing["Bldgs"].ToString();
 
-                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
                 {
@@ -1041,10 +1042,10 @@ namespace vhcbcloud.Housing
                     int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
 
                     hfVHCBUnitWarning.Value = "0";
-                    if (TotalUnits - totVHCBUnits != 0)
+                    if (DataUtils.GetInt(txtNetNewUnits.Text) - totVHCBUnits != 0)
                     {
                         hfVHCBUnitWarning.Value = "1";
-                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Units must be equal to Total Units.");
+                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Units must be equal to New Units.");
                     }
                     else
                     {

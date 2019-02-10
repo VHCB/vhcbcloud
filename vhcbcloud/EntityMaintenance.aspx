@@ -67,7 +67,9 @@
                                     </table>
                                 </div>
                             </td>
-                            <td style="width: 170px"></td>
+                            <td style="width: 170px">
+                                
+                            </td>
                             <td></td>
                         </tr>
                         <tr>
@@ -241,10 +243,31 @@
                                             <asp:DropDownList ID="ddlDefaultRole" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
+                                        <td><span class="labelClass" runat="server" id="Span1">Active</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbMilestoneActive" runat="server" Text="" Enabled="false" Checked="true" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                   <tr>
+                                        <td>
+                                            <span class="labelClass" runat="server" id="spnTier1">Tier 1</span>
+                                        </td>
+                                        <td style="width: 322px">
+                                            <asp:CheckBox ID="cbTear1" CssClass="ChkBox" runat="server" Text=""  Enabled="false"/>
+                                        </td>
+                                        <td>
+                                            <span class="labelClass" runat="server" id="spnFileHold">FileHold</span>
+                                        </td>
+                                        <td>
+                                            <asp:CheckBox ID="cbFileHold" CssClass="ChkBox" runat="server" Text=""  Enabled="false"/>
+                                        </td>
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                    <tr>
+                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>

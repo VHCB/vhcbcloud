@@ -395,11 +395,13 @@ namespace vhcbcloud.Viability
                     EnterpriseFundamentalsData.UpdateEnterpriseFinancialJobs(EnterFinancialJobsID, 
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
                         "", //txtYear.Text, 
-                        DataUtils.GetDecimal(txtGrossSales.Text),
-                        DataUtils.GetDecimal(txtNetIncome.Text), 
-                        DataUtils.GetDecimal(txtGrossPayroll.Text), 
-                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text),
+                        DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtAccessFTE.Text),
                         chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
@@ -411,11 +413,13 @@ namespace vhcbcloud.Viability
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFinancialJobs(ProjectId,
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
                         "",//txtYear.Text, 
-                        DataUtils.GetDecimal(txtGrossSales.Text),
-                        DataUtils.GetDecimal(txtNetIncome.Text), 
-                        DataUtils.GetDecimal(txtGrossPayroll.Text), 
-                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text), 
-                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text));
+                        DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtAccessFTE.Text));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)

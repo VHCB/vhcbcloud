@@ -70,10 +70,11 @@
                                     </td>
                                      <td><span class="labelClass">Primary Steward Organization:</span></td>
                                     <td>
-                                        <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        <span class="labelClass" id="spnPrimarySteward" runat="server"></span>
+                                        <%--<asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>--%>
                                     </td>
                                      <td>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                        <%--<asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />--%>
                                     </td>
                                 </tr>
                                 <tr>

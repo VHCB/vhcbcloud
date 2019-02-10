@@ -224,8 +224,13 @@ namespace vhcbcloud.Conservation
             if (drConserve != null)
             {
                 hfConserveId.Value = drConserve["ConserveID"].ToString();
-                PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
-                btnSubmit.Text = "Update";
+                DataRow drow = ConservationSummaryData.GetPrimarySteward(Convert.ToInt32(hfConserveId.Value));
+
+                if (drow != null)
+                    spnPrimarySteward.InnerHtml = drow["ApplicantName"].ToString();
+
+                //PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
+                //btnSubmit.Text = "Update";
             }
         }
 
@@ -263,25 +268,25 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlPlan, 142);
             //BindLookUP(ddlEvent, 146);
             BindLookUP(ddlProgramMilestone, 159);
-            BindPrimaryStewardOrganization();
+            //BindPrimaryStewardOrganization();
         }
 
-        private void BindPrimaryStewardOrganization()
-        {
-            try
-            {
-                ddlPSO.Items.Clear();
-                ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
-                ddlPSO.DataValueField = "applicantid";
-                ddlPSO.DataTextField = "ApplicantName";
-                ddlPSO.DataBind();
-                ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
-            }
-            catch (Exception ex)
-            {
-                LogError(Pagename, "BindApplicants", "", ex.Message);
-            }
-        }
+        //private void BindPrimaryStewardOrganization()
+        //{
+        //    try
+        //    {
+        //        ddlPSO.Items.Clear();
+        //        ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
+        //        ddlPSO.DataValueField = "applicantid";
+        //        ddlPSO.DataTextField = "ApplicantName";
+        //        ddlPSO.DataBind();
+        //        ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindApplicants", "", ex.Message);
+        //    }
+        //}
         private void BindGrids()
         {
             BindMajorGrid();
@@ -1628,17 +1633,17 @@ namespace vhcbcloud.Conservation
             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Major Amendments"));
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            ConservationSummaryData.SubmitPrimStewConserve(DataUtils.GetInt(hfProjectId.Value), 
-                            DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
-                            GetUserId());
+        //protected void btnSubmit_Click(object sender, EventArgs e)
+        //{
+        //    ConservationSummaryData.SubmitPrimStewConserve(DataUtils.GetInt(hfProjectId.Value), 
+        //                    DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
+        //                    GetUserId());
 
-            if (btnSubmit.Text.ToLower() == "update")
-                LogMessage("Primary Steward Organization updated successfully");
-            else
-                LogMessage("Primary Steward Organization added successfully");
-        }
+        //    if (btnSubmit.Text.ToLower() == "update")
+        //        LogMessage("Primary Steward Organization updated successfully");
+        //    else
+        //        LogMessage("Primary Steward Organization added successfully");
+        //}
 
         protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
         {

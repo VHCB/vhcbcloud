@@ -764,14 +764,25 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtNextInspDeadLine" TargetControlID="txtNextInspDeadLine">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 138px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 138px"><span class="labelClass">Response Not Needed</span></td>
                                         <td style="width: 177px">
-                                            <asp:CheckBox ID="chkInspectionActive" Enabled="false" runat="server" Checked="true" /></td>
-                                        <td style="width: 156px">
+                                            <asp:CheckBox ID="chkRespNotNeed" Enabled="true" runat="server" Checked="false" /></td>
+                                        <td style="width: 156px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 180px">
+                                            <asp:CheckBox ID="chkInspectionActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td style="width: 158px" colspan="6">
                                             <asp:Button ID="btnAddInspection" runat="server" Text="Add" class="btn btn-info"
                                                 OnClick="btnAddInspection_Click" />
                                         </td>
-                                        <td style="width: 180px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>

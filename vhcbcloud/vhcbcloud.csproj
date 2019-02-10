@@ -193,6 +193,7 @@
     <Content Include="Conservation\ConservationStewardship.aspx" />
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
+    <Content Include="Dashboard.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
@@ -268,6 +269,7 @@
     <Content Include="Lead\ProjectLeadMilestones.aspx" />
     <Content Include="Lead\ProjectLeadOccupants.aspx" />
     <Content Include="LoanMaintenance.aspx" />
+    <Content Include="LoanSummary.aspx" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
@@ -498,6 +500,13 @@
     </Compile>
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="GeoResponse.cs" />
     <Compile Include="ConservationAct250.aspx.cs">
@@ -910,6 +919,13 @@
     </Compile>
     <Compile Include="LoanMaintenance.aspx.designer.cs">
       <DependentUpon>LoanMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoanSummary.aspx.cs">
+      <DependentUpon>LoanSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanSummary.aspx.designer.cs">
+      <DependentUpon>LoanSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>

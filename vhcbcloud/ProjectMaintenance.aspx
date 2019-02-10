@@ -308,6 +308,8 @@
                                             <asp:TextBox ID="txtEventDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtEventDate">
                                             </ajaxToolkit:CalendarExtender>
+                                             <asp:DropDownList ID="ddlBoardDate" CssClass="clsDropDown" runat="server" Height="20px" Width="185px" Visible="false">
+                                                                </asp:DropDownList>
                                         </td>
                                         <td style="width: 136px"><span class="labelClass">URL</span></td>
                                         <td style="width: 319px">
@@ -326,6 +328,15 @@
                                         <td style="width: 80px"><span class="labelClass">Comments</span></td>
                                         <td colspan="5">
                                             <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 80px"><span class="labelClass">Active</span></td>
+                                        <td colspan="5">
+                                            <asp:CheckBox ID="cbMilestoneActive" runat="server" Text="" Enabled="false" Checked="true" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -944,7 +955,7 @@
                                                 <asp:Label ID="lblProjectApplicantID" runat="Server" Text='<%# Eval("ProjectApplicantID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project Applicant Id">
+                                        <asp:TemplateField HeaderText="Id">
                                             <ItemTemplate>
                                                 <asp:HyperLink ID="HyperLink1" runat="server" Target='_blank'
                                                     NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?IsSearch=true&ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'><%# Eval("ApplicantId") %></asp:HyperLink>
@@ -962,7 +973,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Phone">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("Phone") %>' />
+                                                <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("phone") %>' ToolTip ='<%# Eval("PhoneDetails") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Role">

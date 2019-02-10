@@ -482,30 +482,30 @@
                 toNumericControl($('#<%= txtYear.ClientID%>').val(), $('#<%= txtYear.ClientID%>'));
             });--%>
 
-            //toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
             //accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val());
             //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val()));
 
-            //toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-            //toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
-            //toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+            toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+            toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+            toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
 
-          <%-- $('#<%= txtNetworth.ClientID%>').keyup(function () {
+          $('#<%= txtNetworth.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
-            });--%>
+            });
 
-           <%--$('#<%= txtGrossSales.ClientID%>').keyup(function () {
+           $('#<%= txtGrossSales.ClientID%>').keyup(function () {
                 //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatColumn( $('#<%= txtGrossSales.ClientID%>').val(), "$ "));
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
-            });--%>
+            });
 
-           <%-- $('#<%= txtNetIncome.ClientID%>').keyup(function () {
+            $('#<%= txtNetIncome.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-            });--%>
+            });
 
-           <%-- $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
+            $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
-            });--%>
+            });
 
             $('#<%= dvMilestoneForm.ClientID%>').toggle($('#<%= cbAddMilestone.ClientID%>').is(':checked'));
 

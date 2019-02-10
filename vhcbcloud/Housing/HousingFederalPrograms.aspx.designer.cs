@@ -1057,6 +1057,15 @@ namespace vhcbcloud.Housing {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtNextInspDeadLine;
         
         /// <summary>
+        /// chkRespNotNeed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkRespNotNeed;
+        
+        /// <summary>
         /// chkInspectionActive control.
         /// </summary>
         /// <remarks>

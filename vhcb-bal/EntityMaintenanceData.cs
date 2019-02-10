@@ -15,7 +15,7 @@ namespace VHCBCommon.DataAccessLayer
         public static EntityMaintResult AddNewEntity(int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int? AppRole,
-            int Operation, bool W9)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold)
         {
             try
             {
@@ -57,6 +57,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
                         command.Parameters.Add(new SqlParameter("Operation", Operation));
                         command.Parameters.Add(new SqlParameter("W9", W9));
+                        command.Parameters.Add(new SqlParameter("Tier1", IsTier1));
+                        command.Parameters.Add(new SqlParameter("FileHold", IsFileHold));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -93,7 +95,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateEntity(int ApplicantId, int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int AppRole, 
-            int Operation, bool W9)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold, bool RowIsActive)
         {
             try
             {
@@ -136,7 +138,10 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
                         command.Parameters.Add(new SqlParameter("Operation", Operation));
                         command.Parameters.Add(new SqlParameter("W9", W9));
-
+                        command.Parameters.Add(new SqlParameter("Tier1", IsTier1));
+                        command.Parameters.Add(new SqlParameter("FileHold", IsFileHold));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -856,7 +861,7 @@ namespace VHCBCommon.DataAccessLayer
 
         #endregion Products
 
-        public static DataTable EntitySearchByRole(int EntityRole, string EntityName)
+        public static DataTable EntitySearchByRole(string EntityRole, string EntityName, bool RowIsActive)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -864,9 +869,13 @@ namespace VHCBCommon.DataAccessLayer
             {
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "EntitySearchByRole";
-                command.Parameters.Add(new SqlParameter("EntityRole", EntityRole));
+                command.CommandText = "EntitySearch_New";
+                if (EntityRole != "NA")
+                    command.Parameters.Add(new SqlParameter("EntityRole", DataUtils.GetInt(EntityRole)));
+
                 command.Parameters.Add(new SqlParameter("EntityName", EntityName));
+                command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
                 using (connection)
                 {
                     connection.Open();

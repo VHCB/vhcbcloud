@@ -241,15 +241,40 @@ namespace vhcbcloud
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                int transId = Convert.ToInt32(gvTransactions.DataKeys[e.Row.RowIndex].Value.ToString());
-    
+                int LoanImportID = Convert.ToInt32(gvTransactions.DataKeys[e.Row.RowIndex].Value.ToString());
 
+                var dd = e.Row.Cells[7].Controls[1] as DropDownList;
+                if (null != dd)
+                {
+                    BindLoanId(dd, LoanImportID);
+                }
+            }
+        }
 
+        private void BindLoanId(DropDownList ddList, int LoanImportID)
+        {
+            try
+            {
+                DataTable dt = FinancialTransactions.GetLoanIdForProject(LoanImportID);
+                ddList.Items.Clear();
+                ddList.DataSource = dt;
+                ddList.DataValueField = "LoanID";
+                ddList.DataTextField = "LoanIDFundType";
+                ddList.DataBind();
+
+                if(dt.Rows.Count > 1)
+                    ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = "Error in loading loan Id's";
             }
         }
 
         protected void btnTranSubmit_Click(object sender, EventArgs e)
         {
+            bool IsValidData = true;
+
             foreach (GridViewRow row in gvTransactions.Rows)
             {
                 if (row.RowType == DataControlRowType.DataRow)
@@ -257,22 +282,87 @@ namespace vhcbcloud
                     CheckBox chkRow = (row.Cells[0].FindControl("chkTrans") as CheckBox);
                     if (chkRow.Checked)
                     {
-                        int LoanImportID = Convert.ToInt32(gvTransactions.DataKeys[row.RowIndex].Value.ToString());
-
-                        FinancialTransactions.UpdateLoanImportTransactionStatus(LoanImportID);
+                        DropDownList ddlLoanId = (row.Cells[0].FindControl("ddlLoanId") as DropDownList);
+                        if (ddlLoanId.SelectedIndex == 0)
+                        {
+                            lblErrorMsg.Text = "All disbursements need an identified Loan Id";
+                            IsValidData = false;
+                            break;
+                        }
                     }
                 }
             }
-            if (hfProjId.Value != "")
+
+            if (IsValidData)
             {
-                PopulateTransactions(Convert.ToInt32(hfProjId.Value), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()));
-                lblErrorMsg.Text = "Transaction finalized successfully";
+                foreach (GridViewRow row in gvTransactions.Rows)
+                {
+                    if (row.RowType == DataControlRowType.DataRow)
+                    {
+                        CheckBox chkRow = (row.Cells[0].FindControl("chkTrans") as CheckBox);
+
+                        if (chkRow.Checked)
+                        {
+                            DropDownList ddlLoanId = (row.Cells[0].FindControl("ddlLoanId") as DropDownList);
+
+                            if (ddlLoanId.SelectedIndex != 0)
+                            {
+                                int LoanId = Convert.ToInt32(ddlLoanId.SelectedValue);
+                                int LoanImportID = Convert.ToInt32(gvTransactions.DataKeys[row.RowIndex].Value.ToString());
+
+                                FinancialTransactions.UpdateLoanImportTransactionStatus(LoanImportID, LoanId);
+                            }
+                        }
+                    }
+                }
+
+                if (hfProjId.Value != "")
+                {
+                    PopulateTransactions(Convert.ToInt32(hfProjId.Value), DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()));
+                    lblErrorMsg.Text = "Transaction finalized successfully";
+                }
+                else
+                {
+                    lblProjName.Text = "All";
+                    PopulateTransactions(-1, DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()));
+                    lblErrorMsg.Text = "Transaction finalized successfully";
+                }
             }
+        }
+
+        protected void chkTrans_CheckedChanged(object sender, EventArgs e)
+        {
+            GridViewRow row = ((GridViewRow)((CheckBox)sender).NamingContainer);
+            int index = row.RowIndex;
+            CheckBox cb1 = (CheckBox)gvTransactions.Rows[index].FindControl("chkTrans");
+            DropDownList ddlLoanId = (DropDownList)gvTransactions.Rows[index].FindControl("ddlLoanId");
+
+            if (cb1.Checked)
+                ddlLoanId.Enabled = true;
             else
             {
-                lblProjName.Text = "All";
-                PopulateTransactions(-1, DateTime.Parse(ViewState["FromDate"].ToString()), DateTime.Parse(ViewState["EndDate"].ToString()));
-                lblErrorMsg.Text = "Transaction finalized successfully";
+                ddlLoanId.SelectedIndex = -1;
+                ddlLoanId.Enabled = false;
+            }
+        }
+
+        protected void chkboxSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (GridViewRow row in gvTransactions.Rows)
+            {
+                if (row.RowType == DataControlRowType.DataRow)
+                {
+                    CheckBox chkRow = (row.Cells[0].FindControl("chkTrans") as CheckBox);
+                    DropDownList ddlLoanId = (row.Cells[0].FindControl("ddlLoanId") as DropDownList);
+
+                    if (chkRow.Checked)
+                        ddlLoanId.Enabled = true;
+                    else
+                    {
+                        ddlLoanId.SelectedIndex = -1;
+                        ddlLoanId.Enabled = false;
+                    }
+                }
             }
         }
     }

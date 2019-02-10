@@ -65,10 +65,13 @@
                             <td style="width: 170px">
                                 <asp:TextBox ID="txtEntityName" CssClass="clsTextBoxBlue1" runat="server" Width="150px" Height="22px"></asp:TextBox>
                             </td>
-                            <td style="width: 392px">
+                            <td style="width: 222px">
                                 <asp:Button ID="btnEntitySearch" runat="server" Text="Search" class="btn btn-info" OnClick="btnEntitySearch_Click" />
-                                &nbsp;&nbsp;<asp:Button ID="btnClear" runat="server" Text="Clear" class="btn btn-info" OnClick="btnClear_Click" /></td>
-
+                                &nbsp;&nbsp;<asp:Button ID="btnClear" runat="server" Text="Clear" class="btn btn-info" OnClick="btnClear_Click" />
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="cbEntityActiveOnly" runat="server" Text="Active Only" Enabled="true" Checked="true" />
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
@@ -102,14 +105,19 @@
                                         <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("ApplicantName") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Last Name" SortExpression="Lastname" ItemStyle-Width="100px">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblLastname" runat="Server" Text='<%# Eval("Lastname") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="First Name" SortExpression="Firstname" ItemStyle-Width="100px">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblFirstname" runat="Server" Text='<%# Eval("Firstname") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Legal Structure" SortExpression="LegalStructure">
                                     <ItemTemplate>
                                         <asp:Label ID="lblLegalStructure" runat="Server" Text='<%# Eval("LegalStructure") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Work Phone" SortExpression="WorkPhone" ItemStyle-Width="100px">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblWorkPhone" runat="Server" Text='<%# Eval("WorkPhone") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Default Role" SortExpression="DefaultRole">

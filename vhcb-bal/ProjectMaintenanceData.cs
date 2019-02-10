@@ -1416,7 +1416,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public static string GetApplicantAppRole(int AppNameId)
+        public static string GetApplicantAppRole(int ApplicantId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -1425,7 +1425,7 @@ namespace DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetApplicantAppRole";
-                command.Parameters.Add(new SqlParameter("AppNameId", AppNameId));
+                command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
 
                 using (connection)
                 {

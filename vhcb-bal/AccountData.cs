@@ -22,7 +22,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Username", UserName));
                 command.Parameters.Add(new SqlParameter("Password", Password));
 
-                SqlParameter parmIsValid = new SqlParameter("@ReturnData", SqlDbType.VarChar, 5);
+                SqlParameter parmIsValid = new SqlParameter("@ReturnData", SqlDbType.VarChar, 110);
                 parmIsValid.Direction = ParameterDirection.Output;
                 command.Parameters.Add(parmIsValid);
 
@@ -144,7 +144,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddUserInfo(string firstName, string lastName, string password, 
-            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite)
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool Dashboard, string DashboardName)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -160,6 +160,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("dfltSecGrp", dfltSecGrp));
                 command.Parameters.Add(new SqlParameter("NumbProj", NumbProj));
                 command.Parameters.Add(new SqlParameter("HostSite", HostSite));
+                command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
+                command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
                 
                 using (connection)
                 {
@@ -179,7 +181,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, 
-            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool RowIsActive)
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool RowIsActive, 
+            bool Dashboard, string DashboardName)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -197,6 +200,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("NumbProj", NumbProj));
                 command.Parameters.Add(new SqlParameter("HostSite", HostSite));
                 command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
+                command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
 
                 using (connection)
                 {
@@ -215,6 +220,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateDashboard(int UserId, string DashboardName)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "UpdateDashboard";
+                command.Parameters.Add(new SqlParameter("UserId", UserId));
+                command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
         public static DataRow GetUserInfoById(int UserId)
         {
             DataRow dt = null;

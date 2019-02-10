@@ -385,7 +385,7 @@ namespace vhcbcloud
             dvNewVHCBProjects.Visible = true;
             BindVHCBProjectsGrid();
 
-            BindPermitCommitmentsGrid();
+            //BindPermitCommitmentsGrid();
         }
 
         private void BindPermitCommitmentsGrid()

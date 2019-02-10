@@ -164,14 +164,14 @@ namespace vhcbcloud.Viability
 
             spnEnterPriseType.InnerText = EnterpriseType;
 
-            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)//Farm
                 TypeId = 375;
-            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)//Food
                 TypeId = 376;
-            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
-                TypeId = 378;
-            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)//Land Owner
                 TypeId = 377;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)//Forest
+                TypeId = 378;
             else
                 TypeId = 0;
 
@@ -180,11 +180,11 @@ namespace vhcbcloud.Viability
             if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
                 ProjectTypeId = 106;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
-                ProjectTypeId = 263;
+                ProjectTypeId = 265;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
                 ProjectTypeId = 264;
             else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
-                ProjectTypeId = 265;
+                ProjectTypeId = 263;
             else
                 ProjectTypeId = 0;
 

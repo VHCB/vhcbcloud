@@ -62,7 +62,7 @@ namespace vhcbcloud
                 txtProjectNumber.Text = dtUserDetails.Rows[0]["ProjNum"].ToString().Trim();
                 txtHostSite.Text = dtUserDetails.Rows[0]["PrimaryApplicantName"].ToString().Trim();
                 hfUserId.Value = dtUserDetails.Rows[0]["UserId"].ToString().Trim();
-                btnNextPage.Attributes.Add("disabled", "disabled");
+                //btnNextPage.Attributes.Add("disabled", "disabled");
               
             }
                 btnSubmit.Visible = false;

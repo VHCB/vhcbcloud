@@ -413,6 +413,23 @@ namespace vhcbcloud
             }
         }
 
+        private void BindBoardDates(DropDownList ddList)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.GetTop6BoardDates();
+                ddList.DataValueField = "BoardDate";
+                ddList.DataTextField = "BoardDate";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
         protected void BindApplicants(DropDownList ddList)
         {
             try
@@ -700,6 +717,17 @@ namespace vhcbcloud
             }
         }
 
+        private void PopulateBoardDateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DataUtils.GetDate(DBSelectedvalue) == DataUtils.GetDate(item.Value.ToString()))
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             RadioButtonSelectionChanged();
@@ -1452,7 +1480,7 @@ namespace vhcbcloud
                             ddlLkApplicantRoleEntity.Items.Remove(ddlLkApplicantRoleEntity.Items.FindByValue("358"));
                         }
 
-                        if (chkw9.Checked && CheckPayeeAccess())
+                        if (chkw9.Checked && CheckPayeeAccess() && CheckTier1Access())
                             chkFinLegal.Enabled = true;
                         else
                             chkFinLegal.Enabled = false;
@@ -2205,6 +2233,7 @@ namespace vhcbcloud
             BindMilestoneGrid();
             ClearEntityAndCommonForm();
             cbAddProjectEvent.Checked = false;
+            cbMilestoneActive.Checked = true;
         }
 
         protected void gvMilestone_RowEditing(object sender, GridViewEditEventArgs e)
@@ -2263,11 +2292,18 @@ namespace vhcbcloud
                         PopulateDropDown(ddlAdminSubMilestone, dr["SubEventID"].ToString());
                         PopulateDropDown(ddlProgramSubMilestone, dr["ProgSubEventID"].ToString());
 
+                        string EventDate = "";
+                        if(dr["Date"].ToString() != "")
+                            EventDate = Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+
+                        PopulateBoardDateDropDown(ddlBoardDate, EventDate);
+
                         txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
                         txtURL.Text = dr["URL"].ToString();
 
                         txtNotes.Text = dr["Note"].ToString();
-
+                        cbMilestoneActive.Enabled = true;
+                        cbMilestoneActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
                 }
             }
@@ -2331,6 +2367,13 @@ namespace vhcbcloud
             if (URL != "")
                 URL = URL.Split('/').Last();
 
+            DateTime EventDate;
+
+            if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
+                EventDate = DataUtils.GetDate(ddlBoardDate.SelectedValue.ToString());
+            else
+                EventDate = DataUtils.GetDate(txtEventDate.Text);
+
             if (btnAddMilestone.Text == "Add")
             {
                 MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value),
@@ -2338,7 +2381,7 @@ namespace vhcbcloud
                 DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlAdminSubMilestone.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
                 0, 0,
-                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
+                EventDate, txtNotes.Text, URL, GetUserId());
 
                 if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
                     LogMessage("Milestone Event already exist as in-active");
@@ -2355,12 +2398,13 @@ namespace vhcbcloud
                 DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlAdminSubMilestone.SelectedValue.ToString()),
                 DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
                 0, 0,
-                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId(), true);
+                EventDate, txtNotes.Text, URL, GetUserId(), cbMilestoneActive.Checked);
 
                 LogMessage("Milestone updated successfully");
                 hfProjectEventID.Value = "";
                 btnAddMilestone.Text = "Add";
                 gvMilestone.EditIndex = -1;
+                cbMilestoneActive.Checked = true;
             }
 
             ClearEntityAndCommonForm();
@@ -2380,6 +2424,8 @@ namespace vhcbcloud
             btnAddMilestone.Text = "Add";
             AdminMilestoneChanged();
             ProgramMilestoneChanged();
+            cbMilestoneActive.Enabled = false;
+            cbMilestoneActive.Checked = true;
         }
 
         private void AdminMilestoneChanged()
@@ -2388,6 +2434,16 @@ namespace vhcbcloud
             {
                 dvProgram.Visible = false;
                 dvAdmin.Visible = true;
+
+                ddlBoardDate.Visible = false;
+                txtEventDate.Visible = true;
+
+                if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
+                {
+                    BindBoardDates(ddlBoardDate);
+                    ddlBoardDate.Visible = true;
+                    txtEventDate.Visible = false;
+                }
 
                 BindSubLookUP(ddlAdminSubMilestone, DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()));
 
@@ -2492,6 +2548,19 @@ namespace vhcbcloud
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "27447")
+                    return true;
+            }
+            return false;
+        }
+
+        private bool CheckTier1Access()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "30926")
                     return true;
             }
             return false;

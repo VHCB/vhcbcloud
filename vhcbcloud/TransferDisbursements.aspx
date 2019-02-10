@@ -94,18 +94,19 @@
                             <FooterStyle CssClass="footerStyleTotals" />
                             <Columns>
                                 <asp:TemplateField ItemStyle-Width="40px">
-                                    <HeaderTemplate>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="chkboxSelectAll" runat="server" onclick="CheckAllEmp(this);" />
+                                    <HeaderTemplate >
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="chkboxSelectAll" runat="server"
+                                            AutoPostBack="true" OnCheckedChanged="chkboxSelectAll_CheckedChanged" onclick="CheckAllEmp(this);" />
                                     </HeaderTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
                                     <ItemTemplate>
-                                        <asp:CheckBox ID="chkTrans" runat="server"></asp:CheckBox>
+                                        <asp:CheckBox ID="chkTrans" runat="server" AutoPostBack="true" OnCheckedChanged="chkTrans_CheckedChanged"></asp:CheckBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:BoundField ItemStyle-Width="80px" DataField="ProjectNumber" HeaderText="Project #" />
                                 <asp:BoundField ItemStyle-Width="120px" DataField="ProjectName" HeaderText="Project Name" />
                                 <asp:BoundField ItemStyle-Width="120px" DataField="FundName" HeaderText="Fund Name" />
-
+                                <asp:BoundField ItemStyle-Width="120px" DataField="FundType" HeaderText="Fund Type" />
                                 <asp:TemplateField HeaderText="Date" ItemStyle-Width="70px">
                                     <ItemTemplate>
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("FinalizedDate", "{0:MM-dd-yyyy}") %>' />
@@ -115,6 +116,11 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
                                     </ItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="Loan Id" ItemStyle-Width="90px" ItemStyle-HorizontalAlign="Right">
+                                    <ItemTemplate>                                                           
+                                        <asp:DropDownList runat="server" ID="ddlLoanId" Enabled="false" />
+                                    </ItemTemplate> 
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>

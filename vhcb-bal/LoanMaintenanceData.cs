@@ -115,7 +115,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddLoanMaster(int ProjectId, int TaxCreditPartner, int NoteOwner,
-            decimal NoteAmt, int ApplicantId)
+            decimal NoteAmt, decimal BalForward, int ApplicantId)
         {
             try
             {
@@ -134,6 +134,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("TaxCreditPartner", TaxCreditPartner));
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
                         command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
+                        command.Parameters.Add(new SqlParameter("BalForward", BalForward));
                         
                         command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
                         command.CommandTimeout = 60 * 5;
@@ -149,7 +150,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateLoanMaster(int LoanId, int TaxCreditPartner, int NoteOwner,
-            decimal NoteAmt, int ApplicantId, bool RowIsActive)
+            decimal NoteAmt, decimal BalForward, int ApplicantId, bool RowIsActive)
         {
             try
             {
@@ -168,6 +169,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("TaxCreditPartner", TaxCreditPartner));
                         command.Parameters.Add(new SqlParameter("NoteOwner", NoteOwner));
                         command.Parameters.Add(new SqlParameter("NoteAmt", NoteAmt));
+                        command.Parameters.Add(new SqlParameter("BalForward", BalForward));
                         //command.Parameters.Add(new SqlParameter("FundID", FundID));
                         command.Parameters.Add(new SqlParameter("ApplicantId", ApplicantId));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
@@ -182,6 +184,39 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static DataRow GetLatestLoanDetailsByLoanId(int LoanID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetLatestLoanDetailsByLoanId";
+                        command.Parameters.Add(new SqlParameter("LoanID", LoanID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
 
         public static DataRow GetLoanDetailsByLoanDetailId(int LoanDetailID)
@@ -218,7 +253,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddLoanDetail(int LoanId, int LegalDoc, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
-            decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate, string URL, DateTime EffectiveDate)
+            decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate, string URL, 
+            DateTime EffectiveDate, DateTime BoardApproveDate)
         {
             try
             {
@@ -244,6 +280,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("WatchDate", WatchDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : WatchDate));
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("EffectiveDate", EffectiveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EffectiveDate));
+                        command.Parameters.Add(new SqlParameter("BoardApproveDate", BoardApproveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : BoardApproveDate));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -258,7 +295,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateLoanDetail(int LoanDetailID, int LegalDoc, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
             decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate, string URL,
-            DateTime EffectiveDate, bool RowIsActive)
+            DateTime EffectiveDate, DateTime BoardApproveDate, bool RowIsActive)
         {
             try
             {
@@ -285,6 +322,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("EffectiveDate", EffectiveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EffectiveDate));
+                        command.Parameters.Add(new SqlParameter("BoardApproveDate", BoardApproveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : BoardApproveDate));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -897,6 +935,73 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
         #endregion
+
+        public static DataTable GetLoanMasterDetails(int ProjectId, int LoanId)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetLoanMasterDetails";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                command.Parameters.Add(new SqlParameter("LoanId", LoanId));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataSet GetLoanSummaryDetails(int LoanId)
+        {
+            DataSet ds = new DataSet();
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "getLoanSummaryDetails";
+                command.Parameters.Add(new SqlParameter("LoanId", LoanId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return ds;
+        }
     }
 
     public class LoanResult

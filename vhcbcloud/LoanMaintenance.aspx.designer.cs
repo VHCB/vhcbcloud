@@ -103,6 +103,42 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtProjName;
         
         /// <summary>
+        /// dvNewRelatedProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewRelatedProjects;
+        
+        /// <summary>
+        /// dvRelatedProjectsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvRelatedProjectsGrid;
+        
+        /// <summary>
+        /// Panel12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel12;
+        
+        /// <summary>
+        /// gvRelatedProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvRelatedProjects;
+        
+        /// <summary>
         /// dvNewProjectInfo control.
         /// </summary>
         /// <remarks>
@@ -110,6 +146,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewProjectInfo;
+        
+        /// <summary>
+        /// ibLoanSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ibLoanSummary;
         
         /// <summary>
         /// cbAddLoanMaster control.
@@ -191,6 +236,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbLoanMasterActive;
+        
+        /// <summary>
+        /// txtBalanceForward control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBalanceForward;
         
         /// <summary>
         /// btnLoanMaster control.
@@ -382,6 +436,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlLegalDocs;
         
         /// <summary>
+        /// pnlLoanDetailsForm1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm1;
+        
+        /// <summary>
         /// ddlLoanCat control.
         /// </summary>
         /// <remarks>
@@ -490,6 +553,24 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
         
         /// <summary>
+        /// cbLoanDetailActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive;
+        
+        /// <summary>
+        /// pnlLoanDetailsForm2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm2;
+        
+        /// <summary>
         /// txtFileURL control.
         /// </summary>
         /// <remarks>
@@ -517,13 +598,31 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender19;
         
         /// <summary>
-        /// cbLoanDetailActive control.
+        /// spnBoardApprovalDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnBoardApprovalDate;
+        
+        /// <summary>
+        /// txtBoardApprovalDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBoardApprovalDate;
+        
+        /// <summary>
+        /// CalendarExtender6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender6;
         
         /// <summary>
         /// Div1 control.
@@ -922,13 +1021,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span7;
         
         /// <summary>
-        /// cap_ddlTransPaymentType control.
+        /// cap_txtTransAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cap_ddlTransPaymentType;
+        protected global::System.Web.UI.WebControls.TextBox cap_txtTransAmount;
         
         /// <summary>
         /// span8 control.
@@ -940,33 +1039,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span8;
         
         /// <summary>
-        /// cap_txtTransAmount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cap_txtTransAmount;
-        
-        /// <summary>
-        /// cap_txtTransPrinciple control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cap_txtTransPrinciple;
-        
-        /// <summary>
-        /// span9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span9;
-        
-        /// <summary>
         /// cap_txtTransDescription control.
         /// </summary>
         /// <remarks>
@@ -974,15 +1046,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cap_txtTransDescription;
-        
-        /// <summary>
-        /// span10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span10;
         
         /// <summary>
         /// cap_cbLoanTransActive control.
@@ -994,6 +1057,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cap_cbLoanTransActive;
         
         /// <summary>
+        /// span9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span9;
+        
+        /// <summary>
+        /// span10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span10;
+        
+        /// <summary>
         /// dvCR control.
         /// </summary>
         /// <remarks>
@@ -1001,33 +1082,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvCR;
-        
-        /// <summary>
-        /// cr_txtTransDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cr_txtTransDate;
-        
-        /// <summary>
-        /// CalendarExtender7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender7;
-        
-        /// <summary>
-        /// span1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span1;
         
         /// <summary>
         /// cr_txtTransAmount control.
@@ -1039,13 +1093,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransAmount;
         
         /// <summary>
-        /// span2 control.
+        /// span1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span2;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span1;
         
         /// <summary>
         /// cr_txtTransPrinciple control.
@@ -1055,6 +1109,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransPrinciple;
+        
+        /// <summary>
+        /// span2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span2;
         
         /// <summary>
         /// span25 control.
@@ -1129,87 +1192,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvConversion;
         
         /// <summary>
-        /// cv_txtTransDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransDate;
-        
-        /// <summary>
-        /// CalendarExtender3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender3;
-        
-        /// <summary>
-        /// cv_txtTransIntrestRate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransIntrestRate;
-        
-        /// <summary>
-        /// cv_ddlTransCompounding control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cv_ddlTransCompounding;
-        
-        /// <summary>
-        /// cv_ddlTransPaymentFreq control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cv_ddlTransPaymentFreq;
-        
-        /// <summary>
-        /// cv_ddlTransPaymentType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cv_ddlTransPaymentType;
-        
-        /// <summary>
-        /// spanPaymentType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanPaymentType;
-        
-        /// <summary>
-        /// cv_txtTransStartDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransStartDate;
-        
-        /// <summary>
-        /// CalendarExtender5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender5;
-        
-        /// <summary>
         /// cv_txtTransAmount control.
         /// </summary>
         /// <remarks>
@@ -1217,42 +1199,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cv_txtTransAmount;
-        
-        /// <summary>
-        /// cv_txtTransStopDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransStopDate;
-        
-        /// <summary>
-        /// CalendarExtender6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender6;
-        
-        /// <summary>
-        /// cv_txtTransPrinciple control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransPrinciple;
-        
-        /// <summary>
-        /// cv_txtTransIntrest control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransIntrest;
         
         /// <summary>
         /// cv_txtTransDescription control.
@@ -1264,13 +1210,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cv_txtTransDescription;
         
         /// <summary>
-        /// cv_txtTransProjConverted control.
+        /// cv_txtEffectiveDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransProjConverted;
+        protected global::System.Web.UI.WebControls.TextBox cv_txtEffectiveDate;
+        
+        /// <summary>
+        /// CalendarExtender3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender3;
         
         /// <summary>
         /// cv_cbLoanTransActive control.
@@ -1309,13 +1264,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span6;
         
         /// <summary>
-        /// dis_txtTransPrinciple control.
+        /// dis_txtTransDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dis_txtTransPrinciple;
+        protected global::System.Web.UI.WebControls.TextBox dis_txtTransDescription;
         
         /// <summary>
         /// span11 control.
@@ -1327,13 +1282,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span11;
         
         /// <summary>
-        /// dis_txtTransDescription control.
+        /// dis_txtEffectiveDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dis_txtTransDescription;
+        protected global::System.Web.UI.WebControls.TextBox dis_txtEffectiveDate;
+        
+        /// <summary>
+        /// CalendarExtender20 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender20;
         
         /// <summary>
         /// dis_cbLoanTransActive control.
@@ -1372,22 +1336,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvForgiveness;
         
         /// <summary>
-        /// fg_txtTransDate control.
+        /// fg_txtTransAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransDate;
-        
-        /// <summary>
-        /// CalendarExtender11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender11;
+        protected global::System.Web.UI.WebControls.TextBox fg_txtTransAmount;
         
         /// <summary>
         /// span14 control.
@@ -1399,13 +1354,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span14;
         
         /// <summary>
-        /// fg_txtTransAmount control.
+        /// fg_txtTransDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransAmount;
+        protected global::System.Web.UI.WebControls.TextBox fg_txtTransDescription;
         
         /// <summary>
         /// span15 control.
@@ -1417,31 +1372,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span15;
         
         /// <summary>
-        /// fg_txtTransPrinciple control.
+        /// fg_txtEffectiveDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransPrinciple;
+        protected global::System.Web.UI.WebControls.TextBox fg_txtEffectiveDate;
         
         /// <summary>
-        /// fg_txtTransDescription control.
+        /// CalendarExtender5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransDescription;
-        
-        /// <summary>
-        /// span16 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span16;
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender5;
         
         /// <summary>
         /// fg_cbLoanTransActive control.
@@ -1451,6 +1397,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox fg_cbLoanTransActive;
+        
+        /// <summary>
+        /// span16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span16;
         
         /// <summary>
         /// span17 control.

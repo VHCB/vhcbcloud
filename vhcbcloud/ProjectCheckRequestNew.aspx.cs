@@ -78,7 +78,11 @@ namespace vhcbcloud
                 {
                     if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
                     {
-                        RoleViewOnly();
+                        RoleViewOnly(); 
+
+                        if(DataUtils.GetBool(dr["ChReqMod"].ToString()))
+                            ddlCRDate.Enabled = true;
+
                         hfIsVisibleBasedOnRole.Value = "false";
                     }
                     else
@@ -1788,7 +1792,7 @@ namespace vhcbcloud
                 if (approvals != 0 && approvals == dt.Rows.Count)
                 {
                     btnCRSubmit.Visible = false;
-                    btnDelete.Visible = false;
+                    //btnDelete.Visible = false;
                     btnPCRTransDetails.Visible = false;
                     btnApprovalsSubmit.Visible = false;
                     //ddlCRDate.Enabled = false;
@@ -1997,7 +2001,7 @@ namespace vhcbcloud
                         linkButton.Visible = true;
                     else if (hfLKPCRQId.Value == "3")
                     {
-                        if (GetUserId().ToString() == hfCreatedById.Value && (CheckFxnAccess("27453") || CheckFxnAccess("27454")))
+                        if (GetUserId().ToString() == hfCreatedById.Value && CheckFxnAccess("27453") && CheckFxnAccess("27454") && CheckFxnAccess("30926"))
                             linkButton.Visible = false;
                         else if (GetUserId().ToString() == hfCreatedById.Value || DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
                             linkButton.Visible = true;

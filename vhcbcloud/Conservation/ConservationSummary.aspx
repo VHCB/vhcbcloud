@@ -227,9 +227,10 @@
                                         </td>
                                         <td style="width: 100px"></td>
                                         <td style="width: 180px">
-                                            <asp:Button ID="AddEasementHolder" runat="server" Text="Add" class="btn btn-info" OnClick="AddEasementHolder_Click" />
+                                            <asp:CheckBox ID="cbPrimarySteward" CssClass="ChkBox" runat="server" Text="Primary Steward" Checked="false" Enabled="true" /></td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="AddEasementHolder" runat="server" class="btn btn-info" OnClick="AddEasementHolder_Click" Text="Add" />
                                         </td>
-                                        <td style="width: 170px"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -257,7 +258,7 @@
                                                 <asp:Label ID="lblConserveEholderID" runat="Server" Text='<%# Eval("ConserveEholderID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="ApplicantName">
+                                        <asp:TemplateField HeaderText="Applicant Name">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblApplicantName" runat="Server" Text='<%# Eval("ApplicantName") %>' />
                                             </ItemTemplate>
@@ -266,6 +267,14 @@
                                                 <asp:TextBox ID="txtApplicantId" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("ApplicantId") %>' Visible="false">
                                                 </asp:TextBox>
                                             </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Primary Steward">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkPrimarySteward" Enabled="false" runat="server" Checked='<%# Eval("PrimeStew") %>' />
+                                            </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkPrimarySteward" runat="server" Checked='<%# Eval("PrimeStew") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>

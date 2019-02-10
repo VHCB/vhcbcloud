@@ -53,14 +53,14 @@ namespace vhcbcloud
             dvOrgSearchResultsGrid.Visible = false;
             dvIndiSearchResultsGrid.Visible = false;
 
-            DataTable dtTable = EntityMaintenanceData.EntitySearchByRole(DataUtils.GetInt(ddlEntityRole.SelectedValue), txtEntityName.Text);
+            DataTable dtTable = EntityMaintenanceData.EntitySearchByRole(ddlEntityRole.SelectedValue, txtEntityName.Text, cbEntityActiveOnly.Checked);
 
-            if (ddlEntityRole.SelectedValue == "26242") //Organization
-            {
+            //if (ddlEntityRole.SelectedValue == "26242") //Organization
+            //{
                 dvOrgSearchResultsGrid.Visible = true;
                 gvOrgSearchresults.DataSource = dtTable;
                 gvOrgSearchresults.DataBind();
-            }
+            //}
             if (ddlEntityRole.SelectedValue == "26243") //Individual
             {
                 dvIndiSearchResultsGrid.Visible = true;
@@ -74,6 +74,7 @@ namespace vhcbcloud
         {
             ddlEntityRole.SelectedIndex = -1;
             txtEntityName.Text = "";
+            cbEntityActiveOnly.Checked = true;
             dvIndiSearchResultsGrid.Visible = false;
             dvOrgSearchResultsGrid.Visible = false;
         }

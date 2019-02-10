@@ -393,7 +393,8 @@ namespace vhcbcloud.Conservation
                 return;
             }
 
-            Result objResult = ConservationSummaryData.AddConserveEholder(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlEasementHolder.SelectedValue.ToString()));
+            Result objResult = ConservationSummaryData.AddConserveEholder(DataUtils.GetInt(hfProjectId.Value), 
+                DataUtils.GetInt(ddlEasementHolder.SelectedValue.ToString()), cbPrimarySteward.Checked);
             CleaEasementHolderForm();
 
             BindEasementHolderGrid();
@@ -435,6 +436,7 @@ namespace vhcbcloud.Conservation
         {
             ddlEasementHolder.SelectedIndex = -1;
             cbAddEasementHolder.Checked = false;
+            cbAddEasementHolder.Checked = false;
         }
 
         protected void gvEasementHolder_RowEditing(object sender, GridViewEditEventArgs e)
@@ -454,9 +456,10 @@ namespace vhcbcloud.Conservation
             int rowIndex = e.RowIndex;
 
             int ConserveEholderID = DataUtils.GetInt(((Label)gvEasementHolder.Rows[rowIndex].FindControl("lblConserveEholderID")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvEasementHolder.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvEasementHolder.Rows[rowIndex].FindControl("chkActive")).Checked);
+            bool PrimarySteward = Convert.ToBoolean(((CheckBox)gvEasementHolder.Rows[rowIndex].FindControl("chkPrimarySteward")).Checked); ;
 
-            ConservationSummaryData.UpdateConserveEholder(ConserveEholderID, RowIsActive);
+            ConservationSummaryData.UpdateConserveEholder(ConserveEholderID, RowIsActive, PrimarySteward);
             gvEasementHolder.EditIndex = -1;
 
             BindEasementHolderGrid();

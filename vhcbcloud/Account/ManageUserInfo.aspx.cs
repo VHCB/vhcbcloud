@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -22,6 +23,14 @@ namespace vhcbcloud.Account
                 BindSecurityGroups();
                 BindDDLPage();
                 BindLookUP(ddlSecFunctions, 246);
+
+                string[] Dashboards = Directory.GetFiles("C:\\Reports\\Dashboard", "*.*")
+                                     .Select(Path.GetFileName)
+                                     .ToArray();
+                for (int i = 0; i < Dashboards.Length; i++)
+                {
+                    ddlDashBoard.Items.Insert(i, new ListItem(Dashboards[i], Dashboards[i]));
+                }
             }
         }
 
@@ -116,7 +125,7 @@ namespace vhcbcloud.Account
             ddlSecurityGroup.SelectedIndex = -1;
             btnUserInfoSubmit.Text = "Submit";
             cbAddUser.Checked = false;
-
+            ddlDashBoard.SelectedIndex = -1;
             spnPrimaryApplicant.Visible = false;
             spnProjectNum.Visible = false;
             txtPrimaryApplicant.Visible = false;
@@ -125,6 +134,7 @@ namespace vhcbcloud.Account
             txtPrimaryApplicant.Text = "";
             txtProjectNum.Text = "";
             chkActive.Checked = true;
+            cbDashBoard.Checked = false;
 
         }
 
@@ -146,14 +156,14 @@ namespace vhcbcloud.Account
 
                 if (btnUserInfoSubmit.Text.ToLower() == "submit")
                 {
-                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text );
+                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
                     BindUserInfo();
                     ClearFields();
                     lblErrorMsg.Text = "User Information added successfully";
                 }
                 else
                 {
-                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, chkActive.Checked);
+                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
 
                     gvUserInfo.EditIndex = -1;
                     BindUserInfo();
@@ -202,7 +212,7 @@ namespace vhcbcloud.Account
                 int dfltPgr = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedValue.ToString()) : 0;
                 int dflSecGrp = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedValue.ToString()) : 0;
 
-                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp, "", "", chkActive.Checked);
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp, "", "", chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
 
                 gvUserInfo.EditIndex = -1;
                 BindUserInfo();
@@ -248,6 +258,8 @@ namespace vhcbcloud.Account
                     PopulateDropDown(ddlVHCBProgram, dr["DfltPrg"].ToString());
                     PopulateDropDown(ddlSecurityGroup, dr["securityLevel"].ToString());
                     chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                    cbDashBoard.Checked = DataUtils.GetBool(dr["Dashboard"].ToString());
+                    PopulateDropDown(ddlDashBoard, dr["DashboardName"].ToString());
 
                     if (ddlSecurityGroup.SelectedItem.ToString() == "Americorps Member")
                     {

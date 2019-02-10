@@ -277,11 +277,11 @@ namespace vhcbcloud.Viability
                 ClearEntMilestoneForm();
 
                 if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
-                    LogMessage("Milestone already exist as in-active");
+                    LogMessage("Status Pts already exist as in-active");
                 else if (objViabilityMaintResult.IsDuplicate)
-                    LogMessage("Milestone Info already exist");
+                    LogMessage("Status Pts Info already exist");
                 else
-                    LogMessage("Milestone Info added successfully");
+                    LogMessage("Status Pts Info added successfully");
             }
             else
             {
@@ -444,7 +444,7 @@ namespace vhcbcloud.Viability
         {
             DataRow dr = EnterpriseEvaluationsData.GetEnterpriseEvalMilestonesById(EnterpriseEvalID);
 
-            PopulateDropDown(ddlMilestone, dr["Milestone"].ToString());
+            PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
             txtDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
             txtComments.Text = dr["Comment"].ToString();
             txtLeadPlanAdvisorExp.Text = dr["LeadPlanAdvisorExp"].ToString();

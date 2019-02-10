@@ -57,6 +57,65 @@
                             </table>
                         </div>
 
+                        <div class="panel-body" id="dvAct250InfoGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="170px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAct250Info" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvAct250Info_RowEditing" OnRowCancelingEdit="gvAct250Info_RowCancelingEdit"
+                                    OnRowDataBound="gvAct250Info_RowDataBound" OnSorting="gvAct250Info_Sorting">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Act250FarmID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAct250FarmID" runat="Server" Text='<%# Eval("Act250FarmID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                            <ItemTemplate>
+                                                <asp:RadioButton ID="rdBtnSelectAct250Info" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
+                                                    OnCheckedChanged="rdBtnSelectAct250Info_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenAct250FarmID" runat="server" Value='<%#Eval("Act250FarmID")%>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Land Use Permit" SortExpression ="UsePermit">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
+                                                <asp:HiddenField ID="HiddenUsePermit" runat="server" Value='<%#Eval("UsePermit")%>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Developer" SortExpression="DeveloperName">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="URL">
+                                            <ItemTemplate>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Total acres lost">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTotalAcresLost" runat="Server" Text='<%# Eval("TotalAcreslost") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:CommandField ShowEditButton="True" />
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                       <br /> <br />
                         <div class="panel-body" runat="server" id="dvAct250InfoForm">
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
@@ -176,64 +235,6 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="panel-body" id="dvAct250InfoGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="170px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvAct250Info" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvAct250Info_RowEditing" OnRowCancelingEdit="gvAct250Info_RowCancelingEdit"
-                                    OnRowDataBound="gvAct250Info_RowDataBound" OnSorting="gvAct250Info_Sorting">
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Act250FarmID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAct250FarmID" runat="Server" Text='<%# Eval("Act250FarmID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
-                                            <ItemTemplate>
-                                                <asp:RadioButton ID="rdBtnSelectAct250Info" runat="server" AutoPostBack="true" onclick="RadioCheck(this);"
-                                                    OnCheckedChanged="rdBtnSelectAct250Info_CheckedChanged" />
-                                                <asp:HiddenField ID="HiddenAct250FarmID" runat="server" Value='<%#Eval("Act250FarmID")%>' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Land Use Permit" SortExpression ="UsePermit">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
-                                                <asp:HiddenField ID="HiddenUsePermit" runat="server" Value='<%#Eval("UsePermit")%>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Developer" SortExpression="DeveloperName">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDeveloper" runat="Server" Text='<%# Eval("DeveloperName") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="URL">
-                                            <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total acres lost">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTotalAcresLost" runat="Server" Text='<%# Eval("TotalAcreslost") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
-                                            <ItemTemplate>
-                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
-                                    </Columns>
-                                </asp:GridView>
                             </asp:Panel>
                         </div>
                     </div>
@@ -464,6 +465,16 @@
                                     <RowStyle CssClass="rowStyle" />
                                     <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
+                                         <asp:TemplateField HeaderText="Project">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProject" runat="Server" Text='<%# Eval("Project") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Transaction">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("TransactionName") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Date">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />

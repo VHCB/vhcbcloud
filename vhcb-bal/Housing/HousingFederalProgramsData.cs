@@ -685,7 +685,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static void AddFederalProjectInspection(int ProjectFederalID, DateTime InspectDate, string NextInspect, 
-            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline)
+            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, 
+            bool RespNotNeed)
         {
             try
             {
@@ -707,7 +708,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("RespDate", RespDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : RespDate));
                         command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
                         command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
-                        
+                        command.Parameters.Add(new SqlParameter("RespNotNeed", RespNotNeed));
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -721,7 +723,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
         }
 
         public static void UpdateFederalProjectInspection(int FederalProjectInspectionID, DateTime InspectDate, string NextInspect,
-            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, bool RowIsActive)
+            int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, 
+            bool RowIsActive, bool RespNotNeed)
         {
             try
             {
@@ -744,6 +747,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
                         command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        command.Parameters.Add(new SqlParameter("RespNotNeed", RespNotNeed));
 
                         command.CommandTimeout = 60 * 5;
 

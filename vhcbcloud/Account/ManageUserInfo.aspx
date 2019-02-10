@@ -144,6 +144,26 @@
                                     <td style="height: 4px" colspan="2" />
                                 </tr>
                                  <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="Span2">Dashboard</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:CheckBox ID="cbDashBoard" runat="server" Checked="false" />
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td style="height: 4px" colspan="2" />
+
+                                </tr>
+                                <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass">Dashboard Name</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:DropDownList ID="ddlDashBoard" CssClass="clsDropDown" runat="server" Width="251px" >
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 4px" colspan="2" />
+                                </tr>
+                                 <tr>
                                     <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="Span1">Active</span></td>
                                     <td style="width: 65%; float: left">
                                         <asp:CheckBox ID="chkActive" runat="server" Checked="true" />

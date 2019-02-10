@@ -1220,7 +1220,7 @@ namespace vhcbcloud.Housing
                 HousingFederalProgramsData.AddFederalProjectInspection(DataUtils.GetInt(hfProjectFederalID.Value),
                            DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                            DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
-                           DataUtils.GetDate(txtNextInspDeadLine.Text));
+                           DataUtils.GetDate(txtNextInspDeadLine.Text), chkRespNotNeed.Checked);
                 cbAddNewInspections.Checked = false;
 
                 BindInspectionsGrid();
@@ -1232,7 +1232,7 @@ namespace vhcbcloud.Housing
                 HousingFederalProgramsData.UpdateFederalProjectInspection(DataUtils.GetInt(hfFederalProjectInspectionID.Value),
                           DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                           DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
-                          DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked);
+                          DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked, chkRespNotNeed.Checked);
 
                 gvInspection.EditIndex = -1;
                 BindInspectionsGrid();
@@ -1270,6 +1270,7 @@ namespace vhcbcloud.Housing
             txtRespDate.Text = "";
             cbDeficiency.Checked = false;
             txtNextInspDeadLine.Text = "";
+            chkRespNotNeed.Checked = false;
             chkInspectionActive.Enabled = false;
             cbAddNewInspections.Checked = false;
         }
@@ -1327,6 +1328,7 @@ namespace vhcbcloud.Housing
                         txtRespDate.Text = dr["RespDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["RespDate"].ToString()).ToShortDateString();
                         txtNextInspDeadLine.Text = dr["InspectDeadline"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDeadline"].ToString()).ToShortDateString();
                         cbDeficiency.Checked = DataUtils.GetBool(dr["Deficiency"].ToString());
+                        chkRespNotNeed.Checked = DataUtils.GetBool(dr["RespNotNeed"].ToString());
                         chkInspectionActive.Enabled = true;
                         chkInspectionActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
