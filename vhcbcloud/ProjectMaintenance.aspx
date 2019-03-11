@@ -613,7 +613,7 @@
                         </div>
 
                         <div class="panel-body" id="dvProjectNamesGrid" runat="server">
-                            <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvProjectNames" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit"
@@ -727,14 +727,15 @@
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">Town</span></td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
-
+                                            <%--<asp:TextBox ID="txtTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>--%>
+                                            <asp:DropDownList ID="ddlTown" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTown_SelectedIndexChanged">
+                                            </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">State</span>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2"></asp:TextBox>
+                                            <asp:TextBox ID="txtState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="2" Text="VT" ReadOnly="true"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -748,19 +749,24 @@
                                         </td>
                                         <td style="width: 100px"><span class="labelClass">County</span></td>
                                         <td style="width: 270px">
-                                            <asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtCounty" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>--%>
+                                             <asp:DropDownList ID="ddlCounty" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px">
                                             <span class="labelClass">Village</span>
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
+                                            <asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="true">
+                                            </asp:DropDownList>
+
+                                            <%--<asp:DropDownList ID="ddlVillages" CssClass="clsDropDown" runat="server" Visible="false">
                                             </asp:DropDownList>
                                             <asp:TextBox ID="txtVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtVillage" MinimumPrefixLength="1"
                                                 EnableCaching="true" CompletionSetCount="1"
                                                 CompletionInterval="100" ServiceMethod="GetAllVillages">
-                                            </ajaxToolkit:AutoCompleteExtender>
+                                            </ajaxToolkit:AutoCompleteExtender>--%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -808,7 +814,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAddressGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
@@ -939,7 +945,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"
@@ -1086,7 +1092,7 @@
                         </div>
 
                         <div class="panel-body" id="dvRelatedProjectsGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvRelatedProjects" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvRelatedProjects_RowCancelingEdit" OnRowEditing="gvRelatedProjects_RowEditing" OnRowUpdating="gvRelatedProjects_RowUpdating">
@@ -1210,11 +1216,11 @@
             $('#<%=txtAddress2.ClientID%>').val(addressArray[2]);
             $('#<%=txtState.ClientID%>').val(addressArray[3]);
             $('#<%=txtZip.ClientID%>').val(addressArray[4]);
-            $('#<%=txtTown.ClientID%>').val(addressArray[5]);
-            $('#<%=txtCounty.ClientID%>').val(addressArray[6]);
+            $('#<%=ddlTown.ClientID%>').val(addressArray[5]);
+            $('#<%=ddlCounty.ClientID%>').val(addressArray[6]);
             $('#<%=txtLattitude.ClientID%>').val(addressArray[7]);
             $('#<%=txtLongitude.ClientID%>').val(addressArray[8]);
-            $('#<%=txtVillage.ClientID%>').val(addressArray[9]);
+            $('#<%=ddlVillages.ClientID%>').val(addressArray[9]);
             $('#<%=ddlVillages.ClientID%>').empty();
             $('#<%=ddlVillages.ClientID%>').append($("<option></option>").val(addressArray[9]).html(addressArray[9]));
         }
@@ -1257,7 +1263,7 @@
                 // getAddressInfoByZip($('#<%= txtZip.ClientID%>').val());
                 $('#<%=hfVillage.ClientID%>').val('');
 
-                LoadVillages();
+                //LoadVillages();
             });
 
             $('#<%= btnAddAddress.ClientID%>').click(function () {
@@ -1342,7 +1348,7 @@
                         //$('#<%=hfVillage.ClientID%>').val(value.Name);
 
                         if (value.Name != 'Select')
-                            $('#<%=txtVillage.ClientID%>').val(value.Name);
+                            $('#<%=ddlVillages.ClientID%>').val(value.Name);
                     });
                 },
                 error: function (data) {
@@ -1374,9 +1380,9 @@
         }
 
         function getAddressInfoByZip(zip) {
-            $('#<%= txtTown.ClientID%>').val('');
+            $('#<%= ddlTown.ClientID%>').val('');
             $('#<%= txtState.ClientID%>').val('');
-            $('#<%= txtCounty.ClientID%>').val('');
+            $('#<%= ddlCounty.ClientID%>').val('');
             if (zip.length >= 5 && typeof google != 'undefined') {
                 var addr = {};
                 var geocoder = new google.maps.Geocoder();
@@ -1397,7 +1403,7 @@
                                 }
                                 if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political") {
                                     addr.city = (city == '' || types == "locality,political") ? results[0].address_components[ii].long_name : city;
-                                    $('#<%= txtTown.ClientID%>').val(addr.city);
+                                    $('#<%= ddlTown.ClientID%>').val(addr.city);
                                 }
                                 if (types == "administrative_area_level_1,political") {
                                     addr.state = results[0].address_components[ii].short_name;
@@ -1411,7 +1417,7 @@
                                 }
                                 if (types == "administrative_area_level_2,political") {
                                     addr.county = results[0].address_components[ii].short_name;
-                                    $('#<%= txtCounty.ClientID%>').val(addr.county.replace('County', ''));
+                                    $('#<%= ddlCounty.ClientID%>').val(addr.county.replace('County', ''));
                                 }
                             }
                             addr.success = true;
@@ -1423,13 +1429,13 @@
                             }
                             response(addr);
 
-                            $('#<%= txtVillage.ClientID%>').attr("disabled", "disabled");
-                            $('#<%=txtVillage.ClientID%>').val('');
+                           <%-- $('#<%= txtVillage.ClientID%>').attr("disabled", "disabled");
+                            $('#<%=txtVillage.ClientID%>').val('');--%>
 
-                            if ($('#<%= txtState.ClientID%>').val() == 'VT') {
+                            <%--if ($('#<%= txtState.ClientID%>').val() == 'VT') {
                                 $('#<%= txtVillage.ClientID%>').removeAttr("disabled");
                                 LoadVillages();
-                            }
+                            }--%>
                         } else {
                             response({ success: false });
                         }

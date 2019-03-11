@@ -590,6 +590,151 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dr;
         }
         #endregion SurfaceWaters
+
+        #region Watershed
+        public static DataTable GetWatershedList(int ConserveID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetWatershedList";
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static Result AddWatershed(int ConserveID, int LKWaterShed, int LkSubWatershed)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddWatershed";
+
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("LKWaterShed", LKWaterShed));
+                        command.Parameters.Add(new SqlParameter("LkSubWatershed", LkSubWatershed));
+                       
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        Result objResult = new Result();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateWatershed(int ConserveWatershedID, int LKWaterShed, int LkSubWatershed, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateWatershed";
+
+                        command.Parameters.Add(new SqlParameter("ConserveWatershedID", ConserveWatershedID));
+                        command.Parameters.Add(new SqlParameter("LKWaterShed", LKWaterShed));
+                        command.Parameters.Add(new SqlParameter("LkSubWatershed", LkSubWatershed));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataRow GetWatershedById(int ConserveWatershedID)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetWatershedById";
+                        command.Parameters.Add(new SqlParameter("ConserveWatershedID", ConserveWatershedID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+        #endregion Watershed
     }
     public class Result
     {

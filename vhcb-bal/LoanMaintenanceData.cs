@@ -252,7 +252,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static void AddLoanDetail(int LoanId, int LegalDoc, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
+        public static LoadDetailsResult AddLoanDetail(int LoanId, int LegalDoc, int LoanCat, DateTime NoteDate, DateTime MaturityDate,
             decimal IntRate, int Compound, int Frequency, int PaymentType, DateTime WatchDate, string URL, 
             DateTime EffectiveDate, DateTime BoardApproveDate)
         {
@@ -281,9 +281,21 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("EffectiveDate", EffectiveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : EffectiveDate));
                         command.Parameters.Add(new SqlParameter("BoardApproveDate", BoardApproveDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : BoardApproveDate));
+
+                        SqlParameter parmMessage = new SqlParameter("@IsExist", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
+
+                        LoadDetailsResult ap = new LoadDetailsResult();
+
+                        ap.IsExist = DataUtils.GetBool(command.Parameters["@IsExist"].Value.ToString());
+                        
+
+                        return ap;
                     }
                 }
             }
@@ -1008,5 +1020,10 @@ namespace VHCBCommon.DataAccessLayer
     {
         public bool IsDuplicate { set; get; }
         public bool IsActive { set; get; }
+    }
+
+    public class LoadDetailsResult
+    {
+        public bool IsExist { set; get; }
     }
 }

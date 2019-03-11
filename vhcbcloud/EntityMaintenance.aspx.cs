@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -273,8 +275,43 @@ namespace vhcbcloud
             BindLookUP(ddlEntityMilestone, 206);
 
             //EventProgramSelection();
+            BindTown();
+            BindStates();
         }
 
+        private void BindStates()
+        {
+            try
+            {
+                ddlState.Items.Clear();
+                ddlState.DataSource = ProjectMaintenanceData.GetStates();
+                ddlState.DataValueField = "Abbrev";
+                ddlState.DataTextField = "Abbrev";
+                ddlState.DataBind();
+                ddlState.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindStates", "Control ID:" + ddlState.ID, ex.Message);
+            }
+        }
+
+        private void BindTown()
+        {
+            try
+            {
+                ddlTown.Items.Clear();
+                ddlTown.DataSource = ProjectMaintenanceData.GetTowns();
+                ddlTown.DataValueField = "Town";
+                ddlTown.DataTextField = "Town";
+                ddlTown.DataBind();
+                ddlTown.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindTown", "Control ID:" + ddlTown.ID, ex.Message);
+            }
+        }
 
 
         protected void BindProjects(DropDownList ddList)
@@ -400,10 +437,28 @@ namespace vhcbcloud
 
             int ApplicantId = Convert.ToInt32(hfApplicatId.Value);
 
+            string town = "", county = "", village ="";
+
+            if(ddlState.SelectedValue == "VT")
+            {
+                town = ddlTown.SelectedValue;
+                county = ddlCounty.SelectedValue;
+                village = ddlVillage.SelectedValue;
+            }
+            else
+            {
+                town = txtTown.Text;
+                county = txtCounty.Text;
+            }
+
             if (btnAddAddress.Text.ToLower() == "add")
             {
-                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntityAddress(ApplicantId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtState.Text, txtZip.Text,
-                       txtCounty.Text, int.Parse(ddlAddressType.SelectedValue.ToString()), DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
+                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntityAddress(ApplicantId, 
+                    txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, 
+                    town, village, ddlState.SelectedValue, txtZip.Text,
+                    county, int.Parse(ddlAddressType.SelectedValue.ToString()), 
+                    DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), 
+                    cbDefaultAddress.Checked);
 
                 btnAddAddress.Text = "Add";
 
@@ -418,8 +473,10 @@ namespace vhcbcloud
             {
                 int AddressId = Convert.ToInt32(hfAddressId.Value);
 
-                EntityMaintenanceData.UpdateEntityAddress(ApplicantId, AddressId, int.Parse(ddlAddressType.SelectedValue.ToString()), txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, cbActive.Checked, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
+                EntityMaintenanceData.UpdateEntityAddress(ApplicantId, AddressId, int.Parse(ddlAddressType.SelectedValue.ToString()), 
+                    txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, town, village,
+                    ddlState.SelectedValue, txtZip.Text, county, cbActive.Checked, 
+                    DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
 
                 hfAddressId.Value = "";
                 btnAddAddress.Text = "Add";
@@ -473,11 +530,17 @@ namespace vhcbcloud
             txtAddress1.Text = "";
             txtAddress2.Text = "";
             txtTown.Text = "";
-            //ddlTown.SelectedIndex = -1;
-            txtState.Text = "";
+            ddlTown.SelectedIndex = -1;
+
+            ddlCounty.Items.Clear();
+            ddlVillage.Items.Clear();
+            ddlCounty.SelectedIndex = -1;
+            txtCounty.Text = "";
+            ddlState.SelectedIndex = -1;
+            //txtState.Text = "";
             txtZip.Text = "";
             txtCounty.Text = "";
-            //ddlCounty.SelectedIndex = -1;
+            ddlVillage.SelectedIndex = -1;
             ddlAddressType.SelectedIndex = -1;
             txtLattitude.Text = "";
             txtLongitude.Text = "";
@@ -485,6 +548,8 @@ namespace vhcbcloud
             cbActive.Enabled = true;
             cbDefaultAddress.Checked = true;
             cbDefaultAddress.Enabled = true;
+            ddlState.SelectedIndex = -1;
+            dvAddress.Visible = false;
         }
 
         protected bool IsAddressValid()
@@ -513,17 +578,30 @@ namespace vhcbcloud
                 txtZip.Focus();
                 return false;
             }
-            if (txtTown.Text.Trim() == "")
-            {
-                LogMessage("Enter Town");
-                txtTown.Focus();
-                return false;
-            }
-            if (txtState.Text.Trim() == "")
+            
+            if (ddlState.SelectedIndex == 0)
             {
                 LogMessage("Enter State");
-                txtState.Focus();
+                ddlState.Focus();
                 return false;
+            }
+            else if(ddlState.SelectedValue == "VT")
+            {
+                if (ddlTown.SelectedIndex == 0)
+                {
+                    LogMessage("Enter Town");
+                    ddlTown.Focus();
+                    return false;
+                }
+            }
+            else
+            {
+                if (txtTown.Text.Trim() == "")
+                {
+                    LogMessage("Enter Town");
+                    txtTown.Focus();
+                    return false;
+                }
             }
             return true;
         }
@@ -857,12 +935,45 @@ namespace vhcbcloud
                         txtStreetNo.Text = dr["Street#"].ToString();
                         txtAddress1.Text = dr["Address1"].ToString();
                         txtAddress2.Text = dr["Address2"].ToString();
-                        txtTown.Text = dr["Town"].ToString(); ;
-                        txtState.Text = dr["State"].ToString();
+
+                        if(dr["State"].ToString() == "VT")
+                        {
+                            BindCounty(dr["Town"].ToString());
+                            BindVillages(dr["Town"].ToString());
+
+                            PopulateDropDown(ddlTown, dr["Town"].ToString());
+                            ddlTown.Visible = true;
+                            txtTown.Visible = false;
+
+                            PopulateDropDown(ddlCounty, dr["County"].ToString());
+                            ddlCounty.Visible = true;
+                            txtCounty.Visible = false;
+
+                            PopulateDropDown(ddlVillage, dr["Village"].ToString());
+                            ddlVillage.Visible = true;
+                            spnVillage.Visible = true;
+                        }
+                        else
+                        {
+                            txtTown.Text = dr["Town"].ToString();
+                            ddlTown.Visible = false;
+                            txtTown.Visible = true;
+
+                            txtCounty.Text =  dr["Town"].ToString();
+                            ddlCounty.Visible = false;
+                            txtCounty.Visible = true;
+                            
+                            ddlVillage.Visible = false;
+                            spnVillage.Visible = false;
+                        }
+                        //txtState.Text = dr["State"].ToString();
                         txtZip.Text = dr["Zip"].ToString();
                         txtCounty.Text = dr["County"].ToString();
                         txtLattitude.Text = dr["latitude"].ToString();
                         txtLongitude.Text = dr["longitude"].ToString();
+                        PopulateDropDown(ddlState, dr["State"].ToString());
+                        dvAddress.Visible = true;
+
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["DefAddress"].ToString());
 
@@ -1816,6 +1927,236 @@ namespace vhcbcloud
 
                     txtEntityMilestoneComments.Text = dr["Note"].ToString();
 
+                }
+            }
+        }
+
+        protected void ddlState_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dvAddress.Visible = true;
+
+            if (ddlState.SelectedValue == "VT")
+            {
+                txtTown.Visible = false;
+                txtCounty.Visible = false;
+                ddlTown.Visible = true;
+                ddlCounty.Visible = true;
+                ddlVillage.Visible = true;
+                spnVillage.Visible = true;
+            }
+            else
+            {
+                ddlTown.Visible = false;
+                txtTown.Visible = true;
+
+                ddlCounty.Visible = false;
+                txtCounty.Visible = true;
+
+                ddlVillage.Visible = false;
+                spnVillage.Visible = false;
+            }
+        }
+
+        protected void ddlTown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindCounty(ddlTown.SelectedValue);
+            BindVillages(ddlTown.SelectedValue);
+        }
+
+        private void BindCounty(string Town)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetCountysByTown(Town);
+
+                ddlCounty.Items.Clear();
+                ddlCounty.DataSource = dt;
+                ddlCounty.DataValueField = "County";
+                ddlCounty.DataTextField = "County";
+                ddlCounty.DataBind();
+                ddlCounty.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (dt.Rows.Count == 1)
+                    ddlCounty.SelectedIndex = 1;
+
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCounty", "Control ID:" + ddlCounty.ID, ex.Message);
+            }
+        }
+
+        private void BindVillages(string Town)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetVillagesByTown(Town);
+                ddlVillage.Items.Clear();
+                ddlVillage.DataSource = dt;
+                ddlVillage.DataValueField = "village";
+                ddlVillage.DataTextField = "village";
+                ddlVillage.DataBind();
+                ddlVillage.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (dt.Rows.Count == 1)
+                    ddlVillage.SelectedIndex = 1;
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindVillages", "Control ID:" + ddlVillage.ID, ex.Message);
+            }
+        }
+
+        protected void btnGetLatLong_Click(object sender, EventArgs e)
+        {
+            if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+            {
+                LogMessage("Enter Street#");
+                txtStreetNo.Focus();
+            }
+            else if (txtAddress1.Text.Trim() == "")
+            {
+                LogMessage("Enter Address1");
+                txtAddress1.Focus();
+            }
+            //else if (txtZip.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Zip");
+            //    txtZip.Focus();
+            //}
+            else if(ddlState.SelectedValue == "VT" && ddlTown.SelectedIndex == 0)
+            {
+                    LogMessage("Select Town");
+                    ddlTown.Focus();
+            }
+            else if (ddlState.SelectedValue != "VT" && txtTown.Text == "")
+            {
+                    LogMessage("Enter Town");
+                    txtTown.Focus();
+            }
+            //else if (txtTown.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Town");
+            //    txtTown.Focus();
+            //}
+            else
+            {
+                //https://www.friism.com/c-and-google-geocoding-web-service-v3/
+                txtLattitude.Text = "";
+                txtLongitude.Text = "";
+
+                string address = string.Format("{0} {1}, {2}, {3}, {4}", txtStreetNo.Text, txtAddress1.Text, ddlTown.SelectedValue,// txtTown.Text, 
+                    ddlState.SelectedValue, txtZip.Text);
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+                    //txtCounty.Text = "";
+                    ddlCounty.SelectedIndex = -1;
+                    txtZip.Text = "";
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            //txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                            PopulateDropDown(ddlVillage, res.Results[0].AddressComponents[ii].ShortName);
+                        }
+                    }
+                    txtLattitude.Text = res.Results[0].Geometry.Location.Latitude.ToString();
+                    txtLongitude.Text = res.Results[0].Geometry.Location.Longitude.ToString();
+                }
+            }
+        }
+
+        protected void btnGetAddress_Click(object sender, EventArgs e)
+        {
+            if (txtLattitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Lattitude");
+                txtLattitude.Focus();
+            }
+            else if (txtLongitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Longitude");
+                txtLongitude.Focus();
+            }
+            else
+            {
+                txtStreetNo.Text = "";
+                txtAddress1.Text = "";
+                txtAddress2.Text = "";
+                //txtTown.Text = "";
+                //txtState.Text = "";
+                //txtCounty.Text = "";
+                txtZip.Text = "";
+                //txtVillage.Text = "";
+
+                string LatLong = string.Format("{0}, {1}", txtLattitude.Text, txtLongitude.Text);
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&latlng={0}&region=dk&sensor=false", HttpUtility.UrlEncode(LatLong));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+
+                        if (types == "street_number")
+                        {
+                            txtStreetNo.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "route" || types == "point_of_interest,establishment")
+                        {
+                            txtAddress1.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            //txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political")
+                        {
+                            //txtTown.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_1,political")
+                        {
+                            //txtState.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                        }
+                    }
                 }
             }
         }

@@ -332,7 +332,7 @@ namespace VHCBCommon.DataAccessLayer
         #region Address
 
         public static EntityMaintResult AddNewEntityAddress(int ApplicantId, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, int AddressType, decimal latitude, decimal longitude, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, int AddressType, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -352,6 +352,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
@@ -386,7 +387,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateEntityAddress(int ApplicantId, int AddressId, int LkAddressType, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, bool IsActive, decimal latitude, decimal longitude, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, bool IsActive, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -406,6 +407,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));

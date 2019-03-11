@@ -285,9 +285,27 @@ namespace vhcbcloud.Conservation
             BindEasementHolder(ddlEasementHolder);
             BindLookUP(ddlAcreageDescription, 97);
             BindLookUP(ddlWatershed, 143);
+            BindLookUP(ddlWaterShedNew, 143);
             BindLookUP(ddlWaterBody, 140);
             BindLookUP(ddlGeoSignificance, 255);
             BindLookUP(ddlSubwatershed, 261);
+        }
+
+        private void BindLookupSubWatershed(int TypeId)
+        {
+            try
+            {
+                ddlSubWatershedNew.Items.Clear();
+                ddlSubWatershedNew.DataSource = LookupMaintenanceData.GetLkLookupSubValues(TypeId, cbActiveOnly.Checked);
+                ddlSubWatershedNew.DataValueField = "subtypeid";
+                ddlSubWatershedNew.DataTextField = "SubDescription";
+                ddlSubWatershedNew.DataBind();
+                ddlSubWatershedNew.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         private void BindPrimaryStewardOrganization()
@@ -329,6 +347,7 @@ namespace vhcbcloud.Conservation
             BindEasementHolderGrid();
             BindAcreageGrid();
             BindSurfacewatersGrid();
+            BindWatershedGrid();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -766,6 +785,161 @@ namespace vhcbcloud.Conservation
         {
             ClientScript.RegisterStartupScript(this.GetType(),
                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Surface Waters"));
+        }
+
+        protected void ImgWatershed_Click(object sender, ImageClickEventArgs e)
+        {
+
+        }
+
+        protected void btnWatershed_Click(object sender, EventArgs e)
+        {
+            if (ddlWaterShedNew.SelectedIndex == 0)
+            {
+                LogMessage("Select Watershed");
+                ddlWaterShedNew.Focus();
+                return;
+            }
+
+            if (ddlSubWatershedNew.SelectedIndex == 0)
+            {
+                LogMessage("Select Sub-Watershed");
+                ddlSubWatershedNew.Focus();
+                return;
+            }
+
+            
+            if (btnWatershed.Text.ToLower() == "update")
+            {
+                int ConserveWatershedID = Convert.ToInt32(hfConserveWatershedID.Value);
+
+                ConservationSummaryData.UpdateWatershed(ConserveWatershedID,
+                    DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()),
+                    cbWatershedActive.Checked);
+
+                hfConserveWatershedID.Value = "";
+                btnWatershed.Text = "Add";
+                cbWatershedActive.Checked = true;
+                cbWatershedActive.Enabled = false;
+                LogMessage("Watershed updated successfully");
+            }
+            else
+            {
+                Result objResult = ConservationSummaryData.AddWatershed(DataUtils.GetInt(hfConserveId.Value),
+                DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
+                DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()));
+
+                if (objResult.IsDuplicate && !objResult.IsActive)
+                    LogMessage("Watershed already exist as in-active");
+                else if (objResult.IsDuplicate)
+                    LogMessage("Watershed already exist");
+                else
+                    LogMessage("New Watershed added successfully");
+            }
+
+            gvWatershed.EditIndex = -1;
+            BindWatershedGrid();
+            ClearWatershedForm();
+            //dvSurfaceWatersGrid.Visible = true;
+            cbAddWatershed.Checked = false;
+        }
+
+        private void BindWatershedGrid()
+        {
+            try
+            {
+                DataTable dtWatershed = ConservationSummaryData.GetWatershedList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
+
+                if (dtWatershed.Rows.Count > 0)
+                {
+                    dvWatershedGrid.Visible = true;
+                    gvWatershed.DataSource = dtWatershed;
+                    gvWatershed.DataBind();
+                }
+                else
+                {
+                    dvWatershedGrid.Visible = false;
+                    gvWatershed.DataSource = null;
+                    gvWatershed.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindWatershedGrid", "", ex.Message);
+            }
+        }
+
+        private void ClearWatershedForm()
+        {
+            ddlSubWatershedNew.SelectedIndex = -1;
+            ddlWaterShedNew.SelectedIndex = -1;
+            cbAddWatershed.Checked = false;
+        }
+
+        protected void ddlWaterShedNew_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlWaterShedNew.SelectedIndex > 0)
+                BindLookupSubWatershed(DataUtils.GetInt(ddlWaterShedNew.SelectedValue));
+            else
+                ddlSubWatershedNew.Items.Clear();
+        }
+
+        protected void gvWatershed_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvWatershed.EditIndex = e.NewEditIndex;
+            BindWatershedGrid();
+        }
+
+        protected void gvWatershed_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbWatershedActive.Checked = true;
+            cbWatershedActive.Enabled = false;
+            cbAddWatershed.Checked = false;
+            ClearWatershedForm();
+            btnWatershed.Text = "Add";
+
+            gvWatershed.EditIndex = -1;
+            BindWatershedGrid();
+
+            btnWatershed.Visible = true;
+        }
+
+        protected void gvWatershed_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnWatershed.Text = "Update";
+
+                    //if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    //    btnAddSurfaceWaters.Visible = true;
+                    //else
+                    //    btnAddSurfaceWaters.Visible = false;
+
+                    cbAddWatershed.Checked = true;
+
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[4].Controls[1].Visible = false;
+                        Label lblConserveWatershedID = e.Row.FindControl("lblConserveWatershedID") as Label;
+                        DataRow dr = ConservationSummaryData.GetWatershedById(Convert.ToInt32(lblConserveWatershedID.Text));
+
+                        PopulateDropDown(ddlWaterShedNew, dr["LKWatershed"].ToString());
+                        BindLookupSubWatershed(DataUtils.GetInt(dr["LKWatershed"].ToString()));
+                        PopulateDropDown(ddlSubWatershedNew, dr["LkSubWatershed"].ToString());
+                        cbWatershedActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        cbWatershedActive.Enabled = true;
+                        hfConserveWatershedID.Value = lblConserveWatershedID.Text;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvWatershed_RowDataBound", "", ex.Message);
+            }
         }
     }
 }

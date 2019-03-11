@@ -616,6 +616,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
+        /// ddlState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlState;
+        
+        /// <summary>
+        /// dvAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddress;
+        
+        /// <summary>
         /// ddlAddressType control.
         /// </summary>
         /// <remarks>
@@ -641,6 +659,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender ae_txtStreetNo;
+        
+        /// <summary>
+        /// cbReqStreetNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbReqStreetNo;
         
         /// <summary>
         /// txtAddress1 control.
@@ -679,6 +706,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtTown;
         
         /// <summary>
+        /// ddlTown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTown;
+        
+        /// <summary>
         /// txtCounty control.
         /// </summary>
         /// <remarks>
@@ -688,13 +724,31 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtCounty;
         
         /// <summary>
-        /// txtState control.
+        /// ddlCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtState;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCounty;
+        
+        /// <summary>
+        /// spnVillage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnVillage;
+        
+        /// <summary>
+        /// ddlVillage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlVillage;
         
         /// <summary>
         /// cbDefaultAddress control.
@@ -740,6 +794,24 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddAddress;
+        
+        /// <summary>
+        /// btnGetLatLong control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGetLatLong;
+        
+        /// <summary>
+        /// btnGetAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGetAddress;
         
         /// <summary>
         /// dvAddressGrid control.

@@ -505,7 +505,7 @@
                                                 </ajaxToolkit:CalendarExtender>
                                             </td>
                                             <td style="width: 183px">
-                                                <span class="labelClass" runat="server" id="spnBoardApprovalDate">Board Approval Date</span>
+                                                <span class="labelClass" runat="server" id="spnBoardApprovalDate">Document Date</span>
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtBoardApprovalDate" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
@@ -559,9 +559,9 @@
                                                 <asp:Label ID="lblLegalDoc" runat="Server" Text='<%# Eval("LegalDoc") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Board Approval Date">
+                                        <asp:TemplateField HeaderText="Document Date">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblBoardApprovalDate" runat="Server" Text='<%# Eval("BoardApproveDate", "{0:MM/dd/yyyy}") %>' />
+                                                <asp:Label ID="lblBoardApprovalDate" runat="Server" Text='<%# Eval("DocumentDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Note Date">
@@ -822,11 +822,15 @@
                                         <tr>
                                             <td style="width: 268px"><span class="labelClass">Project Transferred To</span></td>
                                             <td style="width: 215px">
-                                                <asp:TextBox ID="ad_txtTransProjTransfered" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <%--<asp:TextBox ID="ad_txtTransProjTransfered" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                                <asp:DropDownList ID="ddlTransProjTransferedTo" CssClass="clsDropDown" runat="server">
+                                                </asp:DropDownList>
                                             </td>
                                             <td style="width: 344px"><span class="labelClass">Project Converted From</span></td>
                                             <td style="width: 336px">
-                                                <asp:TextBox ID="ad_txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <%--<asp:TextBox ID="ad_txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                                <asp:DropDownList ID="ddlTransProjConvertedFrom" CssClass="clsDropDown" runat="server">
+                                                </asp:DropDownList>
                                             </td>
                                             <td style="width: 354px"><span class="labelClass">Active</span></td>
                                             <td>
@@ -1097,11 +1101,15 @@
                                             </td>
                                             <td style="width: 146px"><span class="labelClass" runat="server" id="span20">Project Converted To</span></td>
                                             <td style="width: 171px">
-                                                <asp:TextBox ID="tr_txtTransProjTransfered" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <%--<asp:TextBox ID="tr_txtTransProjTransfered" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                                 <asp:DropDownList ID="ddlProjTransferedTo" CssClass="clsDropDown" runat="server">
+                                                </asp:DropDownList>
                                             </td>
                                             <td style="width: 141px"><span class="labelClass" runat="server" id="span21">Project Converted From</span></td>
                                             <td>
-                                                <asp:TextBox ID="tr_txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                                <%--<asp:TextBox ID="tr_txtTransProjConverted" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                                <asp:DropDownList ID="ddlProjTransferedFrom" CssClass="clsDropDown" runat="server">
+                                                </asp:DropDownList>
                                             </td>
                                         </tr>
                                         <tr>

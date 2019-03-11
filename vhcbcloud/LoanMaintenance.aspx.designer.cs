@@ -958,22 +958,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox ad_txtTransDescription;
         
         /// <summary>
-        /// ad_txtTransProjTransfered control.
+        /// ddlTransProjTransferedTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ad_txtTransProjTransfered;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransProjTransferedTo;
         
         /// <summary>
-        /// ad_txtTransProjConverted control.
+        /// ddlTransProjConvertedFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ad_txtTransProjConverted;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransProjConvertedFrom;
         
         /// <summary>
         /// ad_cbLoanTransActive control.
@@ -1498,13 +1498,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span20;
         
         /// <summary>
-        /// tr_txtTransProjTransfered control.
+        /// ddlProjTransferedTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tr_txtTransProjTransfered;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProjTransferedTo;
         
         /// <summary>
         /// span21 control.
@@ -1516,13 +1516,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl span21;
         
         /// <summary>
-        /// tr_txtTransProjConverted control.
+        /// ddlProjTransferedFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tr_txtTransProjConverted;
+        protected global::System.Web.UI.WebControls.DropDownList ddlProjTransferedFrom;
         
         /// <summary>
         /// tr_cbLoanTransActive control.

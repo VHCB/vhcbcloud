@@ -166,7 +166,7 @@ namespace vhcbcloud
 
             ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\Dashboard\" + ReportName);
 
-            //report.ExportType = wrExportType.Html;
+            report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
             if (report != null)
                 api.ReportObjectFactory.SaveToApi(report);

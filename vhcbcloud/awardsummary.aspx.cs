@@ -333,7 +333,9 @@ namespace vhcbcloud
         protected void AwardSummaryReport_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
-                    "script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award_Summary_Complete"));
+                    "script", Helper.GetExagoURLForAwardSummary(txtFromCommitedProjNum.Text, "Award_Summary_Complete"));
+            //"script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award_Summary_Complete"));
+            
         }
 
         protected void gvTransDetail_RowDataBound(object sender, GridViewRowEventArgs e)

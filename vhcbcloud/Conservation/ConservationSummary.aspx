@@ -538,7 +538,116 @@
                             </asp:Panel>
                         </div>
                     </div>
+                    </div>
+
+                <div class="panel-width" runat="server" id="dvNewWatershed">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Watershed</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddWatershed" runat="server" Text="Add New Watershed" />
+                                        <asp:ImageButton ID="ImgWatershed" ImageUrl="~/Images/print.png" ToolTip="Watershed Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgWatershed_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvNewWatershedForm">
+                            <asp:Panel runat="server" ID="Panel5">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Watershed</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlWaterShedNew" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlWaterShedNew_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 166px">
+                                            <span class="labelClass">Sub-Watershed</span>
+                                        </td>
+                                        <td style="width: 180px">
+                                                <asp:DropDownList ID="ddlSubWatershedNew" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:CheckBox ID="cbWatershedActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" />
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 140px">
+                                            <asp:Button ID="btnWatershed" runat="server" Text="Add" class="btn btn-info" OnClick="btnWatershed_Click" />
+                                        </td>
+                                        <td style="width: 215px">
+                                            
+                                        </td>
+                                        <td style="width: 166px"></td>
+                                        <td style="width: 180px"></td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvWatershedGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvWatershed" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" 
+                                    OnRowEditing="gvWatershed_RowEditing" 
+                                    OnRowCancelingEdit="gvWatershed_RowCancelingEdit"
+                                    OnRowDataBound="gvWatershed_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ConserveWatershedID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveWatershedID" runat="Server" Text='<%# Eval("ConserveWatershedID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Watershed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblwatershed" runat="Server" Text='<%# Eval("WatershedDesc") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Sub Watershed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblSubWatershed" runat="Server" Text='<%# Eval("WatershedSubDesc") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -546,6 +655,7 @@
     <asp:HiddenField ID="hfConserveId" runat="server" />
     <asp:HiddenField ID="hfSurfaceWatersId" runat="server" />
     <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+    <asp:HiddenField ID="hfConserveWatershedID" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -566,6 +676,11 @@
 
             $('#<%= cbAddSurfaceWaters.ClientID%>').click(function () {
                 $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvNewWatershedForm.ClientID%>').toggle($('#<%= cbAddWatershed.ClientID%>').is(':checked'));
+            $('#<%= cbAddWatershed.ClientID%>').click(function () {
+                $('#<%= dvNewWatershedForm.ClientID%>').toggle(this.checked);
             }).change();
 
 <%--             $('#<%= txtTillable.ClientID%>').keyup(function () {

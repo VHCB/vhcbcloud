@@ -796,13 +796,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtAddress2;
         
         /// <summary>
-        /// txtTown control.
+        /// ddlTown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTown;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTown;
         
         /// <summary>
         /// txtState control.
@@ -823,13 +823,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtZip;
         
         /// <summary>
-        /// txtCounty control.
+        /// ddlCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCounty;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCounty;
         
         /// <summary>
         /// ddlVillages control.
@@ -839,24 +839,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlVillages;
-        
-        /// <summary>
-        /// txtVillage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVillage;
-        
-        /// <summary>
-        /// AutoCompleteExtender3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender3;
         
         /// <summary>
         /// cbDefaultAddress control.
