@@ -22,6 +22,12 @@ namespace vhcbcloud
         private string strLandUsePermit = "148";
         private object regex;
 
+        /// <summary>
+        /// Page load
+        /// Check Page Access
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -29,6 +35,7 @@ namespace vhcbcloud
                 CheckPageAccess();
             }
         }
+
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -38,6 +45,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Project selection by filter
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetCommittedProjectsByFilter(string prefixText, int count)
@@ -53,7 +66,12 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
-
+        /// <summary>
+        /// Get projects and project names
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
@@ -69,6 +87,12 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        /// <summary>
+        /// Select decommitment radio
+        /// Redirect to corresponding selected pages
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnFinancial.SelectedIndex == 0)
@@ -83,6 +107,10 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
+        /// <summary>
+        /// Populate Accunt number dropdown
+        /// Populate Fund name dropdown
+        /// </summary>
         protected void BindFundAccounts()
         {
             ddlAcctNum.DataSource = null;
@@ -121,6 +149,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Clear Transaction details form
+        /// </summary>
         private void ClearTransactionDetailForm()
         {
             lblFundName.Text = "";
@@ -138,6 +169,10 @@ namespace vhcbcloud
             { }
         }
 
+        /// <summary>
+        /// Populate fund details by transaction id
+        /// </summary>
+        /// <param name="transId"></param>
         private void BindFundDetails(int transId)
         {
             try
@@ -223,6 +258,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        ///  Get Transaction Id
+        /// </summary>
+        /// <returns></returns>
         private int GetTransId()
         {
             if (hfTransId.Value.ToString() == "")
@@ -237,7 +276,12 @@ namespace vhcbcloud
         {
         }
 
-
+        /// <summary>
+        /// DeCommitment Submit click
+        /// Verify available amount
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnDecommitmentSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -372,7 +416,11 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// Submit Transaction details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnTransactionSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -498,6 +546,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Get UserId
+        /// </summary>
+        /// <returns></returns>
         protected int GetUserId()
         {
             try
@@ -511,6 +563,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// When Radio button selected clear form details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
@@ -519,10 +576,12 @@ namespace vhcbcloud
             GetSelectedTransId(gvPTrans);
             BindFundDetails(GetTransId());
             pnlTranDetails.Visible = true;
-
-
         }
 
+        /// <summary>
+        /// Get selected Trans details
+        /// </summary>
+        /// <param name="gvFGM"></param>
         private void GetSelectedTransId(GridView gvFGM)
         {
             for (int i = 0; i < gvFGM.Rows.Count; i++)
@@ -552,6 +611,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Transacton details
+        /// </summary>
+        /// <param name="TransId"></param>
         private void BindTransGrid(int TransId)
         {
             try
@@ -592,12 +655,22 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Fund Detaisl
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBCommit_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvBCommit.EditIndex = -1;
             BindFundDetails(GetTransId());
         }
 
+        /// <summary>
+        /// Bind Fund details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBCommit_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvBCommit.EditIndex = e.NewEditIndex;
@@ -608,6 +681,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// DeCommitment details updating
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBCommit_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
@@ -689,6 +767,11 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// DeCommitment details setting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBCommit_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
@@ -728,7 +811,11 @@ namespace vhcbcloud
 
         }
 
-
+        /// <summary>
+        /// Set hidden project value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -757,6 +844,11 @@ namespace vhcbcloud
             getDetails(dt);
         }
 
+        /// <summary>
+        /// Project Number changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -784,7 +876,11 @@ namespace vhcbcloud
             ///populate the form based on retrieved data
             getDetails(dt);
         }
-
+        
+        /// <summary>
+        /// Get Available funds
+        /// </summary>
+        /// <param name="dt"></param>
         private void getDetails(DataTable dt)
         {
             try
@@ -876,6 +972,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// When Decommitment grid populated select one item/record
+        /// populate selected item details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             gvPTrans.DataSource = null;
@@ -913,6 +1015,11 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Active Only checkbox checked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
             if (cbActiveOnly.Checked)
@@ -923,11 +1030,21 @@ namespace vhcbcloud
             BindFundDetails(GetTransId());
         }
 
+        /// <summary>
+        /// Get selected Trans Id
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetSelectedTransId(gvPTrans);
         }
 
+        /// <summary>
+        /// Transaction Row created
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_RowCreated(object sender, GridViewRowEventArgs e)
         {
             if (rdBtnSelection.SelectedIndex == 0)
@@ -936,6 +1053,11 @@ namespace vhcbcloud
                 e.Row.Cells[0].Visible = true;
         }
 
+        /// <summary>
+        /// Award Summary link
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbAwardSummary_Click(object sender, ImageClickEventArgs e)
         {
             if (hfProjId.Value != "")
@@ -954,9 +1076,11 @@ namespace vhcbcloud
                 lblErrorMsg.Text = "Select a project to see the award summary";
         }
 
-
-
-
+        /// <summary>
+        /// Select DeCommitment details by Project Id
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnfind_Click(object sender, EventArgs e)
         {
             DataTable dt = new DataTable();
@@ -980,14 +1104,23 @@ namespace vhcbcloud
             }
             getDetails(dt);
         }
-
-
+        
+        /// <summary>
+        /// Trasaction Row Editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvPTrans.EditIndex = e.NewEditIndex;
             BindTransGrid(GetTransId());
         }
 
+        /// <summary>
+        /// Trasaction Row Updating
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
@@ -1010,12 +1143,22 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Trasaction cancel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvPTrans.EditIndex = -1;
             BindTransGrid(GetTransId());
         }
 
+        /// <summary>
+        /// Trasaction Deleting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvPTrans_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
@@ -1062,6 +1205,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Populate usepermit
+        /// </summary>
+        /// <param name="ProjectId"></param>
+        /// <param name="AccountId"></param>
+        /// <param name="FundTransType"></param>
         protected void PopulateUsePermit(int ProjectId, string AccountId, int FundTransType)
         {
             try
@@ -1087,6 +1236,10 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Bind UsePermit dropdown
+        /// </summary>
+        /// <param name="projId"></param>
         protected void BindUsePermit(int projId)
         {
             try
@@ -1107,11 +1260,21 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Button click for new decommitment page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
             Response.Redirect("decommitments.aspx");
         }
-
+        
+        /// <summary>
+        /// Row deleting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBCommit_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
@@ -1129,6 +1292,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// When Account number changes select corresponding Fund
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlAcctNum_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataTable dtable = new DataTable();
@@ -1197,6 +1365,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// When Fund Name changes select corresponding Account Id
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlFundName_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataTable dtable = new DataTable();
@@ -1264,6 +1437,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Trans Type changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
@@ -1299,6 +1477,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// usePermit dropdown element changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
@@ -1308,6 +1491,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Set Available funds amount
+        /// </summary>
         private void SetAvailableFundsLabel()
         {
             DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
@@ -1321,6 +1507,9 @@ namespace vhcbcloud
                 lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
         }
 
+        /// <summary>
+        /// Check for login user can able to access this page
+        /// </summary>
         private void CheckPageAccess()
         {
             DataTable dt = new DataTable();

@@ -14,7 +14,12 @@ namespace vhcbcloud
     public partial class Act250Notes : System.Web.UI.Page
     {
         string Pagename = "Act250Notes";
-       
+
+       /// <summary>
+       /// Page Load Event
+       /// Loading All dropdowns and required Grid's
+       /// </summary>
+      
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -26,12 +31,18 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Loading Category Lookup drodown
+        /// Loading LandUsePermitNum dropdown
+        /// </summary>
         private void BindControls()
         {
             LoadLandUsePermitNum();
             BindLookUP(ddlCategory, 254);
         }
-
+        /// <summary>
+        /// Loading LandUsePermitNum dropdown
+        /// </summary>
         private void LoadLandUsePermitNum()
         {
             try
@@ -50,7 +61,11 @@ namespace vhcbcloud
                 LogError(Pagename, "LoadLandUsePermitNum", "", ex.Message);
             }
         }
-
+        /// <summary>
+        /// Lookup data loading into dropdown
+        /// </summary>
+        /// <param name="ddList"></param>
+        /// <param name="LookupType"></param>
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -67,7 +82,13 @@ namespace vhcbcloud
                 LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
             }
         }
-
+        /// <summary>
+        /// Logging Error message on UI
+        /// </summary>
+        /// <param name="pagename"></param>
+        /// <param name="method"></param>
+        /// <param name="message"></param>
+        /// <param name="error"></param>
         private void LogError(string pagename, string method, string message, string error)
         {
             dvMessage.Visible = true;
@@ -78,7 +99,10 @@ namespace vhcbcloud
             else
                 lblErrorMsg1.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
         }
-
+        /// <summary>
+        /// Logging Error message on UI
+        /// </summary>
+        /// <param name="message"></param>
         private void LogMessage(string message)
         {
             dvMessage.Visible = true;
@@ -89,7 +113,11 @@ namespace vhcbcloud
         {
 
         }
-
+        /// <summary>
+        /// Inserting or Updating the Notes details. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmitNotes_Click(object sender, EventArgs e)
         {
             if (IsProjectNotesValid(btnSubmitNotes.Text.ToLower()))
@@ -121,7 +149,9 @@ namespace vhcbcloud
                 BindAct250NotesGrid();
             }
         }
-
+        /// <summary>
+        /// Loading the Notes Grid
+        /// </summary>
         private void BindAct250NotesGrid()
         {
             DataTable dt = ProjectNotesData.GetAct250NotesList(cbActiveOnly.Checked);
@@ -141,6 +171,11 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Notes details validation
+        /// </summary>
+        /// <param name="Action"></param>
+        /// <returns></returns>
         private bool IsProjectNotesValid(string Action)
         {
             if (ddlLandUsePermitNum.SelectedIndex == 0)
@@ -190,7 +225,11 @@ namespace vhcbcloud
 
             return true;
         }
-
+        /// <summary>
+        /// Notes Grid editing and after edit loading the Grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvAct250Notes_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvAct250Notes.EditIndex = e.NewEditIndex;
@@ -201,7 +240,11 @@ namespace vhcbcloud
         {
 
         }
-
+        /// <summary>
+        /// Noted grid data bound i.e when edit enabling the fields and load data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvAct250Notes_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -250,7 +293,12 @@ namespace vhcbcloud
                 LogError(Pagename, "gvAddress_RowDataBound", "", ex.Message);
             }
         }
-
+        /// <summary>
+        /// Canceling the Notes form
+        /// clearing the fields.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvAct250Notes_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             ddlLandUsePermitNum.SelectedIndex = -1;

@@ -12,7 +12,11 @@ namespace vhcbcloud
     public partial class AwardSummary : System.Web.UI.Page
     {
         bool isReallocation = false;
-
+        /// <summary>
+        /// Loading Project details and Loading Award Summary grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             string reallocarionFlag = Request.QueryString["Reallocations"];
@@ -46,6 +50,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// UI Project dropdown filtering the projects
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetProjectsByFilter(string prefixText, int count)
@@ -61,20 +71,31 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
-
+        /// <summary>
+        /// Setting the Project Name for a selected Project
+        /// </summary>
+        /// <param name="dtProjects"></param>
+        /// <param name="projId"></param>
+        /// <returns></returns>
         private string GetProjectName(DataTable dtProjects, string projId)
         {
             DataRow[] dr = dtProjects.Select("projectid = '" + projId + "'");
             return dr[0]["Description"].ToString();
         }
-
+        /// <summary>
+        /// Get projects from database 
+        /// </summary>
+        /// <returns></returns>
         private DataTable GetProjects()
         {
             DataTable dtProjects = new DataTable();
             dtProjects = Project.GetProjects("GetProjects");
             return dtProjects;
         }
-
+        /// <summary>
+        /// Binding Projects to dropdown
+        /// </summary>
+        /// <param name="dtProjects"></param>
         private void BindProjects(DataTable dtProjects)
         {
             ddlProj.DataSource = dtProjects;
@@ -83,7 +104,11 @@ namespace vhcbcloud
             ddlProj.DataBind();
             ddlProj.Items.Insert(0, new ListItem("Select", "NA"));
         }
-
+        /// <summary>
+        /// Pre populating the typed project numbers and setting the Award summary grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -104,7 +129,10 @@ namespace vhcbcloud
                 BindAwardSummary(projId);
             }
         }
-
+        /// <summary>
+        /// Loading Award Summary and details grids
+        /// </summary>
+        /// <param name="projectid"></param>
         private void BindAwardSummary(int projectid)
         {
             try
@@ -129,7 +157,11 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
-
+        /// <summary>
+        /// Setting Summary and Transaction grid 's
+        /// Calculating the totals
+        /// </summary>
+        /// <param name="dtAwdStatus"></param>
         private void SetSummaryGridTotals(DataTable dtAwdStatus)
         {
             decimal totCommitAmt = 0;
@@ -211,7 +243,12 @@ namespace vhcbcloud
             gvTransDetail.PageIndex = pageIndex;
         }
 
-
+        /// <summary>
+        /// Sorting Grid
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <param name="isPageIndexChanging"></param>
+        /// <returns></returns>
         protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
         {
 
@@ -329,7 +366,11 @@ namespace vhcbcloud
             //    lblFinalExpend.Text = CommonHelper.myDollarFormat(totFinalExpendAmt);
             //}
         }
-
+        /// <summary>
+        /// Exago Link for Award Summary
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void AwardSummaryReport_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
@@ -337,7 +378,13 @@ namespace vhcbcloud
             //"script", Helper.GetExagoURLForAwardSummary(ddlProj.SelectedItem.Text, "Award_Summary_Complete"));
             
         }
-
+        /// <summary>
+        /// Transaction details row data bound
+        /// Setting the Light Blue color for different project
+        /// If it is Adjustment, setting the Orange color
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvTransDetail_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)

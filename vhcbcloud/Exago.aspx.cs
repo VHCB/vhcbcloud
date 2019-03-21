@@ -23,6 +23,10 @@ namespace vhcbcloud
                 Api api = new Api(@"/eWebReports");
                 api.Action = wrApiAction.Home;
 
+                WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("userid ");
+                parameter.Value = Context.User.Identity.Name;
+                parameter.IsHidden = true;
+
                 DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
 
                 Role role = api.Roles.GetRole(dr["ExagoRole"].ToString());

@@ -14,6 +14,12 @@ namespace vhcbcloud
 {
     public partial class Assignments : System.Web.UI.Page
     {
+        /// <summary>
+        /// Bind Projects
+        /// Check Page Access
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -44,6 +50,13 @@ namespace vhcbcloud
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        /// <summary>
+        /// Get Projects filter by typing project number
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetProjectsByFilter(string prefixText, int count)
@@ -58,6 +71,12 @@ namespace vhcbcloud
             }
             return ProjNames.ToArray();
         }
+
+        /// <summary>
+        /// Selected radio button redorects to corresponding page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnFinancial.SelectedIndex == 0)
@@ -72,6 +91,9 @@ namespace vhcbcloud
                 Response.Redirect("CashRefund.aspx");
         }
 
+        /// <summary>
+        /// Binding Projects
+        /// </summary>
         protected void BindProjects()
         {
             try
@@ -99,6 +121,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Get Commited Pending Projects
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetCommittedPendingProjectslistByFilter(string prefixText, int count)
@@ -114,6 +142,13 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        /// <summary>
+        /// Get Assignments Projets by filter
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <param name="contextKey"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
@@ -131,6 +166,11 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        /// <summary>
+        /// From Projects Selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlRFromProj_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRFromProj.SelectedIndex > 0)
@@ -177,6 +217,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Select project changed, update projectId in hidden field
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -205,6 +250,11 @@ namespace vhcbcloud
             getDetails(dt);
         }
 
+        /// <summary>
+        /// Get Project details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnCommitedProjValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -234,6 +284,10 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Get Project Details
+        /// </summary>
+        /// <param name="dt"></param>
         private void getDetails(DataTable dt)
         {
             lblAvailFund.Text = "";
@@ -298,7 +352,11 @@ namespace vhcbcloud
             //}
         }
 
-
+        /// <summary>
+        /// Project Number changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnToValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -327,6 +385,11 @@ namespace vhcbcloud
             getToDetails(dt);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnToCommitedProjValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -355,7 +418,10 @@ namespace vhcbcloud
             getToDetails(dt);
         }
 
-
+        /// <summary>
+        /// Get Project To Details
+        /// </summary>
+        /// <param name="dt"></param>
         private void getToDetails(DataTable dt)
         {
             hfToProjId.Value = dt.Rows[0][0].ToString();
@@ -419,7 +485,11 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// To Prject Selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlRToProj_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRToProj.SelectedIndex > 0)
@@ -464,6 +534,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind All Projects
+        /// </summary>
         protected void BindAllFunds()
         {
             try
@@ -483,6 +556,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlRFromFundType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRFromFundType.Items.Count > 1)
@@ -503,6 +581,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Set Avaiable funds value to label
+        /// </summary>
         private void SetAvailableFundsLabel()
         {
             DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
@@ -522,6 +603,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlRToFund_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if (ddlRFromProj.SelectedValue.ToString() != ddlRToProj.SelectedValue.ToString())
@@ -559,6 +645,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Clear Reallocation To Panel
+        /// </summary>
         private void ClearReallocationToPanel()
         {
             txtToProjNum.Text = "";
@@ -570,6 +659,9 @@ namespace vhcbcloud
             txtRToAmt.Text = "";
         }
 
+        /// <summary>
+        /// Clear Reallocation From Panel
+        /// </summary>
         private void ClearReallocationFromPanel()
         {
             txtFromCommitedProjNum.Text = "";
@@ -585,6 +677,9 @@ namespace vhcbcloud
             txtRfromAmt.Text = "";
         }
 
+        /// <summary>
+        /// Disable Reallocations From Panel
+        /// </summary>
         private void DisableReallocationFromPanel()
         {
             txtFromProjNum.Enabled = false;
@@ -594,6 +689,9 @@ namespace vhcbcloud
             txtRfromAmt.Enabled = false;
         }
 
+        /// <summary>
+        /// Enable Reallocation From Panel
+        /// </summary>
         private void EnableReallocationFromPanel()
         {
             txtFromProjNum.Enabled = true;
@@ -603,6 +701,9 @@ namespace vhcbcloud
             txtRfromAmt.Enabled = true;
         }
 
+        /// <summary>
+        /// Bind Reallocate Grid
+        /// </summary>
         private void BindGvReallocate()
         {
             try
@@ -676,6 +777,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Reallocate Grid
+        /// </summary>
+        /// <param name="fromProjId"></param>
+        /// <param name="reallocateGuid"></param>
         private void BindGvReallocate(int fromProjId, string reallocateGuid)
         {
             try
@@ -739,7 +845,11 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// Bind Reallocate Grid
+        /// </summary>
+        /// <param name="fromProjId"></param>
+        /// <param name="fundId"></param>
         private void BindGvReallocate(int fromProjId, int fundId)
         {
             try
@@ -812,6 +922,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Reallocate Grid
+        /// </summary>
+        /// <param name="fromProjId"></param>
+        /// <param name="fundId"></param>
+        /// <param name="transTypeId"></param>
         private void BindGvReallocate(int fromProjId, int fundId, int transTypeId)
         {
             try
@@ -884,7 +1000,11 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// Award Summary Clik
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbAwardSummary_Click(object sender, EventArgs e)
         {
             //if (ddlRFromProj.SelectedIndex > 0)
@@ -902,7 +1022,11 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             hfReallocateGuid.Value = "";
@@ -924,11 +1048,21 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Select Active Only items
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cbActiveOnly_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// ReAllocation Submit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnReallocateSubmit_Click(object sender, EventArgs e)
         {
             int? nullable = null;
@@ -1103,11 +1237,17 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// New Assignments form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNewTransaction_Click(object sender, EventArgs e)
         {
             Response.Redirect("assignments.aspx");
         }
 
+        #region Reallocation Grid
         protected void gvReallocate_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvReallocate.EditIndex = e.NewEditIndex;
@@ -1144,7 +1284,12 @@ namespace vhcbcloud
         {
 
         }
+        #endregion Reallocation Grid
 
+        /// <summary>
+        /// Get User Id
+        /// </summary>
+        /// <returns></returns>
         protected int GetUserId()
         {
             try
@@ -1158,6 +1303,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Check current user can access this page
+        /// </summary>
         private void CheckPageAccess()
         {
             DataTable dt = new DataTable();
@@ -1185,6 +1333,11 @@ namespace vhcbcloud
                 rdBtnFinancial.Items[3].Selected = true;
         }
 
+        /// <summary>
+        /// From Fund selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlRFromFund_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlRFromFund.SelectedIndex > 0)
@@ -1252,6 +1405,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Account From selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlAccountFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataTable dtable = new DataTable();
