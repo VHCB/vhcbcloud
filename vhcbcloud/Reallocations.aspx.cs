@@ -166,7 +166,7 @@ namespace vhcbcloud
                 ddlAccountFrom.DataBind();
                 ddlAccountFrom.Items.Insert(0, new ListItem("Select", "NA"));
 
-                txtRfromDate.Text = DateTime.Now.ToShortDateString();
+                //txtRfromDate.Text = DateTime.Now.ToShortDateString();
                 ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
                 BindAllFunds();
                 hfProjId.Value = ddlRFromProj.SelectedValue.ToString();
@@ -298,7 +298,7 @@ namespace vhcbcloud
             ddlAccountFrom.DataBind();
             ddlAccountFrom.Items.Insert(0, new ListItem("Select", "NA"));
 
-            txtRfromDate.Text = DateTime.Now.ToShortDateString();
+            //txtRfromDate.Text = DateTime.Now.ToShortDateString();
             //ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
             txtToProjNum.Text = txtFromProjNum.Text;
             BindAllFunds();
@@ -1300,6 +1300,13 @@ namespace vhcbcloud
                         ddlToUsePermit.Focus();
                         return;
                     }
+                }
+
+                if (txtRfromDate.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please enter transaction date";
+                    txtRfromDate.Focus();
+                    return;
                 }
 
                 DateTime AcctEffectiveDate = FinancialTransactions.GetSetupDate();

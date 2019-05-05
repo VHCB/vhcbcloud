@@ -33,7 +33,8 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
-                ce_txtEventDate.SelectedDate = DateTime.Today;
+                //ce_txtEventDate.SelectedDate = DateTime.Today;
+                txtEventDate.Text = DateTime.Today.ToShortDateString();
                 if (Request.QueryString["Type"] == "new")
                 {
                     rdBtnSelection.SelectedIndex = 0;
@@ -1678,19 +1679,19 @@ namespace vhcbcloud
             //    return false;
             //}
 
-            if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+            if (ddlTown.SelectedItem.Text != "Various" && txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
             {
                 LogMessage("Enter Street#");
                 txtStreetNo.Focus();
                 return false;
             }
-            if (txtAddress1.Text.Trim() == "")
+            if (ddlTown.SelectedItem.Text != "Various" && txtAddress1.Text.Trim() == "")
             {
                 LogMessage("Enter Address1");
                 txtAddress1.Focus();
                 return false;
             }
-            if (txtZip.Text.Trim() == "")
+            if (ddlTown.SelectedItem.Text != "Various" && txtZip.Text.Trim() == "")
             {
                 LogMessage("Enter Zip");
                 txtZip.Focus();

@@ -23,9 +23,9 @@ namespace vhcbcloud
                 Api api = new Api(@"/eWebReports");
                 api.Action = wrApiAction.Home;
 
-                WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("userid ");
+                WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("userId");
                 parameter.Value = Context.User.Identity.Name;
-                parameter.IsHidden = true;
+                parameter.IsHidden = false;
 
                 DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
 

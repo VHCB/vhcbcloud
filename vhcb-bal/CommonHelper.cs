@@ -36,7 +36,7 @@ namespace VHCBCommon.DataAccessLayer
         public static string myDollarFormat(object amount)
         {
 
-            if (amount is DBNull)
+            if (amount is DBNull || amount.ToString() == "")
             {
                 amount = 0.0;
             }

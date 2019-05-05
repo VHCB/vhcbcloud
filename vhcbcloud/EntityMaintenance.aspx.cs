@@ -560,7 +560,7 @@ namespace vhcbcloud
                 ddlAddressType.Focus();
                 return false;
             }
-            if (txtStreetNo.Text.Trim() == "")
+            if (cbReqStreetNo.Checked && txtStreetNo.Text.Trim() == "")
             {
                 LogMessage("Enter Street#");
                 txtStreetNo.Focus();

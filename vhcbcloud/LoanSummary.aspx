@@ -21,14 +21,18 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                                 <tr>
-                                    <td style="width: 80px"><span class="labelClass">Project Name:</span></td>
+                                    <td style="width: 54px"><span class="labelClass">Project#:</span></td>
+                                    <td style="width: 110px"><asp:Label ID="lblProjectNum" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                    <td style="width: 99px"><span class="labelClass">Project Name:</span></td>
                                     <td style="width: 200px"><asp:Label ID="lblProjectName" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                    <td style="width: 121px"><span class="labelClass">Current Borrower:</span></td>
+                                    <td style="width: 200px"><asp:Label ID="lblCurrentBorrower" class="labelClass" Text=" " runat="server"></asp:Label></td>
                                     <td style="width: 48px"><span class="labelClass">Loan #:</span></td>
                                     <td style="width: 100px"><asp:Label ID="lblLoanID" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                    <td style="width: 77px"><span class="labelClass">Note Amount:</span></td>
+                                    <td style="width: 103px"><span class="labelClass">Note Amount:</span></td>
                                     <td style="width: 100px"><asp:Label ID="lblNoteAmount" class="labelClass" Text=" " runat="server"></asp:Label></td>
-                                    <td style="width: 78px"><span class="labelClass">Beg. Balance:</span></td>
-                                    <td style="width: 100px"><asp:Label ID="lblBegBalance" class="labelClass" Text=" " runat="server"></asp:Label></td>
+                                    <%--<td style="width: 78px"><span class="labelClass">Beg. Balance:</span></td>
+                                    <td style="width: 100px"><asp:Label ID="lblBegBalance" class="labelClass" Text=" " runat="server"></asp:Label></td>--%>
                                     <td>
                                         <asp:ImageButton ID="ImgLoanSummaryReport" ImageUrl="~/Images/print.png" ToolTip="Loan Summary Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgLoanSummaryReport_Click"/>
@@ -36,7 +40,7 @@
                                 </tr>
                             </table>
                     </div>
-                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="300px" ScrollBars="None">
+                    <asp:Panel runat="server" ID="Panel1" Width="100%" Height="800px" ScrollBars="Vertical">
                         <asp:GridView ID="gvLoanSummary" runat="server" AutoGenerateColumns="False" 
                             CssClass="gridView" EnableTheming="True" GridLines="None" OnRowDataBound="gvLoanSummary_RowDataBound"
                             ShowFooter="True" Width="100%" AllowSorting="False">
@@ -46,18 +50,19 @@
                             <RowStyle CssClass="rowStyle" />
                             <FooterStyle CssClass="footerStyleTotals" />
                             <Columns>
-                                <asp:TemplateField HeaderText="Trans Type" SortExpression="FundType">
+                                <asp:TemplateField HeaderText="Date">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
+                                        <asp:Label ID="lblEffectiveDate" runat="Server" Text='<%# Eval("EffectiveDate", "{0:MM/dd/yyyy}") %>' />
                                     </ItemTemplate>
                                      <FooterTemplate>
                                         Totals :
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Date">
+                                <asp:TemplateField HeaderText="Trans Type" SortExpression="FundType">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblEffectiveDate" runat="Server" Text='<%# Eval("EffectiveDate", "{0:MM/dd/yyyy}") %>' />
+                                        <asp:Label ID="lblFundType" runat="Server" Text='<%# Eval("FundType") %>' />
                                     </ItemTemplate>
+                                    
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Disbursement" SortExpression="Disbursement">
                                     <ItemTemplate>
@@ -67,7 +72,7 @@
                                         <asp:Label ID="lblDisbursementTotal" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Modifications" SortExpression="Modifications">
+                                <asp:TemplateField HeaderText="Other Adds/Deletes" SortExpression="Modifications">
                                     <ItemTemplate>
                                         <asp:Label ID="lblModifications" runat="Server" Text='<%# Eval("Modifications", "{0:C2}") %>' />
                                     </ItemTemplate>
@@ -75,12 +80,20 @@
                                         <asp:Label ID="lblModificationsTotal" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Receipts" SortExpression="Receipts">
+                                 <asp:TemplateField HeaderText="Receipts(Principal)" SortExpression="Receipts(Principal)">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblReceipts" runat="Server" Text='<%# Eval("Receipts", "{0:C2}") %>' />
+                                        <asp:Label ID="lblReceiptsPrincipal" runat="Server" Text='<%# Eval("Receipts", "{0:C2}") %>' />
                                     </ItemTemplate>
                                      <FooterTemplate>
-                                        <asp:Label ID="lblReceiptsTotal" runat="server" Text=""></asp:Label>
+                                        <asp:Label ID="lblReceiptsTotalPrincipal" runat="server" Text=""></asp:Label>
+                                    </FooterTemplate>
+                                </asp:TemplateField>
+                                 <asp:TemplateField HeaderText="Receipts(Interest)" SortExpression="Receipts(Interest)">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblReceiptsInterest" runat="Server" Text='<%# Eval("Inter", "{0:C2}") %>' />
+                                    </ItemTemplate>
+                                     <FooterTemplate>
+                                        <asp:Label ID="lblReceiptsInterestTotal" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                 </asp:TemplateField>
                                  <asp:TemplateField HeaderText="Balance" SortExpression="Balance">
@@ -95,7 +108,7 @@
                             </Columns>
                             <FooterStyle CssClass="footerStyle" />
                         </asp:GridView>
-                        <span class="labelClass"> *  includes Beginning Balance in calculation</span>
+                        <%--<span class="labelClass"> *  includes Beginning Balance in calculation</span>--%>
                     </asp:Panel>
                     <p class="lblErrMsg">
                         <asp:Label runat="server" ID="lblErrorMsg" Font-Size="Small"></asp:Label>

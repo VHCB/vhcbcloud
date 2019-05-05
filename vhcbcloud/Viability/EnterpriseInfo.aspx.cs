@@ -215,7 +215,7 @@ namespace vhcbcloud.Viability
                 tblAcres.Visible = false;
             }
 
-            if (EnterpriseType == "Forest Landowner")
+            if (EnterpriseType == "Forest Landowner" || EnterpriseType == "Forest Products")
             {
                 dvAcres.Visible = true;
                 tblForectAcres.Visible = true;

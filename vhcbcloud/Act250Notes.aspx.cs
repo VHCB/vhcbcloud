@@ -241,7 +241,7 @@ namespace vhcbcloud
 
         }
         /// <summary>
-        /// Noted grid data bound i.e when edit enabling the fields and load data
+        /// Notes grid data bound i.e when edit enabling the fields and load data
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

@@ -3,15 +3,21 @@
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron" id="vhcb">
-        <p class="lead">Conservation - Act250</p>
+        <p class="lead">Mitigation</p>
         <div class="container">
             <div class="panel panel-default">
-
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td colspan="2">
+                                <asp:RadioButtonList ID="rdBtnFilter" class="mySelect" runat="server" AutoPostBack="true" CellPadding="2" CellSpacing="4" onclick="needToConfirm = true;"
+                                    RepeatDirection="Horizontal"
+                                    OnSelectedIndexChanged="rdBtnFilter_SelectedIndexChanged">
+                                    <asp:ListItem Selected="true">Conservation&nbsp;&nbsp;  </asp:ListItem>
+                                    <asp:ListItem>Housing  </asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
+
                             <td></td>
                             <td style="text-align: left"></td>
                             <td style="text-align: right">
@@ -48,10 +54,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Act250 Info</h3>
+                                        <h3 class="panel-title">Permit Info</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddAct250Info" runat="server" Text="Add New Act 250 Info" />
+                                        <asp:CheckBox ID="cbAddAct250Info" runat="server" Text="Add New Permit Info" />
                                     </td>
                                 </tr>
                             </table>
@@ -83,7 +89,7 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Land Use Permit" SortExpression ="UsePermit">
+                                        <asp:TemplateField HeaderText="Land Use Permit" SortExpression="UsePermit">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUsePermit" runat="Server" Text='<%# Eval("UsePermit") %>' />
                                                 <asp:HiddenField ID="HiddenUsePermit" runat="server" Value='<%#Eval("UsePermit")%>' />
@@ -115,7 +121,8 @@
                             </asp:Panel>
                         </div>
 
-                       <br /> <br />
+                        <br />
+                        <br />
                         <div class="panel-body" runat="server" id="dvAct250InfoForm">
                             <asp:Panel runat="server" ID="Panel2">
                                 <table style="width: 100%">
@@ -156,8 +163,8 @@
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtDistrictNo" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                             <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True"
-                                                MinimumValue="1" MaximumValue="9" ControlToValidate="txtDistrictNo"
-                                                ErrorMessage="District # value must be between 1 and 9" />
+                                                MinimumValue="0" MaximumValue="9" ControlToValidate="txtDistrictNo"
+                                                ErrorMessage="District # value must be between 0 and 9" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -376,69 +383,66 @@
 
                 <div class="panel-width" runat="server" id="dvNewPermitCommitments" visible="false">
                     <div class="panel panel-default ">
-                     <div class="panel-heading ">
+                        <div class="panel-heading ">
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
                                         <h3 class="panel-title">Permit Commitments</h3>
                                     </td>
-                                    <td style="text-align: right">
-                                       
-                                    </td>
+                                    <td style="text-align: right"></td>
                                 </tr>
                             </table>
                         </div>
 
-                    <div class="panel panel-default ">
-                        <div class="panel-body" id="dvPermitCommitmentsGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="170px" ScrollBars="Vertical">
-                                <asp:GridView ID="gvPermitCommitments" runat="server" AutoGenerateColumns="False"
-                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="false"
-                                    >
-                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                    <HeaderStyle CssClass="headerStyle" />
-                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                    <RowStyle CssClass="rowStyle" />
-                                    <FooterStyle CssClass="footerStyleTotals" />
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Act250CommitID" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAct250CommitID" runat="Server" Text='<%# Eval("Act250CommitID") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblProject" runat="Server" Text='<%# Eval("Project") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Transaction">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("TransactionName") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                     <asp:TemplateField HeaderText="Date">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Amount">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="DetailId">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDetailId" runat="Server" Text='<%# Eval("DetailId") %>' />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-                            </asp:Panel>
+                        <div class="panel panel-default ">
+                            <div class="panel-body" id="dvPermitCommitmentsGrid" runat="server">
+                                <asp:Panel runat="server" ID="Panel8" Width="100%" Height="170px" ScrollBars="Vertical">
+                                    <asp:GridView ID="gvPermitCommitments" runat="server" AutoGenerateColumns="False"
+                                        Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                        GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="false">
+                                        <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                        <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                        <HeaderStyle CssClass="headerStyle" />
+                                        <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                        <RowStyle CssClass="rowStyle" />
+                                        <FooterStyle CssClass="footerStyleTotals" />
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Act250CommitID" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAct250CommitID" runat="Server" Text='<%# Eval("Act250CommitID") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Project">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblProject" runat="Server" Text='<%# Eval("Project") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Transaction">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblTransaction" runat="Server" Text='<%# Eval("TransactionName") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Date">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblDate" runat="Server" Text='<%# Eval("Date", "{0:MM/dd/yyyy}") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Amount">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("Amount", "{0:C2}") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="DetailId">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblDetailId" runat="Server" Text='<%# Eval("DetailId") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </asp:Panel>
+                            </div>
                         </div>
                     </div>
-                        </div>
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewlandUsePermitFinancials" visible="false">
@@ -465,7 +469,7 @@
                                     <RowStyle CssClass="rowStyle" />
                                     <FooterStyle CssClass="footerStyleTotals" />
                                     <Columns>
-                                         <asp:TemplateField HeaderText="Project">
+                                        <asp:TemplateField HeaderText="Project">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProject" runat="Server" Text='<%# Eval("Project") %>' />
                                             </ItemTemplate>
@@ -690,6 +694,7 @@
         <asp:HiddenField ID="hfTotalDevPayments" runat="server" />
         <asp:HiddenField ID="hfLandUsePermitFinancialsBalance" runat="server" />
         <asp:HiddenField ID="hfProjectsWarning" runat="server" />
+        <asp:HiddenField ID="hfFilter" runat="server" />
 
         <script language="javascript">
             $(document).ready(function () {

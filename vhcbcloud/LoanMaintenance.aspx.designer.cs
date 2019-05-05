@@ -193,6 +193,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnLoanId;
         
         /// <summary>
+        /// ddlFundGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundGroup;
+        
+        /// <summary>
+        /// spnNoteAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnNoteAmount;
+        
+        /// <summary>
         /// ddlPrimaryApplicant control.
         /// </summary>
         /// <remarks>
@@ -200,24 +218,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPrimaryApplicant;
-        
-        /// <summary>
-        /// txtNoteAmount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNoteAmount;
-        
-        /// <summary>
-        /// ddlNoteOwner control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlNoteOwner;
         
         /// <summary>
         /// ddltaxCreditPartner control.
@@ -229,6 +229,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddltaxCreditPartner;
         
         /// <summary>
+        /// ddlNoteOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlNoteOwner;
+        
+        /// <summary>
         /// cbLoanMasterActive control.
         /// </summary>
         /// <remarks>
@@ -236,15 +245,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbLoanMasterActive;
-        
-        /// <summary>
-        /// txtBalanceForward control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBalanceForward;
         
         /// <summary>
         /// btnLoanMaster control.
@@ -281,6 +281,402 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvLoanMaster;
+        
+        /// <summary>
+        /// dvNewLoanDetailInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewLoanDetailInfo;
+        
+        /// <summary>
+        /// cbAddNewLoanDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddNewLoanDetails;
+        
+        /// <summary>
+        /// dvLoanDetailsForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLoanDetailsForm;
+        
+        /// <summary>
+        /// Panel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+        
+        /// <summary>
+        /// pnlLoanDetailsForm1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm1;
+        
+        /// <summary>
+        /// ddlLegalDocs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLegalDocs;
+        
+        /// <summary>
+        /// spnLegalDoc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnLegalDoc;
+        
+        /// <summary>
+        /// spnBoardApprovalDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnBoardApprovalDate;
+        
+        /// <summary>
+        /// txtBoardApprovalDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBoardApprovalDate;
+        
+        /// <summary>
+        /// CalendarExtender6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender6;
+        
+        /// <summary>
+        /// txtOriginalDateOfNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOriginalDateOfNote;
+        
+        /// <summary>
+        /// ce_txtProjectNotesDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtProjectNotesDate;
+        
+        /// <summary>
+        /// txtNoteAmountLoanDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNoteAmountLoanDetails;
+        
+        /// <summary>
+        /// txtMaturityDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMaturityDate;
+        
+        /// <summary>
+        /// CalendarExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
+        
+        /// <summary>
+        /// ddlLoanCat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLoanCat;
+        
+        /// <summary>
+        /// txtIntrestRate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtIntrestRate;
+        
+        /// <summary>
+        /// ddlCompounded control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCompounded;
+        
+        /// <summary>
+        /// ddlPaymentFreq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPaymentFreq;
+        
+        /// <summary>
+        /// ddlPaymentType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPaymentType;
+        
+        /// <summary>
+        /// txtWatchDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWatchDate;
+        
+        /// <summary>
+        /// CalendarExtender2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
+        
+        /// <summary>
+        /// txtFileURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFileURL;
+        
+        /// <summary>
+        /// pnlLoanDetailsForm2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm2;
+        
+        /// <summary>
+        /// txtEffectiveDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEffectiveDate;
+        
+        /// <summary>
+        /// CalendarExtender19 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender19;
+        
+        /// <summary>
+        /// cbLoanDetailActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive;
+        
+        /// <summary>
+        /// pnlLoanDetailsForm_ON control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm_ON;
+        
+        /// <summary>
+        /// cbLoanDetailActive_ON control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive_ON;
+        
+        /// <summary>
+        /// pnlLoanDetailsForm_DC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm_DC;
+        
+        /// <summary>
+        /// ddlLegalDocs_dc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLegalDocs_dc;
+        
+        /// <summary>
+        /// Span3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Span3;
+        
+        /// <summary>
+        /// txtEffectiveDate_DC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEffectiveDate_DC;
+        
+        /// <summary>
+        /// CalendarExtender21 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender21;
+        
+        /// <summary>
+        /// txtDocumentDate_DC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDocumentDate_DC;
+        
+        /// <summary>
+        /// CalendarExtender22 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender22;
+        
+        /// <summary>
+        /// txtFileHoldLink_DC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFileHoldLink_DC;
+        
+        /// <summary>
+        /// Span4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Span4;
+        
+        /// <summary>
+        /// cbLoanDetailActive_DC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive_DC;
+        
+        /// <summary>
+        /// Div1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
+        
+        /// <summary>
+        /// btnAddLoanDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddLoanDetails;
+        
+        /// <summary>
+        /// dvProjectLoanDetailsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectLoanDetailsGrid;
+        
+        /// <summary>
+        /// Panel11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel11;
+        
+        /// <summary>
+        /// gvProjectLoanDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvProjectLoanDetails;
         
         /// <summary>
         /// dvNewFundInfo control.
@@ -389,366 +785,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvFundDetails;
-        
-        /// <summary>
-        /// dvNewLoanDetailInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewLoanDetailInfo;
-        
-        /// <summary>
-        /// cbAddNewLoanDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddNewLoanDetails;
-        
-        /// <summary>
-        /// dvLoanDetailsForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLoanDetailsForm;
-        
-        /// <summary>
-        /// Panel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
-        
-        /// <summary>
-        /// ddlLegalDocs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLegalDocs;
-        
-        /// <summary>
-        /// pnlLoanDetailsForm1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm1;
-        
-        /// <summary>
-        /// ddlLoanCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLoanCat;
-        
-        /// <summary>
-        /// txtOriginalDateOfNote control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOriginalDateOfNote;
-        
-        /// <summary>
-        /// ce_txtProjectNotesDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ce_txtProjectNotesDate;
-        
-        /// <summary>
-        /// txtMaturityDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMaturityDate;
-        
-        /// <summary>
-        /// CalendarExtender1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
-        
-        /// <summary>
-        /// spnNoteAmt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnNoteAmt;
-        
-        /// <summary>
-        /// txtIntrestRate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIntrestRate;
-        
-        /// <summary>
-        /// ddlCompounded control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCompounded;
-        
-        /// <summary>
-        /// ddlPaymentFreq control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPaymentFreq;
-        
-        /// <summary>
-        /// ddlPaymentType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPaymentType;
-        
-        /// <summary>
-        /// txtWatchDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWatchDate;
-        
-        /// <summary>
-        /// CalendarExtender2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender2;
-        
-        /// <summary>
-        /// cbLoanDetailActive control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbLoanDetailActive;
-        
-        /// <summary>
-        /// pnlLoanDetailsForm2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlLoanDetailsForm2;
-        
-        /// <summary>
-        /// txtFileURL control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFileURL;
-        
-        /// <summary>
-        /// txtEffectiveDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEffectiveDate;
-        
-        /// <summary>
-        /// CalendarExtender19 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender19;
-        
-        /// <summary>
-        /// spnBoardApprovalDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnBoardApprovalDate;
-        
-        /// <summary>
-        /// txtBoardApprovalDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBoardApprovalDate;
-        
-        /// <summary>
-        /// CalendarExtender6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender6;
-        
-        /// <summary>
-        /// Div1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
-        
-        /// <summary>
-        /// btnAddLoanDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddLoanDetails;
-        
-        /// <summary>
-        /// dvProjectLoanDetailsGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectLoanDetailsGrid;
-        
-        /// <summary>
-        /// Panel11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel11;
-        
-        /// <summary>
-        /// gvProjectLoanDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProjectLoanDetails;
-        
-        /// <summary>
-        /// dvNewEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewEvent;
-        
-        /// <summary>
-        /// cbAddEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAddEvent;
-        
-        /// <summary>
-        /// dvEventForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEventForm;
-        
-        /// <summary>
-        /// Panel8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel8;
-        
-        /// <summary>
-        /// txtEventDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEventDescription;
-        
-        /// <summary>
-        /// AddEvent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddEvent;
-        
-        /// <summary>
-        /// dvLoanEventsGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLoanEventsGrid;
-        
-        /// <summary>
-        /// pnlGrid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlGrid;
-        
-        /// <summary>
-        /// gvLoanEvents control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvLoanEvents;
         
         /// <summary>
         /// dvTransaction control.
@@ -994,6 +1030,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvCaptalizing;
         
         /// <summary>
+        /// cap_cbAdjustment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cap_cbAdjustment;
+        
+        /// <summary>
         /// cap_txtTransDate control.
         /// </summary>
         /// <remarks>
@@ -1012,15 +1057,6 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender15;
         
         /// <summary>
-        /// span7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span7;
-        
-        /// <summary>
         /// cap_txtTransAmount control.
         /// </summary>
         /// <remarks>
@@ -1028,15 +1064,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cap_txtTransAmount;
-        
-        /// <summary>
-        /// span8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span8;
         
         /// <summary>
         /// cap_txtTransDescription control.
@@ -1048,6 +1075,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cap_txtTransDescription;
         
         /// <summary>
+        /// cap_txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cap_txtURL;
+        
+        /// <summary>
         /// cap_cbLoanTransActive control.
         /// </summary>
         /// <remarks>
@@ -1057,24 +1093,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cap_cbLoanTransActive;
         
         /// <summary>
-        /// span9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span9;
-        
-        /// <summary>
-        /// span10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span10;
-        
-        /// <summary>
         /// dvCR control.
         /// </summary>
         /// <remarks>
@@ -1082,6 +1100,33 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvCR;
+        
+        /// <summary>
+        /// cr_cbAdjustment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cr_cbAdjustment;
+        
+        /// <summary>
+        /// cr_txtEffectiveDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cr_txtEffectiveDate;
+        
+        /// <summary>
+        /// CalendarExtender18 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender18;
         
         /// <summary>
         /// cr_txtTransAmount control.
@@ -1111,15 +1156,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransPrinciple;
         
         /// <summary>
-        /// span2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span2;
-        
-        /// <summary>
         /// span25 control.
         /// </summary>
         /// <remarks>
@@ -1138,15 +1174,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransIntrest;
         
         /// <summary>
-        /// span26 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span26;
-        
-        /// <summary>
         /// cr_txtTransDescription control.
         /// </summary>
         /// <remarks>
@@ -1154,24 +1181,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox cr_txtTransDescription;
-        
-        /// <summary>
-        /// cr_txtEffectiveDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cr_txtEffectiveDate;
-        
-        /// <summary>
-        /// CalendarExtender18 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender18;
         
         /// <summary>
         /// cr_cbLoanTransActive control.
@@ -1183,6 +1192,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cr_cbLoanTransActive;
         
         /// <summary>
+        /// insText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insText;
+        
+        /// <summary>
         /// dvConversion control.
         /// </summary>
         /// <remarks>
@@ -1192,22 +1210,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvConversion;
         
         /// <summary>
-        /// cv_txtTransAmount control.
+        /// cv_cbAdjustment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransAmount;
-        
-        /// <summary>
-        /// cv_txtTransDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cv_txtTransDescription;
+        protected global::System.Web.UI.WebControls.CheckBox cv_cbAdjustment;
         
         /// <summary>
         /// cv_txtEffectiveDate control.
@@ -1228,6 +1237,33 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender3;
         
         /// <summary>
+        /// cv_txtTransAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cv_txtTransAmount;
+        
+        /// <summary>
+        /// cv_txtTransDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cv_txtTransDescription;
+        
+        /// <summary>
+        /// cv_txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cv_txtURL;
+        
+        /// <summary>
         /// cv_cbLoanTransActive control.
         /// </summary>
         /// <remarks>
@@ -1246,40 +1282,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvDisbursement;
         
         /// <summary>
-        /// dis_txtTransAmount control.
+        /// dis_cbAdjustment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dis_txtTransAmount;
-        
-        /// <summary>
-        /// span6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span6;
-        
-        /// <summary>
-        /// dis_txtTransDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dis_txtTransDescription;
-        
-        /// <summary>
-        /// span11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span11;
+        protected global::System.Web.UI.WebControls.CheckBox dis_cbAdjustment;
         
         /// <summary>
         /// dis_txtEffectiveDate control.
@@ -1298,6 +1307,33 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender20;
+        
+        /// <summary>
+        /// dis_txtTransAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dis_txtTransAmount;
+        
+        /// <summary>
+        /// dis_ddlFundName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dis_ddlFundName;
+        
+        /// <summary>
+        /// dis_txtTransDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dis_txtTransDescription;
         
         /// <summary>
         /// dis_cbLoanTransActive control.
@@ -1336,40 +1372,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvForgiveness;
         
         /// <summary>
-        /// fg_txtTransAmount control.
+        /// fg_ddlSubcategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransAmount;
+        protected global::System.Web.UI.WebControls.DropDownList fg_ddlSubcategory;
         
         /// <summary>
-        /// span14 control.
+        /// fg_cbAdjustment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span14;
-        
-        /// <summary>
-        /// fg_txtTransDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fg_txtTransDescription;
-        
-        /// <summary>
-        /// span15 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span15;
+        protected global::System.Web.UI.WebControls.CheckBox fg_cbAdjustment;
         
         /// <summary>
         /// fg_txtEffectiveDate control.
@@ -1390,6 +1408,33 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender5;
         
         /// <summary>
+        /// fg_txtTransAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fg_txtTransAmount;
+        
+        /// <summary>
+        /// fg_txtTransDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fg_txtTransDescription;
+        
+        /// <summary>
+        /// fg_txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fg_txtURL;
+        
+        /// <summary>
         /// fg_cbLoanTransActive control.
         /// </summary>
         /// <remarks>
@@ -1399,22 +1444,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox fg_cbLoanTransActive;
         
         /// <summary>
-        /// span16 control.
+        /// spnLRInsText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span16;
-        
-        /// <summary>
-        /// span17 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span17;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnLRInsText;
         
         /// <summary>
         /// dvTransfer control.
@@ -1424,6 +1460,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTransfer;
+        
+        /// <summary>
+        /// tr_cbAdjustment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox tr_cbAdjustment;
         
         /// <summary>
         /// tr_txtTransDate control.
@@ -1444,15 +1489,6 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender12;
         
         /// <summary>
-        /// span18 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span18;
-        
-        /// <summary>
         /// tr_txtTransAmount control.
         /// </summary>
         /// <remarks>
@@ -1460,15 +1496,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tr_txtTransAmount;
-        
-        /// <summary>
-        /// span19 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span19;
         
         /// <summary>
         /// tr_txtTransPrinciple control.
@@ -1480,22 +1507,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox tr_txtTransPrinciple;
         
         /// <summary>
-        /// tr_txtTransDescription control.
+        /// spnTransFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tr_txtTransDescription;
-        
-        /// <summary>
-        /// span20 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span20;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTransFrom;
         
         /// <summary>
         /// ddlProjTransferedTo control.
@@ -1507,22 +1525,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProjTransferedTo;
         
         /// <summary>
-        /// span21 control.
+        /// tr_txtTransDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span21;
+        protected global::System.Web.UI.WebControls.TextBox tr_txtTransDescription;
         
         /// <summary>
-        /// ddlProjTransferedFrom control.
+        /// tr_txtURL control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProjTransferedFrom;
+        protected global::System.Web.UI.WebControls.TextBox tr_txtURL;
         
         /// <summary>
         /// tr_cbLoanTransActive control.
@@ -1534,22 +1552,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox tr_cbLoanTransActive;
         
         /// <summary>
-        /// span22 control.
+        /// spnL2LInsText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span22;
-        
-        /// <summary>
-        /// span23 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span23;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnL2LInsText;
         
         /// <summary>
         /// dvNoteModification control.
@@ -1723,6 +1732,69 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox nm_cbLoanTransActive;
         
         /// <summary>
+        /// dvDBConvertedBalance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvDBConvertedBalance;
+        
+        /// <summary>
+        /// db_cbAdjustment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox db_cbAdjustment;
+        
+        /// <summary>
+        /// db_EffectiveDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox db_EffectiveDate;
+        
+        /// <summary>
+        /// CalendarExtender11 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender11;
+        
+        /// <summary>
+        /// db_amount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox db_amount;
+        
+        /// <summary>
+        /// db_description control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox db_description;
+        
+        /// <summary>
+        /// db_Active control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox db_Active;
+        
+        /// <summary>
         /// btnAddTransaction control.
         /// </summary>
         /// <remarks>
@@ -1757,6 +1829,123 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvLoanTrans;
+        
+        /// <summary>
+        /// dvNewEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewEvent;
+        
+        /// <summary>
+        /// cbAddEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAddEvent;
+        
+        /// <summary>
+        /// dvEventForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEventForm;
+        
+        /// <summary>
+        /// Panel8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel8;
+        
+        /// <summary>
+        /// txtEventDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEventDate;
+        
+        /// <summary>
+        /// CalendarExtender7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender7;
+        
+        /// <summary>
+        /// ddlEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEvent;
+        
+        /// <summary>
+        /// txtFileHoldLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFileHoldLink;
+        
+        /// <summary>
+        /// txtEventDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEventDescription;
+        
+        /// <summary>
+        /// AddEvent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddEvent;
+        
+        /// <summary>
+        /// dvLoanEventsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvLoanEventsGrid;
+        
+        /// <summary>
+        /// pnlGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlGrid;
+        
+        /// <summary>
+        /// gvLoanEvents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvLoanEvents;
         
         /// <summary>
         /// dvNotes control.

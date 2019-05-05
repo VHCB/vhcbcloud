@@ -13,6 +13,15 @@ namespace vhcbcloud {
     public partial class LoanSummary {
         
         /// <summary>
+        /// lblProjectNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProjectNum;
+        
+        /// <summary>
         /// lblProjectName control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProjectName;
+        
+        /// <summary>
+        /// lblCurrentBorrower control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentBorrower;
         
         /// <summary>
         /// lblLoanID control.
@@ -38,15 +56,6 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoteAmount;
-        
-        /// <summary>
-        /// lblBegBalance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblBegBalance;
         
         /// <summary>
         /// ImgLoanSummaryReport control.

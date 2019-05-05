@@ -127,17 +127,23 @@ namespace vhcbcloud
             dvNewlandUsePermitFinancials.Visible = false;
             dvNewVHCBProjects.Visible = false;
             dvNewPermitCommitments.Visible = false;
+            int Type;
+
+            if (rdBtnFilter.SelectedIndex == 0)
+                Type = 145;
+            else
+                Type = 144;
 
             try
             {
                 if (Session["SortExp"] == null)
                 {
-                    gvAct250Info.DataSource = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
+                    gvAct250Info.DataSource = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, Type);
                     gvAct250Info.DataBind();
                 }
                 else
                 {
-                    DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
+                    DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, Type);
 
                     if (dt.Rows.Count > 0)
                     {
@@ -208,7 +214,7 @@ namespace vhcbcloud
                     DataUtils.GetDecimal(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
-                    chkAct250Active.Checked);
+                    chkAct250Active.Checked, txtLandUsePermit.Text);
 
                 gvAct250Info.EditIndex = -1;
                 ClearAct250InfoForm();
@@ -351,7 +357,7 @@ namespace vhcbcloud
                 txtUnits.Visible = true;
             }
 
-            txtLandUsePermit.Enabled = false;
+            //txtLandUsePermit.Enabled = false;
             chkAct250Active.Enabled = true;
         }
 
@@ -816,7 +822,7 @@ namespace vhcbcloud
         {
             GridViewSortExpression = e.SortExpression;
             int pageIndex = 0;
-            gvAct250Info.DataSource = SortDataTable(ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked), false);
+            gvAct250Info.DataSource = SortDataTable(ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, DataUtils.GetInt(hfFilter.Value)), false);
             gvAct250Info.DataBind();
             gvAct250Info.PageIndex = pageIndex;
         }
@@ -873,6 +879,16 @@ namespace vhcbcloud
         {
             get { return ViewState["SortDirection"] as string ?? "ASC"; }
             set { ViewState["SortDirection"] = value; }
+        }
+
+        protected void rdBtnFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rdBtnFilter.SelectedIndex == 0)
+                hfFilter.Value = "145";
+            else
+                hfFilter.Value = "144";
+
+            BindAct250InfoGrid();
         }
     }
 }

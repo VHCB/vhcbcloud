@@ -12,6 +12,11 @@ namespace vhcbcloud
 {
     public partial class QAManagement : System.Web.UI.Page
     {
+        /// <summary>
+        /// Page loading with Bind Year Quarter Grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -20,6 +25,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// YrQrtrDetails Grid Row Deleting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvYrQrtrDetails_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
@@ -43,7 +53,10 @@ namespace vhcbcloud
             }
         }
 
-        //Bind Year Quarter Grid
+        /// <summary>
+        /// Bind Year Quarter Grid
+        /// </summary>
+        /// <param name="isGrid"></param>
         protected void BindYearQuarterGrid(bool isGrid)
         {
             DataTable dtable = default(DataTable);
@@ -87,6 +100,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Year Quarter details submission
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -111,12 +129,21 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Log Error Message
+        /// </summary>
+        /// <param name="message"></param>
         private void LogMessage(string message)
         {
             //dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
 
+        /// <summary>
+        /// Bind Question Answer Grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
@@ -126,10 +153,14 @@ namespace vhcbcloud
             cbActive.Checked = true;
             gvQuestionAnswer.EditIndex = -1;
             BindQuestionAnswerGrid();
-           
-           
         }
 
+        /// <summary>
+        /// Button Import click event
+        /// Import settings and Binding grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnImport_Click(object sender, EventArgs e)
         {
             string YearQrtrId = default(string);
@@ -154,6 +185,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Question Answer Grid Cancelling event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvQuestionAnswer_RowCancelingEdit1(object sender, GridViewCancelEditEventArgs e)
         {
             lblQuestionErrorMsg.Text = string.Empty;
@@ -162,6 +198,11 @@ namespace vhcbcloud
             BindQuestionAnswerGrid();
         }
 
+        /// <summary>
+        /// Question Answer Grid Row Edit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvQuestionAnswer_RowEditing1(object sender, GridViewEditEventArgs e)
         {
             lblQuestionErrorMsg.Text = string.Empty;
@@ -172,6 +213,11 @@ namespace vhcbcloud
             BindQuestionAnswerGrid();
         }
 
+        /// <summary>
+        /// Question Answer Row Data Binding
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvQuestionAnswer_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -197,6 +243,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Populating Question Answer Grid 
+        /// </summary>
         protected void BindQuestionAnswerGrid()
         {
             DataTable dtable = default(DataTable);
@@ -243,6 +292,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Submit Button Question Details click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnQuestionDetails_Click(object sender, EventArgs e)
         {
             try
@@ -272,6 +326,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Check box click adding new question
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cbAddNewQuestion_CheckedChanged(object sender, EventArgs e)
         {
             lblQuestionErrorMsg.Text = string.Empty;
@@ -293,6 +352,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Active check box clicked, binding question answer grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cbActive_CheckedChanged(object sender, EventArgs e)
         {
             BindQuestionAnswerGrid();

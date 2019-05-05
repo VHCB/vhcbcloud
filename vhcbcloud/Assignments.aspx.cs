@@ -191,7 +191,7 @@ namespace vhcbcloud
                 ddlAccountFrom.DataBind();
                 ddlAccountFrom.Items.Insert(0, new ListItem("Select", "NA"));
 
-                txtRfromDate.Text = DateTime.Now.ToShortDateString();
+                //txtRfromDate.Text = DateTime.Now.ToShortDateString();
                 ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
                 BindAllFunds();
 
@@ -327,7 +327,7 @@ namespace vhcbcloud
             ddlAccountFrom.DataBind();
             ddlAccountFrom.Items.Insert(0, new ListItem("Select", "NA"));
 
-            txtRfromDate.Text = DateTime.Now.ToShortDateString();
+            //txtRfromDate.Text = DateTime.Now.ToShortDateString();
             //ddlRToProj.SelectedIndex = ddlRFromProj.SelectedIndex;
             //txtToProjNum.Text = txtFromProjNum.Text;
             BindAllFunds();
@@ -1191,6 +1191,13 @@ namespace vhcbcloud
                         lblRErrorMsg.Text = "Amount can't be more than available assignment from funds (" + CommonHelper.myDollarFormat(lblAvailFund.Text) + ") for the selected from project";
 
                     txtRfromAmt.Focus();
+                    return;
+                }
+
+                if (txtRfromDate.Text == "")
+                {
+                    lblRErrorMsg.Text = "Please enter transaction date";
+                    txtRfromDate.Focus();
                     return;
                 }
 

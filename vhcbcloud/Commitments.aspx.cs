@@ -653,6 +653,13 @@ namespace vhcbcloud
                     return;
                 }
 
+                if (txtTransDate.Text == "")
+                {
+                    lblErrorMsg.Text = "Please enter transaction date";
+                    txtTransDate.Focus();
+                    return;
+                }
+
                 DateTime AcctEffectiveDate = FinancialTransactions.GetSetupDate();
 
                 if(AcctEffectiveDate > Convert.ToDateTime(txtTransDate.Text))
@@ -684,7 +691,7 @@ namespace vhcbcloud
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
-                txtTransDate.Text = DateTime.Now.ToShortDateString();
+                //txtTransDate.Text = DateTime.Now.ToShortDateString();
                 txtTotAmt.Text = "";
 
                 CommonHelper.EnableButton(btnCommitmentSubmit);
@@ -1272,7 +1279,7 @@ namespace vhcbcloud
                         hfGrantee.Value = "";
                     }
 
-                    txtTransDate.Text = DateTime.Now.ToShortDateString();
+                    //txtTransDate.Text = DateTime.Now.ToShortDateString();
                     txtTotAmt.Text = "";
                     BindFundAccounts();
                     ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;

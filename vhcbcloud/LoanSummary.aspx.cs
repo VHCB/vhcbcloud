@@ -37,11 +37,13 @@ namespace vhcbcloud
                         if (drLoanMasterDetails["NoteAmt"].ToString() != "")
                             lblNoteAmount.Text = CommonHelper.myDollarFormat(drLoanMasterDetails["NoteAmt"].ToString());
 
-                        if (drLoanMasterDetails["BalForward"].ToString() != "")
-                        {
-                            lblBegBalance.Text = CommonHelper.myDollarFormat(drLoanMasterDetails["BalForward"].ToString());
-                            BalForward = DataUtils.GetDecimal(drLoanMasterDetails["BalForward"].ToString());
-                        }
+                        lblProjectNum.Text = drLoanMasterDetails["Proj_num"].ToString();
+                        lblCurrentBorrower.Text = drLoanMasterDetails["CurrentBorrower"].ToString();
+                        //if (drLoanMasterDetails["BalForward"].ToString() != "")
+                        //{
+                        //    lblBegBalance.Text = CommonHelper.myDollarFormat(drLoanMasterDetails["BalForward"].ToString());
+                        //    BalForward = DataUtils.GetDecimal(drLoanMasterDetails["BalForward"].ToString());
+                        //}
                         BindLoanSummary(Convert.ToInt32(loanId), BalForward);
                     }
                 }
@@ -164,12 +166,14 @@ namespace vhcbcloud
             decimal totDisbursement = 0;
             decimal totModifications = 0;
             decimal totReceipts = 0;
+            decimal totReceiptsInt = 0;
 
             if (dtLoanSummary.Rows.Count > 0)
             {
                 Label lblDisbursementTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblDisbursementTotal");
                 Label lblModificationsTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblModificationsTotal");
-                Label lblReceiptsTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblReceiptsTotal");
+                Label lblReceiptsTotalPrincipalTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblReceiptsTotalPrincipal");
+                Label lblReceiptsInterestTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblReceiptsInterestTotal");
                 Label lblBalanceTotal = (Label)gvLoanSummary.FooterRow.FindControl("lblBalanceTotal");
 
                 if (dtLoanSummary.Rows.Count > 0)
@@ -185,12 +189,17 @@ namespace vhcbcloud
                         if (Convert.ToDecimal(dtLoanSummary.Rows[i]["Receipts"].ToString()) != 0)
                             totReceipts += Convert.ToDecimal(dtLoanSummary.Rows[i]["Receipts"].ToString());
 
+                        if (Convert.ToDecimal(dtLoanSummary.Rows[i]["Inter"].ToString()) != 0)
+                            totReceiptsInt += Convert.ToDecimal(dtLoanSummary.Rows[i]["Inter"].ToString());
+
                     }
                 }
 
                 lblDisbursementTotal.Text = CommonHelper.myDollarFormat(totDisbursement);
                 lblModificationsTotal.Text = CommonHelper.myDollarFormat(totModifications);
-                lblReceiptsTotal.Text = CommonHelper.myDollarFormat(totReceipts);
+                lblReceiptsTotalPrincipalTotal.Text = CommonHelper.myDollarFormat(totReceipts);
+                lblReceiptsInterestTotal.Text = CommonHelper.myDollarFormat(totReceiptsInt);
+
                 lblBalanceTotal.Text = CommonHelper.myDollarFormat(BalForward + totDisbursement + totModifications + totReceipts);
             }
         }
@@ -204,8 +213,8 @@ namespace vhcbcloud
 
                 if (numberOfRows > 0 && e.Row.RowIndex == numberOfRows -1)
                 {
-                    Label lblStar = e.Row.FindControl("lblStar") as Label;
-                    lblStar.Text = "*";
+                    //Label lblStar = e.Row.FindControl("lblStar") as Label;
+                    //lblStar.Text = "*";
                 }
                 
             }

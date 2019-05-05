@@ -945,7 +945,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"

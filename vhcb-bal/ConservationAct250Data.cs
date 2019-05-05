@@ -8,7 +8,7 @@ namespace VHCBCommon.DataAccessLayer
     public class ConservationAct250Data
     {
         #region Act250 Info
-        public static DataTable GetAct250FarmsList(bool IsActiveOnly)
+        public static DataTable GetAct250FarmsList(bool IsActiveOnly, int Type)
         {
             DataTable dt = null;
             try
@@ -23,6 +23,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetAct250FarmsList";
                         command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+                        command.Parameters.Add(new SqlParameter("Type", Type));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -103,7 +104,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateAct250Farm(int Act250FarmID, int LkTownDev, int CDist, int Type,
             string DevName, decimal Primelost, decimal Statelost, decimal TotalAcreslost, decimal AcresDevelop, 
             int Developer, decimal AntFunds,
-            DateTime MitDate, string URL, int FundID, bool IsRowIsActive)
+            DateTime MitDate, string URL, int FundID, bool IsRowIsActive, string UsePermit)
         {
             try
             {
@@ -132,6 +133,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
+                        command.Parameters.Add(new SqlParameter("UsePermit", UsePermit));
 
                         command.CommandTimeout = 60 * 5;
 

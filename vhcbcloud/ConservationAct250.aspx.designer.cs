@@ -13,6 +13,15 @@ namespace vhcbcloud {
     public partial class ConservationAct250 {
         
         /// <summary>
+        /// rdBtnFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnFilter;
+        
+        /// <summary>
         /// ibAwardSummary control.
         /// </summary>
         /// <remarks>
@@ -695,5 +704,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectsWarning;
+        
+        /// <summary>
+        /// hfFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfFilter;
     }
 }
