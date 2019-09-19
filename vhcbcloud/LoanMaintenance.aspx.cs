@@ -47,6 +47,20 @@ namespace vhcbcloud
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        protected bool IsAdminUser()
+        {
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                   return true;
+                }
+            }
+            return false;
+        }
+
         private void BindControls()
         {
             BindLookUP(ddlLoanCat, 179);
@@ -452,11 +466,15 @@ namespace vhcbcloud
             //    return;
             //}
 
+            var NoteOwnerValue = HttpContext.Current.Request.Form["ctl00$MainContent$ddlNoteOwner"];
+
             if (btnLoanMaster.Text == "Add")
             {
                 LoanMaintenanceData.AddLoanMaster(DataUtils.GetInt(hfProjectId.Value),
                     DataUtils.GetInt(ddltaxCreditPartner.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlNoteOwner.SelectedValue.ToString()), 0,
+                    DataUtils.GetInt(NoteOwnerValue),
+                    //DataUtils.GetInt(ddlNoteOwner.SelectedValue.ToString()), 
+                    0,
                     //DataUtils.GetDecimal(Regex.Replace(txtNoteAmount.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetInt(ddlFundGroup.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()));
@@ -465,7 +483,8 @@ namespace vhcbcloud
             {
                 LoanMaintenanceData.UpdateLoanMaster(DataUtils.GetInt(hfLoanId.Value),
                     DataUtils.GetInt(ddltaxCreditPartner.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlNoteOwner.SelectedValue.ToString()),
+                    DataUtils.GetInt(NoteOwnerValue),
+                    //DataUtils.GetInt(ddlNoteOwner.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(spnNoteAmount.InnerHtml, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetInt(ddlFundGroup.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlPrimaryApplicant.SelectedValue.ToString()), cbLoanMasterActive.Checked);
@@ -541,6 +560,8 @@ namespace vhcbcloud
 
             cbLoanDetailActive_ON.Checked = true;
             cbLoanDetailActive_ON.Enabled = false;
+
+            txtOriginalDateOfNote.Enabled = true;
         }
 
         protected void gvProjectLoanDetails_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -601,6 +622,10 @@ namespace vhcbcloud
                         PopulateDropDown(ddlLoanCat, dr["LoanCat"].ToString());
 
                         txtOriginalDateOfNote.Text = dr["NoteDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["NoteDate"].ToString()).ToShortDateString();
+
+                        if (!IsAdminUser())
+                            txtOriginalDateOfNote.Enabled = false;
+
                         txtMaturityDate.Text = dr["MaturityDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MaturityDate"].ToString()).ToShortDateString();
                         txtIntrestRate.Text = dr["IntRate"].ToString();
                         PopulateDropDown(ddlCompounded, dr["Compound"].ToString());
@@ -694,7 +719,7 @@ namespace vhcbcloud
                     else
                     {
                         LogMessage("Loan details added successfully");
-                        UpdateLoanMasterGrid(DataUtils.GetInt(hfLoanDetailID.Value));
+                        UpdateLoanMasterGrid(objLoadDetailsResult.LoanDetailId);
                     }
                 }
                 else
@@ -769,15 +794,15 @@ namespace vhcbcloud
                 }
             }
 
-            if (ddlLegalDocs.SelectedItem.ToString().ToLower() == "modification")
-            {
-                if (ddlPaymentType.SelectedIndex == 0)
-                {
-                    LogMessage("Select Payment Type");
-                    ddlPaymentType.Focus();
-                    return false;
-                }
-            }
+            //if (ddlLegalDocs.SelectedItem.ToString().ToLower() == "modification")
+            //{
+            //    if (ddlPaymentType.SelectedIndex == 0)
+            //    {
+            //        LogMessage("Select Payment Type");
+            //        ddlPaymentType.Focus();
+            //        return false;
+            //    }
+            //}
 
             if (ddlLoanCat.SelectedIndex == 0)
             {
@@ -791,6 +816,15 @@ namespace vhcbcloud
                 {
                     LogMessage("Enter valid Document Date");
                     txtBoardApprovalDate.Focus();
+                    return false;
+                }
+            }
+            else if (txtMaturityDate.Text.Trim() == "")
+            {
+                if (!DataUtils.IsDateTime(txtMaturityDate.Text.Trim()))
+                {
+                    LogMessage("Enter valid Maturity Date");
+                    txtMaturityDate.Focus();
                     return false;
                 }
             }
@@ -812,6 +846,21 @@ namespace vhcbcloud
                     }
                 }
             }
+
+            if (ddlPaymentFreq.SelectedIndex != 0)
+            {
+                if(ddlPaymentFreq.SelectedItem.ToString().ToLower() != "none")
+                {
+                    if (ddlPaymentType.SelectedIndex == 0)
+                    {
+                        LogMessage("Select Payment Type");
+                        ddlPaymentType.Focus();
+                        return false;
+                    }
+                }
+            }
+           
+
             //if (txtMaturityDate.Text.Trim() == "")
             //{
             //    if (!DataUtils.IsDateTime(txtMaturityDate.Text.Trim()))
@@ -860,6 +909,13 @@ namespace vhcbcloud
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    gvLoanMaster.Columns[6].Visible = false;
+                    if (IsEditAccess())
+                        gvLoanMaster.Columns[6].Visible = true;
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -868,7 +924,7 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[0].Visible = false;
                         Label lblLoanID = e.Row.FindControl("lblLoanID") as Label;
                         DataRow drLoanMasterDetails = LoanMaintenanceData.GetLoanMasterDetailsByLoanID(Convert.ToInt32(lblLoanID.Text));
 
@@ -878,7 +934,7 @@ namespace vhcbcloud
                         PopulateDropDown(ddltaxCreditPartner, drLoanMasterDetails["TaxCreditPartner"].ToString());
                         //PopulateDropDown(ddlNoteOwner, drLoanMasterDetails["NoteOwner"].ToString());
                         //txtNoteAmount.Text = drLoanMasterDetails["NoteAmt"].ToString();
-                        spnNoteAmount.InnerHtml = drLoanMasterDetails["NoteAmt"].ToString();
+                        spnNoteAmount.InnerHtml = CommonHelper.myDollarFormat(drLoanMasterDetails["NoteAmt"].ToString());
                         //txtBalanceForward.Text = drLoanMasterDetails["BalForward"].ToString();
                         PopulateDropDown(ddlFundGroup, drLoanMasterDetails["FundGroup"].ToString());
                         //txtPrimaryApplicant.Text = drLoanMasterDetails["Applicantname"].ToString();
@@ -1040,6 +1096,13 @@ namespace vhcbcloud
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    gvLoanEvents.Columns[6].Visible = false;
+                    if (IsEditAccess())
+                        gvLoanEvents.Columns[6].Visible = true;
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -1267,11 +1330,11 @@ namespace vhcbcloud
                         LinkButton lbEdit = e.Row.FindControl("LinkButton1") as LinkButton;
                         lbEdit.Visible = false;
                     }
-                    else
-                    {
-                        LinkButton lbView = e.Row.FindControl("AddButton") as LinkButton;
-                        lbView.Visible = false;
-                    }
+                    //else
+                    //{
+                    //    LinkButton lbView = e.Row.FindControl("AddButton") as LinkButton;
+                    //    lbView.Visible = false;
+                    //}
                 }
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
@@ -1341,7 +1404,7 @@ namespace vhcbcloud
                     case "cash receipt":
                         PopulateCashReceiptForm(dr);
                         break;
-                    case "Convert Grant to Loan":
+                    case "convert grant to  loan":
                         PopulateConversionForm(dr);
                         break;
                     case "disbursement":
@@ -1376,8 +1439,8 @@ namespace vhcbcloud
         private void PopulateTransferForm(DataRow dr)
         {
             tr_txtTransDate.Text = dr["EffectiveDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["EffectiveDate"].ToString()).ToShortDateString();
-            tr_txtTransPrinciple.Text = dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
-            tr_txtTransAmount.Text = CommonHelper.myDollarFormat(dr["Amount"].ToString());
+            tr_txtTransPrinciple.Text = dr["Principal"].ToString();//  dr["Principal"] == DBNull.Value ? "" : dr["Principal"].ToString();
+            tr_txtTransAmount.Text = dr["Amount"].ToString();// CommonHelper.myDollarFormat(dr["Amount"].ToString());
             tr_txtTransDescription.Text = dr["Description"].ToString();
             //tr_txtTransProjTransfered.Text = dr["TransferTo"].ToString();
             //tr_txtTransProjConverted.Text = dr["ConvertFrom"].ToString();
@@ -1474,8 +1537,8 @@ namespace vhcbcloud
         {
             //cr_txtTransDate.Text = dr["TransDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
             //PopulateDropDown(cr_ddlTransPaymentType, dr["PayType"].ToString());
-            cr_txtTransAmount.Text = CommonHelper.myDollarFormat(dr["Amount"].ToString());
-            cr_txtTransPrinciple.Text = CommonHelper.myDollarFormat(dr["Principal"].ToString());
+            cr_txtTransAmount.Text = dr["Amount"].ToString();
+            cr_txtTransPrinciple.Text = dr["Principal"].ToString();
             cr_txtTransIntrest.Text = dr["Interest"].ToString();
             cr_txtTransDescription.Text = dr["Description"].ToString();
             cr_txtEffectiveDate.Text = dr["EffectiveDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["EffectiveDate"].ToString()).ToShortDateString();
@@ -1724,7 +1787,7 @@ namespace vhcbcloud
                     null,//DataUtils.GetDate(cv_txtTransStartDate.Text),
                     DataUtils.GetDecimal(Regex.Replace(cv_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
                     null,//DataUtils.GetDate(cv_txtTransStopDate.Text),
-                    null,//DataUtils.GetDecimal(Regex.Replace(cv_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(cv_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),//DataUtils.GetDecimal(Regex.Replace(cv_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
                     null,//DataUtils.GetDecimal(Regex.Replace(cv_txtTransIntrest.Text, "[^0-9a-zA-Z.]+", "")),
                     cv_txtTransDescription.Text,
                     null,
@@ -1780,7 +1843,7 @@ namespace vhcbcloud
                     null, null,
                     DataUtils.GetDecimal(tr_txtTransAmount.Text.Replace("$", "")),
                     null,
-                    DataUtils.GetDecimal(tr_txtTransPrinciple.Text.Replace("$", "")),
+                    DataUtils.GetDecimal(tr_txtTransAmount.Text.Replace("$", "")),
                     null,
                     tr_txtTransDescription.Text, DataUtils.GetInt(ddlProjTransferedTo.SelectedValue),
                     DataUtils.GetInt(hfLoanId.Value),
@@ -1864,8 +1927,7 @@ namespace vhcbcloud
                         null, null,
                         DataUtils.GetDecimal(Regex.Replace(cap_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
                         null,
-                        //DataUtils.GetDecimal(Regex.Replace(cap_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
-                        null,
+                        DataUtils.GetDecimal(Regex.Replace(cap_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
                         null,
                         cap_txtTransDescription.Text, null, null,
                         DataUtils.GetDate(cap_txtTransDate.Text),
@@ -1904,7 +1966,7 @@ namespace vhcbcloud
                         null,//DataUtils.GetDate(cv_txtTransStartDate.Text),
                         DataUtils.GetDecimal(Regex.Replace(cv_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
                         null,//DataUtils.GetDate(cv_txtTransStopDate.Text),
-                        null,//DataUtils.GetDecimal(Regex.Replace(cv_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(cv_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),//DataUtils.GetDecimal(Regex.Replace(cv_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
                         null,//DataUtils.GetDecimal(Regex.Replace(cv_txtTransIntrest.Text, "[^0-9a-zA-Z.]+", "")),
                         cv_txtTransDescription.Text,
                         null,
@@ -1956,9 +2018,11 @@ namespace vhcbcloud
                         null, null, null,
                         null, null,
                         null, null,
-                        DataUtils.GetDecimal(Regex.Replace(tr_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(tr_txtTransAmount.Text.Replace("$", "")),
+                        //DataUtils.GetDecimal(Regex.Replace(tr_txtTransAmount.Text, "[^0-9a-zA-Z.]+", "")),
                         null,
-                        DataUtils.GetDecimal(Regex.Replace(tr_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(tr_txtTransAmount.Text.Replace("$", "")),
+                        //DataUtils.GetDecimal(Regex.Replace(tr_txtTransPrinciple.Text, "[^0-9a-zA-Z.]+", "")),
                         null,
                         tr_txtTransDescription.Text, DataUtils.GetInt(ddlProjTransferedTo.SelectedValue),
                         DataUtils.GetInt(hfLoanId.Value),
@@ -2334,6 +2398,14 @@ namespace vhcbcloud
 
         protected void gvFundDetails_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                gvFundDetails.Columns[4].Visible = false;
+                if (IsEditAccess())
+                    gvFundDetails.Columns[4].Visible = true;
+            }
+                
+
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
             {
                 CommonHelper.GridViewSetFocus(e.Row);
@@ -2346,6 +2418,7 @@ namespace vhcbcloud
                     TextBox txtFundID = (e.Row.FindControl("txtFundID") as TextBox);
                     BindFundType(ddlFundEdit);
                     PopulateDropDown(ddlFundEdit, txtFundID.Text);
+                    //e.Row.Cells[3].Controls[0].Visible = false;
                 }
             }
         }
@@ -2396,6 +2469,8 @@ namespace vhcbcloud
                 PopulateDropDown(ddlLoanCat, dr["LoanCat"].ToString());
 
                 txtOriginalDateOfNote.Text = dr["NoteDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["NoteDate"].ToString()).ToShortDateString();
+                txtOriginalDateOfNote.Enabled = true;
+
                 txtMaturityDate.Text = dr["MaturityDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MaturityDate"].ToString()).ToShortDateString();
                 txtIntrestRate.Text = dr["IntRate"].ToString();
                 PopulateDropDown(ddlCompounded, dr["Compound"].ToString());
@@ -2429,6 +2504,8 @@ namespace vhcbcloud
                 PopulateDropDown(ddlLoanCat, dr["LoanCat"].ToString());
 
                 txtOriginalDateOfNote.Text = dr["NoteDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["NoteDate"].ToString()).ToShortDateString();
+                txtOriginalDateOfNote.Enabled = false;
+
                 txtMaturityDate.Text = dr["MaturityDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MaturityDate"].ToString()).ToShortDateString();
                 txtIntrestRate.Text = dr["IntRate"].ToString();
                 PopulateDropDown(ddlCompounded, dr["Compound"].ToString());
@@ -2468,6 +2545,19 @@ namespace vhcbcloud
                     ddlLegalDocs.Visible = false;
                 }
             }
+        }
+
+        public bool IsEditAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "31969") //"37632")
+                    return true;
+            }
+            return false;
         }
 
         public bool IsLoanDetailAccess()

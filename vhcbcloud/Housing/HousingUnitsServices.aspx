@@ -97,13 +97,27 @@
                         <tr>
                             <td><span class="labelClass">Service Supported Units</span></td>
                             <td><asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                             <td><span class="labelClass">VHCB Affordable Units</span></td>
+                             <td><span class="labelClass">Total VHCB Affordable Units</span></td>
                             <td>
                                 <span class="labelClass" id="spnVHCBAffUnits" runat="server">0</span>
                             </td>
                             <td><span class="labelClass"># of Buildings</span></td>
                             <td><asp:TextBox ID="txtBuildings" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                         </tr>
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="labelClass">Previous Affordable Units</span></td>
+                            <td><asp:TextBox ID="txtPrevAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                             <td><span class="labelClass">New Affordable Units</span></td>
+                            <td>
+                                <asp:TextBox ID="txtNewAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
                         <tr>
                             <td colspan="5">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>

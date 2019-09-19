@@ -140,7 +140,7 @@
                                             <asp:DropDownList ID="ddlFundGroup" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px"><span class="labelClass">Note Amount $</span></td>
+                                        <td style="width: 170px"><span class="labelClass">Note Amount</span></td>
                                         <td>
                                             <span class="labelClass" id="spnNoteAmount" runat="server"></span>
                                             <%--<asp:TextBox ID="txtNoteAmount" runat="server" CssClass="clsTextBoxBlueSm" Enabled="false"></asp:TextBox>--%>
@@ -670,7 +670,7 @@
                                                 <asp:CheckBox ID="chkActiveEditFund" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                        <asp:CommandField ShowEditButton="True"/>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -1117,7 +1117,7 @@
                                             </td>
                                             <td><span class="labelClass">Transferred To</span></td>
                                             <td>
-                                                  <asp:DropDownList ID="ddlProjTransferedTo" CssClass="clsDropDown" runat="server">
+                                                  <asp:DropDownList ID="ddlProjTransferedTo" CssClass="clsDropDown" runat="server" Height="20px" Width="165px">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>

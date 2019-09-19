@@ -313,9 +313,9 @@
                                                 <asp:Label ID="lblAppRecd" runat="Server" Text='<%# Eval("AppRecd", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Effective Date">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblEffDate" runat="Server" Text='<%# Eval("EffDate", "{0:MM/dd/yyyy}") %>' />
+                                                <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("Comment") %>' Text='<%# Eval("CommentShow") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="center">

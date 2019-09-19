@@ -361,7 +361,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static Result AddConserveAcres(int ProjectId, int LkAcres, int Acres)
+        public static Result AddConserveAcres(int ProjectId, int LkAcres, decimal Acres)
         {
             try
             {
@@ -406,7 +406,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateConserveAcres(int ConserveAcresID, int Acres, bool RowIsActive)
+        public static void UpdateConserveAcres(int ConserveAcresID, decimal Acres, bool RowIsActive)
         {
             try
             {
@@ -735,6 +735,227 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dr;
         }
         #endregion Watershed
+
+        #region Trail
+
+        public static DataTable GetConserveTrailsList(int ConserveID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConserveTrailsList";
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+        public static Result AddConserveTrails(int ConserveID, int LKTrail, decimal Miles, bool Protected)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddConserveTrails";
+
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("LKTrail", LKTrail));
+                        command.Parameters.Add(new SqlParameter("Miles", Miles));
+                        command.Parameters.Add(new SqlParameter("Protected", Protected));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        Result objResult = new Result();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void UpdateConserveTrails(int ConserveTrailsID, decimal Miles, bool Protected, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateConserveTrails";
+
+                        command.Parameters.Add(new SqlParameter("ConserveTrailsID", ConserveTrailsID));
+                        command.Parameters.Add(new SqlParameter("Miles", Miles));
+                        command.Parameters.Add(new SqlParameter("Protected", Protected));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region TrailUsage
+
+        public static DataTable GetConserveTrailUsageList(int ConserveID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConserveTrailUsageList";
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+        public static Result AddConserveTrailUsage(int ConserveID, int LKTrailUsage)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddConserveTrailUsage";
+
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("LKTrailUsage", LKTrailUsage));
+                        
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        Result objResult = new Result();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void UpdateConserveTrailUsage(int ConserveTrailsUsageId, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateConserveTrailUsage";
+
+                        command.Parameters.Add(new SqlParameter("ConserveTrailsUsageId", ConserveTrailsUsageId));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
     public class Result
     {

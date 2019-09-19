@@ -228,6 +228,8 @@ namespace vhcbcloud.Housing
                 txtMHIP.Text = drHousing["Vermod"].ToString();
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
                 txtBuildings.Text = drHousing["Bldgs"].ToString();
+                txtNewAffordUnits.Text = drHousing["NewAffordUnits"].ToString();
+                txtPrevAffordUnits.Text = drHousing["PrevAffordUnits"].ToString();
 
                 //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
                 spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
@@ -499,7 +501,8 @@ namespace vhcbcloud.Housing
                 DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), 
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
                 DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text), 
-                chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text), DataUtils.GetInt(txtBuildings.Text));
+                chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text), DataUtils.GetInt(txtBuildings.Text),
+                DataUtils.GetInt(txtNewAffordUnits.Text), DataUtils.GetInt(txtPrevAffordUnits.Text));
 
             BindHousingUnitsForm();
 
@@ -1042,7 +1045,7 @@ namespace vhcbcloud.Housing
                     int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
 
                     hfVHCBUnitWarning.Value = "0";
-                    if (DataUtils.GetInt(txtNetNewUnits.Text) - totVHCBUnits != 0)
+                    if (DataUtils.GetInt(spnTotalUnits.InnerText) - totVHCBUnits != 0)
                     {
                         hfVHCBUnitWarning.Value = "1";
                         WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Units must be equal to New Units.");

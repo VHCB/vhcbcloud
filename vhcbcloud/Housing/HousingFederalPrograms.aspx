@@ -813,9 +813,27 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Performed By">
+                                        <asp:TemplateField HeaderText="Date Inspection Letter Sent">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblInspectionPerformedBy" runat="Server" Text='<%# Eval("InspectionPerformedBy") %>' />
+                                                <asp:Label ID="lblDateInspectionLetterSent" runat="Server" Text='<%# Eval("InspectLetter", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="250px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Deficiency">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDeficiency" runat="Server" Text='<%# Eval("Deficiency") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="250px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Date of Response">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDateofResponse" runat="Server" Text='<%# Eval("RespDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="220px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Not Needed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotNeeded" runat="Server" Text='<%# Eval("RespNotNeed") %>' />
                                             </ItemTemplate>
                                             <ItemStyle Width="250px" />
                                         </asp:TemplateField>
@@ -825,18 +843,6 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField> 
-                                        <asp:TemplateField HeaderText="Date Inspection Letter Sent">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDateInspectionLetterSent" runat="Server" Text='<%# Eval("InspectLetter", "{0:MM/dd/yyyy}") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="300px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date of Response">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDateofResponse" runat="Server" Text='<%# Eval("RespDate", "{0:MM/dd/yyyy}") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="220px" />
-                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />

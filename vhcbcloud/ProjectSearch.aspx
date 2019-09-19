@@ -147,8 +147,9 @@
                                 </td>
                                 <td><span class="labelClass">Active</span></td>
                                 <td><asp:CheckBox ID="cbProjectActive" runat="server" Checked="true" Text="" /></td>
-                                <td></td>
-                                <td></td>
+                                <td><span class="labelClass">Target Year</span></td>
+                                <td><asp:DropDownList ID="ddlTargetYear" CssClass="clsDropDown" runat="server">
+                                    </asp:DropDownList></td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="height: 10px"></td>

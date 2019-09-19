@@ -283,7 +283,7 @@ namespace vhcbcloud
                     if (chkRow.Checked)
                     {
                         DropDownList ddlLoanId = (row.Cells[0].FindControl("ddlLoanId") as DropDownList);
-                        if (ddlLoanId.SelectedIndex == 0)
+                        if (ddlLoanId.SelectedIndex == -1)
                         {
                             lblErrorMsg.Text = "All disbursements need an identified Loan Id";
                             IsValidData = false;
@@ -305,7 +305,7 @@ namespace vhcbcloud
                         {
                             DropDownList ddlLoanId = (row.Cells[0].FindControl("ddlLoanId") as DropDownList);
 
-                            if (ddlLoanId.SelectedIndex != 0)
+                            if (ddlLoanId.SelectedIndex != -1)
                             {
                                 int LoanId = Convert.ToInt32(ddlLoanId.SelectedValue);
                                 int LoanImportID = Convert.ToInt32(gvTransactions.DataKeys[row.RowIndex].Value.ToString());

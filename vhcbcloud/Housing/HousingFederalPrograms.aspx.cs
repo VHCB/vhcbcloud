@@ -1220,7 +1220,8 @@ namespace vhcbcloud.Housing
                 HousingFederalProgramsData.AddFederalProjectInspection(DataUtils.GetInt(hfProjectFederalID.Value),
                            DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                            DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
-                           DataUtils.GetDate(txtNextInspDeadLine.Text), chkRespNotNeed.Checked);
+                           DataUtils.GetDate(txtNextInspDeadLine.Text), chkRespNotNeed.Checked, 
+                           DataUtils.GetInt(hfProjectId.Value));
                 cbAddNewInspections.Checked = false;
 
                 BindInspectionsGrid();

@@ -241,6 +241,7 @@
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FundMaintenance.aspx" />
+    <Content Include="GetAddressFromGoogleAPI.aspx" />
     <Content Include="GrantMaintenance.aspx" />
     <Content Include="Housing\HomeOwnership.aspx" />
     <Content Include="Housing\HOPWAManagement.aspx" />
@@ -270,6 +271,7 @@
     <Content Include="Lead\ProjectLeadOccupants.aspx" />
     <Content Include="LoanMaintenance.aspx" />
     <Content Include="LoanSummary.aspx" />
+    <Content Include="LoanSummaryTemp.aspx" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
@@ -282,6 +284,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
+    <Content Include="PoolAssignments.aspx" />
     <Content Include="ProjectCheckRequestNew.aspx" />
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
@@ -835,6 +838,13 @@
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetAddressFromGoogleAPI.aspx.cs">
+      <DependentUpon>GetAddressFromGoogleAPI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetAddressFromGoogleAPI.aspx.designer.cs">
+      <DependentUpon>GetAddressFromGoogleAPI.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GrantMaintenance.aspx.cs">
       <DependentUpon>GrantMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -927,6 +937,13 @@
     <Compile Include="LoanSummary.aspx.designer.cs">
       <DependentUpon>LoanSummary.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LoanSummaryTemp.aspx.cs">
+      <DependentUpon>LoanSummaryTemp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanSummaryTemp.aspx.designer.cs">
+      <DependentUpon>LoanSummaryTemp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -952,6 +969,13 @@
       <DependentUpon>MilestonesQuickentry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="PoolAssignments.aspx.cs">
+      <DependentUpon>PoolAssignments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PoolAssignments.aspx.designer.cs">
+      <DependentUpon>PoolAssignments.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ProjectCheckRequest.aspx.cs">
       <DependentUpon>ProjectCheckRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

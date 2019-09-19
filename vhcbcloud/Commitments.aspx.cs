@@ -1,4 +1,5 @@
 
+using DataAccessLayer;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 CheckPageAccess();
+                CheckTargetYearAccess();
             }
         }
 
@@ -685,9 +687,9 @@ namespace vhcbcloud
                 if (hfGrantee.Value != "")
                     granteeId = Convert.ToInt32(hfGrantee.Value);
 
-                DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransaction(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
+                DataTable dtTrans = FinancialTransactions.AddBoardFinancialTransactionCommitment(Convert.ToInt32(hfProjId.Value), Convert.ToDateTime(txtTransDate.Text),
                     TransAmount, granteeId, "Board Commitment",
-                    TRANS_PENDING_STATUS, GetUserId());
+                    TRANS_PENDING_STATUS, GetUserId(), ddlTargetYear.SelectedValue.ToString());
 
                 hfTransId.Value = dtTrans.Rows[0]["transid"].ToString();
                 BindTransGrid(GetTransId());
@@ -1263,9 +1265,13 @@ namespace vhcbcloud
                     gvPTrans.DataBind();
 
                     ClearTransactionDetailForm();
+                    BindLookUP(ddlTargetYear, 2272);
+
                     DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfProjId.Value));
 
                     lblProjName.Text = dtProjects.Rows[0]["Description"].ToString();
+                    PopulateDropDown(ddlTargetYear, dtProjects.Rows[0]["TargetYr"].ToString());
+
                     dt = new DataTable();
                     dt = FinancialTransactions.GetGranteeByProject(Convert.ToInt32(hfProjId.Value));
                     if (dt.Rows.Count > 0)
@@ -1318,7 +1324,34 @@ namespace vhcbcloud
         {
             Response.Redirect("commitments.aspx");
         }
-        
+
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                //LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue.Trim() == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
         /// <summary>
         /// Checking Page Access
         /// </summary>
@@ -1347,6 +1380,20 @@ namespace vhcbcloud
                 Response.Redirect("Reallocations.aspx");
             else if (rdBtnFinancial.Items[3].Enabled)
                 Response.Redirect("Assignments.aspx");
+        }
+
+        private void CheckTargetYearAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "37661")
+                    ddlTargetYear.Enabled = true;
+            }
+            if (!rdBtnSelection.Items[0].Enabled)
+                rdBtnSelection.SelectedIndex = 1;
         }
     }
 }

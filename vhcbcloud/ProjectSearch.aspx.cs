@@ -50,6 +50,8 @@ namespace vhcbcloud
         {
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlProjectType, 119);
+            BindLookUP(ddlTargetYear, 2272);
+            
             //BindPrimaryApplicants();
             BindProjectTowns();
             BindCounties();
@@ -202,7 +204,7 @@ namespace vhcbcloud
             dvSearchResults.Visible = true;
             DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
-                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked);
+                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked, ddlTargetYear.SelectedValue.ToString());
 
             List<int> lstProjectId = new List<int>();
             Session["lstSearchResultProjectId"] = lstProjectId;
@@ -348,7 +350,8 @@ namespace vhcbcloud
             List<string> Applicants = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+                //Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+                Applicants.Add(dt.Rows[i][1].ToString());
             }
             return Applicants.ToArray();
 

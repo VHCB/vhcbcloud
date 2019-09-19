@@ -29,6 +29,9 @@
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
+                                <asp:ImageButton ID="imgLoanSummary" runat="server" ImageUrl="~/Images/LoanSummary.png" ToolTip="Loan Summary" Text="Loan Summary"
+                                    Style="border: none; vertical-align: middle;" Visible="true"
+                                    OnClientClick="PopupLoanSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" ToolTip="Award Summary" Text="Award Summary"
                                     Style="border: none; vertical-align: middle;" Visible="false"
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
@@ -157,8 +160,11 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 150px; height: 20px;"></td>
-                                        <td style="width: 250px; height: 20px;"></td>
+                                        <td style="width: 150px; height: 20px;"><span class="labelClass">Target Year</span></td>
+                                        <td style="width: 250px; height: 20px;">
+                                            <asp:DropDownList ID="ddlTargetYear" CssClass="clsDropDown" runat="server" Enabled="false">
+                                            </asp:DropDownList>
+                                        </td>
                                         <td style="width: 100px; text-align: left; height: 20px;"><span class="labelClass">Verify: </span></td>
                                         <td style="width: 270px; height: 20px;">
                                             <asp:CheckBox ID="chkApprove" runat="server" Text="Verified" />
@@ -419,7 +425,7 @@
                         </div>
 
                         <div class="panel-body" id="dvMilestoneGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
@@ -678,7 +684,8 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Addresses</h3>
+                                        <h3 class="panel-title">Addresses
+                                        <asp:CheckBox ID="cbValidation" runat="server" Text="" ToolTip="Remove ALL Validations" /></h3>
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAddress" runat="server" Text="Add New Address" />
@@ -945,7 +952,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"
@@ -1109,7 +1116,9 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project#">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProjectNumber" runat="Server" Text='<%# Eval("Proj_num") %>' />
+                                                <%--<asp:Label ID="lblProjectNumber" runat="Server" Text='<%# Eval("Proj_num") %>' />--%>
+                                                 <asp:HyperLink ID="HyperLink1" runat="server" Target='_self'
+                                                    NavigateUrl='<%# String.Format("~/ProjectMaintenance.aspx?ProjectId={0}", Eval("ProjectId")) %>'><%# Eval("Proj_num") %></asp:HyperLink>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Name">
@@ -1279,10 +1288,10 @@
             $('#<%= txtProjNum.ClientID%>').blur(function () {
                 IsProjectNumberExist();
             });
-            gridviewScroll(<%=gvMilestone.ClientID%>);
+            
             gridviewScroll(<%=gvAddress.ClientID%>);
             gridviewScroll(<%=gvEntity.ClientID%>);
-        
+            
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');
                 RefreshGrids();
@@ -1295,11 +1304,12 @@
                 height: 100
             });
         }
-
         function PopupAwardSummary() {
             window.open('./awardsummary.aspx?projectid=' + $("#<%= hfProjectId.ClientID%>").val())
         };
-
+        function PopupLoanSummary() {
+            window.open('./LoanSummaryTemp.aspx?projectid=' + $("#<%= hfProjectId.ClientID%>").val())
+        };
         function IsProjectNumberExist() {
             $.ajax({
                 type: "POST",

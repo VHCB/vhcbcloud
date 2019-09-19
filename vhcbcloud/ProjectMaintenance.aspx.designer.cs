@@ -49,6 +49,15 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.ImageButton imgSearch;
         
         /// <summary>
+        /// imgLoanSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton imgLoanSummary;
+        
+        /// <summary>
         /// ibAwardSummary control.
         /// </summary>
         /// <remarks>
@@ -308,6 +317,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlManager;
+        
+        /// <summary>
+        /// ddlTargetYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTargetYear;
         
         /// <summary>
         /// chkApprove control.
@@ -713,6 +731,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewAddress;
+        
+        /// <summary>
+        /// cbValidation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbValidation;
         
         /// <summary>
         /// cbAddAddress control.

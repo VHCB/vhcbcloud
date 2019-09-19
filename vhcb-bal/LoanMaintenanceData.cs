@@ -14,7 +14,39 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class LoanMaintenanceData
     {
-        
+        public static DataTable GetLoanDetailsIdList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetLoanDetailsIdList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
         public static DataTable GetLoanTransferList(int LoanID)
         {
             DataTable dt = null;
@@ -321,6 +353,11 @@ namespace VHCBCommon.DataAccessLayer
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
 
+                        SqlParameter parmMessage1 = new SqlParameter("@LoanDetailId", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+                        
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -328,7 +365,7 @@ namespace VHCBCommon.DataAccessLayer
                         LoadDetailsResult ap = new LoadDetailsResult();
 
                         ap.IsExist = DataUtils.GetBool(command.Parameters["@IsExist"].Value.ToString());
-                        
+                        ap.LoanDetailId = DataUtils.GetInt(command.Parameters["@LoanDetailId"].Value.ToString());
 
                         return ap;
                     }
@@ -1178,5 +1215,6 @@ namespace VHCBCommon.DataAccessLayer
     public class LoadDetailsResult
     {
         public bool IsExist { set; get; }
+        public int LoanDetailId { set; get; }
     }
 }

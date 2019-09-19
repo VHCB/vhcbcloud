@@ -286,6 +286,7 @@ namespace vhcbcloud
             BindLookUP(ddlProjectGoal, 201);
             BindLookUP(ddlEntityRole, 170);
             BindTown();
+            BindLookUP(ddlTargetYear, 2272);
         }
 
         private void EventProgramSelection()
@@ -541,6 +542,7 @@ namespace vhcbcloud
             txtPrimaryApplicant.Text = "";
             txtProjectName.Text = "";
             ddlProjectGoal.SelectedIndex = -1;
+            ddlTargetYear.SelectedIndex = -1;
         }
 
         protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
@@ -736,6 +738,8 @@ namespace vhcbcloud
                 dtApprove.Text = "";
 
             hfIsVerified.Value = drProjectDetails["verified"].ToString();
+
+            PopulateDropDown(ddlTargetYear, drProjectDetails["TargetYr"].ToString());
         }
 
         private void GenerateTabs(int ProjectId, int ProgramId)
@@ -897,6 +901,7 @@ namespace vhcbcloud
                     AddProject ap = ProjectMaintenanceData.AddProject(txtProjNum.Text, DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
                         txtPrimaryApplicant.Text, txtProjectName.Text, DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlTargetYear.SelectedValue.ToString()),
                         cbAddTBDAddress.Checked);
 
                     if (ap.IsDuplicate)
@@ -941,6 +946,7 @@ namespace vhcbcloud
                         DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
                         txtPrimaryApplicant.Text, txtProjectName.Text,
                         DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlTargetYear.SelectedValue.ToString()),
                         cbProjectActive.Checked,
                         chkApprove.Checked);
 
@@ -1157,10 +1163,10 @@ namespace vhcbcloud
                             ddlTown.SelectedValue, //txtTown.Text, 
                             ddlVillages.SelectedValue, // txtVillage.Text,
                             txtState.Text, txtZip.Text, ddlCounty.SelectedValue, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked,
-                            26241);// int.Parse(ddlAddressType.SelectedValue.ToString()));
+                            26241, cbValidation.Checked);// int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         btnAddAddress.Text = "Add";
-
+                      
                         if (objProjectMaintResult.IsDuplicate && !objProjectMaintResult.IsActive)
                             LogMessage("Address already exist as in-active");
                         else if (objProjectMaintResult.IsDuplicate)
@@ -1176,6 +1182,7 @@ namespace vhcbcloud
                     //dvAddress.Visible = false;
                     dvAddressGrid.Visible = true;
                     cbAddAddress.Checked = false;
+                    cbValidation.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -1679,43 +1686,70 @@ namespace vhcbcloud
             //    return false;
             //}
 
-            if (ddlTown.SelectedItem.Text != "Various" && txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+            if (!cbValidation.Checked)
             {
-                LogMessage("Enter Street#");
-                txtStreetNo.Focus();
-                return false;
+                if (ddlTown.SelectedItem.Text != "Various" && txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+                {
+                    LogMessage("Enter Street#");
+                    txtStreetNo.Focus();
+                    return false;
+                }
+                if (ddlTown.SelectedItem.Text != "Various" && txtAddress1.Text.Trim() == "")
+                {
+                    LogMessage("Enter Address1");
+                    txtAddress1.Focus();
+                    return false;
+                }
+                if (ddlTown.SelectedItem.Text != "Various" && txtZip.Text.Trim() == "")
+                {
+                    LogMessage("Enter Zip");
+                    txtZip.Focus();
+                    return false;
+                }
+                if (ddlTown.SelectedIndex == 0)
+                {
+                    LogMessage("Select Town");
+                    ddlTown.Focus();
+                    return false;
+                }
+                //if (txtTown.Text.Trim() == "")
+                //{
+                //    LogMessage("Enter Town");
+                //    txtTown.Focus();
+                //    return false;
+                //}
+                if (txtState.Text.Trim() == "")
+                {
+                    LogMessage("Enter State");
+                    txtState.Focus();
+                    return false;
+                }
+                return true;
             }
-            if (ddlTown.SelectedItem.Text != "Various" && txtAddress1.Text.Trim() == "")
+            else
             {
-                LogMessage("Enter Address1");
-                txtAddress1.Focus();
-                return false;
+                if (txtLattitude.Text.Trim() != "")
+                {
+                    if (txtLongitude.Text.Trim() == "")
+                    {
+                        LogMessage("Enter Longitude");
+                        txtLongitude.Focus();
+                        return false;
+                    }
+                }
+
+                if (txtLongitude.Text.Trim() != "")
+                {
+                    if (txtLattitude.Text.Trim() == "")
+                    {
+                        LogMessage("Enter Lattitude");
+                        txtLattitude.Focus();
+                        return false;
+                    }
+                }
+
+                return true;
             }
-            if (ddlTown.SelectedItem.Text != "Various" && txtZip.Text.Trim() == "")
-            {
-                LogMessage("Enter Zip");
-                txtZip.Focus();
-                return false;
-            }
-            if (ddlTown.SelectedIndex == 0)
-            {
-                LogMessage("Select Town");
-                ddlTown.Focus();
-                return false;
-            }
-            //if (txtTown.Text.Trim() == "")
-            //{
-            //    LogMessage("Enter Town");
-            //    txtTown.Focus();
-            //    return false;
-            //}
-            if (txtState.Text.Trim() == "")
-            {
-                LogMessage("Enter State");
-                txtState.Focus();
-                return false;
-            }
-            return true;
         }
 
         [System.Web.Services.WebMethod()]
@@ -2226,7 +2260,7 @@ namespace vhcbcloud
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 if (dt.Rows[i][1].ToString() == contextKey)
-                    ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+                    ProjNumbers.Add("" + dt.Rows[i][0].ToString() + "");
             }
             return ProjNumbers.ToArray();
         }
@@ -2617,6 +2651,9 @@ namespace vhcbcloud
             {
                 if (row["FxnID"].ToString() == "27454")
                     rdBtnSelection.Items[0].Enabled = true;
+
+                if (row["FxnID"].ToString() == "37661")
+                    ddlTargetYear.Enabled = true;
             }
             if (!rdBtnSelection.Items[0].Enabled)
                 rdBtnSelection.SelectedIndex = 1;
@@ -2783,6 +2820,8 @@ namespace vhcbcloud
                         if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political")
                         {
                             //txtTown.Text = res.Results[0].AddressComponents[ii].LongName;
+                            PopulateDropDown(ddlTown, res.Results[0].AddressComponents[ii].LongName);
+                            BindCountyAndVillage();
                         }
                         if (types == "administrative_area_level_1,political")
                         {
@@ -2795,7 +2834,7 @@ namespace vhcbcloud
                         if (types == "administrative_area_level_2,political")
                         {
                             //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
-                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                            //PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
                         }
                     }
                 }
@@ -2803,6 +2842,11 @@ namespace vhcbcloud
         }
 
         protected void ddlTown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindCountyAndVillage();
+        }
+
+        private void BindCountyAndVillage()
         {
             BindCounty(ddlTown.SelectedValue);
             BindVillages(ddlTown.SelectedValue);

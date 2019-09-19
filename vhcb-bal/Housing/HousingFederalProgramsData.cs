@@ -686,7 +686,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 
         public static void AddFederalProjectInspection(int ProjectFederalID, DateTime InspectDate, string NextInspect, 
             int InspectStaff, DateTime InspectLetter, DateTime RespDate, bool Deficiency, DateTime InspectDeadline, 
-            bool RespNotNeed)
+            bool RespNotNeed, int ProjectId)
         {
             try
             {
@@ -709,7 +709,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("Deficiency", Deficiency));
                         command.Parameters.Add(new SqlParameter("InspectDeadline", InspectDeadline.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : InspectDeadline));
                         command.Parameters.Add(new SqlParameter("RespNotNeed", RespNotNeed));
-
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

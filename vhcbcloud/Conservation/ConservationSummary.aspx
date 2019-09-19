@@ -411,6 +411,218 @@
                     </div>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvTrailMileage">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Trail Mileage</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddTrailMileage" runat="server" Text="Add New Trail Mileage" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvNewTrailMileageForm">
+                            <asp:Panel runat="server" ID="Panel7">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Trail</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlTrail" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Mileage</span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtMileage" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                         <td style="width: 100px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:CheckBox ID="cbProtected" CssClass="ChkBox" runat="server" Text="Protected" Checked="false" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td>
+                                            <asp:Button ID="btnAddTrailMileage" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddTrailMileage_Click" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvTrailMileageGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel10" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvTrailMileage" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
+                                    OnRowEditing="gvTrailMileage_RowEditing" 
+                                    OnRowCancelingEdit="gvTrailMileage_RowCancelingEdit"
+                                    OnRowUpdating="gvTrailMileage_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Conserve Trails" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveTrailsID" runat="Server" Text='<%# Eval("ConserveTrailsID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Trail">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTrailDescription" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                            <%-- <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlTrail" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtLKTrail" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LKTrail") %>' Visible="false">
+                                                </asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Miles">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMiles" runat="Server" Text='<%# Eval("Miles") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtMiles" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Miles") %>'>
+                                                </asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Protected">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkProtected" Enabled="false" runat="server" Checked='<%# Eval("Protected") %>' />
+                                            </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkProtected" runat="server" Checked='<%# Eval("Protected") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="panel-width" runat="server" id="dvAllowedSpecialUses">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Allowed Special Uses</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAllowedSpecialUses" runat="server" Text="Add New Allowed Special Uses" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvNewAllowedSpecialUsesForm">
+                            <asp:Panel runat="server" ID="Panel11">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Allowed Special Uses</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlAllowedSpecialUses" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 180px">
+                                        </td>
+                                         <td style="width: 100px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 180px">
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td>
+                                            <asp:Button ID="btnAddAllowedSpecialUses" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAllowedSpecialUses_Click" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvAllowedSpecialUsesGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel12" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAllowedSpecialUses" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
+                                    OnRowEditing="gvAllowedSpecialUses_RowEditing" 
+                                    OnRowCancelingEdit="gvAllowedSpecialUses_RowCancelingEdit"
+                                    OnRowUpdating="gvAllowedSpecialUses_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ConserveTrailsUsageId" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveTrailsUsageId" runat="Server" Text='<%# Eval("ConserveTrailsUsageId") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Allowed Special Uses">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAllowedSpecialUses" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel-width" runat="server" id="dvNewSurfaceWaters">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -670,6 +882,18 @@
 
             $('#<%= cbAddAcreage.ClientID%>').click(function () {
                 $('#<%= dvNewAcreageForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvNewTrailMileageForm.ClientID%>').toggle($('#<%= cbAddTrailMileage.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddTrailMileage.ClientID%>').click(function () {
+                $('#<%= dvNewTrailMileageForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvNewAllowedSpecialUsesForm.ClientID%>').toggle($('#<%= cbAllowedSpecialUses.ClientID%>').is(':checked'));
+
+            $('#<%= cbAllowedSpecialUses.ClientID%>').click(function () {
+                $('#<%= dvNewAllowedSpecialUsesForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvNewSurfaceWatersForm.ClientID%>').toggle($('#<%= cbAddSurfaceWaters.ClientID%>').is(':checked'));

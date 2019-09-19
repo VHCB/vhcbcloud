@@ -2785,6 +2785,50 @@ namespace VHCBCommon.DataAccessLayer
             return dtTrans;
         }
 
+        public static DataTable AddBoardFinancialTransactionCommitment(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType,
+            int lkStatus, int UserId, string TargetYr)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            DataTable dtStatus = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddBoardFinancialTransactionCommitment";
+                command.Parameters.Add(new SqlParameter("projectId", projectId));
+                command.Parameters.Add(new SqlParameter("transDate", transDate));
+                command.Parameters.Add(new SqlParameter("transAmt", transAmt));
+                command.Parameters.Add(new SqlParameter("payeeApplicant", payeeAppl));
+                command.Parameters.Add(new SqlParameter("commitmentType", CommitmentType));
+                command.Parameters.Add(new SqlParameter("lkStatus", lkStatus));
+                command.Parameters.Add(new SqlParameter("UserId", UserId));
+                if (TargetYr != "NA")
+                    command.Parameters.Add(new SqlParameter("TargetYr", DataUtils.GetInt(TargetYr)));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtStatus = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtStatus;
+        }
+
         public static DataTable AddBoardFinancialTransaction(int projectId, DateTime transDate, decimal transAmt, Nullable<int> payeeAppl, string CommitmentType,
             int lkStatus, int UserId)
         {

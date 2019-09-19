@@ -846,6 +846,16 @@
                                                 <asp:Label ID="lblAttachedApplicantName" runat="Server" Text='<%# Eval("AttachedApplicantName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Email">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEmail" runat="Server" Text='<%# Eval("Email") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Default Role">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblRole" runat="Server" Text='<%# Eval("DefaultRole") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />

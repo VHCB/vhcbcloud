@@ -289,6 +289,8 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlWaterBody, 140);
             BindLookUP(ddlGeoSignificance, 255);
             BindLookUP(ddlSubwatershed, 261);
+            BindLookUP(ddlTrail, 1270);
+            BindLookUP(ddlAllowedSpecialUses, 1271);
         }
 
         private void BindLookupSubWatershed(int TypeId)
@@ -348,6 +350,8 @@ namespace vhcbcloud.Conservation
             BindAcreageGrid();
             BindSurfacewatersGrid();
             BindWatershedGrid();
+            BindTrailMilesGrid();
+            BindTrailUsageGrid();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -509,7 +513,7 @@ namespace vhcbcloud.Conservation
             }
 
             Result objResult = ConservationSummaryData.AddConserveAcres(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlAcreageDescription.SelectedValue.ToString()), DataUtils.GetInt(txtAcres.Text));
+                DataUtils.GetInt(ddlAcreageDescription.SelectedValue.ToString()), DataUtils.GetDecimal(txtAcres.Text));
             CleaAcreageForm();
 
             BindAcreageGrid();
@@ -595,7 +599,7 @@ namespace vhcbcloud.Conservation
             }
 
             int ConserveAcresID = DataUtils.GetInt(((Label)gvAcreage.Rows[rowIndex].FindControl("lblConserveAcresID")).Text);
-            int Acres = DataUtils.GetInt(strAcres);
+            decimal Acres = DataUtils.GetDecimal(strAcres);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAcreage.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
             ConservationSummaryData.UpdateConserveAcres(ConserveAcresID, Acres, RowIsActive);
@@ -940,6 +944,163 @@ namespace vhcbcloud.Conservation
             {
                 LogError(Pagename, "gvWatershed_RowDataBound", "", ex.Message);
             }
+        }
+
+        protected void btnAddTrailMileage_Click(object sender, EventArgs e)
+        {
+            Result objResult = ConservationSummaryData.AddConserveTrails(DataUtils.GetInt(hfConserveId.Value),
+               DataUtils.GetInt(ddlTrail.SelectedValue.ToString()),
+               DataUtils.GetDecimal(txtMileage.Text),
+               cbProtected.Checked);
+
+            if (objResult.IsDuplicate && !objResult.IsActive)
+                LogMessage("Trail Miles already exist as in-active");
+            else if (objResult.IsDuplicate)
+                LogMessage("Trail Miles already exist");
+            else
+                LogMessage("New Trail Miles added successfully");
+
+            ddlTrail.SelectedIndex = -1;
+            txtMileage.Text = "";
+            cbProtected.Checked = false;
+            BindTrailMilesGrid();
+        }
+
+        protected void gvTrailMileage_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvTrailMileage.EditIndex = e.NewEditIndex;
+            BindTrailMilesGrid();
+        }
+
+        protected void gvTrailMileage_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvTrailMileage.EditIndex = -1;
+            BindTrailMilesGrid();
+        }
+
+        protected void gvTrailMileage_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            string strMiles = ((TextBox)gvTrailMileage.Rows[rowIndex].FindControl("txtMiles")).Text;
+
+            if (string.IsNullOrWhiteSpace(strMiles) == true)
+            {
+                LogMessage("Enter Miles");
+                return;
+            }
+            if (DataUtils.GetDecimal(strMiles) <= 0)
+            {
+                LogMessage("Enter valid Miles");
+                return;
+            }
+
+            int ConserveTrailsID = DataUtils.GetInt(((Label)gvTrailMileage.Rows[rowIndex].FindControl("lblConserveTrailsID")).Text);
+            decimal Miles = DataUtils.GetDecimal(strMiles);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTrailMileage.Rows[rowIndex].FindControl("chkActive")).Checked);
+            bool Protected = Convert.ToBoolean(((CheckBox)gvTrailMileage.Rows[rowIndex].FindControl("chkProtected")).Checked);
+
+            ConservationSummaryData.UpdateConserveTrails(ConserveTrailsID, Miles, Protected, RowIsActive);
+            gvTrailMileage.EditIndex = -1;
+
+            BindTrailMilesGrid();
+
+            LogMessage("Trail Miles updated successfully");
+        }
+
+        private void BindTrailMilesGrid()
+        {
+            try
+            {
+                DataTable dtTrails = ConservationSummaryData.GetConserveTrailsList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
+
+                if (dtTrails.Rows.Count > 0)
+                {
+                    dvTrailMileageGrid.Visible = true;
+                    gvTrailMileage.DataSource = dtTrails;
+                    gvTrailMileage.DataBind();
+                }
+                else
+                {
+                    dvTrailMileageGrid.Visible = false;
+                    gvTrailMileage.DataSource = null;
+                    gvTrailMileage.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindTrailMilesGrid", "", ex.Message);
+            }
+        }
+
+        protected void btnAddAllowedSpecialUses_Click(object sender, EventArgs e)
+        {
+            Result objResult = ConservationSummaryData.AddConserveTrailUsage(DataUtils.GetInt(hfConserveId.Value),
+               DataUtils.GetInt(ddlAllowedSpecialUses.SelectedValue.ToString()));
+
+            if (objResult.IsDuplicate && !objResult.IsActive)
+                LogMessage("Trail Usage already exist as in-active");
+            else if (objResult.IsDuplicate)
+                LogMessage("Trail Usage already exist");
+            else
+                LogMessage("New Usage added successfully");
+
+            ddlAllowedSpecialUses.SelectedIndex = -1;
+            
+            cbAllowedSpecialUses.Checked = false;
+            BindTrailUsageGrid();
+        }
+
+        private void BindTrailUsageGrid()
+        {
+            try
+            {
+                DataTable dtTrails = ConservationSummaryData.GetConserveTrailUsageList(DataUtils.GetInt(hfConserveId.Value), cbActiveOnly.Checked);
+
+                if (dtTrails.Rows.Count > 0)
+                {
+                    dvAllowedSpecialUsesGrid.Visible = true;
+                    gvAllowedSpecialUses.DataSource = dtTrails;
+                    gvAllowedSpecialUses.DataBind();
+                }
+                else
+                {
+                    dvAllowedSpecialUsesGrid.Visible = false;
+                    gvAllowedSpecialUses.DataSource = null;
+                    gvAllowedSpecialUses.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindTrailUsageGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvAllowedSpecialUses_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAllowedSpecialUses.EditIndex = e.NewEditIndex;
+            BindTrailUsageGrid();
+        }
+
+        protected void gvAllowedSpecialUses_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAllowedSpecialUses.EditIndex = -1;
+            BindTrailUsageGrid();
+        }
+
+        protected void gvAllowedSpecialUses_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int ConserveTrailsUsageId = DataUtils.GetInt(((Label)gvTrailMileage.Rows[rowIndex].FindControl("lblConserveTrailsUsageId")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTrailMileage.Rows[rowIndex].FindControl("chkActive")).Checked);
+           
+
+            ConservationSummaryData.UpdateConserveTrailUsage(ConserveTrailsUsageId, RowIsActive);
+            gvAllowedSpecialUses.EditIndex = -1;
+
+            BindTrailUsageGrid();
+
+            LogMessage("Trail Usage updated successfully");
         }
     }
 }
