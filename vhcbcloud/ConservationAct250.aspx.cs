@@ -20,7 +20,7 @@ namespace vhcbcloud
             dvMessage.Visible = false;
             lblErrorMsg.Text = "";
 
-            ifProjectNotes.Src = "ProjectNotes.aspx";
+            ifProjectNotes.Src = "Act250Notes.aspx";
 
             var ctrlName = Request.Params[Page.postEventSourceID];
             var args = Request.Params[Page.postEventArgumentID];
@@ -53,6 +53,7 @@ namespace vhcbcloud
             BindApplicants(ddlDeveloper);
             //BindProjects(ddlProjects);
             //BindLookUP(ddlConservationTown, 89);
+            LoadFundNames();
         }
 
         protected void BindProjects(DropDownList ddList)
@@ -125,22 +126,40 @@ namespace vhcbcloud
             dvNewDeveloperPayments.Visible = false;
             dvNewlandUsePermitFinancials.Visible = false;
             dvNewVHCBProjects.Visible = false;
+            dvNewPermitCommitments.Visible = false;
+            int Type;
+
+            if (rdBtnFilter.SelectedIndex == 0)
+                Type = 145;
+            else
+                Type = 144;
 
             try
             {
-                DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked);
-
-                if (dt.Rows.Count > 0)
+                if (Session["SortExp"] == null)
                 {
-                    dvAct250InfoGrid.Visible = true;
-                    gvAct250Info.DataSource = dt;
+                    gvAct250Info.DataSource = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, Type);
                     gvAct250Info.DataBind();
                 }
                 else
                 {
-                    dvAct250InfoGrid.Visible = false;
-                    gvAct250Info.DataSource = null;
-                    gvAct250Info.DataBind();
+                    DataTable dt = ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, Type);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataView view = dt.DefaultView;
+                        view.Sort = Session["SortExp"].ToString();
+                        gvAct250Info.DataSource = view.ToTable();
+                        gvAct250Info.DataBind();
+
+                        dvAct250InfoGrid.Visible = true;
+                    }
+                    else
+                    {
+                        dvAct250InfoGrid.Visible = false;
+                        gvAct250Info.DataSource = null;
+                        gvAct250Info.DataBind();
+                    }
                 }
             }
             catch (Exception ex)
@@ -161,20 +180,20 @@ namespace vhcbcloud
             string URL = txtURL.Text;
 
             if (URL != "")
-            {
-                if (!URL.Contains("http"))
-                    URL = "http://" + URL;
-            }
+                URL = URL.Split('/').Last();
 
             if (btnAddAct250Info.Text == "Submit")
             {
                 ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250Farm(txtLandUsePermit.Text,
                     DataUtils.GetInt(ddlTown.SelectedValue.ToString()), DataUtils.GetInt(txtDistrictNo.Text),
-                    DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text, DataUtils.GetInt(txtPrimeSoilsAcresLost.Text),
-                    DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text), DataUtils.GetInt(txtAcresDeveloped.Text),
+                    DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text, 
+                    DataUtils.GetDecimal(txtPrimeSoilsAcresLost.Text),
+                    DataUtils.GetDecimal(txtStateSoilsAcresLost.Text), 
+                    DataUtils.GetDecimal(txtTotAcresLost.Text), 
+                    DataUtils.GetDecimal(txtAcresDeveloped.Text),
                     DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDate(txtMitigationDate.Text), URL);
+                    DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()));
 
                 BindGrids();
                 ClearAct250InfoForm();
@@ -190,10 +209,12 @@ namespace vhcbcloud
             {
                 ConservationAct250Data.UpdateAct250Farm(DataUtils.GetInt(hfAct250FarmID.Value), DataUtils.GetInt(ddlTown.SelectedValue.ToString()),
                     DataUtils.GetInt(txtDistrictNo.Text), DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), txtDevname.Text,
-                    DataUtils.GetInt(txtPrimeSoilsAcresLost.Text), DataUtils.GetInt(txtStateSoilsAcresLost.Text), DataUtils.GetInt(txtTotAcresLost.Text),
-                    DataUtils.GetInt(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
+                    DataUtils.GetDecimal(txtPrimeSoilsAcresLost.Text), DataUtils.GetDecimal(txtStateSoilsAcresLost.Text), 
+                    DataUtils.GetDecimal(txtTotAcresLost.Text),
+                    DataUtils.GetDecimal(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDate(txtMitigationDate.Text), URL, chkAct250Active.Checked);
+                    DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
+                    chkAct250Active.Checked, txtLandUsePermit.Text);
 
                 gvAct250Info.EditIndex = -1;
                 ClearAct250InfoForm();
@@ -219,7 +240,7 @@ namespace vhcbcloud
             txtAnticipatedFunds.Text = "";
             txtMitigationDate.Text = "";
             txtURL.Text = "";
-
+            ddlFundName.SelectedIndex = -1;
             txtLandUsePermit.Enabled = true;
             chkAct250Active.Enabled = false;
         }
@@ -262,6 +283,30 @@ namespace vhcbcloud
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
@@ -271,7 +316,7 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[7].Controls[0].Visible = false;
 
                         Label lblAct250FarmID = e.Row.FindControl("lblAct250FarmID") as Label;
                         hfAct250FarmID.Value = lblAct250FarmID.Text;
@@ -302,8 +347,17 @@ namespace vhcbcloud
             txtMitigationDate.Text = dr["MitDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MitDate"].ToString()).ToShortDateString();
             txtURL.Text = dr["URL"].ToString();
             chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+            PopulateDropDown(ddlFundName, dr["FundID"].ToString());
+            spnUnits.Visible = false;
+            txtUnits.Visible = false;
 
-            txtLandUsePermit.Enabled = false;
+            if (dr["Type"].ToString() == "144")
+            {
+                spnUnits.Visible = true;
+                txtUnits.Visible = true;
+            }
+
+            //txtLandUsePermit.Enabled = false;
             chkAct250Active.Enabled = true;
         }
 
@@ -336,6 +390,35 @@ namespace vhcbcloud
 
             dvNewVHCBProjects.Visible = true;
             BindVHCBProjectsGrid();
+
+            //BindPermitCommitmentsGrid();
+        }
+
+        private void BindPermitCommitmentsGrid()
+        {
+            try
+            {
+                DataTable dt = ConservationAct250Data.GetAct250PermitCommitList(DataUtils.GetInt(hfAct250FarmID.Value));
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvNewPermitCommitments.Visible = true;
+                    dvPermitCommitmentsGrid.Visible = true;
+                    gvPermitCommitments.DataSource = dt;
+                    gvPermitCommitments.DataBind();
+                }
+                else
+                {
+                    dvNewPermitCommitments.Visible = false;
+                    dvPermitCommitmentsGrid.Visible = false;
+                    gvPermitCommitments.DataSource = null;
+                    gvPermitCommitments.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindDeveloperPaymentsGrid", "", ex.Message);
+            }
         }
 
         private string GetAct250InfoSelectedRecordID(GridView gvAct250Info)
@@ -464,8 +547,17 @@ namespace vhcbcloud
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 CommonHelper.GridViewSetFocus(e.Row);
             {
+                if (e.Row.RowType == DataControlRowType.Header)
+                {
+                    if(ddlFarmType.SelectedValue.ToString() != "144")
+                    e.Row.Cells[3].Text = " ";
+                }
+
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
+                    if (ddlFarmType.SelectedValue.ToString() != "144")
+                        e.Row.Cells[3].Controls[1].Visible = false;
+
                     DropDownList ddlMjrDispositionE = (e.Row.FindControl("ddlMjrDispositionE") as DropDownList);
                     TextBox txtLkConsMajAmend = (e.Row.FindControl("txtLkConsMajAmend") as TextBox);
 
@@ -492,7 +584,7 @@ namespace vhcbcloud
         {
             ConservationAct250Result objConservationAct250Result = ConservationAct250Data.AddAct250DevPay(DataUtils.GetInt(hfAct250FarmID.Value),
                 DataUtils.GetDecimal(Regex.Replace(txtDevPaymentAmount.Text, "[^0-9a-zA-Z.]+", "")),
-                DataUtils.GetDate(txtDevPaymentReceived.Text));
+                DataUtils.GetDate(txtDevPaymentReceived.Text), txtUnits.Text);
 
             ClearDeveloperPaymentsForm();
             BindDeveloperPaymentsGrid();
@@ -515,13 +607,17 @@ namespace vhcbcloud
         protected void gvDeveloperPayments_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
+            string Units = "";
 
             int Act250PayID = DataUtils.GetInt(((Label)gvDeveloperPayments.Rows[rowIndex].FindControl("lblAct250PayID")).Text);
             decimal PaymentAmount = DataUtils.GetDecimal(Regex.Replace(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtpaymentAmount")).Text, "[^0-9a-zA-Z.]+", ""));
             DateTime PayReceivedDate = DataUtils.GetDate(((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtDevPayReceived")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvDeveloperPayments.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvDeveloperPayments.Rows[rowIndex].FindControl("chkActive")).Checked);
 
-            ConservationAct250Data.UpdateAct250DevPay(Act250PayID, PaymentAmount, PayReceivedDate, RowIsActive);
+            if (ddlFarmType.SelectedValue.ToString() == "144")
+                Units = ((TextBox)gvDeveloperPayments.Rows[rowIndex].FindControl("txtUnits")).Text;
+
+            ConservationAct250Data.UpdateAct250DevPay(Act250PayID, PaymentAmount, PayReceivedDate, Units, RowIsActive);
 
             gvDeveloperPayments.EditIndex = -1;
 
@@ -574,17 +670,17 @@ namespace vhcbcloud
 
                     hfProjectsWarning.Value = "0";
 
-                    if (totAnticipatedFunds > DataUtils.GetDecimal(hfLandUsePermitFinancialsBalance.Value))
-                    {
-                        hfProjectsWarning.Value = "1";
-                        WarningMessage(dvVHCBProjectsWarning, lblVHCBProjectsWarning, "Total of Anticpated funds cannot be greater than "
-                            + CommonHelper.myDollarFormat(hfLandUsePermitFinancialsBalance.Value));
-                    }
-                    else
-                    {
-                        dvVHCBProjectsWarning.Visible = false;
-                        lblVHCBProjectsWarning.Text = "";
-                    }
+                    //if (totAnticipatedFunds > DataUtils.GetDecimal(hfLandUsePermitFinancialsBalance.Value))
+                    //{
+                    //    hfProjectsWarning.Value = "1";
+                    //    WarningMessage(dvVHCBProjectsWarning, lblVHCBProjectsWarning, "Total of Anticpated funds cannot be greater than "
+                    //        + CommonHelper.myDollarFormat(hfLandUsePermitFinancialsBalance.Value));
+                    //}
+                    //else
+                    //{
+                    //    dvVHCBProjectsWarning.Visible = false;
+                    //    lblVHCBProjectsWarning.Text = "";
+                    //}
                 }
                 else
                 {
@@ -704,6 +800,95 @@ namespace vhcbcloud
             {
                 LoadConservationTown(GetProjectID(txtPotentialProjNum.Text).ToString());
             }
+        }
+
+        private void LoadFundNames()
+        {
+            try
+            {
+                ddlFundName.DataSource = FundMaintenanceData.GetFundName(cbActiveOnly.Checked);
+                ddlFundName.DataValueField = "fundid";
+                ddlFundName.DataTextField = "name";
+                ddlFundName.DataBind();
+                ddlFundName.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void gvAct250Info_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+            gvAct250Info.DataSource = SortDataTable(ConservationAct250Data.GetAct250FarmsList(cbActiveOnly.Checked, DataUtils.GetInt(hfFilter.Value)), false);
+            gvAct250Info.DataBind();
+            gvAct250Info.PageIndex = pageIndex;
+        }
+        protected DataView SortDataTable(DataTable dataTable, bool isPageIndexChanging)
+        {
+
+            if (dataTable != null)
+            {
+                DataView dataView = new DataView(dataTable);
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (isPageIndexChanging)
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GridViewSortDirection);
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                    else
+                    {
+                        Session["SortExp"] = string.Format("{0} {1}", GridViewSortExpression, GetSortDirection());
+                        dataView.Sort = Session["SortExp"].ToString();
+                    }
+                }
+                return dataView;
+            }
+            else
+            {
+                return new DataView();
+            }
+        } //eof SortDataTable
+
+        private string GridViewSortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? string.Empty; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string GetSortDirection()
+        {
+            switch (GridViewSortDirection)
+            {
+                case "ASC":
+                    GridViewSortDirection = "DESC";
+                    break;
+
+                case "DESC":
+                    GridViewSortDirection = "ASC";
+                    break;
+            }
+
+            return GridViewSortDirection;
+        }
+
+        private string GridViewSortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
+        }
+
+        protected void rdBtnFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rdBtnFilter.SelectedIndex == 0)
+                hfFilter.Value = "145";
+            else
+                hfFilter.Value = "144";
+
+            BindAct250InfoGrid();
         }
     }
 }

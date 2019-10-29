@@ -83,7 +83,8 @@
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Age:</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <%--<asp:TextBox ID="txtAge" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>--%>
+                                            <asp:DropDownList ID="ddlBldgAge" CssClass="clsDropDownLong" runat="server" Style="margin-left: 1"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -208,7 +209,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -398,7 +399,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -414,6 +415,7 @@
     <asp:HiddenField ID="hfLeadBldgID" runat="server" />
     <asp:HiddenField ID="hfLeadUnitID" runat="server" />
     <asp:HiddenField ID="hfSelectedBuilding" runat="server" />
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {

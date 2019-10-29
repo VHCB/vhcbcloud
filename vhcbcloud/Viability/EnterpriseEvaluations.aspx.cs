@@ -34,25 +34,93 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddBPU.Enabled = true;
+            cbAddManagementSkill.Enabled = true;
+            cbAddMilestone.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddEntMilestone.Visible = false;
             btnAddManagementSkill.Visible = false;
+
             cbAddBPU.Enabled = false;
             cbAddManagementSkill.Enabled = false;
             cbAddMilestone.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -86,7 +154,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
-            BindLookUP(ddlMilestone, 162);
+            BindLookUP(ddlMilestone, 247);// 162);
             BindLookUP(ddlQuoteUse, 212);
             BindLookUP(ddlSkillType, 217);
             BindLookUP(ddlPreLevel, 219);//219
@@ -202,17 +270,18 @@ namespace vhcbcloud.Viability
                     DataUtils.GetDecimal(Regex.Replace(txtOtherReq.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtOtherRec.Text, "[^0-9a-zA-Z.]+", "")),
                     cbOtherPending.Checked,
-                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), ddlQuoteUse.SelectedItem.ToString());
+                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), 
+                    txtQuoteName.Text);
 
                 BindGrids();
                 ClearEntMilestoneForm();
 
                 if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
-                    LogMessage("Milestone already exist as in-active");
+                    LogMessage("Status Pts already exist as in-active");
                 else if (objViabilityMaintResult.IsDuplicate)
-                    LogMessage("Milestone Info already exist");
+                    LogMessage("Status Pts Info already exist");
                 else
-                    LogMessage("Milestone Info added successfully");
+                    LogMessage("Status Pts Info added successfully");
             }
             else
             {
@@ -228,7 +297,8 @@ namespace vhcbcloud.Viability
                     DataUtils.GetDecimal(Regex.Replace(txtOtherReq.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtOtherRec.Text, "[^0-9a-zA-Z.]+", "")),
                     cbOtherPending.Checked,
-                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()), ddlQuoteUse.SelectedItem.ToString(),
+                    txtSharedOutcome.Text, DataUtils.GetInt(ddlQuoteUse.SelectedValue.ToString()),
+                    txtQuoteName.Text,
                     chkMilestoneActive.Checked);
 
                 gvEntMilestoneGrid.EditIndex = -1;
@@ -260,6 +330,7 @@ namespace vhcbcloud.Viability
             ddlQuoteUse.SelectedIndex = -1;
             chkMilestoneActive.Enabled = false;
             btnAddEntMilestone.Text = "Submit";
+            txtQuoteName.Text = "";
         }
 
         private void BindMilestonesGrid()
@@ -303,6 +374,8 @@ namespace vhcbcloud.Viability
             BindMilestonesGrid();
             ClearEntMilestoneForm();
             hfEnterpriseEvalID.Value = "";
+
+            btnAddEntMilestone.Visible = true;
             btnAddEntMilestone.Text = "Submit";
         }
 
@@ -316,10 +389,15 @@ namespace vhcbcloud.Viability
                     btnAddEntMilestone.Text = "Update";
                     cbAddMilestone.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddEntMilestone.Visible = true;
+                    else
+                        btnAddEntMilestone.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
                         //e.Row.Cells[7].Controls[0].Visible = false;
 
                         Label lblEnterpriseEvalID = e.Row.FindControl("lblEnterpriseEvalID") as Label;
@@ -340,6 +418,12 @@ namespace vhcbcloud.Viability
             GetEnterpriseEvalID(gvEntMilestoneGrid);
 
             btnAddEntMilestone.Text = "Update";
+
+            if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                btnAddEntMilestone.Visible = true;
+            else
+                btnAddEntMilestone.Visible = false;
+
             cbAddMilestone.Checked = true;
             PopulateEntMilestoneForm(DataUtils.GetInt(hfEnterpriseEvalID.Value));
             ////////////////////////
@@ -360,7 +444,7 @@ namespace vhcbcloud.Viability
         {
             DataRow dr = EnterpriseEvaluationsData.GetEnterpriseEvalMilestonesById(EnterpriseEvalID);
 
-            PopulateDropDown(ddlMilestone, dr["Milestone"].ToString());
+            PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
             txtDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
             txtComments.Text = dr["Comment"].ToString();
             txtLeadPlanAdvisorExp.Text = dr["LeadPlanAdvisorExp"].ToString();
@@ -376,6 +460,7 @@ namespace vhcbcloud.Viability
             cbOtherPending.Checked = DataUtils.GetBool(dr["OtherPend"].ToString());
             txtSharedOutcome.Text = dr["SharedOutcome"].ToString();
             PopulateDropDown(ddlQuoteUse, dr["QuoteUse"].ToString());
+            txtQuoteName.Text = dr["QuoteName"].ToString();
             chkMilestoneActive.Enabled = true;
         }
 

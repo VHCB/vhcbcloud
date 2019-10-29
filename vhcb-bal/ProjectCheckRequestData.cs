@@ -603,7 +603,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
-           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs, DateTime CRDate)
+           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, 
+           int UserID, string LKNODs, DateTime CRDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtPCRDet = null;
@@ -725,6 +726,35 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void PCR_Update_CheckReqDate(int PRCID, DateTime CRDate)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Update_CheckReqDate";
+                command.Parameters.Add(new SqlParameter("ProjectCheckReqID", PRCID));
+                command.Parameters.Add(new SqlParameter("CRDate", CRDate));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataTable UpdateVoucherNumber(int PCRID, string VoucherNum, DateTime CrDate, int userid)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -796,7 +826,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid)
+        public static void AddDefaultPCRQuestions(bool IsLegal, int ProjectCheckReqId, int staffid, bool Secondapproval)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -806,6 +836,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("IsLegal", IsLegal));
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqId", ProjectCheckReqId));
                 command.Parameters.Add(new SqlParameter("staffId", staffid));
+                command.Parameters.Add(new SqlParameter("Secondapproval", Secondapproval));
+
                 command.CommandText = "AddDefaultPCRQuestions";
                 using (connection)
                 {
@@ -905,7 +937,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount)
+        public static void AddPCRTransactionFundDetails(int transid, int fundid, int fundtranstype, decimal fundamount, int ProjectId)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -917,6 +949,41 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("fundid", fundid));
                 command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
                 command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void AddPCRTransactionFundDetailsWithLandUsePermit(int transid, int fundid, int fundtranstype, decimal fundamount, int ProjectID,
+            string usePermit, string useFarmId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "PCR_Trans_Detail_LansUsePermit_Submit";
+                command.Parameters.Add(new SqlParameter("transid", transid));
+                command.Parameters.Add(new SqlParameter("fundid", fundid));
+                command.Parameters.Add(new SqlParameter("fundtranstype", fundtranstype));
+                command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                command.Parameters.Add(new SqlParameter("fundamount", fundamount));
+                command.Parameters.Add(new SqlParameter("LandUsePermit", usePermit));
+                command.Parameters.Add(new SqlParameter("LandUseFarmId", Convert.ToInt32(useFarmId)));
 
                 using (connection)
                 {
@@ -995,7 +1062,6 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-
         public static decimal GetPCRDisbursemetDetailTotal(int ProjectCheckReqID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -1034,7 +1100,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdatePCRQuestionsApproval(int ProjectCheckReqQuestionid, bool isApproved, int UserID)
+        public static void UpdatePCRQuestionsApproval(int ProjectCheckReqQuestionid, bool isApproved, bool isPC, int UserID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -1046,6 +1112,7 @@ namespace VHCBCommon.DataAccessLayer
 
                 command.Parameters.Add(new SqlParameter("ProjectCheckReqQuestionid", ProjectCheckReqQuestionid));
                 command.Parameters.Add(new SqlParameter("Approved", isApproved));
+                command.Parameters.Add(new SqlParameter("PaperCheck", isPC));
                 command.Parameters.Add(new SqlParameter("StaffID", UserID));
 
                 using (connection)
@@ -1064,6 +1131,40 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static DataTable GetCRDates()
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                DataTable dtPCRDet = null;
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetCRDates";
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtPCRDet = ds.Tables[0];
+                    }
+                    return dtPCRDet;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 
     public class PCRDetails

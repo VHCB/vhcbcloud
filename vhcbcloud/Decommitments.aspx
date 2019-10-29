@@ -243,7 +243,7 @@
                                                 </td>
                                                 <td style="width: 15%; float: left"><span class="labelClass">Trans Type :</span></td>
                                                 <td style="width: 25%; float: left">
-                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
+                                                    <asp:DropDownList ID="ddlTransType" CssClass="clsDropDown" runat="server" TabIndex="9" AutoPostBack="true" OnSelectedIndexChanged="ddlTransType_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
                                             </tr>
@@ -258,7 +258,7 @@
                                                     <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                 </td>
                                                 <td style="width: 20%; float: left">
-                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 15%; float: left">
@@ -300,13 +300,16 @@
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblAcctNum" runat="Server" Text='<%# Eval("Account") %>' />
                                                 </ItemTemplate>
+                                                 <EditItemTemplate>
+                                                    <asp:TextBox ID="txtAcctNum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("FundId") %>' Visible="false"></asp:TextBox>
+                                                     </EditItemTemplate>
                                                 <FooterTemplate>
                                                     Running Total :
                                                 </FooterTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                                    <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                                 </ItemTemplate>
                                                 <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>

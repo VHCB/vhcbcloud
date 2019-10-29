@@ -33,12 +33,91 @@ namespace vhcbcloud.Housing
 
                 PopulateProjectDetails();
                 BindControls();
+                GetRoleAccess();
                 BindHousingUnitsForm();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
 
-        protected void RoleReadOnly()
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+
+        protected void GetRoleAccess()
+        {
+          
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            btnSubmit.Visible = false;
+
+            cbAddHousingSubType.Enabled = true;
+            cbAddAgeRes.Enabled = true;
+            cbAddMultiUnit.Enabled = true;
+            cbAddSecService.Enabled = true;
+            cbAddSingleUnit.Enabled = true;
+            cbAddSuppService.Enabled = true;
+            cbAddVHCBAff.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             cbAddHousingSubType.Enabled = false;
             cbAddAgeRes.Enabled = false;
@@ -46,8 +125,7 @@ namespace vhcbcloud.Housing
             cbAddSecService.Enabled = false;
             cbAddSingleUnit.Enabled = false;
             cbAddSuppService.Enabled = false;
-            cbAddVHCBAff.Enabled = false;          
-            
+            cbAddVHCBAff.Enabled = false;
             btnAddAgeRest.Visible = false;
             btnAddHousingSubType.Visible = false;
             btnAddMultiUnitCharacteristic.Visible = false;
@@ -56,14 +134,6 @@ namespace vhcbcloud.Housing
             btnAddSuppServices.Visible = false;
             btnAddVHCBAff.Visible = false;
             btnSubmit.Visible = false;
-        }
-
-        protected bool GetRoleAuth()
-        {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
         }
 
         protected void Page_PreInit(Object sender, EventArgs e)
@@ -119,6 +189,18 @@ namespace vhcbcloud.Housing
                 dvAgeRestrWarning.Visible = false;
                 lblAgeRestrWarning.Text = "";
             }
+
+            if (hfTargetEffWarning.Value != "1")
+            {
+                dvTargetEffWarning.Visible = false;
+                lblTargetEffWarning.Text = "";
+            }
+
+            if (hfAffordableToWarning.Value != "1")
+            {
+                dvAffordableToWarning.Visible = false;
+                lblAffordableToWarning.Text = "";
+            }
         }
 
         private void BindHousingUnitsForm()
@@ -145,9 +227,12 @@ namespace vhcbcloud.Housing
                 //chkVermod.Checked = DataUtils.GetBool(drHousing["Vermod"].ToString());
                 txtMHIP.Text = drHousing["Vermod"].ToString();
                 txtSSUnits.Text = drHousing["ServSuppUnits"].ToString();
+                txtBuildings.Text = drHousing["Bldgs"].ToString();
+                txtNewAffordUnits.Text = drHousing["NewAffordUnits"].ToString();
+                txtPrevAffordUnits.Text = drHousing["PrevAffordUnits"].ToString();
 
-                
-                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
                 {
@@ -189,6 +274,8 @@ namespace vhcbcloud.Housing
             BindSecServiceGrid();
             BindAgeRestrictionGrid();
             //BindHomeAffordGrid();
+            BindTargetBestEffortGrid();
+            BindAffordableToGrid();
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -259,7 +346,8 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlSecService, 188);//188
             BindLookUP(ddlAgeRest, 189); //189
             BindLookUP(ddlVHCBAff, 109);
-            //BindLookUP(ddlHomeAff, 109);
+            BindLookUP(ddlTargetEff, 250);
+            BindLookUP(ddlAffordableTo, 251);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -413,7 +501,8 @@ namespace vhcbcloud.Housing
                 DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), 
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
                 DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text), 
-                chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text));
+                chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text), DataUtils.GetInt(txtBuildings.Text),
+                DataUtils.GetInt(txtNewAffordUnits.Text), DataUtils.GetInt(txtPrevAffordUnits.Text));
 
             BindHousingUnitsForm();
 
@@ -956,10 +1045,10 @@ namespace vhcbcloud.Housing
                     int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
 
                     hfVHCBUnitWarning.Value = "0";
-                    if (TotalUnits - totVHCBUnits != 0)
+                    if (DataUtils.GetInt(spnTotalUnits.InnerText) - totVHCBUnits != 0)
                     {
                         hfVHCBUnitWarning.Value = "1";
-                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Affordability Units must be equal to Total Units.");
+                        WarningMessage(dvVHCBUnitWarning, lblVHCBUnitWarning, "VHCB Covenant Units must be equal to New Units.");
                     }
                     else
                     {
@@ -1302,6 +1391,296 @@ namespace vhcbcloud.Housing
         {
             ClientScript.RegisterStartupScript(this.GetType(),
                "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB Affordable Units"));
+        }
+
+        protected void ImgTargetEff_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB Target Effect Units"));
+        }
+
+        protected void btnAddTargetEff_Click(object sender, EventArgs e)
+        {
+            if (ddlTargetEff.SelectedIndex == 0)
+            {
+                LogMessage("Select Target Best Effort");
+                ddlTargetEff.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtTargetUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtTargetUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtTargetUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtTargetUnits.Focus();
+                return;
+            }
+
+            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddProjectHouseTargetUnits(
+                DataUtils.GetInt(hfHousingID.Value),
+                DataUtils.GetInt(ddlTargetEff.SelectedValue.ToString()), 
+                DataUtils.GetInt(txtTargetUnits.Text));
+
+            ddlTargetEff.SelectedIndex = -1;
+            txtTargetUnits.Text = "";
+            cbAddTargetEff.Checked = false;
+
+            BindTargetBestEffortGrid();
+
+            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
+                LogMessage("Target Best Effort Units already exist as in-active");
+            else if (objHousingUnitseResult.IsDuplicate)
+                LogMessage("Target Best Effort Units already exist");
+            else
+                LogMessage("New Target Best Effort Units added successfully");
+        }
+
+        private void BindTargetBestEffortGrid()
+        {
+            try
+            {
+                DataTable dt = HousingUnitsServicesData.GetProjectHouseTargetUnitsList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvTargetEffGrid.Visible = true;
+                    gvTargetEff.DataSource = dt;
+                    gvTargetEff.DataBind();
+
+                    Label lblFooterTargetTotalUnits = (Label)gvTargetEff.FooterRow.FindControl("lblFooterTargetTotalUnits");
+                    int totTargetUnits = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                        {
+                            totTargetUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
+
+                            //if (dt.Rows[i]["VHCB"].ToString() == "Not in Covenant")
+                            //    hfNotInCovenantCount.Value = dt.Rows[i]["numunits"].ToString();
+                        }
+                    }
+
+                    //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(hfTotalUnitsFromDB.Value) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+
+                    lblFooterTargetTotalUnits.Text = totTargetUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
+
+                    hfTargetEffWarning.Value = "0";
+                    if (TotalUnits - totTargetUnits != 0)
+                    {
+                        //hfTargetEffWarning.Value = "1";
+                        //WarningMessage(dvTargetEffWarning, lblTargetEffWarning, "Target Best Effort Units must be equal to Total Units.");
+                    }
+                    else
+                    {
+                        dvTargetEffWarning.Visible = false;
+                        lblTargetEffWarning.Text = "";
+                    }
+                }
+                else
+                {
+                    dvTargetEffGrid.Visible = false;
+                    gvTargetEff.DataSource = null;
+                    gvTargetEff.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindVHCBAffordGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvTargetEff_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvTargetEff.EditIndex = e.NewEditIndex;
+            BindTargetBestEffortGrid();
+        }
+
+        protected void gvTargetEff_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvTargetEff.EditIndex = -1;
+            BindTargetBestEffortGrid();
+        }
+
+        protected void gvTargetEff_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            string strUnits = ((TextBox)gvTargetEff.Rows[rowIndex].FindControl("txtTargetUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
+
+            int lblProjectHouseTargetID = DataUtils.GetInt(((Label)gvTargetEff.Rows[rowIndex].FindControl("lblProjectHouseTargetID")).Text);
+            int Units = DataUtils.GetInt(strUnits);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTargetEff.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingUnitsServicesData.UpdateProjectHouseTargetUnits(lblProjectHouseTargetID, Units, RowIsActive);
+            gvTargetEff.EditIndex = -1;
+
+            LogMessage("Target Best Effort Units updated successfully");
+
+            BindTargetBestEffortGrid();
+        }
+
+        protected void ImgAffordableTo_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+               "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Housing VHCB AffordableTo Units"));
+        }
+
+        protected void gvAffordableTo_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvAffordableTo.EditIndex = e.NewEditIndex;
+            BindAffordableToGrid();
+        }
+
+        protected void gvAffordableTo_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvAffordableTo.EditIndex = -1;
+            BindAffordableToGrid();
+        }
+
+        protected void gvAffordableTo_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            string strUnits = ((TextBox)gvAffordableTo.Rows[rowIndex].FindControl("txtAffordToUnits")).Text;
+
+            if (string.IsNullOrWhiteSpace(strUnits) == true)
+            {
+                LogMessage("Enter Units");
+                return;
+            }
+            if (DataUtils.GetDecimal(strUnits) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                return;
+            }
+
+            int ProjectHouseAffordToID = DataUtils.GetInt(((Label)gvAffordableTo.Rows[rowIndex].FindControl("lblProjectHouseAffordToID")).Text);
+            int Units = DataUtils.GetInt(strUnits);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAffordableTo.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingUnitsServicesData.UpdateProjectHouseAffordTOUnits(ProjectHouseAffordToID, Units, RowIsActive);
+            gvAffordableTo.EditIndex = -1;
+
+            LogMessage("Affordable To Units updated successfully");
+
+            BindAffordableToGrid();
+        }
+
+        private void BindAffordableToGrid()
+        {
+            try
+            {
+                DataTable dt = HousingUnitsServicesData.GetProjectHouseAffordToUnitsList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvAffordableToGrid.Visible = true;
+                    gvAffordableTo.DataSource = dt;
+                    gvAffordableTo.DataBind();
+
+                    Label lblFooterAffordToTotalUnits = (Label)gvAffordableTo.FooterRow.FindControl("lblFooterAffordToTotalUnits");
+                    int totAffordToUnits = 0;
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (DataUtils.GetBool(dt.Rows[i]["RowIsActive"].ToString()))
+                        {
+                            totAffordToUnits += DataUtils.GetInt(dt.Rows[i]["Numunits"].ToString());
+
+                            //if (dt.Rows[i]["VHCB"].ToString() == "Not in Covenant")
+                            //    hfNotInCovenantCount.Value = dt.Rows[i]["numunits"].ToString();
+                        }
+                    }
+
+                    //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(hfTotalUnitsFromDB.Value) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+
+                    lblFooterAffordToTotalUnits.Text = totAffordToUnits.ToString();
+
+                    int TotalUnits = DataUtils.GetInt(hfTotalUnitsFromDB.Value);
+
+                    hfAffordableToWarning.Value = "0";
+                    if (TotalUnits - totAffordToUnits != 0)
+                    {
+                        hfAffordableToWarning.Value = "1";
+                        WarningMessage(dvAffordableToWarning, lblAffordableToWarning, "Affordable To Units must be equal to Total Units.");
+                    }
+                    else
+                    {
+                        dvAffordableToWarning.Visible = false;
+                        lblAffordableToWarning.Text = "";
+                    }
+                }
+                else
+                {
+                    dvAffordableToGrid.Visible = false;
+                    gvAffordableTo.DataSource = null;
+                    gvAffordableTo.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindAffordableToGrid", "", ex.Message);
+            }
+        }
+
+        protected void btnAddAffordableTo_Click(object sender, EventArgs e)
+        {
+            if (ddlAffordableTo.SelectedIndex == 0)
+            {
+                LogMessage("Select Affordable To");
+                ddlAffordableTo.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAffordableToUnits.Text.ToString()) == true)
+            {
+                LogMessage("Enter Units");
+                txtAffordableToUnits.Focus();
+                return;
+            }
+            if (DataUtils.GetDecimal(txtAffordableToUnits.Text) <= 0)
+            {
+                LogMessage("Enter valid Units");
+                txtAffordableToUnits.Focus();
+                return;
+            }
+
+            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddProjectHouseAffordTOUnits(
+                DataUtils.GetInt(hfHousingID.Value),
+                DataUtils.GetInt(ddlAffordableTo.SelectedValue.ToString()),
+                DataUtils.GetInt(txtAffordableToUnits.Text));
+
+            ddlAffordableTo.SelectedIndex = -1;
+            txtAffordableToUnits.Text = "";
+            cbAddAffordableTo.Checked = false;
+
+            BindAffordableToGrid();
+
+            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
+                LogMessage("Affordable To Units already exist as in-active");
+            else if (objHousingUnitseResult.IsDuplicate)
+                LogMessage("Affordable To Units already exist");
+            else
+                LogMessage("New Affordable To Units added successfully");
         }
 
         //protected void btnAddHomeAff_Click(object sender, EventArgs e)

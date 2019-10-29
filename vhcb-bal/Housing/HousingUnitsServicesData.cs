@@ -13,7 +13,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
     {
         #region Housing
         public static void SubmitHousingUnits(int HousingID, int LkHouseCat, int Hsqft, int Previous, 
-            int NewUnits, int UnitsRemoved, int MHIP, bool IsSash, int ServSuppUnits)
+            int NewUnits, int UnitsRemoved, int MHIP, bool IsSash, int ServSuppUnits, int Bldgs, 
+            int NewAffordUnits, int PrevAffordUnits)
         {
             try
             {
@@ -37,6 +38,9 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("MHIP", MHIP));
                         command.Parameters.Add(new SqlParameter("IsSash", IsSash));
                         command.Parameters.Add(new SqlParameter("ServSuppUnits", ServSuppUnits));
+                        command.Parameters.Add(new SqlParameter("Bldgs", Bldgs));
+                        command.Parameters.Add(new SqlParameter("NewAffordUnits", NewAffordUnits));
+                        command.Parameters.Add(new SqlParameter("PrevAffordUnits", PrevAffordUnits));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -1127,6 +1131,230 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return TotalUnits;
         }
         #endregion Total Federal Program Units
+
+        #region Target Best
+        public static DataTable GetProjectHouseTargetUnitsList(int HousingID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectHouseTargetUnitsList";
+                        command.Parameters.Add(new SqlParameter("HousingID", HousingID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void UpdateProjectHouseTargetUnits(int ProjectHouseTargetID, int Numunits, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectHouseTargetUnits";
+
+                        command.Parameters.Add(new SqlParameter("ProjectHouseTargetID", ProjectHouseTargetID));
+                        command.Parameters.Add(new SqlParameter("Numunits", Numunits));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static HousingUnitseResult AddProjectHouseTargetUnits(int HousingID, int LKTargetUnits, int Numunits)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectHouseTargetUnits";
+
+                        command.Parameters.Add(new SqlParameter("HousingID", HousingID));
+                        command.Parameters.Add(new SqlParameter("LKTargetUnits", LKTargetUnits));
+                        command.Parameters.Add(new SqlParameter("Numunits", Numunits));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        HousingUnitseResult acs = new HousingUnitseResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Target Best
+
+        #region Affordable To
+        public static DataTable GetProjectHouseAffordToUnitsList(int HousingID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectHouseAffordToUnitsList";
+                        command.Parameters.Add(new SqlParameter("HousingID", HousingID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static HousingUnitseResult AddProjectHouseAffordTOUnits(int HousingID, int LKAffordToUnits, int Numunits)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectHouseAffordTOUnits";
+
+                        command.Parameters.Add(new SqlParameter("HousingID", HousingID));
+                        command.Parameters.Add(new SqlParameter("LKAffordToUnits", LKAffordToUnits));
+                        command.Parameters.Add(new SqlParameter("Numunits", Numunits));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        HousingUnitseResult acs = new HousingUnitseResult();
+
+                        acs.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        acs.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return acs;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateProjectHouseAffordTOUnits(int ProjectHouseAffordToID, int Numunits, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectHouseAffordTOUnits";
+
+                        command.Parameters.Add(new SqlParameter("ProjectHouseAffordToID", ProjectHouseAffordToID));
+                        command.Parameters.Add(new SqlParameter("Numunits", Numunits));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Affordable To
     }
 
     public class HousingUnitseResult

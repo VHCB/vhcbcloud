@@ -226,7 +226,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static void UpdateEnterpriseAcres(int EnterpriseAcresId, int AcresInProduction, int AcresOwned, int AcresLeased)
+        public static void UpdateEnterpriseAcres(int EnterpriseAcresId, int AcresInProduction, int AcresOwned, 
+            int AcresLeased, int ForestAcres, int TotalAcres, int AccessAcres)
         {
             try
             {
@@ -244,6 +245,9 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresInProduction", AcresInProduction));
                         command.Parameters.Add(new SqlParameter("AcresOwned", AcresOwned));
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
+                        command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
+                        command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
+                        command.Parameters.Add(new SqlParameter("AccessAcres", AccessAcres));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -257,7 +261,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static ViabilityMaintResult AddEnterpriseAttributes(int ProjectID, int AcresInProduction, int AcresOwned, int AcresLeased)
+        public static ViabilityMaintResult AddEnterpriseAttributes(int ProjectID, int AcresInProduction, 
+            int AcresOwned, int AcresLeased, int ForestAcres, int TotalAcres, int AccessAcres)
         {
             try
             {
@@ -275,7 +280,10 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("AcresInProduction", AcresInProduction));
                         command.Parameters.Add(new SqlParameter("AcresOwned", AcresOwned));
                         command.Parameters.Add(new SqlParameter("AcresLeased", AcresLeased));
-
+                        command.Parameters.Add(new SqlParameter("ForestAcres", ForestAcres));
+                        command.Parameters.Add(new SqlParameter("TotalAcres", TotalAcres));
+                        command.Parameters.Add(new SqlParameter("AccessAcres", AccessAcres));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
@@ -334,7 +342,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dr;
         }
 
-        public static void SubmitEnterprisePrimeProduct(int ProjectID, int PrimaryProduct, string YrManageBus, int HearAbout)
+        public static void SubmitEnterprisePrimeProduct(int ProjectID, int PrimaryProduct, string YrManageBus, int HearAbout, string OtherNames)
         {
             try
             {
@@ -352,6 +360,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.Parameters.Add(new SqlParameter("PrimaryProduct", PrimaryProduct));
                         command.Parameters.Add(new SqlParameter("YrManageBus", YrManageBus));
                         command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
+                        command.Parameters.Add(new SqlParameter("OtherNames", OtherNames));
 
                         command.CommandTimeout = 60 * 5;
 

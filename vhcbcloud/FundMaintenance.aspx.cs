@@ -31,10 +31,27 @@ namespace vhcbcloud
             LoadFundNumbers();
 
             BindLookUP(ddlSOVFundCode, 207);
-            BindLookUP(ddlAcctMethod, 129);
+            //BindLookUP(ddlAcctMethod, 129);
             BindLookUP(ddlSOVDeptId, 209);
 
             BindFundType();
+            LoadVHCBGrantNames();
+        }
+
+        private void LoadVHCBGrantNames()
+        {
+            try
+            {
+                ddlGrantName.DataSource = FundTypeData.GetFundType("GetFundTypeData");
+                ddlGrantName.DataValueField = "typeid";
+                ddlGrantName.DataTextField = "description";
+                ddlGrantName.DataBind();
+                ddlGrantName.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
         }
 
         private void BindFundType()
@@ -122,13 +139,15 @@ namespace vhcbcloud
                 PopulateDropDown(ddlFundType, dr["LkFundType"].ToString());
                 txtFundNum.Text = dr["account"].ToString();
                 PopulateDropDown(ddlSOVFundCode, dr["VHCBCode"].ToString());
-                PopulateDropDown(ddlAcctMethod, dr["LkAcctMethod"].ToString());
+                txtMIPFundNo.Text = dr["MIPFundnum"].ToString() == "0"? "" : dr["MIPFundnum"].ToString();
+                //PopulateDropDown(ddlAcctMethod, dr["LkAcctMethod"].ToString());
                 PopulateDropDown(ddlSOVDeptId, dr["DeptID"].ToString());
                 cbMitFund.Checked = DataUtils.GetBool(dr["MitFund"].ToString());
                 cbFundActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                 cbFundActive.Enabled = true;
+                cbSecondapproval.Checked = DataUtils.GetBool(dr["Secondapproval"].ToString());
 
-                txtFundName.Enabled = false;
+                //txtFundName.Enabled = false;
 
                 btnSubmitFund.Text = "Update";
             }
@@ -154,7 +173,8 @@ namespace vhcbcloud
             ddlFundType.SelectedIndex = -1;
             txtFundNum.Text = "";
             ddlSOVFundCode.SelectedIndex = -1;
-            ddlAcctMethod.SelectedIndex = -1;
+            //ddlAcctMethod.SelectedIndex = -1;
+            txtMIPFundNo.Text = "";
             ddlSOVDeptId.SelectedIndex = -1;
             cbFundActive.Checked = true;
             cbFundActive.Enabled = false;
@@ -202,8 +222,9 @@ namespace vhcbcloud
             {
                 FundMaintenanceData.UpdateFund(Convert.ToInt32(ddlFundName.SelectedValue.ToString()), txtAbbrev.Text,
                     Convert.ToInt32(ddlFundType.SelectedValue.ToString()),
-                    txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked, cbMitFund.Checked);
+                    txtFundNum.Text, txtMIPFundNo.Text == "" ? 0 : Convert.ToInt32(txtMIPFundNo.Text),
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbFundActive.Checked, 
+                    cbMitFund.Checked, cbSecondapproval.Checked, txtFundName.Text);
 
                 LogMessage("Fund updated successfully");
             }
@@ -211,8 +232,9 @@ namespace vhcbcloud
             {
                 AddFund objAddFund = FundMaintenanceData.AddFund(txtFundName.Text, txtAbbrev.Text,
                     Convert.ToInt32(ddlFundType.SelectedValue?.ToString()),
-                    txtFundNum.Text, ddlAcctMethod.SelectedValue == "NA" ? 0 : Convert.ToInt32(ddlAcctMethod.SelectedValue?.ToString()),
-                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), cbMitFund.Checked);
+                    txtFundNum.Text, txtMIPFundNo.Text == "" ? 0 : Convert.ToInt32(txtMIPFundNo.Text),
+                    ddlSOVDeptId.SelectedValue.ToString(), ddlSOVFundCode.SelectedValue?.ToString(), 
+                    cbMitFund.Checked, cbSecondapproval.Checked);
 
                 if (objAddFund.IsDuplicate && !objAddFund.IsActive)
                     LogMessage("Fund already exist as in-active");
@@ -271,6 +293,31 @@ namespace vhcbcloud
             ClientScript.RegisterStartupScript(this.GetType(),
             "script", Helper.GetExagoURL("6588", "Fund Data"));
             
+        }
+
+        protected void btnAddAttachGrant_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void gvAttachedGrants_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+
+        }
+
+        protected void gvAttachedGrants_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+
+        }
+
+        protected void gvAttachedGrants_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+
+        }
+
+        protected void gvAttachedGrants_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
         }
     }
 }

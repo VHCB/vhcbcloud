@@ -62,7 +62,7 @@
                                 &nbsp;
                                
                                 <asp:ImageButton ID="btnNewProject1" runat="server" ImageUrl="~/Images/NewProject.png" ToolTip="New Project"
-                                    Text="New Project" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
+                                    Text="New Project" Enabled="false" Style="border: none; vertical-align: middle;" OnClientClick="window.location.href='ProjectMaintenance.aspx?type=new'; return false;" />
                             </td>
                         </tr>
                     </table>
@@ -145,10 +145,11 @@
                                     <asp:DropDownList ID="ddlProjectType" CssClass="clsDropDown" runat="server">
                                     </asp:DropDownList>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td><span class="labelClass">Active</span></td>
+                                <td><asp:CheckBox ID="cbProjectActive" runat="server" Checked="true" Text="" /></td>
+                                <td><span class="labelClass">Target Year</span></td>
+                                <td><asp:DropDownList ID="ddlTargetYear" CssClass="clsDropDown" runat="server">
+                                    </asp:DropDownList></td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="height: 10px"></td>

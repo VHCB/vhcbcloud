@@ -198,10 +198,10 @@ namespace vhcbcloud
             ddlGrantType.SelectedIndex = -1;
             ddlStaff.SelectedIndex = -1;
             ddlProgram.SelectedIndex = -1;
-            cbFederalFunds.Checked = false;
+            //cbFederalFunds.Checked = false;
             cbAdmin.Checked = false;
             cbMatch.Checked = false;
-            cbFundsReceived.Checked = false;
+            //cbFundsReceived.Checked = false;
             cbFundActive.Checked = true;
             cbFundActive.Enabled = false;
         }
@@ -249,11 +249,14 @@ namespace vhcbcloud
             PopulateDropDown(ddlGrantType, dr["LkGrantSource"].ToString());
             PopulateDropDown(ddlStaff, dr["Staff"].ToString());
             PopulateDropDown(ddlProgram, dr["Program"].ToString());
-            cbFederalFunds.Checked = DataUtils.GetBool(dr["FedFunds"].ToString());
+            //cbFederalFunds.Checked = DataUtils.GetBool(dr["FedFunds"].ToString());
             cbAdmin.Checked = DataUtils.GetBool(dr["Admin"].ToString());
+            txtAdminAmt.Text = dr["Adminamt"].ToString();
             cbMatch.Checked = DataUtils.GetBool(dr["Match"].ToString());
-            cbFundsReceived.Checked = DataUtils.GetBool(dr["Fundsrec"].ToString());
+            txtMatchAmt.Text = dr["MatchAmt"].ToString();
+            //cbFundsReceived.Checked = DataUtils.GetBool(dr["Fundsrec"].ToString());
             cbFundActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+            chkDrawDown.Checked = DataUtils.GetBool(dr["DrawDown"].ToString()); 
             cbFundActive.Enabled = true;
         }
 
@@ -474,8 +477,12 @@ namespace vhcbcloud
                     DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
                     txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
                     DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), cbFederalFunds.Checked, cbAdmin.Checked, cbMatch.Checked,
-                    cbFundsReceived.Checked);
+                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), 
+                    cbAdmin.Checked,
+                    DataUtils.GetDecimal(Regex.Replace(txtAdminAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    cbMatch.Checked, 
+                    DataUtils.GetDecimal(Regex.Replace(txtMatchAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    chkDrawDown.Checked);
 
                 ClearGrantInfoForm();
                 BindGrantInfoGrid();
@@ -494,8 +501,12 @@ namespace vhcbcloud
                     DataUtils.GetDate(txtBeginDate.Text), DataUtils.GetDate(txtEndDate.Text), DataUtils.GetInt(ddlGrantingAgency.SelectedValue.ToString()),
                     txtGrantName.Text, DataUtils.GetInt(ddlGrantorContact.SelectedValue.ToString()), txtAwardNum.Text, txtCFDANum.Text,
                     DataUtils.GetInt(ddlGrantType.SelectedValue.ToString()), DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), cbFederalFunds.Checked, cbAdmin.Checked, cbMatch.Checked,
-                    cbFundsReceived.Checked, cbFundActive.Checked);
+                    DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), cbAdmin.Checked, 
+                    DataUtils.GetDecimal(Regex.Replace(txtAdminAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    cbMatch.Checked, 
+                    DataUtils.GetDecimal(Regex.Replace(txtMatchAmt.Text, "[^0-9a-zA-Z.]+", "")),
+                    chkDrawDown.Checked, 
+                    cbFundActive.Checked);
 
                 gvGrantInfo.EditIndex = -1;
                 BindGrantInfoGrid();

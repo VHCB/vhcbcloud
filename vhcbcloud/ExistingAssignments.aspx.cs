@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,12 +14,24 @@ namespace vhcbcloud
     public partial class ExistingAssignments : System.Web.UI.Page
     {
         string Pagename = "ExistingAssignments";
-
+        /// <summary>
+        /// Check Page Access
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                CheckPageAccess();
+            }
         }
 
+        /// <summary>
+        /// Redirecting the pages based on radio button selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnFinancial_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnFinancial.SelectedIndex == 0)
@@ -32,7 +45,11 @@ namespace vhcbcloud
             else
                 Response.Redirect("CashRefund.aspx");
         }
-
+        /// <summary>
+        /// If New radio button selected then redirect to Assignments.aspx page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (rdBtnSelection.SelectedIndex == 0)
@@ -50,7 +67,12 @@ namespace vhcbcloud
         {
 
         }
-
+        
+        /// <summary>
+        /// Deleting the transaction by de-activatinf the Transaction record in Trans table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvAssignments_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             try
@@ -84,6 +106,13 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Transaction record radio buttion changed
+        /// Get selected Trans details.
+        /// Clear details form and re-populate with current selected trans details.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rdBtnSelect_CheckedChanged(object sender, EventArgs e)
         {
             lblRErrorMsg.Text = "";
@@ -96,6 +125,9 @@ namespace vhcbcloud
             PopulateDetailFormStaticFields();
         }
 
+        /// <summary>
+        /// Populate Fund name and Trans type
+        /// </summary>
         private void PopulateDetailFormStaticFields()
         {
             //lblFromFundNumber.Text = hfFromAccountNumber.Value;
@@ -103,6 +135,9 @@ namespace vhcbcloud
             lblFromTransType.Text = hfFromTransType.Value;
         }
 
+        /// <summary>
+        /// Clearing the Trans Details form
+        /// </summary>
         private void ClearDetailForm()
         {
             txtToAmt.Text = "";
@@ -113,6 +148,10 @@ namespace vhcbcloud
             btnToAssignmentDetailSubmit.Text = "Submit";
         }
 
+        /// <summary>
+        /// Get TransId from hidden field
+        /// </summary>
+        /// <returns></returns>
         private int GetTransId()
         {
             if (hfTransId.Value.ToString() == "")
@@ -127,6 +166,10 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Set the selected TransId in hidden fields.
+        /// </summary>
+        /// <param name="gvFGM"></param>
         private void GetSelectedTransId(GridView gvFGM)
         {
             for (int i = 0; i < gvFGM.Rows.Count; i++)
@@ -164,6 +207,10 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// set the Trans record  by selecting appropriate radio button
+        /// </summary>
+        /// <param name="TransId"></param>
         private void SetRadioButton(string TransId)
         {
             if (TransId.ToString() != string.Empty)
@@ -183,6 +230,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Populate Project name based on project selection
+        /// get Grantee details by project
+        /// Bind assignments Transaction grid
+        /// </summary>
+        /// <param name="dt"></param>
         private void getDetails(DataTable dt)
         {
             //lblAvailFund.Text = "";
@@ -236,6 +289,9 @@ namespace vhcbcloud
             ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + hfProjId.Value;
         }
 
+        /// <summary>
+        /// Bind Assignments Transactions Grid
+        /// </summary>
         private void BindAssignmentTransGrid()
         {
             try
@@ -268,12 +324,19 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Ajax call to get Assignment Projects list
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetAssignmentProjectslist(string prefixText, int count)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            //dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -283,12 +346,20 @@ namespace vhcbcloud
             return ProjNames.ToArray();
         }
 
+        /// <summary>
+        /// Ajax call for getting projects by project name
+        /// </summary>
+        /// <param name="prefixText"></param>
+        /// <param name="count"></param>
+        /// <param name="contextKey"></param>
+        /// <returns></returns>
         [System.Web.Services.WebMethod()]
         [System.Web.Script.Services.ScriptMethod()]
         public static string[] GetAssignmentProjectslistByFilter(string prefixText, int count, string contextKey)
         {
             DataTable dt = new DataTable();
-            dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            //dt = Project.GetProjects("GetAssignmentProjectslistByFilter", prefixText);
+            dt = Project.GetProjects("GetProjectsByFilter", prefixText);
 
             List<string> ProjNames = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -298,7 +369,12 @@ namespace vhcbcloud
             }
             return ProjNames.ToArray();
         }
-
+        
+        /// <summary>
+        /// Setting From ProjectId by selecting pretext selected project
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnAssignmentProjValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -316,6 +392,11 @@ namespace vhcbcloud
             getDetails(dt);
         }
 
+        /// <summary>
+        /// Setting To ProjectId by selecting pretext selected project
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void hdnAssignmentToProjectValue_ValueChanged(object sender, EventArgs e)
         {
             string projNum = ((HiddenField)sender).Value;
@@ -331,6 +412,13 @@ namespace vhcbcloud
             hfToProjId.Value = dt.Rows[0][0].ToString();
         }
 
+        /// <summary>
+        /// Submitting Assignments details.
+        /// Data Validation
+        /// Assignment amount validations
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAssignmentDetailSubmit_Click(object sender, EventArgs e)
         {
             txtToAmt.Text = Regex.Replace(txtToAmt.Text, "[^0-9a-zA-Z.]+", "");
@@ -421,14 +509,20 @@ namespace vhcbcloud
                 }
             }
         }
-
+        /// <summary>
+        /// Grid selected Item cancel event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvToAssignments_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvToAssignments.EditIndex = -1;
             ClearToAssignmentsForm();
             BindGvToAssignments();
         }
-
+        /// <summary>
+        /// Clear To Assignments form
+        /// </summary>
         private void ClearToAssignmentsForm()
         {
             txtToProjNum.Text = "";
@@ -436,6 +530,12 @@ namespace vhcbcloud
             btnToAssignmentDetailSubmit.Text = "Submit";
         }
 
+        /// <summary>
+        /// Assignmnets to grid data binding
+        /// when edit button clicked populate data into respective fields
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvToAssignments_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -475,6 +575,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Deleting assignments details from grid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvToAssignments_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             Label lblGuid = (Label)gvToAssignments.Rows[e.RowIndex].FindControl("lblProjGuid");
@@ -485,12 +590,20 @@ namespace vhcbcloud
             BindGvToAssignments();
         }
 
+        /// <summary>
+        /// Editing assignment details in Grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvToAssignments_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvToAssignments.EditIndex = e.NewEditIndex;
             BindGvToAssignments();
         }
 
+        /// <summary>
+        /// Bing To Assignments grid
+        /// </summary>
         private void BindGvToAssignments()
         {
             try
@@ -598,6 +711,13 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Log Error helper function
+        /// </summary>
+        /// <param name="pagename"></param>
+        /// <param name="method"></param>
+        /// <param name="message"></param>
+        /// <param name="error"></param>
         private void LogError(string pagename, string method, string message, string error)
         {
             lblRErrorMsg.Visible = true;
@@ -609,10 +729,62 @@ namespace vhcbcloud
                 lblRErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
         }
 
+        /// <summary>
+        /// Log error message helper function
+        /// </summary>
+        /// <param name="message"></param>
         private void LogMessage(string message)
         {
             lblRErrorMsg.Visible = true;
             lblRErrorMsg.Text = message;
+        }
+
+        /// <summary>
+        /// Get Login User Id for storing details in Trans and Detail table
+        /// </summary>
+        /// <returns></returns>
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Check Page accessabilty 
+        /// Functiona accessability
+        /// </summary>
+        private void CheckPageAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetuserPageSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["pageid"].ToString() == "26725")
+                    rdBtnFinancial.Items[0].Enabled = false;
+                if (row["pageid"].ToString() == "26780")
+                    rdBtnFinancial.Items[1].Enabled = false;
+                if (row["pageid"].ToString() == "27455")
+                    rdBtnFinancial.Items[2].Enabled = false;
+                if (row["pageid"].ToString() == "27456")
+                    rdBtnFinancial.Items[3].Enabled = false;
+            }
+
+            //if (rdBtnFinancial.Items[0].Enabled)
+            //    rdBtnFinancial.Items[0].Selected = true;
+            //if (rdBtnFinancial.Items[1].Enabled)
+            //    rdBtnFinancial.Items[1].Selected = true;
+            //if (rdBtnFinancial.Items[2].Enabled)
+            //    rdBtnFinancial.Items[2].Selected = true;
+            if (rdBtnFinancial.Items[3].Enabled)
+                rdBtnFinancial.Items[3].Selected = true;
         }
     }
 }

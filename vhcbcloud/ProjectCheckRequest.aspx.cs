@@ -671,7 +671,7 @@ namespace vhcbcloud
         {
             try
             {
-                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId());
+                ProjectCheckRequestData.AddDefaultPCRQuestions(chkLegalReview.Checked, int.Parse(this.hfPCRId.Value), GetUserId(), false);
                 BindPCRQuestionsForApproval();
             }
             catch (Exception ex)
@@ -707,7 +707,7 @@ namespace vhcbcloud
                 else
                 {
                     pnlVoucherDet.Visible = false;
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -1399,7 +1399,7 @@ namespace vhcbcloud
                         return;
                     }
 
-                    ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
+                    //ProjectCheckRequestData.AddPCRTransactionFundDetails(int.Parse(hfTransId.Value.ToString()), int.Parse(ddlFundTypeCommitments.SelectedValue.ToString()), int.Parse(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
                     AddDefaultPCRQuestions();
                     BindPCRTransDetails();
                     ClearTransactionDetailForm();
@@ -1682,7 +1682,7 @@ namespace vhcbcloud
 
                 if (!isApproved)
                 {
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());                    
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, false, GetUserId());
                     return;
                 }
 
@@ -1716,7 +1716,7 @@ namespace vhcbcloud
                 }
 
                 if (isApproved)
-                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, GetUserId());
+                    ProjectCheckRequestData.UpdatePCRQuestionsApproval(ProjectCheckReqQuestionid, isApproved, false, GetUserId());
 
 
                 //if (((TextBox)gvPTransDetails.Rows[rowIndex].FindControl("txtAmount")).Text.Trim() != "")

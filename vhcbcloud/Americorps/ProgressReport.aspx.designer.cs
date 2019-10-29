@@ -7,37 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbcloud.Americorps {
+namespace vhcbcloud {
     
     
     public partial class ProgressReport {
         
         /// <summary>
-        /// dvTabs control.
+        /// dvProgressReport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTabs;
-        
-        /// <summary>
-        /// Tabs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tabs;
-        
-        /// <summary>
-        /// imgSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton imgSearch;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProgressReport;
         
         /// <summary>
         /// dvProgressReportUserDetails control.
@@ -227,14 +209,5 @@ namespace vhcbcloud.Americorps {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAllIsCompleted;
-        
-        /// <summary>
-        /// hfProjectId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
     }
 }

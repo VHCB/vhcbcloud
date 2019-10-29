@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
@@ -27,21 +28,85 @@ namespace vhcbcloud.Lead
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
         {
-            btnSubmit.Visible = false;            
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
         }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+        }
+
+        protected void RoleViewOnly()
+        {
+            btnSubmit.Visible = false;
+        }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -205,10 +270,7 @@ namespace vhcbcloud.Lead
             string URL = txtURL.Text;
 
             if (URL != "")
-            {
-                if (!URL.Contains("http"))
-                    URL = "http://" + URL;
-            }
+                URL = URL.Split('/').Last();
 
             if (btnSubmit.Text == "Submit")
             {
@@ -289,21 +351,51 @@ namespace vhcbcloud.Lead
             ClearMilestonesForm();
             hfLeadMilestoneID.Value = "";
             btnSubmit.Text = "Submit";
+            btnSubmit.Visible = true;
         }
 
         protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnSubmit.Text = "Update";
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnSubmit.Visible = true;
+                    else
+                        btnSubmit.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[7].Controls[1].Visible = false;
 
                         Label lblLeadMilestoneID = e.Row.FindControl("lblLeadMilestoneID") as Label;
                         DataRow dr = ProjectLeadMilestonesData.GetProjectLeadMilestoneById(DataUtils.GetInt(lblLeadMilestoneID.Text));
@@ -378,6 +470,12 @@ namespace vhcbcloud.Lead
 
             chkMilestoneActive.Checked = true;
             chkMilestoneActive.Enabled = false;
+        }
+
+        protected void ImgMilestoneReport_Click1(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                    "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Lead Milestones"));
         }
     }
 }

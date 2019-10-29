@@ -34,6 +34,8 @@
                     <asp:ScriptReference Name="WebParts.js" Path="~/Scripts/WebForms/WebParts.js" />
                     <asp:ScriptReference Name="Focus.js" Path="~/Scripts/WebForms/Focus.js" />
                     <asp:ScriptReference Name="CurrencyController.js" Path="~/Scripts/CurrencyController.js" />
+                    <asp:ScriptReference Name="accounting.js" Path="~/Scripts/accounting.js" />
+                    
                     
                     <asp:ScriptReference Name="WebFormsBundle" />
                     <%--Site Scripts--%>
@@ -49,7 +51,7 @@
                             <span class="icon-bar"></span>
 
                         </button>
-                        <a class="navbar-brand" href="projectsearch.aspx">
+                        <a class="navbar-brand" href="projectsearch.aspx" runat="server" id="logoURL">
                             <img alt="" src="~/Images/vhcb_logo_1_rgb_sm.png" class="img-responsive img-rounded" runat="server" /></a>
                     </div>
                     <div class="navbar-collapse collapse">
@@ -72,87 +74,8 @@
                             <li><a runat="server" href="~/About">About</a></li>
                             <li><a runat="server" href="~/Contact">Contact</a></li>
                         </ul>--%>
-
-                        <ul class="nav navbar-nav">
-
-
-                            <li class="menu-item dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File Maintenance</a>
-                                        <ul class="dropdown-menu">
-                                            <%--<li class="menu-item "><a runat="server" href="~/Applicant.aspx">Applicant</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/default.aspx">Project</a></li>--%>
-                                             <li class="menu-item dropdown dropdown-submenu "><a runat="server" href="~/Americorps.aspx">Americorps</a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a id="A1" runat="server" href="~/QAManagement.aspx">QA Management</a></li>
-                                                    <li><a id="A2" runat="server" href="~/ProgressReport.aspx">Progress Report</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item "><a runat="server" href="~/BoardDates.aspx">Board Dates</a></li>
-                                            <%--<li class="menu-item "><a runat="server" href="~/FundingSource">Funding Source</a></li>--%>
-                                            <li class="menu-item "><a runat="server" href="~/CheckRequestdates.aspx">Check Request</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/LookupMaintenance.aspx">Lookup Maintenance</a></li>
-                                            
-                                           <%-- <li class="menu-item "><a runat="server" href="~/ProjectMaintenance.aspx">Project Maintenance</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/ProjectSearch.aspx">Project Search</a></li>
-                                             <li class="menu-item "><a runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>--%>
-                                            
-                                            <%--<li class="menu-item "><a runat="server" href="~/FederalRentalAffordability.aspx">Federal Rental Affordability</a></li>--%>
-                                            <li class="menu-item dropdown dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Housing</a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a runat="server" href="~/FederalRentalAffordability.aspx">Rental Affordability</a></li>
-                                                </ul>
-                                            </li>
-                                         <%--   <li class="menu-item dropdown dropdown-submenu">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Conservation</a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a runat="server" href="~/ConservationAct250.aspx">Act 250</a></li>
-                                                </ul>
-                                            </li>--%>
-                                             <li class="menu-item "><a runat="server" href="~/ConservationAct250.aspx">Act 250</a></li>
-                                            <%-- <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More</a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">3rd level link more options</a></li>
-                                                    <li><a href="#">3rd level link</a></li>
-                                                </ul>
-                                            </li>--%>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Financial Transactions</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="menu-item "><a runat="server" href="~/Commitments.aspx">Board Transactions</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/FinalizeTransactions.aspx">Finalize Transactions</a></li>
-                                            <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Cash Transactions</a>
-                                                <ul class="dropdown-menu">
-                                                    <li class="menu-item "><a runat="server" href="~/ProjectCheckRequest.aspx">Check Request</a></li>
-                                                    <li class="menu-item "><a runat="server" href="~/cashrefund.aspx">Cash Refund</a></li>
-                                                    <li class="menu-item "><a runat="server" href="~/cashrefund.aspx">Cash Void</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="menu-item "><a runat="server" href="~/FundType.aspx">Fund Type</a></li>
-                                           <%-- <li class="menu-item "><a runat="server" href="~/FundGrantMaintenance.aspx">Fund/Grant Maintenance</a></li>--%>
-                                            <li class="menu-item "><a runat="server" href="~/FundMaintenance.aspx">Fund Maintenance</a></li>
-                                            <li class="menu-item "><a runat="server" href="~/GrantMaintenance.aspx">Grant Maintenance</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage Users</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="menu-item "><a runat="server" href="~/Account/ManageUserInfo.aspx">Manage Users</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item "><a runat="server" href="~/EntityMaintenance.aspx">Entity Maintenance</a></li>
-                                    <li class="menu-item "><a runat="server" href="~/HOPWAManagement.aspx">HOPWA</a></li>
-                                    <li class="menu-item "><a runat="server" href="~/MilestonesQuickentry.aspx">Milestone Quickentry</a></li>
-                                     <li class="menu-item "><a runat="server" href="~/UserSecurity.aspx">User Security</a></li>
-                                </ul>
-                            </li>
-                            <li><a runat="server" href="~/LoanMaintenance.aspx">Loans</a></li>
-                            <li><a runat="server" href="~/FileHold">FileHold</a></li>
-                            <li><a runat="server" href="~/Exago">Exago</a></li>                            
-                            <li><a runat="server" href="~/About">About</a></li>
-                            <li><a runat="server" href="~/Contact">Contact</a></li>
-                        </ul>
+                        <%= strMenuText %>
+                       
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>
                                 <ul class="nav navbar-nav navbar-right">
@@ -162,7 +85,7 @@
                             </AnonymousTemplate>
                             <LoggedInTemplate>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
+                                    <li><a runat="server" href="#" title="Manage your account">Hello, <%: Session["FirstName"]  %> !</a></li>
                                     <li>
                                         <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
                                     </li>
@@ -192,3 +115,4 @@
     </form>
 </body>
 </html>
+ 

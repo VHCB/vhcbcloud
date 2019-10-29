@@ -74,7 +74,22 @@
                         <div class="panel-body" runat="server" id="dvPlanForm">
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
-                                    <tr>
+                                     <tr>
+                                        <td style="width: 24%"><span class="labelClass">Fiscal Year</span></td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlFiscalYear" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 18%">
+                                            <span class="labelClass"></span>
+                                        </td>
+
+                                        <td style="width: 13%">
+                                           </td>
+                                        <td style="width: 45%"></td>
+                                    </tr>
+
+                                   <%-- <tr>
                                         <td style="width: 24%"><span class="labelClass">Business Planning Application</span></td>
                                         <td>
                                             <asp:CheckBox ID="cbBusplan" runat="server" Text="" />
@@ -86,7 +101,7 @@
                                         <td style="width: 13%">
                                             <asp:CheckBox ID="cbGrantApp" runat="server" Text="" /></td>
                                         <td style="width: 45%"></td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
@@ -171,10 +186,10 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <h3 class="panel-title">Job/Financial Year</h3>
+                                                <h3 class="panel-title">Job Financial Date</h3>
                                             </td>
                                             <td style="text-align: right">
-                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Financial/Job" />
+                                                <asp:CheckBox ID="cbAddMilestone" runat="server" Text="Add New Job Financial Date" />
                                             </td>
                                         </tr>
                                     </table>
@@ -185,14 +200,14 @@
                                         <table style="width: 100%">
                                             <tr>
                                                 <td>
-                                                    <span class="labelClass">Milestone</span>
+                                                    <span class="labelClass">Status Point</span>
                                                 </td>
                                                 <td>
                                                     <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Style="margin-left: 0" TabIndex="1">
                                                     </asp:DropDownList>
                                                 </td>
                                                 <td>
-                                                    <span class="labelClass">Date</span>
+                                                    <span class="labelClass">Date of Financial Data</span>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtMSDate" CssClass="clsTextBoxBlue1" runat="server" TabIndex="7"></asp:TextBox>
@@ -205,10 +220,10 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <span class="labelClass">Year of Financial Data</span>
+                                                    <%--<span class="labelClass">Year of Financial Data</span>--%>
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>
+                                                    <%--<asp:TextBox ID="txtYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" TabIndex="2"></asp:TextBox>--%>
                                                 </td>
                                                 <td>
                                                     <span class="labelClass">Family FTEs</span>
@@ -244,11 +259,10 @@
                                                 <td>
                                                     <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox>
                                                 </td>
+                                                <td><span class="labelClass">Total FTEs from Access</span>
+                                                    </td>
                                                 <td>
-                                                    <span class="labelClass">Total FTEs</span>
-                                                </td>
-                                                <td>
-                                                    <span class="labelClass" id="spnTotalFulltime" runat="server"></span>
+                                                    <asp:TextBox ID="txtAccessFTE" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -262,9 +276,9 @@
                                                     <asp:TextBox ID="txtNetworth" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
                                                 <td>
-                                                    <span class="labelClass"></span>
+                                                    <span class="labelClass">Total FTEs </span>
                                                 </td>
-                                                <td></td>
+                                                <td><span class="labelClass" id="spnTotalFulltime" runat="server"></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4" style="height: 6px"></td>
@@ -312,7 +326,7 @@
                                                         <asp:Label ID="lblEnterFinancialJobsID" runat="Server" Text='<%# Eval("EnterFinancialJobsID") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Milestone">
+                                                <asp:TemplateField HeaderText="Status Point">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblMilestone" runat="Server" Text='<%# Eval("Milestone") %>' />
                                                     </ItemTemplate>
@@ -342,7 +356,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -429,7 +443,7 @@
                                                         &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -447,7 +461,7 @@
     <asp:HiddenField ID="hfEnterFundamentalID" runat="server" />
     <asp:HiddenField ID="hfProjectProgram" runat="server" />
     <asp:HiddenField ID="hfEnterFinancialJobsID" runat="server" />
-
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -458,26 +472,30 @@
                 $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
             }).change();
 
-            $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
+           <%-- $('#<%= txtFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtFamilyFTEmp.ClientID%>').val(), $('#<%= txtFamilyFTEmp.ClientID%>'));
             });
             $('#<%= txtNonFamilyFTEmp.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtNonFamilyFTEmp.ClientID%>').val(), $('#<%= txtNonFamilyFTEmp.ClientID%>'));
-            });
-            $('#<%= txtYear.ClientID%>').keyup(function () {
+            });--%>
+           <%-- $('#<%= txtYear.ClientID%>').keyup(function () {
                 toNumericControl($('#<%= txtYear.ClientID%>').val(), $('#<%= txtYear.ClientID%>'));
-            });
+            });--%>
 
             toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            //accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val());
+            //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatMoney($('#<%= txtGrossSales.ClientID%>').val()));
+
             toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
             toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
             toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
 
-            $('#<%= txtNetworth.ClientID%>').keyup(function () {
+          $('#<%= txtNetworth.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
             });
 
-            $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+           $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+                //$('#<%= txtGrossSales.ClientID%>').val(accounting.formatColumn( $('#<%= txtGrossSales.ClientID%>').val(), "$ "));
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
             });
 
@@ -504,8 +522,8 @@
         });
 
         function CalculateTotalFT() {
-            var FamilyFT = parseInt($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
-            var NonFamilyFT = parseInt($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
+            var FamilyFT = parseFloat($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
+            var NonFamilyFT = parseFloat($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
 
             if (isNaN(FamilyFT)) {
                 var FamilyFT = 0;
@@ -514,7 +532,8 @@
             if (isNaN(NonFamilyFT)) {
                 var NonFamilyFT = 0;
             }
-
+            console.log(FamilyFT);
+            console.log(NonFamilyFT);
             var Total = FamilyFT + NonFamilyFT;
             $('#<%= spnTotalFulltime.ClientID%>').text(Total);
         };

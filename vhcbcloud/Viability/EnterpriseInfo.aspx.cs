@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Conservation;
 using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud.Viability
@@ -31,29 +32,98 @@ namespace vhcbcloud.Viability
                 ce_txtEventDate.SelectedDate = DateTime.Today;
                 CalendarExtender1.SelectedDate = DateTime.Today;
                 BindControls();
+                GetRoleAccess();
                 PopulateProjectDetails();
                 BindProductGrid();
                 BindAttributeGrid();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAttribute.Enabled = true;
+            cbAddProduct.Enabled = true;
+
+            btnAddAcres.Visible = false;
+            btnAddEntInfo.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAcres.Visible = false;
             btnAddAttribute.Visible = false;
             btnAddEntInfo.Visible = false;
             btnAddProducts.Visible = false;
+
             cbAddAttribute.Enabled = false;
             cbAddProduct.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -80,6 +150,8 @@ namespace vhcbcloud.Viability
 
         private void PopulateProjectDetails()
         {
+            int TypeId = 0;
+            int ProjectTypeId = 0;
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
@@ -91,8 +163,32 @@ namespace vhcbcloud.Viability
             GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
 
             spnEnterPriseType.InnerText = EnterpriseType;
-            BindSubLookUP(ddlPrimaryProduct, DataUtils.GetInt(dr["LkProjectType"].ToString()));
-            BindSubLookUP(ddlProducts, EnterpriseTypeId);
+
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)//Farm
+                TypeId = 375;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)//Food
+                TypeId = 376;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)//Land Owner
+                TypeId = 377;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)//Forest
+                TypeId = 378;
+            else
+                TypeId = 0;
+
+            BindSubLookUP(ddlPrimaryProduct, TypeId);
+
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26851)
+                ProjectTypeId = 106;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26852)
+                ProjectTypeId = 265;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26402)
+                ProjectTypeId = 264;
+            else if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26401)
+                ProjectTypeId = 263;
+            else
+                ProjectTypeId = 0;
+
+            BindLookUP(ddlProducts, ProjectTypeId);
 
             BindLookUP(ddlAttribute, AttributeTypeId);
 
@@ -104,12 +200,27 @@ namespace vhcbcloud.Viability
                 PopulateDropDown(ddlHearViability, drow["HearAbout"].ToString());
                 txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
                 btnAddEntInfo.Text = "Update";
+                txtOtherNames.Text = drow["OtherNames"].ToString();
+
+                if (DataUtils.GetInt(drow["YrManageBus"].ToString()) > 0)
+                {
+                    int noOfYears = DateTime.Now.Year - DataUtils.GetInt(drow["YrManageBus"].ToString());
+                    spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
+                }
             }
 
             if (EnterpriseType != "Viability Farm Enterprise")
             {
                 dvAcres.Visible = false;
+                tblAcres.Visible = false;
             }
+
+            if (EnterpriseType == "Forest Landowner" || EnterpriseType == "Forest Products")
+            {
+                dvAcres.Visible = true;
+                tblForectAcres.Visible = true;
+            }
+
             LoadAcresForm();
         }
 
@@ -131,13 +242,13 @@ namespace vhcbcloud.Viability
             AttributeTypeId = 0;
             EnterpriseType = "";
 
-            if (LkProjectType == 26399)
+            if (LkProjectType == 26851)
             {
                 AttributeTypeId = 169;
                 EnterpriseTypeId = 375;
                 EnterpriseType = "Viability Farm Enterprise";
             }
-            else if (LkProjectType == 26400)
+            else if (LkProjectType == 26852)
             {
                 AttributeTypeId = 202;
                 EnterpriseTypeId = 376;
@@ -345,21 +456,26 @@ namespace vhcbcloud.Viability
                 {
                     int EnterpriseAcresId = DataUtils.GetInt(hfEnterpriseAcresId.Value);
                     EnterpriseInfoData.UpdateEnterpriseAcres(EnterpriseAcresId, DataUtils.GetInt(txtAcresInProd.Text),
-                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text),
+                        DataUtils.GetInt(txtAccAcres.Text));
 
-                    LogMessage("Acers updated successfully");
+                    LogMessage("Acres updated successfully");
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, DataUtils.GetInt(txtAcresInProd.Text),
-                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text));
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseInfoData.AddEnterpriseAttributes(ProjectId, 
+                        DataUtils.GetInt(txtAcresInProd.Text),
+                        DataUtils.GetInt(txtAcresOwned.Text), DataUtils.GetInt(txtAcresLeased.Text),
+                        DataUtils.GetInt(txtForestAcres.Text), DataUtils.GetInt(txtTotalAcres.Text),
+                        DataUtils.GetInt(txtAccAcres.Text));
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
-                        LogMessage("Accres already exist as in-active");
+                        LogMessage("Acres already exist as in-active");
                     else if (objViabilityMaintResult.IsDuplicate)
-                        LogMessage("Accres already exist");
+                        LogMessage("Acres already exist");
                     else
-                        LogMessage("Accres added successfully");
+                        LogMessage("Acres added successfully");
                 }
                 LoadAcresForm();
             }
@@ -372,6 +488,10 @@ namespace vhcbcloud.Viability
         private void LoadAcresForm()
         {
             DataRow drEntImpGrant = EnterpriseInfoData.GetEnterpriseAcresById(DataUtils.GetInt(hfProjectId.Value));
+            //DataRow drTotalAcres = ConservationAppraisalsData.GetConserveTotalAcres(DataUtils.GetInt(hfProjectId.Value));
+
+            //txtAccAcres.Text = drTotalAcres != null ? drTotalAcres["TotAcres"].ToString() : "0";
+
             if (drEntImpGrant != null)
             {
                 hfEnterpriseAcresId.Value = drEntImpGrant["EnterpriseAcresId"].ToString();
@@ -380,6 +500,7 @@ namespace vhcbcloud.Viability
                 txtAcresLeased.Text = drEntImpGrant["AcresLeased"].ToString();
                 txtAcresOwned.Text = drEntImpGrant["AcresOwned"].ToString();
                 spnTotalAcres.InnerText = drEntImpGrant["TotalAcres"].ToString();
+                txtAccAcres.Text = drEntImpGrant["AccessAcres"].ToString(); 
                 btnAddAcres.Text = "Update";
             }
             else
@@ -476,7 +597,15 @@ namespace vhcbcloud.Viability
         protected void btnAddEntInfo_Click(object sender, EventArgs e)
         {
             EnterpriseInfoData.SubmitEnterprisePrimeProduct(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlPrimaryProduct.SelectedValue.ToString()), txtYearMangBusiness.Text, 
+                DataUtils.GetInt(ddlHearViability.SelectedValue.ToString()), txtOtherNames.Text);
+
+            spnYearsManagedBusiness.InnerHtml = "";
+            if (DataUtils.GetInt(txtYearMangBusiness.Text) > 0)
+            {
+                int noOfYears = DateTime.Now.Year - DataUtils.GetInt(txtYearMangBusiness.Text);
+                spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
+            }
         }
     }
 }

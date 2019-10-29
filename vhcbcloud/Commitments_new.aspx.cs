@@ -428,7 +428,7 @@ namespace vhcbcloud
                         return;
                     }
 
-                    FinancialTransactions.AddProjectFundDetails(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
+                    FinancialTransactions.AddProjectFundDetails(0, transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                         Convert.ToInt32(ddlTransType.SelectedValue.ToString()), currentTranFudAmount);
 
                     BindFundDetails(transId);

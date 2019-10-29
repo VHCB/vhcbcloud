@@ -256,15 +256,6 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.DropDownList ddlProgram;
         
         /// <summary>
-        /// cbFederalFunds control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbFederalFunds;
-        
-        /// <summary>
         /// cbAdmin control.
         /// </summary>
         /// <remarks>
@@ -272,6 +263,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAdmin;
+        
+        /// <summary>
+        /// txtAdminAmt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAdminAmt;
         
         /// <summary>
         /// cbMatch control.
@@ -283,13 +283,22 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox cbMatch;
         
         /// <summary>
-        /// cbFundsReceived control.
+        /// txtMatchAmt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbFundsReceived;
+        protected global::System.Web.UI.WebControls.TextBox txtMatchAmt;
+        
+        /// <summary>
+        /// chkDrawDown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkDrawDown;
         
         /// <summary>
         /// cbFundActive control.

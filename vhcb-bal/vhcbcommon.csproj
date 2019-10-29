@@ -66,6 +66,8 @@
     <Compile Include="FundTypeData.cs" />
     <Compile Include="FundingSourceData.cs" />
     <Compile Include="GrantMaintenanceData.cs" />
+    <Compile Include="HOPWADefData.cs" />
+    <Compile Include="HOPWAMaintenanceData.cs" />
     <Compile Include="Housing\HomeOwnershipData.cs" />
     <Compile Include="Housing\HousingAttributesData.cs" />
     <Compile Include="Housing\HousingFederalProgramsData.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="ProjectNotesData.cs" />
     <Compile Include="ProjectSearchData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetupData.cs" />
     <Compile Include="TabsData.cs" />
     <Compile Include="UserSecurityData.cs" />
     <Compile Include="Viability\EnterpriseEvaluationsData.cs" />

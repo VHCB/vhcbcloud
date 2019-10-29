@@ -30,21 +30,89 @@ namespace vhcbcloud.Conservation
 
             if (!IsPostBack)
             {
-                PopulateProjectDetails();
-
                 BindControls();
+                PopulateProjectDetails();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            //btnAddApproval.Visible = false;
+            //btnAddMajor.Visible = false;
+            ////btnAddMilestone.Visible = false;
+            //btnAddMinor.Visible = false;
+            //btnAddPlan.Visible = false;
+            //btnAddViolation.Visible = false;
+
+            cbAddApproval.Enabled = true;
+            cbAddMajor.Enabled = true;
+            cbAddMinor.Enabled = true;
+            cbAddMilestone.Enabled = true;
+            cbAddPlan.Enabled = true;
+            cbAddViolation.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddApproval.Visible = false;
             btnAddMajor.Visible = false;
@@ -52,14 +120,38 @@ namespace vhcbcloud.Conservation
             btnAddMinor.Visible = false;
             btnAddPlan.Visible = false;
             btnAddViolation.Visible = false;
+
             cbAddApproval.Enabled = false;
             cbAddMajor.Enabled = false;
             cbAddMinor.Enabled = false;
             cbAddMilestone.Enabled = false;
             cbAddPlan.Enabled = false;
-            cbAddViolation.Enabled = false;            
-
+            cbAddViolation.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddApproval.Visible = false;
+        //    btnAddMajor.Visible = false;
+        //    btnAddMilestone.Visible = false;
+        //    btnAddMinor.Visible = false;
+        //    btnAddPlan.Visible = false;
+        //    btnAddViolation.Visible = false;
+        //    cbAddApproval.Enabled = false;
+        //    cbAddMajor.Enabled = false;
+        //    cbAddMinor.Enabled = false;
+        //    cbAddMilestone.Enabled = false;
+        //    cbAddPlan.Enabled = false;
+        //    cbAddViolation.Enabled = false;            
+
+        //}
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -125,6 +217,21 @@ namespace vhcbcloud.Conservation
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
+
+            DataRow drConserve = ConservationSummaryData.GetConserveDetailsById(DataUtils.GetInt(hfProjectId.Value));
+            hfConserveId.Value = "";
+
+            if (drConserve != null)
+            {
+                hfConserveId.Value = drConserve["ConserveID"].ToString();
+                DataRow drow = ConservationSummaryData.GetPrimarySteward(Convert.ToInt32(hfConserveId.Value));
+
+                if (drow != null)
+                    spnPrimarySteward.InnerHtml = drow["ApplicantName"].ToString();
+
+                //PopulateDropDown(ddlPSO, drConserve["PrimStew"].ToString());
+                //btnSubmit.Text = "Update";
+            }
         }
 
         private void LogError(string pagename, string method, string message, string error)
@@ -161,8 +268,25 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlPlan, 142);
             //BindLookUP(ddlEvent, 146);
             BindLookUP(ddlProgramMilestone, 159);
+            //BindPrimaryStewardOrganization();
         }
 
+        //private void BindPrimaryStewardOrganization()
+        //{
+        //    try
+        //    {
+        //        ddlPSO.Items.Clear();
+        //        ddlPSO.DataSource = ConservationSummaryData.GetPrimaryStewardOrg();
+        //        ddlPSO.DataValueField = "applicantid";
+        //        ddlPSO.DataTextField = "ApplicantName";
+        //        ddlPSO.DataBind();
+        //        ddlPSO.Items.Insert(0, new ListItem("Select", "NA"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(Pagename, "BindApplicants", "", ex.Message);
+        //    }
+        //}
         private void BindGrids()
         {
             BindMajorGrid();
@@ -246,8 +370,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtMajorURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddMajor.Text.ToLower() == "update")
             {
@@ -336,6 +460,8 @@ namespace vhcbcloud.Conservation
             BindMajorGrid();
             ClearMajorAmendmentForm();
             cbAddMajor.Checked = false;
+            btnAddMajor.Visible = true;
+            btnAddMajor.Text = "Add";
         }
 
         //protected void gvMajor_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -360,15 +486,45 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddMajor.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMajor.Visible = true;
+                    else
+                        btnAddMajor.Visible = false;
+
                     cbAddMajor.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveMajAmendID = e.Row.FindControl("lblConserveMajAmendID") as Label;
                         DataRow dr = ConservationStewardshipData.GetMajorAmendmentsById(Convert.ToInt32(lblConserveMajAmendID.Text));
 
@@ -478,8 +634,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtMinorURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddMinor.Text.ToLower() == "update")
             {
@@ -533,6 +689,8 @@ namespace vhcbcloud.Conservation
             BindMinorGrid();
             ClearMinorAmendmentForm();
             cbAddMinor.Checked = false;
+            btnAddMinor.Visible = true;
+            btnAddMinor.Text = "Add";
         }
 
         protected void gvMinor_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -557,15 +715,45 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddMinor.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMinor.Visible = true;
+                    else
+                        btnAddMinor.Visible = false;
+
                     cbAddMinor.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveMinAmendID = e.Row.FindControl("lblConserveMinAmendID") as Label;
                         DataRow dr = ConservationStewardshipData.GetMinorAmendmentsById(Convert.ToInt32(lblConserveMinAmendID.Text));
 
@@ -735,8 +923,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtViolationURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddViolation.Text.ToLower() == "update")
             {
@@ -790,21 +978,53 @@ namespace vhcbcloud.Conservation
             BindViolationsGrid();
             ClearViolationForm();
             cbAddViolation.Checked = false;
+            btnAddViolation.Visible = true;
+            btnAddViolation.Text = "Add";
         }
 
         protected void gvViolation_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddViolation.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddViolation.Visible = true;
+                    else
+                        btnAddViolation.Visible = false;
+
                     cbAddViolation.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveViolationsID = e.Row.FindControl("lblConserveViolationsID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConserveViolationsById(Convert.ToInt32(lblConserveViolationsID.Text));
 
@@ -876,8 +1096,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtApprovalURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddApproval.Text.ToLower() == "update")
             {
@@ -932,21 +1152,53 @@ namespace vhcbcloud.Conservation
             BindApprovalsGrid();
             ClearApprovalForm();
             cbAddApproval.Checked = false;
+            btnAddApproval.Visible = true;
+            btnAddApproval.Text = "Add";
         }
 
         protected void gvApproval_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddApproval.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddApproval.Visible = true;
+                    else
+                        btnAddApproval.Visible = false;
+
                     cbAddApproval.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[8].Controls[1].Visible = false;
                         Label lblConserveApprovalID = e.Row.FindControl("lblConserveApprovalID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConserveApprovalsById(Convert.ToInt32(lblConserveApprovalID.Text));
 
@@ -1017,6 +1269,8 @@ namespace vhcbcloud.Conservation
             BindPlansGrid();
             ClearPlansForm();
             cbAddPlan.Checked = false;
+            btnAddPlan.Visible = true;
+            btnAddPlan.Text = "Add";
         }
 
         private void BindPlansGrid()
@@ -1080,8 +1334,8 @@ namespace vhcbcloud.Conservation
 
             string URL = txtPlanURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddPlan.Text.ToLower() == "update")
             {
@@ -1125,15 +1379,45 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddPlan.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddPlan.Visible = true;
+                    else
+                        btnAddPlan.Visible = false;
+
                     cbAddPlan.Checked = true;
 
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
                         Label lblConservePlanID = e.Row.FindControl("lblConservePlanID") as Label;
                         DataRow dr = ConservationStewardshipData.GetConservePlansById(Convert.ToInt32(lblConservePlanID.Text));
 
@@ -1206,10 +1490,12 @@ namespace vhcbcloud.Conservation
         {
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
-            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value),
+            if (btnAddMilestone.Text == "Add")
+            {
+                MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ProgramId),
                 null,
                 0, 0,
@@ -1217,17 +1503,34 @@ namespace vhcbcloud.Conservation
                 0, 0,
                 DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId());
 
+                if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                    LogMessage("Milestone Event already exist as in-active");
+                else if (obMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist");
+                else
+                    LogMessage("New milestone added successfully");
+            }
+            else
+            {
+                ProjectMaintenanceData.UpdateProjectEvent2(DataUtils.GetInt(hfProjectEventID.Value),
+                    DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ProgramId),
+                null,
+                0, null,
+                DataUtils.GetInt(ddlProgramMilestone.SelectedValue.ToString()), 
+                DataUtils.GetInt(ddlProgramSubMilestone.SelectedValue.ToString()),
+                0, 0,
+                DataUtils.GetDate(txtEventDate.Text), txtNotes.Text, URL, GetUserId(), true);
+
+                LogMessage("Milestone updated successfully");
+                hfProjectEventID.Value = "";
+                btnAddMilestone.Text = "Add";
+                gvMilestone.EditIndex = -1;
+            }
+
             //ClearForm();
             ClearEntityAndCommonForm();
             cbAddMilestone.Checked = false;
             BindMilestoneGrid();
-
-            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
-                LogMessage("Milestone Event already exist as in-active");
-            else if (obMilestoneResult.IsDuplicate)
-                LogMessage("Milestone already exist");
-            else
-                LogMessage("New milestone added successfully");
         }
 
         private void ClearEntityAndCommonForm()
@@ -1243,6 +1546,8 @@ namespace vhcbcloud.Conservation
         protected void gvMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvMilestone.EditIndex = -1;
+            ClearEntityAndCommonForm();
+            cbAddMilestone.Checked = false;
             BindMilestoneGrid();
         }
 
@@ -1327,6 +1632,75 @@ namespace vhcbcloud.Conservation
             ClientScript.RegisterStartupScript(this.GetType(),
             "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Major Amendments"));
         }
+
+        //protected void btnSubmit_Click(object sender, EventArgs e)
+        //{
+        //    ConservationSummaryData.SubmitPrimStewConserve(DataUtils.GetInt(hfProjectId.Value), 
+        //                    DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
+        //                    GetUserId());
+
+        //    if (btnSubmit.Text.ToLower() == "update")
+        //        LogMessage("Primary Steward Organization updated successfully");
+        //    else
+        //        LogMessage("Primary Steward Organization added successfully");
+        //}
+
+        protected void gvMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string URL = "";
+                HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                string DocumentId = anchorDocument.InnerHtml;
+
+                if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                {
+                    URL = "fda://document/" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else if (DocumentId != "")
+                {
+                    URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else
+                {
+                    anchorDocument.InnerHtml = "";
+                }
+            }
+
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            {
+                ClearEntityAndCommonForm();
+                CommonHelper.GridViewSetFocus(e.Row);
+                btnAddMilestone.Text = "Update";
+                cbAddMilestone.Checked = true;
+
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    e.Row.Cells[7].Controls[1].Visible = false;
+
+                    Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                    int ProjectEventID = DataUtils.GetInt(lblProjectEventID.Text);
+
+                    DataRow dr = ProjectMaintenanceData.GetProjectEventById(ProjectEventID);
+
+                    hfProjectEventID.Value = lblProjectEventID.Text;
+                    //Populate Edit Form
+                    
+                    PopulateDropDown(ddlProgramMilestone, dr["ProgEventID"].ToString());
+                    PopulateDropDown(ddlProgramSubMilestone, dr["ProgSubEventID"].ToString());
+
+                    txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                    txtURL.Text = dr["URL"].ToString();
+
+                    txtNotes.Text = dr["Note"].ToString();
+
+                }
+            }
+            }
 
         //protected void btnAddEvent_Click(object sender, EventArgs e)
         //{

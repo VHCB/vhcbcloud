@@ -107,7 +107,11 @@
                                                     <td style="width: 20%; float: left"><span class="labelClass">Amount to Distribute $ :</span></td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:TextBox ID="txtTotAmt" CssClass="clsTextBoxMoney" class="totMoney" onkeyup='toTotAmtFormatter(value)' runat="server" TabIndex="4"></asp:TextBox></td>
-                                                    <td style="width: 10%; float: left"><asp:CheckBox ID="cbCorrection" runat="server" Text="Correction" /></td>
+                                                    <td style="width: 10%; float: left"><span class="labelClass">Target Year</span></td>
+                                                    <td style="width: 10%; float: left">
+                                                        <asp:DropDownList ID="ddlTargetYear" Enabled="false" CssClass="clsDropDown" runat="server" TabIndex="5">
+                                                        </asp:DropDownList>
+                                                    </td>
                                                     <td style="width: 20%; float: left">
                                                         <asp:DropDownList ID="ddlStatus" Visible="false" CssClass="clsDropDown" runat="server" TabIndex="5">
                                                         </asp:DropDownList>
@@ -296,7 +300,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Fund Name" SortExpression="Name">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("Name") %>' />
+                                                            <asp:Label ID="lblFundName" runat="Server" Text='<%# Eval("FundName") %>' />
                                                         </ItemTemplate>
                                                         <%-- <EditItemTemplate>
                                     <asp:TextBox ID="txtFundName" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Name") %>'></asp:TextBox>

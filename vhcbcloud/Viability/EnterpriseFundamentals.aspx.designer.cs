@@ -166,22 +166,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel8;
         
         /// <summary>
-        /// cbBusplan control.
+        /// ddlFiscalYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbBusplan;
-        
-        /// <summary>
-        /// cbGrantApp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbGrantApp;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiscalYear;
         
         /// <summary>
         /// ddlPlanType control.
@@ -301,15 +292,6 @@ namespace vhcbcloud.Viability {
         protected global::AjaxControlToolkit.CalendarExtender ce_txtEventDate;
         
         /// <summary>
-        /// txtYear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtYear;
-        
-        /// <summary>
         /// txtFamilyFTEmp control.
         /// </summary>
         /// <remarks>
@@ -346,13 +328,13 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtNetIncome;
         
         /// <summary>
-        /// spnTotalFulltime control.
+        /// txtAccessFTE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
+        protected global::System.Web.UI.WebControls.TextBox txtAccessFTE;
         
         /// <summary>
         /// txtNetworth control.
@@ -362,6 +344,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetworth;
+        
+        /// <summary>
+        /// spnTotalFulltime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalFulltime;
         
         /// <summary>
         /// txtGrossPayroll control.
@@ -533,5 +524,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEnterFinancialJobsID;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

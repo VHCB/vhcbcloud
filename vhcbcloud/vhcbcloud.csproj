@@ -51,11 +51,13 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
@@ -115,7 +117,7 @@
     </Reference>
     <Reference Include="WebReportsApi, Version=2016.3.0.104, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Exago\ExagoWebAPI\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>C:\Program Files\Exago\eWebReportsAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -173,10 +175,13 @@
     <Content Include="Account\Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />
+    <Content Include="Act250Notes.aspx" />
+    <Content Include="Adjustments.aspx" />
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
     <Content Include="Applicant.aspx" />
-    <Content Include="CashRefund_old.aspx" />
+    <Content Include="AwardSummary.aspx" />
+    <Content Include="CashRefundnew.aspx" />
     <Content Include="CheckRequestDates.aspx" />
     <Content Include="ConservationAct250.aspx" />
     <Content Include="CashRefund.aspx" />
@@ -188,15 +193,15 @@
     <Content Include="Conservation\ConservationStewardship.aspx" />
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
-    <Content Include="Decommitments_old.aspx" />
+    <Content Include="Dashboard.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
+    <Content Include="EntitySearch.aspx" />
     <Content Include="EventMaintenance.aspx" />
     <Content Include="ExistingAssignments.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
-    <Content Include="awardsummary.aspx" />
     <Content Include="Blog.aspx" />
     <Content Include="Commitments.aspx" />
     <Content Include="Decommitments.aspx" />
@@ -236,9 +241,10 @@
     <Content Include="Content\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FundMaintenance.aspx" />
+    <Content Include="GetAddressFromGoogleAPI.aspx" />
     <Content Include="GrantMaintenance.aspx" />
-    <Content Include="HOPWAManagement.aspx" />
     <Content Include="Housing\HomeOwnership.aspx" />
+    <Content Include="Housing\HOPWAManagement.aspx" />
     <Content Include="Housing\HousingAttributes.aspx" />
     <Content Include="Housing\HousingFederalPrograms.aspx" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
@@ -264,6 +270,8 @@
     <Content Include="Lead\ProjectLeadMilestones.aspx" />
     <Content Include="Lead\ProjectLeadOccupants.aspx" />
     <Content Include="LoanMaintenance.aspx" />
+    <Content Include="LoanSummary.aspx" />
+    <Content Include="LoanSummaryTemp.aspx" />
     <Content Include="LookupMaintenance.aspx" />
     <Content Include="Fundingsource.aspx" />
     <Content Include="Images\BtnSubmit.gif" />
@@ -276,12 +284,19 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ExistingReallocations.aspx" />
-    <Content Include="ProgressReport.aspx" />
+    <Content Include="PoolAssignments.aspx" />
+    <Content Include="ProjectCheckRequestNew.aspx" />
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
     <Content Include="Scripts\CurrencyController.js" />
+    <Content Include="Scripts\gridviewScroll.min.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\NumericController.js" />
+    <Content Include="Setup.aspx" />
+    <Content Include="SetUp\AccountSetup.aspx" />
+    <Content Include="SetUp\AmericorpsSetup.aspx" />
+    <Content Include="SetUp\HOPWASetup.aspx" />
     <Content Include="SiteLogin.Master" />
     <Content Include="SiteNonAdmin.Master" />
     <Content Include="SQL\Americorpsmembers.sql" />
@@ -290,6 +305,21 @@
     <Content Include="SQL\ConservationAttributes.sql" />
     <Content Include="SQL\ConservationSourcesUses.sql" />
     <Content Include="SQL\ConservationSummary.sql" />
+    <Content Include="SQL\Conversion\Fund Population.sql" />
+    <Content Include="SQL\Conversion\Project.sql" />
+    <Content Include="SQL\DC_Address_ProjectAddress_Population.sql" />
+    <Content Include="SQL\DC_ConserveAppraisalInfo.sql" />
+    <Content Include="SQL\DC_ConserveEHolder.sql" />
+    <Content Include="SQL\DC_ConserveSourcesUses.sql" />
+    <Content Include="SQL\DC_ConserveUses.sql" />
+    <Content Include="SQL\DC_Homeownership_ProjectHouseSubType_ProjectHouseSuppServ.sql" />
+    <Content Include="SQL\DC_HouseSource.sql" />
+    <Content Include="SQL\DC_HouseUse.sql" />
+    <Content Include="SQL\DC_Housing.sql" />
+    <Content Include="SQL\DC_ProjectFederal_ProjectFederalProgramDetail.sql" />
+    <Content Include="SQL\DC_ProjectRelated.sql" />
+    <Content Include="SQL\DC_ProjectVHCBPriorities_ProjectInterAgency.sql" />
+    <Content Include="SQL\DC_UpdateProjectTable.sql" />
     <Content Include="SQL\Enterprise Evaluations.sql" />
     <Content Include="SQL\EnterpriseFundamentals.sql" />
     <Content Include="SQL\EnterpriseImpGrant.sql" />
@@ -373,9 +403,13 @@
     <Content Include="SQL\ProjectSearch.sql" />
     <Content Include="SQL\ProjectTabs.sql" />
     <Content Include="SQL\RentalAffordability.sql" />
+    <Content Include="SQL\Trans-Conversion.sql" />
+    <Content Include="SQL\Trans-Conversion2.sql" />
+    <Content Include="SQL\Trans-Detail-Fund Population-Final.sql" />
     <Content Include="SQL\UserSecurity.sql" />
     <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
+    <Content Include="TransferDisbursements.aspx" />
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability\EnterpriseEvaluations.aspx" />
     <Content Include="Viability\EnterpriseFundamentals.aspx" />
@@ -414,6 +448,20 @@
     <Compile Include="Account\SetPassword.aspx.designer.cs">
       <DependentUpon>SetPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Act250Notes.aspx.cs">
+      <DependentUpon>Act250Notes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Act250Notes.aspx.designer.cs">
+      <DependentUpon>Act250Notes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Adjustments.aspx.cs">
+      <DependentUpon>Adjustments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Adjustments.aspx.designer.cs">
+      <DependentUpon>Adjustments.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Americorps\AmericorpsMember.aspx.cs">
       <DependentUpon>AmericorpsMember.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -435,12 +483,19 @@
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CashRefund_old.aspx.cs">
-      <DependentUpon>CashRefund_old.aspx</DependentUpon>
+    <Compile Include="AwardSummary.aspx.cs">
+      <DependentUpon>AwardSummary.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CashRefund_old.aspx.designer.cs">
-      <DependentUpon>CashRefund_old.aspx</DependentUpon>
+    <Compile Include="AwardSummary.aspx.designer.cs">
+      <DependentUpon>AwardSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashRefundnew.aspx.cs">
+      <DependentUpon>CashRefundnew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashRefundnew.aspx.designer.cs">
+      <DependentUpon>CashRefundnew.aspx</DependentUpon>
     </Compile>
     <Compile Include="CheckRequestDates.aspx.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
@@ -449,6 +504,14 @@
     <Compile Include="CheckRequestDates.aspx.designer.cs">
       <DependentUpon>CheckRequestDates.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeoResponse.cs" />
     <Compile Include="ConservationAct250.aspx.cs">
       <DependentUpon>ConservationAct250.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -512,13 +575,6 @@
     <Compile Include="Conservation\ConservationSummary.aspx.designer.cs">
       <DependentUpon>ConservationSummary.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Decommitments_old.aspx.cs">
-      <DependentUpon>Decommitments_old.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Decommitments_old.aspx.designer.cs">
-      <DependentUpon>Decommitments_old.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Entity.aspx.cs">
       <DependentUpon>Entity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -539,6 +595,13 @@
     </Compile>
     <Compile Include="EntityNotes.aspx.designer.cs">
       <DependentUpon>EntityNotes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EntitySearch.aspx.cs">
+      <DependentUpon>EntitySearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EntitySearch.aspx.designer.cs">
+      <DependentUpon>EntitySearch.aspx</DependentUpon>
     </Compile>
     <Compile Include="EventMaintenance.aspx.cs">
       <DependentUpon>EventMaintenance.aspx</DependentUpon>
@@ -567,13 +630,6 @@
     </Compile>
     <Compile Include="FinalizeTransactions.aspx.designer.cs">
       <DependentUpon>FinalizeTransactions.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="awardsummary.aspx.cs">
-      <DependentUpon>awardsummary.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="awardsummary.aspx.designer.cs">
-      <DependentUpon>awardsummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Blog.aspx.cs">
       <DependentUpon>Blog.aspx</DependentUpon>
@@ -782,6 +838,13 @@
     <Compile Include="FundType.aspx.designer.cs">
       <DependentUpon>FundType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetAddressFromGoogleAPI.aspx.cs">
+      <DependentUpon>GetAddressFromGoogleAPI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetAddressFromGoogleAPI.aspx.designer.cs">
+      <DependentUpon>GetAddressFromGoogleAPI.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GrantMaintenance.aspx.cs">
       <DependentUpon>GrantMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -790,19 +853,19 @@
       <DependentUpon>GrantMaintenance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
-    <Compile Include="HOPWAManagement.aspx.cs">
-      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="HOPWAManagement.aspx.designer.cs">
-      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Housing\HomeOwnership.aspx.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Housing\HomeOwnership.aspx.designer.cs">
       <DependentUpon>HomeOwnership.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\HOPWAManagement.aspx.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\HOPWAManagement.aspx.designer.cs">
+      <DependentUpon>HOPWAManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Housing\HousingAttributes.aspx.cs">
       <DependentUpon>HousingAttributes.aspx</DependentUpon>
@@ -867,6 +930,20 @@
     <Compile Include="LoanMaintenance.aspx.designer.cs">
       <DependentUpon>LoanMaintenance.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LoanSummary.aspx.cs">
+      <DependentUpon>LoanSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanSummary.aspx.designer.cs">
+      <DependentUpon>LoanSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoanSummaryTemp.aspx.cs">
+      <DependentUpon>LoanSummaryTemp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoanSummaryTemp.aspx.designer.cs">
+      <DependentUpon>LoanSummaryTemp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LookupMaintenance.aspx.cs">
       <DependentUpon>LookupMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -892,12 +969,12 @@
       <DependentUpon>MilestonesQuickentry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="ProgressReport.aspx.cs">
-      <DependentUpon>ProgressReport.aspx</DependentUpon>
+    <Compile Include="PoolAssignments.aspx.cs">
+      <DependentUpon>PoolAssignments.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ProgressReport.aspx.designer.cs">
-      <DependentUpon>ProgressReport.aspx</DependentUpon>
+    <Compile Include="PoolAssignments.aspx.designer.cs">
+      <DependentUpon>PoolAssignments.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProjectCheckRequest.aspx.cs">
       <DependentUpon>ProjectCheckRequest.aspx</DependentUpon>
@@ -905,6 +982,13 @@
     </Compile>
     <Compile Include="ProjectCheckRequest.aspx.designer.cs">
       <DependentUpon>ProjectCheckRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectCheckRequestNew.aspx.cs">
+      <DependentUpon>ProjectCheckRequestNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectCheckRequestNew.aspx.designer.cs">
+      <DependentUpon>ProjectCheckRequestNew.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProjectDesc.aspx.cs">
       <DependentUpon>ProjectDesc.aspx</DependentUpon>
@@ -963,6 +1047,34 @@
     <Compile Include="Reallocations.aspx.designer.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Setup.aspx.cs">
+      <DependentUpon>Setup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup.aspx.designer.cs">
+      <DependentUpon>Setup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\AccountSetup.aspx.cs">
+      <DependentUpon>AccountSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\AccountSetup.aspx.designer.cs">
+      <DependentUpon>AccountSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\AmericorpsSetup.aspx.cs">
+      <DependentUpon>AmericorpsSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\AmericorpsSetup.aspx.designer.cs">
+      <DependentUpon>AmericorpsSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetUp\HOPWASetup.aspx.cs">
+      <DependentUpon>HOPWASetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetUp\HOPWASetup.aspx.designer.cs">
+      <DependentUpon>HOPWASetup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1012,6 +1124,13 @@
     </Compile>
     <Compile Include="TestExago.aspx.designer.cs">
       <DependentUpon>TestExago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransferDisbursements.aspx.cs">
+      <DependentUpon>TransferDisbursements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransferDisbursements.aspx.designer.cs">
+      <DependentUpon>TransferDisbursements.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurity.aspx.cs">
       <DependentUpon>UserSecurity.aspx</DependentUpon>
@@ -1067,8 +1186,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="ExternalComponents\" />
+    <Folder Include="ExternalComponents\App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vhcb-bal\vhcbcommon.csproj">

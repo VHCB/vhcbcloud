@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="vhcbcloud._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
+ 
     <div class="jumbotron">
 
         <p class="lead">VHCB Projects</p>
@@ -16,15 +16,15 @@
                     <p>
                         <span class="labelClass">New Project # :</span>
                         <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                        <ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
+                        <%--<ajaxToolkit:MaskedEditExtender runat="server" ID="ameProjNum" Mask="9999-999-999" ClearMaskOnLostFocus="false"
                             MaskType="Number" TargetControlID="txtProjNum" InputDirection="LeftToRight">
-                        </ajaxToolkit:MaskedEditExtender>
+                        </ajaxToolkit:MaskedEditExtender>--%>
 
                         &nbsp;<span class="labelClass">Name :</span>
                         <asp:TextBox ID="txtPName" CssClass="clsTextBoxBlueSMDL" Width ="500px" Height="22px" runat="server"></asp:TextBox>
-                        <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
+                       <%-- <ajaxToolkit:AutoCompleteExtender ID="aaceProjName" runat="server" TargetControlID="txtPName" MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1"
                             CompletionInterval="100" ServiceMethod="GetProjectName">
-                        </ajaxToolkit:AutoCompleteExtender>
+                        </ajaxToolkit:AutoCompleteExtender>--%>
                         <br />
                         <span class="labelClass">Applicant :</span>
                         <asp:DropDownList ID="ddlApplicantName" CssClass="clsApplicantBlue" runat="server">
@@ -44,14 +44,14 @@
                         <asp:Label runat="server" ID="lblErrorMsg"></asp:Label>
                     </p>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id="dvProjectNamesGridTest" runat="server">
                     <p>
-                        <asp:Panel runat="server" ID="Panel1" Width="100%" Height="350px" ScrollBars="Vertical">
+                     
                             <asp:GridView ID="gvProject" runat="server" AutoGenerateColumns="False" DataKeyNames="typeid"
-                                Width="90%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                 GridLines="None" EnableTheming="True" OnRowCancelingEdit="gvProject_RowCancelingEdit"
                                 OnRowEditing="gvProject_RowEditing" OnRowUpdating="gvProject_RowUpdating" OnPageIndexChanging="gvProject_PageIndexChanging" AllowSorting="true"
-                                OnSorting="gvProject_Sorting" OnRowDataBound="gvProject_RowDataBound">
+                                OnSorting="gvProject_Sorting" OnRowDataBound="gvProject_RowDataBound"  >
                                 <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                 <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                 <HeaderStyle CssClass="headerStyle" />
@@ -78,12 +78,31 @@
                                     <asp:BoundField DataField="TypeID" HeaderText="Name ID" ReadOnly="True" Visible="false" SortExpression="TypeID" />
                                     <asp:CommandField ShowEditButton="True" />
                                 </Columns>
-                                <FooterStyle CssClass="footerStyle" />
                             </asp:GridView>
-                        </asp:Panel>
+                       
                     </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+   <%-- </div>--%>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script> 
+    <script type="text/javascript" src="Scripts/gridviewScroll.min.js"></script> 
+          
+     <script language="javascript">
+         $(document).ready(function () {
+             gridviewScrollstest();
+         });
+         function gridviewScrollstest() {
+             $('#<%=gvProject.ClientID%>').gridviewScroll({
+                 width: 900,
+                 height: 300,
+                 startHorizontal: 0,
+                 wheelstep: 10,
+                 barhovercolor: "#3399FF",
+                 barcolor: "#3399FF"
+             });
+         }
+         </script>
 </asp:Content>

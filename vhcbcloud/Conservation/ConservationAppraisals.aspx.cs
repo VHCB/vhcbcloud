@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -29,29 +30,104 @@ namespace vhcbcloud.Conservation
                 Session["dtOccupantsList"] = null;
                 PopulateProjectDetails();
                 BindControls();
+                GetRoleAccess();
                 BindAppraisalValueForm();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
 
-        protected bool GetRoleAuth()
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
 
-        protected void RoleReadOnly()
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAppraisalInfo.Enabled = true;
+            cbAddAppraisalPay.Enabled = true;
+            btnSubmit.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAppraisalInfo.Visible = false;
             btnAddPay.Visible = false;
             btnSubmit.Visible = false;
+
             cbAddAppraisalInfo.Enabled = false;
             cbAddAppraisalPay.Enabled = false;
-            cbReviewApproved.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddAppraisalInfo.Visible = false;
+        //    btnAddPay.Visible = false;
+        //    btnSubmit.Visible = false;
+        //    cbAddAppraisalInfo.Enabled = false;
+        //    cbAddAppraisalPay.Enabled = false;
+        //    cbReviewApproved.Enabled = false;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -70,23 +146,25 @@ namespace vhcbcloud.Conservation
         private void BindAppraisalValueForm()
         {
             DataRow drAppraisalValue = ConservationAppraisalsData.GetConservationAppraisalValueById(DataUtils.GetInt(hfProjectId.Value));
+            DataRow drTotalAcres = ConservationAppraisalsData.GetConserveTotalAcres(DataUtils.GetInt(hfProjectId.Value));
 
             dvNewAppraisalInfo.Visible = false;
+            txtTotalAcres.Text = drTotalAcres != null ? drTotalAcres["TotAcres"].ToString() : "0";
 
             if (drAppraisalValue != null)
             {
                 btnSubmit.Text = "Update";
                 hfAppraisalID.Value = drAppraisalValue["AppraisalID"].ToString();
                 txtFeeValue.Text = drAppraisalValue["FeeValue"].ToString();
-                txtTotalAcres.Text = drAppraisalValue["TotAcres"].ToString();
+                //txtTotalAcres.Text = drAppraisalValue["TotAcres"].ToString();
                 txtValueBefore.Text = drAppraisalValue["Apbef"].ToString();
                 txtValueafter.Text =drAppraisalValue["Apaft"].ToString();
                 txtValueofLandWithOption.Text = drAppraisalValue["Aplandopt"].ToString();
                 txtEnhancedExclusionValue.Text =drAppraisalValue["Exclusion"].ToString();
-                spEasementValue.InnerText = CommonHelper.myDollarFormat(drAppraisalValue["EaseValue"].ToString());// DataUtils.GetDecimal(drAppraisalValue["EaseValue"].ToString()).ToString("#.##");
-                spEasementValuePerAcre.InnerText = CommonHelper.myDollarFormat(drAppraisalValue["Valperacre"].ToString());  //DataUtils.GetDecimal(drAppraisalValue["Valperacre"].ToString()).ToString("#.##");
+                spEasementValue.InnerText = drAppraisalValue["EaseValue"].ToString() == "" ? "" : CommonHelper.myDollarFormat(drAppraisalValue["EaseValue"].ToString());// DataUtils.GetDecimal(drAppraisalValue["EaseValue"].ToString()).ToString("#.##");
+                spEasementValuePerAcre.InnerText = drAppraisalValue["Valperacre"].ToString() == ""? "" : CommonHelper.myDollarFormat(drAppraisalValue["Valperacre"].ToString());  //DataUtils.GetDecimal(drAppraisalValue["Valperacre"].ToString()).ToString("#.##");
                 txtAppraisalValueComments.Text = drAppraisalValue["Comments"].ToString();
-
+                PopulateDropDown(ddlType, drAppraisalValue["LKType"].ToString());
                 dvNewAppraisalInfo.Visible = true;
                 BindGrids();
 
@@ -141,6 +219,7 @@ namespace vhcbcloud.Conservation
         private void BindControls()
         {
             BindLookUP(ddlAppraiser, 57);
+            BindLookUP(ddlType, 256);
             BindApplicants(ddlPayParty);
         }
 
@@ -199,14 +278,17 @@ namespace vhcbcloud.Conservation
             //}
 
             decimal Easementvalue;
+            decimal EasementValuePerAcre = 0;
 
-            if (txtFeeValue.Text == "")
+            //if (txtFeeValue.Text == "")
                 Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtValueBefore.Text, "[^0-9a-zA-Z.]+", "")) - DataUtils.GetDecimal(Regex.Replace(txtValueafter.Text, "[^0-9a-zA-Z.]+", ""));
-            else
-                Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
+            //else
+                //Easementvalue = DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", ""));
 
-
-            decimal EasementValuePerAcre = Easementvalue / DataUtils.GetInt(txtTotalAcres.Text);
+            if(DataUtils.GetDecimal(txtTotalAcres.Text) > 0)
+            {
+                EasementValuePerAcre = Easementvalue / DataUtils.GetDecimal(txtTotalAcres.Text);
+            }
 
             if (btnSubmit.Text == "Submit")
             {
@@ -216,7 +298,8 @@ namespace vhcbcloud.Conservation
                     DataUtils.GetDecimal(Regex.Replace(txtValueofLandWithOption.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtEnhancedExclusionValue.Text, "[^0-9a-zA-Z.]+", "")),  
                     Easementvalue, EasementValuePerAcre, txtAppraisalValueComments.Text, 
-                    DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")));
+                    DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetInt(ddlType.SelectedValue.ToString()));
                 BindAppraisalValueForm();
                 BindGrids();
                 LogMessage("Appraisal Value Added Successfully");
@@ -229,7 +312,8 @@ namespace vhcbcloud.Conservation
                     DataUtils.GetDecimal(Regex.Replace(txtValueofLandWithOption.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDecimal(Regex.Replace(txtEnhancedExclusionValue.Text, "[^0-9a-zA-Z.]+", "")),
                    Easementvalue, EasementValuePerAcre, true, txtAppraisalValueComments.Text,
-                   DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")));
+                   DataUtils.GetDecimal(Regex.Replace(txtFeeValue.Text, "[^0-9a-zA-Z.]+", "")),
+                   DataUtils.GetInt(ddlType.SelectedValue.ToString()));
 
                 gvAppraisalInfo.EditIndex = -1;
                 BindAppraisalValueForm();
@@ -302,6 +386,8 @@ namespace vhcbcloud.Conservation
             BindAppaisalInfoGrid();
             ClearAppraisalInfoForm();
             hfAppraisalInfoID.Value = "";
+
+            btnAddAppraisalInfo.Visible = true;
             btnAddAppraisalInfo.Text = "Add";
         }
 
@@ -309,16 +395,46 @@ namespace vhcbcloud.Conservation
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+                }
+
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddAppraisalInfo.Text = "Update";
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddAppraisalInfo.Visible = true;
+                    else
+                        btnAddAppraisalInfo.Visible = false;
+
                     cbAddAppraisalInfo.Checked = true;
 
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[8].Controls[0].Visible = false;
+                        e.Row.Cells[9].Controls[1].Visible = false;
 
                         Label lblAppraisalInfoID = e.Row.FindControl("lblAppraisalInfoID") as Label;
                         DataRow dr = ConservationAppraisalsData.GetConservationAppraisalInfoById(DataUtils.GetInt(lblAppraisalInfoID.Text));
@@ -400,26 +516,26 @@ namespace vhcbcloud.Conservation
                 return;
             }
 
-            if (txtDateOrdered.Text.Trim() == "")
-            {
-                LogMessage("Enter Date Ordered");
-                txtDateOrdered.Focus();
-                return;
-            }
-            else
-            {
-                if (!DataUtils.IsDateTime(txtDateOrdered.Text.Trim()))
-                {
-                    LogMessage("Enter valid Date Ordered");
-                    txtDateOrdered.Focus();
-                    return;
-                }
-            }
+            //if (txtDateOrdered.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Date Ordered");
+            //    txtDateOrdered.Focus();
+            //    return;
+            //}
+            //else
+            //{
+            //    if (!DataUtils.IsDateTime(txtDateOrdered.Text.Trim()))
+            //    {
+            //        LogMessage("Enter valid Date Ordered");
+            //        txtDateOrdered.Focus();
+            //        return;
+            //    }
+            //}
 
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
             if (btnAddAppraisalInfo.Text == "Add")
             {
@@ -485,9 +601,11 @@ namespace vhcbcloud.Conservation
 
             if (string.IsNullOrWhiteSpace(txtPayAmount.Text.ToString()) == true)
             {
-                LogMessage("Enter Amount");
-                txtPayAmount.Focus();
-                return;
+                txtPayAmount.Text = "0";
+
+                //LogMessage("Enter Amount");
+                //txtPayAmount.Focus();
+                //return;
             }
 
             ConservationAppraisalsData.AddConservationAppraisalPay((DataUtils.GetInt(hfAppraisalInfoID.Value)),

@@ -268,6 +268,12 @@ namespace vhcbcloud
                     Label lblTotAmt = (Label)gvDetails.FooterRow.FindControl("lblFooterAmount");
                     lblTotAmt.Text = CommonHelper.myDollarFormat(totFundAmt);
                 }
+
+                DataRowView drv = e.Row.DataItem as DataRowView;
+                if (DataUtils.GetBool(drv["Adjust"].ToString()))
+                {
+                    e.Row.BackColor = System.Drawing.Color.Orange;
+                }
             }
         }
 

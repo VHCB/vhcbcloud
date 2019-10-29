@@ -427,13 +427,13 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.WebControls.TextBox txtMedConcern;
         
         /// <summary>
-        /// TextNotesBox1 control.
+        /// txtNotes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextNotesBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtNotes;
         
         /// <summary>
         /// btnAddmemberData control.
@@ -445,6 +445,15 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.WebControls.Button btnAddmemberData;
         
         /// <summary>
+        /// dvNewMember control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewMember;
+        
+        /// <summary>
         /// Div4 control.
         /// </summary>
         /// <remarks>
@@ -454,13 +463,31 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div4;
         
         /// <summary>
-        /// Div5 control.
+        /// Panel4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div5;
+        protected global::System.Web.UI.WebControls.Panel Panel4;
+        
+        /// <summary>
+        /// ddlGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGroup;
+        
+        /// <summary>
+        /// dvNewMemberForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewMemberForm;
         
         /// <summary>
         /// Panel3 control.
@@ -472,22 +499,85 @@ namespace vhcbcloud.Americorps {
         protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
-        /// ddlFormGroup control.
+        /// lblFormName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFormGroup;
+        protected global::System.Web.UI.WebControls.Label lblFormName;
         
         /// <summary>
-        /// dvEntityGrid control.
+        /// cbReceived control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityGrid;
+        protected global::System.Web.UI.WebControls.CheckBox cbReceived;
+        
+        /// <summary>
+        /// txtReceivedDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtReceivedDate;
+        
+        /// <summary>
+        /// CalendarExtender3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender CalendarExtender3;
+        
+        /// <summary>
+        /// txtURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtURL;
+        
+        /// <summary>
+        /// cbACFormActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbACFormActive;
+        
+        /// <summary>
+        /// txtACMemberFormNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtACMemberFormNotes;
+        
+        /// <summary>
+        /// btnSubmitACForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmitACForm;
+        
+        /// <summary>
+        /// dvMemberFormGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMemberFormGrid;
         
         /// <summary>
         /// Panel5 control.
@@ -524,5 +614,41 @@ namespace vhcbcloud.Americorps {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfApplicantId;
+        
+        /// <summary>
+        /// hfContactId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfContactId;
+        
+        /// <summary>
+        /// hfACMemberId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfACMemberId;
+        
+        /// <summary>
+        /// hfACMemberFormId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfACMemberFormId;
+        
+        /// <summary>
+        /// hfACFormID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfACFormID;
     }
 }

@@ -33,31 +33,104 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 LoadForm();
+
+                BindGrantMatchGrid();
+                BindAttributeGrid();
+                BindFinJobsGrid();
+                BindGrantMatchGrid();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAttribute.Enabled = true;
+            cbAddGrantmatch.Enabled = true;
+
+            btnAddGrantApplication.Visible = false;
+            btnUpdateGrantAward.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAttribute.Visible = false;
             btnAddGrantApplication.Visible = false;
             btnAddMatchDesc.Visible = false;
             btnUpdateGrantAward.Visible = false;
+
             cbAddAttribute.Enabled = false;
             cbAddGrantmatch.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void LoadForm()
         {
-            
             DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
             if (drEntImpGrant != null)
             {
@@ -71,11 +144,10 @@ namespace vhcbcloud.Viability
                 txtAwardDescription.Text = drEntImpGrant["AwardDesc"].ToString();
                 spnLevFunds.InnerHtml = (DataUtils.GetDecimal(drEntImpGrant["ProjCost"].ToString()) - DataUtils.GetDecimal(drEntImpGrant["AwardAmt"].ToString())).ToString();
                 txtComments.Text = drEntImpGrant["Comments"].ToString();
-                
+                txtOtherNames.Text = drEntImpGrant["OtherNames"].ToString();
+
                 btnAddGrantApplication.Text = "Update";
                 dvGrantAward.Visible = true;
-                BindGrantMatchGrid();
-                BindAttributeGrid();
             }
             else
             {
@@ -128,6 +200,7 @@ namespace vhcbcloud.Viability
 
         private void BindControls()
         {
+            BindLookUP(ddlMilestone, 247);
             BindLookUP(ddlMatchDescription, 214);//214
             BindLookUP(ddlFYGrantRound, 220);
             BindLookUP(ddlAttribute, 228);
@@ -223,7 +296,8 @@ namespace vhcbcloud.Viability
                 if (btnAddGrantApplication.Text.ToLower() == "update" || btnUpdateGrantAward.Text.ToUpper() == "update")
                 {
                     int EnterImpGrantID = DataUtils.GetInt(hfEnterImpGrantID.Value);
-                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, txtOtherNames.Text,
+                        DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
@@ -235,7 +309,8 @@ namespace vhcbcloud.Viability
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, txtOtherNames.Text,
+                        DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAwardAmount.Text, "[^0-9a-zA-Z.]+", "")),
@@ -273,9 +348,10 @@ namespace vhcbcloud.Viability
             }
 
             ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseGrantMatch(DataUtils.GetInt(hfEnterImpGrantID.Value),
-                DataUtils.GetInt(ddlMatchDescription.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlMatchDescription.SelectedValue.ToString()), DataUtils.GetDecimal(Regex.Replace(txtGrantAmt.Text, "[^0-9a-zA-Z.]+", "")));
 
             ddlMatchDescription.SelectedIndex = -1;
+            txtGrantAmt.Text = "";
             cbAddGrantmatch.Checked = false;
 
             BindGrantMatchGrid();
@@ -299,6 +375,17 @@ namespace vhcbcloud.Viability
                     dvGrantMatchGrid.Visible = true;
                     gvGrantMatch.DataSource = dt;
                     gvGrantMatch.DataBind();
+
+                    decimal totAmt = 0;
+
+                    Label lblTotAmt = (Label)gvGrantMatch.FooterRow.FindControl("lblFooterAmount");
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (Convert.ToDecimal(dt.Rows[i]["GrantAmt"].ToString()) > 0)
+                            totAmt += Convert.ToDecimal(dt.Rows[i]["GrantAmt"].ToString());
+                    }
+                    lblTotAmt.Text = CommonHelper.myDollarFormat(totAmt);
                 }
                 else
                 {
@@ -323,6 +410,8 @@ namespace vhcbcloud.Viability
         {
             gvGrantMatch.EditIndex = -1;
             BindGrantMatchGrid();
+            ddlMatchDescription.SelectedIndex = -1;
+            txtGrantAmt.Text = "";
         }
 
         protected void gvGrantMatch_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -330,9 +419,10 @@ namespace vhcbcloud.Viability
             int rowIndex = e.RowIndex;
 
             int EnterpriseGrantMatchID = DataUtils.GetInt(((Label)gvGrantMatch.Rows[rowIndex].FindControl("lblEnterpriseGrantMatchID")).Text);
+            decimal GrantAmt = DataUtils.GetDecimal(((TextBox)gvGrantMatch.Rows[rowIndex].FindControl("txtGrantAmt")).Text);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvGrantMatch.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            EnterpriseImpGrantData.UpdateEnterpriseGrantMatch(EnterpriseGrantMatchID, RowIsActive);
+            EnterpriseImpGrantData.UpdateEnterpriseGrantMatch(EnterpriseGrantMatchID, GrantAmt, RowIsActive);
             gvGrantMatch.EditIndex = -1;
 
             BindGrantMatchGrid();
@@ -416,6 +506,168 @@ namespace vhcbcloud.Viability
             BindAttributeGrid();
 
             LogMessage("Attribute updated successfully");
+        }
+
+        protected void gvFiniceJobs_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvFiniceJobs.EditIndex = e.NewEditIndex;
+            BindFinJobsGrid();
+        }
+
+        protected void gvFiniceJobs_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvFiniceJobs.EditIndex = -1;
+            BindFinJobsGrid();
+            ClearFinJobsForm();
+
+            btnAddMilestone.Visible = true;
+            btnAddMilestone.Text = "Submit";
+        }
+
+        protected void gvFiniceJobs_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnAddMilestone.Text = "Update";
+                    cbAddMilestone.Checked = true;
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMilestone.Visible = true;
+                    else
+                        btnAddMilestone.Visible = false;
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[1].Visible = false;
+
+                        Label lblEnterFinancialJobsID = e.Row.FindControl("lblEnterFinancialJobsID") as Label;
+                        DataRow dr = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsById(DataUtils.GetInt(lblEnterFinancialJobsID.Text));
+
+                        hfEnterFinancialJobsID.Value = lblEnterFinancialJobsID.Text;
+
+                        PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
+
+                        //cbVHFAInv.Checked = DataUtils.GetBool(dr["vhfa"].ToString()); ;
+                        //cbRDLoan.Checked = DataUtils.GetBool(dr["RDLoan"].ToString()); ;
+
+                        txtMSDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
+                        //txtYear.Text = dr["Year"].ToString() ?? "";
+                        txtGrossSales.Text = dr["GrossSales"].ToString() ?? "";
+                        txtNetIncome.Text = dr["Netincome"].ToString() ?? "";
+                        txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
+                        txtFamilyFTEmp.Text = dr["FamilyFTE"].ToString() ?? "";
+                        txtNonFamilyFTEmp.Text = dr["NonFamilyFTE"].ToString() ?? "";
+                        txtNetworth.Text = dr["Networth"].ToString() ?? "";
+                        txtAccessFTE.Text = dr["AccessFTE"].ToString() ?? "";
+                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyFTE"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyFTE"].ToString())).ToString();
+
+                        chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                        chkActive.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvFiniceJobs_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void btnAddMilestone_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int ProjectId = DataUtils.GetInt(hfProjectId.Value);
+
+                if (btnAddMilestone.Text.ToLower() == "update")
+                {
+                    int EnterFinancialJobsID = DataUtils.GetInt(hfEnterFinancialJobsID.Value);
+                    EnterpriseFundamentalsData.UpdateEnterpriseFinancialJobs(EnterFinancialJobsID,
+                        DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text),
+                        "", //txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text),
+                        chkActive.Checked);
+
+                    gvFiniceJobs.EditIndex = -1;
+
+                    LogMessage("Finalcial Job updated successfully");
+                }
+                else //add
+                {
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFinancialJobs(ProjectId,
+                        DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text),
+                        "",//txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text),
+                        DataUtils.GetDecimal(txtNetIncome.Text),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text), DataUtils.GetDecimal(txtAccessFTE.Text));
+
+
+                    if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
+                        LogMessage("Financial Job already exist as in-active");
+                    else if (objViabilityMaintResult.IsDuplicate)
+                        LogMessage("Financial Job already exist");
+                    else
+                        LogMessage("Financial Job added successfully");
+                }
+                ClearFinJobsForm();
+                BindFinJobsGrid();
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "btnAddMilestone_Click", "", ex.Message);
+            }
+        }
+
+        private void ClearFinJobsForm()
+        {
+            btnAddMilestone.Text = "Add";
+            cbAddMilestone.Checked = false;
+            ddlMilestone.SelectedIndex = -1;
+            txtMSDate.Text = "";
+            //txtYear.Text = "";
+            txtGrossSales.Text = "";
+            txtNetIncome.Text = "";
+            txtGrossPayroll.Text = "";
+            txtNetworth.Text = "";
+            txtFamilyFTEmp.Text = "";
+            txtNonFamilyFTEmp.Text = "";
+            txtAccessFTE.Text = "";
+            chkActive.Enabled = false;
+            spnTotalFulltime.InnerHtml = "";
+        }
+
+        private void BindFinJobsGrid()
+        {
+            try
+            {
+                DataTable dt = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvFiniceJobsGrid.Visible = true;
+                    gvFiniceJobs.DataSource = dt;
+                    gvFiniceJobs.DataBind();
+                }
+                else
+                {
+                    dvFiniceJobsGrid.Visible = false;
+                    gvFiniceJobs.DataSource = null;
+                    gvFiniceJobs.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindFinJobsGrid", "", ex.Message);
+            }
         }
     }
 }

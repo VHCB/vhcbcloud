@@ -330,7 +330,7 @@
                                             <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                         </EditItemTemplate>
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="LnkBtnEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                            <asp:LinkButton ID="LnkBtnEdit" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible="false"></asp:LinkButton>
                                             &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Delete" Text="Delete" OnClientClick="return confirm('Are you sure you want to delete the detail?');"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>

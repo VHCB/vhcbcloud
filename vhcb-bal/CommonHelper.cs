@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net.NetworkInformation;
 
 namespace VHCBCommon.DataAccessLayer
 {
@@ -35,7 +36,7 @@ namespace VHCBCommon.DataAccessLayer
         public static string myDollarFormat(object amount)
         {
 
-            if (amount is DBNull)
+            if (amount is DBNull || amount.ToString() == "")
             {
                 amount = 0.0;
             }
@@ -112,6 +113,25 @@ namespace VHCBCommon.DataAccessLayer
         {
             btn.Enabled = true;
             btn.CssClass = "btn btn-info";
+        }
+
+        public static bool IsVPNConnected()
+        {
+            if (NetworkInterface.GetIsNetworkAvailable())
+            {
+                NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
+                foreach (NetworkInterface networkInterface in interfaces)
+                {
+                    if ((networkInterface.OperationalStatus == OperationalStatus.Up &&
+                        networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet) &&
+                        (networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback) &&
+                        (networkInterface.NetworkInterfaceType != NetworkInterfaceType.Wireless80211))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

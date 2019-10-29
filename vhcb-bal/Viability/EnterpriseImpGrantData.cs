@@ -45,7 +45,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dr;
         }
 
-        public static ViabilityMaintResult AddEnterpriseImpGrants(int ProjectID, int FYGrantRound, string ProjTitle, string ProjDesc, 
+        public static ViabilityMaintResult AddEnterpriseImpGrants(int ProjectID, string OtherNames, int FYGrantRound, string ProjTitle, string ProjDesc, 
             decimal ProjCost, decimal Request, decimal AwardAmt, string AwardDesc, decimal LeveragedFunds, string Comments)
         {
             try
@@ -61,6 +61,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.CommandText = "AddEnterpriseImpGrants";
 
                         command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("OtherNames", OtherNames));
                         command.Parameters.Add(new SqlParameter("FYGrantRound", FYGrantRound));
                         command.Parameters.Add(new SqlParameter("ProjTitle", ProjTitle));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
@@ -96,7 +97,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static void UpdateEnterpriseImpGrants(int EnterImpGrantID, int FYGrantRound, string ProjTitle, string ProjDesc,
+        public static void UpdateEnterpriseImpGrants(int EnterImpGrantID, string OtherNames, int FYGrantRound, string ProjTitle, string ProjDesc,
             decimal ProjCost, decimal Request, decimal AwardAmt, string AwardDesc, decimal LeveragedFunds, string Comments, bool RowIsActive)
         {
             try
@@ -112,6 +113,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
                         command.CommandText = "UpdateEnterpriseImpGrants";
 
                         command.Parameters.Add(new SqlParameter("EnterImpGrantID", EnterImpGrantID));
+                        command.Parameters.Add(new SqlParameter("OtherNames", OtherNames));
                         command.Parameters.Add(new SqlParameter("FYGrantRound", FYGrantRound));
                         command.Parameters.Add(new SqlParameter("ProjTitle", ProjTitle));
                         command.Parameters.Add(new SqlParameter("ProjDesc", ProjDesc));
@@ -169,7 +171,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dt;
         }
 
-        public static void UpdateEnterpriseGrantMatch(int EnterpriseGrantMatchID, bool RowIsActive)
+        public static void UpdateEnterpriseGrantMatch(int EnterpriseGrantMatchID, decimal GrantAmt, bool RowIsActive)
         {
             try
             {
@@ -185,6 +187,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         //4 Parameters
                         command.Parameters.Add(new SqlParameter("EnterpriseGrantMatchID", EnterpriseGrantMatchID));
+                        command.Parameters.Add(new SqlParameter("GrantAmt", GrantAmt));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -199,7 +202,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
         }
 
-        public static ViabilityMaintResult AddEnterpriseGrantMatch(int EnterImpGrantID, int MatchDescID)
+        public static ViabilityMaintResult AddEnterpriseGrantMatch(int EnterImpGrantID, int MatchDescID, decimal GrantAmt)
         {
             try
             {
@@ -215,7 +218,8 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         command.Parameters.Add(new SqlParameter("EnterImpGrantID", EnterImpGrantID));
                         command.Parameters.Add(new SqlParameter("MatchDescID", MatchDescID));
-
+                        command.Parameters.Add(new SqlParameter("GrantAmt", GrantAmt));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);

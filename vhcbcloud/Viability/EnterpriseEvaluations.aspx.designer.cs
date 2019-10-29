@@ -337,6 +337,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.DropDownList ddlQuoteUse;
         
         /// <summary>
+        /// txtQuoteName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtQuoteName;
+        
+        /// <summary>
         /// chkMilestoneActive control.
         /// </summary>
         /// <remarks>
@@ -596,5 +605,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEnterpriseEvalID;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

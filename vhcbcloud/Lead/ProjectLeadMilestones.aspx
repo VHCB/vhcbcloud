@@ -110,7 +110,10 @@
                                 <tr>
                                     <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
-                                    <td></td>
+                                    <td>
+                                        <asp:ImageButton ID="ImgMilestoneReport" ImageUrl="~/Images/print.png" ToolTip="Milestones Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgMilestoneReport_Click1" />
+                                    </td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -127,7 +130,9 @@
                                 <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="false"
-                                     OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit" OnRowDataBound="gvMilestone_RowDataBound">
+                                     OnRowEditing="gvMilestone_RowEditing" 
+                                    OnRowCancelingEdit="gvMilestone_RowCancelingEdit" 
+                                    OnRowDataBound="gvMilestone_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -161,7 +166,7 @@
                                         </asp:TemplateField>
                                          <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -175,7 +180,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -189,7 +194,8 @@
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfLeadMilestoneID" runat="server" />
-    
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+
     <script language="javascript">
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());

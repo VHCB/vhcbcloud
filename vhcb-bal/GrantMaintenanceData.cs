@@ -95,7 +95,8 @@ namespace VHCBCommon.DataAccessLayer
 
         public static DBResult AddGrantInfo(string VHCBName, decimal AwardAmt, DateTime BeginDate, DateTime EndDate, 
             int LkGrantAgency, string GrantName, int ContactID, string AwardNum, string CFDA, int LkGrantSource, int Staff, 
-            int Program, bool FedFunds, bool Admin, bool Match, bool Fundsrec)
+            int Program, bool Admin, decimal Adminamt, bool Match,  decimal Matchamt, 
+            bool DrawDown)
         {
             try
             {
@@ -121,10 +122,12 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkGrantSource", LkGrantSource == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkGrantSource));
                         command.Parameters.Add(new SqlParameter("Staff", Staff == 0 ? System.Data.SqlTypes.SqlInt32.Null : Staff));
                         command.Parameters.Add(new SqlParameter("Program", Program == 0 ? System.Data.SqlTypes.SqlInt32.Null : Program));
-                        command.Parameters.Add(new SqlParameter("FedFunds", FedFunds));
                         command.Parameters.Add(new SqlParameter("Admin", Admin));
+                        command.Parameters.Add(new SqlParameter("Adminamt", Adminamt));
                         command.Parameters.Add(new SqlParameter("Match", Match));
-                        command.Parameters.Add(new SqlParameter("Fundsrec", Fundsrec));
+                        command.Parameters.Add(new SqlParameter("Matchamt", Matchamt));
+                        command.Parameters.Add(new SqlParameter("DrawDown", DrawDown));
+                        
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -156,7 +159,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateGrantInfo(int GrantInfoId, string VHCBName, decimal AwardAmt, DateTime BeginDate, DateTime EndDate,
             int LkGrantAgency, string GrantName, int ContactID, string AwardNum, string CFDA, int LkGrantSource, int Staff,
-            int Program, bool FedFunds, bool Admin, bool Match, bool Fundsrec, bool RowIsActive)
+            int Program, bool Admin, decimal Adminamt, bool Match, decimal Matchamt, bool DrawDown, bool RowIsActive)
         {
             try
             {
@@ -182,10 +185,11 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkGrantSource", LkGrantSource == 0 ? System.Data.SqlTypes.SqlInt32.Null : LkGrantSource));
                         command.Parameters.Add(new SqlParameter("Staff", Staff == 0 ? System.Data.SqlTypes.SqlInt32.Null : Staff));
                         command.Parameters.Add(new SqlParameter("Program", Program == 0 ? System.Data.SqlTypes.SqlInt32.Null : Program));
-                        command.Parameters.Add(new SqlParameter("FedFunds", FedFunds));
                         command.Parameters.Add(new SqlParameter("Admin", Admin));
+                        command.Parameters.Add(new SqlParameter("Adminamt", Adminamt));
                         command.Parameters.Add(new SqlParameter("Match", Match));
-                        command.Parameters.Add(new SqlParameter("Fundsrec", Fundsrec));
+                        command.Parameters.Add(new SqlParameter("Matchamt", Matchamt));
+                        command.Parameters.Add(new SqlParameter("DrawDown", DrawDown));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.ExecuteNonQuery();

@@ -97,12 +97,27 @@
                         <tr>
                             <td><span class="labelClass">Service Supported Units</span></td>
                             <td><asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                             <td><span class="labelClass">VHCB Affordable Units</span></td>
+                             <td><span class="labelClass">Total VHCB Affordable Units</span></td>
                             <td>
                                 <span class="labelClass" id="spnVHCBAffUnits" runat="server">0</span>
                             </td>
-                            <td colspan="2"></td>
+                            <td><span class="labelClass"># of Buildings</span></td>
+                            <td><asp:TextBox ID="txtBuildings" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                         </tr>
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="labelClass">Previous Affordable Units</span></td>
+                            <td><asp:TextBox ID="txtPrevAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                             <td><span class="labelClass">New Affordable Units</span></td>
+                            <td>
+                                <asp:TextBox ID="txtNewAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
                         <tr>
                             <td colspan="5">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
@@ -225,7 +240,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -341,7 +356,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -457,7 +472,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -573,7 +588,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -684,7 +699,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -801,7 +816,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -818,10 +833,10 @@
                             <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">VHCB Affordability</h3>
+                                        <h3 class="panel-title">VHCB Covenant</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddVHCBAff" runat="server" Text="Add New VHCB Affordability" />
+                                        <asp:CheckBox ID="cbAddVHCBAff" runat="server" Text="Add New VHCB Covenant" />
                                         <asp:ImageButton ID="ImgVHCBAff" ImageUrl="~/Images/print.png" ToolTip="VHCB Affordability"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgVHCBAff_Click" />
                                     </td>
@@ -917,7 +932,243 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewTargetEff">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Target/Best Effort</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddTargetEff" runat="server" Text="Add New Target/Best Effort" />
+                                        <asp:ImageButton ID="ImgTargetEff" ImageUrl="~/Images/print.png" ToolTip="Target/Best Effort"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgTargetEff_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvTargetEffForm">
+                            <asp:Panel runat="server" ID="Panel15">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Target Best Effort</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlTargetEff" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"># of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtTargetUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddTargetEff" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddTargetEff_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvTargetEffGrid" runat="server">
+                            <div id="dvTargetEffWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblTargetEffWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
+                            <asp:Panel runat="server" ID="Panel16" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvTargetEff" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvTargetEff_RowEditing" 
+                                    OnRowCancelingEdit="gvTargetEff_RowCancelingEdit" 
+                                    OnRowUpdating="gvTargetEff_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ProjectHouseTargetID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectHouseTargetID" runat="Server" Text='<%# Eval("ProjectHouseTargetID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="TargetBestEffort">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTargetBestEffort" runat="Server" Text='<%# Eval("TargetBestEffort") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTargetUnits" runat="Server" Text='<%# Eval("Numunits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtTargetUnits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterTargetTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewAffordableTo">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Affordable To</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddAffordableTo" runat="server" Text="Add New Affordable To" />
+                                        <asp:ImageButton ID="ImgAffordableTo" ImageUrl="~/Images/print.png" ToolTip="Affordable To"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAffordableTo_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvAffordableToForm">
+                            <asp:Panel runat="server" ID="Panel17">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 140px"><span class="labelClass">Affordable To</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlAffordableTo" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"># of Units
+                                            </span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtAffordableToUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 170px">
+                                            <asp:Button ID="btnAddAffordableTo" runat="server" Text="Add" class="btn btn-info"
+                                                OnClick="btnAddAffordableTo_Click" /></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvAffordableToGrid" runat="server">
+                            <div id="dvAffordableToWarning" runat="server">
+                                <p class="bg-info">
+                                    &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                    <asp:Label runat="server" ID="lblAffordableToWarning" class="labelClass"></asp:Label>
+                                </p>
+                            </div>
+                            <asp:Panel runat="server" ID="Panel18" Width="100%" Height="150px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvAffordableTo" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
+                                    OnRowEditing="gvAffordableTo_RowEditing" 
+                                    OnRowCancelingEdit="gvAffordableTo_RowCancelingEdit" 
+                                    OnRowUpdating="gvAffordableTo_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ProjectHouseAffordToID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectHouseAffordToID" runat="Server" Text='<%# Eval("ProjectHouseAffordToID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Affordable To">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAffordableTo" runat="Server" Text='<%# Eval("AffordableTo") %>' />
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                Grand Total :
+                                            </FooterTemplate>
+                                            <ItemStyle Width="400px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAffordToUnits" runat="Server" Text='<%# Eval("Numunits") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtAffordToUnits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label runat="server" ID="lblFooterAffordToTotalUnits" Text=""></asp:Label>
+                                            </FooterTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="200px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -1039,7 +1290,10 @@
     <asp:HiddenField ID="hfPrimaryServiceWarning" runat="server" />
     <asp:HiddenField ID="hfAgeRestrWarning" runat="server" />
     <asp:HiddenField ID="hfNotInCovenantCount" runat="server" Value="0" />
-    
+     <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+    <asp:HiddenField ID="hfTargetEffWarning" runat="server" />
+    <asp:HiddenField ID="hfAffordableToWarning" runat="server" />
+   
     <script language="javascript">
         $(document).ready(function () {
            <%-- $('#<%= txtTotalUnits.ClientID%>').blur(function () {
@@ -1095,6 +1349,18 @@
             $('#<%= cbAddVHCBAff.ClientID%>').click(function () {
                 $('#<%= dvVHCBAffForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= cbAddTargetEff.ClientID%>').click(function () {
+                $('#<%= dvTargetEffForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvTargetEffForm.ClientID%>').toggle($('#<%= cbAddTargetEff.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddAffordableTo.ClientID%>').click(function () {
+                $('#<%= dvAffordableToForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvAffordableToForm.ClientID%>').toggle($('#<%= cbAddAffordableTo.ClientID%>').is(':checked'));
 
              <%--$('#<%= dvHomeAffForm.ClientID%>').toggle($('#<%= cbAddHomeAff.ClientID%>').is(':checked'));
 

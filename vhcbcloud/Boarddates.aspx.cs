@@ -11,6 +11,11 @@ namespace vhcbcloud
 {
     public partial class Boarddates : System.Web.UI.Page
     {
+        /// <summary>
+        /// Page loading with Board Dates
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -19,6 +24,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Loading Board Dates
+        /// </summary>
         protected void BindBoardDates()
         {
             try
@@ -33,6 +41,7 @@ namespace vhcbcloud
                 lblErrorMsg.Text = ex.Message;
             }
         }
+
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -41,18 +50,34 @@ namespace vhcbcloud
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        /// <summary>
+        /// Board Date Grid Cancel event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvBoardDates.EditIndex = -1;
             BindBoardDates();
         }
 
+        /// <summary>
+        /// Board Date Grid row editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_RowEditing(object sender, GridViewEditEventArgs e)
         {
             gvBoardDates.EditIndex = e.NewEditIndex;
             BindBoardDates();
         }
 
+        /// <summary>
+        /// Board Date Grid Row Updating
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
@@ -75,12 +100,20 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Board Date Grid Sorting 
+        /// </summary>
         protected void BindSortedGrid()
         {
             DataTable dt = BoarddatesData.GetBoardDates();
             SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, SortExpression, SortDireaction != "" ? ViewState["SortDireaction"].ToString() : SortDireaction);
         }
 
+        /// <summary>
+        /// Board Date Grid Sorting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_Sorting(object sender, GridViewSortEventArgs e)
         {
             SortExpression = e.SortExpression;
@@ -88,6 +121,11 @@ namespace vhcbcloud
             SortDireaction = CommonHelper.GridSorting(gvBoardDates, dt, SortExpression, SortDireaction);
         }
 
+        /// <summary>
+        /// Board Date Grid Row Databound
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
@@ -123,6 +161,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Board Date Grid Page Index changing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void gvBoardDates_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             if (gvBoardDates.EditIndex != -1)

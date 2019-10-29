@@ -197,7 +197,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -358,6 +358,11 @@
                                                 <asp:Label ID="lblLenderName" runat="Server" Text='<%# Eval("LenderName") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Purchase Date">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPurchaseDate" runat="Server" Text='<%# Eval("PurchaseDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="VHCB Grant Amount">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblVHCBGrant" runat="Server" Text='<%# Eval("VHCBGrant", "{0:C2}") %>' />
@@ -374,7 +379,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -389,6 +394,7 @@
     <asp:HiddenField ID="hfProjectId" runat="server" />
     <asp:HiddenField ID="hfHomeOwnershipID" runat="server" />
     <asp:HiddenField ID="hfProjectHomeOwnershipID" runat="server" />
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {
@@ -402,6 +408,39 @@
                 $('#<%= dvOwnerForm.ClientID%>').toggle(this.checked);
             }).change();
 
+            toCurrencyControl($('#<%= txtVHCBGrant.ClientID%>').val(), $('#<%= txtVHCBGrant.ClientID%>'));
+            toCurrencyControl($('#<%= txtOwnerAppAtResale.ClientID%>').val(), $('#<%= txtOwnerAppAtResale.ClientID%>'));
+            toCurrencyControl($('#<%= txtCapitalImpAtResale.ClientID%>').val(), $('#<%= txtCapitalImpAtResale.ClientID%>'));
+            toCurrencyControl($('#<%= txtFeeAtPurchase.ClientID%>').val(), $('#<%= txtFeeAtPurchase.ClientID%>'));
+            toCurrencyControl($('#<%= txtFeeAtResale.ClientID%>').val(), $('#<%= txtFeeAtResale.ClientID%>'));
+            toCurrencyControl($('#<%= txtStewardCont.ClientID%>').val(), $('#<%= txtStewardCont.ClientID%>'));
+            toCurrencyControl($('#<%= txtVHCBAsstLoan.ClientID%>').val(), $('#<%= txtVHCBAsstLoan.ClientID%>'));
+            toCurrencyControl($('#<%= txtVHCBRehabLoan.ClientID%>').val(), $('#<%= txtVHCBRehabLoan.ClientID%>'));
+
+             $('#<%= txtVHCBGrant.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtVHCBGrant.ClientID%>').val(), $('#<%= txtVHCBGrant.ClientID%>'));
+             });
+            $('#<%= txtOwnerAppAtResale.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtOwnerAppAtResale.ClientID%>').val(), $('#<%= txtOwnerAppAtResale.ClientID%>'));
+            });
+             $('#<%= txtCapitalImpAtResale.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtCapitalImpAtResale.ClientID%>').val(), $('#<%= txtCapitalImpAtResale.ClientID%>'));
+             }); 
+            $('#<%= txtFeeAtPurchase.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtFeeAtPurchase.ClientID%>').val(), $('#<%= txtFeeAtPurchase.ClientID%>'));
+            });
+            $('#<%= txtFeeAtResale.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtFeeAtResale.ClientID%>').val(), $('#<%= txtFeeAtResale.ClientID%>'));
+            }); 
+             $('#<%= txtStewardCont.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtStewardCont.ClientID%>').val(), $('#<%= txtStewardCont.ClientID%>'));
+             });
+             $('#<%= txtVHCBAsstLoan.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtVHCBAsstLoan.ClientID%>').val(), $('#<%= txtVHCBAsstLoan.ClientID%>'));
+             });
+            $('#<%= txtVHCBRehabLoan.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtVHCBRehabLoan.ClientID%>').val(), $('#<%= txtVHCBRehabLoan.ClientID%>'));
+            });
         });
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());

@@ -94,6 +94,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
         
         /// <summary>
+        /// txtOtherNames control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOtherNames;
+        
+        /// <summary>
         /// mpExtender control.
         /// </summary>
         /// <remarks>
@@ -200,6 +209,15 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtYearMangBusiness;
+        
+        /// <summary>
+        /// spnYearsManagedBusiness control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnYearsManagedBusiness;
         
         /// <summary>
         /// btnAddEntInfo control.
@@ -346,6 +364,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
+        /// tblAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblAcres;
+        
+        /// <summary>
         /// txtAcresOwned control.
         /// </summary>
         /// <remarks>
@@ -373,6 +400,15 @@ namespace vhcbcloud.Viability {
         protected global::System.Web.UI.WebControls.TextBox txtAcresLeased;
         
         /// <summary>
+        /// txtAccAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAccAcres;
+        
+        /// <summary>
         /// spnTotalAcres control.
         /// </summary>
         /// <remarks>
@@ -380,6 +416,33 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalAcres;
+        
+        /// <summary>
+        /// tblForectAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblForectAcres;
+        
+        /// <summary>
+        /// txtForestAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtForestAcres;
+        
+        /// <summary>
+        /// txtTotalAcres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTotalAcres;
         
         /// <summary>
         /// btnAddAcres control.
@@ -515,5 +578,14 @@ namespace vhcbcloud.Viability {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfEnterpriseAcresId;
+        
+        /// <summary>
+        /// hfIsVisibleBasedOnRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
     }
 }

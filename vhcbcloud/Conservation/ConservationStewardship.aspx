@@ -18,13 +18,13 @@
                 <div class="panel-heading">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width: 171px"><span class="labelClass">Project #</span></td>
+                            <td style="width: 171px"></td>
                             <td style="width: 192px">
-                                <span class="labelClass" id="ProjectNum" runat="server"></span>
+                                
                             </td>
-                            <td><span class="labelClass">Name:</span></td>
+                            <td></td>
                             <td style="text-align: left">
-                                <span class="labelClass" id="ProjName" runat="server"></span>
+                                
                             </td>
                             <td style="text-align: right">
                                 <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
@@ -54,6 +54,36 @@
 
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
+                </div>
+                <div class="panel-width">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td><span class="labelClass">Project #:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="ProjectNum" runat="server"></span>
+                                    </td>
+                                    <td><span class="labelClass">Name:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="ProjName" runat="server"></span>
+                                    </td>
+                                     <td><span class="labelClass">Primary Steward Organization:</span></td>
+                                    <td>
+                                        <span class="labelClass" id="spnPrimarySteward" runat="server"></span>
+                                        <%--<asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>--%>
+                                    </td>
+                                     <td>
+                                        <%--<asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />--%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" style="height: 5px"></td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-width" runat="server" id="dvNewMajor">
@@ -188,7 +218,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Comments">
@@ -207,7 +237,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -349,7 +379,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Comments">
@@ -368,7 +398,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -510,7 +540,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Comments">
@@ -529,7 +559,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -671,7 +701,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Comments">
@@ -690,7 +720,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -801,7 +831,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Comments">
@@ -820,7 +850,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -928,6 +958,7 @@
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowDataBound="gvMilestone_RowDataBound"
                                     OnRowUpdating="gvMilestone_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -960,7 +991,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                         </asp:TemplateField>
@@ -984,7 +1015,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
@@ -1091,12 +1122,14 @@
         </div>
     </div>
     <asp:HiddenField ID="hfProjectId" runat="server" />
+    <asp:HiddenField ID="hfConserveId" runat="server" />
     <asp:HiddenField ID="hfConserveMajAmendID" runat="server" />
     <asp:HiddenField ID="hfConserveMinAmendID" runat="server" />
     <asp:HiddenField ID="hfConserveViolationsID" runat="server" />
     <asp:HiddenField ID="hfConserveApprovalID" runat="server" />
     <asp:HiddenField ID="hfConservePlanID" runat="server" />
-
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+    <asp:HiddenField ID="hfProjectEventID" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {

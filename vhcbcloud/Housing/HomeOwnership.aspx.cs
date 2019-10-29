@@ -12,6 +12,7 @@ using VHCBCommon.DataAccessLayer;
 using VHCBCommon.DataAccessLayer.Housing;
 using VHCBCommon.DataAccessLayer.Lead;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace vhcbcloud.Housing
 { 
@@ -32,10 +33,12 @@ namespace vhcbcloud.Housing
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
+
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -44,6 +47,79 @@ namespace vhcbcloud.Housing
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAddress.Enabled = true;
+            cbAddOwner.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
+        {
+            cbAddAddress.Enabled = false;
+            cbAddOwner.Enabled = false;
+
+            btnAddAddress.Visible = false;
+            btnAddOwner.Visible = false;
+        }
+
         private void ProjectNotesSetUp()
         {
             int PageId = ProjectNotesData.GetPageId(Path.GetFileName(Request.PhysicalPath));
@@ -58,21 +134,14 @@ namespace vhcbcloud.Housing
             }
         }
 
-        private void RoleReadOnly()
-        {
-            cbAddAddress.Enabled = false;
-            cbAddOwner.Enabled = false;
-            btnAddAddress.Visible = false;
-            btnAddOwner.Visible = false;            
-        }
-
-        protected bool GetRoleAuth()
-        {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
-        }
+       
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void GenerateTabs()
         {
@@ -346,6 +415,9 @@ namespace vhcbcloud.Housing
             ClearAddressForm();
             //    //hfLeadUnitID.Value = "";
             btnAddAddress.Text = "Submit";
+
+            //btnAddAddress.Visible = true;
+
         }
 
         protected void gvHOAddress_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -356,12 +428,18 @@ namespace vhcbcloud.Housing
                 {
                     CommonHelper.GridViewSetFocus(e.Row);
                     btnAddAddress.Text = "Update";
+
+                    //if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    //    btnAddAddress.Visible = true;
+                    //else
+                    //    btnAddAddress.Visible = false;
+
                     cbAddAddress.Checked = true;
 
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[7].Controls[0].Visible = false;
+                        e.Row.Cells[7].Controls[1].Visible = false;
 
                         Label lblHomeOwnershipID = e.Row.FindControl("lblHomeOwnershipID") as Label;
                         DataRow dr = HomeOwnershipData.GetHomeOwnershipById(DataUtils.GetInt(lblHomeOwnershipID.Text));
@@ -462,6 +540,7 @@ namespace vhcbcloud.Housing
             BindHomeOwnersGrid();
             ClearOwnerForm();
             btnAddOwner.Text = "Submit";
+            btnAddOwner.Visible = true;
         }
 
         protected void gvOwner_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -474,10 +553,15 @@ namespace vhcbcloud.Housing
                     btnAddOwner.Text = "Update";
                     cbAddOwner.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddOwner.Visible = true;
+                    else
+                        btnAddOwner.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[5].Controls[1].Visible = false;
 
                         Label lblProjectHomeOwnershipID = e.Row.FindControl("lblProjectHomeOwnershipID") as Label;
                         DataRow dr = HomeOwnershipData.GetProjectHomeOwnershipById(DataUtils.GetInt(lblProjectHomeOwnershipID.Text));
@@ -516,9 +600,16 @@ namespace vhcbcloud.Housing
                 if (btnAddOwner.Text == "Submit")
                 {
                     HomeOwnershipResult objHomeOwnershipResult = HomeOwnershipData.AddProjectHomeOwnership(DataUtils.GetInt(hfHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
-                        DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text));
+                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, 
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBGrant.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtOwnerAppAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtCapitalImpAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtPurchase.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtStewardCont.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBAsstLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBRehabLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDate(txtPurchaseDate.Text));
 
                     ClearOwnerForm();
                     BindHomeOwnersGrid();
@@ -533,9 +624,17 @@ namespace vhcbcloud.Housing
                 else
                 {
                     HomeOwnershipData.UpdateProjectHomeOwnership(DataUtils.GetInt(hfProjectHomeOwnershipID.Value), DataUtils.GetInt(ddlOwner.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, DataUtils.GetDecimal(txtVHCBGrant.Text), DataUtils.GetDecimal(txtOwnerAppAtResale.Text),
-                        DataUtils.GetDecimal(txtCapitalImpAtResale.Text), DataUtils.GetDecimal(txtFeeAtPurchase.Text), DataUtils.GetDecimal(txtFeeAtResale.Text), DataUtils.GetDecimal(txtStewardCont.Text),
-                        DataUtils.GetDecimal(txtVHCBAsstLoan.Text), DataUtils.GetDecimal(txtVHCBRehabLoan.Text), DataUtils.GetDate(txtPurchaseDate.Text),chkOwnerActive.Checked);
+                        DataUtils.GetInt(ddlLender.SelectedValue.ToString()), cbVHFAInv.Checked, cbRDLoan.Checked, 
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBGrant.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtOwnerAppAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtCapitalImpAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtPurchase.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtFeeAtResale.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtStewardCont.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBAsstLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDecimal(Regex.Replace(txtVHCBRehabLoan.Text, "[^0-9a-zA-Z.]+", "")),
+                        DataUtils.GetDate(txtPurchaseDate.Text),
+                        chkOwnerActive.Checked);
 
                     gvOwner.EditIndex = -1;
                     BindHomeOwnersGrid();

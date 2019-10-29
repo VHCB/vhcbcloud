@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -92,7 +91,35 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "AddUserPageSecurity";
                 command.Parameters.Add(new SqlParameter("userid", userId));
                 command.Parameters.Add(new SqlParameter("pageid", pageid));
-                
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void AddUserFxnSecurity(int userId, int FxnID)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "AddUserFxnSecurity";
+                command.Parameters.Add(new SqlParameter("userid", userId));
+                command.Parameters.Add(new SqlParameter("FxnID", FxnID));
+
                 using (connection)
                 {
                     connection.Open();
@@ -119,6 +146,41 @@ namespace VHCBCommon.DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetuserPageSecurity";
+                command.Parameters.Add(new SqlParameter("userid", userid));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetUserFxnSecurity(int userid)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetUserFxnSecurity";
                 command.Parameters.Add(new SqlParameter("userid", userid));
                 using (connection)
                 {
@@ -209,48 +271,68 @@ namespace VHCBCommon.DataAccessLayer
         }
 
 
+        public static DataRow GetUserSecurity(string username)
+        {
+            DataRow dr = null;
+
+            DataTable dt = GetUserId(username);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
+                dr = dtGetUserSec.Rows[0];
+            }
+            return dr;
+        }
+
         public static bool GetRoleAuth(string username, int projId)
         {
-            DataTable dtPrg = new DataTable();
-            DataTable dt = GetUserId(username);
             bool isVerified = false;
+            DataTable dtPrg = new DataTable();
+
+
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(projId);
-            if (drProjectDetails !=null)
-                isVerified= Convert.ToBoolean(drProjectDetails["verified"].ToString());
-            if (dt != null)
+
+            if (drProjectDetails != null)
+                isVerified = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+
+            DataTable dt = GetUserId(username);
+            if (dt != null && dt.Rows.Count > 0)
             {
                 DataTable dtGetUserSec = UserSecurityData.GetUserSecurityByUserId(DataUtils.GetInt(dt.Rows[0]["userid"].ToString()));
 
-                if (dt.Rows.Count > 0)
-                    if (dtGetUserSec.Rows.Count > 0)
-                        if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3")
-                        {                           
+                if (dtGetUserSec.Rows.Count > 0)
+                {
+                    if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "3") // View Only
+                    {
+                        return false;
+                    }
+                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "2") //Program Staff
+                    {
+                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "") //Default Program
+                        {
+                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
+                        }
+                        if (dtPrg.Rows.Count <= 0)
+                        {
                             return false;
                         }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "2")
+                        else
                         {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                return false;
-                            }
-                            else
-                                return isVerified;                          
+                            return isVerified;
                         }
-                        else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1")
+                    }
+                    else if (dtGetUserSec.Rows[0]["usergroupid"].ToString() == "1") //Program Admin
+                    {
+                        if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
                         {
-                            if (dtGetUserSec.Rows[0]["dfltprg"].ToString() != "")
-                            {
-                                dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
-                            }
-                            if (dtPrg.Rows.Count <= 0)
-                            {
-                                return false;
-                            }
+                            dtPrg = UserSecurityData.GetProjectsByProgram(DataUtils.GetInt(dtGetUserSec.Rows[0]["dfltprg"].ToString()), projId);
                         }
+                        if (dtPrg.Rows.Count <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
             return true;
         }
@@ -290,6 +372,33 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "DeletePageSecurity";
                 command.Parameters.Add(new SqlParameter("pagesecurityid", pagesecurityid));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public static void DeleteUserFxnSecurity(int UserFxnSecurityId)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "DeleteUserFxnSecurity";
+                command.Parameters.Add(new SqlParameter("UserFxnSecurityId", UserFxnSecurityId));
 
                 using (connection)
                 {
@@ -368,7 +477,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetUserSecurityByUserId";
                 command.Parameters.Add(new SqlParameter("userid", userid));
-                
+
                 using (connection)
                 {
                     connection.Open();
@@ -437,6 +546,39 @@ namespace VHCBCommon.DataAccessLayer
                 return "~/SiteNonAdmin.master";
             else
                 return "~/Site.master";
+        }
+
+        public static DataTable GetMenuDetailsByUser(int UserId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetMenuDetailsByUser";
+                        command.Parameters.Add(new SqlParameter("UserId", UserId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
     }
 }

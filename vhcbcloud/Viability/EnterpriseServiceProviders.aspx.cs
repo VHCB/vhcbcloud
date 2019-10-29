@@ -33,24 +33,94 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindEntProvDataGrid();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddNewEndOfContract.Enabled = true;
+            cbAddYear.Enabled = true;
+
+            btnAddAppliationData.Visible = false;
+            btnAddEndContractData.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAppliationData.Visible = false;
             btnAddEndContractData.Visible = false;
+
             cbAddNewEndOfContract.Enabled = false;
-            cbAddYear.Enabled = false;            
+            cbAddYear.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -210,10 +280,22 @@ namespace vhcbcloud.Viability
                     cbAddYear.Checked = true;
                     cbAddYear.Enabled = false;
                     txtYear.Enabled = true;
+
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    {
+                        btnAddAppliationData.Visible = true;
+                        btnAddEndContractData.Visible = true;
+                    }
+                    else
+                    {
+                        btnAddAppliationData.Visible = false;
+                        btnAddEndContractData.Visible = false;
+                    }
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[2].Controls[0].Visible = false;
+                        e.Row.Cells[2].Controls[1].Visible = false;
 
                         Label lblEnterpriseMasterServiceProvID = e.Row.FindControl("lblEnterpriseMasterServiceProvID") as Label;
                         DataTable dt = EnterpriseServiceProvidersData.GetEnterpriseServProviderDataById(DataUtils.GetInt(lblEnterpriseMasterServiceProvID.Text));
@@ -353,6 +435,8 @@ namespace vhcbcloud.Viability
             ClearEntProvDataForm();
             btnAddAppliationData.Text = "Submit";
             btnAddEndContractData.Text = "Submit";
+            btnAddAppliationData.Visible = true;
+            btnAddEndContractData.Visible = true;
         }
 
         private void ClearEntProvDataForm()

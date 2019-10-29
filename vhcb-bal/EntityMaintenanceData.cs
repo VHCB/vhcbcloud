@@ -15,7 +15,7 @@ namespace VHCBCommon.DataAccessLayer
         public static EntityMaintResult AddNewEntity(int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int? AppRole,
-            int Operation)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold)
         {
             try
             {
@@ -56,7 +56,10 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("YearsManagingFarm", YearsManagingFarm));
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
                         command.Parameters.Add(new SqlParameter("Operation", Operation));
-                        
+                        command.Parameters.Add(new SqlParameter("W9", W9));
+                        command.Parameters.Add(new SqlParameter("Tier1", IsTier1));
+                        command.Parameters.Add(new SqlParameter("FileHold", IsFileHold));
+
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
@@ -92,7 +95,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateEntity(int ApplicantId, int LkEntityType, int LKEntityType2, string FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int AppRole, 
-            int Operation)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold, bool RowIsActive)
         {
             try
             {
@@ -134,7 +137,11 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("YearsManagingFarm", YearsManagingFarm));
                         command.Parameters.Add(new SqlParameter("AppRole", AppRole));
                         command.Parameters.Add(new SqlParameter("Operation", Operation));
-
+                        command.Parameters.Add(new SqlParameter("W9", W9));
+                        command.Parameters.Add(new SqlParameter("Tier1", IsTier1));
+                        command.Parameters.Add(new SqlParameter("FileHold", IsFileHold));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -321,10 +328,11 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dtProjects;
         }
+
         #region Address
 
         public static EntityMaintResult AddNewEntityAddress(int ApplicantId, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, int AddressType, decimal latitude, decimal longitude, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, int AddressType, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -344,6 +352,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
@@ -378,7 +387,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void UpdateEntityAddress(int ApplicantId, int AddressId, int LkAddressType, string StreetNo, string Address1, string Address2,
-            string Town, string State, string Zip, string County, bool IsActive, decimal latitude, decimal longitude, bool DefAddress)
+            string Town, string Village, string State, string Zip, string County, bool IsActive, decimal latitude, decimal longitude, bool DefAddress)
         {
             try
             {
@@ -398,6 +407,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Address1", Address1));
                         command.Parameters.Add(new SqlParameter("Address2", Address2));
                         command.Parameters.Add(new SqlParameter("Town", Town));
+                        command.Parameters.Add(new SqlParameter("Village", Village));
                         command.Parameters.Add(new SqlParameter("State", State));
                         command.Parameters.Add(new SqlParameter("Zip", Zip));
                         command.Parameters.Add(new SqlParameter("County", County));
@@ -852,6 +862,46 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         #endregion Products
+
+        public static DataTable EntitySearchByRole(string EntityRole, string EntityName, bool RowIsActive)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "EntitySearch_New";
+                if (EntityRole != "NA")
+                    command.Parameters.Add(new SqlParameter("EntityRole", DataUtils.GetInt(EntityRole)));
+
+                command.Parameters.Add(new SqlParameter("EntityName", EntityName));
+                command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
     }
 
     public class EntityMaintResult

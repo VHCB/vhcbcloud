@@ -33,24 +33,91 @@ namespace vhcbcloud.Lead
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddBldgInfo.Enabled = true;
+            cbAddUnitInfo.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddBldgInfoSubmit.Visible = false;
             btnAddUnitInfo.Visible = false;
+
             cbAddBldgInfo.Enabled = false;
-            cbAddUnitInfo.Enabled = false;            
+            cbAddUnitInfo.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
         private void ProjectNotesSetUp()
         {
@@ -120,6 +187,7 @@ namespace vhcbcloud.Lead
             BindLookUP(ddlAppendixA, 152);
             BindLookUP(ddlEBlStatus, 153);
             BindLookUP(ddlIncomeStatus, 155);
+            BindLookUP(ddlBldgAge, 262);
         }
 
         private void BindAddresses()
@@ -237,7 +305,8 @@ namespace vhcbcloud.Lead
             if (btnAddBldgInfoSubmit.Text == "Submit")
             {
                 LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddProjectLeadBldg((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(txtBldgnumber.Text), 
-                    DataUtils.GetInt(ddlAddress.SelectedValue.ToString()), DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), 
+                    DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlBldgAge.SelectedValue.ToString()), DataUtils.GetInt(ddlType.SelectedValue.ToString()), 
                     DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked, DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), 
                     txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()));
 
@@ -254,7 +323,7 @@ namespace vhcbcloud.Lead
             else
             {
                 ProjectLeadBuildingsData.UpdateProjectLeadBldg((DataUtils.GetInt(hfLeadBldgID.Value)), DataUtils.GetInt(txtBldgnumber.Text), DataUtils.GetInt(ddlAddress.SelectedValue.ToString()),
-                  DataUtils.GetInt(txtAge.Text), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
+                  DataUtils.GetInt(ddlBldgAge.SelectedValue.ToString()), DataUtils.GetInt(ddlType.SelectedValue.ToString()), DataUtils.GetInt(txtLHCUnits.Text), cbFloodHazardArea.Checked, cbFloodInsurance.Checked,
                   DataUtils.GetInt(ddlverifiedBy.SelectedValue.ToString()), txtInsuredby.Text, DataUtils.GetInt(ddlHistoricStatus.SelectedValue.ToString()), 
                   DataUtils.GetInt(ddlAppendixA.SelectedValue.ToString()), chkBldgActive.Checked);
 
@@ -274,7 +343,7 @@ namespace vhcbcloud.Lead
 
             txtBldgnumber.Text = "";
             ddlAddress.SelectedIndex = -1;
-            txtAge.Text = "";
+            ddlBldgAge.SelectedIndex = -1;
             ddlType.SelectedIndex = -1;
             txtLHCUnits.Text = "";
             cbFloodHazardArea.Checked = false;
@@ -301,6 +370,7 @@ namespace vhcbcloud.Lead
             ClearBldgInfoForm();
             hfLeadBldgID.Value = "";
             btnAddBldgInfoSubmit.Text = "Submit";
+            btnAddBldgInfoSubmit.Visible = true;
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -325,10 +395,15 @@ namespace vhcbcloud.Lead
                     btnAddBldgInfoSubmit.Text = "Update";
                     cbAddBldgInfo.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddBldgInfoSubmit.Visible = true;
+                    else
+                        btnAddBldgInfoSubmit.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[5].Controls[1].Visible = false;
 
                         Label lblLeadBldgID = e.Row.FindControl("lblLeadBldgID") as Label;
                         DataRow dr = ProjectLeadBuildingsData.GetProjectLeadBldgById(DataUtils.GetInt(lblLeadBldgID.Text));
@@ -337,7 +412,9 @@ namespace vhcbcloud.Lead
 
                         txtBldgnumber.Text = dr["Building"].ToString();
                         PopulateDropDown(ddlAddress, dr["AddressID"].ToString());
-                        txtAge.Text = dr["Age"].ToString();
+                        //txtAge.Text = dr["Age"].ToString();
+                        PopulateDropDown(ddlBldgAge, dr["Age"].ToString());
+
                         PopulateDropDown(ddlType, dr["Type"].ToString());
                         txtLHCUnits.Text = dr["LHCUnits"].ToString();
                         cbFloodHazardArea.Checked = DataUtils.GetBool(dr["FloodHazard"].ToString());
@@ -509,6 +586,7 @@ namespace vhcbcloud.Lead
             ClearUnitInfoForm();
             hfLeadUnitID.Value = "";
             btnAddUnitInfo.Text = "Submit";
+            btnAddUnitInfo.Visible = true;
         }
 
         protected void gvUnitInfo_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -521,10 +599,15 @@ namespace vhcbcloud.Lead
                     btnAddUnitInfo.Text = "Update";
                     cbAddUnitInfo.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddUnitInfo.Visible = true;
+                    else
+                        btnAddUnitInfo.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[6].Controls[0].Visible = false;
+                        e.Row.Cells[6].Controls[1].Visible = false;
 
                         Label lblLeadUnitID = e.Row.FindControl("lblLeadUnitID") as Label;
                         DataRow dr = ProjectLeadBuildingsData.GetProjectLeadUnitById(DataUtils.GetInt(lblLeadUnitID.Text));

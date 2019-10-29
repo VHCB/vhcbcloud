@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,27 +33,103 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
 
                 BindControls();
-
+                GetRoleAccess();
                 LoadEnterpriseFundamentals();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddAttribute.Enabled = true;
+            cbAddMilestone.Enabled = true;
+
+            btnAddPlanInfo.Visible = false;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddAttribute.Visible = false;
             btnAddMilestone.Visible = false;
             btnAddPlanInfo.Visible = false;
+
             cbAddAttribute.Enabled = false;
             cbAddMilestone.Enabled = false;
-            cbBusplan.Enabled = false;
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddAttribute.Visible = false;
+        //    btnAddMilestone.Visible = false;
+        //    btnAddPlanInfo.Visible = false;
+        //    cbAddAttribute.Enabled = false;
+        //    cbAddMilestone.Enabled = false;
+        //    //cbBusplan.Enabled = false;
+        //}
 
         private void LoadEnterpriseFundamentals()
         {
@@ -70,12 +147,12 @@ namespace vhcbcloud.Viability
                 //txtYearMangBusiness.Text = drEntFunDetails["YrManageBus"].ToString();
                 txtProjectDesc.Text = drEntFunDetails["ProjDesc"].ToString();
                 txtBusinessDesc.Text = drEntFunDetails["BusDesc"].ToString();
-                cbBusplan.Checked = DataUtils.GetBool(drEntFunDetails["BusPlan"].ToString());
-                cbGrantApp.Checked = DataUtils.GetBool(drEntFunDetails["GrantApp"].ToString());
+                //cbBusplan.Checked = DataUtils.GetBool(drEntFunDetails["BusPlan"].ToString());
+                //cbGrantApp.Checked = DataUtils.GetBool(drEntFunDetails["GrantApp"].ToString());
+                PopulateDropDown(ddlFiscalYear, drEntFunDetails["FiscalYr"].ToString());
 
                 btnAddPlanInfo.Text = "Update";
-                dvNewFinJobs.Visible = true;
-                BindFinJobsGrid();
+                CheckFinancialJobAccess();
                 BindAttributeGrid();
             }
             else
@@ -85,6 +162,33 @@ namespace vhcbcloud.Viability
             }
         }
 
+        private void CheckFinancialJobAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "28686")
+                {
+                    dvNewFinJobs.Visible = true;
+                    BindFinJobsGrid();
+                }
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
         {
             foreach (ListItem item in ddl.Items)
@@ -134,6 +238,8 @@ namespace vhcbcloud.Viability
             BindApplicants(26243, "individual", ddlLeadAdvisor);
             //BindLookUP(ddlHearViability, 215);
             BindLookUP(ddlAttribute, 230);
+            BindLookUP(ddlFiscalYear, 76);
+            
         }
 
         protected void BindApplicants(int RoleId, string RoleName, DropDownList ddList)
@@ -247,18 +353,20 @@ namespace vhcbcloud.Viability
                 if (btnAddPlanInfo.Text.ToLower() == "update")
                 {
                     int EnterFundamentalID = DataUtils.GetInt(hfEnterFundamentalID.Value);
-                    EnterpriseFundamentalsData.UpdateEnterpriseFundamentals(EnterFundamentalID, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
+                    EnterpriseFundamentalsData.UpdateEnterpriseFundamentals(EnterFundamentalID, DataUtils.GetInt(ddlFiscalYear.SelectedValue.ToString()), 
+                        DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                       txtProjectDesc.Text, txtBusinessDesc.Text, cbBusplan.Checked, cbGrantApp.Checked,
+                       txtProjectDesc.Text, txtBusinessDesc.Text,
                         true);
 
                     LogMessage("Plan Info updated successfully");
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFundamentals(ProjectId, DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFundamentals(ProjectId, DataUtils.GetInt(ddlFiscalYear.SelectedValue.ToString()), 
+                        DataUtils.GetInt(ddlPlanType.SelectedValue.ToString()),
                         DataUtils.GetInt(ddlServiceProvOrg.SelectedValue.ToString()), DataUtils.GetInt(ddlLeadAdvisor.SelectedValue.ToString()),
-                        txtProjectDesc.Text, txtBusinessDesc.Text, cbBusplan.Checked, cbGrantApp.Checked);
+                        txtProjectDesc.Text, txtBusinessDesc.Text);
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
                         LogMessage("Plan Info already exist as in-active");
@@ -286,11 +394,14 @@ namespace vhcbcloud.Viability
                     int EnterFinancialJobsID = DataUtils.GetInt(hfEnterFinancialJobsID.Value);
                     EnterpriseFundamentalsData.UpdateEnterpriseFinancialJobs(EnterFinancialJobsID, 
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
-                        txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")), 
+                        "", //txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtAccessFTE.Text),
                         chkActive.Checked);
 
                     gvFiniceJobs.EditIndex = -1;
@@ -301,11 +412,14 @@ namespace vhcbcloud.Viability
                 {
                     ViabilityMaintResult objViabilityMaintResult = EnterpriseFundamentalsData.AddEnterpriseFinancialJobs(ProjectId,
                         DataUtils.GetInt(ddlMilestone.SelectedValue.ToString()), DataUtils.GetDate(txtMSDate.Text), 
-                        txtYear.Text, DataUtils.GetDecimal(Regex.Replace(txtGrossSales.Text, "[^0-9a-zA-Z.]+", "")),
-                        DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetDecimal(Regex.Replace(txtGrossPayroll.Text, "[^0-9a-zA-Z.]+", "")), 
-                        DataUtils.GetInt(txtFamilyFTEmp.Text), DataUtils.GetInt(txtNonFamilyFTEmp.Text), 
-                        DataUtils.GetDecimal(Regex.Replace(txtNetworth.Text, "[^0-9a-zA-Z.]+", "")));
+                        "",//txtYear.Text, 
+                        DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
+                        DataUtils.GetDecimal(txtAccessFTE.Text));
 
 
                     if (objViabilityMaintResult.IsDuplicate && !objViabilityMaintResult.IsActive)
@@ -327,26 +441,27 @@ namespace vhcbcloud.Viability
         private void EventProgramSelection()
         {
             ddlMilestone.Items.Clear();
+            BindLookUP(ddlMilestone, 247);
 
-            if (hfProjectProgram.Value == "Admin")
-                BindLookUP(ddlMilestone, 157);
-            else if (hfProjectProgram.Value == "Housing")
-                BindLookUP(ddlMilestone, 160);
-            else if (hfProjectProgram.Value == "Conservation")
-                BindLookUP(ddlMilestone, 159);
-            else if (hfProjectProgram.Value == "Lead")
-                BindLookUP(ddlMilestone, 158);
-            else if (hfProjectProgram.Value == "Americorps")
-                BindLookUP(ddlMilestone, 161);
-            else if (hfProjectProgram.Value == "Viability")
-                BindLookUP(ddlMilestone, 162);
+            //if (hfProjectProgram.Value == "Admin")
+            //    BindLookUP(ddlMilestone, 157);
+            //else if (hfProjectProgram.Value == "Housing")
+            //    BindLookUP(ddlMilestone, 160);
+            //else if (hfProjectProgram.Value == "Conservation")
+            //    BindLookUP(ddlMilestone, 159);
+            //else if (hfProjectProgram.Value == "Lead")
+            //    BindLookUP(ddlMilestone, 158);
+            //else if (hfProjectProgram.Value == "Americorps")
+            //    BindLookUP(ddlMilestone, 161);
+            //else if (hfProjectProgram.Value == "Viability")
+            //    BindLookUP(ddlMilestone, 162);
             //else if (ddlEventProgram.SelectedItem.ToString() == "Healthy Homes")
             //    BindLookUP(ddlEvent, 159);
-            else
-            {
-                ddlMilestone.Items.Clear();
-                ddlMilestone.Items.Insert(0, new ListItem("Select", "NA"));
-            }
+            //else
+            //{
+            //    ddlMilestone.Items.Clear();
+            //    ddlMilestone.Items.Insert(0, new ListItem("Select", "NA"));
+            //}
         }
 
         private void BindFinJobsGrid()
@@ -385,6 +500,8 @@ namespace vhcbcloud.Viability
             gvFiniceJobs.EditIndex = -1;
             BindFinJobsGrid();
             ClearFinJobsForm();
+            
+            btnAddMilestone.Visible = true;
             btnAddMilestone.Text = "Submit";
         }
 
@@ -394,13 +511,16 @@ namespace vhcbcloud.Viability
             cbAddMilestone.Checked = false;
             ddlMilestone.SelectedIndex = -1;
             txtMSDate.Text = "";
-            txtYear.Text = "";
+            //txtYear.Text = "";
             txtGrossSales.Text = "";
             txtNetIncome.Text = "";
             txtGrossPayroll.Text = "";
+            txtNetworth.Text = "";
             txtFamilyFTEmp.Text = "";
             txtNonFamilyFTEmp.Text = "";
+            txtAccessFTE.Text = "";
             chkActive.Enabled = false;
+            spnTotalFulltime.InnerHtml = "";
         }
 
         protected void gvFiniceJobs_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -413,31 +533,36 @@ namespace vhcbcloud.Viability
                     btnAddMilestone.Text = "Update";
                     cbAddMilestone.Checked = true;
 
+                    if (DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                        btnAddMilestone.Visible = true;
+                    else
+                        btnAddMilestone.Visible = false;
+
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        e.Row.Cells[5].Controls[0].Visible = false;
+                        e.Row.Cells[5].Controls[1].Visible = false;
 
                         Label lblEnterFinancialJobsID = e.Row.FindControl("lblEnterFinancialJobsID") as Label;
                         DataRow dr = EnterpriseFundamentalsData.GetEnterpriseFinancialJobsById(DataUtils.GetInt(lblEnterFinancialJobsID.Text));
 
                         hfEnterFinancialJobsID.Value = lblEnterFinancialJobsID.Text;
-
-                        PopulateDropDown(ddlMilestone, dr["MilestoneID"].ToString());
+                        
+                        PopulateDropDown(ddlMilestone, dr["StatusPt"].ToString());
                         
                         //cbVHFAInv.Checked = DataUtils.GetBool(dr["vhfa"].ToString()); ;
                         //cbRDLoan.Checked = DataUtils.GetBool(dr["RDLoan"].ToString()); ;
 
                         txtMSDate.Text = dr["MSDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MSDate"].ToString()).ToShortDateString();
-                        txtYear.Text = dr["Year"].ToString() ?? "";
+                        //txtYear.Text = dr["Year"].ToString() ?? "";
                         txtGrossSales.Text = dr["GrossSales"].ToString() ?? "";
                         txtNetIncome.Text = dr["Netincome"].ToString() ?? "";
                         txtGrossPayroll.Text = dr["GrossPayroll"].ToString() ?? "";
-                        txtFamilyFTEmp.Text = dr["FamilyEmp"].ToString() ?? "";
-                        txtNonFamilyFTEmp.Text = dr["NonFamilyEmp"].ToString() ?? "";
+                        txtFamilyFTEmp.Text = dr["FamilyFTE"].ToString() ?? "";
+                        txtNonFamilyFTEmp.Text = dr["NonFamilyFTE"].ToString() ?? "";
                         txtNetworth.Text = dr["Networth"].ToString() ?? "";
-
-                        spnTotalFulltime.InnerText = (DataUtils.GetInt(dr["FamilyEmp"].ToString()) + DataUtils.GetInt(dr["NonFamilyEmp"].ToString())).ToString();
+                        txtAccessFTE.Text = dr["AccessFTE"].ToString() ?? "";
+                        spnTotalFulltime.InnerText = (DataUtils.GetDecimal(dr["FamilyFTE"].ToString()) + DataUtils.GetDecimal(dr["NonFamilyFTE"].ToString())).ToString();
 
                         chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         chkActive.Enabled = true;

@@ -99,19 +99,39 @@
                                             <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtRfromDate">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 10%; float: left">
-                                            <span class="labelClass">Fund :</span>
+                                        <td style="width: 40%; float: left" colspan="2">
+                                            <asp:Label ID="lblProjName1" runat="server" class="labelClass" Text=" "></asp:Label>
                                         </td>
-                                        <td style="width: 30%; float: left">
-                                            <asp:DropDownList ID="ddlRFromFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRFromFund_SelectedIndexChanged">
-                                            </asp:DropDownList>
-                                            <%--<asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                       <%-- <td style="width: 30%; float: left">
+                                            
+                                            <asp:TextBox ID="txtToProjNum" runat="server" Visible="true" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
 
                                             <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtToProjNum" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
                                                 OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetCommittedPendingProjectslistByFilter">
-                                            </ajaxToolkit:AutoCompleteExtender>--%>
+                                            </ajaxToolkit:AutoCompleteExtender>
                                         </td>
-
+--%>
+                                    </tr>
+                                     <tr>
+                                        <td style="height: 4px" colspan="6" />
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%; float: left"><span class="labelClass">Fund # :</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlAccountFrom" CssClass="clsDropDown" runat="server" onclick="needToConfirm = false;" OnSelectedIndexChanged="ddlAccountFrom_SelectedIndexChanged" AutoPostBack="True" TabIndex="8">
+                                            </asp:DropDownList>
+                                            <asp:TextBox ID="txtAcctNumFrom" runat="server" Visible="false" CssClass="clsTextBoxBlueSm" Width="120px" TabIndex="1"></asp:TextBox>
+                                            <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" TargetControlID="txtAcctNumFrom" MinimumPrefixLength="1" EnableCaching="false" CompletionSetCount="1"
+                                                OnClientItemSelected="OnContactSelected" CompletionInterval="100" ServiceMethod="GetFundAccountsByFilter">
+                                            </ajaxToolkit:AutoCompleteExtender>
+                                        </td>
+                                        <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:DropDownList ID="ddlRFromFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRFromFund_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 40%; float: left" colspan="2"><span class="labelClass"></span></td>
+                                       <%-- <td style="width: 20%; float: left"></td>--%>
                                     </tr>
                                     <tr>
                                         <td style="height: 4px" colspan="6" />
@@ -161,9 +181,12 @@
                                             </ajaxToolkit:AutoCompleteExtender>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Fund :</span></td>
-                                        <td style="width: 60%; float: left" colspan="3">
+                                        <td style="width: 20%; float: left">
                                             <asp:DropDownList ID="ddlRToFund" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRToFund_SelectedIndexChanged">
                                             </asp:DropDownList></td>
+                                        <td style="width: 40%; float: left" colspan="2">
+                                            <asp:Label ID="lblProjName2" runat="server" class="labelClass" Text=" "></asp:Label>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="height: 4px" colspan="6" />
@@ -175,7 +198,7 @@
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
-                                        <td style="width: 60%; float: left" colspan="3">
+                                        <td style="width: 20%; float: left" colspan="2">
                                             <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney" onkeyup='toRToAmtFormatter(value)' runat="server"></asp:TextBox></td>
 
                                     </tr>

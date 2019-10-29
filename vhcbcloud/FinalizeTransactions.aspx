@@ -12,6 +12,15 @@
         }
     </script>
 
+    <style>
+        .myheaderStyle  {
+        text-align: Right;
+    }
+    .myheaderStyle th {
+        text-align: center;
+    }
+</style>
+
     <div class="jumbotron clearfix">
         <p class="lead">Finalize Transactions</p>
 
@@ -42,7 +51,7 @@
                                 <td style="height: 8px;" colspan="5"></td>
                             </tr>
                             <tr>
-                                <td style="width: 20%; float: left;"><span class="labelClass">Board Financial Transactions :</span></td>
+                                <td style="width: 20%; float: left;"><span class="labelClass">Financial Transactions :</span></td>
                                 <td style="width: 20%; float: left">
                                     <asp:DropDownList ID="ddlFinancialTrans" runat="server" CssClass="clsDropDown" Width="161px">
                                         <%--  <asp:ListItem Text="Select Financial Transaction" Value="0"></asp:ListItem>
@@ -117,18 +126,23 @@
                                         <asp:CheckBox ID="chkTrans" runat="server"></asp:CheckBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField ItemStyle-Width="100px" DataField="ProjectNumber" HeaderText="Proj Number" />
-                                <asp:BoundField ItemStyle-Width="120px" DataField="ProjectName" HeaderText="Proj Name" />
-                                <asp:BoundField ItemStyle-Width="120px" DataField="LkTransactionDesc" HeaderText="Financial Tran" />
+                                <asp:BoundField ItemStyle-Width="80px" DataField="ProjectNumber" HeaderText="Project #" />
+                                <asp:BoundField ItemStyle-Width="120px" DataField="ProjectName" HeaderText="Name" />
+                                <asp:BoundField ItemStyle-Width="120px" DataField="LkTransactionDesc" HeaderText="Transaction" />
 
-                                <asp:TemplateField HeaderText="Trans Date" ItemStyle-Width="80px">
+                                <asp:TemplateField HeaderText="Date" ItemStyle-Width="70px">
                                     <ItemTemplate>
                                         <asp:Label ID="lblTransDate" runat="Server" Text='<%# Eval("TransactionDate", "{0:MM-dd-yyyy}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Trans Amount" ItemStyle-Width="90px" ItemStyle-HorizontalAlign="Right">
+                                <asp:TemplateField HeaderText="Amount" ItemStyle-Width="90px" ItemStyle-HorizontalAlign="Right">
                                     <ItemTemplate>
                                         <asp:Label ID="lblTransAmt" runat="Server" Text='<%# Eval("TransAmt", "{0:C2}") %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="User Name" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Left">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblUserName" runat="Server" Text='<%# Eval("UserName", "{0:C2}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
@@ -142,9 +156,10 @@
                                                 <RowStyle CssClass="rowStyle" />
                                                 <FooterStyle CssClass="footerStyleTotals" />
                                                 <Columns>
-                                                    <asp:BoundField ItemStyle-Width="150px" DataField="name" HeaderText="Fund Name" />
+                                                    <asp:BoundField ItemStyle-Width="100px" DataField="ProjectNum" HeaderText="Project #" />
+                                                    <asp:BoundField ItemStyle-Width="150px" DataField="FundName" HeaderText="Fund/Permit #" />
                                                     <%--<asp:BoundField ItemStyle-Width="150px" DataField="description" HeaderText="Transaction Type" />--%>
-                                                    <asp:TemplateField HeaderText="Transaction Type">
+                                                    <asp:TemplateField HeaderText="Trans Type" ItemStyle-Width="100px">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblDescription" runat="Server" Text='<%# Eval("description") %>' />
                                                         </ItemTemplate>
@@ -152,7 +167,8 @@
                                                             Total :
                                                         </FooterTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Amount" ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
+                                                    <asp:TemplateField HeaderStyle-CssClass="myheaderStyle"  HeaderText="Amount" HeaderStyle-HorizontalAlign="Center" 
+                                                        ItemStyle-HorizontalAlign="Right" FooterStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblAmount" runat="Server" Text='<%# Eval("amount", "{0:C2}") %>' />
                                                         </ItemTemplate>

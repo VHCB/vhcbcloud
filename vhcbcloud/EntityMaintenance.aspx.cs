@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
@@ -29,17 +32,62 @@ namespace vhcbcloud
             {
                 BindControls();
                 DisplayPanels();
-                if (Request.QueryString["ApplicantId"] != "")
-                {
 
+                if (Request.QueryString["ApplicantId"] != null && Request.QueryString["ApplicantId"] != "")
+                {
                     PopulateEntity(DataUtils.GetInt(Request.QueryString["ApplicantId"]), DataUtils.GetInt(Request.QueryString["Role"]));
                 }
+                CheckW9Access();
+                CheckTear1Access();
+                CheckNewEntityAccess();
+            }
+        }
+
+        private void CheckTear1Access()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            cbTear1.Enabled = false;
+            cbFileHold.Enabled = false;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "30926")
+                {
+                    cbTear1.Enabled = true;
+                    cbFileHold.Enabled = true;
+                }
+            }
+        }
+
+        private void CheckW9Access()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27448")
+                    ckbW9.Enabled = true;
+            }
+        }
+
+        private void CheckNewEntityAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27453")
+                    rdBtnAction.Items[0].Enabled = true;
             }
         }
 
         //private void HandleCustomPostbackEvent(string ctrlName, string args)
         //{
-            
+
         //    if (ctrlName == txtEntityDDL.UniqueID && args == "OnBlur")
         //    {
         //        EntitySelectionChanged();
@@ -164,6 +212,7 @@ namespace vhcbcloud
                 dvNewMilestone.Visible = false;
                 ddlDefaultRole.Visible = false;
                 spnDefaultRole.Visible = false;
+                //cbMilestoneActive.Visible = false;
             }
             else if (SelectedRole.ToLower() == "organization")
             {
@@ -177,6 +226,7 @@ namespace vhcbcloud
                 dvNewMilestone.Visible = false;
                 ddlDefaultRole.Visible = true;
                 spnDefaultRole.Visible = true;
+                //cbMilestoneActive.Visible = true;
             }
             else if (SelectedRole.ToLower() == "farm")
             {
@@ -188,6 +238,7 @@ namespace vhcbcloud
                 dvAttachEntities.Visible = false;
                 ddlDefaultRole.Visible = true;
                 spnDefaultRole.Visible = true;
+                //cbMilestoneActive.Visible = true;
             }
             else
             {
@@ -213,7 +264,7 @@ namespace vhcbcloud
             BindLookUP(ddlAttribute, 169);
             BindLookUP(ddlProduct, 12);
             BindLookUP(ddlDefaultRole, 56);
-
+            BindLookUP(ddlEntityRole1, 170);
             //Project Events
             //BindLookUP(ddlEventProgram, 34);
             //BindProjects(ddlEventProject);
@@ -224,9 +275,44 @@ namespace vhcbcloud
             BindLookUP(ddlEntityMilestone, 206);
 
             //EventProgramSelection();
+            BindTown();
+            BindStates();
         }
 
-        
+        private void BindStates()
+        {
+            try
+            {
+                ddlState.Items.Clear();
+                ddlState.DataSource = ProjectMaintenanceData.GetStates();
+                ddlState.DataValueField = "Abbrev";
+                ddlState.DataTextField = "Abbrev";
+                ddlState.DataBind();
+                ddlState.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindStates", "Control ID:" + ddlState.ID, ex.Message);
+            }
+        }
+
+        private void BindTown()
+        {
+            try
+            {
+                ddlTown.Items.Clear();
+                ddlTown.DataSource = ProjectMaintenanceData.GetTowns();
+                ddlTown.DataValueField = "Town";
+                ddlTown.DataTextField = "Town";
+                ddlTown.DataBind();
+                ddlTown.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindTown", "Control ID:" + ddlTown.ID, ex.Message);
+            }
+        }
+
 
         protected void BindProjects(DropDownList ddList)
         {
@@ -310,14 +396,16 @@ namespace vhcbcloud
             ClearForm();
             hfApplicatId.Value = "";
 
-            if (rdBtnAction.SelectedValue.ToLower() == "existing")
+            if (hfIsCreated.Value != "true" && rdBtnAction.SelectedValue.ToLower() == "existing" && Request.QueryString["IsSearch"] == null)
             {
                 cbActiveOnly.Visible = true;
+                Response.Redirect("EntitySearch.aspx", true);
             }
-            else
+            if (rdBtnAction.SelectedValue.ToLower() == "new" && Request.QueryString["IsSearch"] != null)
             {
-                cbActiveOnly.Visible = false;
+                Response.Redirect("EntityMaintenance.aspx", true);
             }
+            hfIsCreated.Value = "fasle";
         }
 
         protected void ddlEntityRole_SelectedIndexChanged(object sender, EventArgs e)
@@ -349,10 +437,28 @@ namespace vhcbcloud
 
             int ApplicantId = Convert.ToInt32(hfApplicatId.Value);
 
+            string town = "", county = "", village ="";
+
+            if(ddlState.SelectedValue == "VT")
+            {
+                town = ddlTown.SelectedValue;
+                county = ddlCounty.SelectedValue;
+                village = ddlVillage.SelectedValue;
+            }
+            else
+            {
+                town = txtTown.Text;
+                county = txtCounty.Text;
+            }
+
             if (btnAddAddress.Text.ToLower() == "add")
             {
-                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntityAddress(ApplicantId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text, txtState.Text, txtZip.Text,
-                       txtCounty.Text, int.Parse(ddlAddressType.SelectedValue.ToString()), DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
+                EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntityAddress(ApplicantId, 
+                    txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, 
+                    town, village, ddlState.SelectedValue, txtZip.Text,
+                    county, int.Parse(ddlAddressType.SelectedValue.ToString()), 
+                    DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), 
+                    cbDefaultAddress.Checked);
 
                 btnAddAddress.Text = "Add";
 
@@ -367,8 +473,10 @@ namespace vhcbcloud
             {
                 int AddressId = Convert.ToInt32(hfAddressId.Value);
 
-                EntityMaintenanceData.UpdateEntityAddress(ApplicantId, AddressId, int.Parse(ddlAddressType.SelectedValue.ToString()), txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtTown.Text,
-                    txtState.Text, txtZip.Text, txtCounty.Text, cbActive.Checked, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
+                EntityMaintenanceData.UpdateEntityAddress(ApplicantId, AddressId, int.Parse(ddlAddressType.SelectedValue.ToString()), 
+                    txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, town, village,
+                    ddlState.SelectedValue, txtZip.Text, county, cbActive.Checked, 
+                    DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text), cbDefaultAddress.Checked);
 
                 hfAddressId.Value = "";
                 btnAddAddress.Text = "Add";
@@ -422,11 +530,17 @@ namespace vhcbcloud
             txtAddress1.Text = "";
             txtAddress2.Text = "";
             txtTown.Text = "";
-            //ddlTown.SelectedIndex = -1;
-            txtState.Text = "";
+            ddlTown.SelectedIndex = -1;
+
+            ddlCounty.Items.Clear();
+            ddlVillage.Items.Clear();
+            ddlCounty.SelectedIndex = -1;
+            txtCounty.Text = "";
+            ddlState.SelectedIndex = -1;
+            //txtState.Text = "";
             txtZip.Text = "";
             txtCounty.Text = "";
-            //ddlCounty.SelectedIndex = -1;
+            ddlVillage.SelectedIndex = -1;
             ddlAddressType.SelectedIndex = -1;
             txtLattitude.Text = "";
             txtLongitude.Text = "";
@@ -434,6 +548,8 @@ namespace vhcbcloud
             cbActive.Enabled = true;
             cbDefaultAddress.Checked = true;
             cbDefaultAddress.Enabled = true;
+            ddlState.SelectedIndex = -1;
+            dvAddress.Visible = false;
         }
 
         protected bool IsAddressValid()
@@ -444,7 +560,7 @@ namespace vhcbcloud
                 ddlAddressType.Focus();
                 return false;
             }
-            if (txtStreetNo.Text.Trim() == "")
+            if (cbReqStreetNo.Checked && txtStreetNo.Text.Trim() == "")
             {
                 LogMessage("Enter Street#");
                 txtStreetNo.Focus();
@@ -462,17 +578,30 @@ namespace vhcbcloud
                 txtZip.Focus();
                 return false;
             }
-            if (txtTown.Text.Trim() == "")
-            {
-                LogMessage("Enter Town");
-                txtTown.Focus();
-                return false;
-            }
-            if (txtState.Text.Trim() == "")
+            
+            if (ddlState.SelectedIndex == 0)
             {
                 LogMessage("Enter State");
-                txtState.Focus();
+                ddlState.Focus();
                 return false;
+            }
+            else if(ddlState.SelectedValue == "VT")
+            {
+                if (ddlTown.SelectedIndex == 0)
+                {
+                    LogMessage("Enter Town");
+                    ddlTown.Focus();
+                    return false;
+                }
+            }
+            else
+            {
+                if (txtTown.Text.Trim() == "")
+                {
+                    LogMessage("Enter Town");
+                    txtTown.Focus();
+                    return false;
+                }
             }
             return true;
         }
@@ -512,6 +641,7 @@ namespace vhcbcloud
         {
             if (IsEntityFormValid())
             {
+                hfIsCreated.Value = "true";
                 if (btnEntitySubmit.Text == "Submit")
                 {
                     string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
@@ -524,7 +654,7 @@ namespace vhcbcloud
                             txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
-                            0, null, 1); //1=Individual
+                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //1=Individual
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
@@ -544,11 +674,11 @@ namespace vhcbcloud
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
-                           null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text,
+                            txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
-                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2); //2=Organization
+                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //2=Organization
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -559,7 +689,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3); //3=Farm
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //3=Farm
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -584,7 +714,7 @@ namespace vhcbcloud
                            txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                            txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation);
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked);
                     ClearForm();
                     PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                     LogMessage("Entity Updated Successfully");
@@ -638,18 +768,19 @@ namespace vhcbcloud
                         dvNewAttribute.Visible = true;
                         dvNewProduct.Visible = true;
                         dvAttachEntities.Visible = true;
-                        BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                        //BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
                     }
                     else
                     {
                         if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                         {
                             dvAttachEntities.Visible = true;
-                            BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                            //BindApplicants(DataUtils.GetInt(ddlEntityRole.SelectedItem.Value), ddlEntityRole.SelectedItem.ToString(), ddlIndividualApplicant);
+                            //BindApplicants(26243, "individual", ddlIndividualApplicant);
                         }
                         else
                         {
-                            dvAttachEntities.Visible = false;
+                            dvAttachEntities.Visible = true;
                         }
 
                         dvNewAttribute.Visible = false;
@@ -709,8 +840,8 @@ namespace vhcbcloud
                 txtHomePhone.Text = "";
             else
                 txtHomePhone.Text = String.Format("{0:(###)###-####}", double.Parse(drEntityData["HomePhone"].ToString()));
-            
-            spnAcctNumber.InnerHtml = drEntityData["AppNameID"].ToString();  
+
+            spnAcctNumber.InnerHtml = drEntityData["AppNameID"].ToString();
             txtStateVendorId.Text = drEntityData["Stvendid"].ToString();
             txtApplicantName.Text = drEntityData["Applicantname"].ToString();
             txtFirstName.Text = drEntityData["Firstname"].ToString();
@@ -730,6 +861,16 @@ namespace vhcbcloud
             txtAgrEdu.Text = drEntityData["AgEd"].ToString();
             txtYearsManagingForm.Text = drEntityData["YearsManagingFarm"].ToString();
             PopulateDropDown(ddlDefaultRole, drEntityData["AppRole"].ToString());
+            ckbW9.Checked = DataUtils.GetBool(drEntityData["w9"].ToString());
+            cbTear1.Checked = DataUtils.GetBool(drEntityData["Tier1"].ToString());
+            cbFileHold.Checked = DataUtils.GetBool(drEntityData["FileHold"].ToString());
+
+            if (drEntityData["LKApplicantRole"].ToString() == "358")//Primary Applicant
+                cbMilestoneActive.Enabled = false;
+            else
+                cbMilestoneActive.Enabled = true;
+
+            cbMilestoneActive.Checked = DataUtils.GetBool(drEntityData["RowIsActive"].ToString()); ;
         }
 
         private void ClearForm()
@@ -794,12 +935,45 @@ namespace vhcbcloud
                         txtStreetNo.Text = dr["Street#"].ToString();
                         txtAddress1.Text = dr["Address1"].ToString();
                         txtAddress2.Text = dr["Address2"].ToString();
-                        txtTown.Text = dr["Town"].ToString(); ;
-                        txtState.Text = dr["State"].ToString();
+
+                        if(dr["State"].ToString() == "VT")
+                        {
+                            BindCounty(dr["Town"].ToString());
+                            BindVillages(dr["Town"].ToString());
+
+                            PopulateDropDown(ddlTown, dr["Town"].ToString());
+                            ddlTown.Visible = true;
+                            txtTown.Visible = false;
+
+                            PopulateDropDown(ddlCounty, dr["County"].ToString());
+                            ddlCounty.Visible = true;
+                            txtCounty.Visible = false;
+
+                            PopulateDropDown(ddlVillage, dr["Village"].ToString());
+                            ddlVillage.Visible = true;
+                            spnVillage.Visible = true;
+                        }
+                        else
+                        {
+                            txtTown.Text = dr["Town"].ToString();
+                            ddlTown.Visible = false;
+                            txtTown.Visible = true;
+
+                            txtCounty.Text =  dr["Town"].ToString();
+                            ddlCounty.Visible = false;
+                            txtCounty.Visible = true;
+                            
+                            ddlVillage.Visible = false;
+                            spnVillage.Visible = false;
+                        }
+                        //txtState.Text = dr["State"].ToString();
                         txtZip.Text = dr["Zip"].ToString();
                         txtCounty.Text = dr["County"].ToString();
                         txtLattitude.Text = dr["latitude"].ToString();
                         txtLongitude.Text = dr["longitude"].ToString();
+                        PopulateDropDown(ddlState, dr["State"].ToString());
+                        dvAddress.Visible = true;
+
                         cbActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         cbDefaultAddress.Checked = DataUtils.GetBool(dr["DefAddress"].ToString());
 
@@ -1060,17 +1234,17 @@ namespace vhcbcloud
 
         protected void btnAttachEntities_Click(object sender, EventArgs e)
         {
-            if (ddlIndividualApplicant.SelectedIndex == 0)
+            if (ddlEntityName1.SelectedIndex == 0)
             {
                 LogMessage("Select Applicant");
-                ddlIndividualApplicant.Focus();
+                ddlEntityName1.Focus();
                 return;
             }
 
             FormAttributeResult obAttributeResult = EntityMaintenanceData.AddApplicantApplicant(DataUtils.GetInt(hfApplicatId.Value),
-                DataUtils.GetInt(ddlIndividualApplicant.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlEntityName1.SelectedValue.ToString()));
 
-            ddlIndividualApplicant.SelectedIndex = -1;
+            ddlEntityName1.SelectedIndex = -1;
             cbAttachEntities.Checked = false;
 
             BindAttachEntitiesGrid();
@@ -1521,7 +1695,9 @@ namespace vhcbcloud
         protected void gvEntityMilestone_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvEntityMilestone.EditIndex = -1;
+            cbAddMilestone.Checked = false;
             BindEntityMilestoneGrid();
+            EntityMilestoneChanged();
         }
 
         protected void gvEntityMilestone_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -1545,7 +1721,7 @@ namespace vhcbcloud
             {
                 DataTable dtMilestones = null;
 
-                dtMilestones = MilestoneData.GetEventMilestonesList(ddlEntityName.SelectedItem.ToString(), cbActiveOnly.Checked);
+                dtMilestones = MilestoneData.GetEventMilestonesList1(DataUtils.GetInt(ddlEntityName.SelectedItem.Value.ToString()), cbActiveOnly.Checked);
 
 
                 if (dtMilestones.Rows.Count > 0)
@@ -1571,30 +1747,50 @@ namespace vhcbcloud
         {
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
-                URL = "http://" + URL;
+            if (URL != "")
+                URL = URL.Split('/').Last();
 
-            MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone(DataUtils.GetInt(hfProjectId.Value), 
+            if (btnAddMilestone.Text == "Add")
+            {
+                MilestoneData.MilestoneResult obMilestoneResult = MilestoneData.AddMilestone1(
+                DataUtils.GetInt(hfProjectId.Value),
                 0,
-                ddlEntityName.SelectedItem.ToString(),
+                ddlEntityName.SelectedItem.Value.ToString(),
                 //txtEntityDDL.Text,
                 0, 0,
-                0,0,
+                0, 0,
                 DataUtils.GetInt(ddlEntityMilestone.SelectedValue.ToString()), DataUtils.GetInt(ddlEntitySubMilestone.SelectedValue.ToString()),
                 DataUtils.GetDate(txtEventDate.Text), txtEntityMilestoneComments.Text, URL, GetUserId());
 
-            //ClearForm();
-            ClearEntityAndCommonForm();
-            cbAddMilestone.Checked = false;
-
+                cbAddMilestone.Checked = false;
                 BindEntityMilestoneGrid();
 
-            if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
-                LogMessage("Milestone Event already exist as in-active");
-            else if (obMilestoneResult.IsDuplicate)
-                LogMessage("Milestone already exist");
+                if (obMilestoneResult.IsDuplicate && !obMilestoneResult.IsActive)
+                    LogMessage("Milestone Event already exist as in-active");
+                else if (obMilestoneResult.IsDuplicate)
+                    LogMessage("Milestone already exist");
+                else
+                    LogMessage("New milestone added successfully");
+            }
             else
-                LogMessage("New milestone added successfully");
+            {
+                ProjectMaintenanceData.UpdateProjectEvent3(DataUtils.GetInt(hfProjectEventID.Value),
+                   DataUtils.GetInt(hfProjectId.Value), 0,
+               ddlEntityName.SelectedItem.Value.ToString(),
+               0, null,
+               0, 0,
+               DataUtils.GetInt(ddlEntityMilestone.SelectedValue.ToString()), 
+               DataUtils.GetInt(ddlEntitySubMilestone.SelectedValue.ToString()),
+               DataUtils.GetDate(txtEventDate.Text), txtEntityMilestoneComments.Text, URL, GetUserId(), true);
+
+                LogMessage("Milestone updated successfully");
+                hfProjectEventID.Value = "";
+                btnAddMilestone.Text = "Add";
+                gvEntityMilestone.EditIndex = -1;
+            }
+            cbAddMilestone.Checked = false;
+            BindEntityMilestoneGrid();
+            EntityMilestoneChanged();
         }
 
         private void ClearEntityAndCommonForm()
@@ -1663,6 +1859,306 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ddlEntityRole1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string SelectedRole = ddlEntityRole1.SelectedValue.ToString();
+
+            //dvExistingEntities.Visible = true;
+            BindApplicants(DataUtils.GetInt(SelectedRole), ddlEntityRole1.SelectedItem.ToString(), ddlEntityName1);
+        }
+
+        protected void ddlEntityName1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void gvEntityMilestone_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                string URL = "";
+                HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                string DocumentId = anchorDocument.InnerHtml;
+
+                if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                {
+                    URL = "fda://document/" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else if (DocumentId != "")
+                {
+                    URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                    anchorDocument.InnerHtml = "Click";
+                    anchorDocument.HRef = URL;
+                }
+                else
+                {
+                    anchorDocument.InnerHtml = "";
+                }
+            }
+            if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+            {
+                ClearEntityAndCommonForm();
+                CommonHelper.GridViewSetFocus(e.Row);
+                btnAddMilestone.Text = "Update";
+                cbAddMilestone.Checked = true;
+
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    e.Row.Cells[8].Controls[0].Visible = false;
+
+                    Label lblProjectEventID = e.Row.FindControl("lblProjectEventID") as Label;
+                    int ProjectEventID = DataUtils.GetInt(lblProjectEventID.Text);
+
+                    DataRow dr = ProjectMaintenanceData.GetProjectEventById(ProjectEventID);
+
+                    hfProjectEventID.Value = lblProjectEventID.Text;
+                    //Populate Edit Form
+
+                    PopulateDropDown(ddlEntityMilestone, dr["EntityMSID"].ToString());
+                    EntityMilestoneChanged();
+                    PopulateDropDown(ddlEntitySubMilestone, dr["EntitySubMSID"].ToString());
+
+                    txtEventDate.Text = dr["Date"].ToString() == "" ? "" : Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
+                    txtURL.Text = dr["URL"].ToString();
+
+                    txtEntityMilestoneComments.Text = dr["Note"].ToString();
+
+                }
+            }
+        }
+
+        protected void ddlState_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dvAddress.Visible = true;
+
+            if (ddlState.SelectedValue == "VT")
+            {
+                txtTown.Visible = false;
+                txtCounty.Visible = false;
+                ddlTown.Visible = true;
+                ddlCounty.Visible = true;
+                ddlVillage.Visible = true;
+                spnVillage.Visible = true;
+            }
+            else
+            {
+                ddlTown.Visible = false;
+                txtTown.Visible = true;
+
+                ddlCounty.Visible = false;
+                txtCounty.Visible = true;
+
+                ddlVillage.Visible = false;
+                spnVillage.Visible = false;
+            }
+        }
+
+        protected void ddlTown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindCounty(ddlTown.SelectedValue);
+            BindVillages(ddlTown.SelectedValue);
+        }
+
+        private void BindCounty(string Town)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetCountysByTown(Town);
+
+                ddlCounty.Items.Clear();
+                ddlCounty.DataSource = dt;
+                ddlCounty.DataValueField = "County";
+                ddlCounty.DataTextField = "County";
+                ddlCounty.DataBind();
+                ddlCounty.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (dt.Rows.Count == 1)
+                    ddlCounty.SelectedIndex = 1;
+
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCounty", "Control ID:" + ddlCounty.ID, ex.Message);
+            }
+        }
+
+        private void BindVillages(string Town)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetVillagesByTown(Town);
+                ddlVillage.Items.Clear();
+                ddlVillage.DataSource = dt;
+                ddlVillage.DataValueField = "village";
+                ddlVillage.DataTextField = "village";
+                ddlVillage.DataBind();
+                ddlVillage.Items.Insert(0, new ListItem("Select", "NA"));
+
+                if (dt.Rows.Count == 1)
+                    ddlVillage.SelectedIndex = 1;
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindVillages", "Control ID:" + ddlVillage.ID, ex.Message);
+            }
+        }
+
+        protected void btnGetLatLong_Click(object sender, EventArgs e)
+        {
+            if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
+            {
+                LogMessage("Enter Street#");
+                txtStreetNo.Focus();
+            }
+            else if (txtAddress1.Text.Trim() == "")
+            {
+                LogMessage("Enter Address1");
+                txtAddress1.Focus();
+            }
+            //else if (txtZip.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Zip");
+            //    txtZip.Focus();
+            //}
+            else if(ddlState.SelectedValue == "VT" && ddlTown.SelectedIndex == 0)
+            {
+                    LogMessage("Select Town");
+                    ddlTown.Focus();
+            }
+            else if (ddlState.SelectedValue != "VT" && txtTown.Text == "")
+            {
+                    LogMessage("Enter Town");
+                    txtTown.Focus();
+            }
+            //else if (txtTown.Text.Trim() == "")
+            //{
+            //    LogMessage("Enter Town");
+            //    txtTown.Focus();
+            //}
+            else
+            {
+                //https://www.friism.com/c-and-google-geocoding-web-service-v3/
+                txtLattitude.Text = "";
+                txtLongitude.Text = "";
+
+                string address = string.Format("{0} {1}, {2}, {3}, {4}", txtStreetNo.Text, txtAddress1.Text, ddlTown.SelectedValue,// txtTown.Text, 
+                    ddlState.SelectedValue, txtZip.Text);
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+                    //txtCounty.Text = "";
+                    ddlCounty.SelectedIndex = -1;
+                    txtZip.Text = "";
+                    txtLattitude.Text = "";
+                    txtLongitude.Text = "";
+
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            //txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                            PopulateDropDown(ddlVillage, res.Results[0].AddressComponents[ii].ShortName);
+                        }
+                    }
+                    txtLattitude.Text = res.Results[0].Geometry.Location.Latitude.ToString();
+                    txtLongitude.Text = res.Results[0].Geometry.Location.Longitude.ToString();
+                }
+            }
+        }
+
+        protected void btnGetAddress_Click(object sender, EventArgs e)
+        {
+            if (txtLattitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Lattitude");
+                txtLattitude.Focus();
+            }
+            else if (txtLongitude.Text.Trim() == "")
+            {
+                LogMessage("Enter Longitude");
+                txtLongitude.Focus();
+            }
+            else
+            {
+                txtStreetNo.Text = "";
+                txtAddress1.Text = "";
+                txtAddress2.Text = "";
+                //txtTown.Text = "";
+                //txtState.Text = "";
+                //txtCounty.Text = "";
+                txtZip.Text = "";
+                //txtVillage.Text = "";
+
+                string LatLong = string.Format("{0}, {1}", txtLattitude.Text, txtLongitude.Text);
+                string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&latlng={0}&region=dk&sensor=false", HttpUtility.UrlEncode(LatLong));
+
+                var request = (HttpWebRequest)HttpWebRequest.Create(url);
+                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GeoResponse));
+                var res = (GeoResponse)serializer.ReadObject(request.GetResponse().GetResponseStream());
+
+                if (res.Status == "OK")
+                {
+                    for (var ii = 0; ii < res.Results[0].AddressComponents.Length; ii++)
+                    {
+                        var types = string.Join(",", res.Results[0].AddressComponents[ii].Type.Select(x => x));
+
+                        if (types == "street_number")
+                        {
+                            txtStreetNo.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "route" || types == "point_of_interest,establishment")
+                        {
+                            txtAddress1.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "neighborhood" || types == "neighborhood,political")
+                        {
+                            //txtVillage.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political")
+                        {
+                            //txtTown.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_1,political")
+                        {
+                            //txtState.Text = res.Results[0].AddressComponents[ii].ShortName;
+                        }
+                        if (types == "postal_code" || types == "postal_code_prefix,postal_code")
+                        {
+                            txtZip.Text = res.Results[0].AddressComponents[ii].LongName;
+                        }
+                        if (types == "administrative_area_level_2,political")
+                        {
+                            //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                        }
+                    }
+                }
+            }
         }
     }
 }

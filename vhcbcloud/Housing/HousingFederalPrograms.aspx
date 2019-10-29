@@ -162,7 +162,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -449,7 +449,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -568,7 +568,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -685,7 +685,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -764,14 +764,25 @@
                                             <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtNextInspDeadLine" TargetControlID="txtNextInspDeadLine">
                                             </ajaxToolkit:CalendarExtender>
                                         </td>
-                                        <td style="width: 138px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 138px"><span class="labelClass">Response Not Needed</span></td>
                                         <td style="width: 177px">
-                                            <asp:CheckBox ID="chkInspectionActive" Enabled="false" runat="server" Checked="true" /></td>
-                                        <td style="width: 156px">
+                                            <asp:CheckBox ID="chkRespNotNeed" Enabled="true" runat="server" Checked="false" /></td>
+                                        <td style="width: 156px"><span class="labelClass">Active:</span></td>
+                                        <td style="width: 180px">
+                                            <asp:CheckBox ID="chkInspectionActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td style="width: 158px" colspan="6">
                                             <asp:Button ID="btnAddInspection" runat="server" Text="Add" class="btn btn-info"
                                                 OnClick="btnAddInspection_Click" />
                                         </td>
-                                        <td style="width: 180px"></td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -802,9 +813,27 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Performed By">
+                                        <asp:TemplateField HeaderText="Date Inspection Letter Sent">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblInspectionPerformedBy" runat="Server" Text='<%# Eval("InspectionPerformedBy") %>' />
+                                                <asp:Label ID="lblDateInspectionLetterSent" runat="Server" Text='<%# Eval("InspectLetter", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="250px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Deficiency">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDeficiency" runat="Server" Text='<%# Eval("Deficiency") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="250px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Date of Response">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDateofResponse" runat="Server" Text='<%# Eval("RespDate", "{0:MM/dd/yyyy}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="220px" />
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Not Needed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblNotNeeded" runat="Server" Text='<%# Eval("RespNotNeed") %>' />
                                             </ItemTemplate>
                                             <ItemStyle Width="250px" />
                                         </asp:TemplateField>
@@ -814,18 +843,6 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField> 
-                                        <asp:TemplateField HeaderText="Date Inspection Letter Sent">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDateInspectionLetterSent" runat="Server" Text='<%# Eval("InspectLetter", "{0:MM/dd/yyyy}") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="300px" />
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Date of Response">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblDateofResponse" runat="Server" Text='<%# Eval("RespDate", "{0:MM/dd/yyyy}") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle Width="220px" />
-                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
@@ -838,7 +855,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -968,7 +985,7 @@
     <asp:HiddenField ID="hfHousingID" runat="server" />
     <asp:HiddenField ID="hfHomeAffWarning" runat="server" />
     <asp:HiddenField ID="hfFederalProjectInspectionID" runat="server" />
-    
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
     <script language="javascript">
         $(document).ready(function () {

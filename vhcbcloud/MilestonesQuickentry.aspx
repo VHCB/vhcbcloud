@@ -260,8 +260,11 @@
                                 <asp:GridView ID="gvMilestone" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvMilestone_RowEditing" OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
-                                    OnRowDeleting="gvMilestone_RowDeleting" OnRowUpdating="gvMilestone_RowUpdating">
+                                    OnRowEditing="gvMilestone_RowEditing" 
+                                    OnRowCancelingEdit="gvMilestone_RowCancelingEdit"
+                                    OnRowDeleting="gvMilestone_RowDeleting" 
+                                    OnRowUpdating="gvMilestone_RowUpdating"
+                                     OnRowDataBound ="gvMilestone_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -305,7 +308,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                             <ItemStyle Width="100px" />
                                         </asp:TemplateField>
@@ -319,9 +322,9 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                           <%-- <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                         <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
@@ -388,9 +391,9 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                            <EditItemTemplate>
+                                            <%--<EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                            </EditItemTemplate>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
                                         <%--<asp:CommandField ShowDeleteButton="true" DeleteText="Inactivate" />--%>
@@ -404,7 +407,8 @@
             <asp:HiddenField ID="hfProjectId" runat="server" />
             <asp:HiddenField ID="hfProgramId" runat="server" />
             <asp:HiddenField ID="hfProjectProgram" runat="server" />
-
+            <asp:HiddenField ID="hfProjectEventID" runat="server" />
+            
         </div>
     </div>
     <script language="javascript">

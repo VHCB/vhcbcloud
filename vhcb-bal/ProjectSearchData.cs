@@ -13,7 +13,7 @@ namespace DataAccessLayer
     public class ProjectSearchData
     {
         public static DataTable ProjectSearch(string ProjNum, string ProjectName, string AppName, string LKProgram,
-            string LKProjectType, string Town, string County, bool IsPrimaryApplicant)
+            string LKProjectType, string Town, string County, bool IsPrimaryApplicant, bool ActiveProject, string TargetYr)
         {
             DataTable dt = null;
             try
@@ -43,8 +43,13 @@ namespace DataAccessLayer
                             command.Parameters.Add(new SqlParameter("Town", Town));
                         if (County != "NA")
                             command.Parameters.Add(new SqlParameter("County", County));
+                        if (TargetYr != "NA")
+                            command.Parameters.Add(new SqlParameter("TargetYr", DataUtils.GetInt(TargetYr)));
+                        
 
                         command.Parameters.Add(new SqlParameter("IsPrimaryApplicant", IsPrimaryApplicant));
+                        command.Parameters.Add(new SqlParameter("ActiveProject", ActiveProject));
+                        
 
                         command.CommandTimeout = 60 * 5;
 
@@ -146,6 +151,41 @@ namespace DataAccessLayer
                 SqlCommand command = new SqlCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetProjectNumbersWithNameAndProjectType";
+                command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNumPrefix));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static DataTable GetProjectNumbersWithPrimaryApplicant(string ProjectNumPrefix)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetProjectNumbersWithPrimaryApplicant";
                 command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNumPrefix));
                 using (connection)
                 {

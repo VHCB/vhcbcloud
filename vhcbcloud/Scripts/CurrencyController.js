@@ -3,7 +3,34 @@
     currency: 'USD',
     minimumFractionDigits: 2,
 });
+
 toCurrencyControl = (value, id) => {
+    const neg = value.startsWith('-');
+    const digits = this.getDigitsFromValue(value);
+    let digitsWithPadding = '';
+
+    if (digits != '') {
+        digitsWithPadding = this.padDigits(digits);
+        let result = this.addDecimalToNumber(digitsWithPadding);
+        if (neg) id.val('-'.concat(formatter.format(result)));
+        else id.val(formatter.format(result));
+    }
+    else {
+        if (!neg) {
+            id.val('');
+        }
+        else {
+            const digits = this.getDigitsFromValue(value.substring(1));
+            if (digits == '') {
+                digitsWithPadding = this.padDigits(digits);
+                let result = this.addDecimalToNumber(digitsWithPadding);
+                id.val('-'.concat(formatter.format(result)));
+            }
+        }
+    }
+};
+
+toCurrencyControl1 = (value, id) => {
     const digits = this.getDigitsFromValue(value);
     const digitsWithPadding = this.padDigits(digits);
     let result = this.addDecimalToNumber(digitsWithPadding);

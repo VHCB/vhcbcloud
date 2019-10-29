@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -91,7 +92,7 @@ namespace vhcbcloud
             DataTable dt = UserSecurityData.GetMasterPageSecurity(userid);
             if (dt.Rows.Count > 0)
             {
-                //this.MasterPageFile = "SiteNonAdmin.Master";
+                this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
 
@@ -108,15 +109,85 @@ namespace vhcbcloud
                 return 0;
             }
         }
+        public String strMenuText = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            DataTable dtable = default(DataTable);
+            var sb = new StringBuilder();
+            
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if (dr != null && dr["usergroupid"].ToString() == "7")
+            {
+                Session["UserMenuDetails"] = null;
+                logoURL.HRef = "";
+            }
+            else
+            {
+                if (Session["UserMenuDetails"] == null)
+                {
+                    dtable = UserSecurityData.GetMenuDetailsByUser(GetUserId());
+                    //dtable = UserSecurityData.GetMenuDetailsByUser(7);
+                    Session["UserMenuDetails"] = dtable;
+                }
+                else
+                    dtable = (DataTable)Session["UserMenuDetails"];
+                DataRow[] parentMenus = dtable.Select("ParentID = 0");
+                strMenuText = GenerateUL(parentMenus, dtable, sb, false);
+            }
         }
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
+            Session.Remove("UserMenuDetails");
+            Session.Remove("FirstName");
             Context.GetOwinContext().Authentication.SignOut();
         }
+
+        private string GenerateUL(DataRow[] menu, DataTable table, StringBuilder sb,bool isSubmenu)
+        {
+            if (!isSubmenu)
+                sb.AppendLine(@"<ul class=""nav navbar-nav"">");
+            else
+                sb.AppendLine(@"<ul class=""dropdown-menu"">");
+            if (menu.Length > 0)
+            {
+                foreach (DataRow dr in menu)
+                {
+                    string handler = dr["Handler"].ToString();
+                    string menuText = dr["MenuText"].ToString();
+                    string pid = dr["MenuID"].ToString();
+                    string parentId = dr["ParentID"].ToString();
+                    string line;
+                    DataRow[] subMenu = table.Select(String.Format("ParentID = {0}", pid));
+                        if (!isSubmenu)
+                        {
+                            if (DataUtils.GetBool(dr["IsDropDownToggle"].ToString()))
+                                line = String.Format(@"<li class=""menu-item dropdown""><a href=""{0}"" class=""dropdown-toggle"" data-toggle=""dropdown"">{1}<b class=""caret""></b></a>", ResolveUrl(@"~/" + handler), menuText);
+                            else
+                                line = String.Format(@"<li><a href=""{0}"" >{1}</a>", ResolveUrl(@"~/" + handler), menuText);
+                        }
+                        else
+                        {
+                            if (DataUtils.GetBool(dr["IsDropDownToggle"].ToString()))
+                                line = String.Format(@"<li class=""menu-item dropdown dropdown-submenu""><a href=""{0}"" class=""dropdown-toggle"" data-toggle=""dropdown"">{1}</a>", ResolveUrl(@"~/" + handler), menuText);
+                            else
+                                line = String.Format(@"<li><a href=""{0}"" >{1}</a>", ResolveUrl(@"~/" + handler), menuText);
+                        }
+                        sb.Append(line);
+                        if (subMenu.Length > 0 && !pid.Equals(parentId))
+                        {
+                            var subMenuBuilder = new StringBuilder();
+                            sb.Append(GenerateUL(subMenu, table, subMenuBuilder, true));
+                        }
+                        sb.Append("</li>");
+                    
+                }
+            }
+            sb.Append("</ul>");
+            return sb.ToString();
+        }
+
+       
     }
 
 }

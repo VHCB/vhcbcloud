@@ -33,9 +33,10 @@ namespace vhcbcloud.Housing
                 PopulateProjectDetails();
 
                 BindControls();
+                GetRoleAccess();
                 BindGrids();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
@@ -46,7 +47,76 @@ namespace vhcbcloud.Housing
             }
         }
 
-        protected void RoleReadOnly()
+        protected bool GetIsVisibleBasedOnRole()
+        {
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
+        }
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            btnSubmitHomeForm.Visible = false;
+
+            cbAddFedProgram.Enabled = true;
+            cbAddHomeAff.Enabled = true;
+            cbAddNewInspections.Enabled = true;
+            cbAddRentalAffordability.Enabled = true;
+            cbAddUnitOccupancy.Enabled = true;
+            cbDeficiency.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddHomeAff.Visible = false;
             btnAddInspection.Visible = false;
@@ -60,16 +130,15 @@ namespace vhcbcloud.Housing
             cbAddRentalAffordability.Enabled = false;
             cbAddUnitOccupancy.Enabled = false;
             cbDeficiency.Enabled = false;
-            
         }
 
-        protected bool GetRoleAuth()
-        {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
-        }
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
 
 
         private void ProjectNotesSetUp()
@@ -302,16 +371,22 @@ namespace vhcbcloud.Housing
                 hfHousingID.Value = drHousing["HousingID"].ToString();
             }
 
-            if (hfProjectFedProgram.Value.ToLower() == "home")
+            if (hfProjectFedProgram.Value.ToLower() == "home" || hfProjectFedProgram.Value.ToLower() == "nsp")
             {
-                spnFormTitle.InnerText = "HOME";
-                cbAddHomeAff.Text = "Add New HOME Income Restriction";
-                cbAddRentalAffordability.Text = "Add New HOME Rent Restriction";
-                cbAddUnitOccupancy.Text = "Add New HOME Unit Sizes";
-                spnUnitSizes.InnerText = "HOME Unit Sizes";
-                spnRentRest.InnerText = "HOME Rent Restrictions";
-                spnIncomeRest.InnerText = "HOME Income Restrictions";
-                spnIncomeRestrictionsLabel.InnerText = "HOME";
+                string labelText = "";
+                if(hfProjectFedProgram.Value.ToLower() == "home")
+                    labelText = "HOME";
+                else
+                    labelText = "NSP";
+
+                spnFormTitle.InnerText = labelText;
+                cbAddHomeAff.Text = "Add New " + labelText + " Income Restriction";
+                cbAddRentalAffordability.Text = "Add New " + labelText + " Rent Restriction";
+                cbAddUnitOccupancy.Text = "Add New " + labelText + " Unit Sizes";
+                spnUnitSizes.InnerText = labelText + " Unit Sizes";
+                spnRentRest.InnerText = labelText + " Rent Restrictions";
+                spnIncomeRest.InnerText = labelText + " Income Restrictions";
+                spnIncomeRestrictionsLabel.InnerText = labelText;
 
                 spnCHDORequest.Visible = true;
                 chkCHDO.Visible = spnCHDORequest.Visible = true;
@@ -1145,7 +1220,8 @@ namespace vhcbcloud.Housing
                 HousingFederalProgramsData.AddFederalProjectInspection(DataUtils.GetInt(hfProjectFederalID.Value),
                            DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                            DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
-                           DataUtils.GetDate(txtNextInspDeadLine.Text));
+                           DataUtils.GetDate(txtNextInspDeadLine.Text), chkRespNotNeed.Checked, 
+                           DataUtils.GetInt(hfProjectId.Value));
                 cbAddNewInspections.Checked = false;
 
                 BindInspectionsGrid();
@@ -1157,7 +1233,7 @@ namespace vhcbcloud.Housing
                 HousingFederalProgramsData.UpdateFederalProjectInspection(DataUtils.GetInt(hfFederalProjectInspectionID.Value),
                           DataUtils.GetDate(txtInspectDate.Text), txtNextInspect.Text, DataUtils.GetInt(ddlStaff.SelectedValue.ToString()),
                           DataUtils.GetDate(txtInspectLetter.Text), DataUtils.GetDate(txtRespDate.Text), cbDeficiency.Checked,
-                          DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked);
+                          DataUtils.GetDate(txtNextInspDeadLine.Text), chkInspectionActive.Checked, chkRespNotNeed.Checked);
 
                 gvInspection.EditIndex = -1;
                 BindInspectionsGrid();
@@ -1195,6 +1271,7 @@ namespace vhcbcloud.Housing
             txtRespDate.Text = "";
             cbDeficiency.Checked = false;
             txtNextInspDeadLine.Text = "";
+            chkRespNotNeed.Checked = false;
             chkInspectionActive.Enabled = false;
             cbAddNewInspections.Checked = false;
         }
@@ -1252,6 +1329,7 @@ namespace vhcbcloud.Housing
                         txtRespDate.Text = dr["RespDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["RespDate"].ToString()).ToShortDateString();
                         txtNextInspDeadLine.Text = dr["InspectDeadline"].ToString() == "" ? "" : Convert.ToDateTime(dr["InspectDeadline"].ToString()).ToShortDateString();
                         cbDeficiency.Checked = DataUtils.GetBool(dr["Deficiency"].ToString());
+                        chkRespNotNeed.Checked = DataUtils.GetBool(dr["RespNotNeed"].ToString());
                         chkInspectionActive.Enabled = true;
                         chkInspectionActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }

@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,6 +32,8 @@ namespace vhcbcloud
                 gvSearchresults.Columns[4].HeaderText = "Applicant Name";
             else
                 gvSearchresults.Columns[4].HeaderText = "Entity Name";
+
+            CheckNewProjectAccess();
         }
 
         private void ProjectNotesSetUp()
@@ -39,28 +42,49 @@ namespace vhcbcloud
             //if (ProjectNotesData.IsNotesExist(PageId))
             //    btnProjectNotes1.ImageUrl = "~/Images/currentpagenotes.png";
 
-                ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
-                    "&PageId=" + PageId;
+            ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"] +
+                "&PageId=" + PageId;
         }
 
         private void BindControls()
         {
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlProjectType, 119);
+            BindLookUP(ddlTargetYear, 2272);
+            
             //BindPrimaryApplicants();
             BindProjectTowns();
             BindCounties();
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            if (dr != null)
+            {
+                if (dr["dfltprg"].ToString() != "26170") //Skip Admin
+                    PopulateDropDown(ddlProgram, dr["dfltprg"].ToString());
+            }
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
         }
 
         protected void Page_PreInit(Object sender, EventArgs e)
-        {           
+        {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
             if (dt.Rows.Count > 0)
             {
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
-             
+
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -180,7 +204,7 @@ namespace vhcbcloud
             dvSearchResults.Visible = true;
             DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
-                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked);
+                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked, ddlTargetYear.SelectedValue.ToString());
 
             List<int> lstProjectId = new List<int>();
             Session["lstSearchResultProjectId"] = lstProjectId;
@@ -191,7 +215,7 @@ namespace vhcbcloud
 
             Session["lstSearchResultProjectId"] = lstProjectId;
 
-            if (dtSearchResults.Rows.Count > 0 && 
+            if (dtSearchResults.Rows.Count > 0 &&
                 ((txtProjNum.Text.IndexOf('-', 0) > -1 && txtProjNum.Text.Length == 12) ||
                 (txtProjNum.Text.IndexOf('-', 0) == -1 && txtProjNum.Text.Length == 10)))
                 Response.Redirect("ProjectMaintenance.aspx?ProjectId=" + dtSearchResults.Rows[0]["ProjectId"].ToString());
@@ -277,6 +301,7 @@ namespace vhcbcloud
             ddlTown.SelectedIndex = -1;
             ddlCounty.SelectedIndex = -1;
             ddlProjectType.SelectedIndex = -1;
+            cbProjectActive.Checked = true;
         }
 
         protected void gvSearchresults_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -305,7 +330,7 @@ namespace vhcbcloud
             List<string> ProjNumbers = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                ProjNumbers.Add("'" + dt.Rows[i][0].ToString()+"'");
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
         }
@@ -325,7 +350,8 @@ namespace vhcbcloud
             List<string> Applicants = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+                //Applicants.Add("'" + dt.Rows[i][1].ToString() + "'");
+                Applicants.Add(dt.Rows[i][1].ToString());
             }
             return Applicants.ToArray();
 
@@ -333,6 +359,31 @@ namespace vhcbcloud
             //ddlPrimaryApplicant.DataTextField = "Applicantname";
             //ddlPrimaryApplicant.DataBind();
             //ddlPrimaryApplicant.Items.Insert(0, new ListItem("Select", "NA"));
+        }
+
+        private void CheckNewProjectAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "27454")
+                    btnNewProject1.Enabled = true;
+            }
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

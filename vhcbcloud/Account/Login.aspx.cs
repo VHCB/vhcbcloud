@@ -21,6 +21,9 @@ namespace vhcbcloud.Account
         private int LoginUserId;
         private string _UserName;
         private LdapAuthentication adAuth;
+        private string FirstName;
+        private string DashboardName;
+        private bool IsDashboard;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -101,22 +104,37 @@ namespace vhcbcloud.Account
 
         private void GeneralLogin()
         {
+            IsDashboard = false;
             IsLoginValid(UserId.Text, Password.Text);
 
             if (IsValidUser)
             {
                 Session["UserId"] = UserId.Text;
-
+                Session["FirstName"] = FirstName;
                 //if (IsFirstTimeUser)
                 //    Response.Redirect("SetPassword.aspx");
                 //else
                 //{
+
                 FormsAuthentication.SetAuthCookie(UserId.Text, RememberMe.Checked);
-                string url = FormsAuthentication.DefaultUrl;
-                if (Request["ReturnUrl"] != null) url = Request["ReturnUrl"];
-                Response.Redirect(url);
-                // }
-                //Response.Redirect("../BoardFinancialTransactions.aspx");
+                string url = "";
+
+                DataRow dr = UserSecurityData.GetUserSecurity(UserId.Text);
+                if (dr != null && dr["usergroupid"].ToString() == "7")
+                    url = "../Americorps/ProgressReport.aspx";
+                else
+                {
+                    url = FormsAuthentication.DefaultUrl;
+                    if (Request["ReturnUrl"] != null)
+                        url = Request["ReturnUrl"];
+                }
+
+                int i = 0;
+                for (int a = 0; a < 2; a++)
+                {
+                    i += 1;
+                    OpenTabs(this, i, url);
+                }
             }
             else
             {
@@ -126,12 +144,37 @@ namespace vhcbcloud.Account
             }
         }
 
+        public void OpenTabs(System.Web.UI.Page page, int i, string URL)
+        {
+            if (i == 1)
+            {
+                string script = "window.open('" + URL + "', '" + "_self" + "', '');";
+                page.ClientScript.RegisterClientScriptBlock(page.GetType(), "_self", script, true);
+            }
+            else
+            {
+                if (IsDashboard)
+                {
+                    if (DashboardName != null)
+                    {
+                        string[] tokens = DashboardName.Split('.');
+                        DashboardName = tokens[0];
+                    }
+
+                    string script = "window.open('" + Helper.GetExagoURLForDashBoard(DashboardName) + "', '" + "abc" + "', '');";
+                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "abc", script, true);
+                }
+            }
+        }
         private void IsLoginValid(string UserName, string Password)
         {
             string[] UserAccountData = AccountData.CheckUserLogin(UserName, Password).Split('|');
             IsValidUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[0]));
             IsFirstTimeUser = Convert.ToBoolean(Convert.ToInt16(UserAccountData[1]));
             LoginUserId = Convert.ToInt32(UserAccountData[1]);
+            FirstName = UserAccountData[3];
+            IsDashboard = Convert.ToBoolean(Convert.ToInt16(UserAccountData[4]));
+            DashboardName = UserAccountData[5];
 
             MasterPage mPage;
             mPage = Page.Master;

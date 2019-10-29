@@ -32,7 +32,7 @@ namespace vhcbcloud.Conservation
 
                 dvImport.Visible = false;
                 BindControls();
-
+                GetRoleAccess();
                 dvNewSource.Visible = false;
                 dvConsevationSourcesGrid.Visible = false;
 
@@ -42,23 +42,96 @@ namespace vhcbcloud.Conservation
                 ddlBudgetPeriod.SelectedValue = ConservationSourcesUsesData.GetLatestBudgetPeriod(DataUtils.GetInt(hfProjectId.Value)).ToString();
                 BudgetPeriodSelectionChanged();
             }
-            GetRoleAuth();
+            //GetRoleAuth();
         }
-        protected bool GetRoleAuth()
+
+        protected bool GetIsVisibleBasedOnRole()
         {
-            bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
-            if (!checkAuth)
-                RoleReadOnly();
-            return checkAuth;
+            return DataUtils.GetBool(hfIsVisibleBasedOnRole.Value);
         }
-        protected void RoleReadOnly()
+
+        protected void GetRoleAccess()
+        {
+
+            DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
+            DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+
+            if (dr != null)
+            {
+                if (dr["usergroupid"].ToString() == "0") // Admin Only
+                {
+                    hfIsVisibleBasedOnRole.Value = "true";
+                }
+                else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        hfIsVisibleBasedOnRole.Value = "true";
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
+                {
+                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    {
+                        RoleViewOnly();
+                        hfIsVisibleBasedOnRole.Value = "false";
+                    }
+                    else
+                    {
+                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        {
+                            RoleViewOnlyExceptAddNewItem();
+                            hfIsVisibleBasedOnRole.Value = "false";
+                        }
+                        else
+                        {
+                            hfIsVisibleBasedOnRole.Value = "true";
+                        }
+                    }
+                }
+                else if (dr["usergroupid"].ToString() == "3") // View Only
+                {
+                    RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+            }
+        }
+
+        protected void RoleViewOnlyExceptAddNewItem()
+        {
+            cbAddSource.Enabled = true;
+            cbAddUse.Enabled = true;
+        }
+
+        protected void RoleViewOnly()
         {
             btnAddOtherUses.Visible = false;
             btnAddSources.Visible = false;
+
             cbAddSource.Enabled = false;
             cbAddUse.Enabled = false;
-            
         }
+
+        //protected bool GetRoleAuth()
+        //{
+        //    bool checkAuth = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
+        //    if (!checkAuth)
+        //        RoleReadOnly();
+        //    return checkAuth;
+        //}
+        //protected void RoleReadOnly()
+        //{
+        //    btnAddOtherUses.Visible = false;
+        //    btnAddSources.Visible = false;
+        //    cbAddSource.Enabled = false;
+        //    cbAddUse.Enabled = false;
+            
+        //}
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -514,10 +587,10 @@ namespace vhcbcloud.Conservation
         private void ClearAddUsesForm()
         {
             ddlVHCBUses.SelectedIndex = -1;
-            txtVHCBUseAmount.Text = "";
+            txtVHCBUseAmount.Text = "$0.00";
             ddlOtherUses.SelectedIndex = -1;
-            txtOtherUseAmount.Text = "";
-            //txtUsesTotal.Text = "";
+            txtOtherUseAmount.Text = "$0.00";
+            //txtUsesTotal.Text = "$0.00";
         }
 
         protected void gvConsevationSources_RowEditing(object sender, GridViewEditEventArgs e)
@@ -713,6 +786,102 @@ namespace vhcbcloud.Conservation
                     LogMessage("Invalid Import, No Data Exist for this Budget Period");
                 else
                 LogError(Pagename, "ddlImportFrom_SelectedIndexChanged", "", ex.Message);
+            }
+        }
+
+        protected void ddlVHCBUses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlVHCBUses.SelectedIndex != 0)
+                PopulateDropDown(ddlOtherUses, GetOtherUsesCode(ddlVHCBUses.SelectedValue.ToString()));
+            else
+                ddlOtherUses.SelectedIndex = 0;
+        }
+
+        private string GetOtherUsesCode(string VHCBUsesCode)
+        {
+            string returnCode = "0";
+
+            switch (VHCBUsesCode)
+            {
+                case "439":
+                    return "447";
+                case "440":
+                    return "448";
+                case "441":
+                    return "450";
+                case "442":
+                    return "449";
+                case "443":
+                    return "451";
+                case "444":
+                    return "454";
+                case "445":
+                    return "455";
+                case "446":
+                    return "452";
+                case "26611":
+                    return "26612";
+                case "26609":
+                    return "453";
+                case "26613":
+                    return "26610";
+                case "27648":
+                    return "27649";
+            }
+            return returnCode;
+        }
+
+        protected void ddlOtherUses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlOtherUses.SelectedIndex != 0)
+                PopulateDropDown(ddlVHCBUses, GetVHCBUsesCode(ddlOtherUses.SelectedValue.ToString()));
+            else
+                ddlVHCBUses.SelectedIndex = 0;
+        }
+
+        private string GetVHCBUsesCode(string OtherUsesCode)
+        {
+            string returnCode = "0";
+
+            switch (OtherUsesCode)
+            {
+                case "447":
+                    return "439";
+                case "448":
+                    return "440";
+                case "450":
+                    return "441";
+                case "449":
+                    return "442";
+                case "451":
+                    return "443";
+                case "454":
+                    return "444";
+                case "455":
+                    return "445";
+                case "452":
+                    return "446";
+                case "26612":
+                    return "26611";
+                case "453":
+                    return "26609";
+                case "26610":
+                    return "26613";
+                case "27649":
+                    return "27648";
+            }
+            return returnCode;
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
             }
         }
     }

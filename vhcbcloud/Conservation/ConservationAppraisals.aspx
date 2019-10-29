@@ -70,7 +70,7 @@
                                     </td>
                                     <td><span class="labelClass">Total Acres</span></td>
                                     <td>
-                                        <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server" ReadOnly="true"></asp:TextBox>
                                     </td>
 
                                 </tr>
@@ -78,7 +78,7 @@
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="labelClass">Fee Value</span></td>
+                                    <td><span class="labelClass">Fee Simple Value</span></td>
                                     <td>
                                         <asp:TextBox ID="txtFeeValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                     </td>
@@ -116,9 +116,12 @@
                                 </tr>
                                 <tr>
                                     <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
-                                    <td colspan="5">
+                                    <td>
                                         <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
                                     </td>
+                                    <td><span class="labelClass">Type</span>
+                                    </td>
+                                    <td><asp:DropDownList ID="ddlType" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -273,7 +276,8 @@
                                 <asp:GridView ID="gvAppraisalInfo" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    OnRowEditing="gvAppraisalInfo_RowEditing" OnRowCancelingEdit="gvAppraisalInfo_RowCancelingEdit"
+                                    OnRowEditing="gvAppraisalInfo_RowEditing" 
+                                    OnRowCancelingEdit="gvAppraisalInfo_RowCancelingEdit"
                                     OnRowDataBound="gvAppraisalInfo_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -309,9 +313,9 @@
                                                 <asp:Label ID="lblAppRecd" runat="Server" Text='<%# Eval("AppRecd", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Effective Date">
+                                        <asp:TemplateField HeaderText="Comments">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblEffDate" runat="Server" Text='<%# Eval("EffDate", "{0:MM/dd/yyyy}") %>' />
+                                                <asp:Label ID="lblComments" runat="Server" ToolTip='<%# Eval("Comment") %>' Text='<%# Eval("CommentShow") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Total Cost" ItemStyle-HorizontalAlign="center">
@@ -322,7 +326,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="URL">
                                             <ItemTemplate>
-                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URLText") %></a>
+                                                <a href='<%# Eval("URL") %>' runat="server" id="hlurl" target="_blank"><%# Eval("URL") %></a>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
@@ -336,7 +340,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -463,7 +467,7 @@
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetRoleAuth() %>'></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -479,7 +483,7 @@
             <asp:HiddenField ID="hfAppraisalPayID" runat="server" />
             <asp:HiddenField ID="hfSelectedAppraisalTotalCost" runat="server" />
             <asp:HiddenField ID="hfPayWarning" runat="server" />
-
+            <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
 
             <script language="javascript">
                 $(document).ready(function () {
@@ -507,7 +511,7 @@
                     <%--toCurrencyControl($('#<%= spEasementValue.ClientID%>').text(), $('#<%= spEasementValue.ClientID%>'));
                     toCurrencyControl($('#<%= spEasementValuePerAcre.ClientID%>').text(), $('#<%= spEasementValuePerAcre.ClientID%>'));--%>
 
-                    toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
+                    //toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     $('#<%= txtTotalCost.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtTotalCost.ClientID%>').val(), $('#<%= txtTotalCost.ClientID%>'));
                     });
@@ -541,13 +545,17 @@
                 function CalEasementVal() {
                     var Before = parseFloat($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(",", ""), 10);
                     var After = parseFloat($('#<%=txtValueafter.ClientID%>').val().replace("$", "").replace(",", ""), 10);
-
+                    //console.log("Before: " + Before);
+                    //console.log("After: " + After);
                     var EasementVal = parseFloat(Before - After).toFixed(2);
+                    //console.log("EasementVal: " + EasementVal);
 
-                    if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
+                    //if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
                         $('#<%= spEasementValue.ClientID%>').html('$' + EasementVal);
-                    else
-                        $('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+                    //else {
+                        //$('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
+                        //console.log("Final EasementValue: " + $('#<%=txtFeeValue.ClientID%>').val());
+                    //}
 
                     CalEasementValPerAcre();
                 };
@@ -556,6 +564,8 @@
                     var Total = parseFloat($('#<%=txtTotalAcres.ClientID%>').val().replace("$", "").replace(",", ""), 10);
                     var Eval = parseFloat($('#<%=spEasementValue.ClientID%>').text().replace("$", "").replace(",", ""), 10);
                     var EasementValPerAcre = parseFloat(Eval / Total).toFixed(2);
+                    console.log("Total: " + Total);
+                    console.log("Eval: " + Eval);
 
                     $('#<%= spEasementValuePerAcre.ClientID%>').html('$' + EasementValPerAcre);
                 };
