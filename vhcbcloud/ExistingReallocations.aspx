@@ -298,9 +298,15 @@
                                                 <td style="width: 10%; float: left">
                                                     <asp:Label ID="lblUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
                                                 </td>
-                                                <td colspan="3" style="width: 60%; float: left">
-                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                                <td style="width: 20%; float: left">
+                                                    <asp:DropDownList ID="ddlUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermit_SelectedIndexChanged">
                                                     </asp:DropDownList>
+                                                </td>
+                                                 <td style="width: 15%; float: left">
+                                                    <span class="labelClass" id="spanAvailableFundsText" runat="server" visible="false">Available Funds:</span>
+                                                </td>
+                                                <td style="width: 25%; float: left">
+                                                    <span class="labelClass" id="spanAvailableFunds" runat="server" visible="false">Available Funds:</span>
                                                 </td>
                                             </tr>
                                         </table>

@@ -231,7 +231,7 @@
                 <div class="panel-width" runat="server" id="dvNewProjectEvent">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
-                            <table style="width: 100%;">
+                            <table class="nav-justified">
                                 <tr>
                                     <td>
                                         <h3 class="panel-title">Milestones</h3>
@@ -262,7 +262,8 @@
                                                         <tr>
                                                             <td style="width: 140px"><span class="labelClass">Admin Sub Milestone</span></td>
                                                             <td>
-                                                                <asp:DropDownList ID="ddlAdminSubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px">
+                                                                <asp:DropDownList ID="ddlAdminSubMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="185px" 
+                                                                    OnSelectedIndexChanged="ddlAdminSubMilestone_SelectedIndexChanged" AutoPostBack="true">
                                                                 </asp:DropDownList>
                                                             </td>
                                                         </tr>
@@ -805,10 +806,10 @@
                                             <asp:Button ID="btnAddAddress" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAddress_Click" />
                                         </td>
                                         <td style="width: 250px">
-                                            <asp:Button ID="btnGetLatLong" runat="server" Text="Get Lat Long" class="btn btn-info" OnClick="btnGetLatLong_Click" />
+                                            <asp:Button ID="btnGetLatLong" runat="server" Text="Get Lat Long" class="btn btn-info" OnClick="btnGetLatLong_Click" Visible="true" />
                                         </td>
                                         <td style="width: 150px">
-                                            <asp:Button ID="btnGetAddress" runat="server" Text="Update Address from Lat/Long" class="btn btn-info" OnClick="btnGetAddress_Click" /></td>
+                                            <asp:Button ID="btnGetAddress" runat="server" Text="Update Address from Lat/Long" class="btn btn-info" OnClick="btnGetAddress_Click" Visible="true" /></td>
                                         <td style="width: 250px"></td>
                                         <td></td>
                                         <td></td>
@@ -821,7 +822,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAddressGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel3" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvAddress" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvAddress_RowCancelingEdit1" OnRowDataBound="gvAddress_RowDataBound"
@@ -872,16 +873,21 @@
                                                 <asp:Label ID="lblState" runat="Server" Text='<%# Eval("State") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Zip">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblZip" runat="Server" Text='<%# Eval("Zip") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Default">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDefault" runat="Server" Text='<%# Eval("PrimaryAdd") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Active">
+                                        <%--<asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <%--<asp:CommandField ShowEditButton="True" />--%>
 
                                         <asp:TemplateField ShowHeader="False">
@@ -952,7 +958,7 @@
                         </div>
 
                         <div class="panel-body" id="dvEntityGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvEntity" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvEntity_RowCancelingEdit"
@@ -984,11 +990,11 @@
                                                 <asp:Label ID="lblemail" runat="Server" Text='<%# Eval("email") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Phone">
+                                      <%--  <asp:TemplateField HeaderText="Phone">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPhone" runat="Server" Text='<%# Eval("phone") %>' ToolTip ='<%# Eval("PhoneDetails") %>' />
                                             </ItemTemplate>
-                                        </asp:TemplateField>
+                                        </asp:TemplateField>--%>
                                         <asp:TemplateField HeaderText="Role">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblLKApplicantRole" runat="Server" Text='<%# Eval("ApplicantRoleDescription") %>' />
@@ -1040,6 +1046,12 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox ID="chkw9" runat="server" Checked='<%# Eval("w9") %>' />
                                             </EditItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Notes">
+                                            <ItemTemplate>
+                                                <asp:HyperLink ID="NotesHyperLink" runat="server" Target='_blank'
+                                                    NavigateUrl='<%# String.Format("~/EntityMaintenance.aspx?IsSearch=true&ApplicantId={0}&Role={1}", Eval("ApplicantId"), Eval("LKEntityType2")) %>'>Notes</asp:HyperLink>
+                                            </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
@@ -1099,10 +1111,11 @@
                         </div>
 
                         <div class="panel-body" id="dvRelatedProjectsGrid" runat="server">
-                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvRelatedProjects" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvRelatedProjects_RowCancelingEdit" OnRowEditing="gvRelatedProjects_RowEditing" OnRowUpdating="gvRelatedProjects_RowUpdating">
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvRelatedProjects_RowCancelingEdit" 
+                                    OnRowEditing="gvRelatedProjects_RowEditing" OnRowUpdating="gvRelatedProjects_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -1289,8 +1302,8 @@
                 IsProjectNumberExist();
             });
             
-            gridviewScroll(<%=gvAddress.ClientID%>);
-            gridviewScroll(<%=gvEntity.ClientID%>);
+            //gridviewScroll(<%=gvAddress.ClientID%>);
+            //gridviewScroll(<%=gvEntity.ClientID%>);
             
            <%-- $('#<%= cbActiveOnly.ClientID%>').click(function (e) {
                 alert('Rama');

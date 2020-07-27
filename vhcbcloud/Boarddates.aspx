@@ -12,7 +12,9 @@
                         <asp:TextBox ID="txtBDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                         <ajaxToolkit:CalendarExtender runat="server" ID="aceBoardDate" TargetControlID="txtBdate"></ajaxToolkit:CalendarExtender>
                         <span class="labelClass">Meeting Type :</span>
-                        <asp:TextBox ID="txtMType" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                        <%--<asp:TextBox ID="txtMType" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>--%>
+                        <asp:DropDownList ID="ddlMeetingType" CssClass="clsDropDown" runat="server">
+                                                        </asp:DropDownList>
                         <br />
                         <%--<asp:RequiredFieldValidator ID="rfvBDate" runat="server" ErrorMessage="Board Date required" CssClass="lblErrMsg" ControlToValidate="txtBDate"></asp:RequiredFieldValidator>
             <asp:RequiredFieldValidator ID="rfvMType" runat="server" ErrorMessage="Meeting type required" CssClass="lblErrMsg" ControlToValidate="txtMType"></asp:RequiredFieldValidator>--%>

@@ -379,6 +379,487 @@ namespace VHCBCommon.DataAccessLayer.Lead
             }
             return dt;
         }
+        
+        public static LeadBuildResult AddProjectLeadTypeofWork(int LeadBldgID, int LeadUnitID, int TypeofWorkID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectLeadTypeofWork";
+
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("TypeofWorkID", TypeofWorkID));
+                     
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        LeadBuildResult ap = new LeadBuildResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetProjectLeadTypeofWorkList(int LeadBldgID, int LeadUnitID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectLeadTypeofWorkList";
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void UpdateProjectLeadTypeofWork(int WorkTypeID, int typeOfWorkId, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectLeadTypeofWork";
+
+                        command.Parameters.Add(new SqlParameter("WorkTypeID", WorkTypeID));
+                        command.Parameters.Add(new SqlParameter("typeOfWorkId", typeOfWorkId));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateWorkLocation(int WorkLocationID, int LocationID, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateWorkLocation";
+
+                        command.Parameters.Add(new SqlParameter("WorkLocationID", WorkLocationID));
+                        command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static LeadBuildResult AddWorkLocation(int LeadBldgID, int LeadUnitID, int LocationID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddWorkLocation";
+
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        LeadBuildResult ap = new LeadBuildResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetWorkLocationList(int LeadBldgID, int LeadUnitID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetWorkLocationList";
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataTable GetCheckrequestInfoByProjectID(int ProjectId)
+        {
+            DataTable dt = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetCheckrequestInfoByProjectID";
+                command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dt = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dt;
+        }
+
+        public static DataTable GetProjectMasterLeadCostsList(int ProjectId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectMasterLeadCostsList";
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        //command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static LeadBuildResult AddProjectMasterLeadCosts(int ProjectCheckReqID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectMasterLeadCosts";
+
+                        command.Parameters.Add(new SqlParameter("ProjectCheckReqID", ProjectCheckReqID));
+                       
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        LeadBuildResult ap = new LeadBuildResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static LeadBuildResult AddProjectLeadCosts(int ProjectMasterLeadCostsID, int LeadUnitID, int LeadBldgID, decimal Amount, string Note)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddProjectLeadCosts";
+
+                        command.Parameters.Add(new SqlParameter("ProjectMasterLeadCostsID", ProjectMasterLeadCostsID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("Amount", Amount));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        LeadBuildResult ap = new LeadBuildResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ap.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetProjectLeadCostsList(int ProjectMasterLeadCostsID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectLeadCostsList";
+                        command.Parameters.Add(new SqlParameter("ProjectMasterLeadCostsID", ProjectMasterLeadCostsID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static DataRow GetProjectLeadCostById(int LeadCostsID)
+        {
+            DataRow dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectLeadCostById";
+                        command.Parameters.Add(new SqlParameter("LeadCostsID", LeadCostsID));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void UpdateProjectLeadCost(int LeadCostsID, int LeadBldgID, int LeadUnitID, 
+            decimal Amount, string Note, bool IsRowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectLeadCost";
+
+                        command.Parameters.Add(new SqlParameter("LeadCostsID", LeadCostsID));
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("Amount", Amount));
+                        command.Parameters.Add(new SqlParameter("Note", Note));
+                        command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
     public class LeadBuildResult

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -20,9 +21,29 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
+                BindSubLookUP(ddlMeetingType, 26407);
+                //BindLookUP(ddlMeetingType, 163);
                 BindBoardDates();
             }
         }
+
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+        //        LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
 
         /// <summary>
         /// Loading Board Dates
@@ -34,7 +55,8 @@ namespace vhcbcloud
                 gvBoardDates.DataSource = BoarddatesData.GetBoardDates();
                 gvBoardDates.DataBind();
                 txtBDate.Text = "";
-                txtMType.Text = "";
+                //txtMType.Text = "";
+                ddlMeetingType.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -42,6 +64,22 @@ namespace vhcbcloud
             }
         }
 
+        private void BindSubLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.GetSubLookupValues(LookupType);
+                ddList.DataValueField = "SubTypeID";
+                ddList.DataTextField = "SubDescription";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         protected void Page_PreInit(Object sender, EventArgs e)
         {
             DataTable dt = UserSecurityData.GetUserId(Context.User.Identity.Name);
@@ -192,10 +230,11 @@ namespace vhcbcloud
             try
             {
                 DateTime dt = Convert.ToDateTime(txtBDate.Text);
-                BoarddatesData.AddBoardDate(txtMType.Text, dt);
+                BoarddatesData.AddBoardDate(ddlMeetingType.SelectedItem.Text, dt);
                 
                 txtBDate.Text = "";
-                txtMType.Text = "";
+                //txtMType.Text = "";
+                ddlMeetingType.SelectedIndex = -1;
                 gvBoardDates.PageIndex = 0;
                 BindBoardDates();
             }

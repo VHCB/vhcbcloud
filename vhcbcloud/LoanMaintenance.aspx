@@ -221,6 +221,7 @@
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
                                     OnRowEditing="gvLoanMaster_RowEditing" OnRowCancelingEdit="gvLoanMaster_RowCancelingEdit"
                                     OnRowDataBound="gvLoanMaster_RowDataBound"
+                                    OnRowCommand="gvLoanMaster_RowCommand"
                                     OnSelectedIndexChanged="gvLoanMaster_SelectedIndexChanged">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -256,6 +257,12 @@
                                                 <asp:Label ID="lblNoteOwner" runat="Server" Text='<%# Eval("NoteOwner") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Current Balance">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblCurrentBalance" runat="Server" Text=
+                                                    '<%# getCurrentBalance(Eval("LoanID").ToString())  %>'/>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Fund Group">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFundGroup" runat="Server" Text='<%# Eval("FundGroup") %>' />
@@ -267,6 +274,14 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:CommandField ShowEditButton="True" />
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="AddButton" runat="server"
+                                                    CommandName="View"
+                                                    CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
+                                                    Text="View" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -492,8 +507,10 @@
                                 <asp:GridView ID="gvProjectLoanDetails" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowCancelingEdit="gvProjectLoanDetails_RowCancelingEdit" OnRowDataBound="gvProjectLoanDetails_RowDataBound"
-                                    OnRowEditing="gvProjectLoanDetails_RowEditing" OnRowCommand="gvProjectLoanDetails_RowCommand">
+                                    OnRowCancelingEdit="gvProjectLoanDetails_RowCancelingEdit" 
+                                    OnRowDataBound="gvProjectLoanDetails_RowDataBound"
+                                    OnRowEditing="gvProjectLoanDetails_RowEditing" 
+                                    OnRowCommand="gvProjectLoanDetails_RowCommand">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -537,9 +554,9 @@
                                                 <asp:Label ID="lblMaturityDate" runat="Server" Text='<%# Eval("MaturityDate", "{0:MM/dd/yyyy}") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Intrest Rate %">
+                                        <asp:TemplateField HeaderText="Int. Rate %">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblIntRate" runat="Server" Text='<%# Eval("IntRate", "{0:0.00}") %>' />
+                                                <asp:Label ID="lblIntRate" runat="Server" Text='<%# Eval("IntRate", "{0:0.00} %") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="File Hold Link">
@@ -1013,7 +1030,7 @@
                                             <td style="width: 153px">
                                                 <asp:CheckBox ID="dis_cbLoanTransActive" CssClass="ChkBox" runat="server" Text="Yes" Checked="true" Enabled="false" />
                                             </td>
-                                            <td style="width: 70px"><span class="labelClass" runat="server" id="span12"></span></td>
+                                            <td style="width: 70px"><span class="labelClass" runat="server" id="dis_spnVoid"></span></td>
                                             <td style="width: 239px" class="modal-sm"></td>
                                             <td style="width: 130px"><span class="labelClass" runat="server" id="span13"></span></td>
                                             <td></td>

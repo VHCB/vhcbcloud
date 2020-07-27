@@ -24,7 +24,7 @@ namespace vhcbcloud.Account
                 BindDDLPage();
                 BindLookUP(ddlSecFunctions, 246);
 
-                string[] Dashboards = Directory.GetFiles("C:\\Reports\\Dashboard", "*.*")
+                string[] Dashboards = Directory.GetFiles("C:\\exago\\Reports\\Dashboard", "*.*")
                                      .Select(Path.GetFileName)
                                      .ToArray();
                 for (int i = 0; i < Dashboards.Length; i++)

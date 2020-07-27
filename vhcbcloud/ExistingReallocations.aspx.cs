@@ -950,6 +950,9 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlFundName.SelectedIndex != 0)
             {
+                spanAvailableFundsText.Visible = false;
+                spanAvailableFunds.Visible = false;
+
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
@@ -1082,6 +1085,13 @@ namespace vhcbcloud
                                 ddlUsePermit.Focus();
                                 return;
                             }
+                            decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+
+                            if (currentTranFudAmount > mitigationFundBalance)
+                            {
+                                lblRErrorMsg.Text = "Permit " + ddlUsePermit.SelectedItem.ToString() + " does not have available funds ";
+                                return;
+                            }
 
                             FinancialTransactions.AddProjectFundDetails(DataUtils.GetInt(hfProjId.Value), transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                             Convert.ToInt32(hfTransTypeId.Value.ToString()), currentTranFudAmount, ddlUsePermit.SelectedItem.Text, ddlUsePermit.SelectedValue.ToString());
@@ -1211,6 +1221,23 @@ namespace vhcbcloud
                 rdBtnFinancial.Items[2].Selected = true;
             else if (rdBtnFinancial.Items[3].Enabled)
                 Response.Redirect("Assignments.aspx");
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            spanAvailableFundsText.Visible = false;
+            spanAvailableFunds.Visible = false;
+
+            spanAvailableFunds.InnerText = CommonHelper.myDollarFormat("0.00");
+
+            if (ddlUsePermit.SelectedIndex > 0)
+            {
+                spanAvailableFundsText.Visible = true;
+                spanAvailableFunds.Visible = true;
+
+                decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                spanAvailableFunds.InnerText = CommonHelper.myDollarFormat(mitigationFundBalance);
+            }
         }
     }
 }

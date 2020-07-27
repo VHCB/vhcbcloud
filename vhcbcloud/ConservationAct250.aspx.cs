@@ -890,5 +890,10 @@ namespace vhcbcloud
 
             BindAct250InfoGrid();
         }
+
+        protected void gvDeveloperPayments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

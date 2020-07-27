@@ -166,7 +166,7 @@ namespace DataAccessLayer
             return dtBoardDates;
         }
 
-        public static DataTable GetTop6BoardDates()
+        public static DataTable GetTop6BoardDates(string MeetingType)
         {
             DataTable dtBoardDates = null;
 
@@ -180,6 +180,7 @@ namespace DataAccessLayer
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add(new SqlParameter("MeetingType", MeetingType));
                         command.CommandText = "GetTop6BoardDates";
 
                         command.CommandTimeout = 60 * 5;
@@ -203,6 +204,46 @@ namespace DataAccessLayer
             }
 
             return dtBoardDates;
+        }
+
+        public static DataTable GetHUCList(string OrderBy)
+        {
+            DataTable dtManagers = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetHUCList";
+                        command.Parameters.Add(new SqlParameter("OrderBy", OrderBy));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtManagers = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtManagers;
         }
     }
 }

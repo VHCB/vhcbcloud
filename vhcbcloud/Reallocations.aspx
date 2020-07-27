@@ -221,10 +221,15 @@
                                             <asp:TextBox ID="txtRtoFundType" CssClass="clsTextBoxBlueSm" runat="server" Enabled="false"></asp:TextBox>
                                         </td>
                                         <td style="width: 10%; float: left"><span class="labelClass">Amount :</span></td>
-                                        <td style="width: 60%; float: left" colspan="3">
+                                        <td style="width: 20%; float: left">
                                             <asp:TextBox ID="txtRToAmt" CssClass="clsTextBoxMoney" onkeyup='toRToAmtFormatter(value)' runat="server"></asp:TextBox>
                                         </td>
-
+                                         <td style="width: 20%; float: left"><span class="labelClass">Available Funds $:</span></td>
+                                        <td style="width: 20%; float: left">
+                                            <asp:Label ID="lblAvailFundTo" runat="server" class="labelClass" Text="" Visible="false">
+                                            </asp:Label>
+                                            <asp:Label ID="lblAvailVisibleFundTo" runat="server" class="labelClass" Text=""></asp:Label>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="height: 4px" colspan="6" />
@@ -233,7 +238,7 @@
                                         <td style="width: 10%; float: left">
                                             <asp:Label ID="lblToUsePermit" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label></td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10">
+                                            <asp:DropDownList ID="ddlToUsePermit" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" AutoPostBack="true" OnSelectedIndexChanged="ddlToUsePermit_SelectedIndexChanged">
                                             </asp:DropDownList></td>
                                         <td style="width: 10%; float: left">&nbsp;</td>
                                         <td style="width: 20%; float: left">&nbsp;</td>

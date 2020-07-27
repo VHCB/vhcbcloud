@@ -15,7 +15,8 @@ namespace vhcbcloud
             
             if (!IsPostBack)
             {
-                string url = "http://192.168.100.13/FH/FileHold/WebClient/LoginForm.aspx";
+                //string url = "http://192.168.100.13/FH/FileHold/WebClient/LoginForm.aspx";
+                string url = "https://sslvpn.vhcb.org/FH/FileHold/WebClient/LoginForm.aspx";
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<script type = 'text/javascript'>");
                 sb.Append("window.open('");

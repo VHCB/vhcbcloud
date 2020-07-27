@@ -362,7 +362,7 @@ namespace vhcbcloud.Americorps
         {
             string URL = txtURL.Text;
 
-            if (!URL.Contains("http"))
+            if (!URL.Contains("http") && !URL.Contains("fda"))
                 URL = "http://" + URL;
 
             if (btnSubmitACForm.Text.ToLower() == "update")

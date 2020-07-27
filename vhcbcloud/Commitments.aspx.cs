@@ -202,6 +202,9 @@ namespace vhcbcloud
             DataTable dtable = new DataTable();
             if (ddlFundName.SelectedIndex != 0)
             {
+                spanAvailableText.Visible = false;
+                spanAvailableAmount.Visible = false;
+
                 dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
                 lblFundName.Text = dtable.Rows[0]["name"].ToString();
 
@@ -578,9 +581,7 @@ namespace vhcbcloud
 
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
 
-                    //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
                     if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
-                    //if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
                         if (ddlUsePermit.Items.Count > 1 && ddlUsePermit.SelectedIndex == 0)
                         {
@@ -589,6 +590,13 @@ namespace vhcbcloud
                             return;
                         }
 
+                        decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+
+                        if(currentTranFudAmount > mitigationFundBalance)
+                        {
+                            lblErrorMsg.Text = "Permit " + ddlUsePermit.SelectedItem.ToString() +" does not have available funds ";
+                            return;
+                        }
                         FinancialTransactions.AddCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                         Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount, 
                         ddlUsePermit.SelectedItem.Text, 
@@ -815,6 +823,10 @@ namespace vhcbcloud
                 int detailId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblDetId")).Text);
                 int fundId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblFundId")).Text);
 
+                HiddenField hfAct250FarmId = (HiddenField)gvBCommit.Rows[rowIndex].FindControl("HiddenAct250FarmId");
+                HiddenField hfUsePermit = (HiddenField)gvBCommit.Rows[rowIndex].FindControl("UsePermit");
+
+
                 int transId = Convert.ToInt32(((Label)gvBCommit.Rows[rowIndex].FindControl("lblTransId")).Text);
 
                 decimal old_amount = Convert.ToDecimal(FinancialTransactions.GetTransDetails(detailId).Rows[0]["Amount"].ToString());
@@ -839,6 +851,18 @@ namespace vhcbcloud
                 {
                     if (!btnCommitmentSubmit.Enabled)
                         CommonHelper.EnableButton(btnCommitmentSubmit);
+                }
+
+                if (hfAct250FarmId.Value != "")
+                {
+                    decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(hfAct250FarmId.Value));
+
+                    if (amount > (mitigationFundBalance + old_amount))
+                    {
+                        lblErrorMsg.Text = "Permit " + hfUsePermit.Value + " does not have available funds ";
+                        //"Mitigation Fund Amount should not more than " + CommonHelper.myDollarFormat(mitigationFundBalance + old_amount) + ". Please select different selection";
+                        return;
+                    }
                 }
 
                 //if (FinancialTransactions.IsDuplicateFundDetailPerTransaction(transId, fundId, transType))
@@ -1394,6 +1418,14 @@ namespace vhcbcloud
             }
             if (!rdBtnSelection.Items[0].Enabled)
                 rdBtnSelection.SelectedIndex = 1;
+        }
+
+        protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+            spanAvailableAmount.Visible = true;
+            spanAvailableText.Visible = true;
+            spanAvailableAmount.InnerText = CommonHelper.myDollarFormat(mitigationFundBalance);
         }
     }
 }

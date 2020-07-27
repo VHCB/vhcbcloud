@@ -211,6 +211,24 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.TextBox txtTotFedProgUnits;
         
         /// <summary>
+        /// txtPBUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPBUnits;
+        
+        /// <summary>
+        /// txtFixedUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFixedUnits;
+        
+        /// <summary>
         /// AddFederalProgram control.
         /// </summary>
         /// <remarks>

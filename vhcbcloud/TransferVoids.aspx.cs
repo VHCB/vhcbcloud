@@ -9,9 +9,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 
+
 namespace vhcbcloud
 {
-    public partial class TransferDisbursements : System.Web.UI.Page
+    public partial class TransferVoids : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -211,7 +212,7 @@ namespace vhcbcloud
 
         private void PopulateTransactions(int Projectid, DateTime TranFromDate, DateTime TranToDate)
         {
-            DataTable dtable = FinancialTransactions.GetDisbursementTransactionDetails(Projectid, TranFromDate, TranToDate);
+            DataTable dtable = FinancialTransactions.GetDisbursementVoidTransactionDetails(Projectid, TranFromDate, TranToDate);
 
             if (dtable.Rows.Count > 0)
             {
@@ -267,7 +268,7 @@ namespace vhcbcloud
                 ddList.DataTextField = "LoanIDFundType";
                 ddList.DataBind();
 
-                if(dt.Rows.Count > 1)
+                if (dt.Rows.Count > 1)
                     ddList.Items.Insert(0, new ListItem("Select", "NA"));
             }
             catch (Exception ex)
@@ -315,7 +316,7 @@ namespace vhcbcloud
                                 int LoanId = Convert.ToInt32(ddlLoanId.SelectedValue);
                                 int LoanImportID = Convert.ToInt32(gvTransactions.DataKeys[row.RowIndex].Value.ToString());
 
-                                FinancialTransactions.UpdateLoanImportTransactionStatus(LoanImportID, LoanId);
+                                FinancialTransactions.UpdateLoanImportVoidTransactionStatus(LoanImportID, LoanId);
                             }
                         }
                     }

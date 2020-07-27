@@ -31,13 +31,13 @@ namespace vhcbcloud {
         protected global::AjaxControlToolkit.CalendarExtender aceBoardDate;
         
         /// <summary>
-        /// txtMType control.
+        /// ddlMeetingType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMType;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMeetingType;
         
         /// <summary>
         /// btnSubmit control.

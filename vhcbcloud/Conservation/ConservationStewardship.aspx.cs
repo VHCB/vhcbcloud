@@ -76,20 +76,26 @@ namespace vhcbcloud.Conservation
                     }
                     else
                     {
-                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        {
-                            RoleViewOnlyExceptAddNewItem();
-                            hfIsVisibleBasedOnRole.Value = "false";
-                        }
-                        else
-                        {
+                        //if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //{
+                        //    RoleViewOnlyExceptAddNewItem();
+                        //    hfIsVisibleBasedOnRole.Value = "false";
+                        //}
+                        //else
+                        //{
                             hfIsVisibleBasedOnRole.Value = "true";
-                        }
+                        //}
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
+                if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                {
+                    RoleViewOnlyExceptAddNewItem();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }

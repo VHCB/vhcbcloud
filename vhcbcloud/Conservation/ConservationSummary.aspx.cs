@@ -77,20 +77,26 @@ namespace vhcbcloud.Conservation
                     }
                     else
                     {
-                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        {
-                            RoleViewOnlyExceptAddNewItem();
-                            hfIsVisibleBasedOnRole.Value = "false";
-                        }
-                        else
-                        {
-                            hfIsVisibleBasedOnRole.Value = "true";
-                        }
+                        //if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //{
+                        //    RoleViewOnlyExceptAddNewItem();
+                        //    hfIsVisibleBasedOnRole.Value = "false";
+                        //}
+                        //else
+                        //{
+                        hfIsVisibleBasedOnRole.Value = "true";
+                        //}
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
+                if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                {
+                    RoleViewOnlyExceptAddNewItem();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }
@@ -167,7 +173,7 @@ namespace vhcbcloud.Conservation
                 txtTillable.Text = drConserve["Tillable"].ToString();
                 txtUnManaged.Text = drConserve["Unmanaged"].ToString();
                 txtPasture.Text = drConserve["Pasture"].ToString();
-                txtFarmResident.Text= drConserve["FarmResident"].ToString();
+                txtFarmResident.Text = drConserve["FarmResident"].ToString();
                 txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
                 pctWooded.InnerText = "0";
                 PopulateDropDown(ddlGeoSignificance, drConserve["GeoSignificance"].ToString());
@@ -291,7 +297,29 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlSubwatershed, 261);
             BindLookUP(ddlTrail, 1270);
             BindLookUP(ddlAllowedSpecialUses, 1271);
+            BindHUC12CheckBoxList();
         }
+
+        private void BindHUC12CheckBoxList()
+        {
+            string order = "";
+            try
+            {
+                if (rdHUC12order.SelectedItem != null)
+                    order = rdHUC12order.SelectedItem.Text;
+
+                cblHUC12.Items.Clear();
+                cblHUC12.DataSource = LookupValuesData.GetHUCList(order);
+                cblHUC12.DataValueField = "HUCID";
+                cblHUC12.DataTextField = "HUC12Name";
+                cblHUC12.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
 
         private void BindLookupSubWatershed(int TypeId)
         {
@@ -382,7 +410,7 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetInt(txtEasements.Text), //DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
                 0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
-                DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text), 
+                DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId(),
                 DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()));
 
@@ -416,7 +444,7 @@ namespace vhcbcloud.Conservation
                 return;
             }
 
-            Result objResult = ConservationSummaryData.AddConserveEholder(DataUtils.GetInt(hfProjectId.Value), 
+            Result objResult = ConservationSummaryData.AddConserveEholder(DataUtils.GetInt(hfProjectId.Value),
                 DataUtils.GetInt(ddlEasementHolder.SelectedValue.ToString()), cbPrimarySteward.Checked);
             CleaEasementHolderForm();
 
@@ -578,7 +606,7 @@ namespace vhcbcloud.Conservation
         {
             gvAcreage.EditIndex = -1;
             BindAcreageGrid();
-           
+
         }
 
         protected void gvAcreage_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -668,8 +696,8 @@ namespace vhcbcloud.Conservation
             {
                 int SurfaceWatersId = Convert.ToInt32(hfSurfaceWatersId.Value);
 
-                ConservationSummaryData.UpdateProjectSurfaceWaters(SurfaceWatersId, 
-                    DataUtils.GetInt(ddlSubwatershed.SelectedValue.ToString()), 
+                ConservationSummaryData.UpdateProjectSurfaceWaters(SurfaceWatersId,
+                    DataUtils.GetInt(ddlSubwatershed.SelectedValue.ToString()),
                     DataUtils.GetInt(ddlWaterBody.SelectedValue.ToString()),
                     DataUtils.GetInt(txtFrontageFeet.Text), txtOtherStream.Text, DataUtils.GetInt(txtRiparianBuffer.Text), cbActive.Checked);
 
@@ -793,7 +821,8 @@ namespace vhcbcloud.Conservation
 
         protected void ImgWatershed_Click(object sender, ImageClickEventArgs e)
         {
-
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid Conservation Watershed HUC12"));
         }
 
         protected void btnWatershed_Click(object sender, EventArgs e)
@@ -804,42 +833,48 @@ namespace vhcbcloud.Conservation
                 ddlWaterShedNew.Focus();
                 return;
             }
-
-            if (ddlSubWatershedNew.SelectedIndex == 0)
+            if (!cblHUC12.Items.Cast<ListItem>().Any(i => i.Selected))
             {
-                LogMessage("Select Sub-Watershed");
-                ddlSubWatershedNew.Focus();
+                LogMessage("Select HUC12");
+                cblHUC12.Focus();
                 return;
             }
+            //if (ddlSubWatershedNew.SelectedIndex == 0)
+            //{
+            //    LogMessage("Select Sub-Watershed");
+            //    ddlSubWatershedNew.Focus();
+            //    return;
+            //}
 
-            
+
             if (btnWatershed.Text.ToLower() == "update")
             {
-                int ConserveWatershedID = Convert.ToInt32(hfConserveWatershedID.Value);
+                //int ConserveWatershedID = Convert.ToInt32(hfConserveWatershedID.Value);
 
-                ConservationSummaryData.UpdateWatershed(ConserveWatershedID,
-                    DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
-                    DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()),
-                    cbWatershedActive.Checked);
+                //ConservationSummaryData.UpdateWatershed(ConserveWatershedID,
+                //    DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
+                //    DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()),
+                //    cbWatershedActive.Checked);
 
-                hfConserveWatershedID.Value = "";
-                btnWatershed.Text = "Add";
-                cbWatershedActive.Checked = true;
-                cbWatershedActive.Enabled = false;
-                LogMessage("Watershed updated successfully");
+                //hfConserveWatershedID.Value = "";
+                //btnWatershed.Text = "Add";
+                //cbWatershedActive.Checked = true;
+                //cbWatershedActive.Enabled = false;
+                //LogMessage("Watershed updated successfully");
             }
             else
             {
-                Result objResult = ConservationSummaryData.AddWatershed(DataUtils.GetInt(hfConserveId.Value),
-                DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
-                DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()));
-
-                if (objResult.IsDuplicate && !objResult.IsActive)
-                    LogMessage("Watershed already exist as in-active");
-                else if (objResult.IsDuplicate)
-                    LogMessage("Watershed already exist");
-                else
-                    LogMessage("New Watershed added successfully");
+                foreach (ListItem item in cblHUC12.Items)
+                {
+                    if (item.Selected)
+                    {
+                        ConservationSummaryData.AddWatershed(DataUtils.GetInt(hfConserveId.Value),
+                        DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
+                        DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()), 
+                        DataUtils.GetInt(item.Value));
+                    }
+                }
+                LogMessage("Watershed added successfully");
             }
 
             gvWatershed.EditIndex = -1;
@@ -879,8 +914,14 @@ namespace vhcbcloud.Conservation
             ddlSubWatershedNew.SelectedIndex = -1;
             ddlWaterShedNew.SelectedIndex = -1;
             cbAddWatershed.Checked = false;
+            foreach (ListItem item in cblHUC12.Items)
+            {
+                if (item.Selected)
+                {
+                    item.Selected = false;
+                }
+            }
         }
-
         protected void ddlWaterShedNew_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlWaterShedNew.SelectedIndex > 0)
@@ -1046,7 +1087,7 @@ namespace vhcbcloud.Conservation
                 LogMessage("New Usage added successfully");
 
             ddlAllowedSpecialUses.SelectedIndex = -1;
-            
+
             cbAllowedSpecialUses.Checked = false;
             BindTrailUsageGrid();
         }
@@ -1091,9 +1132,9 @@ namespace vhcbcloud.Conservation
         protected void gvAllowedSpecialUses_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            int ConserveTrailsUsageId = DataUtils.GetInt(((Label)gvTrailMileage.Rows[rowIndex].FindControl("lblConserveTrailsUsageId")).Text);
-            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTrailMileage.Rows[rowIndex].FindControl("chkActive")).Checked);
-           
+            int ConserveTrailsUsageId = DataUtils.GetInt(((Label)gvAllowedSpecialUses.Rows[rowIndex].FindControl("lblConserveTrailsUsageId")).Text);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvAllowedSpecialUses.Rows[rowIndex].FindControl("chkActive")).Checked);
+
 
             ConservationSummaryData.UpdateConserveTrailUsage(ConserveTrailsUsageId, RowIsActive);
             gvAllowedSpecialUses.EditIndex = -1;
@@ -1101,6 +1142,28 @@ namespace vhcbcloud.Conservation
             BindTrailUsageGrid();
 
             LogMessage("Trail Usage updated successfully");
+        }
+
+        protected void rdHUC12order_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindHUC12CheckBoxList();
+        }
+
+        protected void gvWatershed_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ConserveWatershedID = DataUtils.GetInt(((Label)gvWatershed.Rows[rowIndex].FindControl("lblConserveWatershedID")).Text);
+            int ConserveHUCId = DataUtils.GetInt(((Label)gvWatershed.Rows[rowIndex].FindControl("lblconserveHUCId")).Text);
+
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvWatershed.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+            
+            ConservationSummaryData.UpdateWatershed(ConserveHUCId, RowIsActive);
+            gvWatershed.EditIndex = -1;
+
+            BindWatershedGrid();
+
+            LogMessage("Project Watershed updated successfully");
         }
     }
 }

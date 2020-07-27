@@ -10,7 +10,7 @@
                 
                  <table style="width: 100%;">
                         <tr>
-                            <td><b>Entity Notes</b></td>
+                            <td><b><asp:Label runat="server" ID="lblEntiryNotes">Entity Notes</asp:Label></b></td>
                             <td style="text-align: right">
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" 
                                     OnCheckedChanged="cbActiveOnly_CheckedChanged" />

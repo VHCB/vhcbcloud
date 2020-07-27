@@ -146,10 +146,51 @@
                                     </asp:DropDownList>
                                 </td>
                                 <td><span class="labelClass">Active</span></td>
-                                <td><asp:CheckBox ID="cbProjectActive" runat="server" Checked="true" Text="" /></td>
+                                <td>
+                                    <asp:CheckBox ID="cbProjectActive" runat="server" Checked="true" Text="" /></td>
                                 <td><span class="labelClass">Target Year</span></td>
-                                <td><asp:DropDownList ID="ddlTargetYear" CssClass="clsDropDown" runat="server">
+                                <td>
+                                    <asp:DropDownList ID="ddlTargetYear" CssClass="clsDropDown" runat="server">
                                     </asp:DropDownList></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="height: 10px"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="labelClass">Milestone Type</span></td>
+                                <td>
+                                    <asp:RadioButtonList ID="rbMilestone" runat="server" Width="150px" RepeatDirection="Horizontal">
+                                        <asp:ListItem>Admin</asp:ListItem>
+                                        <asp:ListItem>Program</asp:ListItem>
+                                    </asp:RadioButtonList>
+                                </td>
+                                <td><span class="labelClass">Key Staff</span></td>
+                                <td><asp:DropDownList ID="ddlKeyStaff" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="height: 10px"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="labelClass">Milestone</span></td>
+                                <td>
+                                    <asp:DropDownList ID="ddlMilestone" CssClass="clsDropDown" runat="server" Height="20px" Width="150px">
+                                    </asp:DropDownList>
+                                </td>
+                                <td><span class="labelClass" id="spnFromDate" runat="server">From Date</span></td>
+                                <td>
+                                    <asp:TextBox ID="txtMilestoneFromDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                    <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtEventDate" TargetControlID="txtMilestoneFromDate">
+                                    </ajaxToolkit:CalendarExtender>
+                                </td>
+                                <td><span class="labelClass" id="spnToDate" runat="server">To Date</span></td>
+                                <td>
+                                    <asp:TextBox ID="txtMilestoneToDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                    <ajaxToolkit:CalendarExtender runat="server" ID="CalendarExtender1" TargetControlID="txtMilestoneToDate">
+                                    </ajaxToolkit:CalendarExtender>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="6" style="height: 10px"></td>
@@ -167,13 +208,16 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
 
-                                <table>
+                               <table style="width: 100%;">
                                     <tr>
                                         <td>
                                             <h3 class="panel-title">Search Results:
                                                 <asp:Label runat="server" ID="lblSearcresultsCount"></asp:Label></h3>
                                         </td>
-                                        <td></td>
+                                        <td style="text-align: right">
+                                        <asp:ImageButton ID="ImgSearchResultReport" ImageUrl="~/Images/print.png" ToolTip="Search Result Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgSearchResultReport_Click" Visible="false" />
+                                    </td>
                                     </tr>
                                 </table>
                             </div>
@@ -242,18 +286,115 @@
     <script language="javascript">
         $(document).ready(function () {
 
-           <%-- $('#<%= cbPrimaryApplicant.ClientID%>').click(function () {
+            <%-- $('#<%= cbPrimaryApplicant.ClientID%>').click(function () {
                 $('#<%=txtPrimaryApplicant.ClientID%>').val('');
             }).change();--%>
+
+            CheckDataSelected();
+
+            $([$('#<%= txtProjNum.ClientID%>'),
+                $('#<%= txtProjectName.ClientID%>'),
+                $('#<%= txtPrimaryApplicant.ClientID%>'),
+                $('#<%= ddlProgram.ClientID%>'),
+                $('#<%= ddlTown.ClientID%>'),
+                $('#<%= ddlCounty.ClientID%>'),
+                $('#<%= ddlProjectType.ClientID%>'),
+                $('#<%= ddlTargetYear.ClientID%>'),
+                $('#<%= ddlMilestone.ClientID%>'),
+                $('#<%= ddlKeyStaff.ClientID%>')
+            ]
+                ).each(function () {
+                    $(this).on('blur', function (e) {
+                        CheckDataSelected();
+                    });
+                });
+
+            <%--$('#<%= txtProjNum.ClientID%>').blur(function () {
+                
+                $('#<%=btnProjectSearch.ClientID%>').prop('disabled', false);
+            });--%>
+
+            $('#<%= ddlProgram.ClientID%>').change(function () {
+
+                if ($('#<%=rbMilestone.ClientID %> input[type=radio]:checked').val() != undefined)
+                { PopulateMilestone(); }
+            });
+
+            $('#<%= rbMilestone.ClientID%>').click(function () {
+                if ($('#<%=rbMilestone.ClientID %> input[type=radio]:checked').val() != undefined)
+                { PopulateMilestone(); }
+            });
         });
 
-        function SetContextKey() {
-            $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=cbPrimaryApplicant.ClientID %>").checked);
+        function CheckDataSelected() {
+            console.log($('#<%= ddlKeyStaff.ClientID%>').val());
+            $('#<%=btnProjectSearch.ClientID%>').prop('disabled', true);
+
+            if ($('#<%= txtProjNum.ClientID%>').val() != '' ||
+                $('#<%= txtProjectName.ClientID%>').val() != '' ||
+                $('#<%= txtPrimaryApplicant.ClientID%>').val() != '' ||
+                $('#<%= ddlProgram.ClientID%>').val() != 'NA' ||
+                $('#<%= ddlTown.ClientID%>').val() != 'NA' ||
+                $('#<%= ddlCounty.ClientID%>').val() != 'NA' ||
+                $('#<%= ddlProjectType.ClientID%>').val() != 'NA' ||
+                $('#<%= ddlTargetYear.ClientID%>').val() != 'NA' ||
+                $('#<%= ddlKeyStaff.ClientID%>').val() != 'NA' || 
+                ($('#<%= ddlMilestone.ClientID%>').val() != null &&
+                 $('#<%= ddlMilestone.ClientID%>').val() != 'NA' &&
+                 $('#<%= ddlMilestone.ClientID%>').val() != '')              
+                ) {
+                console.log('true')
+                $('#<%=btnProjectSearch.ClientID%>').prop('disabled', false);
+            }
+    }
+    function SetContextKey() {
+        $find('<%=AutoCompleteExtender1.ClientID%>').set_contextKey($get("<%=cbPrimaryApplicant.ClientID %>").checked);
         }
         function onListPopulated() {
             var completionList = $find('<%=AutoCompleteExtender1.ClientID%>').get_completionList();
             completionList.style.width = 'auto';
             //completionList.style.css = 'clsAutoExtDropDownListItem';
+        }
+
+        function PopulateMilestone() {
+            //console.log("Input:" + $('#<%=rbMilestone.ClientID %> input[type=radio]:checked').val());
+            //console.log("ddlMilestone:" + $('#<%= ddlProgram.ClientID%>').val());
+
+            var mileStoneSelection = {
+                mileStoneType: $('#<%=rbMilestone.ClientID %> input[type=radio]:checked').val(),
+                Programvalue: $('#<%= ddlProgram.ClientID%>').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "ProjectSearch.aspx/PopulateMilestone",
+                // data: '{input: "' + $('#<%=rbMilestone.ClientID %> input[type=radio]:checked').val() + '" }',
+                data: JSON.stringify({ input: mileStoneSelection }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var jsdata = JSON.parse(data.d);
+                    //console.log('jsdata :' + jsdata);
+
+                    $('#<%=ddlMilestone.ClientID%>').empty();
+
+                    $.each(jsdata, function (key, value) {
+
+                       <%-- if(key = 0)
+                        $('#<%=ddlVillages.ClientID%>')
+                            .append($("<option></option>").val(value.ID).html(value.Name).attr("selected", "selected"));--%>
+                        //console.log(value.ID + ':' + value.Name);
+                        $('#<%=ddlMilestone.ClientID%>')
+                            .append($("<option></option>").val(value.ID).html(value.Name));
+
+                        <%--if (value.Name != 'Select')
+                            $('#<%=ddlMilestone.ClientID%>').val(value.Name);--%>
+                    });
+                },
+                error: function (data) {
+                    alert("error found");
+                }
+            });
         }
     </script>
 </asp:Content>

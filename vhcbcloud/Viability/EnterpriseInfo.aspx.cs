@@ -36,6 +36,7 @@ namespace vhcbcloud.Viability
                 PopulateProjectDetails();
                 BindProductGrid();
                 BindAttributeGrid();
+                BindWatershedGrid();
             }
             //GetRoleAuth();
         }
@@ -160,6 +161,17 @@ namespace vhcbcloud.Viability
             int AttributeTypeId;
             string EnterpriseType;
 
+            spnEnterPriseType.Visible = false;
+            ddlEnterPriseType.Visible = false;
+            btnEntePriseType.Visible = false;
+            if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26598)
+            {
+                ddlEnterPriseType.Visible = true;
+                btnEntePriseType.Visible = true;
+            }
+            else
+                spnEnterPriseType.Visible = true;
+
             GetEnterpriseTypeId(DataUtils.GetInt(dr["LkProjectType"].ToString()), out EnterpriseTypeId, out AttributeTypeId, out EnterpriseType);
 
             spnEnterPriseType.InnerText = EnterpriseType;
@@ -196,16 +208,47 @@ namespace vhcbcloud.Viability
 
             if(drow != null)
             {
+                PopulateDropDown(ddlEnterPriseType, drow["AssocEnterprise"].ToString());
                 PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
                 PopulateDropDown(ddlHearViability, drow["HearAbout"].ToString());
                 txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
                 btnAddEntInfo.Text = "Update";
                 txtOtherNames.Text = drow["OtherNames"].ToString();
+                PopulateDropDown(ddlFarmSize, drow["FarmSize"].ToString());
 
                 if (DataUtils.GetInt(drow["YrManageBus"].ToString()) > 0)
                 {
                     int noOfYears = DateTime.Now.Year - DataUtils.GetInt(drow["YrManageBus"].ToString());
                     spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
+                }
+
+                if (DataUtils.GetInt(dr["LkProjectType"].ToString()) == 26598)
+                {
+                    int EnterpriseTypeId1 = DataUtils.GetInt(drow["AssocEnterprise"].ToString());
+                    if (EnterpriseTypeId1 == 375)
+                    {
+                        ProjectTypeId = 106;
+                        AttributeTypeId = 169;
+                    }
+                    else if (EnterpriseTypeId1 == 376)
+                    {
+                        ProjectTypeId = 265;
+                        AttributeTypeId = 202;
+                    }
+                    else if (EnterpriseTypeId1 == 378)
+                    {
+                        ProjectTypeId = 263;
+                        AttributeTypeId = 204;
+                    }
+                    else if (EnterpriseTypeId1 == 377)
+                    {
+                        ProjectTypeId = 264;
+                        AttributeTypeId = 203;
+                    }
+
+                    BindSubLookUP(ddlPrimaryProduct, EnterpriseTypeId1);
+                    BindLookUP(ddlAttribute, AttributeTypeId);
+                    BindLookUP(ddlProducts, ProjectTypeId);
                 }
             }
 
@@ -236,7 +279,8 @@ namespace vhcbcloud.Viability
             }
         }
 
-        private void GetEnterpriseTypeId(int LkProjectType, out int EnterpriseTypeId, out int AttributeTypeId, out string EnterpriseType)
+        private void GetEnterpriseTypeId(int LkProjectType, 
+            out int EnterpriseTypeId, out int AttributeTypeId, out string EnterpriseType)
         {
             EnterpriseTypeId = 0;
             AttributeTypeId = 0;
@@ -271,8 +315,28 @@ namespace vhcbcloud.Viability
         private void BindControls()
         {
             BindLookUP(ddlHearViability, 215);
+            BindLookUP(ddlFarmSize, 2277);
+            BindLookUP(ddlWaterShedNew, 143);
+            BindHUC12CheckBoxList();
+            BindLookUP(ddlEnterPriseType, 72); 
         }
 
+        private void BindLookupSubWatershed(int TypeId)
+        {
+            try
+            {
+                ddlSubWatershedNew.Items.Clear();
+                ddlSubWatershedNew.DataSource = LookupMaintenanceData.GetLkLookupSubValues(TypeId, cbActiveOnly.Checked);
+                ddlSubWatershedNew.DataValueField = "subtypeid";
+                ddlSubWatershedNew.DataTextField = "SubDescription";
+                ddlSubWatershedNew.DataBind();
+                ddlSubWatershedNew.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -606,6 +670,164 @@ namespace vhcbcloud.Viability
                 int noOfYears = DateTime.Now.Year - DataUtils.GetInt(txtYearMangBusiness.Text);
                 spnYearsManagedBusiness.InnerHtml = noOfYears.ToString();
             }
+        }
+
+        protected void btnAddFarmSize_Click(object sender, EventArgs e)
+        {
+            EnterpriseInfoData.UpdateEnterprisePrimeProductFarmSize(DataUtils.GetInt(hfProjectId.Value),
+               DataUtils.GetInt(ddlFarmSize.SelectedValue.ToString()));
+
+            LogMessage("Farm Size updated successfully");
+        }
+
+        protected void rdHUC12order_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindHUC12CheckBoxList();
+        }
+
+        protected void btnWatershed_Click(object sender, EventArgs e)
+        {
+            if (ddlWaterShedNew.SelectedIndex == 0)
+            {
+                LogMessage("Select Watershed");
+                ddlWaterShedNew.Focus();
+                return;
+            }
+            if (!cblHUC12.Items.Cast<ListItem>().Any(i => i.Selected))
+            {
+                LogMessage("Select HUC12");
+                cblHUC12.Focus();
+                return;
+            }
+
+            foreach (ListItem item in cblHUC12.Items)
+            {
+                if (item.Selected)
+                {
+                    EnterpriseInfoData.AddEnterpriseWatershed(DataUtils.GetInt(hfProjectId.Value),
+                    DataUtils.GetInt(ddlWaterShedNew.SelectedValue.ToString()),
+                    DataUtils.GetInt(ddlSubWatershedNew.SelectedValue.ToString()),
+                    DataUtils.GetInt(item.Value));
+                }
+            }
+            LogMessage("Watershed added successfully");
+            gvWatershed.EditIndex = -1;
+            BindWatershedGrid();
+            ClearWatershedForm();
+            cbAddWatershed.Checked = false;
+        }
+
+        protected void gvWatershed_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvWatershed.EditIndex = e.NewEditIndex;
+            BindWatershedGrid();
+        }
+
+        protected void gvWatershed_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int EnterpriseWaterShedID = DataUtils.GetInt(((Label)gvWatershed.Rows[rowIndex].FindControl("lblEnterpriseWaterShedID")).Text);
+            int EntetrpriseHUCID = DataUtils.GetInt(((Label)gvWatershed.Rows[rowIndex].FindControl("lblEntetrpriseHUCID")).Text);
+
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvWatershed.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            EnterpriseInfoData.UpdatEnterpriseWatershed(EntetrpriseHUCID, RowIsActive);
+            gvWatershed.EditIndex = -1;
+
+            BindWatershedGrid();
+
+            LogMessage("Watershed updated successfully");
+        }
+
+        private void ClearWatershedForm()
+        {
+            ddlSubWatershedNew.SelectedIndex = -1;
+            ddlWaterShedNew.SelectedIndex = -1;
+            cbAddWatershed.Checked = false;
+            foreach (ListItem item in cblHUC12.Items)
+            {
+                if (item.Selected)
+                {
+                    item.Selected = false;
+                }
+            }
+        }
+
+        protected void gvWatershed_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbWatershedActive.Checked = true;
+            cbWatershedActive.Enabled = false;
+            cbAddWatershed.Checked = false;
+            ClearWatershedForm();
+            btnWatershed.Text = "Add";
+
+            gvWatershed.EditIndex = -1;
+            BindWatershedGrid();
+
+            btnWatershed.Visible = true;
+        }
+
+        private void BindWatershedGrid()
+        {
+            try
+            {
+                DataTable dtWatershed = EnterpriseInfoData.GetEnterpriseWatershedList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dtWatershed.Rows.Count > 0)
+                {
+                    dvWatershedGrid.Visible = true;
+                    gvWatershed.DataSource = dtWatershed;
+                    gvWatershed.DataBind();
+                }
+                else
+                {
+                    dvWatershedGrid.Visible = false;
+                    gvWatershed.DataSource = null;
+                    gvWatershed.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindWatershedGrid", "", ex.Message);
+            }
+        }
+
+        protected void ddlWaterShedNew_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlWaterShedNew.SelectedIndex > 0)
+                BindLookupSubWatershed(DataUtils.GetInt(ddlWaterShedNew.SelectedValue));
+            else
+                ddlSubWatershedNew.Items.Clear();
+        }
+
+        private void BindHUC12CheckBoxList()
+        {
+            string order = "";
+            try
+            {
+                if (rdHUC12order.SelectedItem != null)
+                    order = rdHUC12order.SelectedItem.Text;
+
+                cblHUC12.Items.Clear();
+                cblHUC12.DataSource = LookupValuesData.GetHUCList(order);
+                cblHUC12.DataValueField = "HUCID";
+                cblHUC12.DataTextField = "HUC12Name";
+                cblHUC12.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+            }
+        }
+
+        protected void btnEntePriseType_Click(object sender, EventArgs e)
+        {
+            EnterpriseInfoData.SubmitEnterpriseType(DataUtils.GetInt(hfProjectId.Value),
+                DataUtils.GetInt(ddlEnterPriseType.SelectedValue.ToString()));
+
+            LogMessage("Enterprise Type Updated");
+            Response.Redirect(Request.RawUrl);
         }
     }
 }

@@ -85,20 +85,26 @@ namespace vhcbcloud.Housing
                     }
                     else
                     {
-                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        {
-                            RoleViewOnlyExceptAddNewItem();
-                            hfIsVisibleBasedOnRole.Value = "false";
-                        }
-                        else
-                        {
-                            hfIsVisibleBasedOnRole.Value = "true";
-                        }
+                        //    if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //    {
+                        //        RoleViewOnlyExceptAddNewItem();
+                        //        hfIsVisibleBasedOnRole.Value = "false";
+                        //    }
+                        //    else
+                        //    {
+                                hfIsVisibleBasedOnRole.Value = "true";
+                        //    }
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
+                if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                {
+                    RoleViewOnlyExceptAddNewItem();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }
@@ -191,12 +197,32 @@ namespace vhcbcloud.Housing
 
         private void BindControls()
         {
-            BindLookUP(ddlPriorities, 60);
-            BindLookUP(ddlInterAgencyPriorities, 79);
-            BindLookUP(ddlVHCBPriorities, 90);
+            //BindLookUP(ddlPriorities, 60);
+            BindCheckBoxList(cblPriorities, 60);
+            //BindLookUP(ddlInterAgencyPriorities, 79);
+            BindCheckBoxList(cblInterAgencyPriorities, 79);
+            //BindLookUP(ddlVHCBPriorities, 90);
+            BindCheckBoxList(cblVHCBPriorities, 90);
             //BindLookUP(ddlOutcomes, 81);
         }
 
+        private void BindCheckBoxList(CheckBoxList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                //ddList.Items.Insert(0, new ListItem("Select", "NA"));
+                //ddList.Items.Attributes.Add("onclick", "changeColor(this)");
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
             try
@@ -273,27 +299,33 @@ namespace vhcbcloud.Housing
 
         protected void AddPriorities_Click(object sender, EventArgs e)
         {
-            if (ddlPriorities.SelectedIndex == 0)
+            if(!cblPriorities.Items.Cast<ListItem>().Any(i => i.Selected))
             {
                 LogMessage("Select Priorities");
-                ddlPriorities.Focus();
+                cblPriorities.Focus();
                 return;
             }
 
-            HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddConsolidatedPlanPriorities(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlPriorities.SelectedValue.ToString()), GetUserId());
+            foreach (ListItem item in cblPriorities.Items)
+            {
+                if (item.Selected)
+                {
+                    HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddConsolidatedPlanPriorities(DataUtils.GetInt(hfProjectId.Value),
+                                    DataUtils.GetInt(item.Value), GetUserId());
+                    item.Selected = false;
+                }
+            }
 
-            ddlPriorities.SelectedIndex = -1;
             cbAddCPP.Checked = false;
 
             BindConsolidatedPlanPrioritiesGrid();
 
-            if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("Consolidated Plan Priority already exists as in-active");
-            else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("Consolidated Plan Priority already exists");
-            else
-                LogMessage("New Consolidated Plan Priority added successfully");
+            //if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
+            //    LogMessage("Consolidated Plan Priority already exists as in-active");
+            //else if (objHousingAttributesResult.IsDuplicate)
+            //    LogMessage("Consolidated Plan Priority already exists");
+            //else
+                LogMessage("Consolidated Plan Priority added successfully");
         }
 
         protected void gvCPPForm_RowEditing(object sender, GridViewEditEventArgs e)
@@ -363,27 +395,32 @@ namespace vhcbcloud.Housing
 
         protected void btnAddInterAgency_Click(object sender, EventArgs e)
         {
-            if (ddlInterAgencyPriorities.SelectedIndex == 0)
+            if (!cblInterAgencyPriorities.Items.Cast<ListItem>().Any(i => i.Selected))
             {
                 LogMessage("Select Priorities");
-                ddlInterAgencyPriorities.Focus();
+                cblInterAgencyPriorities.Focus();
                 return;
             }
 
-            HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectInteragency(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlInterAgencyPriorities.SelectedValue.ToString()), 0);
-
-            ddlInterAgencyPriorities.SelectedIndex = -1;
+            foreach (ListItem item in cblInterAgencyPriorities.Items)
+            {
+                if (item.Selected)
+                {
+                    HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectInteragency(DataUtils.GetInt(hfProjectId.Value),
+                        DataUtils.GetInt(item.Value), 0);
+                    item.Selected = false;
+                }
+            }
             cbAddInterAgency.Checked = false;
 
             BindInterAgencyGrid();
 
-            if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("InterAgency Priority already exists as in-active");
-            else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("InterAgency Priority already exists");
-            else
-                LogMessage("New InterAgency Priority added successfully");
+            //if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
+            //    LogMessage("InterAgency Priority already exists as in-active");
+            //else if (objHousingAttributesResult.IsDuplicate)
+            //    LogMessage("InterAgency Priority already exists");
+            //else
+                LogMessage("InterAgency Priority added successfully");
         }
 
         protected void gvInterAgency_RowEditing(object sender, GridViewEditEventArgs e)
@@ -415,27 +452,32 @@ namespace vhcbcloud.Housing
 
         protected void btnAddVHCB_Click(object sender, EventArgs e)
         {
-            if (ddlVHCBPriorities.SelectedIndex == 0)
+            if (!cblVHCBPriorities.Items.Cast<ListItem>().Any(i => i.Selected))
             {
                 LogMessage("Select Priorities");
-                ddlVHCBPriorities.Focus();
+                cblInterAgencyPriorities.Focus();
                 return;
             }
 
-            HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectVHCBPriorities(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlVHCBPriorities.SelectedValue.ToString()));
-
-            ddlVHCBPriorities.SelectedIndex = -1;
+            foreach (ListItem item in cblVHCBPriorities.Items)
+            {
+                if (item.Selected)
+                {
+                    HousingAttributesResult objHousingAttributesResult = HousingAttributesData.AddProjectVHCBPriorities(DataUtils.GetInt(hfProjectId.Value),
+                        DataUtils.GetInt(item.Value));
+                    item.Selected = false;
+                }
+            }
             cbAddVHCB.Checked = false;
 
             BindVHCBGrid();
 
-            if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
-                LogMessage("VHCB Priority already exists as in-active");
-            else if (objHousingAttributesResult.IsDuplicate)
-                LogMessage("VHCB Priority already exists");
-            else
-                LogMessage("New VHCB Priority added successfully");
+            //if (objHousingAttributesResult.IsDuplicate && !objHousingAttributesResult.IsActive)
+            //    LogMessage("VHCB Priority already exists as in-active");
+            //else if (objHousingAttributesResult.IsDuplicate)
+            //    LogMessage("VHCB Priority already exists");
+            //else
+                LogMessage("VHCB Priority added successfully");
         }
 
         private void BindVHCBGrid()

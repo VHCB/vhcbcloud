@@ -137,7 +137,7 @@ namespace vhcbcloud
             {
                 string URL = txtURL.Text;
 
-                if (!URL.Contains("http"))
+                if (!URL.Contains("http") && !URL.Contains("fda"))
                     URL = "http://" + URL;
 
                 if (btnSubmitNotes.Text.ToLower() == "submit")
@@ -229,12 +229,14 @@ namespace vhcbcloud
                 dvProjectNotesGrid.Visible = true;
                 gvProjectNotes.DataSource = dt;
                 gvProjectNotes.DataBind();
+                ImgProjectNotesReport.Visible = true;
             }
             else
             {
                 dvProjectNotesGrid.Visible = false;
                 gvProjectNotes.DataSource = null;
                 gvProjectNotes.DataBind();
+                ImgProjectNotesReport.Visible = false;
             }
 
         }
@@ -374,6 +376,13 @@ namespace vhcbcloud
                 //ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ImgProjectNotesReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                  "script", Helper.GetExagoURLForProjectNotes(GetProjectID(txtProjectDDL.Text).ToString(),
+                  "Project Notes"));
         }
     }
 }

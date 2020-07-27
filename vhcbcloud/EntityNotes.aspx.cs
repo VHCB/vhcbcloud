@@ -30,6 +30,9 @@ namespace vhcbcloud
 
                 if (!string.IsNullOrWhiteSpace(EntityId) && DataUtils.GetInt(EntityId) != 0)
                 {
+                    DataRow dr = EntityNotesData.GetApplicantNameByApplicantId(DataUtils.GetInt(EntityId));
+
+                    lblEntiryNotes.Text = "Entity Notes: " + dr["Applicantname"].ToString();
                     BindProjectNotesGrid();
                 }
             }
@@ -44,7 +47,7 @@ namespace vhcbcloud
         }
         private void BindControls()
         {
-            BindLookUP(ddlCategory, 35);
+            BindLookUP(ddlCategory, 2281);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -94,7 +97,7 @@ namespace vhcbcloud
             {
                 string URL = txtURL.Text;
 
-                if (!URL.Contains("http"))
+                if (!URL.Contains("http") && !URL.Contains("fda"))
                     URL = "http://" + URL;
 
                 if (btnSubmitNotes.Text.ToLower() == "submit")

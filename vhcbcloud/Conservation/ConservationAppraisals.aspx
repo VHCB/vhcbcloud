@@ -55,100 +55,179 @@
                 <div class="panel-width">
                     <div class="panel panel-default">
                         <div class="panel-heading ">
-                            <h3 class="panel-title">Appraisal Value</h3>
-                        </div>
-                        <div class="panel-body">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td><span class="labelClass">Project #:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="ProjectNum" runat="server"></span>
-                                    </td>
-                                    <td><span class="labelClass">Name:</span></td>
-                                    <td>
-                                        <span class="labelClass" id="ProjName" runat="server"></span>
-                                    </td>
-                                    <td><span class="labelClass">Total Acres</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server" ReadOnly="true"></asp:TextBox>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="labelClass">Fee Simple Value</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtFeeValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">Value BEFORE</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtValueBefore" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-
-                                    </td>
-                                    <td><span class="labelClass">Value AFTER</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="labelClass">Value of land only with option</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-                                    </td>
-                                    <td><span class="labelClass">Enhanced Exclusion Value</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtEnhancedExclusionValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
-                                    </td>
-
-                                    <td><span class="labelClass">Easement Value</span></td>
-                                    <td><span class="labelClass" id="spEasementValue" runat="server"></span></td>
-
-                                    <%-- <td><span class="labelClass">Easement Value/Acre</span></td>
-                                    <td><span class="labelClass" id="spEasementValuePerAcre" runat="server"></span></td>--%>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
-                                    <td>
-                                        <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
-                                    </td>
-                                    <td><span class="labelClass">Type</span>
-                                    </td>
-                                    <td><asp:DropDownList ID="ddlType" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 160px"><span class="labelClass">Comments</span></td>
-                                    <td colspan="5">
-                                        <asp:TextBox ID="txtAppraisalValueComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
-                                </tr>
+                            <table style="width: 100%;">
                                 <tr>
                                     <td>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                        <h3 class="panel-title">Parcel Value</h3>
                                     </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" style="height: 5px"></td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddAppraisalValue" runat="server" Text="Add New Parcel" />
+                                    </td>
                                 </tr>
                             </table>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvAppraisalValueForm">
+                            <asp:Panel runat="server" ID="Panel8">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td><span class="labelClass">Project #:</span></td>
+                                        <td>
+                                            <span class="labelClass" id="ProjectNum" runat="server"></span>
+                                        </td>
+                                        <td><span class="labelClass">Name:</span></td>
+                                        <td>
+                                            <span class="labelClass" id="ProjName" runat="server"></span>
+                                        </td>
+                                        <td><span class="labelClass">Total Acres</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtTotalAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="labelClass">Fee Simple Value</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtFeeValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass">Value BEFORE</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtValueBefore" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+
+                                        </td>
+                                        <td><span class="labelClass">Value AFTER</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtValueafter" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="labelClass">Value of land only with option</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtValueofLandWithOption" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td><span class="labelClass">Enhanced Exclusion Value</span></td>
+                                        <td>
+                                            <asp:TextBox ID="txtEnhancedExclusionValue" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
+                                        </td>
+
+                                        <td><span class="labelClass">Easement Value</span></td>
+                                        <td><span class="labelClass" id="spEasementValue" runat="server"></span></td>
+
+                                        <%-- <td><span class="labelClass">Easement Value/Acre</span></td>
+                                    <td><span class="labelClass" id="spEasementValuePerAcre" runat="server"></span></td>--%>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 160px"><span class="labelClass">Easement Value/Acre</span></td>
+                                        <td>
+                                            <span class="labelClass" id="spEasementValuePerAcre" runat="server"></span>
+                                        </td>
+                                        <td><span class="labelClass">Type</span>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlType" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td><span class="labelClass">Active</span></td>
+                                        <td>
+                                            <asp:CheckBox ID="chkParcelActive" Enabled="false" runat="server" Checked="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 160px"><span class="labelClass">Comments</span></td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtAppraisalValueComments" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="100%" Height="80px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvAppraisalValueGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel5" Width="100%" Height="100px" ScrollBars="None">
+                                <asp:GridView ID="gvAppraisalValue" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowCancelingEdit="gvAppraisalValue_RowCancelingEdit"
+                                    OnRowDataBound="gvAppraisalValue_RowDataBound"
+                                    OnRowEditing="gvAppraisalValue_RowEditing"
+                                    OnRowUpdating="gvAppraisalValue_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="appraisalID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAppraisalID" runat="Server" Text='<%# Eval("AppraisalID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                            <ItemTemplate>
+                                                <asp:RadioButton ID="rdBtnSelectAppraisalValue" runat="server" AutoPostBack="true" onclick="RadioCheck1(this);"
+                                                    OnCheckedChanged="rdBtnSelectAppraisalValue_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenAppraisalID" runat="server" Value='<%#Eval("AppraisalID")%>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Total Acres">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTotAcres" runat="Server" Text='<%# Eval("TotAcres") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Value Before">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblValueBefore" runat="Server" Text='<%# Eval("ApBef") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Value After">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblValueAfter" runat="Server" Text='<%# Eval("ApAft") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
                         </div>
                     </div>
                 </div>
@@ -276,7 +355,7 @@
                                 <asp:GridView ID="gvAppraisalInfo" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false"
-                                    OnRowEditing="gvAppraisalInfo_RowEditing" 
+                                    OnRowEditing="gvAppraisalInfo_RowEditing"
                                     OnRowCancelingEdit="gvAppraisalInfo_RowCancelingEdit"
                                     OnRowDataBound="gvAppraisalInfo_RowDataBound">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -377,7 +456,7 @@
                                             <span class="labelClass">Amount</span>
                                         </td>
                                         <td style="width: 167px">
-                                            <asp:TextBox ID="txtPayAmount" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtPayAmount" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
                                             <asp:Button ID="btnAddPay" runat="server" Text="Add" class="btn btn-info"
@@ -484,29 +563,40 @@
             <asp:HiddenField ID="hfSelectedAppraisalTotalCost" runat="server" />
             <asp:HiddenField ID="hfPayWarning" runat="server" />
             <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+            <asp:HiddenField ID="hfOriginalTotalAcres" runat="server" />
 
             <script language="javascript">
                 $(document).ready(function () {
+                    
+                    $('#<%= txtPayAmount.ClientID%>').keyup(function () {
+                        toCurrencyControl($('#<%= txtPayAmount.ClientID%>').val(), $('#<%= txtPayAmount.ClientID%>'));
+                    });
+
+                    $('#<%= dvAppraisalValueForm.ClientID%>').toggle($('#<%= cbAddAppraisalValue.ClientID%>').is(':checked'));
+                    $('#<%= cbAddAppraisalValue.ClientID%>').click(function () {
+                        $('#<%= dvAppraisalValueForm.ClientID%>').toggle(this.checked);
+                    }).change();
+
                     toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
                     $('#<%= txtFeeValue.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtFeeValue.ClientID%>').val(), $('#<%= txtFeeValue.ClientID%>'));
-                      });
+                    });
                     toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
                     $('#<%= txtValueBefore.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueBefore.ClientID%>').val(), $('#<%= txtValueBefore.ClientID%>'));
-                      });
+                    });
                     toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
                     $('#<%= txtValueafter.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueafter.ClientID%>').val(), $('#<%= txtValueafter.ClientID%>'));
-                      });
+                    });
                     toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
                     $('#<%= txtValueofLandWithOption.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtValueofLandWithOption.ClientID%>').val(), $('#<%= txtValueofLandWithOption.ClientID%>'));
-                      });
+                    });
                     toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
                     $('#<%= txtEnhancedExclusionValue.ClientID%>').keyup(function () {
                         toCurrencyControl($('#<%= txtEnhancedExclusionValue.ClientID%>').val(), $('#<%= txtEnhancedExclusionValue.ClientID%>'));
-                      });
+                    });
 
                     <%--toCurrencyControl($('#<%= spEasementValue.ClientID%>').text(), $('#<%= spEasementValue.ClientID%>'));
                     toCurrencyControl($('#<%= spEasementValuePerAcre.ClientID%>').text(), $('#<%= spEasementValuePerAcre.ClientID%>'));--%>
@@ -543,19 +633,21 @@
                 });
 
                 function CalEasementVal() {
-                    var Before = parseFloat($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(",", ""), 10);
-                    var After = parseFloat($('#<%=txtValueafter.ClientID%>').val().replace("$", "").replace(",", ""), 10);
+                    //console.log($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(new RegExp(',', 'g'), ''));
+                    var Before = parseFloat($('#<%=txtValueBefore.ClientID%>').val().replace("$", "").replace(new RegExp(',', 'g'), ''), 10);
+                    var After = parseFloat($('#<%=txtValueafter.ClientID%>').val().replace("$", "").replace(new RegExp(',', 'g'), ''), 10);
                     //console.log("Before: " + Before);
                     //console.log("After: " + After);
-                    var EasementVal = parseFloat(Before - After).toFixed(2);
-                    //console.log("EasementVal: " + EasementVal);
+                    var EasementVal = parseFloat((Before ? Before : 0) - (After ? After : 0)).toFixed(2);
+                    console.log("EasementVal: " + EasementVal);
 
-                    //if ($('#<%=txtFeeValue.ClientID%>').val().replace("$", "").replace(",", "") == '0.00')
-                        $('#<%= spEasementValue.ClientID%>').html('$' + EasementVal);
-                    //else {
-                        //$('#<%= spEasementValue.ClientID%>').html($('#<%=txtFeeValue.ClientID%>').val());
-                        //console.log("Final EasementValue: " + $('#<%=txtFeeValue.ClientID%>').val());
-                    //}
+                    var formatter = new Intl.NumberFormat('en-US', {
+                                                style: 'currency',
+                                                currency: 'USD',
+                                            });
+
+                    $('#<%= spEasementValue.ClientID%>').html(formatter.format(EasementVal));
+                   
 
                     CalEasementValPerAcre();
                 };
@@ -567,27 +659,46 @@
                     console.log("Total: " + Total);
                     console.log("Eval: " + Eval);
 
-                    $('#<%= spEasementValuePerAcre.ClientID%>').html('$' + EasementValPerAcre);
+                    var formatter = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                    });
+
+                    $('#<%= spEasementValuePerAcre.ClientID%>').html(formatter.format(EasementValPerAcre));
                 };
 
                 function PopupAwardSummary() {
                     window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
-         };
+                };
 
-         function RadioCheck(rb) {
-             var gv = document.getElementById("<%=gvAppraisalInfo.ClientID%>");
-            var rbs = gv.getElementsByTagName("input");
+                function RadioCheck(rb) {
+                    var gv = document.getElementById("<%=gvAppraisalInfo.ClientID%>");
+                    var rbs = gv.getElementsByTagName("input");
 
-            var row = rb.parentNode.parentNode;
-            for (var i = 0; i < rbs.length; i++) {
-                if (rbs[i].type == "radio") {
-                    if (rbs[i].checked && rbs[i] != rb) {
-                        rbs[i].checked = false;
-                        break;
+                    var row = rb.parentNode.parentNode;
+                    for (var i = 0; i < rbs.length; i++) {
+                        if (rbs[i].type == "radio") {
+                            if (rbs[i].checked && rbs[i] != rb) {
+                                rbs[i].checked = false;
+                                break;
+                            }
+                        }
                     }
                 }
-            }
-        }
+                function RadioCheck1(rb) {
+                    var gv = document.getElementById("<%=gvAppraisalValue.ClientID%>");
+                    var rbs = gv.getElementsByTagName("input");
+
+                    var row = rb.parentNode.parentNode;
+                    for (var i = 0; i < rbs.length; i++) {
+                        if (rbs[i].type == "radio") {
+                            if (rbs[i].checked && rbs[i] != rb) {
+                                rbs[i].checked = false;
+                                break;
+                            }
+                        }
+                    }
+                }
             </script>
         </div>
     </div>

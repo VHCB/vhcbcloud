@@ -77,7 +77,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
             return dt;
         }
 
-        public static HousingFederalProgramsResult AddProjectFederal(int ProjectID, int LkFedProg, int NumUnits)
+        public static HousingFederalProgramsResult AddProjectFederal(int ProjectID, int LkFedProg, int NumUnits, 
+            string PBUnits, string FixedUnits)
         {
             try
             {
@@ -94,7 +95,9 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                         command.Parameters.Add(new SqlParameter("LkFedProg", LkFedProg));
                         command.Parameters.Add(new SqlParameter("NumUnits", NumUnits));
-
+                        command.Parameters.Add(new SqlParameter("PBUnits", PBUnits));
+                        command.Parameters.Add(new SqlParameter("FixedUnits", FixedUnits));
+                        
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
@@ -122,7 +125,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
             }
         }
 
-        public static void UpdateProjectFederal(int ProjectFederalID, int NumUnits, bool IsRowIsActive)
+        public static void UpdateProjectFederal(int ProjectFederalID, int NumUnits, bool IsRowIsActive, string PBUnits, string FixedUnits)
         {
             try
             {
@@ -139,6 +142,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("ProjectFederalID", ProjectFederalID));
                         command.Parameters.Add(new SqlParameter("NumUnits", NumUnits));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
+                        command.Parameters.Add(new SqlParameter("PBUnits", PBUnits));
+                        command.Parameters.Add(new SqlParameter("FixedUnits", FixedUnits));
 
                         command.CommandTimeout = 60 * 5;
 

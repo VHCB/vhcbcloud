@@ -184,13 +184,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.Panel Panel8;
         
         /// <summary>
-        /// ddlPriorities control.
+        /// cblPriorities control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPriorities;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblPriorities;
         
         /// <summary>
         /// AddPriorities control.
@@ -274,13 +274,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.Panel Panel1;
         
         /// <summary>
-        /// ddlInterAgencyPriorities control.
+        /// cblInterAgencyPriorities control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlInterAgencyPriorities;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblInterAgencyPriorities;
         
         /// <summary>
         /// btnAddInterAgency control.
@@ -364,13 +364,13 @@ namespace vhcbcloud.Housing {
         protected global::System.Web.UI.WebControls.Panel Panel3;
         
         /// <summary>
-        /// ddlVHCBPriorities control.
+        /// cblVHCBPriorities control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlVHCBPriorities;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblVHCBPriorities;
         
         /// <summary>
         /// btnAddVHCB control.

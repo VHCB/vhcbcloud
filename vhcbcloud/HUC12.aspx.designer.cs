@@ -10,25 +10,7 @@
 namespace vhcbcloud {
     
     
-    public partial class EntityNotes {
-        
-        /// <summary>
-        /// lblEntiryNotes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEntiryNotes;
-        
-        /// <summary>
-        /// cbActiveOnly control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
+    public partial class HUC12 {
         
         /// <summary>
         /// dvMessage control.
@@ -40,111 +22,102 @@ namespace vhcbcloud {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
         
         /// <summary>
-        /// lblErrorMsg1 control.
+        /// lblErrorMsg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMsg1;
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
         
         /// <summary>
-        /// pnlProjectInfo control.
+        /// dvNewHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlProjectInfo;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewHUC12;
         
         /// <summary>
-        /// ddlCategory control.
+        /// cbAddHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCategory;
+        protected global::System.Web.UI.WebControls.CheckBox cbAddHUC12;
         
         /// <summary>
-        /// CurrentDate control.
+        /// dvNewHUC12Form control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CurrentDate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewHUC12Form;
         
         /// <summary>
-        /// cbActive control.
+        /// Panel5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbActive;
+        protected global::System.Web.UI.WebControls.Panel Panel5;
         
         /// <summary>
-        /// txtNotes control.
+        /// txtHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNotes;
+        protected global::System.Web.UI.WebControls.TextBox txtHUC12;
         
         /// <summary>
-        /// txtURL control.
+        /// txtName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtURL;
+        protected global::System.Web.UI.WebControls.TextBox txtName;
         
         /// <summary>
-        /// btnSubmitNotes control.
+        /// btnAddHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitNotes;
+        protected global::System.Web.UI.WebControls.Button btnAddHUC12;
         
         /// <summary>
-        /// dvProjectNotesGrid control.
+        /// dvHUC12Grid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectNotesGrid;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHUC12Grid;
         
         /// <summary>
-        /// Panel9 control.
+        /// Panel6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel9;
+        protected global::System.Web.UI.WebControls.Panel Panel6;
         
         /// <summary>
-        /// gvProjectNotes control.
+        /// gvHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvProjectNotes;
-        
-        /// <summary>
-        /// hfEntityNotesId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfEntityNotesId;
+        protected global::System.Web.UI.WebControls.GridView gvHUC12;
     }
 }

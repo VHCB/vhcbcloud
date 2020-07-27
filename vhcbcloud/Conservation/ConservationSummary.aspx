@@ -2,6 +2,24 @@
     Inherits="vhcbcloud.Conservation.ConservationSummary" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
+    <style type="text/css">
+        .scroll_checkboxes {
+            height: 100px;
+            padding: 1px;
+            overflow: auto;
+            border: 1px solid #ccc;
+        }
+
+        .FormText {
+            FONT-SIZE: 11px;
+            FONT-FAMILY: tahoma,sans-serif;
+        }
+
+        .checkboxlist_nowrap label {
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
     <div class="jumbotron" id="vhcb">
         <!-- Tabs -->
         <div id="dvTabs" runat="server">
@@ -85,7 +103,8 @@
                                         <asp:DropDownList ID="ddlPSO" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                     </td>--%>
                                     <td><span class="labelClass">Geographic Significance:</span></td>
-                                    <td><asp:DropDownList ID="ddlGeoSignificance" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlGeoSignificance" CssClass="clsDropDown" runat="server"></asp:DropDownList></td>
                                     <%-- <td><span class="labelClass">Total Project Acres:</span></td>
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -268,11 +287,11 @@
                                                 </asp:TextBox>
                                             </EditItemTemplate>--%>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Primary Steward">
+                                        <asp:TemplateField HeaderText="Primary Steward">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkPrimarySteward" Enabled="false" runat="server" Checked='<%# Eval("PrimeStew") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkPrimarySteward" runat="server" Checked='<%# Eval("PrimeStew") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -441,7 +460,7 @@
                                         <td style="width: 180px">
                                             <asp:TextBox ID="txtMileage" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                         <td style="width: 100px">
+                                        <td style="width: 100px">
                                             <span class="labelClass"></span>
                                         </td>
                                         <td style="width: 180px">
@@ -463,7 +482,7 @@
                                 <asp:GridView ID="gvTrailMileage" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
-                                    OnRowEditing="gvTrailMileage_RowEditing" 
+                                    OnRowEditing="gvTrailMileage_RowEditing"
                                     OnRowCancelingEdit="gvTrailMileage_RowCancelingEdit"
                                     OnRowUpdating="gvTrailMileage_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -501,7 +520,7 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkProtected" Enabled="false" runat="server" Checked='<%# Eval("Protected") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkProtected" runat="server" Checked='<%# Eval("Protected") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -529,7 +548,7 @@
                     </div>
                 </div>
 
-                 <div class="panel-width" runat="server" id="dvAllowedSpecialUses">
+                <div class="panel-width" runat="server" id="dvAllowedSpecialUses">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
                             <table style="width: 100%;">
@@ -556,13 +575,11 @@
                                         <td style="width: 100px">
                                             <span class="labelClass"></span>
                                         </td>
-                                        <td style="width: 180px">
-                                        </td>
-                                         <td style="width: 100px">
+                                        <td style="width: 180px"></td>
+                                        <td style="width: 100px">
                                             <span class="labelClass"></span>
                                         </td>
-                                        <td style="width: 180px">
-                                        </td>
+                                        <td style="width: 180px"></td>
                                         <td style="width: 170px"></td>
                                         <td>
                                             <asp:Button ID="btnAddAllowedSpecialUses" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddAllowedSpecialUses_Click" /></td>
@@ -579,7 +596,7 @@
                                 <asp:GridView ID="gvAllowedSpecialUses" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
-                                    OnRowEditing="gvAllowedSpecialUses_RowEditing" 
+                                    OnRowEditing="gvAllowedSpecialUses_RowEditing"
                                     OnRowCancelingEdit="gvAllowedSpecialUses_RowCancelingEdit"
                                     OnRowUpdating="gvAllowedSpecialUses_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -653,7 +670,7 @@
                                             <span class="labelClass">Subwatershed</span>
                                         </td>
                                         <td style="width: 180px">
-                                             <asp:DropDownList ID="ddlSubwatershed" CssClass="clsDropDown" runat="server">
+                                            <asp:DropDownList ID="ddlSubwatershed" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 170px"><span class="labelClass">Water Body</span></td>
@@ -674,7 +691,7 @@
                                             <asp:TextBox ID="txtOtherStream" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
                                         </td>
                                         <td style="width: 170px">
-                                            <span class="labelClass">Riparian Buffer (ft. ):</span>
+                                            <span class="labelClass">Riparian Buffer (length in ft.):</span>
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtRiparianBuffer" CssClass="clsTextBoxBlue" runat="server"></asp:TextBox>
@@ -750,7 +767,7 @@
                             </asp:Panel>
                         </div>
                     </div>
-                    </div>
+                </div>
 
                 <div class="panel-width" runat="server" id="dvNewWatershed">
                     <div class="panel panel-default ">
@@ -773,37 +790,59 @@
                             <asp:Panel runat="server" ID="Panel5">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Watershed</span></td>
-                                        <td style="width: 215px">
+                                        <td><span class="labelClass">Watershed</span></td>
+                                        <td>
                                             <asp:DropDownList ID="ddlWaterShedNew" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlWaterShedNew_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 166px">
+                                        <td>
                                             <span class="labelClass">Sub-Watershed</span>
                                         </td>
-                                        <td style="width: 180px">
-                                                <asp:DropDownList ID="ddlSubWatershedNew" CssClass="clsDropDown" runat="server">
+                                        <td>
+                                            <asp:DropDownList ID="ddlSubWatershedNew" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
-                                        <td style="width: 170px">
-                                            <asp:CheckBox ID="cbWatershedActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" />
-                                        </td>
+                                        <td></td>
                                         <td>
+                                            <asp:CheckBox ID="cbWatershedActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 140px">
+                                        <td>
+                                            <span class="labelClass">HUC-12</span>
+                                        </td>
+                                        <td>
+                                            <div class="scroll_checkboxes">
+                                                <asp:CheckBoxList Width="180px" ID="cblHUC12" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"
+                                                    Datafield="description" DataValueField="value" CssClass="checkboxlist_nowrap">
+                                                </asp:CheckBoxList>
+                                            </div>
+                                        </td>
+                                        <td><span class="labelClass">Sort By</span></td>
+                                        <td>
+                                            <asp:RadioButtonList ID="rdHUC12order" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
+                                                OnSelectedIndexChanged="rdHUC12order_SelectedIndexChanged">
+                                                <asp:ListItem>HUC12</asp:ListItem>
+                                                <asp:ListItem>Name</asp:ListItem>
+                                            </asp:RadioButtonList>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <asp:Button ID="btnWatershed" runat="server" Text="Add" class="btn btn-info" OnClick="btnWatershed_Click" />
                                         </td>
-                                        <td style="width: 215px">
-                                            
-                                        </td>
-                                        <td style="width: 166px"></td>
-                                        <td style="width: 180px"></td>
-                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </table>
@@ -814,10 +853,10 @@
                             <asp:Panel runat="server" ID="Panel6" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvWatershed" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" 
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
                                     OnRowEditing="gvWatershed_RowEditing" 
-                                    OnRowCancelingEdit="gvWatershed_RowCancelingEdit"
-                                    OnRowDataBound="gvWatershed_RowDataBound">
+                                    OnRowUpdating="gvWatershed_RowUpdating"
+                                    OnRowCancelingEdit="gvWatershed_RowCancelingEdit">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />
@@ -827,6 +866,11 @@
                                         <asp:TemplateField HeaderText="ConserveWatershedID" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConserveWatershedID" runat="Server" Text='<%# Eval("ConserveWatershedID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="conserveHUCId" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblconserveHUCId" runat="Server" Text='<%# Eval("conserveHUCId") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Watershed">
@@ -839,10 +883,18 @@
                                                 <asp:Label ID="lblSubWatershed" runat="Server" Text='<%# Eval("WatershedSubDesc") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="HUC-12">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblHUC12" runat="Server" Text='<%# Eval("HUC12Name") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>

@@ -1831,6 +1831,42 @@ namespace DataAccessLayer
                 connection.Close();
             }
         }
+
+        public static bool IsFinanceTransExist(int ProjectId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "IsFinanceTransExist";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+
+                        SqlParameter parmMessage = new SqlParameter("@IsFinanceTransactionsExist", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        return DataUtils.GetBool(command.Parameters["@IsFinanceTransactionsExist"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
     

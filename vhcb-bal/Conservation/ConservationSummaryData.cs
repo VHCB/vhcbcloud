@@ -626,7 +626,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             return dt;
         }
 
-        public static Result AddWatershed(int ConserveID, int LKWaterShed, int LkSubWatershed)
+        public static void AddWatershed(int ConserveID, int LKWaterShed, int LkSubWatershed, int HUCID)
         {
             try
             {
@@ -643,25 +643,11 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
                         command.Parameters.Add(new SqlParameter("LKWaterShed", LKWaterShed));
                         command.Parameters.Add(new SqlParameter("LkSubWatershed", LkSubWatershed));
-                       
-                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
-                        parmMessage.Direction = ParameterDirection.Output;
-                        command.Parameters.Add(parmMessage);
-
-                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
-                        parmMessage1.Direction = ParameterDirection.Output;
-                        command.Parameters.Add(parmMessage1);
+                        command.Parameters.Add(new SqlParameter("HUCID", HUCID));
 
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
-
-                        Result objResult = new Result();
-
-                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
-                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
-
-                        return objResult;
                     }
                 }
             }
@@ -671,7 +657,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
             }
         }
 
-        public static void UpdateWatershed(int ConserveWatershedID, int LKWaterShed, int LkSubWatershed, bool RowIsActive)
+        public static void UpdateWatershed(int ConserveHUCId, bool RowIsActive)
         {
             try
             {
@@ -685,9 +671,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateWatershed";
 
-                        command.Parameters.Add(new SqlParameter("ConserveWatershedID", ConserveWatershedID));
-                        command.Parameters.Add(new SqlParameter("LKWaterShed", LKWaterShed));
-                        command.Parameters.Add(new SqlParameter("LkSubWatershed", LkSubWatershed));
+                        command.Parameters.Add(new SqlParameter("ConserveHUCId", ConserveHUCId));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

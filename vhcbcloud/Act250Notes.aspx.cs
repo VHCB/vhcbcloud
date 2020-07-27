@@ -124,7 +124,7 @@ namespace vhcbcloud
             {
                 string URL = txtURL.Text;
 
-                if (!URL.Contains("http"))
+                if (!URL.Contains("http") && !URL.Contains("fda"))
                     URL = "http://" + URL;
 
                 if (btnSubmitNotes.Text.ToLower() == "submit")

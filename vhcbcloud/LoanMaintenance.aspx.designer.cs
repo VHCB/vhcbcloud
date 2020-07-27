@@ -1345,13 +1345,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox dis_cbLoanTransActive;
         
         /// <summary>
-        /// span12 control.
+        /// dis_spnVoid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span12;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dis_spnVoid;
         
         /// <summary>
         /// span13 control.

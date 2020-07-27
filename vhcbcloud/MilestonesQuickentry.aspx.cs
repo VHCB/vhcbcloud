@@ -87,13 +87,18 @@ namespace vhcbcloud
                 if (txtProjectNumDDL.Text != "")
                 {
                     hfProjectId.Value = GetProjectID(txtProjectNumDDL.Text).ToString();
-                    DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
-                    hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
-                    spnProgram.InnerText = drProjectDetails["program"].ToString();
-                    spnProjectName.InnerText = drProjectDetails["projectName"].ToString();
-                    hfProjectProgram.Value = drProjectDetails["program"].ToString();
-                    EventProgramSelection();
-                    BindMilestoneGrid();
+                    if (hfProjectId.Value != "0")
+                    {
+                        DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
+                        hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
+                        spnProgram.InnerText = drProjectDetails["program"].ToString();
+                        spnProjectName.InnerText = drProjectDetails["projectName"].ToString();
+                        hfProjectProgram.Value = drProjectDetails["program"].ToString();
+                        EventProgramSelection();
+                        BindMilestoneGrid();
+                    }
+                    else
+                        LogMessage("Project does not exist");
                 }
                 else
                 {

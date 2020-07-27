@@ -603,7 +603,11 @@ namespace vhcbcloud
                     ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
                 else
                 {
-                    SetAvailableFundsLabel();
+                    decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
+                    lblAvailFund.Text = mitigationFundBalance.ToString();
+
+                    //SetAvailableFundsLabel();
                 }
             }
             catch (Exception ex)
@@ -731,7 +735,10 @@ namespace vhcbcloud
                     dtFundDet = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRToFund.SelectedValue.ToString()));
 
                     ddlAcctNum.SelectedValue = ddlRToFund.SelectedValue;
-                   
+
+                    lblAvailVisibleFundTo.Text = "";
+                    lblAvailFundTo.Text = "";
+
                     if (dtFundDet.Rows[0]["mitfund"].ToString().ToLower() == "true")
                     {
                         lblToUsePermit.Visible = true;
@@ -740,8 +747,10 @@ namespace vhcbcloud
                     }
                     else
                     {
+                        ddlToUsePermit.Items.Clear();
                         lblToUsePermit.Visible = false;
                         ddlToUsePermit.Visible = false;
+                        
                     }
                 }
             }
@@ -1281,6 +1290,7 @@ namespace vhcbcloud
                     txtRfromAmt.Focus();
                     return;
                 }
+
                 DataTable dFromtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlRFromFund.SelectedValue.ToString()));
                 if (dFromtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
                 {
@@ -1317,7 +1327,20 @@ namespace vhcbcloud
                     txtRfromDate.Focus();
                     return;
                 }
-
+                if(ddlToUsePermit.Visible && ddlToUsePermit.SelectedIndex > 0)
+                {
+                    if (DataUtils.GetDecimal(lblAvailFundTo.Text) <= 0)
+                    {
+                        lblRErrorMsg.Text = "Commitments are greater than Developer Payments Balance";
+                        return;
+                    }
+                    else if(DataUtils.GetDecimal(lblAvailFundTo.Text) < DataUtils.GetDecimal(txtRToAmt.Text))
+                    {
+                        lblRErrorMsg.Text = "There is not enough Developer Payments Balance";
+                        txtRToAmt.Focus();
+                        return;
+                    }
+                }
                 #endregion
 
                 if (hfReallocateGuid.Value == "")
@@ -1439,9 +1462,16 @@ namespace vhcbcloud
         /// <param name="e"></param>
         protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (ddlRFromFundType.SelectedIndex > 0)
-            //{
-            SetAvailableFundsLabel();
+            if (ddlUsePermit.SelectedIndex > 0)
+            {
+                decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+
+            lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
+            lblAvailFund.Text = mitigationFundBalance.ToString(); ;
+            }
+        //if (ddlRFromFundType.SelectedIndex > 0)
+        //{
+        //SetAvailableFundsLabel();
             //}
             ddlRToFund.SelectedIndex = -1;
             ddlToUsePermit.Items.Clear();
@@ -1494,6 +1524,9 @@ namespace vhcbcloud
                 
                 ddlRToFund.SelectedValue = ddlAcctNum.SelectedValue;
 
+                lblAvailVisibleFundTo.Text = "";
+                lblAvailFundTo.Text = "";
+
                 if (DataUtils.GetBool(dtable.Rows[0]["mitfund"].ToString()))
                 {
                     lblToUsePermit.Visible = true;
@@ -1502,6 +1535,7 @@ namespace vhcbcloud
                 }
                 else
                 {
+                    ddlToUsePermit.Items.Clear();
                     lblToUsePermit.Visible = false;
                     ddlToUsePermit.Visible = false;
                 }
@@ -1673,6 +1707,23 @@ namespace vhcbcloud
                 lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
                 lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
             }
+        }
+
+        protected void ddlToUsePermit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlToUsePermit.SelectedIndex > 0)
+            {
+                decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlToUsePermit.SelectedValue.ToString()));
+
+                lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
+                lblAvailFundTo.Text = mitigationFundBalance.ToString();
+            }
+
+            //ddlRToFund.SelectedIndex = -1;
+            //ddlToUsePermit.Items.Clear();
+            //lblToUsePermit.Visible = false;
+            //ddlToUsePermit.Visible = false;
+
         }
     }
 }

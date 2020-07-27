@@ -373,7 +373,36 @@ namespace VHCBCommon.DataAccessLayer.Viability
                 throw ex;
             }
         }
-        
+
+        public static void UpdateEnterprisePrimeProductFarmSize(int ProjectID, int FarmSize)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateEnterprisePrimeProductFarmSize";
+
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("FarmSize", FarmSize));
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static DataRow GetEnterprisePrimeProduct(int ProjectID)
         {
             DataRow dr = null;
@@ -406,5 +435,132 @@ namespace VHCBCommon.DataAccessLayer.Viability
             }
             return dr;
         }
+
+        public static void SubmitEnterpriseType(int ProjectID, int EnterPriseType)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "SubmitEnterpriseType";
+
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("EnterPriseType", EnterPriseType));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        #region Watershed
+        public static DataTable GetEnterpriseWatershedList(int ProjectID, bool IsActiveOnly)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetEnterpriseWatershedList";
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        public static void AddEnterpriseWatershed(int ProjectID, int LKWaterShed, int LkSubWatershed, int HUCID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddEnterpriseWatershed";
+
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("LKWaterShed", LKWaterShed));
+                        command.Parameters.Add(new SqlParameter("LkSubWatershed", LkSubWatershed));
+                        command.Parameters.Add(new SqlParameter("HUCID", HUCID));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdatEnterpriseWatershed(int EntetrpriseHUCID, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdatEnterpriseWatershed";
+
+                        command.Parameters.Add(new SqlParameter("EntetrpriseHUCID", EntetrpriseHUCID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion Watershed
     }
 }

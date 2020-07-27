@@ -12,7 +12,7 @@ using VHCBCommon.DataAccessLayer;
 using VHCBCommon.DataAccessLayer.Housing;
 
 namespace vhcbcloud.Housing
-{ 
+{
     public partial class HousingUnitsServices : System.Web.UI.Page
     {
         string Pagename = "HousingUnitsServices";
@@ -54,7 +54,7 @@ namespace vhcbcloud.Housing
 
         protected void GetRoleAccess()
         {
-          
+
             DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(DataUtils.GetInt(hfProjectId.Value));
 
@@ -85,20 +85,27 @@ namespace vhcbcloud.Housing
                     }
                     else
                     {
-                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        {
-                            RoleViewOnlyExceptAddNewItem();
-                            hfIsVisibleBasedOnRole.Value = "false";
-                        }
-                        else
-                        {
-                            hfIsVisibleBasedOnRole.Value = "true";
-                        }
+                        //    if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //    {
+                        //        RoleViewOnlyExceptAddNewItem();
+                        //        hfIsVisibleBasedOnRole.Value = "false";
+                        //    }
+                        //    else
+                        //    {
+                                hfIsVisibleBasedOnRole.Value = "true";
+                        //    }
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
+
+                if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                {
+                    RoleViewOnlyExceptAddNewItem();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }
@@ -232,7 +239,8 @@ namespace vhcbcloud.Housing
                 txtPrevAffordUnits.Text = drHousing["PrevAffordUnits"].ToString();
 
                 //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["TotalUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
-                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewAffordUnits"].ToString()) + DataUtils.GetInt(drHousing["PrevAffordUnits"].ToString())).ToString();
 
                 if (ddlHousingType.SelectedIndex == 0)
                 {
@@ -276,6 +284,7 @@ namespace vhcbcloud.Housing
             //BindHomeAffordGrid();
             BindTargetBestEffortGrid();
             BindAffordableToGrid();
+            BindtaxCreditGrid();
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -295,7 +304,7 @@ namespace vhcbcloud.Housing
             DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(hfProjectId.Value));
             ProjectNum.InnerText = dr["ProjNumber"].ToString();
             ProjName.InnerText = dr["ProjectName"].ToString();
-            if(HousingUnitsServicesData.GetTotalFederalProgramUnits(DataUtils.GetInt(hfProjectId.Value)) > 0)
+            if (HousingUnitsServicesData.GetTotalFederalProgramUnits(DataUtils.GetInt(hfProjectId.Value)) > 0)
                 snFederalProgramUnits.InnerText = "Yes";
             else
                 snFederalProgramUnits.InnerText = "No";
@@ -348,6 +357,7 @@ namespace vhcbcloud.Housing
             BindLookUP(ddlVHCBAff, 109);
             BindLookUP(ddlTargetEff, 250);
             BindLookUP(ddlAffordableTo, 251);
+            BindLookUP(ddlTaxCredit, 88);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -465,15 +475,9 @@ namespace vhcbcloud.Housing
                 return;
             }
 
-            //if(DataUtils.GetInt(spnTotalUnits.InnerText) <= 0)
-            //{
-            //    LogMessage("Total Units should not be less than or equal to zero");
-            //    return;
-            //}
-
             if (txtSSUnits.Text != "")
             {
-                int TotalUnits = DataUtils.GetInt(txtUnitsFromPreProject.Text) + DataUtils.GetInt(txtNetNewUnits.Text) -DataUtils.GetInt(txtUnitsRemoved.Text);
+                int TotalUnits = DataUtils.GetInt(txtUnitsFromPreProject.Text) + DataUtils.GetInt(txtNetNewUnits.Text) - DataUtils.GetInt(txtUnitsRemoved.Text);
 
                 if (DataUtils.GetInt(txtSSUnits.Text) > TotalUnits)
                 {
@@ -482,6 +486,15 @@ namespace vhcbcloud.Housing
                     txtSSUnits.Focus();
                     return;
                 }
+            }
+
+            int TotalUnits1 = DataUtils.GetInt(txtUnitsFromPreProject.Text) + DataUtils.GetInt(txtNetNewUnits.Text) - DataUtils.GetInt(txtUnitsRemoved.Text);
+
+            if (TotalUnits1 < (DataUtils.GetInt(txtPrevAffordUnits.Text) + DataUtils.GetInt(txtNewAffordUnits.Text)))
+            {
+                spnTotalUnits.InnerText = TotalUnits1.ToString();
+                LogMessage("Total Affordable units should not be greater than Total Units");
+                return;
             }
 
             //if (string.IsNullOrWhiteSpace(txtTotalUnits.Text.ToString()) == true)
@@ -497,10 +510,10 @@ namespace vhcbcloud.Housing
             //    return;
             //}
 
-            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value), 
-                DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()), 
+            HousingUnitsServicesData.SubmitHousingUnits(DataUtils.GetInt(hfHousingID.Value),
+                DataUtils.GetInt(ddlHousingType.SelectedValue.ToString()),
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
-                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text), 
+                DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text),
                 chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text), DataUtils.GetInt(txtBuildings.Text),
                 DataUtils.GetInt(txtNewAffordUnits.Text), DataUtils.GetInt(txtPrevAffordUnits.Text));
 
@@ -951,7 +964,7 @@ namespace vhcbcloud.Housing
         {
             int rowIndex = e.RowIndex;
             string strUnits = ((TextBox)gvSuppService.Rows[rowIndex].FindControl("txtSuppServiceNumunits")).Text;
-            
+
             if (string.IsNullOrWhiteSpace(strUnits) == true)
             {
                 LogMessage("Enter Units");
@@ -1038,7 +1051,7 @@ namespace vhcbcloud.Housing
                         }
                     }
 
-                    spnVHCBAffUnits.InnerText = (DataUtils.GetInt(hfTotalUnitsFromDB.Value) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
+                    //nVHCBAffUnits.InnerText = (DataUtils.GetInt(hfTotalUnitsFromDB.Value) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
 
                     lblFooterVHCBTotalUnits.Text = totVHCBUnits.ToString();
 
@@ -1295,8 +1308,8 @@ namespace vhcbcloud.Housing
                     //}
                     //else
                     //{
-                        dvAgeRestrWarning.Visible = false;
-                        lblAgeRestrWarning.Text = "";
+                    dvAgeRestrWarning.Visible = false;
+                    lblAgeRestrWarning.Text = "";
                     //}
                 }
                 else
@@ -1423,7 +1436,7 @@ namespace vhcbcloud.Housing
 
             HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddProjectHouseTargetUnits(
                 DataUtils.GetInt(hfHousingID.Value),
-                DataUtils.GetInt(ddlTargetEff.SelectedValue.ToString()), 
+                DataUtils.GetInt(ddlTargetEff.SelectedValue.ToString()),
                 DataUtils.GetInt(txtTargetUnits.Text));
 
             ddlTargetEff.SelectedIndex = -1;
@@ -1681,6 +1694,92 @@ namespace vhcbcloud.Housing
                 LogMessage("Affordable To Units already exist");
             else
                 LogMessage("New Affordable To Units added successfully");
+        }
+
+        protected void btnAddTaxCredit_Click(object sender, EventArgs e)
+        {
+            if (ddlTaxCredit.SelectedIndex == 0)
+            {
+                LogMessage("Select Tax Credit");
+                ddlTaxCredit.Focus();
+                return;
+            }
+
+            HousingUnitseResult objHousingUnitseResult = HousingUnitsServicesData.AddTaxCredits(DataUtils.GetInt(hfHousingID.Value),
+                        DataUtils.GetInt(ddlTaxCredit.SelectedValue.ToString()));
+
+            if (objHousingUnitseResult.IsDuplicate && !objHousingUnitseResult.IsActive)
+                LogMessage("Tax Credit already exist as in-active");
+            else if (objHousingUnitseResult.IsDuplicate)
+                LogMessage("Tax Credit already exist");
+            else
+                LogMessage("Tax Credit added successfully");
+
+            cbAddTaxCredit.Checked = false;
+            ddlTaxCredit.SelectedIndex = -1;
+
+            BindtaxCreditGrid();
+        }
+
+        protected void gvTaxCredit_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            int ProjectHouseTaxCreditsID = DataUtils.GetInt(((Label)gvTaxCredit.Rows[rowIndex].FindControl("lblProjectHouseTaxCreditsID")).Text);
+            
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTaxCredit.Rows[rowIndex].FindControl("chkActive")).Checked); ;
+
+            HousingUnitsServicesData.UpdateTaxCredit(ProjectHouseTaxCreditsID, RowIsActive);
+            gvTaxCredit.EditIndex = -1;
+
+            BindtaxCreditGrid();
+
+            LogMessage("Tax Credit updated successfully");
+
+        }
+
+        protected void gvTaxCredit_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            cbAddTaxCredit.Checked = false;
+            gvTaxCredit.EditIndex = -1;
+            BindtaxCreditGrid();
+        }
+
+        protected void gvTaxCredit_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvTaxCredit.EditIndex = e.NewEditIndex;
+            BindtaxCreditGrid();
+        }
+
+        private void BindtaxCreditGrid()
+        {
+            try
+            {
+                DataTable dttaxCredit = HousingUnitsServicesData.GetTaxCreditList(DataUtils.GetInt(hfHousingID.Value), cbActiveOnly.Checked);
+
+                if (dttaxCredit.Rows.Count > 0)
+                {
+                    dvTaxCreditGrid.Visible = true;
+                    gvTaxCredit.DataSource = dttaxCredit;
+                    gvTaxCredit.DataBind();
+                }
+                else
+                {
+                    dvTaxCreditGrid.Visible = false;
+                    gvTaxCredit.DataSource = null;
+                    gvTaxCredit.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindtaxCreditGrid", "", ex.Message);
+            }
+        }
+
+        protected void ImgTaxCredit_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetExagoURL(hfProjectId.Value, "Grid_Projects with Tax Credits"));
         }
 
         //protected void btnAddHomeAff_Click(object sender, EventArgs e)

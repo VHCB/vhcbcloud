@@ -821,7 +821,7 @@ namespace VHCBCommon.DataAccessLayer
             int? Compound, int? Freq, int? PayType, DateTime MatDate, DateTime StartDate,
             decimal? Amount, DateTime StopDate, decimal? Principal, decimal? Interest, string Description, 
             int? TransferTo, int? ConvertFrom, DateTime EffectiveDate, bool Adjustment, string URL, 
-            int? FundID, int ToLoanID)
+            int? FundID, int ToLoanID, int? TransSubType)
         {
             try
             {
@@ -857,6 +857,8 @@ namespace VHCBCommon.DataAccessLayer
                         if (FundID == 0) FundID = null;
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
                         command.Parameters.Add(new SqlParameter("ToLoanID", ToLoanID));
+                        if (TransSubType == 0) TransSubType = null;
+                        command.Parameters.Add(new SqlParameter("TransSubType", TransSubType));
                         
                         command.CommandTimeout = 60 * 5;
 
@@ -873,7 +875,8 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateLoanTransactions(int LoanTransId, int TransType, DateTime TransDate, decimal? IntRate,
             int? Compound, int? Freq, int? PayType, DateTime MatDate, DateTime StartDate,
             decimal? Amount, DateTime StopDate, decimal? Principal, decimal? Interest, string Description, 
-            int? TransferTo, int? ConvertFrom, DateTime EffectiveDate, bool RowIsActive, bool Adjustment, string URL, int? FundID)
+            int? TransferTo, int? ConvertFrom, DateTime EffectiveDate, bool RowIsActive, bool Adjustment, 
+            string URL, int? FundID, int? TransSubType)
         {
             try
             {
@@ -909,6 +912,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         if (FundID == 0) FundID = null;
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
+                        if (TransSubType == 0) TransSubType = null;
+                        command.Parameters.Add(new SqlParameter("TransSubType", TransSubType));
 
                         command.CommandTimeout = 60 * 5;
 

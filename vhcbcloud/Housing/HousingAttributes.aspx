@@ -2,6 +2,27 @@
     Inherits="vhcbcloud.Housing.HousingAttributes" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
+    <style type="text/css">
+.scroll_checkboxes {
+    height: 100px;
+    
+    padding: 5px;
+    overflow: auto;
+    border: 1px solid #ccc;
+}
+
+.FormText {
+    FONT-SIZE: 11px;
+    FONT-FAMILY: tahoma,sans-serif;
+}
+.checkboxlist_nowrap label
+{
+     white-space:nowrap;
+     display:inline-block;
+}
+      
+    </style>
+
     <div class="jumbotron" id="vhcb">
         <!-- Tabs   -->
         <div id="dvTabs" runat="server">
@@ -80,17 +101,17 @@
                             <asp:Panel runat="server" ID="Panel8">
                                 <table style="width: 100%">
                                     <tr>
-                                        <td style="width: 140px"><span class="labelClass">Priorities</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlPriorities" CssClass="clsDropDownLong" runat="server">
-                                            </asp:DropDownList>
+                                        <td style="width: 100px"><span class="labelClass">Priorities</span></td>
+                                        <td colspan="3">
+                                           <%-- <asp:DropDownList ID="ddlPriorities" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>--%>
+                                             <div class="scroll_checkboxes">
+                                                <asp:CheckBoxList Width="180px" ID="cblPriorities" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0" 
+                                                    Datafield="description" DataValueField="value"  CssClass="checkboxlist_nowrap">
+                                                </asp:CheckBoxList>
+                                            </div>
                                         </td>
-                                        <td style="width: 100px"></td>
-                                        <td style="width: 180px">
-                                            <asp:Button ID="AddPriorities" runat="server" Text="Add" class="btn btn-info" OnClick="AddPriorities_Click" />
-                                        </td>
-                                        <td style="width: 170px"></td>
-                                        <td></td>
+                                        <td style="width: 60px">&nbsp;<asp:Button ID="AddPriorities" runat="server" Text="Add" class="btn btn-info" OnClick="AddPriorities_Click" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
@@ -171,8 +192,13 @@
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Priorities</span></td>
                                         <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlInterAgencyPriorities" CssClass="clsDropDownLong" runat="server">
-                                            </asp:DropDownList>
+                                            <%--<asp:DropDownList ID="ddlInterAgencyPriorities" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>--%>
+                                             <div class="scroll_checkboxes">
+                                                <asp:CheckBoxList Width="180px" ID="cblInterAgencyPriorities" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0" 
+                                                    Datafield="description" DataValueField="value"  CssClass="checkboxlist_nowrap">
+                                                </asp:CheckBoxList>
+                                            </div>
                                         </td>
                                         <td style="width: 100px"></td>
                                         <td style="width: 180px">
@@ -260,12 +286,17 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 140px"><span class="labelClass">Priorities/Outcomes</span></td>
-                                        <td style="width: 215px">
-                                            <asp:DropDownList ID="ddlVHCBPriorities" CssClass="clsDropDownLong" runat="server">
-                                            </asp:DropDownList>
+                                        <td class="auto-style1">
+                                           <%-- <asp:DropDownList ID="ddlVHCBPriorities" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>--%>
+                                             <div class="scroll_checkboxes">
+                                                <asp:CheckBoxList Width="180px" ID="cblVHCBPriorities" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0" 
+                                                    Datafield="description" DataValueField="value"  CssClass="checkboxlist_nowrap">
+                                                </asp:CheckBoxList>
+                                            </div>
                                         </td>
                                         <td style="width: 100px"></td>
-                                        <td style="width: 180px">
+                                        <td style="width: 100px">
                                             <asp:Button ID="btnAddVHCB" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddVHCB_Click" />
                                         </td>
                                         <td style="width: 170px"></td>

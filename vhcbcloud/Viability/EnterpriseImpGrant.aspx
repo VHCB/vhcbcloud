@@ -42,9 +42,9 @@
                         </tr>
                         <tr>
                             <td style="height: 5px"><span class="labelClass">Owner/Operator</span></td>
-                            <td  style="height: 5px" colspan="5">
-                                 <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
-                             </td>
+                            <td style="height: 5px" colspan="5">
+                                <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
@@ -216,7 +216,7 @@
                                                     <asp:TextBox ID="txtNetIncome" CssClass="clsTextBoxBlue1" runat="server" TabIndex="4"></asp:TextBox>
                                                 </td>
                                                 <td><span class="labelClass">Total FTEs from Access</span>
-                                                    </td>
+                                                </td>
                                                 <td>
                                                     <asp:TextBox ID="txtAccessFTE" CssClass="clsTextBoxBlue1" runat="server" TabIndex="5"></asp:TextBox>
                                                 </td>
@@ -258,7 +258,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="4" style="height: 6px">
-                                                    <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info" 
+                                                    <asp:Button ID="btnAddMilestone" runat="server" Text="Add" class="btn btn-info"
                                                         OnClick="btnAddMilestone_Click" TabIndex="11" /></td>
                                             </tr>
                                         </table>
@@ -270,8 +270,8 @@
                                         <asp:GridView ID="gvFiniceJobs" runat="server" AutoGenerateColumns="False"
                                             Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                             GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="False"
-                                            OnRowEditing="gvFiniceJobs_RowEditing" 
-                                            OnRowCancelingEdit="gvFiniceJobs_RowCancelingEdit" 
+                                            OnRowEditing="gvFiniceJobs_RowEditing"
+                                            OnRowCancelingEdit="gvFiniceJobs_RowCancelingEdit"
                                             OnRowDataBound="gvFiniceJobs_RowDataBound">
                                             <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                             <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -396,7 +396,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblGrantAmount" runat="Server" Text='<%# Eval("GrantAmt", "{0:C2}") %>' />
                                                     </ItemTemplate>
-                                                     <EditItemTemplate>
+                                                    <EditItemTemplate>
                                                         <asp:TextBox ID="txtGrantAmt" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" Text='<%# Eval("GrantAmt") %>'></asp:TextBox>
                                                     </EditItemTemplate>
                                                     <FooterTemplate>
@@ -583,6 +583,11 @@
 
         <script language="javascript">
             $(document).ready(function () {
+                toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+                toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+                toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+                toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+
                 $('#<%= dvGrantMatchForm.ClientID%>').toggle($('#<%= cbAddGrantmatch.ClientID%>').is(':checked'));
 
                 $('#<%= cbAddGrantmatch.ClientID%>').click(function () {
@@ -609,7 +614,22 @@
                     CalculateTotalFT();
                 });
 
-               
+
+                $('#<%= txtNetIncome.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+                });
+
+                $('#<%= txtNetworth.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtNetworth.ClientID%>').val(), $('#<%= txtNetworth.ClientID%>'));
+                });
+
+                $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+                });
+
+                $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+                 });
 
                 $('#<%= txtGrantAmt.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
@@ -640,12 +660,14 @@
                 toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
                 toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
                 toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
+                
+                
             });
 
             function CalculateLivFund() {
                 var ProjCost = parseInt($('#<%=txtProjCost.ClientID%>').val(), 10);
                 var AwardAmount = parseInt($('#<%=txtAwardAmount.ClientID%>').val(), 10);
-                
+
                 if (isNaN(ProjCost)) {
                     var ProjCost = 0;
                 }
@@ -659,25 +681,25 @@
             };
 
             function CalculateTotalFT() {
-            var FamilyFT = parseFloat($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
-            var NonFamilyFT = parseFloat($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
+                var FamilyFT = parseFloat($('#<%=txtFamilyFTEmp.ClientID%>').val(), 10);
+                var NonFamilyFT = parseFloat($('#<%=txtNonFamilyFTEmp.ClientID%>').val(), 10);
 
-            if (isNaN(FamilyFT)) {
-                var FamilyFT = 0;
-            }
+                if (isNaN(FamilyFT)) {
+                    var FamilyFT = 0;
+                }
 
-            if (isNaN(NonFamilyFT)) {
-                var NonFamilyFT = 0;
-            }
-            console.log("XXXX")
-            console.log(FamilyFT);
-            console.log(NonFamilyFT);
-            var Total = FamilyFT + NonFamilyFT;
-            $('#<%= spnTotalFulltime.ClientID%>').text(Total);
-            };
+                if (isNaN(NonFamilyFT)) {
+                    var NonFamilyFT = 0;
+                }
+                console.log("XXXX")
+                console.log(FamilyFT);
+                console.log(NonFamilyFT);
+                var Total = FamilyFT + NonFamilyFT;
+                $('#<%= spnTotalFulltime.ClientID%>').text(Total);
+        };
 
-            function PopupAwardSummary() {
-                window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+        function PopupAwardSummary() {
+            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
             };
         </script>
     </div>

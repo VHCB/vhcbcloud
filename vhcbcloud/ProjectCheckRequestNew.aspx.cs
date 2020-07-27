@@ -61,6 +61,9 @@ namespace vhcbcloud
             return IsShow;
         }
 
+        /// <summary>
+        /// Role based access logic
+        /// </summary>
         protected void GetRoleAccess()
         {
 
@@ -129,6 +132,9 @@ namespace vhcbcloud
             ddlCRDate.Enabled = false;
         }
 
+        /// <summary>
+        /// Bind CR data to dropdown
+        /// </summary>
         protected void BindCRDates()
         {
             try
@@ -160,6 +166,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Project selection changed
+        /// Clear hidden fields and Populating PCR form
+        /// </summary>
         private void ProjectSelectionChanged()
         {
             try
@@ -182,6 +192,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Populate PCR form fields
+        /// Setting available funds
+        /// Enabling PCR
+        /// </summary>
         private void PopulatePCRForm()
         {
             DataTable dt = Project.GetProjects("GetProjectIdByProjNum", txtProjNum.Text.ToString());
@@ -217,6 +232,7 @@ namespace vhcbcloud
                         return;
                     }
                     btnCRSubmit.Text = "Submit";
+                    btnCRSubmit.ToolTip = "";
                     spnCreatedBy.InnerHtml = Context.User.Identity.GetUserName();
                 }
                 else
@@ -238,6 +254,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Binding data FundType Commitments dropdown
+        /// </summary>
+        /// <param name="projId"></param>
         protected void BindFundTypeCommitments(int projId)
         {
             try
@@ -259,6 +279,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Binding data to UsePermit drop down
+        /// </summary>
+        /// <param name="ProjectId"></param>
+        /// <param name="FundId"></param>
         protected void BindUsePermitNew(int ProjectId, int FundId)
         {
             try
@@ -279,6 +304,11 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// dropdown fund type commitments data selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlFundTypeCommitments_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlFundTypeCommitments.SelectedIndex != 0)
@@ -344,6 +374,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// TransType drop down selection changed
+        /// re-populating and cleanup data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlTransType_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
@@ -380,6 +416,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// UsePermit dropdown selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlUsePermit_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
@@ -389,6 +430,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Use Permit dropdown populate
+        /// </summary>
+        /// <param name="ProjectId"></param>
+        /// <param name="AccountId"></param>
+        /// <param name="FundTransType"></param>
         protected void PopulateUsePermit(int ProjectId, string AccountId, int FundTransType)
         {
             try
@@ -663,6 +710,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind PCR Transactions details
+        /// </summary>
         private void BindPCRTransDetails()
         {
             try
@@ -749,6 +799,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Default PCR Questions to database
+        /// </summary>
         protected void AddDefaultPCRQuestions()
         {
             try
@@ -764,6 +817,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// clar transactions details form
+        /// </summary>
         private void ClearTransactionDetailForm()
         {
             if (ddlFundTypeCommitments.Items.Count >= 0) ddlFundTypeCommitments.SelectedIndex = 0;
@@ -777,6 +833,10 @@ namespace vhcbcloud
             lblCommittedAvailFunds.Text = "";
         }
 
+        /// <summary>
+        /// populating existing data
+        /// </summary>
+        /// <param name="dt"></param>
         private void PopulateExistingData(DataTable dt)
         {
             //txtCRDate.Text = "";
@@ -806,6 +866,8 @@ namespace vhcbcloud
                 lblProjectType.Text = dt.Rows[0][2].ToString();
 
                 btnCRSubmit.Text = "Update";
+                btnCRSubmit.ToolTip = "Clicking on update will clear all approvals as well as updating this panel";
+
                 //btnCRSubmit.Visible = true;
 
                 //EnableButton(btnPCRTransDetails);
@@ -823,6 +885,11 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// generaic code for dropdown population
+        /// </summary>
+        /// <param name="ddl"></param>
+        /// <param name="DBSelectedvalue"></param>
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
         {
             foreach (ListItem item in ddl.Items)
@@ -835,6 +902,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Populate Form
+        /// </summary>
         protected void PopulateForm()
         {
             try
@@ -968,6 +1038,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Clear PCR form fields
+        /// </summary>
         private void ClearPCRForm()
         {
             ddlApplicantName.Items.Clear();
@@ -1007,6 +1080,9 @@ namespace vhcbcloud
             lblAvailVisibleFund.Text = "0.00";
         }
 
+        /// <summary>
+        /// Clear PCR details
+        /// </summary>
         private void ClearPCRDetails()
         {
             gvPTransDetails.DataSource = null;
@@ -1016,6 +1092,10 @@ namespace vhcbcloud
             ddlPCRQuestions.SelectedIndex = -1;
 
         }
+
+        /// <summary>
+        /// Enablin PCR
+        /// </summary>
         private void EnablePCR()
         {
             ddlApplicantName.Enabled = true;
@@ -1044,6 +1124,10 @@ namespace vhcbcloud
             txtDisbursementAmt.Enabled = true;
         }
 
+        /// <summary>
+        /// Bind Applicant Name data
+        /// </summary>
+        /// <param name="ProjectId"></param>
         protected void BindApplicantName(int ProjectId)
         {
             try
@@ -1076,6 +1160,10 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Display controls based on roles
+        /// </summary>
+        /// <param name="SelectedText"></param>
         private void DisplayControls(string SelectedText)
         {
             lblAmtEligibleForMatch.Visible = false;
@@ -1099,6 +1187,9 @@ namespace vhcbcloud
             //}
         }
 
+        /// <summary>
+        /// Check and setting available funds
+        /// </summary>
         private void SetAvailableFunds()
         {
             // DataRow dr = ProjectCheckRequestData.GetAvailableFundsByProject(DataUtils.GetInt(hfProjId.Value));
@@ -1127,11 +1218,20 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Get Project ID
+        /// </summary>
+        /// <param name="ProjectNum"></param>
+        /// <returns></returns>
         private int GetProjectID(string ProjectNum)
         {
             return ProjectMaintenanceData.GetProjectId(ProjectNum);
         }
 
+        /// <summary>
+        /// Bind payee data
+        /// </summary>
+        /// <param name="projId"></param>
         protected void BindPayee(int projId)
         {
             try
@@ -1157,6 +1257,10 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Bind Program
+        /// </summary>
+        /// <param name="projId"></param>
         protected void BindProgram(int projId)
         {
             try
@@ -1187,6 +1291,9 @@ namespace vhcbcloud
 
         }
 
+        /// <summary>
+        /// Bind Status
+        /// </summary>
         protected void BindStatus()
         {
             try
@@ -1207,6 +1314,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Matching Grant data
+        /// </summary>
         protected void BindMatchingGrant()
         {
             try
@@ -1231,6 +1341,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind NOD Data dropdown
+        /// </summary>
         protected void BindNODData()
         {
             try
@@ -1252,6 +1365,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Clear hidden fields
+        /// </summary>
         private void ClearHiddenFieldValues()
         {
             hfTransId.Value = "";
@@ -1265,6 +1381,9 @@ namespace vhcbcloud
             hfIsAllApproved.Value = "false";
         }
 
+        /// <summary>
+        /// Bind PCR Item Data
+        /// </summary>
         protected void BindPCRItemsData()
         {
             try
@@ -1321,22 +1440,42 @@ namespace vhcbcloud
                 btnCRSubmit.Visible = false;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlDate_SelectedIndexChanged(object sender, EventArgs e)
         { }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
         { }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void chkLegalReview_CheckedChanged(object sender, EventArgs e)
         {
             BindPCRQuestions(chkLegalReview.Checked);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCRSubmit_Click(object sender, EventArgs e)
         {
             string PCRID = this.hfPCRId.Value;
@@ -1636,7 +1775,9 @@ namespace vhcbcloud
             }
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void DisablePCR()
         {
             // ddlProjFilter.Enabled = false;
@@ -1666,7 +1807,10 @@ namespace vhcbcloud
             txtNotes.Enabled = false;
             //txtDisbursementAmt.Enabled = false;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected int GetUserId()
         {
             try
@@ -1717,13 +1861,19 @@ namespace vhcbcloud
             btn.Enabled = false;
             btn.CssClass = "btn btn-info";
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="btn"></param>
         public static void EnableButton(Button btn)
         {
             btn.Enabled = true;
             btn.CssClass = "btn btn-info";
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IsLegal"></param>
         protected void BindPCRQuestions(bool IsLegal)
         {
             try
@@ -1744,7 +1894,11 @@ namespace vhcbcloud
                 lblErrorMsg.Focus();
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnApprovalsSubmit_Click(object sender, EventArgs e)
         {
             if (ddlPCRQuestions.Items.Count > 1 && ddlPCRQuestions.SelectedIndex == 0)
@@ -1762,7 +1916,9 @@ namespace vhcbcloud
 
             BindPCRQuestionsForApproval();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected void BindPCRQuestionsForApproval()
         {
             pnlApprovals.Visible = true;
@@ -1816,7 +1972,9 @@ namespace vhcbcloud
                 //}
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void CheckVoucherAccess()
         {
             DataTable dt = new DataTable();
@@ -2113,12 +2271,20 @@ namespace vhcbcloud
             }
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNewPCR_Click(object sender, EventArgs e)
         {
             Response.Redirect("projectcheckrequestnew.aspx");
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -2149,7 +2315,9 @@ namespace vhcbcloud
                 lblErrorMsg.Focus();
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void CheckDeletePCRAccess()
         {
             DataTable dt = new DataTable();
@@ -2173,7 +2341,11 @@ namespace vhcbcloud
                     btnDelete.Visible = true;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="FxnID"></param>
+        /// <returns></returns>
         private bool CheckFxnAccess(string FxnID)
         {
             DataTable dt = new DataTable();
@@ -2186,7 +2358,11 @@ namespace vhcbcloud
             }
             return false;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlCRDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             string PCRID = this.hfPCRId.Value;
@@ -2195,7 +2371,9 @@ namespace vhcbcloud
             if (PCRID != null && PCRID != "" && int.Parse(PCRID) != 0)
                 ProjectCheckRequestData.PCR_Update_CheckReqDate(int.Parse(PCRID), CRDate);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetAvailFundsByProjectAccountPermitTransType()
         {
             string account = FinancialTransactions.GetAccountNumberByFundId(DataUtils.GetInt(ddlFundTypeCommitments.SelectedValue.ToString()));
@@ -2212,18 +2390,29 @@ namespace vhcbcloud
             else
                 lblCommittedAvailFunds.Text = CommonHelper.myDollarFormat("0.00");
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected bool CheckIsVisible()
         {
             return !DataUtils.GetBool(hfIsAllApproved.Value);
         }
 
+        /// <summary>
+        /// Print PCR
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ImgPrintPCR_Click(object sender, ImageClickEventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(),
                    "script", Helper.GetExagoURLForPCR(hfPCRId.Value, "Check_Request_Final"));
         }
 
+        /// <summary>
+        /// Available funds data set to label
+        /// </summary>
         private void SetAvailableFundsLabel()
         {
             hfAvFunds.Value = "0";

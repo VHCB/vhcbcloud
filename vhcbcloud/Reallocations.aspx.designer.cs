@@ -409,6 +409,24 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
         
         /// <summary>
+        /// lblAvailFundTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAvailFundTo;
+        
+        /// <summary>
+        /// lblAvailVisibleFundTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAvailVisibleFundTo;
+        
+        /// <summary>
         /// lblToUsePermit control.
         /// </summary>
         /// <remarks>

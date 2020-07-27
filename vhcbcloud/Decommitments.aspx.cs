@@ -392,8 +392,16 @@ namespace vhcbcloud
                     DataTable dtable = FinancialTransactions.GetFundDetailsByFundId(Convert.ToInt32(ddlFundName.SelectedValue.ToString()));
                     //if (ddlAcctNum.SelectedValue.ToString() == strLandUsePermit)
                     if (dtable.Rows[0]["mitfund"].ToString().ToLower() == "true")
-                    //if (ddlAcctNum.SelectedItem.ToString() == "420" || ddlAcctNum.SelectedItem.ToString() == "415")
                     {
+                        //WO45 following code deleted
+                        //decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+
+                        //if (Convert.ToDecimal(txtAmt.Text) > mitigationFundBalance)
+                        //{
+                        //    lblErrorMsg.Text = "Permit " + ddlUsePermit.SelectedItem.ToString() + " does not have available funds ";
+                        //    return;
+                        //}
+
                         FinancialTransactions.AddDeCommitmentTransDetailsWithLandPermit(transId, Convert.ToInt32(ddlAcctNum.SelectedValue.ToString()),
                         //Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), -currentTranFudAmount,
                         Convert.ToInt32(ddlTransType.SelectedValue.ToString()), Convert.ToInt32(hfProjId.Value), currentTranFudAmount,
@@ -1233,6 +1241,8 @@ namespace vhcbcloud
                     ddlUsePermit.Items.Insert(0, new ListItem("Select", "NA"));
                 else
                 {
+                    //decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                    //lblAvDetailFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
                     SetAvailableFundsLabel();
                 }
             }
@@ -1494,6 +1504,8 @@ namespace vhcbcloud
             lblAvDetailFund.Text = CommonHelper.myDollarFormat("0.00");
             if (ddlUsePermit.SelectedIndex > 0)
             {
+                //decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                //lblAvDetailFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
                 SetAvailableFundsLabel();
             }
         }

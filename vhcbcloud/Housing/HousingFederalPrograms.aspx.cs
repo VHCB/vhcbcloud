@@ -85,20 +85,26 @@ namespace vhcbcloud.Housing
                     }
                     else
                     {
-                        if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
-                        {
-                            RoleViewOnlyExceptAddNewItem();
-                            hfIsVisibleBasedOnRole.Value = "false";
-                        }
-                        else
-                        {
-                            hfIsVisibleBasedOnRole.Value = "true";
-                        }
+                        //    if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                        //    {
+                        //        RoleViewOnlyExceptAddNewItem();
+                        //        hfIsVisibleBasedOnRole.Value = "false";
+                        //    }
+                        //    else
+                        //    {
+                                hfIsVisibleBasedOnRole.Value = "true";
+                        //    }
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "3") // View Only
                 {
                     RoleViewOnly();
+                    hfIsVisibleBasedOnRole.Value = "false";
+                }
+
+                if (Convert.ToBoolean(drProjectDetails["verified"].ToString()))
+                {
+                    RoleViewOnlyExceptAddNewItem();
                     hfIsVisibleBasedOnRole.Value = "false";
                 }
             }
@@ -321,7 +327,9 @@ namespace vhcbcloud.Housing
         {
             HousingFederalProgramsResult objHousingFederalProgramsResult = 
                 HousingFederalProgramsData.AddProjectFederal(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlFederalProgram.SelectedValue.ToString()), DataUtils.GetInt(txtTotFedProgUnits.Text));
+                DataUtils.GetInt(ddlFederalProgram.SelectedValue.ToString()), 
+                DataUtils.GetInt(txtTotFedProgUnits.Text),
+                txtPBUnits.Text,txtFixedUnits.Text);
 
             BindGrids();
             ClearFederalProgramsForm();
@@ -352,6 +360,8 @@ namespace vhcbcloud.Housing
             cbAddFedProgram.Checked = false;
             ddlFederalProgram.SelectedIndex = -1;
             txtTotFedProgUnits.Text = "";
+            txtPBUnits.Text = "";
+            txtFixedUnits.Text = "";
         }
 
         protected void rdBtnSelectFederalProgram_CheckedChanged(object sender, EventArgs e)
@@ -559,9 +569,11 @@ namespace vhcbcloud.Housing
 
             int ProjectFederalID = DataUtils.GetInt(((Label)gvFedProgram.Rows[rowIndex].FindControl("lblProjectFederalID")).Text);
             int NumUnits = DataUtils.GetInt(((TextBox)gvFedProgram.Rows[rowIndex].FindControl("txtNumUnits")).Text);
+            string strPBUnits = ((TextBox)gvFedProgram.Rows[rowIndex].FindControl("txtPBUnits")).Text;
+            string strFixedUnits = ((TextBox)gvFedProgram.Rows[rowIndex].FindControl("txtFixedUnits")).Text;
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvFedProgram.Rows[rowIndex].FindControl("chkActive")).Checked); ;
 
-            HousingFederalProgramsData.UpdateProjectFederal(ProjectFederalID, NumUnits, RowIsActive);
+            HousingFederalProgramsData.UpdateProjectFederal(ProjectFederalID, NumUnits, RowIsActive, strPBUnits, strFixedUnits);
 
             gvFedProgram.EditIndex = -1;
 

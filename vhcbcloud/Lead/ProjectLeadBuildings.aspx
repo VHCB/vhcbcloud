@@ -368,6 +368,15 @@
                                                 <asp:Label ID="lblLeadUnitID" runat="Server" Text='<%# Eval("LeadUnitID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="Select">
+                                            <ItemTemplate>
+                                                <asp:RadioButton ID="rdBtnSelectUnitInfo" runat="server" AutoPostBack="true" 
+                                                    onclick="RadioCheck(this);"
+                                                    OnCheckedChanged="rdBtnSelectUnitInfo_CheckedChanged" />
+                                                <asp:HiddenField ID="HiddenLeadUnitID" runat="server" Value='<%#Eval("LeadUnitID")%>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Building">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblBuilding" runat="Server" Text='<%# Eval("Building") %>' />
@@ -408,6 +417,194 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="dvNewLeadTypeofWork" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Type of Work</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddTypeOfWork" runat="server" Text="Add New Type of Work" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvTypeOfWorkForm">
+                            <asp:Panel runat="server" ID="Panel5">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Type of Work</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlTypeOfWork" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 104px">
+                                            <span class="labelClass">Active</span>
+                                        </td>
+                                        <td style="width: 70px">
+                                            <asp:CheckBox ID="chkTypeOfWorkActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td>
+                                            <asp:Button ID="btnAddTypeOfWork" runat="server" Text="Submit" class="btn btn-info" OnClick="btnAddTypeOfWork_Click" style="margin-left: 0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvTypeOfWorkGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvTypeOfWork" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowCancelingEdit="gvTypeOfWork_RowCancelingEdit"
+                                    OnRowEditing="gvTypeOfWork_RowEditing" 
+                                    OnRowUpdating="gvTypeOfWork_RowUpdating"
+                                    OnRowDataBound="gvTypeOfWork_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="LeadUnitID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblWorkTypeID" runat="Server" Text='<%# Eval("WorkTypeID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                          <asp:TemplateField HeaderText="Type Of Work">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTypeOfWork" runat="Server" Text='<%# Eval("TypeOfWork") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlTypeOfWork" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtTypeOfWorkID" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("TypeOfWorkID") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActiveEditTypeOfWork" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible="true"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewWorkLocation" visible="false">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Work Location</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddWorkLocation" runat="server" Text="Add New Work Location" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvWorkLocationForm">
+                            <asp:Panel runat="server" ID="Panel7">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 150px"><span class="labelClass">Work Location</span></td>
+                                        <td style="width: 250px">
+                                            <asp:DropDownList ID="ddlWorkLocation" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                        </td>
+                                        <td style="width: 104px">
+                                            <span class="labelClass">Active</span>
+                                        </td>
+                                        <td style="width: 70px">
+                                            <asp:CheckBox ID="cbWorkLocationActive" Enabled="false" runat="server" Checked="true" />
+                                        </td>
+                                        <td style="width: 170px"><span class="labelClass"></span></td>
+                                        <td>
+                                            <asp:Button ID="btnAddWorkLocation" runat="server" Text="Submit" class="btn btn-info" OnClick="btnAddWorkLocation_Click" style="margin-left: 0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvWorkLocationGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel8" Width="100%" Height="250px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvWorkLocationGrid" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false"
+                                    OnRowCancelingEdit="gvWorkLocationGrid_RowCancelingEdit"
+                                    OnRowEditing="gvWorkLocationGrid_RowEditing" 
+                                    OnRowUpdating="gvWorkLocationGrid_RowUpdating"
+                                    OnRowDataBound="gvWorkLocationGrid_RowDataBound">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="WorkLocationID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblWorkLocationID" runat="Server" Text='<%# Eval("WorkLocationID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                          <asp:TemplateField HeaderText="Work Location">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblWorkLocation" runat="Server" Text='<%# Eval("WorkLocation") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlWorkLocation" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtLocationID" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LocationID") %>' Visible="false"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActiveEditWorkLocation" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible="true"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -435,6 +632,16 @@
             $('#<%= dvUnitInfoForm.ClientID%>').toggle($('#<%= cbAddUnitInfo.ClientID%>').is(':checked'));
             $('#<%= cbAddUnitInfo.ClientID%>').click(function () {
                 $('#<%= dvUnitInfoForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvTypeOfWorkForm.ClientID%>').toggle($('#<%= cbAddTypeOfWork.ClientID%>').is(':checked'));
+            $('#<%= cbAddTypeOfWork.ClientID%>').click(function () {
+                $('#<%= dvTypeOfWorkForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvWorkLocationForm.ClientID%>').toggle($('#<%= cbAddWorkLocation.ClientID%>').is(':checked'));
+            $('#<%= cbAddWorkLocation.ClientID%>').click(function () {
+                $('#<%= dvWorkLocationForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= txtCertifiedBy.ClientID%>').blur(function () {

@@ -2,6 +2,24 @@
     Inherits="vhcbcloud.Viability.EnterpriseInfo" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="EventContent" ContentPlaceHolderID="MainContent" runat="server">
+     <style type="text/css">
+        .scroll_checkboxes {
+            height: 100px;
+            padding: 1px;
+            overflow: auto;
+            border: 1px solid #ccc;
+        }
+
+        .FormText {
+            FONT-SIZE: 11px;
+            FONT-FAMILY: tahoma,sans-serif;
+        }
+
+        .checkboxlist_nowrap label {
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
     <div class="jumbotron" id="vhcb">
         <!-- Tabs -->
         <div id="dvTabs" runat="server">
@@ -26,9 +44,11 @@
                                 <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
 
-                            <td class="modal-sm" style="width: 144px"><span class="labelClass">Enterprise Type:</span></td>
-                            <td style="width: 150px">
+                            <td class="modal-sm" style="width: 100px"><span class="labelClass">Enterprise Type:</span></td>
+                            <td style="width: 250px">
                                 <span class="labelClass" runat="server" id="spnEnterPriseType"></span>
+                                <asp:DropDownList ID="ddlEnterPriseType" CssClass="clsDropDown" runat="server">
+                                </asp:DropDownList>&nbsp;&nbsp;<asp:Button ID="btnEntePriseType" runat="server" Text="Update" class="btn btn-info" OnClick="btnEntePriseType_Click" />
                             </td>
 
                             <td style="text-align: right">
@@ -446,6 +466,193 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel-width" runat="server" id="Div3">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Farm Size</h3>
+                                    </td>
+                                    <td style="text-align: right"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="Div4">
+                            <asp:Panel runat="server" ID="Panel5">
+                                <table style="width: 100%" runat="server" id="Table1">
+                                    <tr>
+                                        <td class="modal-sm" style="width: 97px"><span class="labelClass">Farm Size</span></td>
+                                        <td class="modal-sm" style="width: 129px">
+                                            <asp:DropDownList ID="ddlFarmSize" CssClass="clsDropDown" AutoPostBack="false" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 129px"><span class="labelClass"></span></td>
+                                        <td style="width: 136px">
+                                            
+                                        </td>
+                                        <td style="width: 115px">
+                                            <asp:Button ID="btnAddFarmSize" runat="server" Text="Update" class="btn btn-info" OnClick="btnAddFarmSize_Click" TabIndex="4" />
+                                        </td>
+                                        <td style="width: 140px"></td>
+                                        <td style="width: 100px"><span class="labelClass"></span></td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 15px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvNewWatershed">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Watershed</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddWatershed" runat="server" Text="Add New Watershed" />
+                                        <%--<asp:ImageButton ID="ImgWatershed" ImageUrl="~/Images/print.png" ToolTip="Watershed Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgWatershed_Click" />--%>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="panel-body" runat="server" id="dvNewWatershedForm">
+                            <asp:Panel runat="server" ID="Panel6">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td><span class="labelClass">Watershed</span></td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlWaterShedNew" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlWaterShedNew_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td>
+                                            <span class="labelClass">Sub-Watershed</span>
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlSubWatershedNew" CssClass="clsDropDown" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <asp:CheckBox ID="cbWatershedActive" CssClass="ChkBox" runat="server" Text="Active" Checked="true" Enabled="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="labelClass">HUC-12</span>
+                                        </td>
+                                        <td>
+                                            <div class="scroll_checkboxes">
+                                                <asp:CheckBoxList Width="180px" ID="cblHUC12" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"
+                                                    Datafield="description" DataValueField="value" CssClass="checkboxlist_nowrap">
+                                                </asp:CheckBoxList>
+                                            </div>
+                                        </td>
+                                        <td><span class="labelClass">Sort By</span></td>
+                                        <td>
+                                            <asp:RadioButtonList ID="rdHUC12order" runat="server" Width="150px" AutoPostBack="True" RepeatDirection="Horizontal"
+                                                OnSelectedIndexChanged="rdHUC12order_SelectedIndexChanged">
+                                                <asp:ListItem>HUC12</asp:ListItem>
+                                                <asp:ListItem>Name</asp:ListItem>
+                                            </asp:RadioButtonList>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Button ID="btnWatershed" runat="server" Text="Add" class="btn btn-info" OnClick="btnWatershed_Click" />
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvWatershedGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel7" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvWatershed" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvWatershed_RowEditing" 
+                                    OnRowUpdating="gvWatershed_RowUpdating"
+                                    OnRowCancelingEdit="gvWatershed_RowCancelingEdit">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="EnterpriseWaterShedID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEnterpriseWaterShedID" runat="Server" Text='<%# Eval("EnterpriseWaterShedID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="EntetrpriseHUCID" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblEntetrpriseHUCID" runat="Server" Text='<%# Eval("EntetrpriseHUCID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Watershed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblwatershed" runat="Server" Text='<%# Eval("WatershedDesc") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Sub Watershed">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblSubWatershed" runat="Server" Text='<%# Eval("WatershedSubDesc") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="HUC-12">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblHUC12" runat="Server" Text='<%# Eval("HUC12Name") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                             <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -465,6 +672,11 @@
 
             $('#<%= cbAddAttribute.ClientID%>').click(function () {
                 $('#<%= dvAttributeForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvNewWatershedForm.ClientID%>').toggle($('#<%= cbAddWatershed.ClientID%>').is(':checked'));
+            $('#<%= cbAddWatershed.ClientID%>').click(function () {
+                $('#<%= dvNewWatershedForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= txtAcresOwned.ClientID%>').keyup(function () {

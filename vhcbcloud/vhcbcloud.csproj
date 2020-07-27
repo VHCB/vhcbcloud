@@ -96,10 +96,6 @@
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="WebGrease">
-      <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-    </Reference>
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
@@ -115,9 +111,13 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi, Version=2016.3.0.104, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Exago\eWebReportsAPI\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebReportsApi, Version=2019.1.13.263, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +249,7 @@
     <Content Include="Housing\HousingFederalPrograms.aspx" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
     <Content Include="Housing\HousingUnitsServices.aspx" />
+    <Content Include="HUC12.aspx" />
     <Content Include="Images\%24%24.jpg" />
     <Content Include="Images\%24%24.png" />
     <Content Include="Images\%24%24_0.png" />
@@ -265,6 +266,7 @@
     <Content Include="Images\print.png" />
     <Content Include="Images\Right.png" />
     <Content Include="Images\Search.png" />
+    <Content Include="Lead\BuildingUnitCost.aspx" />
     <Content Include="Lead\ProjectLeadBuildings.aspx" />
     <Content Include="Lead\ProjectLeadData.aspx" />
     <Content Include="Lead\ProjectLeadMilestones.aspx" />
@@ -410,6 +412,7 @@
     <Content Include="TestCurrencyController.aspx" />
     <Content Include="TestExago.aspx" />
     <Content Include="TransferDisbursements.aspx" />
+    <Content Include="TransferVoids.aspx" />
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability\EnterpriseEvaluations.aspx" />
     <Content Include="Viability\EnterpriseFundamentals.aspx" />
@@ -895,6 +898,20 @@
     <Compile Include="Housing\HousingUnitsServices.aspx.designer.cs">
       <DependentUpon>HousingUnitsServices.aspx</DependentUpon>
     </Compile>
+    <Compile Include="HUC12.aspx.cs">
+      <DependentUpon>HUC12.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HUC12.aspx.designer.cs">
+      <DependentUpon>HUC12.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Lead\BuildingUnitCost.aspx.cs">
+      <DependentUpon>BuildingUnitCost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Lead\BuildingUnitCost.aspx.designer.cs">
+      <DependentUpon>BuildingUnitCost.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Lead\ProjectLeadBuildings.aspx.cs">
       <DependentUpon>ProjectLeadBuildings.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1131,6 +1148,13 @@
     </Compile>
     <Compile Include="TransferDisbursements.aspx.designer.cs">
       <DependentUpon>TransferDisbursements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransferVoids.aspx.cs">
+      <DependentUpon>TransferVoids.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransferVoids.aspx.designer.cs">
+      <DependentUpon>TransferVoids.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurity.aspx.cs">
       <DependentUpon>UserSecurity.aspx</DependentUpon>

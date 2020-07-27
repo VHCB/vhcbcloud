@@ -162,20 +162,21 @@ namespace vhcbcloud
         protected void GetRoleAccess()
         {
             ddlProgram.Enabled = false;
+            chkApprove.Enabled = false;
 
             DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
             if (dr != null)
             {
-                if (ddlManager.SelectedValue == dr["userid"].ToString())
-                    chkApprove.Enabled = true;
-                else
-                    chkApprove.Enabled = false;
+                //if (ddlManager.SelectedValue == dr["userid"].ToString())
+                //    chkApprove.Enabled = true;
+                //else
+                //    chkApprove.Enabled = false;
 
                 if (dr["usergroupid"].ToString() == "0") // Admin Only
                 {
                     ddlProgram.Enabled = true;
                     hfIsVisibleBasedOnRole.Value = "true";
-                    chkApprove.Enabled = true;
+                    //chkApprove.Enabled = true;
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
@@ -189,7 +190,7 @@ namespace vhcbcloud
                     {
                         btnProjectUpdate.Visible = true;
                         hfIsVisibleBasedOnRole.Value = "true";
-                        chkApprove.Enabled = true;
+                        //chkApprove.Enabled = true;
                     }
                 }
                 else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
@@ -222,6 +223,9 @@ namespace vhcbcloud
                     CheckCreateEventFxnAccess();
                 }
             }
+            if(!chkApprove.Enabled && CheckVerifyCheckBoxAccess())
+                chkApprove.Enabled = true;
+
         }
         protected bool GetRoleAuth()
         {
@@ -416,12 +420,12 @@ namespace vhcbcloud
             }
         }
 
-        private void BindBoardDates(DropDownList ddList)
+        private void BindBoardDates(DropDownList ddList, string MeetingType)
         {
             try
             {
                 ddList.Items.Clear();
-                ddList.DataSource = LookupValuesData.GetTop6BoardDates();
+                ddList.DataSource = LookupValuesData.GetTop6BoardDates(MeetingType);
                 ddList.DataValueField = "BoardDate";
                 ddList.DataTextField = "BoardDate";
                 ddList.DataBind();
@@ -559,57 +563,67 @@ namespace vhcbcloud
                 //if (ddlProject.SelectedIndex != 0)
                 if (txtProjectNumDDL.Text != "")
                 {
-                    ibAwardSummary.Visible = true;
-                    btnProjectNotes1.Visible = true;
-                    ImgPreviousProject.Visible = true;
-                    ImgNextProject.Visible = true;
-
-                    dvTabs.Visible = true;
-                    dvUpdate.Visible = true;
-                    //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
-                    //txtProjectName.Text = tokens[1];
                     hfProjectId.Value = GetProjectID(txtProjectNumDDL.Text).ToString();
-                    //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
-                    ProjectNotesSetUp(hfProjectId.Value);
-                    BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
-                    GetRoleAccess();
+                    if (hfProjectId.Value != "0")
+                    {
+                        ibAwardSummary.Visible = true;
+                        btnProjectNotes1.Visible = true;
+                        ImgPreviousProject.Visible = true;
+                        ImgNextProject.Visible = true;
 
-                    //ProjectNames
-                    dvNewProjectName.Visible = true;
-                    //dvProjectName.Visible = false;
-                    dvProjectNamesGrid.Visible = true;
-                    BindProjectNamesGrid();
-                    cbAddProjectName.Checked = false;
+                        dvTabs.Visible = true;
+                        dvUpdate.Visible = true;
+                        //string[] tokens = ddlProject.SelectedValue.ToString().Split('|');
+                        //txtProjectName.Text = tokens[1];
 
-                    //Address
-                    dvNewAddress.Visible = true;
-                    //dvAddress.Visible = false;
-                    dvAddressGrid.Visible = true;
-                    BindAddressGrid();
-                    cbAddAddress.Checked = false;
+                        //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
+                        ProjectNotesSetUp(hfProjectId.Value);
+                        
+                        BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
+                        GetRoleAccess();
 
-                    //Entity
-                    dvNewEntity.Visible = true;
-                    //dvEntity.Visible = false;
-                    dvEntityGrid.Visible = true;
-                    BindProjectEntityGrid();
-                    cbAttachNewEntity.Checked = false;
+                        if (chkApprove.Checked)
+                            hfIsVisibleBasedOnRole.Value = "false";
 
-                    //RelatedProjects
-                    dvNewRelatedProjects.Visible = true;
-                    //dvRelatedProjects.Visible = false;
-                    dvRelatedProjectsGrid.Visible = true;
-                    // BindRelatedProjects(ddlRelatedProjects);
-                    BindRelatedProjectsGrid();
-                    cbRelatedProjects.Checked = false;
+                        //ProjectNames
+                        dvNewProjectName.Visible = true;
+                        //dvProjectName.Visible = false;
+                        dvProjectNamesGrid.Visible = true;
+                        BindProjectNamesGrid();
+                        cbAddProjectName.Checked = false;
 
-                    //ProjectEvent
-                    dvNewProjectEvent.Visible = true;
-                    //dvProjectEventGrid.Visible = true;
-                    //BindPrjectEventGrid();
-                    dvMilestoneGrid.Visible = true;
-                    BindMilestoneGrid();
-                    cbAddProjectEvent.Checked = false;
+                        //Address
+                        dvNewAddress.Visible = true;
+                        //dvAddress.Visible = false;
+                        dvAddressGrid.Visible = true;
+                        BindAddressGrid();
+                        cbAddAddress.Checked = false;
+
+                        //Entity
+                        dvNewEntity.Visible = true;
+                        //dvEntity.Visible = false;
+                        dvEntityGrid.Visible = true;
+                        BindProjectEntityGrid();
+                        cbAttachNewEntity.Checked = false;
+
+                        //RelatedProjects
+                        dvNewRelatedProjects.Visible = true;
+                        //dvRelatedProjects.Visible = false;
+                        dvRelatedProjectsGrid.Visible = true;
+                        // BindRelatedProjects(ddlRelatedProjects);
+                        BindRelatedProjectsGrid();
+                        cbRelatedProjects.Checked = false;
+
+                        //ProjectEvent
+                        dvNewProjectEvent.Visible = true;
+                        //dvProjectEventGrid.Visible = true;
+                        //BindPrjectEventGrid();
+                        dvMilestoneGrid.Visible = true;
+                        BindMilestoneGrid();
+                        cbAddProjectEvent.Checked = false;
+                    }
+                    else
+                        LogMessage("Project does not exist");
                 }
                 else
                 {
@@ -722,7 +736,15 @@ namespace vhcbcloud
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
             chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
-            cbProjectActive.Checked = Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString());
+           
+
+            if (Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString()))
+            {
+                cbProjectActive.Checked = Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString());
+                if (ProjectMaintenanceData.IsFinanceTransExist(ProjectId))
+                    cbProjectActive.Enabled = false;
+            }
+            
 
             dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
@@ -942,45 +964,56 @@ namespace vhcbcloud
             {
                 if (IsProjectInfoFormValid(true))
                 {
-                    ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
-                        txtPrimaryApplicant.Text, txtProjectName.Text,
-                        DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
-                        DataUtils.GetInt(ddlTargetYear.SelectedValue.ToString()),
-                        cbProjectActive.Checked,
-                        chkApprove.Checked);
+                    if (!cbProjectActive.Checked &&
+                        ProjectMaintenanceData.IsFinanceTransExist(DataUtils.GetInt(hfProjectId.Value)))
+                    {
+                        LogMessage("Finance transactions already exist for this Project, so you can't de-activate.");
+                    }
+                    else
+                    {
+                        ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlProgram.SelectedValue.ToString()), DataUtils.GetInt(ddlManager.SelectedValue.ToString()),
+                            txtPrimaryApplicant.Text, txtProjectName.Text,
+                            DataUtils.GetInt(ddlProjectGoal.SelectedValue.ToString()),
+                            DataUtils.GetInt(ddlTargetYear.SelectedValue.ToString()),
+                            cbProjectActive.Checked,
+                            chkApprove.Checked);
 
-                    this.BindProjectEntityGrid();
+                        this.BindProjectEntityGrid();
 
-                    LogMessage("Project updated successfully");
+                        if(!cbProjectActive.Checked)
+                            LogMessage("Project has been inactivated - if this was in error, re - activate now");
+                        else
+                            LogMessage("Project updated successfully");
 
-                    GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
-                    PopulateForm(DataUtils.GetInt(hfProjectId.Value));
+                        GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                        PopulateForm(DataUtils.GetInt(hfProjectId.Value));
 
-                    //ClearForm();
-                    //ddlProject.SelectedIndex = -1;
+                        //ClearForm();
+                        //ddlProject.SelectedIndex = -1;
 
-                    //dvUpdate.Visible = false;
+                        //dvUpdate.Visible = false;
 
-                    ////ProjectNames
-                    //dvNewProjectName.Visible = false;
-                    ////dvProjectName.Visible = false;
-                    //dvProjectNamesGrid.Visible = false;
+                        ////ProjectNames
+                        //dvNewProjectName.Visible = false;
+                        ////dvProjectName.Visible = false;
+                        //dvProjectNamesGrid.Visible = false;
 
-                    ////Address
-                    //dvNewAddress.Visible = false;
-                    ////dvAddress.Visible = false;
-                    //dvAddressGrid.Visible = false;
+                        ////Address
+                        //dvNewAddress.Visible = false;
+                        ////dvAddress.Visible = false;
+                        //dvAddressGrid.Visible = false;
 
-                    ////Entity
-                    //dvNewEntity.Visible = false;
-                    //// dvEntity.Visible = false;
-                    //dvEntityGrid.Visible = false;
+                        ////Entity
+                        //dvNewEntity.Visible = false;
+                        //// dvEntity.Visible = false;
+                        //dvEntityGrid.Visible = false;
 
-                    ////RelatedProjects
-                    //dvNewRelatedProjects.Visible = false;
-                    ////dvRelatedProjects.Visible = false;
-                    //dvRelatedProjectsGrid.Visible = false;
+                        ////RelatedProjects
+                        //dvNewRelatedProjects.Visible = false;
+                        ////dvRelatedProjects.Visible = false;
+                        //dvRelatedProjectsGrid.Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2546,20 +2579,23 @@ namespace vhcbcloud
 
         private void AdminMilestoneChanged()
         {
+            ddlBoardDate.Visible = false;
+            txtEventDate.Visible = true;
+
             if (ddlAdminMilestone.SelectedIndex != 0)
             {
                 dvProgram.Visible = false;
                 dvAdmin.Visible = true;
 
-                ddlBoardDate.Visible = false;
-                txtEventDate.Visible = true;
+                //ddlBoardDate.Visible = false;
+                //txtEventDate.Visible = true;
 
-                if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
-                {
-                    BindBoardDates(ddlBoardDate);
-                    ddlBoardDate.Visible = true;
-                    txtEventDate.Visible = false;
-                }
+                //if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
+                //{
+                //    BindBoardDates(ddlBoardDate, ddlAdminSubMilestone.SelectedItem.Text);
+                //    ddlBoardDate.Visible = true;
+                //    txtEventDate.Visible = false;
+                //}
 
                 BindSubLookUP(ddlAdminSubMilestone, DataUtils.GetInt(ddlAdminMilestone.SelectedValue.ToString()));
 
@@ -2685,6 +2721,19 @@ namespace vhcbcloud
             return false;
         }
 
+        private bool CheckVerifyCheckBoxAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "38061")
+                    return true;
+            }
+            return false;
+        }
+
         protected void btnGetLatLong_Click(object sender, EventArgs e)
         {
             if (txtStreetNo.Text.Trim() == "" && cbReqStreetNo.Checked)
@@ -2753,7 +2802,17 @@ namespace vhcbcloud
                         if (types == "administrative_area_level_2,political")
                         {
                             //txtCounty.Text = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
-                            PopulateDropDown(ddlCounty, res.Results[0].AddressComponents[ii].ShortName.Replace("County", ""));
+                            string countyGoogle = res.Results[0].AddressComponents[ii].ShortName.Replace("County", "");
+
+                            var list = new List<string>();
+                            list.Add("washington");
+                            list.Add("essex");
+                            list.Add("chittenden");
+
+                            if (list.Contains(countyGoogle.Trim().ToLower()))
+                                PopulateDropDown(ddlCounty, countyGoogle.Trim() + " County");
+                            else
+                                PopulateDropDown(ddlCounty, countyGoogle.Trim());
                         }
                         if (types == "neighborhood" || types == "neighborhood,political")
                         {
@@ -2819,8 +2878,16 @@ namespace vhcbcloud
                         }
                         if (types == "sublocality,political" || types == "locality,political" || types == "neighborhood,political" || types == "administrative_area_level_3,political")
                         {
-                            //txtTown.Text = res.Results[0].AddressComponents[ii].LongName;
-                            PopulateDropDown(ddlTown, res.Results[0].AddressComponents[ii].LongName);
+                            var list = new List<string>();
+                            list.Add("rutland town");
+                            list.Add("rutland city");
+                            list.Add("barre town");
+                            list.Add("barre city");
+
+                            if (!list.Contains(ddlTown.SelectedItem.Text.ToLower()))
+                            {
+                                PopulateDropDown(ddlTown, res.Results[0].AddressComponents[ii].LongName);
+                            }
                             BindCountyAndVillage();
                         }
                         if (types == "administrative_area_level_1,political")
@@ -2850,6 +2917,18 @@ namespace vhcbcloud
         {
             BindCounty(ddlTown.SelectedValue);
             BindVillages(ddlTown.SelectedValue);
+        }
+
+        protected void ddlAdminSubMilestone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlBoardDate.Items.Clear();
+            
+            if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
+            {
+                BindBoardDates(ddlBoardDate, ddlAdminSubMilestone.SelectedItem.Text);
+                ddlBoardDate.Visible = true;
+                txtEventDate.Visible = false;
+            }
         }
     }
 

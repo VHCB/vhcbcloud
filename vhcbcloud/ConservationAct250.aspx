@@ -189,7 +189,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 149px">
-                                            <span class="labelClass">Acres Developed</span>
+                                            <span class="labelClass">Acres Protected</span>
                                         </td>
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtAcresDeveloped" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
@@ -305,7 +305,7 @@
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" ShowFooter="True"
                                     OnRowEditing="gvDeveloperPayments_RowEditing" OnRowCancelingEdit="gvDeveloperPayments_RowCancelingEdit"
-                                    OnRowDataBound="gvDeveloperPayments_RowDataBound" OnRowUpdating="gvDeveloperPayments_RowUpdating">
+                                    OnRowDataBound="gvDeveloperPayments_RowDataBound" OnRowUpdating="gvDeveloperPayments_RowUpdating" OnSelectedIndexChanged="gvDeveloperPayments_SelectedIndexChanged">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                     <HeaderStyle CssClass="headerStyle" />

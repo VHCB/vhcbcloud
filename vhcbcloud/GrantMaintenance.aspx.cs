@@ -551,7 +551,7 @@ namespace vhcbcloud
 
             if (URL != "")
             {
-                if (!URL.Contains("http"))
+                if (!URL.Contains("http") && !URL.Contains("fda"))
                     URL = "http://" + URL;
             }
 

@@ -88,19 +88,25 @@
                                             </asp:DropDownList>
                                         </td>
                                         <td style="width: 140px"><span class="labelClass">Number of Units</span></td>
-                                        <td style="width: 215px">
+                                        <td style="width: 100px">
                                             <asp:TextBox ID="txtTotFedProgUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 100px"></td>
+                                         <td style="width: 170px"><span class="labelClass">Project-Based Units</span></td>
+                                        <td style="width: 100px">
+                                            <asp:TextBox ID="txtPBUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                         <td style="width: 140px"><span class="labelClass">Fixed Units</span></td>
+                                        <td style="width: 100px">
+                                            <asp:TextBox ID="txtFixedUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                       
                                         <td style="width: 180px">
                                             <asp:Button ID="AddFederalProgram" runat="server" Text="Add" class="btn btn-info"
                                                 OnClick="AddFederalProgram_Click" />
                                         </td>
-                                        <td style="width: 170px"></td>
-                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" style="height: 5px"></td>
+                                        <td colspan="9" style="height: 5px"></td>
                                     </tr>
                                 </table>
                             </asp:Panel>
@@ -146,6 +152,26 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtNumUnits" CssClass="clsTextBoxBlueSm" runat="server"
                                                     Text='<%# Eval("NumUnits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project-Based Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPBUnits" runat="Server" Text='<%# Eval("PBUnits") %>' />
+                                                <asp:HiddenField ID="HiddenPBUnits" runat="server" Value='<%#Eval("PBUnits")%>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtPBUnits" CssClass="clsTextBoxBlueSm" runat="server"
+                                                    Text='<%# Eval("PBUnits") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Fixed Units">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFixedUnits" runat="Server" Text='<%# Eval("FixedUnits") %>' />
+                                                <asp:HiddenField ID="HiddenFixedUnits" runat="server" Value='<%#Eval("FixedUnits")%>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtFixedUnits" CssClass="clsTextBoxBlueSm" runat="server"
+                                                    Text='<%# Eval("FixedUnits") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Active">

@@ -99,7 +99,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" style="height: 5px"></td>
+                            <td colspan="4" style="text-align: right">
+                                <asp:ImageButton ID="ImgProjectNotesReport" ImageUrl="~/Images/print.png" ToolTip="Project Notes Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgProjectNotesReport_Click" Visible="false" />
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">

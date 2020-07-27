@@ -24,6 +24,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind Projects dropdown
+        /// </summary>
         protected void BindProjects()
         {
             try
@@ -43,6 +46,9 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// Bind financial transactions drop down
+        /// </summary>
         protected void BindFinancialTrans()
         {
             try
@@ -74,7 +80,11 @@ namespace vhcbcloud
             }
             return ProjNames.ToArray();
         }
-
+        /// <summary>
+        /// Project Fiter dropdown changed this event will fire
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlProjFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblErrorMsg.Text = "";
@@ -138,6 +148,12 @@ namespace vhcbcloud
             }
         }
 
+        /// <summary>
+        /// When Submit button click, doing field validation
+        /// Populating Transactions based on selection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubit_click(object sender, EventArgs e)
         {
             DateTime tranFromDate;
@@ -220,7 +236,15 @@ namespace vhcbcloud
             }
         }
 
-
+        /// <summary>
+        /// Populate Transactions based on user selection
+        /// GetFinancialTransactions method fetch data from database 
+        /// Grid data binding
+        /// </summary>
+        /// <param name="Projectid"></param>
+        /// <param name="TranFromDate"></param>
+        /// <param name="TranToDate"></param>
+        /// <param name="TransType"></param>
         private void PopulateTransactions(int Projectid, DateTime TranFromDate, DateTime TranToDate, int TransType)
         {
             DataTable dtable = FinancialTransactions.GetFinancialTransactions(Projectid, TranFromDate, TranToDate, TransType);
@@ -246,6 +270,13 @@ namespace vhcbcloud
                 //this.MasterPageFile = "SiteNonAdmin.Master";
             }
         }
+
+        /// <summary>
+        /// Transaction grid population on databound
+        /// calculating total fund amount
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -288,6 +319,12 @@ namespace vhcbcloud
             //}
         }
 
+        /// <summary>
+        /// Selected transactions submittion
+        /// calling UpdateFinancialTransactionStatus method to comple finalization
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnTranSubmit_click(object sender, EventArgs e)
         {
             foreach (GridViewRow row in gvTransactions.Rows)

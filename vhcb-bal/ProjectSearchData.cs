@@ -13,7 +13,9 @@ namespace DataAccessLayer
     public class ProjectSearchData
     {
         public static DataTable ProjectSearch(string ProjNum, string ProjectName, string AppName, string LKProgram,
-            string LKProjectType, string Town, string County, bool IsPrimaryApplicant, bool ActiveProject, string TargetYr)
+            string LKProjectType, string Town, string County, bool IsPrimaryApplicant, bool ActiveProject, 
+            string TargetYr, string MilestoneType, string EventId, string FromDate, string ToDate, 
+            string UserName, string KeyStaff)
         {
             DataTable dt = null;
             try
@@ -26,7 +28,7 @@ namespace DataAccessLayer
                     {
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "ProjectSearch";
+                        command.CommandText = "ProjectSearchNew";
 
                         //7 Parameters 
                         if (ProjNum != "____-___")
@@ -45,11 +47,22 @@ namespace DataAccessLayer
                             command.Parameters.Add(new SqlParameter("County", County));
                         if (TargetYr != "NA")
                             command.Parameters.Add(new SqlParameter("TargetYr", DataUtils.GetInt(TargetYr)));
-                        
+
+                        if (MilestoneType != "")
+                            command.Parameters.Add(new SqlParameter("MilestoneType", MilestoneType));
+                        if (EventId != "NA" && EventId != null && EventId != "")
+                            command.Parameters.Add(new SqlParameter("EventId", DataUtils.GetInt(EventId)));
+                        if (FromDate != "")
+                            command.Parameters.Add(new SqlParameter("FromDate", DataUtils.GetDate(FromDate)));
+                        if (ToDate != "")
+                            command.Parameters.Add(new SqlParameter("ToDate", DataUtils.GetDate(ToDate)));
 
                         command.Parameters.Add(new SqlParameter("IsPrimaryApplicant", IsPrimaryApplicant));
                         command.Parameters.Add(new SqlParameter("ActiveProject", ActiveProject));
+                        command.Parameters.Add(new SqlParameter("userId", UserName));
                         
+                        if (KeyStaff != "NA" && KeyStaff != null && KeyStaff != "")
+                            command.Parameters.Add(new SqlParameter("KeyStaff", DataUtils.GetInt(KeyStaff)));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -210,6 +223,39 @@ namespace DataAccessLayer
                 connection.Close();
             }
             return dtProjects;
+        }
+
+        public static int GetSearchRecordCount()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetSearchRecordCount";
+
+                        SqlParameter parmMessage = new SqlParameter("@SearchRecordCount", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return DataUtils.GetInt(command.Parameters["@SearchRecordCount"].Value.ToString()); ;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
@@ -27,6 +29,7 @@ namespace vhcbcloud
                 BindControls();
                 //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=";
                 ProjectNotesSetUp();
+                BindKeyStaff();
             }
             if (cbPrimaryApplicant.Checked)
                 gvSearchresults.Columns[4].HeaderText = "Applicant Name";
@@ -51,7 +54,7 @@ namespace vhcbcloud
             BindLookUP(ddlProgram, 34);
             BindLookUP(ddlProjectType, 119);
             BindLookUP(ddlTargetYear, 2272);
-            
+
             //BindPrimaryApplicants();
             BindProjectTowns();
             BindCounties();
@@ -201,10 +204,15 @@ namespace vhcbcloud
 
         protected void btnProjectSearch_Click(object sender, EventArgs e)
         {
+            string ddlMilestoneSelectedValue = HttpContext.Current.Request.Form["ctl00$MainContent$ddlMilestone"];
+
             dvSearchResults.Visible = true;
             DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
-                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked, ddlTargetYear.SelectedValue.ToString());
+                ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked, 
+                ddlTargetYear.SelectedValue.ToString(), rbMilestone.SelectedValue, ddlMilestoneSelectedValue,
+                txtMilestoneFromDate.Text, txtMilestoneToDate.Text, 
+                Context.User.Identity.GetUserName(), ddlKeyStaff.SelectedValue.ToString());
 
             List<int> lstProjectId = new List<int>();
             Session["lstSearchResultProjectId"] = lstProjectId;
@@ -222,10 +230,21 @@ namespace vhcbcloud
 
             Session["dtSearchResults"] = dtSearchResults;
             lblSearcresultsCount.Text = dtSearchResults.Rows.Count.ToString();
+
+            if (dtSearchResults.Rows.Count > 0 &&
+                dtSearchResults.Rows.Count <= ProjectSearchData.GetSearchRecordCount())
+            {
+                ImgSearchResultReport.Visible = true;
+            }
+            else
+                ImgSearchResultReport.Visible = false;
+
             gvSearchresults.DataSource = dtSearchResults;
             gvSearchresults.DataBind();
-        }
 
+            if(ddlMilestoneSelectedValue != null)
+                PopulateMilestone(rbMilestone.SelectedItem.ToString(), ddlMilestoneSelectedValue);
+        }
         #region GridView Sorting Functions
 
         //======================================== GRIDVIEW EventHandlers END
@@ -302,6 +321,13 @@ namespace vhcbcloud
             ddlCounty.SelectedIndex = -1;
             ddlProjectType.SelectedIndex = -1;
             cbProjectActive.Checked = true;
+            ddlMilestone.SelectedIndex = -1;
+            ddlMilestone.Items.Clear();
+            rbMilestone.SelectedIndex = -1;
+            txtMilestoneFromDate.Text = "";
+            txtMilestoneToDate.Text = "";
+            ddlTargetYear.SelectedIndex = -1;
+            ddlKeyStaff.SelectedIndex = -1;
         }
 
         protected void gvSearchresults_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -385,5 +411,179 @@ namespace vhcbcloud
                 return 0;
             }
         }
+
+        //protected void rbMilestone_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    ddlMilestone.Enabled = true;
+
+        //    if (rbMilestone.SelectedValue.ToLower().Trim() == "admin")
+        //    {
+        //        BindLookUP(ddlMilestone, 163);
+        //    }
+        //    else
+        //    {
+        //        if (ddlProgram.SelectedValue.ToString() == "NA")
+        //            ddlMilestone.Enabled = false;
+        //        else
+        //            BindProgramMilestone();
+        //    }
+        //}
+
+        private void BindProgramMilestone(string programvalue)
+        {
+            if (programvalue == "144") //Housing
+                BindLookUP(ddlMilestone, 160);
+            else if (programvalue == "145") //Conservation
+                BindLookUP(ddlMilestone, 159);
+            else if (programvalue == "148") //Viability
+                BindLookUP(ddlMilestone, 162);
+            else if (programvalue == "146") //Lead
+                BindLookUP(ddlMilestone, 154);
+            else if (programvalue == "147") //Americorps
+                BindLookUP(ddlMilestone, 161);
+            else
+                ddlMilestone.Items.Clear();
+        }
+
+        //protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (ddlProgram.SelectedValue.ToString() != "NA")
+        //        ddlMilestone.Enabled = true;
+
+        //    if (rbMilestone.SelectedValue.ToLower().Trim() == "program")
+        //    {
+        //        BindProgramMilestone();
+        //    }
+        //}
+
+        //[WebMethod]
+        //public void PopulateMilestone()
+        //{
+        //    ddlMilestone.Enabled = true;
+
+        //    if (rbMilestone.SelectedValue.ToLower().Trim() == "admin")
+        //    {
+        //        BindLookUP(ddlMilestone, 163);
+        //    }
+        //    else
+        //    {
+        //        if (ddlProgram.SelectedValue.ToString() == "NA")
+        //            ddlMilestone.Enabled = false;
+        //        else
+        //            BindProgramMilestone();
+        //    }
+
+        //    //DataTable dt = ProjectMaintenanceData.GetVillages(DataUtils.GetInt(zip));
+
+        //    //List<KeyVal> listVillages = new List<KeyVal>();
+
+        //    //KeyVal objKeyVal0 = new KeyVal();
+        //    //objKeyVal0.ID = "";
+        //    //objKeyVal0.Name = "Select";
+        //    //listVillages.Insert(0, objKeyVal0);
+
+        //    //if (dt.Rows.Count > 0)
+        //    //{
+        //    //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    //    {
+        //    //        KeyVal objKeyVal = new KeyVal();
+        //    //        objKeyVal.ID = dt.Rows[i]["village"].ToString();
+        //    //        objKeyVal.Name = dt.Rows[i]["village"].ToString();
+        //    //        listVillages.Insert(i + 1, objKeyVal);
+        //    //    }
+
+        //    //}
+        //    //JavaScriptSerializer jscript = new JavaScriptSerializer();
+        //    //return jscript.Serialize(listVillages);
+        //}
+
+        private void PopulateMilestone(string rbMilestoneSelectedItem, string ddlMilestoneSelectedValue)
+        {
+            if (rbMilestoneSelectedItem.ToLower().Trim() == "admin")
+            {
+                BindLookUP(ddlMilestone, 163);
+            }
+            else
+            {
+                BindProgramMilestone(ddlProgram.SelectedValue);
+            }
+
+            if (ddlMilestoneSelectedValue != "NA")
+                PopulateDropDown(ddlMilestone, ddlMilestoneSelectedValue);
+        }
+
+        [WebMethod]
+        public static string PopulateMilestone(MileStoneInput input)
+        {
+            DataTable dt = null;
+
+            if (input.MileStoneType.ToLower().Trim() == "admin")
+            {
+                dt = LookupValuesData.Getlookupvalues(163);
+            }
+            else
+            {
+                if (input.Programvalue.ToString() == "144") //Housing
+                    dt = LookupValuesData.Getlookupvalues(160);
+                else if (input.Programvalue.ToString() == "145") //Conservation
+                    dt = LookupValuesData.Getlookupvalues(159);
+                else if (input.Programvalue.ToString() == "148") //Viability
+                    dt = LookupValuesData.Getlookupvalues(162);
+                else if (input.Programvalue.ToString() == "146") //Lead
+                    dt = LookupValuesData.Getlookupvalues(154);
+                else if (input.Programvalue.ToString() == "147") //Americorps
+                    dt = LookupValuesData.Getlookupvalues(161);
+                else
+                    dt = null;
+            }
+
+            List<KeyVal> listMileStones = new List<KeyVal>();
+
+            KeyVal objKeyVal0 = new KeyVal();
+            objKeyVal0.ID = "";
+            objKeyVal0.Name = "Select";
+            listMileStones.Insert(0, objKeyVal0);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    KeyVal objKeyVal = new KeyVal();
+                    objKeyVal.ID = dt.Rows[i]["typeid"].ToString();
+                    objKeyVal.Name = dt.Rows[i]["description"].ToString();
+                    listMileStones.Insert(i + 1, objKeyVal);
+                }
+            }
+            JavaScriptSerializer jscript = new JavaScriptSerializer();
+            return jscript.Serialize(listMileStones);
+        }
+
+        protected void ImgSearchResultReport_Click(object sender, ImageClickEventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", Helper.GetSerachResults(Context.User.Identity.GetUserName(), "Search Results"));
+        }
+
+        protected void BindKeyStaff()
+        {
+            try
+            {
+                ddlKeyStaff.Items.Clear();
+                ddlKeyStaff.DataSource = LookupValuesData.GetManagers();
+                ddlKeyStaff.DataValueField = "UserId";
+                ddlKeyStaff.DataTextField = "Name";
+                ddlKeyStaff.DataBind();
+                ddlKeyStaff.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindKeyStaff", "", ex.Message);
+            }
+        }
+    }
+    public class MileStoneInput
+    {
+        public string MileStoneType { get; set; }
+        public string Programvalue { get; set; }
     }
 }

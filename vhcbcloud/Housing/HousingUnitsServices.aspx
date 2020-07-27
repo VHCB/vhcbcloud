@@ -251,6 +251,98 @@
                     </div>
                 </div>
 
+                <div class="panel-width" runat="server" id="dvTaxCredit">
+                            <div class="panel panel-default" style="margin-bottom: 2px;">
+                                <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <h3 class="panel-title">Tax Credit</h3>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <asp:CheckBox ID="cbAddTaxCredit" runat="server" Text="Add New Tax Credit" />
+                                                <asp:ImageButton ID="ImgTaxCredit" ImageUrl="~/Images/print.png" ToolTip="Tax Credit Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgTaxCredit_Click" />
+                                    
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvTaxCreditForm">
+                                    <asp:Panel runat="server" ID="Panel19">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 240px"><span class="labelClass">Tax Credit</span></td>
+                                                <td style="width: 215px">
+                                                    <asp:DropDownList ID="ddlTaxCredit" CssClass="clsDropDownLong" runat="server">
+                                                    </asp:DropDownList>
+                                                </td>
+                                                <td style="width: 100px"></td>
+                                                <td style="width: 180px">
+                                                    <asp:Button ID="btnAddTaxCredit" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddTaxCredit_Click" />
+
+                                                </td>
+                                                <td style="width: 170px"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="height: 5px"></td>
+                                            </tr>
+                                        </table>
+                                    </asp:Panel>
+                                </div>
+
+                                <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvTaxCreditGrid" runat="server">
+                                    <asp:Panel runat="server" ID="Panel20" Width="100%" Height="100px" ScrollBars="Vertical">
+                                        <asp:GridView ID="gvTaxCredit" runat="server" AutoGenerateColumns="False"
+                                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                            OnRowEditing="gvTaxCredit_RowEditing" 
+                                            OnRowCancelingEdit="gvTaxCredit_RowCancelingEdit" 
+                                            OnRowUpdating="gvTaxCredit_RowUpdating">
+                                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                            <HeaderStyle CssClass="headerStyle" />
+                                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                            <RowStyle CssClass="rowStyle" />
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="ProjectHouseTaxCredits" Visible="false">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblProjectHouseTaxCreditsID" runat="Server" Text='<%# Eval("ProjectHouseTaxCredits") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Tax Credit">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblTaxCredit" runat="Server" Text='<%# Eval("TaxCreditDesc") %>' />
+                                                    </ItemTemplate>
+                                                    <ItemStyle Width="500px" />
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Active">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                                    </EditItemTemplate>
+                                                    <ItemStyle Width="350px" />
+                                                </asp:TemplateField>
+                                                <asp:TemplateField ShowHeader="False">
+                                                    <EditItemTemplate>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                        &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                                    </EditItemTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </asp:Panel>
+                                </div>
+                            </div>
+                        </div>
+
                 <div class="panel-width" runat="server" id="dvNewSingle">
                     <div class="panel panel-default ">
                         <div class="panel-heading ">
@@ -1330,6 +1422,12 @@
 
             $('#<%= cbAddSuppService.ClientID%>').click(function () {
                 $('#<%= dvSuppServiceForm.ClientID%>').toggle(this.checked);
+            }).change();
+
+            $('#<%= dvTaxCreditForm.ClientID%>').toggle($('#<%= cbAddTaxCredit.ClientID%>').is(':checked'));
+
+            $('#<%= cbAddTaxCredit.ClientID%>').click(function () {
+                $('#<%= dvTaxCreditForm.ClientID%>').toggle(this.checked);
             }).change();
 
             $('#<%= dvSecServiceForm.ClientID%>').toggle($('#<%= cbAddSecService.ClientID%>').is(':checked'));
