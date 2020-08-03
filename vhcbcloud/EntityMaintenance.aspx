@@ -170,7 +170,8 @@
                                         </td>
                                         <td><span class="labelClass">Fiscal Yr End</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtFiscalYearEnd" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
+                                            <asp:DropDownList ID="ddlFYEnd" runat="server" CssClass="clsDropDown">
+                                            </asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -262,10 +263,25 @@
                                         <td>
                                             <asp:CheckBox ID="cbFileHold" CssClass="ChkBox" runat="server" Text="" Enabled="false" />
                                         </td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                            <span class="labelClass" runat="server" id="Span2">EIN</span>
+                                            </td>
+                                        <td>
+                                            <asp:TextBox ID="txtEIN" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                        </td>
                                     </tr>
                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                     <tr>
+                                         <td>
+                                            <span class="labelClass" runat="server" id="Span3">DUNS</span>
+                                            </td>
+                                        <td colspan="5">
+                                            <asp:TextBox ID="txtDUNS" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                 </table>

@@ -284,6 +284,7 @@ namespace vhcbcloud
             //EventProgramSelection();
             BindTown();
             BindStates();
+            BindLookUP(ddlFYEnd, 172); 
         }
 
         private void BindStates()
@@ -659,11 +660,11 @@ namespace vhcbcloud
 
                     if (ddlEntityRole.SelectedItem.ToString().ToLower() == "individual")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
                             txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
-                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //1=Individual
+                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null); //1=Individual
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
@@ -683,22 +684,23 @@ namespace vhcbcloud
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text,
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()),
                             txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
-                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //2=Organization
+                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, 
+                           txtEIN.Text, txtDUNS.Text); //2=Organization
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
                     }
                     else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
+                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked); //3=Farm
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null); //3=Farm
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -719,11 +721,12 @@ namespace vhcbcloud
                     string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
                     string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
 
-                    EntityMaintenanceData.UpdateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), txtFiscalYearEnd.Text, txtWebsite.Text,
+                    EntityMaintenanceData.UpdateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
                            txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                            txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked);
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked, 
+                           txtEIN.Text, txtDUNS.Text);
                     ClearForm();
                     PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                     LogMessage("Entity Updated Successfully");
@@ -833,8 +836,10 @@ namespace vhcbcloud
         {
             hfFarmId.Value = drEntityData["FarmId"].ToString();
             PopulateDropDown(ddlEntityType, drEntityData["LkEntityType"].ToString());
-            txtFiscalYearEnd.Text = drEntityData["FYend"].ToString();
+            PopulateDropDown(ddlFYEnd, drEntityData["FYend"].ToString());
             txtWebsite.Text = drEntityData["website"].ToString();
+            txtDUNS.Text= drEntityData["DUNS"].ToString();
+            txtEIN.Text = drEntityData["EIN"].ToString();
 
             if (drEntityData["WorkPhone"].ToString().Trim() == "")
                 txtWorkPhone.Text = "";
@@ -887,7 +892,7 @@ namespace vhcbcloud
         {
             ddlEntityType.SelectedIndex = -1;
             spnAcctNumber.InnerHtml = "";
-            txtFiscalYearEnd.Text = "";
+            ddlFYEnd.SelectedIndex = -1;
             txtWebsite.Text = "";
             txtHomePhone.Text = "";
             txtWorkPhone.Text = "";
@@ -911,6 +916,8 @@ namespace vhcbcloud
             txtAgrEdu.Text = "";
             txtYearsManagingForm.Text = "";
             ddlDefaultRole.SelectedIndex = -1;
+            txtEIN.Text = "";
+            txtDUNS.Text = "";
         }
 
         protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
