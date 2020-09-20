@@ -436,7 +436,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
             return dr;
         }
 
-        public static void SubmitEnterpriseType(int ProjectID, int EnterPriseType)
+        public static void SubmitEnterpriseType(int ProjectID, int EnterPriseType, string OtherNames)
         {
             try
             {
@@ -452,7 +452,7 @@ namespace VHCBCommon.DataAccessLayer.Viability
 
                         command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                         command.Parameters.Add(new SqlParameter("EnterPriseType", EnterPriseType));
-
+                        command.Parameters.Add(new SqlParameter("OtherNames", OtherNames));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

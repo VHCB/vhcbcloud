@@ -40,7 +40,7 @@
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
-                        <tr>
+                       <%-- <tr>
                             <td style="height: 5px"><span class="labelClass">Owner/Operator</span></td>
                             <td style="height: 5px" colspan="5">
                                 <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
-                        </tr>
+                        </tr>--%>
                     </table>
                 </div>
 

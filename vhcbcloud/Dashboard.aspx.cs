@@ -16,7 +16,7 @@ namespace vhcbcloud
         {
             if (!IsPostBack)
             {
-                string[] Dashboards = Directory.GetFiles("C:\\Reports\\Dashboard", "*.*")
+                string[] Dashboards = Directory.GetFiles("C:\\Reports\\organization\\Dashboard", "*.*")
                                      .Select(Path.GetFileName)
                                      .ToArray();
                 for (int i = 0; i < Dashboards.Length; i++)

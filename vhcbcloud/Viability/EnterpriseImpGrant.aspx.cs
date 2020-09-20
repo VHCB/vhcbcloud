@@ -18,7 +18,7 @@ namespace vhcbcloud.Viability
     public partial class EnterpriseImpGrant : System.Web.UI.Page
     {
         string Pagename = "EnterpriseImpGrant";
-
+        bool IsEvaluationsTabAdded = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             dvMessage.Visible = false;
@@ -26,6 +26,7 @@ namespace vhcbcloud.Viability
 
             hfProjectId.Value = "0";
             ProjectNotesSetUp();
+            
             GenerateTabs();
 
             if (!IsPostBack)
@@ -144,7 +145,7 @@ namespace vhcbcloud.Viability
                 txtAwardDescription.Text = drEntImpGrant["AwardDesc"].ToString();
                 spnLevFunds.InnerHtml = (DataUtils.GetDecimal(drEntImpGrant["ProjCost"].ToString()) - DataUtils.GetDecimal(drEntImpGrant["AwardAmt"].ToString())).ToString();
                 txtComments.Text = drEntImpGrant["Comments"].ToString();
-                txtOtherNames.Text = drEntImpGrant["OtherNames"].ToString();
+                //txtOtherNames.Text = drEntImpGrant["OtherNames"].ToString();
 
                 btnAddGrantApplication.Text = "Update";
                 dvGrantAward.Visible = true;
@@ -241,7 +242,7 @@ namespace vhcbcloud.Viability
             li.Controls.Add(anchor);
 
             DataTable dtTabs = TabsData.GetProgramTabsForViability(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ProgramId));
-
+            bool isGrants = false;
             foreach (DataRow dr in dtTabs.Rows)
             {
                 HtmlGenericControl li1 = new HtmlGenericControl("li");
@@ -256,6 +257,27 @@ namespace vhcbcloud.Viability
                 anchor1.InnerText = dr["TabName"].ToString();
                 anchor1.Attributes.Add("class", "RoundedCornerTop");
                 li1.Controls.Add(anchor1);
+                if (dr["TabName"].ToString() == "Viability Grants")
+                    isGrants = true;
+            }
+            if (isGrants)
+            {
+                DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
+                if (drEntImpGrant != null)
+                {
+                    if (drEntImpGrant["FYGrantRound"].ToString() != "")
+                    {
+                        HtmlGenericControl li1 = new HtmlGenericControl("li");
+                        li1.Attributes.Add("class", "RoundedCornerTop");
+                        Tabs.Controls.Add(li1);
+                        HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+                        anchor1.Attributes.Add("href", "EnterpriseGrantEvaluations.aspx?ProjectId=" + hfProjectId.Value + "&ProgramId=" + ProgramId);
+                        anchor1.Attributes.Add("class", "RoundedCornerTop");
+                        anchor1.InnerText = "Evaluations";
+                        li1.Controls.Add(anchor1);
+                        IsEvaluationsTabAdded = true;
+                    }
+                }
             }
         }
 
@@ -296,7 +318,7 @@ namespace vhcbcloud.Viability
                 if (btnAddGrantApplication.Text.ToLower() == "update" || btnUpdateGrantAward.Text.ToUpper() == "update")
                 {
                     int EnterImpGrantID = DataUtils.GetInt(hfEnterImpGrantID.Value);
-                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, txtOtherNames.Text,
+                    EnterpriseImpGrantData.UpdateEnterpriseImpGrants(EnterImpGrantID, //txtOtherNames.Text,
                         DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
@@ -309,7 +331,7 @@ namespace vhcbcloud.Viability
                 }
                 else //add
                 {
-                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, txtOtherNames.Text,
+                    ViabilityMaintResult objViabilityMaintResult = EnterpriseImpGrantData.AddEnterpriseImpGrants(ProjectId, //txtOtherNames.Text,
                         DataUtils.GetInt(ddlFYGrantRound.SelectedValue.ToString()),
                         txtProjectTitle.Text, txtProjectDesc.Text, DataUtils.GetDecimal(Regex.Replace(txtProjCost.Text, "[^0-9a-zA-Z.]+", "")),
                         DataUtils.GetDecimal(Regex.Replace(txtAmountReq.Text, "[^0-9a-zA-Z.]+", "")),
@@ -323,7 +345,11 @@ namespace vhcbcloud.Viability
                     else if (objViabilityMaintResult.IsDuplicate)
                         LogMessage("Grant Application already exist");
                     else
+                    {
                         LogMessage("Grant Application added successfully");
+                        if(!IsEvaluationsTabAdded)
+                         AddEvaluationTab();
+                    }
                 }
                 LoadForm();
             }
@@ -331,6 +357,23 @@ namespace vhcbcloud.Viability
             {
                 LogError(Pagename, "btnAddGrantApplication_Click", "", ex.Message);
             }
+        }
+
+        private void AddEvaluationTab()
+        {
+            string ProgramId = null;
+            if (Request.QueryString["ProgramId"] != null)
+                ProgramId = Request.QueryString["ProgramId"];
+
+            HtmlGenericControl li1 = new HtmlGenericControl("li");
+            li1.Attributes.Add("class", "RoundedCornerTop");
+            Tabs.Controls.Add(li1);
+            HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+            anchor1.Attributes.Add("href", "EnterpriseGrantEvaluations.aspx?ProjectId=" + hfProjectId.Value + "&ProgramId=" + ProgramId);
+            anchor1.Attributes.Add("class", "RoundedCornerTop");
+            anchor1.InnerText = "Evaluations";
+            li1.Controls.Add(anchor1);
+            IsEvaluationsTabAdded = true;
         }
 
         protected void btnUpdateGrantAward_Click(object sender, EventArgs e)
@@ -591,9 +634,9 @@ namespace vhcbcloud.Viability
                         DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
-                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text),
                         DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")), 
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtAccessFTE.Text),
                         chkActive.Checked);
 
@@ -609,9 +652,9 @@ namespace vhcbcloud.Viability
                         DataUtils.GetDecimal(txtGrossSales.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtNetIncome.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtGrossPayroll.Text.Replace("$", "")),
-                        DataUtils.GetDecimal(txtFamilyFTEmp.Text), 
+                        DataUtils.GetDecimal(txtFamilyFTEmp.Text),
                         DataUtils.GetDecimal(txtNonFamilyFTEmp.Text),
-                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")), 
+                        DataUtils.GetDecimal(txtNetworth.Text.Replace("$", "")),
                         DataUtils.GetDecimal(txtAccessFTE.Text));
 
 

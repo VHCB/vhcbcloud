@@ -96,6 +96,7 @@
     <Compile Include="Viability\EnterpriseImpGrantData.cs" />
     <Compile Include="Viability\EnterpriseInfoData.cs" />
     <Compile Include="Viability\EnterpriseServiceProvidersData.cs" />
+    <Compile Include="Viability\GrantEvaluationsData.cs" />
     <Compile Include="YearQuarterData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

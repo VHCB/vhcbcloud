@@ -14,6 +14,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using VHCBCommon.DataAccessLayer.Viability;
 
 namespace vhcbcloud
 {
@@ -223,7 +224,7 @@ namespace vhcbcloud
                     CheckCreateEventFxnAccess();
                 }
             }
-            if(!chkApprove.Enabled && CheckVerifyCheckBoxAccess())
+            if (!chkApprove.Enabled && CheckVerifyCheckBoxAccess())
                 chkApprove.Enabled = true;
 
         }
@@ -458,7 +459,7 @@ namespace vhcbcloud
             try
             {
                 DataTable dt = ProjectMaintenanceData.GetCountysByTown(Town);
-                
+
                 ddlCounty.Items.Clear();
                 ddlCounty.DataSource = dt;
                 ddlCounty.DataValueField = "County";
@@ -578,7 +579,7 @@ namespace vhcbcloud
 
                         //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + ddlProject.SelectedValue.ToString();
                         ProjectNotesSetUp(hfProjectId.Value);
-                        
+
                         BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
                         GetRoleAccess();
 
@@ -736,7 +737,7 @@ namespace vhcbcloud
             //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
             PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
             chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
-           
+
 
             if (Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString()))
             {
@@ -744,7 +745,7 @@ namespace vhcbcloud
                 if (ProjectMaintenanceData.IsFinanceTransExist(ProjectId))
                     cbProjectActive.Enabled = false;
             }
-            
+
 
             dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
             txtProjectName.Text = drProjectDetails["projectName"].ToString();
@@ -777,7 +778,7 @@ namespace vhcbcloud
             anchor.Attributes.Add("class", "RoundedCornerTop");
 
             li.Controls.Add(anchor);
-
+            bool isGrants = false;
             DataTable dtTabs = TabsData.GetProgramTabsForViability(DataUtils.GetInt(hfProjectId.Value), ProgramId);
             foreach (DataRow dr in dtTabs.Rows)
             {
@@ -789,6 +790,27 @@ namespace vhcbcloud
                 anchor1.Attributes.Add("class", "RoundedCornerTop");
                 anchor1.InnerText = dr["TabName"].ToString();
                 li1.Controls.Add(anchor1);
+
+                if (dr["TabName"].ToString() == "Viability Grants")
+                    isGrants = true;
+            }
+            if (isGrants)
+            {
+                DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
+                if (drEntImpGrant != null)
+                {
+                    if (drEntImpGrant["FYGrantRound"].ToString() != "")
+                    {
+                        HtmlGenericControl li1 = new HtmlGenericControl("li");
+                        li1.Attributes.Add("class", "RoundedCornerTop");
+                        Tabs.Controls.Add(li1);
+                        HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+                        anchor1.Attributes.Add("href", "viability\\EnterpriseGrantEvaluations.aspx?ProjectId=" + ProjectId + "&ProgramId=" + ProgramId);
+                        anchor1.Attributes.Add("class", "RoundedCornerTop");
+                        anchor1.InnerText = "Evaluations";
+                        li1.Controls.Add(anchor1);
+                    }
+                }
             }
         }
 
@@ -981,7 +1003,7 @@ namespace vhcbcloud
 
                         this.BindProjectEntityGrid();
 
-                        if(!cbProjectActive.Checked)
+                        if (!cbProjectActive.Checked)
                             LogMessage("Project has been inactivated - if this was in error, re - activate now");
                         else
                             LogMessage("Project updated successfully");
@@ -1180,7 +1202,7 @@ namespace vhcbcloud
                     {
                         int addressId = Convert.ToInt32(hfAddressId.Value);
 
-                        ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, 
+                        ProjectMaintenanceData.UpdateProjectAddress(ProjectId, addressId, txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text,
                             ddlTown.SelectedValue, //txtTown.Text,
                             ddlVillages.SelectedValue, // txtVillage.Text,
                             txtState.Text, txtZip.Text, ddlCounty.SelectedValue, DataUtils.GetDecimal(txtLattitude.Text), DataUtils.GetDecimal(txtLongitude.Text),
@@ -1199,7 +1221,7 @@ namespace vhcbcloud
                             26241, cbValidation.Checked);// int.Parse(ddlAddressType.SelectedValue.ToString()));
 
                         btnAddAddress.Text = "Add";
-                      
+
                         if (objProjectMaintResult.IsDuplicate && !objProjectMaintResult.IsActive)
                             LogMessage("Address already exist as in-active");
                         else if (objProjectMaintResult.IsDuplicate)
@@ -1297,13 +1319,13 @@ namespace vhcbcloud
                         txtStreetNo.Text = dr["Street#"].ToString();
                         txtAddress1.Text = dr["Address1"].ToString();
                         txtAddress2.Text = dr["Address2"].ToString();
-                      
+
                         PopulateDropDown(ddlTown, dr["Town"].ToString());
                         //txtTown.Text = dr["Town"].ToString(); ;
                         txtState.Text = dr["State"].ToString();
                         txtZip.Text = dr["Zip"].ToString();
                         //txtCounty.Text = dr["County"].ToString();
-                       
+
                         PopulateDropDown(ddlCounty, dr["County"].ToString());
                         txtLattitude.Text = dr["latitude"].ToString();
                         txtLongitude.Text = dr["longitude"].ToString();
@@ -1316,7 +1338,7 @@ namespace vhcbcloud
                         //    txtVillage.Enabled = true;
 
                         //txtVillage.Text = dr["village"].ToString();
-                        
+
                         PopulateDropDown(ddlVillages, dr["village"].ToString());
                         //ddlVillages.Items.Clear();
                         //ddlVillages.DataSource = ProjectMaintenanceData.GetVillages(DataUtils.GetInt(dr["Zip"].ToString()));
@@ -2442,7 +2464,7 @@ namespace vhcbcloud
                         PopulateDropDown(ddlProgramSubMilestone, dr["ProgSubEventID"].ToString());
 
                         string EventDate = "";
-                        if(dr["Date"].ToString() != "")
+                        if (dr["Date"].ToString() != "")
                             EventDate = Convert.ToDateTime(dr["Date"].ToString()).ToShortDateString();
 
                         PopulateBoardDateDropDown(ddlBoardDate, EventDate);
@@ -2922,7 +2944,7 @@ namespace vhcbcloud
         protected void ddlAdminSubMilestone_SelectedIndexChanged(object sender, EventArgs e)
         {
             ddlBoardDate.Items.Clear();
-            
+
             if (ddlAdminMilestone.SelectedValue.ToString() == "26407")
             {
                 BindBoardDates(ddlBoardDate, ddlAdminSubMilestone.SelectedItem.Text);

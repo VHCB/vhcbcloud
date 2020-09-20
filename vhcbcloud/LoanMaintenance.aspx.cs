@@ -1363,6 +1363,28 @@ namespace vhcbcloud
                     //    LinkButton lbView = e.Row.FindControl("AddButton") as LinkButton;
                     //    lbView.Visible = false;
                     //}
+
+                    string URL = "";
+                    HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
+                    string DocumentId = anchorDocument.InnerHtml;
+
+                    if (CommonHelper.IsVPNConnected() && DocumentId != "")
+                    {
+                        URL = "fda://document/" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else if (DocumentId != "")
+                    {
+                        URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
+                        anchorDocument.InnerHtml = "Click";
+                        anchorDocument.HRef = URL;
+                    }
+                    else
+                    {
+                        anchorDocument.InnerHtml = "";
+                    }
+
                 }
                 if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
                 {
@@ -1372,27 +1394,6 @@ namespace vhcbcloud
                     //Checking whether the Row is Data Row
                     if (e.Row.RowType == DataControlRowType.DataRow)
                     {
-                        string URL = "";
-                        HtmlAnchor anchorDocument = e.Row.FindControl("hlurl") as HtmlAnchor;
-                        string DocumentId = anchorDocument.InnerHtml;
-
-                        if (CommonHelper.IsVPNConnected() && DocumentId != "")
-                        {
-                            URL = "fda://document/" + DocumentId;
-                            anchorDocument.InnerHtml = "Click";
-                            anchorDocument.HRef = URL;
-                        }
-                        else if (DocumentId != "")
-                        {
-                            URL = "http://581720-APP1/FH/FileHold/WebClient/LibraryForm.aspx?docId=" + DocumentId;
-                            anchorDocument.InnerHtml = "Click";
-                            anchorDocument.HRef = URL;
-                        }
-                        else
-                        {
-                            anchorDocument.InnerHtml = "";
-                        }
-
                         e.Row.Cells[9].Controls[0].Visible = false;
                         Label lblLoanTransID = e.Row.FindControl("lblLoanTransID") as Label;
                         DataRow dr = LoanMaintenanceData.GetLoanTransByLoanID(Convert.ToInt32(lblLoanTransID.Text));

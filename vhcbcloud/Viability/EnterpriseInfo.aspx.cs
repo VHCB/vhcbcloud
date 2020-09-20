@@ -209,7 +209,7 @@ namespace vhcbcloud.Viability
             if(drow != null)
             {
                 PopulateDropDown(ddlEnterPriseType, drow["AssocEnterprise"].ToString());
-                PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
+                //PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
                 PopulateDropDown(ddlHearViability, drow["HearAbout"].ToString());
                 txtYearMangBusiness.Text = drow["YrManageBus"].ToString();
                 btnAddEntInfo.Text = "Update";
@@ -250,6 +250,7 @@ namespace vhcbcloud.Viability
                     BindLookUP(ddlAttribute, AttributeTypeId);
                     BindLookUP(ddlProducts, ProjectTypeId);
                 }
+                PopulateDropDown(ddlPrimaryProduct, drow["PrimaryProduct"].ToString());
             }
 
             if (EnterpriseType != "Viability Farm Enterprise")
@@ -389,7 +390,7 @@ namespace vhcbcloud.Viability
             li.Controls.Add(anchor);
 
             DataTable dtTabs = TabsData.GetProgramTabsForViability(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ProgramId));
-
+            bool isGrants = false;
             foreach (DataRow dr in dtTabs.Rows)
             {
                 HtmlGenericControl li1 = new HtmlGenericControl("li");
@@ -404,6 +405,27 @@ namespace vhcbcloud.Viability
                 anchor1.InnerText = dr["TabName"].ToString();
                 anchor1.Attributes.Add("class", "RoundedCornerTop");
                 li1.Controls.Add(anchor1);
+
+                if (dr["TabName"].ToString() == "Viability Grants")
+                    isGrants = true;
+            }
+            if (isGrants)
+            {
+                DataRow drEntImpGrant = EnterpriseImpGrantData.GetEnterpriseImpGrantsById(DataUtils.GetInt(hfProjectId.Value));
+                if (drEntImpGrant != null)
+                {
+                    if (drEntImpGrant["FYGrantRound"].ToString() != "")
+                    {
+                        HtmlGenericControl li1 = new HtmlGenericControl("li");
+                        li1.Attributes.Add("class", "RoundedCornerTop");
+                        Tabs.Controls.Add(li1);
+                        HtmlGenericControl anchor1 = new HtmlGenericControl("a");
+                        anchor1.Attributes.Add("href", "EnterpriseGrantEvaluations.aspx?ProjectId=" + hfProjectId.Value + "&ProgramId=" + ProgramId);
+                        anchor1.Attributes.Add("class", "RoundedCornerTop");
+                        anchor1.InnerText = "Evaluations";
+                        li1.Controls.Add(anchor1);
+                    }
+                }
             }
         }
 
@@ -824,7 +846,7 @@ namespace vhcbcloud.Viability
         protected void btnEntePriseType_Click(object sender, EventArgs e)
         {
             EnterpriseInfoData.SubmitEnterpriseType(DataUtils.GetInt(hfProjectId.Value),
-                DataUtils.GetInt(ddlEnterPriseType.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlEnterPriseType.SelectedValue.ToString()), txtOtherNames.Text);
 
             LogMessage("Enterprise Type Updated");
             Response.Redirect(Request.RawUrl);

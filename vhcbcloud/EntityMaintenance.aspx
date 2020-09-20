@@ -267,7 +267,7 @@
                                             <span class="labelClass" runat="server" id="Span2">EIN</span>
                                             </td>
                                         <td>
-                                            <asp:TextBox ID="txtEIN" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                            <asp:TextBox ID="txtEIN" runat="server" CssClass="clsTextBoxBlue1" MaxLength="10"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -278,7 +278,7 @@
                                             <span class="labelClass" runat="server" id="Span3">DUNS</span>
                                             </td>
                                         <td colspan="5">
-                                            <asp:TextBox ID="txtDUNS" runat="server" CssClass="clsTextBoxBlue1"></asp:TextBox>
+                                            <asp:TextBox ID="txtDUNS" runat="server" CssClass="clsTextBoxBlue1" MaxLength="9"></asp:TextBox>
                                         </td>
                                     </tr>
                                      <tr>

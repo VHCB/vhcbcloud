@@ -416,6 +416,7 @@
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability\EnterpriseEvaluations.aspx" />
     <Content Include="Viability\EnterpriseFundamentals.aspx" />
+    <Content Include="Viability\EnterpriseGrantEvaluations.aspx" />
     <Content Include="Viability\EnterpriseImpGrant.aspx" />
     <Content Include="Viability\EnterpriseInfo.aspx" />
     <Content Include="Viability\EnterpriseServiceProviders.aspx" />
@@ -1179,6 +1180,13 @@
     </Compile>
     <Compile Include="Viability\EnterpriseFundamentals.aspx.designer.cs">
       <DependentUpon>EnterpriseFundamentals.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Viability\EnterpriseGrantEvaluations.aspx.cs">
+      <DependentUpon>EnterpriseGrantEvaluations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viability\EnterpriseGrantEvaluations.aspx.designer.cs">
+      <DependentUpon>EnterpriseGrantEvaluations.aspx</DependentUpon>
     </Compile>
     <Compile Include="Viability\EnterpriseImpGrant.aspx.cs">
       <DependentUpon>EnterpriseImpGrant.aspx</DependentUpon>
