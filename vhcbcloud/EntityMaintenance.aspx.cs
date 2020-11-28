@@ -664,7 +664,7 @@ namespace vhcbcloud
                             txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
                             txtTitle.Text, null, 0, 0, 0,
                             0, 0, 0, false, null, null,
-                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null); //1=Individual
+                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text); //1=Individual
 
                         if (objEntityMaintResult.IsDuplicate)
                         {
@@ -689,7 +689,7 @@ namespace vhcbcloud
                            null, null, 0, 0, 0,
                            0, 0, 0, false, null, null,
                            0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, 
-                           txtEIN.Text, txtDUNS.Text); //2=Organization
+                           txtEIN.Text, txtDUNS.Text, txtLegalName.Text); //2=Organization
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -700,7 +700,7 @@ namespace vhcbcloud
                            null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
                            null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null); //3=Farm
+                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text); //3=Farm
                         ClearForm();
                         PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                         LogMessage("New Entity Added Successfully");
@@ -726,7 +726,7 @@ namespace vhcbcloud
                            txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
                            DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
                            DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked, 
-                           txtEIN.Text, txtDUNS.Text);
+                           txtEIN.Text, txtDUNS.Text, txtLegalName.Text);
                     ClearForm();
                     PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                     LogMessage("Entity Updated Successfully");
@@ -840,6 +840,7 @@ namespace vhcbcloud
             txtWebsite.Text = drEntityData["website"].ToString();
             txtDUNS.Text= drEntityData["DUNS"].ToString();
             txtEIN.Text = drEntityData["EIN"].ToString();
+            txtLegalName.Text = drEntityData["LegalName"].ToString();
 
             if (drEntityData["WorkPhone"].ToString().Trim() == "")
                 txtWorkPhone.Text = "";
@@ -918,6 +919,7 @@ namespace vhcbcloud
             ddlDefaultRole.SelectedIndex = -1;
             txtEIN.Text = "";
             txtDUNS.Text = "";
+            txtLegalName.Text = "";
         }
 
         protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)

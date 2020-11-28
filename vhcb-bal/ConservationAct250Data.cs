@@ -147,6 +147,33 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+        public static void UpdateAct250FarmAntFunds(int Act250FarmID, decimal AntFunds)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateAct250FarmAntFunds";
+                        command.Parameters.Add(new SqlParameter("Act250FarmID", Act250FarmID));
+                        command.Parameters.Add(new SqlParameter("AntFunds", AntFunds));
+                       
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public static DataRow GetAct250FarmById(int Act250FarmID)
         {
             DataRow dt = null;

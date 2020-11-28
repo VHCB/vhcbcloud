@@ -194,9 +194,10 @@
                                         <td style="width: 176px">
                                             <asp:TextBox ID="txtAcresDeveloped" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="width: 134px"><span class="labelClass">Anticipated Funds</span></td>
-                                        <td class="modal-sm" style="width: 115px">
-                                            <asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" Style="width: 100px" runat="server"></asp:TextBox>
+                                        <td style="width: 134px"><span class="labelClass">Funds Received</span></td>
+                                        <td style="width: 115px">
+                                            <asp:Label runat="server" ID="lblFundsReceived"></asp:Label>
+                                            <%--<asp:TextBox ID="txtAnticipatedFunds" CssClass="clsTextBoxBlueSm" Style="width: 100px" runat="server"></asp:TextBox>--%>
                                         </td>
                                         <td style="width: 163px"><span class="labelClass">Mitigation Date</span></td>
                                         <td>
@@ -695,14 +696,11 @@
         <asp:HiddenField ID="hfLandUsePermitFinancialsBalance" runat="server" />
         <asp:HiddenField ID="hfProjectsWarning" runat="server" />
         <asp:HiddenField ID="hfFilter" runat="server" />
+         <asp:HiddenField ID="hfAnticipatedFunds" runat="server" />
 
         <script language="javascript">
             $(document).ready(function () {
-                toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
-
-                $('#<%= txtAnticipatedFunds.ClientID%>').keyup(function () {
-                    toCurrencyControl($('#<%= txtAnticipatedFunds.ClientID%>').val(), $('#<%= txtAnticipatedFunds.ClientID%>'));
-                });
+                
 
                 $('#<%= txtDevPaymentAmount.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtDevPaymentAmount.ClientID%>').val(), $('#<%= txtDevPaymentAmount.ClientID%>'));
@@ -742,8 +740,34 @@
                 $('#<%= cbAddVHCBProjects.ClientID%>').click(function () {
                     $('#<%= dvVHCBProjectsForm.ClientID%>').toggle(this.checked);
                 }).change();
-            });
 
+                 $('#<%= txtPrimeSoilsAcresLost.ClientID%>').blur(function () {
+                     CalculateTotalAcresLost();
+                });
+
+                $('#<%= txtStateSoilsAcresLost.ClientID%>').blur(function () {
+                    CalculateTotalAcresLost();
+                });
+
+            });
+            function CalculateTotalAcresLost() {
+                var primeSoils = parseFloat($('#<%=txtPrimeSoilsAcresLost.ClientID%>').val(), 10);
+                 var stateSoils = parseFloat($('#<%=txtStateSoilsAcresLost.ClientID%>').val(), 10);
+
+                if (isNaN(primeSoils)) {
+                     var primeSoils = 0;
+                 }
+
+                 if (isNaN(stateSoils)) {
+                     var stateSoils = 0;
+                 }
+                 console.log("XXXX")
+                 console.log(primeSoils);
+                 console.log(stateSoils);
+                 var Total = primeSoils + stateSoils;
+                 console.log(Total)
+                 $('#<%= txtTotAcresLost.ClientID%>').val(Total);
+            };
             function PopupAwardSummary() {
                 window.open('awardsummary.aspx?projectid=0');
             };

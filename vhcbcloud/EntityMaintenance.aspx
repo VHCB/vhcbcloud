@@ -156,7 +156,7 @@
                                         <td>
                                             <span class="labelClass">Legal Structure</span>
                                         </td>
-                                        <td>
+                                        <td class="modal-sm" style="width: 264px">
                                             <asp:DropDownList ID="ddlEntityType" CssClass="clsDropDown" runat="server">
                                             </asp:DropDownList>
                                         </td>
@@ -181,7 +181,7 @@
                                         <td>
                                             <span class="labelClass">Website</span>
                                         </td>
-                                        <td>
+                                        <td class="modal-sm" style="width: 264px">
                                             <asp:TextBox ID="txtWebsite" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
                                         <td><span class="labelClass">State Vendor ID</span></td>
@@ -205,7 +205,7 @@
                                         <td>
                                             <span class="labelClass">Work Phone</span>
                                         </td>
-                                        <td>
+                                        <td class="modal-sm" style="width: 264px">
                                             <asp:TextBox ID="txtWorkPhone" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                             <ajaxToolkit:MaskedEditExtender runat="server" ID="ameWorkPhoneNumber" Mask="(999)999-9999" ClearMaskOnLostFocus="false"
                                                 MaskType="Number" TargetControlID="txtWorkPhone">
@@ -232,7 +232,7 @@
                                         <td>
                                             <span class="labelClass">Email</span>
                                         </td>
-                                        <td>
+                                        <td class="modal-sm" style="width: 264px">
                                             <asp:TextBox ID="txtEmail" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                                         </td>
                                         <td>
@@ -254,7 +254,7 @@
                                         <td>
                                             <span class="labelClass" runat="server" id="spnTier1">Tier 1</span>
                                         </td>
-                                        <td style="width: 322px">
+                                        <td style="width: 264px" class="modal-sm">
                                             <asp:CheckBox ID="cbTear1" CssClass="ChkBox" runat="server" Text="" Enabled="false" />
                                         </td>
                                         <td>
@@ -277,9 +277,17 @@
                                          <td>
                                             <span class="labelClass" runat="server" id="Span3">DUNS</span>
                                             </td>
-                                        <td colspan="5">
+                                        <td class="modal-sm" style="width: 264px">
                                             <asp:TextBox ID="txtDUNS" runat="server" CssClass="clsTextBoxBlue1" MaxLength="9"></asp:TextBox>
                                         </td>
+                                          <td>
+                                            <span class="labelClass" runat="server" id="Span4">Legal Name</span>
+                                            </td>
+                                        <td>
+                                            <asp:TextBox ID="txtLegalName" runat="server" CssClass="clsTextBoxBlue1" MaxLength="50"></asp:TextBox>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
                                     </tr>
                                      <tr>
                                         <td colspan="6" style="height: 5px"></td>

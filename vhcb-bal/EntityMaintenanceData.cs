@@ -15,7 +15,7 @@ namespace VHCBCommon.DataAccessLayer
         public static EntityMaintResult AddNewEntity(int LkEntityType, int LKEntityType2, int FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int? AppRole,
-            int Operation, bool W9, bool IsTier1, bool IsFileHold,string EIN, string DUNS)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold,string EIN, string DUNS, string LegalName)
         {
             try
             {
@@ -61,6 +61,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("FileHold", IsFileHold));
                         command.Parameters.Add(new SqlParameter("EIN", EIN));
                         command.Parameters.Add(new SqlParameter("DUNS", DUNS));
+                        command.Parameters.Add(new SqlParameter("LegalName", LegalName));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -97,7 +98,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateEntity(int ApplicantId, int LkEntityType, int LKEntityType2, int FYend, string Website, string Email, string HomePhone, string WorkPhone, string CellPhone, string Stvendid,
             string ApplicantName, string Fname, string Lname, int Position, string Title, string FarmName, int LkFVEnterpriseType, int AcresInProduction,
             int AcresOwned, int AcresLeased, int AcresLeasedOut, int TotalAcres, bool OutOFBiz, string Notes, string AgEd, int YearsManagingFarm, int AppRole, 
-            int Operation, bool W9, bool IsTier1, bool IsFileHold, bool RowIsActive, string EIN, string DUNS)
+            int Operation, bool W9, bool IsTier1, bool IsFileHold, bool RowIsActive, string EIN, string DUNS, string LegalName)
         {
             try
             {
@@ -145,6 +146,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
                         command.Parameters.Add(new SqlParameter("EIN", EIN));
                         command.Parameters.Add(new SqlParameter("DUNS", DUNS));
+                        command.Parameters.Add(new SqlParameter("LegalName", LegalName));
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();

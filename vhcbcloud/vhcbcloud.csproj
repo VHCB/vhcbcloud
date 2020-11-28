@@ -176,6 +176,7 @@
     <Content Include="Account\ManageUserInfo.aspx" />
     <Content Include="Account\SetPassword.aspx" />
     <Content Include="Act250Notes.aspx" />
+    <Content Include="AddNewInactiveProject.aspx" />
     <Content Include="Adjustments.aspx" />
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
@@ -458,6 +459,13 @@
     </Compile>
     <Compile Include="Act250Notes.aspx.designer.cs">
       <DependentUpon>Act250Notes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewInactiveProject.aspx.cs">
+      <DependentUpon>AddNewInactiveProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddNewInactiveProject.aspx.designer.cs">
+      <DependentUpon>AddNewInactiveProject.aspx</DependentUpon>
     </Compile>
     <Compile Include="Adjustments.aspx.cs">
       <DependentUpon>Adjustments.aspx</DependentUpon>

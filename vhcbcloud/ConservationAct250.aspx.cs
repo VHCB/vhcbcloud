@@ -192,7 +192,7 @@ namespace vhcbcloud
                     DataUtils.GetDecimal(txtTotAcresLost.Text), 
                     DataUtils.GetDecimal(txtAcresDeveloped.Text),
                     DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
-                    DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(lblFundsReceived.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()));
 
                 BindGrids();
@@ -212,7 +212,7 @@ namespace vhcbcloud
                     DataUtils.GetDecimal(txtPrimeSoilsAcresLost.Text), DataUtils.GetDecimal(txtStateSoilsAcresLost.Text), 
                     DataUtils.GetDecimal(txtTotAcresLost.Text),
                     DataUtils.GetDecimal(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
-                    DataUtils.GetDecimal(Regex.Replace(txtAnticipatedFunds.Text, "[^0-9a-zA-Z.]+", "")),
+                    DataUtils.GetDecimal(Regex.Replace(lblFundsReceived.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
                     chkAct250Active.Checked, txtLandUsePermit.Text);
 
@@ -237,7 +237,9 @@ namespace vhcbcloud
             txtStateSoilsAcresLost.Text = "";
             txtTotAcresLost.Text = "";
             txtAcresDeveloped.Text = "";
-            txtAnticipatedFunds.Text = "";
+            //txtAnticipatedFunds.Text = "";
+            hfAnticipatedFunds.Value = "";
+            lblFundsReceived.Text = "";
             txtMitigationDate.Text = "";
             txtURL.Text = "";
             ddlFundName.SelectedIndex = -1;
@@ -343,7 +345,8 @@ namespace vhcbcloud
             txtStateSoilsAcresLost.Text = dr["Statelost"].ToString();
             txtTotAcresLost.Text = dr["TotalAcreslost"].ToString();
             txtAcresDeveloped.Text = dr["AcresDevelop"].ToString();
-            txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
+            //txtAnticipatedFunds.Text = dr["AntFunds"].ToString();
+            hfAnticipatedFunds.Value = dr["AntFunds"].ToString();
             txtMitigationDate.Text = dr["MitDate"].ToString() == "" ? "" : Convert.ToDateTime(dr["MitDate"].ToString()).ToShortDateString();
             txtURL.Text = dr["URL"].ToString();
             chkAct250Active.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
@@ -452,6 +455,7 @@ namespace vhcbcloud
             try
             {
                 hfTotalDevPayments.Value = "0";
+                lblFundsReceived.Text = "0";
 
                 DataTable dt = ConservationAct250Data.GetAct250DevPayList(DataUtils.GetInt(hfAct250FarmID.Value), cbActiveOnly.Checked);
 
@@ -471,6 +475,12 @@ namespace vhcbcloud
                     }
                     hfTotalDevPayments.Value = totAmt.ToString();
                     lblFooterTotalAmt.Text = CommonHelper.myDollarFormat(totAmt);
+                    lblFundsReceived.Text = CommonHelper.myDollarFormat(totAmt);
+
+                    if(Convert.ToDecimal(hfAnticipatedFunds.Value) != totAmt)
+                    {
+                        ConservationAct250Data.UpdateAct250FarmAntFunds(DataUtils.GetInt(hfAct250FarmID.Value), totAmt);
+                    }
                 }
                 else
                 {

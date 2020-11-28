@@ -27,6 +27,14 @@ namespace vhcbcloud
                 parameter.Value = Context.User.Identity.Name;
                 parameter.IsHidden = false;
 
+                //WebReports.Api.Common.Parameter parameter1 = api.Parameters.GetParameter("ClassId");
+                //parameter1.Value = "VHCB";
+                //parameter1.IsHidden = false;
+
+                //WebReports.Api.Common.Parameter parameter2 = api.Parameters.GetParameter("OwnerId");
+                //parameter2.Value = "Dherman";
+                //parameter2.IsHidden = false;
+
                 DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
 
                 Role role = api.Roles.GetRole(dr["ExagoRole"].ToString());
