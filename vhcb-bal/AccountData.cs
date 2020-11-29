@@ -279,5 +279,40 @@ namespace VHCBCommon.DataAccessLayer
             }
             return dt;
         }
+
+        public static bool CheckExternalUserLogin(string ProjectNumber, string UserName, string Password)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "IsValidExternalUser";
+                command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                command.Parameters.Add(new SqlParameter("Username", UserName));
+                command.Parameters.Add(new SqlParameter("Password", Password));
+
+                SqlParameter parmIsValid = new SqlParameter("@IsValidUser", SqlDbType.Bit);
+                parmIsValid.Direction = ParameterDirection.Output;
+                command.Parameters.Add(parmIsValid);
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+
+                    return DataUtils.GetBool(command.Parameters["@IsValidUser"].Value.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }

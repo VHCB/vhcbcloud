@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbcloud.Tests", "vhcbclou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbcommon", "vhcb-bal\vhcbcommon.csproj", "{FB0D9857-EB88-406D-9D58-07FE74675955}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbExternalApp", "vhcbExternalApp\vhcbExternalApp.csproj", "{5C92D177-1FBC-4C9A-959D-F78ED4444EC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FB0D9857-EB88-406D-9D58-07FE74675955}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB0D9857-EB88-406D-9D58-07FE74675955}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB0D9857-EB88-406D-9D58-07FE74675955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C92D177-1FBC-4C9A-959D-F78ED4444EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C92D177-1FBC-4C9A-959D-F78ED4444EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C92D177-1FBC-4C9A-959D-F78ED4444EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C92D177-1FBC-4C9A-959D-F78ED4444EC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
