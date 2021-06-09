@@ -60,6 +60,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NodaTime">
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\NodaTime.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -79,9 +82,26 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebReportsApi">
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BudgetNarrativeTables.aspx" />
+    <Content Include="FarmBusinessInformation.aspx" />
+    <Content Include="Images\MatchSurce.png" />
+    <Content Include="Images\vhcb_logo_1_rgb_sm1.jpg" />
+    <Content Include="Images\vhcb_logo_1_rgb_sm1.png" />
     <Content Include="packages.config" />
+    <Content Include="Page10.aspx" />
+    <Content Include="Page11.aspx" />
+    <Content Include="Page6.aspx" />
+    <Content Include="Page7.aspx" />
+    <Content Include="Page8.aspx" />
+    <Content Include="Page9.aspx" />
     <Content Include="Site.Master" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
@@ -105,7 +125,6 @@
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Content\Tabs.css" />
     <Content Include="Default.aspx" />
-    <Content Include="Images\vhcb_logo_1_rgb_sm.png" />
     <Content Include="Login.aspx" />
     <Content Include="ProjectDetails.aspx" />
     <Content Include="Scripts\accounting.js" />
@@ -146,9 +165,20 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="WaterQualityGrants.aspx" />
+    <Content Include="WaterQualityGrantsProgramPage4.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BudgetNarrativeTables.aspx.cs">
+      <DependentUpon>BudgetNarrativeTables.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BudgetNarrativeTables.aspx.designer.cs">
+      <DependentUpon>BudgetNarrativeTables.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -156,12 +186,61 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FarmBusinessInformation.aspx.cs">
+      <DependentUpon>FarmBusinessInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FarmBusinessInformation.aspx.designer.cs">
+      <DependentUpon>FarmBusinessInformation.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page10.aspx.cs">
+      <DependentUpon>Page10.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page10.aspx.designer.cs">
+      <DependentUpon>Page10.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page11.aspx.cs">
+      <DependentUpon>Page11.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page11.aspx.designer.cs">
+      <DependentUpon>Page11.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page6.aspx.cs">
+      <DependentUpon>Page6.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page6.aspx.designer.cs">
+      <DependentUpon>Page6.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page7.aspx.cs">
+      <DependentUpon>Page7.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page7.aspx.designer.cs">
+      <DependentUpon>Page7.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page8.aspx.cs">
+      <DependentUpon>Page8.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page8.aspx.designer.cs">
+      <DependentUpon>Page8.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Page9.aspx.cs">
+      <DependentUpon>Page9.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page9.aspx.designer.cs">
+      <DependentUpon>Page9.aspx</DependentUpon>
     </Compile>
     <Compile Include="ProjectDetails.aspx.cs">
       <DependentUpon>ProjectDetails.aspx</DependentUpon>
@@ -177,6 +256,20 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="WaterQualityGrants.aspx.cs">
+      <DependentUpon>WaterQualityGrants.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WaterQualityGrants.aspx.designer.cs">
+      <DependentUpon>WaterQualityGrants.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WaterQualityGrantsProgramPage4.aspx.cs">
+      <DependentUpon>WaterQualityGrantsProgramPage4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WaterQualityGrantsProgramPage4.aspx.designer.cs">
+      <DependentUpon>WaterQualityGrantsProgramPage4.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -228,6 +228,24 @@
                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
+                                     <tr>
+                                        <td style="width: 149px">
+                                            <span class="labelClass">Anticipated Total Funds</span>
+                                        </td>
+                                        <td style="width: 176px">
+                                            <asp:TextBox ID="txtExpectedfunds" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 134px"><span class="labelClass"></span></td>
+                                        <td class="modal-sm" style="width: 115px">
+                                           
+                                        </td>
+                                        <td style="width: 163px"><span class="labelClass"></span></td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
                                     <tr>
                                         <td style="width: 117px">
                                             <asp:Button ID="btnAddAct250Info" runat="server" Text="Submit" class="btn btn-info"
@@ -257,7 +275,7 @@
                                         <h3 class="panel-title">Developer Payments</h3>
                                     </td>
                                     <td style="text-align: right">
-                                        <asp:CheckBox ID="cbAddDeveloperPayment" runat="server" Text="Add New Developer Payment" />
+                                        <asp:CheckBox ID="cbAddDeveloperPayment" runat="server" Text="Add New Developer Payment"/>
                                     </td>
                                 </tr>
                             </table>
@@ -373,7 +391,16 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                        <asp:CommandField ShowEditButton="True" />
+                                       <%-- <asp:CommandField ShowEditButton="True" />--%>
+                                         <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# CheckDeveloperPaymentsAccess() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </asp:Panel>
@@ -705,7 +732,11 @@
                 $('#<%= txtDevPaymentAmount.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtDevPaymentAmount.ClientID%>').val(), $('#<%= txtDevPaymentAmount.ClientID%>'));
                 });
-
+                
+                toCurrencyControl($('#<%= txtExpectedfunds.ClientID%>').val(), $('#<%= txtExpectedfunds.ClientID%>'));
+                $('#<%= txtExpectedfunds.ClientID%>').keyup(function () {
+                    toCurrencyControl($('#<%= txtExpectedfunds.ClientID%>').val(), $('#<%= txtExpectedfunds.ClientID%>'));
+                });
                 //$("input[id*=txtpaymentAmount]").keyup(function () {
                 //    toCurrencyControl($('input[id*=txtpaymentAmount]').val(), $('input[id*=txtpaymentAmount]'));
                 //});

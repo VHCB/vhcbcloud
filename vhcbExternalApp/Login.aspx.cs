@@ -29,6 +29,7 @@ namespace vhcbExternalApp
             if (IsValidUser)
             {
                 Session["UserId"] = UserId.Text;
+                Session["ProjectNumber"] = ProjectNumber.Text;
 
                 FormsAuthentication.SetAuthCookie(UserId.Text, true);
                 string url = "";
@@ -44,6 +45,7 @@ namespace vhcbExternalApp
             else
             {
                 Session["UserId"] = "";
+                Session["ProjectNumber"] = "";
                 FailureText.Text = "Invalid login attempt";
                 ErrorMessage.Visible = true;
             }

@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,7 @@ namespace vhcbcloud
 
             if (!IsPostBack)
             {
+                cbAddDeveloperPayment.Enabled = CheckDeveloperPaymentsAccess();
                 BindControls();
                 BindGrids();
             }
@@ -193,7 +195,8 @@ namespace vhcbcloud
                     DataUtils.GetDecimal(txtAcresDeveloped.Text),
                     DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(lblFundsReceived.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()));
+                    DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
+                    DataUtils.GetDecimal(Regex.Replace(txtExpectedfunds.Text, "[^0-9a-zA-Z.]+", "")));
 
                 BindGrids();
                 ClearAct250InfoForm();
@@ -214,7 +217,8 @@ namespace vhcbcloud
                     DataUtils.GetDecimal(txtAcresDeveloped.Text), DataUtils.GetInt(ddlDeveloper.SelectedValue.ToString()),
                     DataUtils.GetDecimal(Regex.Replace(lblFundsReceived.Text, "[^0-9a-zA-Z.]+", "")),
                     DataUtils.GetDate(txtMitigationDate.Text), URL, DataUtils.GetInt(ddlFundName.SelectedValue.ToString()), 
-                    chkAct250Active.Checked, txtLandUsePermit.Text);
+                    chkAct250Active.Checked, txtLandUsePermit.Text,
+                    DataUtils.GetDecimal(Regex.Replace(txtExpectedfunds.Text, "[^0-9a-zA-Z.]+", "")));
 
                 gvAct250Info.EditIndex = -1;
                 ClearAct250InfoForm();
@@ -245,6 +249,7 @@ namespace vhcbcloud
             ddlFundName.SelectedIndex = -1;
             txtLandUsePermit.Enabled = true;
             chkAct250Active.Enabled = false;
+            txtExpectedfunds.Text = "";
         }
 
         #region Logs
@@ -353,7 +358,7 @@ namespace vhcbcloud
             PopulateDropDown(ddlFundName, dr["FundID"].ToString());
             spnUnits.Visible = false;
             txtUnits.Visible = false;
-
+            txtExpectedfunds.Text = dr["Expectedfunds"].ToString();
             if (dr["Type"].ToString() == "144")
             {
                 spnUnits.Visible = true;
@@ -904,6 +909,32 @@ namespace vhcbcloud
         protected void gvDeveloperPayments_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected bool CheckDeveloperPaymentsAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "38624")
+                    return true;
+            }
+            return false;
+        }
+
+        protected int GetUserId()
+        {
+            try
+            {
+                DataTable dtUser = ProjectCheckRequestData.GetUserByUserName(Context.User.Identity.GetUserName());
+                return dtUser != null ? Convert.ToInt32(dtUser.Rows[0][0].ToString()) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

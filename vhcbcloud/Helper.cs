@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Web;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebReports.Api;
 using WebReports.Api.Data;
 using WebReports.Api.Reports;
+using System.Runtime.Remoting.Contexts;
 
 namespace vhcbcloud
 {
@@ -29,12 +30,15 @@ namespace vhcbcloud
             WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");
             parameter.Value = ProjID;
             parameter.IsHidden = true;
+            //api.SetupData.StorageMgmtConfig.Identity("dherman");
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            //ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\Grid Project Names");
+            //Report report = (Report)api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\Grid Project Names");
 
             //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
-            if(report != null)
+            if (report != null)
                 api.ReportObjectFactory.SaveToApi(report);
 
             URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
@@ -64,7 +68,7 @@ namespace vhcbcloud
             parameter.Value = RecID;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
@@ -96,11 +100,12 @@ namespace vhcbcloud
             parameter.Value = Projnum;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
-            api.ReportObjectFactory.SaveToApi(report);
+            if (report != null)
+                api.ReportObjectFactory.SaveToApi(report);
             URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
 
             StringBuilder sb = new StringBuilder();
@@ -128,7 +133,7 @@ namespace vhcbcloud
             parameter.Value = ProjectCheckRequestID;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\Financial\Check Request\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Financial\Check Request\" + ReportName);
 
             //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
@@ -164,7 +169,7 @@ namespace vhcbcloud
             //parameter.Value = ProjID;
             //parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\organization\Dashboard\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Organization\Dashboard\" + ReportName);
 
             report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
@@ -230,7 +235,7 @@ namespace vhcbcloud
             parameter.Value = userid;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             report.ExportType = wrExportType.Excel;
             //report.ShowStatus = true;
@@ -264,7 +269,7 @@ namespace vhcbcloud
             parameter.Value = ProjID;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             //report.ExportType = wrExportType.Html;
             //report.ShowStatus = true;
@@ -298,7 +303,7 @@ namespace vhcbcloud
             parameter.Value = ApplicantID;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             report.ExportType = wrExportType.Excel;
             //report.ShowStatus = true;
@@ -328,7 +333,7 @@ namespace vhcbcloud
             parameter.Value = ApplicantID;
             parameter.IsHidden = true;
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"\utility\Grid Reports\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             report.ExportType = wrExportType.Pdf;
             //report.ShowStatus = true;

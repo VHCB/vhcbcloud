@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <asp:Label runat="server" AssociatedControlID="UserId" CssClass="col-md-4 control-label">Enter Login Name</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="UserId" CssClass="col-md-4 control-label">Enter Your Email Address</asp:Label>
                         <div class="col-md-6">
                             <asp:TextBox runat="server" ID="UserId" CssClass="form-control" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="UserId"

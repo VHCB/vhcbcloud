@@ -202,13 +202,13 @@ namespace vhcbcloud {
         protected global::System.Web.UI.WebControls.CheckBox chkLegalReview;
         
         /// <summary>
-        /// chkLCB control.
+        /// txtVendorId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkLCB;
+        protected global::System.Web.UI.WebControls.TextBox txtVendorId;
         
         /// <summary>
         /// ddlStatus control.
@@ -353,6 +353,15 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDelete;
+        
+        /// <summary>
+        /// updateSpan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl updateSpan;
         
         /// <summary>
         /// pnlDisbursement control.
@@ -677,5 +686,14 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfIsAdmin;
+        
+        /// <summary>
+        /// hfIsprgramAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsprgramAdmin;
     }
 }

@@ -44,6 +44,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime, Version=2.4.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Exago\eWebReports\Bin\NodaTime.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -99,10 +107,6 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <Private>True</Private>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
       <Private>True</Private>
@@ -296,6 +300,7 @@
     <Content Include="Scripts\gridviewScroll.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\NumericController.js" />
+    <Content Include="SetTemporaryProjectToActive.aspx" />
     <Content Include="Setup.aspx" />
     <Content Include="SetUp\AccountSetup.aspx" />
     <Content Include="SetUp\AmericorpsSetup.aspx" />
@@ -1072,6 +1077,13 @@
     </Compile>
     <Compile Include="Reallocations.aspx.designer.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SetTemporaryProjectToActive.aspx.cs">
+      <DependentUpon>SetTemporaryProjectToActive.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SetTemporaryProjectToActive.aspx.designer.cs">
+      <DependentUpon>SetTemporaryProjectToActive.aspx</DependentUpon>
     </Compile>
     <Compile Include="Setup.aspx.cs">
       <DependentUpon>Setup.aspx</DependentUpon>

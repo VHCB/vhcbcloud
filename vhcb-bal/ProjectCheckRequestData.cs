@@ -603,7 +603,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable SubmitPCR(int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
-           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, 
+           string VendorID, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, 
            int UserID, string LKNODs, DateTime CRDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -618,7 +618,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("InitDate", InitDate));
                 command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                 command.Parameters.Add(new SqlParameter("LegalReview", LegalReview));
-                command.Parameters.Add(new SqlParameter("LCB", LCB));
+                command.Parameters.Add(new SqlParameter("VendorID", VendorID));
                 command.Parameters.Add(new SqlParameter("MatchAmt", (MatchAmt == 0) ? System.Data.SqlTypes.SqlDecimal.Null : MatchAmt));
                 command.Parameters.Add(new SqlParameter("LkFVGrantMatch", (LkFVGrantMatch == 0) ? System.Data.SqlTypes.SqlInt32.Null : LkFVGrantMatch));
                 command.Parameters.Add(new SqlParameter("Notes", Notes));
@@ -667,7 +667,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static DataTable UpdatePCR(int PRCID, int ProjectID, DateTime InitDate, int LkProgram, bool LegalReview,
-           bool LCB, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs, DateTime CRDate)
+           string VendorID, decimal MatchAmt, int LkFVGrantMatch, decimal Disbursement, int PayeeApplicant, int LkStatus, string Notes, int UserID, string LKNODs, DateTime CRDate)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtPCRDet = null;
@@ -682,7 +682,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("InitDate", InitDate));
                 command.Parameters.Add(new SqlParameter("LkProgram", LkProgram));
                 command.Parameters.Add(new SqlParameter("LegalReview", LegalReview));
-                command.Parameters.Add(new SqlParameter("LCB", LCB));
+                command.Parameters.Add(new SqlParameter("VendorID", VendorID));
                 command.Parameters.Add(new SqlParameter("MatchAmt", (MatchAmt == 0) ? System.Data.SqlTypes.SqlDecimal.Null : MatchAmt));
                 command.Parameters.Add(new SqlParameter("LkFVGrantMatch", (LkFVGrantMatch == 0) ? System.Data.SqlTypes.SqlInt32.Null : LkFVGrantMatch));
                 command.Parameters.Add(new SqlParameter("Notes", Notes));

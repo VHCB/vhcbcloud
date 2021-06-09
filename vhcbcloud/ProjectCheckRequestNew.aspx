@@ -50,8 +50,8 @@
                     <table style="width: 100%">
 
                         <tr>
-                            <td><span class="labelClass">Project # :</span></td>
-                            <td>
+                            <td style="width: 246px"><span class="labelClass">Project # :</span></td>
+                            <td style="width: 243px">
                                 <asp:TextBox ID="txtProjNum" CssClass="clsTextBoxBlueSm" Width="120px" runat="server"
                                     ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
                                 <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" TargetControlID="txtProjNum" MinimumPrefixLength="1"
@@ -59,39 +59,39 @@
                                     CompletionInterval="100" ServiceMethod="GetProjectsByFilter">
                                 </ajaxToolkit:AutoCompleteExtender>
                             </td>
-                            <td>
+                            <td style="width: 193px">
                                 <span class="labelClass">Project Name :</span>
                             </td>
-                            <td>
+                            <td style="width: 370px">
                                 <asp:Label ID="lblProjName" class="labelClass" Text="--" runat="server"></asp:Label>
                             </td>
-                            <td><span class="labelClass">Date :</span></td>
+                            <td style="width: 106px"><span class="labelClass">Date :</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDate_SelectedIndexChanged">
+                                <asp:DropDownList ID="ddlDate" CssClass="clsDropDown" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDate_SelectedIndexChanged" Height="28px" Width="130px">
                                 </asp:DropDownList>
-                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" ReadOnly="True"></asp:TextBox>
+                                <asp:TextBox ID="txtTransDate" CssClass="clsTextBoxBlue1" runat="server" ReadOnly="True" Height="21px" Width="98px"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass">Applicant :</span></td>
-                            <td>
+                            <td style="width: 246px"><span class="labelClass">Applicant :</span></td>
+                            <td style="width: 243px">
                                 <asp:DropDownList ID="ddlApplicantName" CssClass="clsDropDown" runat="server" Height="21px" Width="174px">
                                 </asp:DropDownList>
 
                             </td>
-                            <td>
+                            <td style="width: 193px">
                                 <span class="labelClass">Payee :</span>
                             </td>
-                            <td>
-                                <asp:DropDownList ID="ddlPayee" CssClass="clsDropDown" runat="server">
+                            <td style="width: 370px">
+                                <asp:DropDownList ID="ddlPayee" CssClass="clsDropDown" runat="server" Height="26px" Width="293px">
                                 </asp:DropDownList>
                             </td>
-                            <td><span class="labelClass">Program:</span></td>
+                            <td style="width: 106px"><span class="labelClass">Program:</span></td>
                             <td>
-                                <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged">
+                                <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" Height="18px" Width="130px">
                                 </asp:DropDownList>
                             </td>
                         </tr>
@@ -99,21 +99,21 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass">Closing/Legal Review :</span></td>
-                            <td>
+                            <td style="width: 246px"><span class="labelClass">Closing/Legal Review:</span></td>
+                            <td style="width: 243px">
                                 <asp:CheckBox ID="chkLegalReview" runat="server" Text="Yes" OnCheckedChanged="chkLegalReview_CheckedChanged" AutoPostBack="True"></asp:CheckBox>
 
                             </td>
 
-                            <td><span class="labelClass">LCB :</span></td>
-                            <td>
-                                <asp:CheckBox ID="chkLCB" runat="server" Text="Yes"></asp:CheckBox>
+                            <td style="width: 193px"><span class="labelClass">Vendor ID:</span></td>
+                            <td style="width: 370px">
+                               <asp:TextBox ID="txtVendorId" CssClass="clsTextBoxBlue1" runat="server" Width="151px" Enabled="false"></asp:TextBox>
                             </td>
-                            <td>
+                            <td style="width: 106px">
                                 <span class="labelClass">Status :</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server" Enabled="false">
+                                <asp:DropDownList ID="ddlStatus" CssClass="clsDropDown" runat="server" Enabled="false" Height="20px" Width="130px">
                                 </asp:DropDownList>
 
                             </td>
@@ -122,18 +122,18 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="width: 246px">
                                 <span class="labelClass" id="lblAmtEligibleForMatch" visible="false" runat="server">Amount Eligible For Match $ :</span>
                             </td>
-                            <td>
+                            <td style="width: 243px">
                                 <asp:TextBox ID="txtEligibleAmt" CssClass="clsTextBoxMoney" onkeyup='toEligibleAmtFormatter(value)' Visible="false" runat="server"></asp:TextBox>
                             </td>
-                            <td><span class="labelClass" id="lblMatchingGrant" visible="false" runat="server">Matching Grant :</span></td>
-                            <td>
-                                <asp:DropDownList ID="ddlMatchingGrant" Visible="false" CssClass="clsDropDown" runat="server">
+                            <td style="width: 193px"><span class="labelClass" id="lblMatchingGrant" visible="false" runat="server">Matching Grant :</span></td>
+                            <td style="width: 370px">
+                                <asp:DropDownList ID="ddlMatchingGrant" Visible="false" CssClass="clsDropDown" runat="server" Height="22px" Width="150px">
                                 </asp:DropDownList>
                             </td>
-                            <td>&nbsp;</td>
+                            <td style="width: 106px">&nbsp;</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -141,12 +141,12 @@
                         </tr>
 
                         <tr>
-                            <td><span class="labelClass">Disbursement $:</span></td>
-                            <td>
+                            <td style="width: 246px"><span class="labelClass">Disbursement $:</span></td>
+                            <td style="width: 243px">
                                 <asp:TextBox ID="txtDisbursementAmt" CssClass="clsTextBoxMoney" runat="server"></asp:TextBox>
                                 <%--onkeyup='toDisburAmtFormatter(value)'--%>
                             </td>
-                            <td><span class="labelClass">Available Funds:</span></td>
+                            <td style="width: 193px"><span class="labelClass">Available Funds:</span></td>
                             <td colspan="3">
                                 <asp:Label ID="lblAvailFund" class="labelClass" Visible="false" Text="" runat="server"></asp:Label>
                                 <asp:Label ID="lblAvailVisibleFund" class="labelClass" Text="" runat="server"></asp:Label>
@@ -157,15 +157,15 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td style="vertical-align: top"><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td style="vertical-align: top; width: 246px;"><span class="labelClass">Nature of Disbursements :</span></td>
+                            <td style="width: 243px">
+                                <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="165px"></asp:ListBox></td>
+                            <td style="vertical-align: top; width: 193px;"><span class="labelClass">Items :</span></td>
+                            <td style="width: 370px">
+                                <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbItems" Height="80px" Width="150px"></asp:ListBox></td>
+                            <td style="vertical-align: top; width: 106px;"><span class="labelClass">Notes :</span></td>
                             <td>
-                                <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbNOD" Height="80px" Width="200px"></asp:ListBox></td>
-                            <td style="vertical-align: top"><span class="labelClass">Items :</span></td>
-                            <td>
-                                <asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lbItems" Height="80px" Width="180px"></asp:ListBox></td>
-                            <td style="vertical-align: top"><span class="labelClass">Notes :</span></td>
-                            <td>
-                                <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="190px" Height="80px" />
+                                <asp:TextBox ID="txtNotes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="130px" Height="80px" />
                             </td>
 
                         </tr>
@@ -173,12 +173,12 @@
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td style="vertical-align: top"><span class="labelClass">Project Type:</span></td>
-                            <td>
+                            <td style="vertical-align: top; width: 246px;"><span class="labelClass">Project Type:</span></td>
+                            <td style="width: 243px">
                                 <asp:Label ID="lblProjectType" runat="server" class="labelClass" Text="--"></asp:Label>
                             </td>
-                            <td style="vertical-align: top"><span class="labelClass">Check Request Date:</span></td>
-                            <td>
+                            <td style="vertical-align: top; width: 193px;"><span class="labelClass">Request Date:</span></td>
+                            <td style="width: 370px">
                                 <asp:DropDownList ID="ddlCRDate" CssClass="clsDropDown" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlCRDate_SelectedIndexChanged">
                                 </asp:DropDownList>
 
@@ -186,7 +186,7 @@
                                 <ajaxToolkit:CalendarExtender ID="txtCRDate_CalendarExtender" runat="server" TargetControlID="txtCRDate">
                                 </ajaxToolkit:CalendarExtender>--%>
                             </td>
-                            <td style="vertical-align: top"><span class="labelClass">Created By:</span></td>
+                            <td style="vertical-align: top; width: 106px;"><span class="labelClass">Created By:</span></td>
                             <td><span class="labelClass" runat="server" id="spnCreatedBy"></span></td>
                         </tr>
                         <tr>
@@ -200,6 +200,11 @@
                                 &nbsp;
                             </td>
                         </tr>
+                         <tr>
+                            <td colspan="6" style="height: 5px">
+                                <span class="labelClass" runat="server" id="updateSpan" visible="false">Clicking update will clear all approvals below</span>
+                                </td>
+                             </tr>
                     </table>
                     <br />
                 </div>
@@ -527,6 +532,7 @@
         <asp:HiddenField ID="hfIsAllApproved" runat="server" Value="false" />
         <asp:HiddenField ID="hfSecondapproval" runat="server" Value="false" />
         <asp:HiddenField ID="hfIsAdmin" runat="server" Value="false" />
+        <asp:HiddenField ID="hfIsprgramAdmin" runat="server" Value="false" />
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

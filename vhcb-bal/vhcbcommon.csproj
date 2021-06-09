@@ -92,6 +92,7 @@
     <Compile Include="SetupData.cs" />
     <Compile Include="TabsData.cs" />
     <Compile Include="UserSecurityData.cs" />
+    <Compile Include="ViabilityApplicationData.cs" />
     <Compile Include="Viability\EnterpriseEvaluationsData.cs" />
     <Compile Include="Viability\EnterpriseFundamentalsData.cs" />
     <Compile Include="Viability\EnterpriseImpGrantData.cs" />

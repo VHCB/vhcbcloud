@@ -17,7 +17,7 @@ namespace vhcbcloud
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text, cbActive.Checked);
+            InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text, true);
 
             if (objInactiveProjectResult.IsDuplicate)
                 LogMessage("Project already exist");
@@ -37,7 +37,7 @@ namespace vhcbcloud
             txtprojectNumber.Text = "";
             txtLoginName.Text = "";
             txtPassword.Text = "";
-            cbActive.Checked = false;
+            //cbActive.Checked = false;
         }
     }
 }

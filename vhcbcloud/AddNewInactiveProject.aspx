@@ -26,25 +26,25 @@
                             <tr>
                                 <td style="height: 30px"><span class="labelClass">Login Name</span></td>
                                 <td style="height: 30px">
-                                    <asp:TextBox ID="txtLoginName" CssClass="clsTextBoxBlue1" runat="server" Width="72px"></asp:TextBox></td>
+                                    <asp:TextBox ID="txtLoginName" CssClass="clsTextBoxBlue1" runat="server" Width="133px"></asp:TextBox></td>
                                 <td style="height: 30px"></td>
                                 <td style="height: 30px"></td>
                             </tr>
                             <tr>
                                 <td style="height: 30px"><span class="labelClass">Password</span></td>
                                 <td style="height: 30px">
-                                    <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server" Width="72px"></asp:TextBox></td>
+                                    <asp:TextBox ID="txtPassword" CssClass="clsTextBoxBlue1" runat="server" Width="132px"></asp:TextBox></td>
                                 <td style="height: 30px">&nbsp;</td>
                                 <td style="height: 30px">&nbsp;</td>
                             </tr>
-                            <tr>
+                           <%-- <tr>
                                 <td style="height: 30px"><span class="labelClass">Active</span></td>
                                 <td style="height: 30px">
                                     <asp:CheckBox ID="cbActive" runat="server" Text="" Checked="false" Enabled="false" Visible="true" />
                                     &nbsp;</td>
                                 <td style="height: 30px">&nbsp;</td>
                                 <td style="height: 30px">&nbsp;</td>
-                            </tr>
+                            </tr>--%>
                             <tr>
                                 <td colspan="4" style="height: 50px">
                                     <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />

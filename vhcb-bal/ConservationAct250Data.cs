@@ -45,7 +45,7 @@ namespace VHCBCommon.DataAccessLayer
         public static ConservationAct250Result AddAct250Farm(string UsePermit, int LkTownDev, int CDist, int Type, 
             string DevName, decimal Primelost, decimal Statelost, decimal TotalAcreslost, decimal AcresDevelop, 
             int Developer, decimal AntFunds, 
-            DateTime MitDate, string URL, int FundID)
+            DateTime MitDate, string URL, int FundID, decimal Expectedfunds)
         {
             try
             {
@@ -73,6 +73,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("MitDate", MitDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : MitDate));
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
+                        command.Parameters.Add(new SqlParameter("Expectedfunds", Expectedfunds));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -104,7 +105,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void UpdateAct250Farm(int Act250FarmID, int LkTownDev, int CDist, int Type,
             string DevName, decimal Primelost, decimal Statelost, decimal TotalAcreslost, decimal AcresDevelop, 
             int Developer, decimal AntFunds,
-            DateTime MitDate, string URL, int FundID, bool IsRowIsActive, string UsePermit)
+            DateTime MitDate, string URL, int FundID, bool IsRowIsActive, string UsePermit, decimal Expectedfunds)
         {
             try
             {
@@ -134,6 +135,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("URL", URL));
                         command.Parameters.Add(new SqlParameter("FundID", FundID));
                         command.Parameters.Add(new SqlParameter("UsePermit", UsePermit));
+                        command.Parameters.Add(new SqlParameter("Expectedfunds", Expectedfunds));
 
                         command.CommandTimeout = 60 * 5;
 

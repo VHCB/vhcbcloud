@@ -40,7 +40,7 @@
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
-                       <%-- <tr>
+                        <%-- <tr>
                             <td style="height: 5px"><span class="labelClass">Owner/Operator</span></td>
                             <td style="height: 5px" colspan="5">
                                 <asp:TextBox ID="txtOtherNames" CssClass="clsTextBoxBlue1" runat="server" Width="500px"></asp:TextBox>
@@ -444,7 +444,7 @@
                                             <tr>
                                                 <td style="width: 14%"><span class="labelClass">Award Amount</span></td>
                                                 <td style="width: 19%">
-                                                    <asp:TextBox ID="txtAwardAmount" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="txtAwardAmount" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server" ReadOnly="true"></asp:TextBox>
                                                 </td>
                                                 <td style="width: 11%">
                                                     <span class="labelClass">Leveraged Funds</span>
@@ -629,7 +629,7 @@
 
                 $('#<%= txtGrossSales.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
-                 });
+                });
 
                 $('#<%= txtGrantAmt.ClientID%>').keyup(function () {
                     toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
@@ -660,17 +660,21 @@
                 toCurrencyControl($('#<%= txtAmountReq.ClientID%>').val(), $('#<%= txtAmountReq.ClientID%>'));
                 toCurrencyControl($('#<%= txtAwardAmount.ClientID%>').val(), $('#<%= txtAwardAmount.ClientID%>'));
                 toCurrencyControl($('#<%= txtGrantAmt.ClientID%>').val(), $('#<%= txtGrantAmt.ClientID%>'));
-                
-                
+
+
             });
 
             function CalculateLivFund() {
-                var ProjCost = parseInt($('#<%=txtProjCost.ClientID%>').val(), 10);
-                var AwardAmount = parseInt($('#<%=txtAwardAmount.ClientID%>').val(), 10);
+                var ProjCost = parseInt($('#<%=txtProjCost.ClientID%>').val().replace("$", "").replace(",", ""), 10);
+                var AwardAmount = parseInt($('#<%=txtAwardAmount.ClientID%>').val().replace("$", "").replace(",", ""), 10);
 
                 if (isNaN(ProjCost)) {
                     var ProjCost = 0;
                 }
+               <%-- console.log("XXXX");
+                console.log($('#<%=txtProjCost.ClientID%>').val());
+                console.log($('#<%=txtProjCost.ClientID%>').val().replace("$", ""));
+                console.log(ProjCost);--%>
 
                 if (isNaN(AwardAmount)) {
                     var AwardAmount = 0;
@@ -678,6 +682,7 @@
 
                 var LiveFund = ProjCost - AwardAmount;
                 $('#<%= spnLevFunds.ClientID%>').text(LiveFund);
+               
             };
 
             function CalculateTotalFT() {
@@ -696,11 +701,11 @@
                 console.log(NonFamilyFT);
                 var Total = FamilyFT + NonFamilyFT;
                 $('#<%= spnTotalFulltime.ClientID%>').text(Total);
-        };
-
-        function PopupAwardSummary() {
-            window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
             };
+
+            function PopupAwardSummary() {
+                window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
+        };
         </script>
     </div>
 </asp:Content>

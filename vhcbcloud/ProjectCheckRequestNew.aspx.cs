@@ -79,6 +79,7 @@ namespace vhcbcloud
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
+                    hfIsprgramAdmin.Value = "true";
                     if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
                     {
                         RoleViewOnly(); 
@@ -125,6 +126,8 @@ namespace vhcbcloud
         protected void RoleViewOnly()
         {
             btnCRSubmit.Visible = false;
+            updateSpan.Visible = false;
+
             btnDelete.Visible = false;
             btnPCRTransDetails.Visible = false;
             btnApprovalsSubmit.Visible = false;
@@ -233,6 +236,7 @@ namespace vhcbcloud
                     }
                     btnCRSubmit.Text = "Submit";
                     btnCRSubmit.ToolTip = "";
+                    updateSpan.Visible = false;
                     spnCreatedBy.InnerHtml = Context.User.Identity.GetUserName();
                 }
                 else
@@ -868,6 +872,9 @@ namespace vhcbcloud
                 btnCRSubmit.Text = "Update";
                 btnCRSubmit.ToolTip = "Clicking on update will clear all approvals as well as updating this panel";
 
+                if(!btnDelete.Visible)
+                    updateSpan.Visible = true;
+
                 //btnCRSubmit.Visible = true;
 
                 //EnableButton(btnPCRTransDetails);
@@ -990,7 +997,8 @@ namespace vhcbcloud
                     }
                 }
 
-                chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
+                txtVendorId.Text = String.IsNullOrEmpty(drTrans["PayeeApplicant"].ToString()) ? "" : drPCR["VendorId"].ToString();
+                //chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
                 chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
                 txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();
                 txtNotes.Text = String.IsNullOrEmpty(drPCR["Notes"].ToString()) ? "" : drPCR["Notes"].ToString();
@@ -1025,7 +1033,7 @@ namespace vhcbcloud
 
                 chkLegalReview.Enabled = true;
                 //CheckLegalReviewAccess();
-                chkLCB.Enabled = true;
+                //chkLCB.Enabled = true;
                 lbNOD.Enabled = true;
                 txtNotes.Enabled = true;
 
@@ -1051,7 +1059,7 @@ namespace vhcbcloud
             txtTransDate.Text = "";
 
             //EnableButton(btnCRSubmit);
-            chkLCB.Checked = false;
+            //chkLCB.Checked = false;
             chkLegalReview.Checked = false;
 
             if (txtEligibleAmt.Visible)
@@ -1104,7 +1112,7 @@ namespace vhcbcloud
             ddlProgram.Enabled = true;
             ddlStatus.Enabled = false;
             lbNOD.Enabled = true;
-            chkLCB.Enabled = true;
+            //chkLCB.Enabled = true;
             chkLegalReview.Enabled = true;
 
             if (txtEligibleAmt.Visible)
@@ -1438,6 +1446,7 @@ namespace vhcbcloud
                 DisablePCR();
                 //txtProjNum.Visible = false;
                 btnCRSubmit.Visible = false;
+                updateSpan.Visible = false;
             }
         }
         /// <summary>
@@ -1675,7 +1684,7 @@ namespace vhcbcloud
                 if (PCRID == "")
                 {
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        chkLegalReview.Checked, txtVendorId.Text, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS, CRDate);
 
@@ -1715,7 +1724,7 @@ namespace vhcbcloud
                     if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
                     {
                         dtPCR = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        chkLegalReview.Checked, txtVendorId.Text, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS, CRDate);
 
@@ -1787,7 +1796,7 @@ namespace vhcbcloud
             ddlProgram.Enabled = false;
             ddlStatus.Enabled = false;
             //DisableButton(btnCRSubmit);
-            chkLCB.Enabled = false;
+            //chkLCB.Enabled = false;
             chkLegalReview.Enabled = false;
             lbNOD.Enabled = false;
 
@@ -1948,6 +1957,7 @@ namespace vhcbcloud
                 if (approvals != 0 && approvals == dt.Rows.Count)
                 {
                     btnCRSubmit.Visible = false;
+                    updateSpan.Visible = false;
                     //btnDelete.Visible = false;
                     btnPCRTransDetails.Visible = false;
                     btnApprovalsSubmit.Visible = false;
@@ -2168,8 +2178,10 @@ namespace vhcbcloud
                         linkButton.Visible = true;
                     else if (hfLKPCRQId.Value == "7" && CheckFxnAccess("27471"))
                         linkButton.Visible = true;
-                    else if (hfLKPCRQId.Value == "8" && GetUserId().ToString() != hfCreatedById.Value
-                        && DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    //else if (hfLKPCRQId.Value == "8" && GetUserId().ToString() != hfCreatedById.Value
+                    //    && DataUtils.GetBool(hfIsVisibleBasedOnRole.Value))
+                    //    linkButton.Visible = true;
+                    else if (hfLKPCRQId.Value == "8" && (DataUtils.GetBool(hfIsprgramAdmin.Value) || CheckFxnAccess("27645")))
                         linkButton.Visible = true;
                     else
                         linkButton.Visible = false;
@@ -2222,6 +2234,7 @@ namespace vhcbcloud
                 LogMessage("Check Request Finalized Successfully");
 
                 btnCRSubmit.Visible = false;
+                updateSpan.Visible = false;
                 btnPCRTransDetails.Visible = false;
                 btnApprovalsSubmit.Visible = false;
                 btnAddVoucher.Visible = false;
@@ -2326,8 +2339,10 @@ namespace vhcbcloud
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "26816")
+                {
                     btnDelete.Visible = true;
-
+                    updateSpan.Visible = false;
+                }
                 if (row["FxnID"].ToString() == "26820")
                     hfSecondQuestionAccess.Value = "true";
 

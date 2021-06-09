@@ -60,7 +60,9 @@ namespace vhcbcloud
                     //ddlProject.SelectedValue = ProjectId;
 
                     DataRow dr = ProjectMaintenanceData.GetProjectNameById(DataUtils.GetInt(ProjectId));
-                    txtProjectName.Text = dr["ProjectName"].ToString();
+
+                    if(dr!= null)
+                        txtProjectName.Text = dr["ProjectName"].ToString();
 
                     BindProjectNotesGrid();
                 }

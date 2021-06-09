@@ -1242,7 +1242,7 @@ namespace vhcbcloud
                 if (PCRID == "")
                 {
                     dtPCR = ProjectCheckRequestData.SubmitPCR(int.Parse(hfProjId.Value), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        chkLegalReview.Checked, null, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), ddlPayee.Items.Count > 0 ? int.Parse(ddlPayee.SelectedValue.ToString()) : 0, int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS, CRDate);
                     if (dtPCR.Rows.Count > 0)
@@ -2378,7 +2378,7 @@ namespace vhcbcloud
                 if (decimal.Parse(txtDisbursementAmt.Text) >= TotalDisbursementDetail)
                 {
                     dtPCR = ProjectCheckRequestData.UpdatePCR(int.Parse(PCRID), int.Parse(ProjectTokens[0]), TransDate, int.Parse(ddlProgram.SelectedValue.ToString()),
-                        chkLegalReview.Checked, chkLCB.Checked, EligibleAmt, MatchingGrant,
+                        chkLegalReview.Checked, null, EligibleAmt, MatchingGrant,
                         decimal.Parse(txtDisbursementAmt.Text), int.Parse(ddlPayee.SelectedValue.ToString()), int.Parse(ddlStatus.SelectedValue.ToString()),
                         txtNotes.Text, GetUserId(), lbNODS, CRDate);
 

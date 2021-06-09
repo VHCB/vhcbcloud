@@ -227,7 +227,20 @@ namespace vhcbcloud
             if (!chkApprove.Enabled && CheckVerifyCheckBoxAccess())
                 chkApprove.Enabled = true;
 
+            if (!cbProjectNumEdit.Visible && CheckEditProjectnumberAccess() && IsTempProject())
+                cbProjectNumEdit.Visible = true;
+            else
+                cbProjectNumEdit.Visible = false;
+
         }
+
+        private bool IsTempProject()
+        {
+            if (txtProjectNumDDL.Text.Substring(0, 4) == "9999")
+                return true;
+            else return false;
+        }
+
         protected bool GetRoleAuth()
         {
             bool IsVisibleBasedOnRole = UserSecurityData.GetRoleAuth(Context.User.Identity.Name, DataUtils.GetInt(Request.QueryString["ProjectId"]));
@@ -259,7 +272,7 @@ namespace vhcbcloud
 
         private void HandleCustomPostbackEvent(string ctrlName, string args)
         {
-            if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur")
+            if (ctrlName == txtProjectNumDDL.UniqueID && args == "OnBlur" && !cbProjectNumEdit.Checked)
             {
                 ProjectSelectionChanged();
             }
@@ -727,42 +740,46 @@ namespace vhcbcloud
         private void BindProjectInfoForm(int ProjectId)
         {
             DataRow drProjectDetails = ProjectMaintenanceData.GetprojectDetails(ProjectId);
-            PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
-            //ddlProgram.Enabled = false;
-            hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
-            GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
-            //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
-            PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
-            txtPrimaryApplicant.Text = drProjectDetails["AppName"].ToString();
-            //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
-            PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
-            chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
 
-
-            if (Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString()))
+            if (drProjectDetails != null)
             {
-                cbProjectActive.Checked = Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString());
-                if (ProjectMaintenanceData.IsFinanceTransExist(ProjectId))
-                    cbProjectActive.Enabled = false;
+                PopulateDropDown(ddlProgram, drProjectDetails["LkProgram"].ToString());
+                //ddlProgram.Enabled = false;
+                hfProgramId.Value = drProjectDetails["LkProgram"].ToString();
+                GenerateTabs(ProjectId, DataUtils.GetInt(drProjectDetails["LkProgram"].ToString()));
+                //PopulateDropDown(ddlAppStatus, drProjectDetails["LkAppStatus"].ToString());
+                PopulateDropDown(ddlManager, drProjectDetails["Manager"].ToString());
+                txtPrimaryApplicant.Text = drProjectDetails["AppName"].ToString();
+                //PopulateDropDown(ddlPrimaryApplicant, drProjectDetails["AppNameId"].ToString());
+                PopulateDropDown(ddlProjectType, drProjectDetails["LkProjectType"].ToString());
+                chkApprove.Checked = Convert.ToBoolean(drProjectDetails["verified"].ToString());
+
+
+                if (Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString()))
+                {
+                    cbProjectActive.Checked = Convert.ToBoolean(drProjectDetails["RowIsActive"].ToString());
+                    if (ProjectMaintenanceData.IsFinanceTransExist(ProjectId))
+                        cbProjectActive.Enabled = false;
+                }
+
+
+                dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
+                txtProjectName.Text = drProjectDetails["projectName"].ToString();
+                txtProjectName.Enabled = false;
+                //txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
+                //cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
+
+                PopulateDropDown(ddlProjectGoal, drProjectDetails["Goal"].ToString());
+                ShowConservationOnly();
+                //Event Form
+                SetEventProjectandProgram();
+                if (!chkApprove.Checked)
+                    dtApprove.Text = "";
+
+                hfIsVerified.Value = drProjectDetails["verified"].ToString();
+
+                PopulateDropDown(ddlTargetYear, drProjectDetails["TargetYr"].ToString());
             }
-
-
-            dtApprove.Text = drProjectDetails["VerifiedDate"].ToString();
-            txtProjectName.Text = drProjectDetails["projectName"].ToString();
-            txtProjectName.Enabled = false;
-            //txtClosingDate.Text = drProjectDetails["ClosingDate"].ToString() == "" ? "" : Convert.ToDateTime(drProjectDetails["ClosingDate"].ToString()).ToShortDateString();
-            //cbVerified.Checked = DataUtils.GetBool(drProjectDetails["verified"].ToString());
-
-            PopulateDropDown(ddlProjectGoal, drProjectDetails["Goal"].ToString());
-            ShowConservationOnly();
-            //Event Form
-            SetEventProjectandProgram();
-            if (!chkApprove.Checked)
-                dtApprove.Text = "";
-
-            hfIsVerified.Value = drProjectDetails["verified"].ToString();
-
-            PopulateDropDown(ddlTargetYear, drProjectDetails["TargetYr"].ToString());
         }
 
         private void GenerateTabs(int ProjectId, int ProgramId)
@@ -991,6 +1008,16 @@ namespace vhcbcloud
                     {
                         LogMessage("Finance transactions already exist for this Project, so you can't de-activate.");
                     }
+                    else if(cbProjectNumEdit.Checked && CheckEditProjectnumberAccess())
+                    {
+                        ProjectMaintenanceData.UpdateProjectNumber(DataUtils.GetInt(hfProjectId.Value), txtProjectNumDDL.Text);
+
+                        this.BindProjectEntityGrid();
+                        LogMessage("Project updated successfully");
+
+                        GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                        PopulateForm(DataUtils.GetInt(hfProjectId.Value));
+                    }
                     else
                     {
                         ProjectMaintenanceData.UpdateProject((DataUtils.GetInt(hfProjectId.Value)), DataUtils.GetInt(ddlProjectType.SelectedValue.ToString()),
@@ -1003,9 +1030,9 @@ namespace vhcbcloud
 
                         this.BindProjectEntityGrid();
 
-                        if (!cbProjectActive.Checked)
-                            LogMessage("Project has been inactivated - if this was in error, re - activate now");
-                        else
+                        //if (!cbProjectActive.Checked)
+                        //    LogMessage("Project has been inactivated - if this was in error, re - activate now");
+                        //else
                             LogMessage("Project updated successfully");
 
                         GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
@@ -1075,7 +1102,12 @@ namespace vhcbcloud
                 txtProject_Name.Focus();
                 return false;
             }
-
+            else if (txtProject_Name.Text.Trim().Length > 50)
+            {
+                LogMessage("Project Name should not be greater than 50 characters");
+                txtProject_Name.Focus();
+                return false;
+            }
             return true;
         }
 
@@ -1108,12 +1140,32 @@ namespace vhcbcloud
             bool isDefName = Convert.ToBoolean(((CheckBox)gvProjectNames.Rows[rowIndex].FindControl("chkDefNamePN")).Checked);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvProjectNames.Rows[rowIndex].FindControl("chkActiveEditPN")).Checked); ;
 
-            ProjectMaintenanceData.UpdateProjectname(DataUtils.GetInt(hfProjectId.Value), typeid, projectName, isDefName, RowIsActive);
-            gvProjectNames.EditIndex = -1;
+            if (IsProjectNameValid(projectName))
+            {
+                ProjectMaintenanceData.UpdateProjectname(DataUtils.GetInt(hfProjectId.Value), typeid, projectName, isDefName, RowIsActive);
+                gvProjectNames.EditIndex = -1;
 
-            BindProjectNamesGrid();
-            BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
-            LogMessage("Project Name updated successfully");
+                BindProjectNamesGrid();
+                BindProjectInfoForm(DataUtils.GetInt(hfProjectId.Value));
+                LogMessage("Project Name updated successfully");
+            }
+        }
+
+        protected bool IsProjectNameValid(string projectName)
+        {
+            if (projectName.Trim() == "")
+            {
+                LogMessage("Enter Project Name");
+                //txtProject_Name.Focus();
+                return false;
+            }
+            else if (projectName.Trim().Length > 50)
+            {
+                LogMessage("Project Name should not be greater than 50 characters");
+                //txtProject_Name.Focus();
+                return false;
+            }
+            return true;
         }
 
         protected void gvProjectNames_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -2751,6 +2803,19 @@ namespace vhcbcloud
             foreach (DataRow row in dt.Rows)
             {
                 if (row["FxnID"].ToString() == "38061")
+                    return true;
+            }
+            return false;
+        }
+
+        private bool CheckEditProjectnumberAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "38730")
                     return true;
             }
             return false;

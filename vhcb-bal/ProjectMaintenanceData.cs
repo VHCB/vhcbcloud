@@ -175,6 +175,35 @@ namespace DataAccessLayer
             }
         }
 
+        public static void UpdateProjectNumber(int ProjId, string ProjectNumber)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateProjectNumber";
+
+                        command.Parameters.Add(new SqlParameter("ProjectId", ProjId));
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static DataRow GetprojectDetails(int ProjectId)
         {
             DataRow dr = null;
@@ -194,7 +223,7 @@ namespace DataAccessLayer
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
                         da.Fill(ds);
-                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                         {
                             dr = ds.Tables[0].Rows[0];
                         }
@@ -325,7 +354,7 @@ namespace DataAccessLayer
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
                         da.Fill(ds);
-                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count>0)
                         {
                             dt = ds.Tables[0].Rows[0];
                         }
@@ -1866,6 +1895,38 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+        }
+
+        public static DataTable GetCountys()
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetCountys";
+                        
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
         }
     }
 

@@ -110,6 +110,7 @@
                                             <div id="divErrorProjectNumber" style="display: none">
                                                 <span style="color: red">Project Number already exist</span>
                                             </div>
+                                            <asp:CheckBox ID="cbProjectNumEdit" class="labelClass" runat="server" Visible="false" Text="Modify#" />
                                         </td>
                                         <td style="width: 100px">
                                             <span class="labelClass">Name</span>
@@ -620,7 +621,7 @@
                         </div>
 
                         <div class="panel-body" id="dvProjectNamesGrid" runat="server">
-                            <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="None">
+                            <asp:Panel runat="server" ID="pnlGrid" Width="100%" Height="100px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvProjectNames" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" OnRowCancelingEdit="gvProjectNames_RowCancelingEdit"

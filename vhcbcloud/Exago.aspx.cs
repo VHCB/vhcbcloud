@@ -27,11 +27,16 @@ namespace vhcbcloud
                 parameter.Value = Context.User.Identity.Name;
                 parameter.IsHidden = false;
 
-                //WebReports.Api.Common.Parameter parameter1 = api.Parameters.GetParameter("ClassId");
-                //parameter1.Value = "VHCB";
-                //parameter1.IsHidden = false;
+                api.SetupData.StorageMgmtConfig.SetIdentity("userId", Context.User.Identity.Name);
+                api.SetupData.StorageMgmtConfig.SetIdentity("companyId", "VHCB");
+                api.SetupData.StorageMgmtConfig.SetIdentity("classId", "VHCB");
+                api.SetupData.StorageMgmtConfig.SetIdentity("ownerId", "Dherman");
 
-                //WebReports.Api.Common.Parameter parameter2 = api.Parameters.GetParameter("OwnerId");
+                WebReports.Api.Common.Parameter parameter1 = api.Parameters.GetParameter("companyId");
+                parameter1.Value = "VHCB";
+                parameter1.IsHidden = false;
+
+                //WebReports.Api.Common.Parameter parameter2 = api.Parameters.GetParameter("ownerId");
                 //parameter2.Value = "Dherman";
                 //parameter2.IsHidden = false;
 
