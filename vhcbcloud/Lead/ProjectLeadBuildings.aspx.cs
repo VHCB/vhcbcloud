@@ -188,8 +188,26 @@ namespace vhcbcloud.Lead
             BindLookUP(ddlEBlStatus, 153);
             BindLookUP(ddlIncomeStatus, 155);
             BindLookUP(ddlBldgAge, 262);
-            BindLookUP(ddlTypeOfWork, 2273);
+            //BindLookUP(ddlTypeOfWork, 2273);
             BindLookUP(ddlWorkLocation, 2274);
+            BindCategory();
+        }
+
+        private void BindCategory()
+        {
+            try
+            {
+                ddlCategory.Items.Clear();
+                ddlCategory.DataSource = ProjectLeadBuildingsData.GetLeadCategory();
+                ddlCategory.DataValueField = "CategoryID";
+                ddlCategory.DataTextField = "CatDescription";
+                ddlCategory.DataBind();
+                ddlCategory.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCategory", "Control ID:" + ddlCategory.ID, ex.Message);
+            }
         }
 
         private void BindAddresses()
@@ -449,6 +467,12 @@ namespace vhcbcloud.Lead
             hfLeadBldgID.Value = objSelectedBldInfo.LeadBldgID.ToString();
             hfSelectedBuilding.Value = objSelectedBldInfo.Building.ToString();
             dvNewUnitInfo.Visible = true;
+            dvNewLeadTypeofWork.Visible = false;
+            dvNewWorkLocation.Visible = false;
+
+            hfLeadUnitID.Value = "";
+            hfWorkLocationID.Value = "";
+
             BindUnitsGrid();
         }
 
@@ -670,10 +694,11 @@ namespace vhcbcloud.Lead
             SelectedUnitInfo objSelectedUnitInfo = GetUnitInfoSelectedRecordID(gvUnitInfo);
 
             hfLeadUnitID.Value = objSelectedUnitInfo.LeadUnitID.ToString();
-            dvNewLeadTypeofWork.Visible = true;
             dvNewWorkLocation.Visible = true;
+            dvNewLeadTypeofWork.Visible = false;
 
-            BindLeadTypeofWorkGrid();
+            hfWorkLocationID.Value = "";
+
             BindWorkLocationGrid();
         }
 
@@ -681,8 +706,7 @@ namespace vhcbcloud.Lead
         {
             try
             {
-                DataTable dt = ProjectLeadBuildingsData.GetProjectLeadTypeofWorkList(
-                    DataUtils.GetInt(hfLeadBldgID.Value), DataUtils.GetInt(hfLeadUnitID.Value), cbActiveOnly.Checked);
+                DataTable dt = ProjectLeadBuildingsData.GetProjectLeadSpecs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfWorkLocationID.Value), cbActiveOnly.Checked);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -729,35 +753,61 @@ namespace vhcbcloud.Lead
             return objSelectedUnitInfo;
         }
 
-        protected void btnAddTypeOfWork_Click(object sender, EventArgs e)
+        private SelectedWorkLocationInfo GetWorkLocationSelectedRecordID(GridView gvWorkLocationGrid)
         {
-            if (ddlTypeOfWork.SelectedIndex == 0)
+            SelectedWorkLocationInfo objSelectedWorkLocationInfo = new SelectedWorkLocationInfo();
+
+            for (int i = 0; i < gvWorkLocationGrid.Rows.Count; i++)
             {
-                LogMessage("Select Type Of Work");
-                ddlTypeOfWork.Focus();
-                return;
+                RadioButton rbUnitInfo = (RadioButton)gvWorkLocationGrid.Rows[i].Cells[0].FindControl("rdBtnSelectWorkLocation");
+                if (rbUnitInfo != null)
+                {
+                    if (rbUnitInfo.Checked)
+                    {
+                        HiddenField hf = (HiddenField)gvWorkLocationGrid.Rows[i].Cells[0].FindControl("HiddenWorkLocationID");
+                        //Label lblBuilding = (Label)gvBldgInfo.Rows[i].Cells[1].FindControl("lblBuilding");
+
+                        if (hf != null)
+                        {
+                            objSelectedWorkLocationInfo.WorkLocationID = DataUtils.GetInt(hf.Value);
+                            //objSelectedBldInfo.Building = DataUtils.GetInt(lblBuilding.Text);
+                        }
+                        break;
+                    }
+                }
             }
-
-                LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddProjectLeadTypeofWork(
-                    DataUtils.GetInt(hfLeadBldgID.Value),
-                    DataUtils.GetInt(hfLeadUnitID.Value),
-                    DataUtils.GetInt(ddlTypeOfWork.SelectedValue.ToString()));
-
-            ddlTypeOfWork.SelectedIndex = -1;
-            BindLeadTypeofWorkGrid();
-            cbAddTypeOfWork.Checked = false;
-            if (objLeadBuildResult.IsDuplicate && !objLeadBuildResult.IsActive)
-                    LogMessage("Type of Work already exist as in-active");
-                else if (objLeadBuildResult.IsDuplicate)
-                    LogMessage("Type of Work already exist");
-                else
-                    LogMessage("Type of Work Added Successfully");
+            return objSelectedWorkLocationInfo;
         }
+        //protected void btnAddTypeOfWork_Click(object sender, EventArgs e)
+        //{
+        //    if (ddlTypeOfWork.SelectedIndex == 0)
+        //    {
+        //        LogMessage("Select Type Of Work");
+        //        ddlTypeOfWork.Focus();
+        //        return;
+        //    }
+
+        //        LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddProjectLeadTypeofWork(
+        //            DataUtils.GetInt(hfLeadBldgID.Value),
+        //            DataUtils.GetInt(hfLeadUnitID.Value),
+        //            DataUtils.GetInt(ddlTypeOfWork.SelectedValue.ToString()));
+
+        //    ddlTypeOfWork.SelectedIndex = -1;
+        //    BindLeadTypeofWorkGrid();
+        //    cbAddTypeOfWork.Checked = false;
+        //    if (objLeadBuildResult.IsDuplicate && !objLeadBuildResult.IsActive)
+        //            LogMessage("Type of Work already exist as in-active");
+        //        else if (objLeadBuildResult.IsDuplicate)
+        //            LogMessage("Type of Work already exist");
+        //        else
+        //            LogMessage("Type of Work Added Successfully");
+        //}
 
         protected void gvTypeOfWork_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             gvTypeOfWork.EditIndex = -1;
             BindLeadTypeofWorkGrid();
+            dvSpecDetails.Visible = false;
         }
 
         protected void gvTypeOfWork_RowEditing(object sender, GridViewEditEventArgs e)
@@ -783,29 +833,24 @@ namespace vhcbcloud.Lead
         protected void gvTypeOfWork_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
-                CommonHelper.GridViewSetFocus(e.Row);
             {
+                CommonHelper.GridViewSetFocus(e.Row);
+
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
-                    DropDownList ddlTypeOfWork = (e.Row.FindControl("ddlTypeOfWork") as DropDownList);
-                    TextBox txtTypeOfWorkID = (e.Row.FindControl("txtTypeOfWorkID") as TextBox);
-                    CheckBox chkActiveEditTypeOfWork = e.Row.FindControl("chkActiveEditTypeOfWork") as CheckBox;
+                    dvSpecDetails.Visible = true;
+                   // e.Row.Cells[6].Controls[0].Visible = false;
+                    Label lblProjectLeadSpecId = e.Row.FindControl("lblProjectLeadSpecID") as Label;
+                    DataRow dr = ProjectLeadBuildingsData.GetProjectLeadSpecsById(DataUtils.GetInt(lblProjectLeadSpecId.Text));
 
-                    if (txtTypeOfWorkID != null)
+                    if(dr!= null)
                     {
-                        BindLookUP(ddlTypeOfWork, 2273);
-
-                        string itemToCompare = string.Empty;
-                        foreach (ListItem item in ddlTypeOfWork.Items)
-                        {
-                            itemToCompare = item.Value.ToString();
-                            if (txtTypeOfWorkID.Text.ToLower() == itemToCompare.ToLower())
-                            {
-                                ddlTypeOfWork.ClearSelection();
-                                item.Selected = true;
-                            }
-                        }
-                        chkActiveEditTypeOfWork.Enabled = true;
+                        hfProjectLeadSpecID.Value = lblProjectLeadSpecId.Text;
+                        txtSpecDetails.Text = dr["Spec_Detail"].ToString();
+                        txtSpecNotes.Text = dr["Spec_Note"].ToString();
+                        txtUnits.Text = dr["Units"].ToString();
+                        txtUnitCost.Text = dr["UnitCost"].ToString();
+                        cbSpecActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
                 }
             }
@@ -918,6 +963,80 @@ namespace vhcbcloud.Lead
                 }
             }
         }
+
+        protected void rdBtnSelectWorkLocation_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectedWorkLocationInfo objSelectedWorkLocationInfo = GetWorkLocationSelectedRecordID(gvWorkLocationGrid);
+
+            hfWorkLocationID.Value = objSelectedWorkLocationInfo.WorkLocationID.ToString();
+            dvNewLeadTypeofWork.Visible = true;
+
+            BindLeadTypeofWorkGrid();
+        }
+
+        protected void btnAddSpec_Click(object sender, EventArgs e)
+        {
+            int ProjectID = DataUtils.GetInt(hfProjectId.Value);
+            int LocationID = DataUtils.GetInt(hfWorkLocationID.Value);
+
+
+            if (ProjectID != 0 && LocationID != 0)
+            {
+                //ProjectLeadBuildingsData.DeleteProjectLeadSpecs(ProjectID, LocationID);
+
+                foreach (ListItem item in cblSpec.Items)
+                {
+                    if (item.Selected)
+                    {
+                        ProjectLeadBuildingsData.AddProjectLeadSpecs(ProjectID, LocationID, DataUtils.GetInt(item.Value));
+                    }
+                }
+                cbAddTypeOfWork.Checked = false;
+                ddlCategory.SelectedIndex = -1;
+
+                cblSpec.Items.Clear();
+                BindLeadTypeofWorkGrid();
+
+                LogMessage("Location Specs Added Successfully");
+            }
+        }
+
+        protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindCheckBoxList(cblSpec, DataUtils.GetInt(ddlCategory.SelectedValue));
+        }
+
+        private void BindCheckBoxList(CheckBoxList ddList, int CategoryId)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = ProjectLeadBuildingsData.GetLeadSpecs(CategoryId);
+                ddList.DataValueField = "Spec_ID";
+                ddList.DataTextField = "Spec";
+                ddList.DataBind();
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCheckBoxList", "Control ID:" + ddList.ID, ex.Message);
+            }
+        }
+
+        protected void btnUpdateSpecDetails_Click(object sender, EventArgs e)
+        {
+            ProjectLeadBuildingsData.UpdateProjectLeadSpecsById(DataUtils.GetInt(hfProjectLeadSpecID.Value), txtSpecDetails.Text, txtSpecNotes.Text, DataUtils.GetDecimal(txtUnits.Text),
+                DataUtils.GetDecimal(Regex.Replace(txtUnitCost.Text, "[^0-9a-zA-Z.]+", "")), cbSpecActive.Checked);
+
+            dvSpecDetails.Visible = false;
+            hfProjectLeadSpecID.Value = "";
+            txtSpecDetails.Text = "";
+            txtSpecNotes.Text = "";
+            txtUnits.Text = "";
+            txtUnitCost.Text = "";
+            gvTypeOfWork.EditIndex = -1;
+            BindLeadTypeofWorkGrid();
+            LogMessage("Spec details updated successfully");
+        }
     }
 
     public class SelectedBldInfo
@@ -930,5 +1049,11 @@ namespace vhcbcloud.Lead
     {
         public int LeadUnitID { set; get; }
         public decimal Amount { set; get; }
+    }
+
+    public class SelectedWorkLocationInfo
+    {
+        public int WorkLocationID { set; get; }
+        //public decimal Amount { set; get; }
     }
 }

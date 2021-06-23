@@ -45,9 +45,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Exago\eWebReports\Bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files\Exago\ExagoWeb\Bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NodaTime, Version=2.4.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -120,9 +120,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi, Version=2019.1.13.263, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+    <Reference Include="WebReportsApi, Version=2021.1.6.144, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files\Exago\ExagoWeb\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +186,7 @@
     <Content Include="Americorps\AmericorpsMember.aspx" />
     <Content Include="Americorps\ProgressReport.aspx" />
     <Content Include="Applicant.aspx" />
+    <Content Include="AssignOnlineApplicationEmailAddresses.aspx" />
     <Content Include="AwardSummary.aspx" />
     <Content Include="CashRefundnew.aspx" />
     <Content Include="CheckRequestDates.aspx" />
@@ -500,6 +501,13 @@
     </Compile>
     <Compile Include="Applicant.aspx.designer.cs">
       <DependentUpon>Applicant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AssignOnlineApplicationEmailAddresses.aspx.cs">
+      <DependentUpon>AssignOnlineApplicationEmailAddresses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AssignOnlineApplicationEmailAddresses.aspx.designer.cs">
+      <DependentUpon>AssignOnlineApplicationEmailAddresses.aspx</DependentUpon>
     </Compile>
     <Compile Include="AwardSummary.aspx.cs">
       <DependentUpon>AwardSummary.aspx</DependentUpon>

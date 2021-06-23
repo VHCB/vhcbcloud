@@ -1354,7 +1354,11 @@ namespace vhcbcloud
             try
             {
                 ddList.Items.Clear();
-                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                DataView dv = LookupValuesData.Getlookupvalues(LookupType).DefaultView;
+                dv.Sort = "typeid desc";
+                DataTable sortedDT = dv.ToTable();
+
+                ddList.DataSource = sortedDT;
                 ddList.DataValueField = "typeid";
                 ddList.DataTextField = "description";
                 ddList.DataBind();

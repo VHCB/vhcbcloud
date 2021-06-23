@@ -24,7 +24,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="height: 30px"><span class="labelClass">Login Name</span></td>
+                                <td style="height: 30px"><span class="labelClass">Email Address - Login Name</span></td>
                                 <td style="height: 30px">
                                     <asp:TextBox ID="txtLoginName" CssClass="clsTextBoxBlue1" runat="server" Width="133px"></asp:TextBox></td>
                                 <td style="height: 30px"></td>
