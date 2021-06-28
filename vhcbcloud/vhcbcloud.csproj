@@ -421,6 +421,7 @@
     <Content Include="TestExago.aspx" />
     <Content Include="TransferDisbursements.aspx" />
     <Content Include="TransferVoids.aspx" />
+    <Content Include="UpdateLeadSpecCosts.aspx" />
     <Content Include="UserSecurity.aspx" />
     <Content Include="Viability\EnterpriseEvaluations.aspx" />
     <Content Include="Viability\EnterpriseFundamentals.aspx" />
@@ -1185,6 +1186,13 @@
     </Compile>
     <Compile Include="TransferVoids.aspx.designer.cs">
       <DependentUpon>TransferVoids.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateLeadSpecCosts.aspx.cs">
+      <DependentUpon>UpdateLeadSpecCosts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdateLeadSpecCosts.aspx.designer.cs">
+      <DependentUpon>UpdateLeadSpecCosts.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserSecurity.aspx.cs">
       <DependentUpon>UserSecurity.aspx</DependentUpon>
