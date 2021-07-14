@@ -160,6 +160,15 @@
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
+                                 <tr>
+                                    <td style="height: 4px" colspan="2" />
+                                </tr>
+                                 <tr>
+                                    <td style="width: 22%; float: left"><span class="labelClass" runat="server" id="Span3">Receive PDF</span></td>
+                                    <td style="width: 65%; float: left">
+                                        <asp:CheckBox ID="isReceivePDF" runat="server" Checked="false" />
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td style="height: 4px" colspan="2" />
                                 </tr>

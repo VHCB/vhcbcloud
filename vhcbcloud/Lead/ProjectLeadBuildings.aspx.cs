@@ -248,12 +248,16 @@ namespace vhcbcloud.Lead
         {
             BindBuildingsGrid();
             BindUnitsGrid();
+            BindWorkLocationGrid();
+            BindLeadTypeofWorkGrid();
         }
 
         private void BindBuildingsGrid()
         {
             dvNewUnitInfo.Visible = false;
             dvNewLeadTypeofWork.Visible = false;
+            dvNewWorkLocation.Visible = false;
+
             try
             {
                 DataTable dt = ProjectLeadBuildingsData.GetProjectLeadBldgList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);

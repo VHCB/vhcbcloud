@@ -135,6 +135,7 @@ namespace vhcbcloud.Account
             txtProjectNum.Text = "";
             chkActive.Checked = true;
             cbDashBoard.Checked = false;
+            isReceivePDF.Checked = false;
 
         }
 
@@ -156,14 +157,14 @@ namespace vhcbcloud.Account
 
                 if (btnUserInfoSubmit.Text.ToLower() == "submit")
                 {
-                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
+                    AccountData.AddUserInfo(txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString(), isReceivePDF.Checked);
                     BindUserInfo();
                     ClearFields();
                     lblErrorMsg.Text = "User Information added successfully";
                 }
                 else
                 {
-                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
+                    AccountData.UpdateUserInfo(DataUtils.GetInt(hfUserId.Value), txtFname.Text, txtLname.Text, txtPassword.Text, txt1Email.Text, dfltPrg, dfltSecGrp, txtProjectNum.Text, txtPrimaryApplicant.Text, chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString(), isReceivePDF.Checked);
 
                     gvUserInfo.EditIndex = -1;
                     BindUserInfo();
@@ -212,9 +213,9 @@ namespace vhcbcloud.Account
                 int dfltPgr = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditVhcbPrg")).SelectedValue.ToString()) : 0;
                 int dflSecGrp = ((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedIndex != 0 ? Convert.ToInt32(((DropDownList)gvUserInfo.Rows[rowIndex].FindControl("ddlEditSecGroup")).SelectedValue.ToString()) : 0;
 
-                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp, "", "", chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString());
+                AccountData.UpdateUserInfo(UserlId, strFirstName, strLastName, strPassword, strEmail, dfltPgr, dflSecGrp, "", "", chkActive.Checked, cbDashBoard.Checked, ddlDashBoard.SelectedValue.ToString(), isReceivePDF.Checked);
 
-                gvUserInfo.EditIndex = -1;
+                gvUserInfo.EditIndex = -1; 
                 BindUserInfo();
                 lblErrorMsg.Text = "User information updated successfully.";
             }
@@ -259,6 +260,8 @@ namespace vhcbcloud.Account
                     PopulateDropDown(ddlSecurityGroup, dr["securityLevel"].ToString());
                     chkActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     cbDashBoard.Checked = DataUtils.GetBool(dr["Dashboard"].ToString());
+                    isReceivePDF.Checked = DataUtils.GetBool(dr["ReceivePDF"].ToString());
+
                     PopulateDropDown(ddlDashBoard, dr["DashboardName"].ToString());
 
                     if (ddlSecurityGroup.SelectedItem.ToString() == "Americorps Member")

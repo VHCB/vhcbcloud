@@ -1002,6 +1002,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                 command.CommandText = "GetProjectLeadSpecs";
                 command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                 command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+                command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
 
                 using (connection)
                 {

@@ -144,7 +144,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddUserInfo(string firstName, string lastName, string password, 
-            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool Dashboard, string DashboardName)
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool Dashboard, string DashboardName, bool isReceivePDF)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -162,7 +162,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("HostSite", HostSite));
                 command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
                 command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
-                
+                command.Parameters.Add(new SqlParameter("isReceivePDF", isReceivePDF));
                 using (connection)
                 {
                     connection.Open();
@@ -182,7 +182,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, 
             string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool RowIsActive, 
-            bool Dashboard, string DashboardName)
+            bool Dashboard, string DashboardName, bool isReceivePDF)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -202,6 +202,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
                 command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
                 command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
+                command.Parameters.Add(new SqlParameter("isReceivePDF", isReceivePDF));
 
                 using (connection)
                 {

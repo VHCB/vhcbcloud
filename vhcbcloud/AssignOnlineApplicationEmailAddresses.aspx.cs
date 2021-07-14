@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace vhcbcloud
             if (!IsPostBack)
             {
                 BindControls();
+                BindEmailGrid();
             }
         }
 
@@ -24,6 +26,24 @@ namespace vhcbcloud
         {
 
             BindPrograms();
+            BindLookUP(ddlApplicationType, 2283);
+        }
+
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = LookupValuesData.Getlookupvalues(LookupType);
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
         }
 
         protected void BindPrograms()
@@ -71,61 +91,17 @@ namespace vhcbcloud
                 lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
         }
 
-        protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            BindApplicationType(DataUtils.GetInt(ddlProgram.SelectedValue));
-            ddlApplicationType.SelectedIndex = -1;
-
-            txtEmail1.Text = "";
-            txtEmail2.Text = "";
-            txtEmail3.Text = "";
-            txtEmail4.Text = "";
-            txtEmail5.Text = "";
-            txtEmail6.Text = "";
-
-            txtName1.Text = "";
-            txtName2.Text = "";
-            txtName3.Text = "";
-            txtName4.Text = "";
-            txtName5.Text = "";
-            txtName6.Text = "";
-
-            dvMessage.Visible = false;
-        }
-
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             InactiveProjectData.DeleteOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue));
 
             if (txtName1.Text != "" && txtEmail1.Text != "")
             {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text);
+                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
             }
-
-            if (txtName2.Text != "" && txtEmail2.Text != "")
-            {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName2.Text, txtEmail2.Text);
-            }
-
-            if (txtName3.Text != "" && txtEmail3.Text != "")
-            {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName3.Text, txtEmail3.Text);
-            }
-
-            if (txtName4.Text != "" && txtEmail4.Text != "")
-            {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName4.Text, txtEmail4.Text);
-            }
-
-            if (txtName5.Text != "" && txtEmail5.Text != "")
-            {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName5.Text, txtEmail5.Text);
-            }
-
-            if (txtName6.Text != "" && txtEmail6.Text != "")
-            {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName6.Text, txtEmail6.Text);
-            }
+            ClearEmailForm();
+            cbAddEmail.Checked = false;
+            BindEmailGrid();
 
             LogMessage("Saved Data Scuccessfully!");
         }
@@ -136,68 +112,135 @@ namespace vhcbcloud
             lblErrorMsg.Text = message;
         }
 
-        protected void ddlApplicationType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataTable dt = InactiveProjectData.GetOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue));
-
-            int i = 0;
-            foreach (DataRow dr in dt.Rows)
-            {
-                i = i + 1;
-                if (i == 1)
-                {
-                    txtName1.Text = dr["Name"].ToString();
-                    txtEmail1.Text = dr["Email_Address"].ToString();
-                }
-                else if (i == 2)
-                {
-                    txtName2.Text = dr["Name"].ToString();
-                    txtEmail2.Text = dr["Email_Address"].ToString();
-                }
-                else if (i == 3)
-                {
-                    txtName3.Text = dr["Name"].ToString();
-                    txtEmail3.Text = dr["Email_Address"].ToString();
-                }
-                else if (i == 4)
-                {
-                    txtName4.Text = dr["Name"].ToString();
-                    txtEmail4.Text = dr["Email_Address"].ToString();
-                }
-                else if (i == 5)
-                {
-                    txtName5.Text = dr["Name"].ToString();
-                    txtEmail5.Text = dr["Email_Address"].ToString();
-                }
-                else if (i == 6)
-                {
-                    txtName6.Text = dr["Name"].ToString();
-                    txtEmail6.Text = dr["Email_Address"].ToString();
-                }
-            }
-
-        }
-
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ddlProgram.SelectedIndex = -1;
             ddlApplicationType.SelectedIndex = -1;
 
             txtEmail1.Text = "";
-            txtEmail2.Text = "";
-            txtEmail3.Text = "";
-            txtEmail4.Text = "";
-            txtEmail5.Text = "";
-            txtEmail6.Text = "";
-
+          
             txtName1.Text = "";
-            txtName2.Text = "";
-            txtName3.Text = "";
-            txtName4.Text = "";
-            txtName5.Text = "";
-            txtName6.Text = "";
-
+            txtProjectNumber.Text = "";
             dvMessage.Visible = false;
+        }
+
+        private void BindEmailGrid()
+        {
+            try
+            {
+                DataTable dt = InactiveProjectData.GetOnlineEmailAddressesList(true);
+
+                if (dt.Rows.Count > 0)
+                {
+                    dvEmailGrid.Visible = true;
+                    gvEmail.DataSource = dt;
+                    gvEmail.DataBind();
+                }
+                else
+                {
+                    dvEmailGrid.Visible = false;
+                    gvEmail.DataSource = null;
+                    gvEmail.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindEmailGrid", "", ex.Message);
+            }
+        }
+
+        protected void gvEmail_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvEmail.EditIndex = e.NewEditIndex;
+            BindEmailGrid();
+        }
+
+        protected void gvEmail_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvEmail.EditIndex = -1;
+            BindEmailGrid();
+            ClearEmailForm();
+            hfEmailAddressID.Value = "";
+            btnSubmit.Text = "Submit";
+        }
+
+        private void ClearEmailForm()
+        {
+            txtName1.Text = "";
+            txtEmail1.Text = "";
+            ddlProgram.SelectedIndex = -1;
+            ddlApplicationType.SelectedIndex = -1;
+            cbAddEmail.Checked = false;
+        }
+
+        protected void gvEmail_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+                {
+                    CommonHelper.GridViewSetFocus(e.Row);
+                    btnSubmit.Text = "Update";
+                    cbAddEmail.Checked = true;
+
+
+                    //Checking whether the Row is Data Row
+                    if (e.Row.RowType == DataControlRowType.DataRow)
+                    {
+                        e.Row.Cells[5].Controls[1].Visible = false;
+
+                        Label lblEmailAddressID = e.Row.FindControl("lblEmail_AddressID") as Label;
+                        DataRow dr = InactiveProjectData.GetOnlineEmailAddressById(DataUtils.GetInt(lblEmailAddressID.Text));
+
+                        hfEmailAddressID.Value = lblEmailAddressID.Text;
+
+                        PopulateDropDown(ddlProgram, dr["Program"].ToString());
+                        PopulateDropDown(ddlApplicationType, dr["ApplicationType"].ToString());
+
+                        txtEmail1.Text = dr["Email_Address"].ToString();
+                        txtName1.Text = dr["Name"].ToString();
+                        txtProjectNumber.Text = dr["Proj_num"].ToString();
+                        chkEmailActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
+                       
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "gvBldgInfo_RowDataBound", "", ex.Message);
+            }
+        }
+
+        protected void gvEmail_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
+        {
+            foreach (ListItem item in ddl.Items)
+            {
+                if (DBSelectedvalue == item.Value.ToString())
+                {
+                    ddl.ClearSelection();
+                    item.Selected = true;
+                }
+            }
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumber(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = InactiveProjectData.GetProjectNumbersFromTempUser(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
         }
     }
 }

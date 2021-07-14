@@ -172,7 +172,9 @@ namespace vhcbExternalApp
                     }
                 }
 
-                ViabilityApplicationData.WaterQualityGrants(projectNumber, DataUtils.GetInt(ddlFarmSize.SelectedValue), ddlFarmSize.SelectedItem.Text, DataUtils.GetInt(ddlWaterShed.SelectedValue), DataUtils.GetInt(ddlPrimaryProduct.SelectedValue), secProduct, secProductNames);
+                string farmSizeText = ddlFarmSize.SelectedIndex == 0 ? null: ddlFarmSize.SelectedItem.Text;
+
+                ViabilityApplicationData.WaterQualityGrants(projectNumber, DataUtils.GetInt(ddlFarmSize.SelectedValue), farmSizeText, DataUtils.GetInt(ddlWaterShed.SelectedValue), DataUtils.GetInt(ddlPrimaryProduct.SelectedValue), secProduct, secProductNames);
 
                 LogMessage("Farm Business Information Data Added Successfully");
             }

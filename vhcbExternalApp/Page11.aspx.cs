@@ -59,7 +59,10 @@ namespace vhcbExternalApp
 
                         LogMessage("Viability Application Submitted Successfully");
 
-                        GetExagoURLForReport(projectNumber, "Online Application - emailed");
+                        List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
+
+                        if(EmailList.Count > 0)
+                        GetExagoURLForReport(projectNumber, "Online Application - emailed" , EmailList);
                     }
                 }
                 else
@@ -97,7 +100,7 @@ namespace vhcbExternalApp
             Response.Redirect("login.aspx");
         }
 
-        public static void GetExagoURLForReport(string Projnum, string ReportName)
+        public static void GetExagoURLForReport(string Projnum, string ReportName, List<string> EmailList)
         {
             string URL = string.Empty;
             Api api = new Api(@"/eWebReports");
@@ -141,12 +144,13 @@ namespace vhcbExternalApp
                 EmailSubject = subject,
                 EmailBody = "PDF of your Online Viability Application"
             };
+            //newSchedule.EmailToList.AddRange(EmailList);
 
             newSchedule.EmailToList.Add("dan@vhcb.org");
             newSchedule.EmailToList.Add("aaron @vhcb.org");
             newSchedule.EmailToList.Add("b.mcgavisk @vhcb.org");
             newSchedule.EmailToList.Add("Marcy @vhcb.org");
-            
+
             // Send to the scheduler; wrap in try/catch to handle exceptions
             try
             {

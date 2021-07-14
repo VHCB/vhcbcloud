@@ -709,12 +709,12 @@
                                             </ItemTemplate>
                                             <ItemStyle Width="300px" />
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Units">
+                                        <asp:TemplateField HeaderText="Items">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnits" runat="Server" Text='<%# Eval("Units") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Unit Cost">
+                                        <asp:TemplateField HeaderText="Per Item Cost">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblUnitCost" runat="Server" Text='<%# Eval("UnitCost", "{0:C2}") %>' />
                                             </ItemTemplate>

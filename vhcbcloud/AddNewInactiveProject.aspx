@@ -9,18 +9,33 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-body">
-                        
+
+
+
+
                         <table style="width: 60%;">
+                            <tr>
+                                <td style="height: 30px">
+                                    <span class="labelClass">Program</span>
+                                </td>
+                                <td style="height: 30px">
+                                    <asp:DropDownList ID="ddlProgram" CssClass="clsDropDown" runat="server" AutoPostBack="true"
+                                        OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" Style="margin-left: 0">
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="height: 30px"></td>
+                                <td style="height: 30px"></td>
+                            </tr>
                             <tr>
                                 <td style="height: 30px">
                                     <span class="labelClass">Project Number</span>
                                 </td>
-                                <td style="height: 30px"><span class="labelClass"><strong>9999-001-</strong></span>
-                                    <asp:TextBox ID="txtprojectNumber" CssClass="clsTextBoxBlue1" runat="server" Width="72px" MaxLength="3"></asp:TextBox>
+                                <td style="height: 30px"><span class="labelClass" runat="server" visible="false" id="spnViabilityProjectPrefix"><strong>9999-001-</strong></span>
+                                    <asp:TextBox ID="txtprojectNumber" CssClass="clsTextBoxBlue1" runat="server" Width="100px" Height="22px"  ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
                                 </td>
                                 <td style="height: 30px"><span class="labelClass">Project Name</span></td>
                                 <td style="height: 30px">
-                                    <span class="labelClass"><strong>Viability Project</strong></span>
+                                    <span class="labelClass" runat="server" id="spnProjectName"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -37,7 +52,18 @@
                                 <td style="height: 30px">&nbsp;</td>
                                 <td style="height: 30px">&nbsp;</td>
                             </tr>
-                           <%-- <tr>
+                             <tr>
+                                <td style="height: 30px">
+                                    <span class="labelClass">Application ID</span>
+                                </td>
+                                <td style="height: 30px">
+                                    <asp:DropDownList ID="ddlApplication" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="height: 30px"></td>
+                                <td style="height: 30px"></td>
+                            </tr>
+                            <%-- <tr>
                                 <td style="height: 30px"><span class="labelClass">Active</span></td>
                                 <td style="height: 30px">
                                     <asp:CheckBox ID="cbActive" runat="server" Text="" Checked="false" Enabled="false" Visible="true" />
@@ -48,7 +74,7 @@
                             <tr>
                                 <td colspan="4" style="height: 50px">
                                     <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
-                                &nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                     <asp:Button ID="btnClear" runat="server" Text="Clear" class="btn btn-info" OnClick="btnClear_Click" /></td>
                             </tr>
                         </table>

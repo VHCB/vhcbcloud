@@ -164,8 +164,10 @@ namespace vhcbExternalApp
                     }
                 }
 
+                string orgStruct = rdBtnOrgStructure.SelectedItem == null ? "0" : rdBtnOrgStructure.SelectedItem.ToString();
 
-            ViabilityApplicationData.ViabilityApplicationPage2(projectNumber, txtOrgName.Text, txtWebsite.Text, rdBtnOrgStructure.SelectedItem.ToString(), DataUtils.GetInt(txtCows.Text), DataUtils.GetInt(txtHogs.Text),
+
+            ViabilityApplicationData.ViabilityApplicationPage2(projectNumber, txtOrgName.Text, txtWebsite.Text, orgStruct, DataUtils.GetInt(txtCows.Text), DataUtils.GetInt(txtHogs.Text),
             DataUtils.GetInt(txtPoultry.Text), txtOtherNonDiaryFarms.Text, DataUtils.GetInt(txtMilkedDaily.Text), txtPrimaryAnimalTypes.Text, DataUtils.GetInt(txtHerd.Text), DataUtils.GetInt(txtRollingHerd.Text),
             DataUtils.GetInt(txtMilkPounds.Text), DataUtils.GetInt(txtAvgCullRate.Text), DataUtils.GetInt(txtSomaticCell.Text), MilkSold,
             txtGrossSales.Text,
