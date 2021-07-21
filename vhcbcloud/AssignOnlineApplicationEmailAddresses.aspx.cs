@@ -20,13 +20,32 @@ namespace vhcbcloud
                 BindControls();
                 BindEmailGrid();
             }
+            ddlUser.Enabled = true;
         }
 
         private void BindControls()
         {
-
+            BindUsers();
             BindPrograms();
             BindLookUP(ddlApplicationType, 2283);
+
+        }
+
+        private void BindUsers()
+        {
+            try
+            {
+                ddlUser.Items.Clear();
+                ddlUser.DataSource = InactiveProjectData.GetPDFEmailReceiveUsers();
+                ddlUser.DataValueField = "UserId";
+                ddlUser.DataTextField = "Name";
+                ddlUser.DataBind();
+                ddlUser.Items.Insert(0, new ListItem("External User", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindUsers", "", ex.Message);
+            }
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -93,16 +112,36 @@ namespace vhcbcloud
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            InactiveProjectData.DeleteOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue));
-
-            if (txtName1.Text != "" && txtEmail1.Text != "")
+            if (txtName1.Text == "")
             {
-                InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+                lblErrorMsg.Text = "Please select Name";
+                return;
             }
-            ClearEmailForm();
+            else if (txtEmail1.Text == "")
+            {
+                lblErrorMsg.Text = "Please select Email";
+                return;
+            }
+
+            if (btnSubmit.Text.ToLower() == "update")
+            {
+                InactiveProjectData.UpdateOnlineEmailAddresses(DataUtils.GetInt(hfEmailAddressID.Value), DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+                
+                gvEmail.EditIndex = -1;
+            }
+            else
+            {
+                if (txtName1.Text != "" && txtEmail1.Text != "")
+                {
+                    InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+                }
+            }
+
             cbAddEmail.Checked = false;
             BindEmailGrid();
-
+            ClearEmailForm();
+            hfEmailAddressID.Value = "";
+            btnSubmit.Text = "Submit";
             LogMessage("Saved Data Scuccessfully!");
         }
 
@@ -118,7 +157,7 @@ namespace vhcbcloud
             ddlApplicationType.SelectedIndex = -1;
 
             txtEmail1.Text = "";
-          
+
             txtName1.Text = "";
             txtProjectNumber.Text = "";
             dvMessage.Visible = false;
@@ -171,6 +210,8 @@ namespace vhcbcloud
             ddlProgram.SelectedIndex = -1;
             ddlApplicationType.SelectedIndex = -1;
             cbAddEmail.Checked = false;
+            txtProjectNumber.Text = "";
+            ddlUser.SelectedIndex = -1;
         }
 
         protected void gvEmail_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -201,7 +242,7 @@ namespace vhcbcloud
                         txtName1.Text = dr["Name"].ToString();
                         txtProjectNumber.Text = dr["Proj_num"].ToString();
                         chkEmailActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
-                       
+                        ddlUser.Enabled = false;
                     }
                 }
             }
@@ -241,6 +282,23 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ddlUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataRow dr = InactiveProjectData.GetUserInfoByUserId(DataUtils.GetInt(ddlUser.SelectedValue));
+
+            if (dr != null)
+            {
+
+                txtName1.Text = dr["Name"].ToString();
+                txtEmail1.Text = dr["Email"].ToString();
+            }
+            else
+            {
+                txtName1.Text = "";
+                txtEmail1.Text = "";
+            }
         }
     }
 }

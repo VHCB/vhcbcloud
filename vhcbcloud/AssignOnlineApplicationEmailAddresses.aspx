@@ -34,6 +34,16 @@
                                 <div class="panel-body" runat="server" id="dvEmailForm">
                                     <asp:Panel runat="server" ID="Panel2">
                                         <table style="width: 100%">
+                                             <tr>
+                                                <td style="height: 30px; width: 112px;">
+                                                    <span class="labelClass">User</span>
+                                                </td>
+                                                <td style="height: 30px" colspan="3">
+                                                    <asp:DropDownList ID="ddlUser" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlUser_SelectedIndexChanged"
+                                                        Style="margin-left: 0">
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td style="height: 30px; width: 112px;">
                                                     <span class="labelClass">VHCB Program</span>

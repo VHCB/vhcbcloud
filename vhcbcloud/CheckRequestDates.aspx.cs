@@ -85,13 +85,14 @@ namespace vhcbcloud
             try
             {
                 int rowIndex = e.RowIndex;
-                int projectApplicantID = Convert.ToInt32(((Label)gvCheckReq.Rows[rowIndex].FindControl("lblProjapplId")).Text);
-                DateTime dtVoucherDate = Convert.ToDateTime(((TextBox)gvCheckReq.Rows[rowIndex].FindControl("txtVouDate")).Text);
-
-                CheckRequestData.UpdateCheckRequest(projectApplicantID, dtVoucherDate);
+                int CRDateId = Convert.ToInt32(((Label)gvCheckReq.Rows[rowIndex].FindControl("lblCRDateId")).Text);
+                //DateTime dtVoucherDate = Convert.ToDateTime(((TextBox)gvCheckReq.Rows[rowIndex].FindControl("txtVouDate")).Text);
+                bool HideDate = Convert.ToBoolean(((CheckBox)gvCheckReq.Rows[rowIndex].FindControl("chkHideDate")).Checked); ;
+                
+                CheckRequestData.UpdateCheckRequestDates(CRDateId, HideDate);
                 gvCheckReq.EditIndex = -1;
                 BindCheckRequests();
-                lblErrorMsg.Text = "Check request updated successfully";
+                lblErrorMsg.Text = "Check request date updated successfully";
                 txtVoucherDate.Text = "";
             }
             catch (Exception)

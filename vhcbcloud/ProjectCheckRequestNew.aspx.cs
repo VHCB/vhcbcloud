@@ -997,7 +997,7 @@ namespace vhcbcloud
                     }
                 }
 
-                txtVendorId.Text = String.IsNullOrEmpty(drTrans["PayeeApplicant"].ToString()) ? "" : drPCR["VendorId"].ToString();
+                txtVendorId.Text = String.IsNullOrEmpty(drTrans["VendorId"].ToString()) ? "" : drTrans["VendorId"].ToString(); //String.IsNullOrEmpty(drTrans["PayeeApplicant"].ToString()) ? "" : drTrans["VendorId"].ToString();
                 //chkLCB.Checked = String.IsNullOrEmpty(drPCR["LCB"].ToString()) ? false : bool.Parse(drPCR["LCB"].ToString());
                 chkLegalReview.Checked = String.IsNullOrEmpty(drPCR["LegalReview"].ToString()) ? false : bool.Parse(drPCR["LegalReview"].ToString());
                 txtEligibleAmt.Text = String.IsNullOrEmpty(drPCR["MatchAmt"].ToString()) ? "" : Decimal.Round(Decimal.Parse(drPCR["MatchAmt"].ToString()), 2).ToString();

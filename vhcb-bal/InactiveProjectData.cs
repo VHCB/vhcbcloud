@@ -90,6 +90,44 @@ namespace VHCBCommon.DataAccessLayer
             return dtManagers;
         }
 
+        public static DataTable GetPDFEmailReceiveUsers()
+        {
+            DataTable dtManagers = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPDFEmailReceiveUsers";
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtManagers = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtManagers;
+        }
         public static DataTable GetInActivetempProjects(string SufixProjectNumber)
         {
             DataTable dtManagers = null;
@@ -232,6 +270,39 @@ namespace VHCBCommon.DataAccessLayer
                         //return ap;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateOnlineEmailAddresses(int Email_AddressID, int Program, int ApplicationType, string Name, string Email_Address, string ProjectNumber)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateOnlineEmailAddresses";
+                        command.Parameters.Add(new SqlParameter("Email_AddressID", Email_AddressID));
+                        command.Parameters.Add(new SqlParameter("Program", Program));
+                        command.Parameters.Add(new SqlParameter("ApplicationType", ApplicationType));
+                        command.Parameters.Add(new SqlParameter("Name", Name));
+                        command.Parameters.Add(new SqlParameter("Email_Address", Email_Address));
+                        command.Parameters.Add(new SqlParameter("Proj_num", ProjectNumber));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -387,6 +458,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
+
         public static DataTable GetProjectNumbersFromTempUser(string ProjectNumPrefix)
         {
             DataTable dtProjects = null;
@@ -452,6 +524,42 @@ namespace VHCBCommon.DataAccessLayer
             {
                 throw ex;
             }
+            return dt;
+        }
+
+        public static DataRow GetUserInfoByUserId(int UserId)
+        {
+            DataRow dt = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetUserInfoByUserId";
+                        command.Parameters.Add(new SqlParameter("UserId", UserId));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return dt;
         }
     }

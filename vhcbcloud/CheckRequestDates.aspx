@@ -7,7 +7,7 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <p>                        
+                    <p>
                         <span class="labelClass">Date :</span>
                         <asp:TextBox ID="txtVoucherDate" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                         <ajaxToolkit:CalendarExtender runat="server" ID="aceVoucherDate" TargetControlID="txtVoucherDate"></ajaxToolkit:CalendarExtender>
@@ -15,8 +15,9 @@
                         <br />
                         <asp:LinkButton ID="btnSubmit" runat="server" class="btn btn-info" Text="Add check request date" TabIndex="3" OnClick="btnSubmit_Click" />
                     </p>
-                    <p >
-                       <span class="lblErrMsg"> <asp:Label runat="server" ID="lblErrorMsg"></asp:Label></span>
+                    <p>
+                        <span class="lblErrMsg">
+                            <asp:Label runat="server" ID="lblErrorMsg"></asp:Label></span>
                     </p>
                 </div>
                 <div class="panel-body">
@@ -31,23 +32,37 @@
                                 <HeaderStyle CssClass="headerStyle" />
                                 <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
                                 <RowStyle CssClass="rowStyle" />
-                                <Columns>                                    
-
-                                    <asp:TemplateField HeaderText="Check request date" SortExpression="CRDate">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("CRDate", "{0:MM-dd-yyyy}") %>' />
-                                        </ItemTemplate>
-                                        <EditItemTemplate>
-                                            <asp:TextBox ID="txtVouDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("InitDate", "{0:MM-dd-yyyy}") %>'></asp:TextBox>
-                                            <ajaxToolkit:CalendarExtender runat="server" ID="aceVDate" TargetControlID="txtVouDate"></ajaxToolkit:CalendarExtender>
-                                        </EditItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField Visible="false" HeaderText="">
+                                <Columns>
+                                      <asp:TemplateField Visible="false" HeaderText="">
                                         <ItemTemplate>
                                             <asp:Label ID="lblCRDateId" runat="Server" Text='<%# Eval("CRDateID") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <%--<asp:CommandField ShowEditButton="True" />--%>
+                                    <asp:TemplateField HeaderText="Check Request Date" SortExpression="CRDate">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblVDate" runat="Server" Text='<%# Eval("CRDate", "{0:MM-dd-yyyy}") %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                  
+                                    <asp:TemplateField HeaderText="Hide Date" SortExpression="CRDate">
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="chkHideDate" Enabled="false" runat="server" Checked='<%# Eval("HideDate") %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:CheckBox ID="chkHideDate" runat="server" Checked='<%# Eval("HideDate") %>' />
+                                        </EditItemTemplate>
+                                        <ItemStyle Width="450px" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField ShowHeader="False">
+                                        <EditItemTemplate>
+                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                            &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                        </EditItemTemplate>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible="true"></asp:LinkButton>
+                                        </ItemTemplate>
+                                          <ItemStyle Width="150px" />
+                                    </asp:TemplateField>
                                 </Columns>
                                 <FooterStyle CssClass="footerStyle" />
                             </asp:GridView>
