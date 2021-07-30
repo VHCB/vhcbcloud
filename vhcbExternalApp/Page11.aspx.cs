@@ -144,12 +144,12 @@ namespace vhcbExternalApp
                 EmailSubject = subject,
                 EmailBody = "PDF of your Online Viability Application"
             };
-            //newSchedule.EmailToList.AddRange(EmailList);
+            newSchedule.EmailToList.AddRange(EmailList);
 
-            newSchedule.EmailToList.Add("dan@vhcb.org");
-            newSchedule.EmailToList.Add("aaron @vhcb.org");
-            newSchedule.EmailToList.Add("b.mcgavisk @vhcb.org");
-            newSchedule.EmailToList.Add("Marcy @vhcb.org");
+            //newSchedule.EmailToList.Add("dan@vhcb.org");
+            //newSchedule.EmailToList.Add("aaron @vhcb.org");
+            //newSchedule.EmailToList.Add("b.mcgavisk @vhcb.org");
+            //newSchedule.EmailToList.Add("Marcy @vhcb.org");
 
             // Send to the scheduler; wrap in try/catch to handle exceptions
             try

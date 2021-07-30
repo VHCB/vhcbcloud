@@ -125,7 +125,7 @@ namespace vhcbcloud
 
             if (btnSubmit.Text.ToLower() == "update")
             {
-                InactiveProjectData.UpdateOnlineEmailAddresses(DataUtils.GetInt(hfEmailAddressID.Value), DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+                InactiveProjectData.UpdateOnlineEmailAddresses(DataUtils.GetInt(hfEmailAddressID.Value), DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text, chkEmailActive.Checked);
                 
                 gvEmail.EditIndex = -1;
             }
@@ -136,7 +136,8 @@ namespace vhcbcloud
                     InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
                 }
             }
-
+            chkEmailActive.Checked = true;
+            chkEmailActive.Enabled = false;
             cbAddEmail.Checked = false;
             BindEmailGrid();
             ClearEmailForm();
@@ -161,6 +162,10 @@ namespace vhcbcloud
             txtName1.Text = "";
             txtProjectNumber.Text = "";
             dvMessage.Visible = false;
+
+            chkEmailActive.Checked = true;
+            chkEmailActive.Enabled = false;
+            btnSubmit.Text = "Submit";
         }
 
         private void BindEmailGrid()
@@ -243,6 +248,7 @@ namespace vhcbcloud
                         txtProjectNumber.Text = dr["Proj_num"].ToString();
                         chkEmailActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                         ddlUser.Enabled = false;
+                        chkEmailActive.Enabled = true;
                     }
                 }
             }

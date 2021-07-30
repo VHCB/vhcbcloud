@@ -277,7 +277,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void UpdateOnlineEmailAddresses(int Email_AddressID, int Program, int ApplicationType, string Name, string Email_Address, string ProjectNumber)
+        public static void UpdateOnlineEmailAddresses(int Email_AddressID, int Program, int ApplicationType, string Name, string Email_Address, string ProjectNumber, bool RowIsActive)
         {
             try
             {
@@ -296,7 +296,8 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Name", Name));
                         command.Parameters.Add(new SqlParameter("Email_Address", Email_Address));
                         command.Parameters.Add(new SqlParameter("Proj_num", ProjectNumber));
-
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+                        
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
