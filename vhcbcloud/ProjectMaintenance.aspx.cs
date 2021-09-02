@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -2863,6 +2864,8 @@ namespace vhcbcloud
                     txtState.Text, txtZip.Text);
                 string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(address));
 
+                //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 var request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;

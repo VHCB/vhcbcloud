@@ -5,32 +5,28 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <link rel="stylesheet" runat="server" media="screen" href="~/Content/StyleSheet.css" />
     <div class="jumbotron">
-        <p class="lead">SECTION B: FARM BUSINESS INFORMATION</p>
+        <p class="lead">SECTION D: BUDGET TABLES AND NARRATIVE</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
                     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
                     </asp:ToolkitScriptManager>
+                      <div id="dvMessage" runat="server">
+                        <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
+                    </div>
                     <table style="width=100%">
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>SECTION D: BUDGET NARRATIVE AND TABLES</strong></span></td>
+                            <td colspan="2"><span class="labelClass"></span></td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="margin-left: 10px">Please fill out this budget sheet to show all expenses involved in this project, as well as which funding source will pay for each expense. Please be specific about where VHCB funds will go. VHCB funds can be used for capital improvements only – please read the application instructions to ensure your expenses are eligible.</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="height: 5px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <img alt="" src="~/Images/MatchSurce.png" class="auto-style3" runat="server" style="width: 943px; height: 446px" />
-                            </td>
+                            <td colspan="2" style="margin-left: 10px">Please follow link below to download a blank financial spreadsheet to show all expenses involved in this project, as well as which funding source will pay for each expense. Please be specific about where VHCB funds will go. VHCB funds can be used for capital improvements only – please read the application instructions to ensure your expenses are eligible</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
+
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>YOUR PROJECT EXPENSES:</strong></span></td>
+                            <td colspan="2"><span class="labelClass">On the blank worksheet, Tab 1 is an example page. Please do not attempt to edit this tab. Please complete tab 2 with your project’s budget expenses. All totals will be added for you. Further instructions are included on the spreadsheet. You will be able to upload the spreadsheet at the end of this application</span></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
@@ -43,11 +39,48 @@
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>State, Federal, or Other Funding:</strong> Please describe the funds that will support this project and whether the other funding sources are secured. Please explain specifically which components of the project VHCB funds will pay for.
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="margin-left: 10px">&nbsp;&nbsp;&nbsp;
+                              
+                                 <asp:TextBox ID="txtSupportingFunds" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">For projects that are receiving funds from USDA NRCS or the Vermont Agency of Agriculture, Food & Markets, please describe:
+                                  <br />
+                                <ul>
+                                    <li>the practices that these funding sources will pay for,</li>
+                                    <ul>
+                                        <li>-  whether there are any expenses that these programs cannot cover, and</li>
+
+                                        <li>-  the status of these grants (i.e. when contracts will be signed if they are not already).</li>
+
+                                    </ul>
+                            </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="margin-left: 10px">&nbsp;&nbsp;&nbsp;
+                               
+                                 <asp:TextBox ID="txtNRCSExpensesandStatus" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                        <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
                                         <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                     </table>

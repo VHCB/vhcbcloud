@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbExternalApp {
-    
-    
-    public partial class FarmBusinessInformation {
-        
+namespace vhcbExternalApp
+{
+
+
+    public partial class FarmBusinessInformation
+    {
+
         /// <summary>
         /// dvEntityRole control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
-        
+
         /// <summary>
         /// ToolkitScriptManager1 control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-        
+
         /// <summary>
         /// dvMessage control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
-        
+
         /// <summary>
         /// lblErrorMsg control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-        
+
         /// <summary>
         /// txtOrgName control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOrgName;
-        
+
         /// <summary>
         /// txtWebsite control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebsite;
-        
+
         /// <summary>
         /// rdBtnOrgStructure control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnOrgStructure;
-        
+
         /// <summary>
         /// dvNewAddress control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewAddress;
-        
+
         /// <summary>
         /// dvProjectAddressForm control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvProjectAddressForm;
-        
+
         /// <summary>
         /// Panel2 control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel2;
-        
+
         /// <summary>
         /// dvAddress control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAddress;
-        
+
         /// <summary>
         /// txtGrossSales control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtGrossSales;
-        
+
         /// <summary>
         /// txtNetIncome control.
         /// </summary>
@@ -128,25 +130,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetIncome;
-        
-        /// <summary>
-        /// txtNetWorth control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNetWorth;
-        
-        /// <summary>
-        /// txtGrossPayroll control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGrossPayroll;
-        
+
         /// <summary>
         /// txtFamilyETF control.
         /// </summary>
@@ -155,7 +139,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFamilyETF;
-        
+
         /// <summary>
         /// txtNonFamilyETF control.
         /// </summary>
@@ -164,7 +148,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNonFamilyETF;
-        
+
         /// <summary>
         /// cbOwnLandList control.
         /// </summary>
@@ -173,7 +157,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cbOwnLandList;
-        
+
         /// <summary>
         /// ddlFiscalyr control.
         /// </summary>
@@ -182,7 +166,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlFiscalyr;
-        
+
         /// <summary>
         /// Div1 control.
         /// </summary>
@@ -191,7 +175,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
-        
+
         /// <summary>
         /// Panel1 control.
         /// </summary>
@@ -200,7 +184,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel1;
-        
+
         /// <summary>
         /// txtAcresOwned control.
         /// </summary>
@@ -209,7 +193,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAcresOwned;
-        
+
         /// <summary>
         /// txtAcresLeased control.
         /// </summary>
@@ -218,7 +202,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAcresLeased;
-        
+
         /// <summary>
         /// txtAcresinProduction control.
         /// </summary>
@@ -227,7 +211,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAcresinProduction;
-        
+
         /// <summary>
         /// txtPastureAcres control.
         /// </summary>
@@ -236,7 +220,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPastureAcres;
-        
+
         /// <summary>
         /// Div4 control.
         /// </summary>
@@ -245,7 +229,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div4;
-        
+
         /// <summary>
         /// Panel4 control.
         /// </summary>
@@ -254,7 +238,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel4;
-        
+
         /// <summary>
         /// txtCows control.
         /// </summary>
@@ -263,7 +247,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCows;
-        
+
         /// <summary>
         /// txtHogs control.
         /// </summary>
@@ -272,7 +256,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHogs;
-        
+
         /// <summary>
         /// txtPoultry control.
         /// </summary>
@@ -281,7 +265,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPoultry;
-        
+
         /// <summary>
         /// txtOtherNonDiaryFarms control.
         /// </summary>
@@ -290,7 +274,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOtherNonDiaryFarms;
-        
+
         /// <summary>
         /// Div7 control.
         /// </summary>
@@ -299,7 +283,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div7;
-        
+
         /// <summary>
         /// Panel6 control.
         /// </summary>
@@ -308,7 +292,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel6;
-        
+
         /// <summary>
         /// txtMilkedDaily control.
         /// </summary>
@@ -317,7 +301,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMilkedDaily;
-        
+
         /// <summary>
         /// txtPrimaryAnimalTypes control.
         /// </summary>
@@ -326,7 +310,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrimaryAnimalTypes;
-        
+
         /// <summary>
         /// txtHerd control.
         /// </summary>
@@ -335,7 +319,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHerd;
-        
+
         /// <summary>
         /// txtRollingHerd control.
         /// </summary>
@@ -344,7 +328,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRollingHerd;
-        
+
         /// <summary>
         /// txtMilkPounds control.
         /// </summary>
@@ -353,7 +337,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMilkPounds;
-        
+
         /// <summary>
         /// txtAvgCullRate control.
         /// </summary>
@@ -362,7 +346,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAvgCullRate;
-        
+
         /// <summary>
         /// txtSomaticCell control.
         /// </summary>
@@ -371,7 +355,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSomaticCell;
-        
+
         /// <summary>
         /// lstMilkSold control.
         /// </summary>
@@ -380,7 +364,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList lstMilkSold;
-        
+
         /// <summary>
         /// previousButton control.
         /// </summary>
@@ -389,7 +373,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button previousButton;
-        
+
         /// <summary>
         /// btnNext control.
         /// </summary>

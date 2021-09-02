@@ -4,7 +4,7 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <link rel="stylesheet" runat="server" media="screen" href="~/Content/StyleSheet.css" />
     <div class="jumbotron">
-        <p class="lead"><strong>SECTION G: ATTACHMENTS</strong></p>
+        <p class="lead"><strong>SECTION F: ATTACHMENTS</strong></p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -14,9 +14,22 @@
                         <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
                     </div>
                     <table style="width=100%">
-
+                          <tr>
+                            <td colspan="2"><span class="labelClass"><strong>1.	VIABILITY PROGRAM BUDGET SHEET – REQUIRED</strong></span>
+                            </td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>1.	FINANCIAL STATEMENTS - REQUIRED</strong></span>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                         <tr>
+                            <td colspan="2"><span class="labelClass">Please use the download link on page 5, SECTION D: BUDGET NARRATIVE AND TABLES, of this application to download a blank budget. Please follow the instructions on the blank workbook</span>
+                            </td>
+                        </tr>
+                          <tr>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass"><strong>2.	FINANCIAL STATEMENTS - REQUIRED</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -36,8 +49,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REQUIRED: most recent year-end or current balance sheet
-OPTIONAL: any previous year’s balance sheets</td>
+                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>REQUIRED</strong>: most recent year-end or current balance sheet<br />&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>OPTIONAL</strong>: any previous year’s balance sheets</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 15px"></td>
@@ -47,8 +60,8 @@ OPTIONAL: any previous year’s balance sheets</td>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REQUIRED: most recent income statement
-OPTIONAL: any previous year’s income statements</td>
+                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>REQUIRED</strong>: most recent income statement<br />&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>OPTIONAL</strong>: any previous year’s income statements</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="margin-left: 25px"></td>
@@ -61,14 +74,14 @@ OPTIONAL: any previous year’s income statements</td>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REQUIRED: cash-flow projection for current and next year 
-OPTIONAL: cash-flow projections beyond next year</td>
+                            <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>REQUIRED</strong>: cash-flow projection for current and next year <br />&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>OPTIONAL</strong>: cash-flow projections beyond next year</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="margin-left: 25px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>2.	MAP - REQUIRED</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>3.	MAP - REQUIRED</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -81,7 +94,7 @@ OPTIONAL: cash-flow projections beyond next year</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>3.	VT AGENCY of AGRICULTURE, FOOD, AND MARKETS AGENCY or USDA-NRCS PROJECT BUDGETS – REQUIRED FOR PROJECTS RECEIVING VAAFM OR USDA-NRCS GRANT FUNDS</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>4.	VT AGENCY of AGRICULTURE, FOOD, AND MARKETS AGENCY or USDA-NRCS PROJECT BUDGETS – REQUIRED FOR PROJECTS RECEIVING VAAFM OR USDA-NRCS GRANT FUNDS</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -94,7 +107,7 @@ OPTIONAL: cash-flow projections beyond next year</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>4.	LETTERS OF SUPPORT – REQUIRED IN SOME CASES</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>5.	LETTERS OF SUPPORT – REQUIRED IN SOME CASES</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -102,11 +115,11 @@ OPTIONAL: cash-flow projections beyond next year</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span>If you are receiving funds from USDA-NRCS or the Vermont Agency of Agriculture, Food & Markets, please attach a letter or email confirming that these funds have been secured. If your project is designed to fix a water quality problem or a regulatory issue, please include a letter of support from any technical advisor or state employee who is helping you address the problem.</span>
+                            <td colspan="2"><span>If you are receiving funds from USDA-NRCS or the Vermont Agency of Agriculture, Food & Markets, please attach a letter or email confirming that these funds have been secured. If your project is designed to fix a water quality problem or a regulatory issue, please include a letter of support from any technical advisor or state employee who is helping you address the problem. This is not required, but can strengthen an application.</span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>5.	BUSINESS PLAN – OPTIONAL</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>6.	BUSINESS PLAN – OPTIONAL</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -114,12 +127,12 @@ OPTIONAL: cash-flow projections beyond next year</td>
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span>If you have completed a business plan, please attach it to this application.
+                            <td colspan="2"><span>If you have completed a business plan, please attach it to this application. This is not required, but may give the review committee a more complete picture of your business.
                             </span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>6.	PHOTOS - OPTIONAL</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>7.	PHOTOS - OPTIONAL</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -132,7 +145,7 @@ OPTIONAL: cash-flow projections beyond next year</td>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>7.	QUOTES - REQUIRED IF YOU ARE APPLYING FOR A GRANT TO PURCHASE EQUIPMENT</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>8.	QUOTES - REQUIRED IF YOU ARE APPLYING FOR A GRANT TO PURCHASE EQUIPMENT</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -148,7 +161,7 @@ OPTIONAL: cash-flow projections beyond next year</td>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                          <tr>
-                            <td colspan="2" style="height: 5px; margin-left: 10px"> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" runat="server" id="UploadLink">Upload completed financial spreadsheet</a>
+                            <td colspan="2" style="height: 5px; margin-left: 10px"> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" runat="server" id="UploadLink">Upload all attachments using this link</a>
                             </td>
                         </tr>
                         <tr>
@@ -157,8 +170,11 @@ OPTIONAL: cash-flow projections beyond next year</td>
                         <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                 <asp:Button ID="btnSaveExit" runat="server" Text="Save/Exit" class="btn btn-info" OnClick="btnSaveExit_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Submit" class="btn btn-info" OnClick="btnNext_Click"/></td>
+                                 <asp:Button ID="NextButton" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="NextButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
+<%--                                 <asp:Button ID="btnSaveExit" runat="server" Text="Save/Exit" class="btn btn-info" OnClick="btnSaveExit_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <asp:Button ID="btnNext" runat="server" Text="Submit" class="btn btn-info" OnClick="btnNext_Click"/>--%>
+
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>

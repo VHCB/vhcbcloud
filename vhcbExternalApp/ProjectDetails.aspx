@@ -8,7 +8,7 @@
             margin-left: 5px;
         }
         .auto-style1 {
-            width: 355px
+            width: 500px
         }
     </style>
     <div class="jumbotron">
@@ -269,7 +269,7 @@
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
                                 <tr>
-                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">How did you hear about the Viability Program?</span></td>
+                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">How did you hear about the Vermont Farm & Forest Viability Program?</span></td>
                                     <td colspan="2">
                                         <asp:DropDownList ID="ddlHearAbout" CssClass="clsDropDown" runat="server" Visible="true">
                                         </asp:DropDownList>
@@ -279,7 +279,7 @@
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
                                 <tr>
-                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">Have you participated in the Viability program before:</span></td>
+                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">Have you participated in the Vermont Farm & Forest Viability Program before:</span></td>
                                     <td colspan="2">
                                         <asp:RadioButtonList ID="rdBtnPriorParticipation" runat="server" CellPadding="2" CellSpacing="4" AutoPostBack="true" OnSelectedIndexChanged="rdBtnPriorParticipation_SelectedIndexChanged"
                                             RepeatDirection="Horizontal">

@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbExternalApp {
-    
-    
-    public partial class Page11 {
-        
+namespace vhcbExternalApp
+{
+
+
+    public partial class Page11
+    {
+
         /// <summary>
         /// dvEntityRole control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
-        
+
         /// <summary>
         /// ToolkitScriptManager1 control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-        
+
         /// <summary>
         /// dvMessage control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
-        
+
         /// <summary>
         /// lblErrorMsg control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-        
+
         /// <summary>
         /// UploadLink control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor UploadLink;
-        
+
         /// <summary>
         /// previousButton control.
         /// </summary>
@@ -65,23 +67,14 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button previousButton;
-        
+
         /// <summary>
-        /// btnSaveExit control.
+        /// NextButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSaveExit;
-        
-        /// <summary>
-        /// btnNext control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNext;
+        protected global::System.Web.UI.WebControls.Button NextButton;
     }
 }

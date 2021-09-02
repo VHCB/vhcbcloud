@@ -43,7 +43,7 @@ namespace vhcbExternalApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Page6.aspx");
+            Response.Redirect("BudgetNarrativeTables.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)

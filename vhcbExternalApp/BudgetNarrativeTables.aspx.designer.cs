@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbExternalApp {
-    
-    
-    public partial class BudgetNarrativeTables {
-        
+namespace vhcbExternalApp
+{
+
+
+    public partial class BudgetNarrativeTables
+    {
+
         /// <summary>
         /// dvEntityRole control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
-        
+
         /// <summary>
         /// ToolkitScriptManager1 control.
         /// </summary>
@@ -29,7 +31,43 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-        
+
+        /// <summary>
+        /// dvMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
+
+        /// <summary>
+        /// lblErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMsg;
+
+        /// <summary>
+        /// txtSupportingFunds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSupportingFunds;
+
+        /// <summary>
+        /// txtNRCSExpensesandStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNRCSExpensesandStatus;
+
         /// <summary>
         /// previousButton control.
         /// </summary>
@@ -38,7 +76,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button previousButton;
-        
+
         /// <summary>
         /// btnNext control.
         /// </summary>

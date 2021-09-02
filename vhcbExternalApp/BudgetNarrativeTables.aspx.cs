@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -10,25 +11,74 @@ namespace vhcbExternalApp
 {
     public partial class BudgetNarrativeTables : System.Web.UI.Page
     {
+        string Pagename = "BudgetNarrativeTables";
+        string projectNumber = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["ProjectNumber"] == null)
+                Response.Redirect("Login.aspx");
+            else
+                projectNumber = Session["ProjectNumber"].ToString();
+
             if (!IsPostBack)
             {
-                //if (CommonHelper.IsVPNConnected())
-                //    UploadLink.HRef = "https://server3.vhcb.org:5001/sharing/hI0aFAloS";
-                //else
-                //    UploadLink.HRef = "https://server3.vhcb.org/sharing/hI0aFAloS";
+                LoadPage();
+            }
+        }
+
+        private void LoadPage()
+        {
+            if (projectNumber != "")
+            {
+                DataRow drPage1tDetails = ViabilityApplicationData.GetViabilityApplicationData(projectNumber);
+
+                if (drPage1tDetails != null)
+                {
+                    txtSupportingFunds.Text = drPage1tDetails["SupportingFunds"].ToString();
+                    txtNRCSExpensesandStatus.Text = drPage1tDetails["NRCSExpensesandStatus"].ToString();
+                }
             }
         }
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
+            Save();
             Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Page6.aspx");
+            Save();
+            Response.Redirect("Page7.aspx");
+        }
+
+        protected void Save()
+        {
+            if (projectNumber != "")
+            {
+
+                ViabilityApplicationData.ViabilityApplicationPage6(projectNumber, txtSupportingFunds.Text, txtNRCSExpensesandStatus.Text);
+
+                LogMessage("Farm Business Information Data Added Successfully");
+            }
+        }
+
+        private void LogError(string pagename, string method, string message, string error)
+        {
+            dvMessage.Visible = true;
+            if (message == "")
+            {
+                lblErrorMsg.Text = Pagename + ": " + method + ": Error Message: " + error;
+            }
+            else
+                lblErrorMsg.Text = Pagename + ": " + method + ": Message :" + message + ": Error Message: " + error;
+        }
+
+        private void LogMessage(string message)
+        {
+            dvMessage.Visible = true;
+            lblErrorMsg.Text = message;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace vhcbExternalApp
             if (projectNumber != "")
             {
 
-                ViabilityApplicationData.ViabilityApplicationPage6(projectNumber, txtBudget.Text);
+                //ViabilityApplicationData.ViabilityApplicationPage6(projectNumber, txtBudget.Text);
 
                 LogMessage("Farm Business Information Data Added Successfully");
             }

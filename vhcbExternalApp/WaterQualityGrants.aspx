@@ -23,21 +23,24 @@
         .auto-style6 {
             width: 354px;
         }
+
         .auto-style7 {
             width: 354px;
             height: 12px;
             border-radius: 6px;
         }
+
         .auto-style8 {
             height: 12px;
         }
+
         .auto-style9 {
             width: 354px;
             border-radius: 6px;
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Water Quality Grants Program : Application</p>
+        <p class="lead">SECTION B – FARM BUSINESS INFORMATION CONTINUED</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -53,6 +56,15 @@
                             <td class="auto-style8">
                                 <asp:DropDownList ID="ddlFarmSize" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                 <%--<asp:ListBox runat="server" CssClass="clsTextBoxBlue1" SelectionMode="Multiple" ID="lstFarmSize" Height="80px" Width="261px"></asp:ListBox>--%>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">If you are unsure of the size of your farm, please refer to this factsheet from the Vermont Agency of Agriculture, Food, and Markets: <a href="http://agriculture.staging.vermont.gov/sites/agriculture/files/documents/Water_Quality/FarmSizeClass.pdf" target="_blank">FarmSizeClass.pdf </a><a href="http://vermont.gov" target="_blank">(vermont.gov) </a>
+                            </span>
+
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +100,7 @@
                                         <br />
                                         <table style="width: 100%">
                                             <tr>
-                                                <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Primary Product:</span></td>
+                                                <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Primary Product  (select one):</span></td>
                                                 <td colspan="2">
                                                     <asp:DropDownList ID="ddlPrimaryProduct" CssClass="clsDropDown" runat="server">
                                                     </asp:DropDownList>
@@ -98,7 +110,7 @@
                                                 <td colspan="2" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Secondary Product(s):</span></td>
+                                                <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Secondary Product(s) (select all that apply):</span></td>
                                                 <td colspan="2">
                                                     <div class="scroll_checkboxes">
                                                         <asp:CheckBoxList Width="180px" ID="cblSecProduct" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"

@@ -104,8 +104,8 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void ViabilityApplicationPage2(string ProjNumber, string OrgName, string Website, string Org_Structure,
            int Cows, int Hogs, int Poultry, string Other, int Milked_Daily, string Primary_Animals, int Herd, int Rolling_Herd,
-           int Milk_Pounds, int Cull, int Somatic, string Milk_Sold, string GrossSales, string Netincome, string GrossPayroll,
-           string Networth, decimal FamilyFTE, decimal NonFamilyFTE, int FiscalYr, decimal AcresInProduction, decimal AcresOwned, decimal AcresLeased, decimal PastureAcres, 
+           int Milk_Pounds, int Cull, int Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
+           decimal FamilyFTE, decimal NonFamilyFTE, int FiscalYr, decimal AcresInProduction, decimal AcresOwned, decimal AcresLeased, decimal PastureAcres, 
            string LandYouOwn, string LandOwnText)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -133,8 +133,8 @@ namespace VHCBCommon.DataAccessLayer
                 //command.Parameters.Add(new SqlParameter("Dairy_Other", Dairy_Other));
                 command.Parameters.Add(new SqlParameter("GrossSales", GrossSales));
                 command.Parameters.Add(new SqlParameter("Netincome", Netincome));
-                command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
-                command.Parameters.Add(new SqlParameter("Networth", Networth));
+                //command.Parameters.Add(new SqlParameter("GrossPayroll", GrossPayroll));
+                //command.Parameters.Add(new SqlParameter("Networth", Networth));
                 command.Parameters.Add(new SqlParameter("FamilyFTE", FamilyFTE));
                 command.Parameters.Add(new SqlParameter("NonFamilyFTE", NonFamilyFTE));
                 command.Parameters.Add(new SqlParameter("FiscalYr", FiscalYr));
@@ -228,7 +228,7 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void InsertGrantRequest(string ProjNumber, string ProjTitle, string ProjDesc, decimal ProjCost, decimal Request, string strProjCost, string strRequest)
+        public static void InsertGrantRequest(string ProjNumber, string ProjTitle, string ProjDesc, decimal ProjCost, decimal Request, string strProjCost, string strRequest, string strGrantMatch, string ENtGrantMatch)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -243,6 +243,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Request", Request));
                 command.Parameters.Add(new SqlParameter("strProjCost", strProjCost));
                 command.Parameters.Add(new SqlParameter("strRequest", strRequest));
+                command.Parameters.Add(new SqlParameter("strGrantMatch", strGrantMatch));
+                command.Parameters.Add(new SqlParameter("ENtGrantMatch", ENtGrantMatch));
 
                 using (connection)
                 {
@@ -294,7 +296,7 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void ViabilityApplicationPage6(string ProjNumber, string Budget)
+        public static void ViabilityApplicationPage6(string ProjNumber, string SupportingFunds, string NRCSExpensesandStatus)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -303,8 +305,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "ViabilityApplicationPage6";
                 command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
-                command.Parameters.Add(new SqlParameter("Budget", Budget));
-               
+                command.Parameters.Add(new SqlParameter("SupportingFunds", SupportingFunds));
+                command.Parameters.Add(new SqlParameter("NRCSExpensesandStatus", NRCSExpensesandStatus));
                 using (connection)
                 {
                     connection.Open();
@@ -383,7 +385,7 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void ViabilityApplicationPage9(string ProjNumber, string PositiveImpact7, string TechAdvisors8, string LongTermPlans9, string NoGrant10, 
-            string Timeline11, string NoContribution12, string NutrientManagementPlan13, string Permits14)
+            string Timeline11, string NutrientManagementPlan13, string Permits14)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -397,7 +399,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("LongTermPlans9", LongTermPlans9));
                 command.Parameters.Add(new SqlParameter("NoGrant10", NoGrant10));
                 command.Parameters.Add(new SqlParameter("Timeline11", Timeline11));
-                command.Parameters.Add(new SqlParameter("NoContribution12", NoContribution12));
+                //command.Parameters.Add(new SqlParameter("NoContribution12", NoContribution12));
                 command.Parameters.Add(new SqlParameter("NutrientManagementPlan13", NutrientManagementPlan13));
                 command.Parameters.Add(new SqlParameter("Permits14", Permits14));
                 using (connection)

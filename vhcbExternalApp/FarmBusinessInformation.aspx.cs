@@ -108,8 +108,8 @@ namespace vhcbExternalApp
 
                     txtGrossSales.Text = drPage1tDetails["GrossSales"].ToString();
                     txtNetIncome.Text = drPage1tDetails["Netincome"].ToString();
-                    txtGrossPayroll.Text = drPage1tDetails["GrossPayroll"].ToString();
-                    txtNetWorth.Text = drPage1tDetails["Networth"].ToString();
+                    //txtGrossPayroll.Text = drPage1tDetails["GrossPayroll"].ToString();
+                    //txtNetWorth.Text = drPage1tDetails["Networth"].ToString();
                     txtFamilyETF.Text = drPage1tDetails["FamilyFTE"].ToString();
                     txtNonFamilyETF.Text = drPage1tDetails["NonFamilyFTE"].ToString();
 
@@ -173,8 +173,6 @@ namespace vhcbExternalApp
             txtGrossSales.Text,
             txtNetIncome.Text,
             //DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")),
-            txtGrossPayroll.Text,
-            txtNetWorth.Text,
             //DataUtils.GetDecimal(Regex.Replace(txtNetWorth.Text, "[^0-9a-zA-Z.]+", "")),
             DataUtils.GetDecimal(txtFamilyETF.Text),
             DataUtils.GetDecimal(txtNonFamilyETF.Text), DataUtils.GetInt(ddlFiscalyr.SelectedValue), DataUtils.GetDecimal(txtAcresinProduction.Text), DataUtils.GetDecimal(txtAcresOwned.Text),

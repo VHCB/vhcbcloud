@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="FarmBusinessInformation.aspx.cs" Inherits="vhcbExternalApp.FarmBusinessInformation"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="FarmBusinessInformation.aspx.cs" Inherits="vhcbExternalApp.FarmBusinessInformation" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <link rel="stylesheet" runat="server" media="screen" href="~/Content/StyleSheet.css" />
-    <script type="text/javascript" src="Scripts/jquery.min.js"></script> 
-     <script type="text/javascript" src="Scripts/CurrencyController.js"></script> 
+    <script type="text/javascript" src="Scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="Scripts/CurrencyController.js"></script>
     <style type="text/css">
         .FormatRadioButtonList label {
             margin-left: 5px;
@@ -21,11 +21,21 @@
         .auto-style5 {
             width: 344px;
         }
+
         .auto-style7 {
             border: 1px solid #678FC2;
             background-color: #edeeee;
             font-size: 8pt;
             font-family: helvetica, sans-serif;
+        }
+
+        .auto-style8 {
+            width: 545px;
+        }
+
+        .checkboxlist_nowrap label {
+            white-space: nowrap;
+            display: inline-block;
         }
     </style>
     <div class="jumbotron">
@@ -41,7 +51,9 @@
                     <table>
 
                         <tr>
-                            <td class="auto-style3"><span class="labelClass" style="margin-left: 10px">Farm Name:</span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">Farm Name:
+                                <br />
+                                <span style="margin-left: 10px">Business name as listed on most recent tax forms (if different than farm name)</span></span></td>
                             <td>
                                 <asp:TextBox ID="txtOrgName" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox>
                             </td>
@@ -50,13 +62,13 @@
                             <td colspan="3" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td class="auto-style3"><span class="labelClass" style="margin-left: 10px">Website:</span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">Website:</span></td>
 
                             <td style="height: 10px">
                                 <asp:TextBox ID="txtWebsite" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox></td>
                         </tr>
                         <tr>
-                            <td class="auto-style3"><span class="labelClass" style="margin-left: 10px">Ownership Structure:</span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">Ownership Structure:</span></td>
                             <td colspan="2">
                                 <asp:RadioButtonList ID="rdBtnOrgStructure" runat="server" Width="270px" RepeatDirection="Vertical" RepeatLayout="Table" CssClass="FormatRadioButtonList">
                                     <asp:ListItem>Sole Proprietor</asp:ListItem>
@@ -108,8 +120,8 @@
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>
                                             </tr>
-                                           
-                                            <tr>
+
+                                            <%-- <tr>
                                                 <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Net Worth:</span></td>
                                                 <td colspan="2">
                                                     <asp:TextBox ID="txtNetWorth" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
@@ -126,7 +138,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>
-                                            </tr>
+                                            </tr>--%>
                                             <tr>
                                                 <td class="auto-style5"><span class="labelClass" style="margin-left: 10px">Family FTEs (Full-time equivalent, including self):</span></td>
                                                 <td colspan="2">
@@ -280,7 +292,7 @@
                                         <tr>
                                             <td colspan="2" style="height: 5px"></td>
                                         </tr>
-                                        
+
                                         <tr>
                                             <td class="auto-style3"><span class="labelClass" style="margin-left: 10px">Other (please specify):</span></td>
                                             <td colspan="2">
@@ -380,14 +392,15 @@
                                         <tr>
                                             <td class="auto-style2"><span class="labelClass" style="margin-left: 10px">Where do you sell your milk? (Select all that apply):</span></td>
                                             <td colspan="2">
-                                                 <asp:CheckBoxList Width="300px" ID="lstMilkSold" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0" 
-                                                    Datafield="description" DataValueField="value"  CssClass="checkboxlist_nowrap">
-                                                     <asp:ListItem Text="St. Albans Cooperative Creamery" Value="St. Albans Cooperative Creamery" />
+                                                <asp:CheckBoxList Width="300px" ID="lstMilkSold" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"
+                                                    Datafield="description" DataValueField="value" CssClass="checkboxlist_nowrap">
+                                                    <asp:ListItem Text="St. Albans Cooperative Creamery/Dairy Farmers of America" Value="St. Albans Cooperative Creamery/Dairy Farmers of America" />
                                                     <asp:ListItem Text="Organic Valley" Value="Organic Valley" />
                                                     <asp:ListItem Text="NFO" Value="NFO" />
                                                     <asp:ListItem Text="Agrimark" Value="Agrimark" />
                                                     <asp:ListItem Text="Horizon Organic" Value="Horizon Organic" />
                                                     <asp:ListItem Text="Stonyfield" Value="Stonyfield" />
+                                                    <asp:ListItem Text="HP Hood" Value="HP Hood" />
                                                     <asp:ListItem Text="N/A" Value="N/A" />
                                                     <asp:ListItem Text="Other" Value="Other" />
                                                 </asp:CheckBoxList>
@@ -412,25 +425,25 @@
             </div>
         </div>
     </div>
-     <script language="javascript">
-         $(document).ready(function () {
-             toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
-             toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-             toCurrencyControl($('#<%= txtNetWorth.ClientID%>').val(), $('#<%= txtNetWorth.ClientID%>'));
-             toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
+    <script language="javascript">
+        $(document).ready(function () {
+            toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+            <%-- toCurrencyControl($('#<%= txtNetWorth.ClientID%>').val(), $('#<%= txtNetWorth.ClientID%>'));
+             toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));--%>
 
-             $('#<%= txtGrossSales.ClientID%>').keyup(function () {
-                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
+            $('#<%= txtGrossSales.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
              });
-              $('#<%= txtNetIncome.ClientID%>').keyup(function () {
-                 toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-              });
-              $('#<%= txtNetWorth.ClientID%>').keyup(function () {
+            $('#<%= txtNetIncome.ClientID%>').keyup(function () {
+                toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
+             });
+           <%--  $('#<%= txtNetWorth.ClientID%>').keyup(function () {
                  toCurrencyControl($('#<%= txtNetWorth.ClientID%>').val(), $('#<%= txtNetWorth.ClientID%>'));
               });
-              $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
+             $('#<%= txtGrossPayroll.ClientID%>').keyup(function () {
                  toCurrencyControl($('#<%= txtGrossPayroll.ClientID%>').val(), $('#<%= txtGrossPayroll.ClientID%>'));
-             });
-         });
-                </script>
+              });--%>
+        });
+    </script>
 </asp:Content>

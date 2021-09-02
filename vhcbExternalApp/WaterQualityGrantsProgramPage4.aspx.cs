@@ -33,9 +33,43 @@ namespace vhcbExternalApp
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
+            string strGrantMatch = "";
+            string ENtGrantMatch = "";
+
+            if (txtFederalGrant.Text != "")
+            {
+                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";";
+                ENtGrantMatch += "26620-" + txtFederalGrant.Text.Replace("$", "") + ";";
+            }
+            if (txtStateGrant.Text != "")
+            {
+                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";";
+                ENtGrantMatch += "26621-" + txtStateGrant.Text.Replace("$", "") + ";";
+            }
+            if (txtLoan.Text != "")
+            {
+                strGrantMatch += "Loan - " + txtLoan.Text + ";";
+                ENtGrantMatch += "26685-" + txtLoan.Text.Replace("$", "") + ";";
+            }
+            if (txtCash.Text != "")
+            {
+                strGrantMatch += "Cash - " + txtCash.Text + ";";
+                ENtGrantMatch += "26686-" + txtCash.Text.Replace("$", "") + ";";
+            }
+            if (txtKind.Text != "")
+            {
+                strGrantMatch += "Kind - " + txtKind.Text + ";";
+                ENtGrantMatch += "26687-" + txtKind.Text.Replace("$", "") + ";";
+            }
+            if (txtOther.Text != "")
+            {
+                strGrantMatch += "Other - " + txtOther.Text;
+                ENtGrantMatch += "26688-" + txtOther.Text.Replace("$", "") + ";";
+            }
+
             ViabilityApplicationData.InsertGrantRequest(projectNumber, txtProjTitle.Text, txtProjDesc.Text,
                 DataUtils.GetDecimal(txtProjCost.Text.Replace("$", "")),
-                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text);
+                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text, strGrantMatch.TrimEnd(';'), ENtGrantMatch.TrimEnd(';'));
 
             LogMessage("Farm Business Information Data Added Successfully");
 
@@ -54,7 +88,25 @@ namespace vhcbExternalApp
                     txtProjDesc.Text = drPage1tDetails["ProjDesc"].ToString();
                     txtRequest.Text = drPage1tDetails["Request"].ToString();
                     txtProjCost.Text = drPage1tDetails["ProjCost"].ToString();
-                    
+                    string GrantMatch = drPage1tDetails["GrantMatch"].ToString();
+
+                    foreach(var grantMatchDetails in GrantMatch.Split(';').ToList())
+                    {
+                        var grant = grantMatchDetails.Split('-');
+                            
+                        if (grant[0].Trim() == "Federal Grant")
+                            txtFederalGrant.Text = grant[1].Trim();
+                        else if (grant[0].Trim() == "State Grant")
+                            txtStateGrant.Text = grant[1].Trim();
+                        else if (grant[0].Trim() == "Loan")
+                            txtLoan.Text = grant[1].Trim();
+                        else if (grant[0].Trim() == "Cash")
+                            txtCash.Text = grant[1].Trim();
+                        else if (grant[0].Trim() == "Kind")
+                            txtKind.Text = grant[1].Trim();
+                        else if (grant[0].Trim() == "Other")
+                            txtOther.Text = grant[1].Trim();
+                    }
                 }
             }
         }

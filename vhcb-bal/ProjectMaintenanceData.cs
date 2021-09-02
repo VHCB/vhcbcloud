@@ -1740,6 +1740,76 @@ namespace DataAccessLayer
             return dtProjects;
         }
 
+        public static DataTable GetAddressList()
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetAddressList";
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+
+        public static void UpdateAddressLatandLang(int AddressId, int ProjectId, string zip, string town, string county, string village,
+          string latitude, string longitude)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateAddressLatandLang";
+
+                        command.Parameters.Add(new SqlParameter("AddressId", AddressId));
+                        //command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
+                        command.Parameters.Add(new SqlParameter("zip", zip));
+                        command.Parameters.Add(new SqlParameter("county", county));
+                        command.Parameters.Add(new SqlParameter("town", town));
+                        command.Parameters.Add(new SqlParameter("village", village));
+                        command.Parameters.Add(new SqlParameter("latitude", latitude));
+                        command.Parameters.Add(new SqlParameter("longitude", longitude));
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static void UpdateAddressConversion(int Id, int ProjectId, string zip, string town, string county, string village, 
             string latitude, string longitude)
         {

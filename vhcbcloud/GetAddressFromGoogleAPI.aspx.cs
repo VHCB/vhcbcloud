@@ -17,7 +17,7 @@ namespace vhcbcloud
         protected void Page_Load(object sender, EventArgs e)
         {
             try { 
-            DataTable dtAddress = ProjectMaintenanceData.GetAddressConversion();
+            DataTable dtAddress = ProjectMaintenanceData.GetAddressList();
             if (dtAddress.Rows.Count > 0)
             {
                 foreach(DataRow dr in dtAddress.Rows)
@@ -29,7 +29,7 @@ namespace vhcbcloud
                     //string zip = "05491";
                     //string address = string.Format("{0} {1}, {2}, {3}, {4}", stNo, Address1, Town, state, zip);
                     string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(dr["address"].ToString()));
-                    GetData(dr, dr["ProjectID"].ToString(), dr["Id"].ToString(), url);
+                    GetData(dr, dr["ProjectID"].ToString(), dr["AddressId"].ToString(), url);
                 }
             }
             }
@@ -39,7 +39,7 @@ namespace vhcbcloud
             }
         }
 
-        private void GetData(DataRow dr, string ProjectID, string Id, string url)
+        private void GetData(DataRow dr, string ProjectID, string AddressId, string url)
         {
             string zip = "";
             string county = "";
@@ -88,7 +88,7 @@ namespace vhcbcloud
                 Lattitude = res.Results[0].Geometry.Location.Latitude.ToString();
                 Longitude = res.Results[0].Geometry.Location.Longitude.ToString();
 
-                ProjectMaintenanceData.UpdateAddressConversion(DataUtils.GetInt(Id), DataUtils.GetInt(ProjectID), zip, town, county, village, Lattitude, Longitude);
+                ProjectMaintenanceData.UpdateAddressLatandLang(DataUtils.GetInt(AddressId), DataUtils.GetInt(ProjectID), zip, town, county, village, Lattitude, Longitude);
             }
         }
     }

@@ -39,7 +39,7 @@ namespace vhcbExternalApp
                     txtLongTermPlans9.Text = drPage1tDetails["LongTermPlans9"].ToString();
                     txtNoGrant10.Text = drPage1tDetails["NoGrant10"].ToString();
                     txtTimeline11.Text = drPage1tDetails["Timeline11"].ToString();
-                    txtNoContribution12.Text = drPage1tDetails["NoContribution12"].ToString();
+                    //txtNoContribution12.Text = drPage1tDetails["NoContribution12"].ToString();
                     txtNutrientManagementPlan13.Text = drPage1tDetails["NutrientManagementPlan13"].ToString();
                     txtPermits14.Text = drPage1tDetails["Permits14"].ToString();
 
@@ -56,7 +56,7 @@ namespace vhcbExternalApp
         protected void btnNext_Click(object sender, EventArgs e)
         {
             Save();
-            Response.Redirect("Page10.aspx");
+            Response.Redirect("Page11.aspx");
         }
 
         protected void Save()
@@ -65,7 +65,7 @@ namespace vhcbExternalApp
             {
 
                 ViabilityApplicationData.ViabilityApplicationPage9(projectNumber, txtPositiveImpact7.Text, txtTechAdvisors8.Text, txtLongTermPlans9.Text, txtNoGrant10.Text, 
-                    txtTimeline11.Text, txtNoContribution12.Text, txtNutrientManagementPlan13.Text, txtPermits14.Text);
+                    txtTimeline11.Text, txtNutrientManagementPlan13.Text, txtPermits14.Text);
 
                 LogMessage("Farm Business Information Data Added Successfully");
             }

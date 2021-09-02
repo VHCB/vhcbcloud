@@ -21,9 +21,7 @@
                             </td>
                         </tr>
                          <tr>
-                            <td colspan="2"><span class="labelClass"><strong>
-                               Answers must be typed.</strong> You may answer these narrative questions within this PDF form or as a separate attachment.</span>
-                            </td>
+                            <td colspan="2">&nbsp;</td>
                         </tr>
                          <tr>
                             <td colspan="2"><span class="labelClass">FARM QUESTIONS</span>

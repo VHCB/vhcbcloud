@@ -38,6 +38,11 @@
     line-height: 1.4;
 }
 
+.smalllabelClass {
+    margin-bottom: 20px;
+    font-size: 6.099999999999998px;
+    line-height: 1.4;
+}
 .cssWater {
     height: 16px;
     width: 140px;

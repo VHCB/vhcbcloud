@@ -5,7 +5,7 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <link rel="stylesheet" runat="server" media="screen" href="~/Content/StyleSheet.css" />
     <div class="jumbotron">
-        <p class="lead"><strong>SECTION F: CONFIDENTIALITY</strong></p>
+        <p class="lead"><strong>SECTION E: CONFIDENTIALITY</strong></p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -16,8 +16,8 @@
                     </div>
                     <table style="width=100%">
 
-                        <tr>
-                            <td colspan="2"><span class="labelClass">Sharing your application: Can we forward your application to other Vermont Agriculture Water Quality Partnership Funders, such as USDA-NRCS or the Vermont Agency of Agriculture, Food & Markets, if they have applicable funding available?</span>
+                       <%-- <tr>
+                            <td colspan="2"><span class="labelClass"></span>
                             </td>
                         </tr>
                         <tr>
@@ -30,7 +30,7 @@
                                     <asp:ListItem>No</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
-                        </tr>
+                        </tr>--%>
                          <tr>
                             <td colspan="2" style="height: 15px"></td>
                         </tr>
@@ -51,7 +51,7 @@
                             <td colspan="2" style="height: 15px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass">By submitting your application materials, you agree to allow your business plan and application materials to be read by members of the Review Committee and by staff at the Vermont Farm & Forest Viability Program in accordance with our program’s Confidentiality Policy. No other persons will have access to your application, and all copies will be collected for safekeeping following the meeting of the Review Committee.</span>
+                            <td colspan="2"><span class="labelClass">Please read section 7 of the instructions. By submitting your application materials, you agree to allow all of your application materials to be read by members of the Review Committee and by staff at the Vermont Farm & Forest Viability Program in accordance with our program’s Confidentiality Policy.  In addition, you agree to allow the project description and grant request amount to be shared with USDA-NRCS or Vermont Agency of Agriculture, Food & Markets. No other persons will have access to your application, and all copies will be collected for safekeeping following the meeting of the Review Committee.</span>
                             </td>
                         </tr>
                         <tr>
@@ -81,7 +81,10 @@
                         <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                       <%-- <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />--%>
+                                 <asp:Button ID="btnSaveExit" runat="server" Text="Save/Exit" class="btn btn-info" OnClick="btnSaveExit_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <asp:Button ID="btnNext" runat="server" Text="Submit" class="btn btn-info" OnClick="btnNext_Click"/>
+                                </td>
                         </tr>
                          <tr>
                             <td colspan="2" style="height: 15px"></td>

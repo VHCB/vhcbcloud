@@ -81,7 +81,7 @@
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
-                        <tr>
+                       <%-- <tr>
                             <td colspan="2"><span class="labelClass">12.	VHCB may award Water Quality Grants to help cover required cost share on state or federal grants under the circumstances described in the application instructions. If you are receiving state or federal grant funds for this project and you cannot contribute the expected farm cost share, please explain. (100 words) <em><strong>(Required)</strong></em></span>
                             </td>
                         </tr>
@@ -89,12 +89,12 @@
                             <td colspan="2" style="margin-left: 10px">
                                 <asp:TextBox ID="txtNoContribution12" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
                             </td>
-                        </tr>
+                        </tr>--%>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass">13.	If your farm has a nutrient management plan, please indicate when it was completed and by whom. Please summarize key components of the plan and whether any upcoming farm changes might impact nutrient management. (100 words) <em><strong>(Required)</strong></em></span>
+                            <td colspan="2"><span class="labelClass">12.	If your farm has a nutrient management plan, please indicate when it was completed and by whom. Please summarize key components of the plan and whether any upcoming farm changes might impact nutrient management. (100 words) <em><strong>(Required)</strong></em></span>
                             </td>
                         </tr>
                         <tr>
@@ -106,7 +106,7 @@
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass">14.	List any federal, state, or local permits or approvals that will be necessary for you to implement this projects, and the status of these applications or processes. If your farm is conserved, please confirm that the proposed project does not conflict with the terms of the conservation easement. (100 words) <em><strong>(Required)</strong></em></span>
+                            <td colspan="2"><span class="labelClass">13.	List any federal, state, or local permits or approvals that will be necessary for you to implement this projects, and the status of these applications or processes. If your farm is conserved, please confirm that the proposed project does not conflict with the terms of the conservation easement. (100 words) <em><strong>(Required)</strong></em></span>
                             </td>
                         </tr>
                         <tr>

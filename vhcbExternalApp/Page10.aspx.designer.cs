@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbExternalApp {
-    
-    
-    public partial class Page10 {
-        
+namespace vhcbExternalApp
+{
+
+
+    public partial class Page10
+    {
+
         /// <summary>
         /// dvEntityRole control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
-        
+
         /// <summary>
         /// ToolkitScriptManager1 control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-        
+
         /// <summary>
         /// dvMessage control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
-        
+
         /// <summary>
         /// lblErrorMsg control.
         /// </summary>
@@ -47,16 +49,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-        
-        /// <summary>
-        /// rdBtnConfidentSharing control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnConfidentSharing;
-        
+
         /// <summary>
         /// rdbtnConfidentFunding control.
         /// </summary>
@@ -65,7 +58,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdbtnConfidentFunding;
-        
+
         /// <summary>
         /// txtConfidentSignature control.
         /// </summary>
@@ -74,7 +67,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtConfidentSignature;
-        
+
         /// <summary>
         /// txtConfidentDate control.
         /// </summary>
@@ -83,7 +76,7 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtConfidentDate;
-        
+
         /// <summary>
         /// previousButton control.
         /// </summary>
@@ -92,7 +85,16 @@ namespace vhcbExternalApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button previousButton;
-        
+
+        /// <summary>
+        /// btnSaveExit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSaveExit;
+
         /// <summary>
         /// btnNext control.
         /// </summary>
