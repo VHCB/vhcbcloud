@@ -30,6 +30,7 @@ namespace vhcbcloud
                     //string address = string.Format("{0} {1}, {2}, {3}, {4}", stNo, Address1, Town, state, zip);
                     string url = string.Format("https://maps.google.com/maps/api/geocode/json?key=AIzaSyCm3xOguaZV1P3mNL0ThK7nv-H9jVyMjSU&address={0}&region=dk&sensor=false", HttpUtility.UrlEncode(dr["address"].ToString()));
                     GetData(dr, dr["ProjectID"].ToString(), dr["AddressId"].ToString(), url);
+                        lblErrorMsg.Text = "Lat Long updated successfully.";
                 }
             }
             }
@@ -47,6 +48,8 @@ namespace vhcbcloud
             string Lattitude = "";
             string Longitude = "";
             string town = "";
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             var request = (HttpWebRequest)HttpWebRequest.Create(url);
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");

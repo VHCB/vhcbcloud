@@ -14,6 +14,8 @@ namespace vhcbcloud
 {
     public partial class Assignments : System.Web.UI.Page
     {
+        bool IsCheckTransTypeEditAllow;
+
         /// <summary>
         /// Bind Projects
         /// Check Page Access
@@ -22,6 +24,7 @@ namespace vhcbcloud
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            IsCheckTransTypeEditAllow = IsCheckTransTypeAccess();
 
             if (!IsPostBack)
             {
@@ -476,7 +479,10 @@ namespace vhcbcloud
                 if (ddlRFromFundType.SelectedValue != "")
                     ddlRtoFundType.SelectedValue = ddlRFromFundType.SelectedValue;
 
-                ddlRtoFundType.Enabled = false;
+                if(IsCheckTransTypeEditAllow)
+                ddlRtoFundType.Enabled = true;
+                else
+                    ddlRtoFundType.Enabled = false;
 
                 if (lblUsePermit.Visible)
                 {
@@ -543,6 +549,11 @@ namespace vhcbcloud
                     ddlRtoFundType.DataTextField = "Description";
                     ddlRtoFundType.DataBind();
                     ddlRtoFundType.Items.Insert(0, new ListItem("Select", "NA"));
+
+                    if (IsCheckTransTypeEditAllow)
+                        ddlRtoFundType.Enabled = true;
+                    else
+                        ddlRtoFundType.Enabled = false;
                 }
                 else
                     ddlRToFund.Enabled = true;
@@ -578,8 +589,13 @@ namespace vhcbcloud
         /// <param name="e"></param>
         protected void ddlRFromFundType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+            lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
+
             if (ddlRFromFundType.Items.Count > 1)
             {
+                ddlRtoFundType.SelectedValue = ddlRFromFundType.SelectedValue;
+
                 if (ddlRFromFundType.SelectedIndex != 0)
                 {
                     SetAvailableFundsLabel();
@@ -1650,6 +1666,21 @@ namespace vhcbcloud
                 lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
                 lblAvailFundTo.Text = mitigationFundBalance.ToString();
             }
+        }
+
+        private bool IsCheckTransTypeAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "38925")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

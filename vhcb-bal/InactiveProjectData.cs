@@ -297,7 +297,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Email_Address", Email_Address));
                         command.Parameters.Add(new SqlParameter("Proj_num", ProjectNumber));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
-                        
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -326,7 +326,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Connection = connection;
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "GetOnlineEmailAddressesList";
-                       
+
 
                         command.CommandTimeout = 60 * 5;
 
@@ -563,10 +563,93 @@ namespace VHCBCommon.DataAccessLayer
 
             return dt;
         }
-    }
 
+        public static InactiveConservationProjectResult AddInactiveConservationProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddInactiveConservationProject";
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("Password", Password));
+                        command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+
+                        SqlParameter parmMessage = new SqlParameter("@isProjectNotExist", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        InactiveConservationProjectResult ap = new InactiveConservationProjectResult();
+
+                        ap.IsProjectNotExist = DataUtils.GetBool(command.Parameters["@isProjectNotExist"].Value.ToString());
+
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DataTable GetConservationProjectNumbers(string ProjectNumPrefix)
+        {
+            DataTable dtProjects = null;
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "GetConservationProjectNumbers";
+                command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNumPrefix));
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+
+                    var ds = new DataSet();
+                    var da = new SqlDataAdapter(command);
+                    da.Fill(ds);
+                    if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                    {
+                        dtProjects = ds.Tables[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return dtProjects;
+        }
+    }
     public class InactiveProjectResult
     {
         public bool IsDuplicate { set; get; }
     }
+
+    public class InactiveConservationProjectResult
+    {
+        public bool IsProjectNotExist { set; get; }
+    }
 }
+

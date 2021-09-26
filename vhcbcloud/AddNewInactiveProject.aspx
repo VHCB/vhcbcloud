@@ -32,6 +32,11 @@
                                 </td>
                                 <td style="height: 30px"><span class="labelClass" runat="server" visible="false" id="spnViabilityProjectPrefix"><strong>9999-001-</strong></span>
                                     <asp:TextBox ID="txtprojectNumber" CssClass="clsTextBoxBlue1" runat="server" Width="100px" Height="22px"  ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+                                       <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtprojectNumber"
+                                        MinimumPrefixLength="1" UseContextKey="true"
+                                        EnableCaching="true" CompletionSetCount="1"
+                                        CompletionInterval="100" ServiceMethod="GetProjectNumber">
+                                    </ajaxToolkit:AutoCompleteExtender>
                                 </td>
                                 <td style="height: 30px"><span class="labelClass">Project Name</span></td>
                                 <td style="height: 30px">

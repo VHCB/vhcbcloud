@@ -106,20 +106,33 @@ namespace vhcbcloud
             }
             else
             {
-                string ProjNumber = string.Empty;
+                if (ddlProgram.SelectedValue == "8888") //Conservation
+                {
+                    InactiveConservationProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveConservationProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text, DataUtils.GetInt(ddlApplication.SelectedValue), true);
 
-                if (ddlProgram.SelectedValue == "9999")
-                    ProjNumber = "9999-001-" + txtprojectNumber.Text;
+                    if (objInactiveProjectResult.IsProjectNotExist)
+                        LogMessage("Conservation Project not exist");
+
+                    else
+                        LogMessage("Conservation Project added successfully");
+                }
                 else
-                    ProjNumber = txtprojectNumber.Text;
+                {
+                    string ProjNumber = string.Empty;
 
-                InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(ProjNumber, txtLoginName.Text, txtPassword.Text, DataUtils.GetInt(ddlApplication.SelectedValue), true);
+                    if (ddlProgram.SelectedValue == "9999")
+                        ProjNumber = "9999-001-" + txtprojectNumber.Text;
+                    else
+                        ProjNumber = txtprojectNumber.Text;
 
-                if (objInactiveProjectResult.IsDuplicate)
-                    LogMessage("Project already exist");
+                    InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(ProjNumber, txtLoginName.Text, txtPassword.Text, DataUtils.GetInt(ddlApplication.SelectedValue), true);
 
-                else
-                    LogMessage("New Project added successfully");
+                    if (objInactiveProjectResult.IsDuplicate)
+                        LogMessage("Project already exist");
+
+                    else
+                        LogMessage("Project added successfully");
+                }
             }
         }
 
@@ -157,6 +170,21 @@ namespace vhcbcloud
 
 
             SetProjectName();
+        }
+
+        [System.Web.Services.WebMethod()]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string[] GetProjectNumber(string prefixText, int count, string contextKey)
+        {
+            DataTable dt = new DataTable();
+            dt = InactiveProjectData.GetConservationProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
+
+            List<string> ProjNumbers = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
+            }
+            return ProjNumbers.ToArray();
         }
     }
 }

@@ -118,7 +118,8 @@ namespace vhcbExternalApp
                 if (drData != null)
                 {
                     if (drData["ProjTitle"].ToString() == "" || drData["ProjDesc"].ToString() == "" || drData["ProjCost"].ToString() == "0" || drData["Request"].ToString() == "0" ||
-                        drData["Budget"].ToString() == "" || drData["FarmBusiness1"].ToString() == "" || drData["FarmProduction2"].ToString() == "" || drData["ProductsProduced3"].ToString() == "" ||
+                        //drData["Budget"].ToString() == "" || 
+                        drData["FarmBusiness1"].ToString() == "" || drData["FarmProduction2"].ToString() == "" || drData["ProductsProduced3"].ToString() == "" ||
                         drData["FarmOwners4"].ToString() == "" || drData["SurfaceWaters5"].ToString() == "" || drData["MajorGoals6"].ToString() == "" || drData["PositiveImpact7"].ToString() == "" ||
                         drData["TechAdvisors8"].ToString() == "" || drData["LongTermPlans9"].ToString() == "" || drData["NoGrant10"].ToString() == "" || drData["Timeline11"].ToString() == "" ||
                         drData["NoContribution12"].ToString() == "" || drData["NutrientManagementPlan13"].ToString() == "" || drData["Permits14"].ToString() == "" ||
@@ -168,7 +169,10 @@ namespace vhcbExternalApp
             //ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
 
             if (report != null)
+            {
+                report.ExportType = wrExportType.Pdf;
                 api.ReportObjectFactory.SaveToApi(report);
+            }
             // URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
 
 

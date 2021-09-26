@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" MaintainScrollPositionOnPostback="true"
     CodeBehind="HUC12.aspx.cs" Inherits="vhcbcloud.HUC12" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -54,7 +54,7 @@
                         </div>
 
                          <div class="panel-body" id="dvHUC12Grid" runat="server">
-                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="500px" ScrollBars="Vertical">
+                            <asp:Panel runat="server" ID="Panel6" Width="100%" Height="1500px" ScrollBars="Vertical">
                                 <asp:GridView ID="gvHUC12" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
