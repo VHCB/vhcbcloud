@@ -10,6 +10,9 @@
         .auto-style1 {
             width: 500px
         }
+        .auto-style7 {
+            height: 5px;
+        }
     </style>
     <div class="jumbotron">
         <p class="lead">Viability Application</p>
@@ -39,7 +42,7 @@
                         </tr>--%>
 
                         <tr>
-                            <td colspan="2" style="height: 5px; text-decoration: underline;"><strong>Applicant Information</strong></td>
+                            <td colspan="2" style="text-decoration: underline;" class="auto-style7"><strong>Applicant Information</strong></td>
                         </tr>
                         <tr>
                             <td><span class="labelClass" style="margin-left: 10px">All Owners/Operators (including primary contact)</span></td>

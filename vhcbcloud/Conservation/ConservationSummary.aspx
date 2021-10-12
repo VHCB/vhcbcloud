@@ -199,20 +199,37 @@
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                <tr>
+                                 <tr>
                                     <td><span class="labelClass">Natural/Rec</span></td>
-                                    <td>
-                                        <asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                                     <td><span class="labelClass">Total Project Acres:</span></td>
-                                    <td><span class="labelClass" id="spnTotalProject" runat="server"></span></td>
+                                    <td><span class="labelClass"  id="spnTotalProject" runat="server"></span></td>
                                     <td><span class="labelClass"></span></td>
                                     <td>
-                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
+                                <tr>
+                                    <td><span class="labelClass">Sugarbush</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtSugarbush" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                    </td>
+                                    <td><span class="labelClass">% Sugarbush:</span></td>
+                                    <td><span class="labelClass" id="pctSugarBush" runat="server"></span></td>
+
+                                    <td><span class="labelClass"></span></td>
+                                    <td><asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                        </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                               
                             </table>
                         </div>
                     </div>
@@ -854,7 +871,7 @@
                                 <asp:GridView ID="gvWatershed" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                    OnRowEditing="gvWatershed_RowEditing" 
+                                    OnRowEditing="gvWatershed_RowEditing"
                                     OnRowUpdating="gvWatershed_RowUpdating"
                                     OnRowCancelingEdit="gvWatershed_RowCancelingEdit">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
@@ -868,7 +885,7 @@
                                                 <asp:Label ID="lblConserveWatershedID" runat="Server" Text='<%# Eval("ConserveWatershedID") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="conserveHUCId" Visible="false">
+                                        <asp:TemplateField HeaderText="conserveHUCId" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblconserveHUCId" runat="Server" Text='<%# Eval("conserveHUCId") %>' />
                                             </ItemTemplate>
@@ -883,7 +900,7 @@
                                                 <asp:Label ID="lblSubWatershed" runat="Server" Text='<%# Eval("WatershedSubDesc") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="HUC-12">
+                                        <asp:TemplateField HeaderText="HUC-12">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblHUC12" runat="Server" Text='<%# Eval("HUC12Name") %>' />
                                             </ItemTemplate>
@@ -892,7 +909,7 @@
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </ItemTemplate>
-                                             <EditItemTemplate>
+                                            <EditItemTemplate>
                                                 <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -963,7 +980,7 @@
                 $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());
              });--%>
 
-            var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>, #<%= txtNaturalRec.ClientID%>');
+            var txtboxs = $('#<%= txtTillable.ClientID%>,#<%= txtPasture.ClientID%>,#<%= txtWooded.ClientID%>,#<%= txtUnManaged.ClientID%>,#<%= txtFarmResident.ClientID%>,#<%= txtPrime.ClientID%>,#<%= txtStateWide.ClientID%>, #<%= txtNaturalRec.ClientID%>, #<%= txtSugarbush.ClientID%>');
             $.each(txtboxs, function () {
                 $(this).blur(function () {
                     $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());
@@ -974,6 +991,7 @@
                     $('#<%=txtStateWide.ClientID%>').val($('#<%=txtStateWide.ClientID%>').getNum());
                     $('#<%=txtNaturalRec.ClientID%>').val($('#<%=txtNaturalRec.ClientID%>').getNum());
                     $('#<%=txtWooded.ClientID%>').val($('#<%=txtWooded.ClientID%>').getNum());
+                    $('#<%=txtSugarbush.ClientID%>').val($('#<%=txtSugarbush.ClientID%>').getNum());
                     $('#<%=txtUnManaged.ClientID%>').val($('#<%=txtUnManaged.ClientID%>').getNum());
                     CalculatePercentages();
                 });
@@ -987,6 +1005,7 @@
                 var totUnManaged = (isNaN(parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtUnManaged.ClientID%>').val(), 10));
                 var totFarmResident = (isNaN(parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtFarmResident.ClientID%>').val(), 10));
                 var totNaturalRec = (isNaN(parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtNaturalRec.ClientID%>').val(), 10));
+                var totSugarbush = (isNaN(parseFloat($('#<%=txtSugarbush.ClientID%>').val(), 10)) ? 0 : parseFloat($('#<%=txtSugarbush.ClientID%>').val(), 10));
 
                 var Total = totTillable + totPasture + totWooded + totUnManaged + totFarmResident + totNaturalRec;
                 console.log('Total:' + Total.toFixed(2));
@@ -1002,12 +1021,23 @@
 
                     var totPS = totPrime + totStateWide;
                     var pctPS = Math.round(totPS * 100 / Total);
-                    console.log(pctPS);
-                    console.log(pctPS.toPrecision(2));
+                   // console.log(pctPS);
+                   // console.log(pctPS.toPrecision(2));
                     $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS + ' %');
 
                     var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
                     $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2) + ' %');
+                }
+
+                
+                console.log(totWooded);
+                console.log(totSugarbush);
+
+                if (totWooded != 0) {
+                    var pctSugarBush = Math.round($('#<%=txtSugarbush.ClientID%>').val() * 100 / totWooded);
+                    $('#<%=pctSugarBush.ClientID%>').text(pctSugarBush + ' %');
+                } else {
+                    $('#<%=pctSugarBush.ClientID%>').text(' 0.0 %');
                 }
             };
             <%--$('#<%= txtTotProjAcres.ClientID%>').blur(function () {

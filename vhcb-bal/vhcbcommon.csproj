@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountData.cs" />
+    <Compile Include="ConservationApplicationData.cs" />
     <Compile Include="InactiveProjectData.cs" />
     <Compile Include="AmericorpsMemberData.cs" />
     <Compile Include="Americorpsmembers.cs" />

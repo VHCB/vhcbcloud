@@ -175,7 +175,10 @@ namespace vhcbcloud.Conservation
                 txtPasture.Text = drConserve["Pasture"].ToString();
                 txtFarmResident.Text = drConserve["FarmResident"].ToString();
                 txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
-                pctWooded.InnerText = "0";
+                txtSugarbush.Text = drConserve["Sugarbush"].ToString();
+
+                pctWooded.InnerText = "0.0 %";
+                pctSugarBush.InnerText = "0.0 %";
                 PopulateDropDown(ddlGeoSignificance, drConserve["GeoSignificance"].ToString());
                 //pctPrime.InnerText = "0";
                 //pctState.InnerText = "0";
@@ -200,6 +203,11 @@ namespace vhcbcloud.Conservation
                 {
                     pctPrimeStateWide.InnerText = (Math.Round(TotalPS * 100 / Total).ToString()).ToString() + " %";
                     pctWooded.InnerText = (Math.Round(DataUtils.GetDecimal(txtWooded.Text) / Total * 100)).ToString() + " %";
+                }
+
+                if(DataUtils.GetDecimal(drConserve["SugarBush"].ToString()) != 0)
+                {
+                    pctSugarBush.InnerText = (Math.Round(DataUtils.GetDecimal(drConserve["Sugarbush"].ToString()) / DataUtils.GetDecimal(txtWooded.Text) * 100)).ToString() + " %";
                 }
 
                 btnSubmit.Text = "Update";
@@ -411,8 +419,9 @@ namespace vhcbcloud.Conservation
                 0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
-                DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), GetUserId(),
-                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()));
+                DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), DataUtils.GetDecimal(txtSugarbush.Text),
+                GetUserId(),
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString())) ;
 
             BindConConserveForm();
 

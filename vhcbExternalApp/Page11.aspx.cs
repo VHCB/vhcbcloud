@@ -30,9 +30,9 @@ namespace vhcbExternalApp
 
             if (!IsPostBack)
             {
-                if (CommonHelper.IsVPNConnected())
-                    UploadLink.HRef = "https://server3.vhcb.org:5001/sharing/hI0aFAloS";
-                else
+                //if (CommonHelper.IsVPNConnected())
+                //    UploadLink.HRef = "https://server3.vhcb.org:5001/sharing/hI0aFAloS";
+                //else
                     UploadLink.HRef = "https://server3.vhcb.org/sharing/hI0aFAloS";
             }
         }

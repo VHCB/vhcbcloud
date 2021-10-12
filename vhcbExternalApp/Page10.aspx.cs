@@ -122,7 +122,8 @@ namespace vhcbExternalApp
                         drData["FarmBusiness1"].ToString() == "" || drData["FarmProduction2"].ToString() == "" || drData["ProductsProduced3"].ToString() == "" ||
                         drData["FarmOwners4"].ToString() == "" || drData["SurfaceWaters5"].ToString() == "" || drData["MajorGoals6"].ToString() == "" || drData["PositiveImpact7"].ToString() == "" ||
                         drData["TechAdvisors8"].ToString() == "" || drData["LongTermPlans9"].ToString() == "" || drData["NoGrant10"].ToString() == "" || drData["Timeline11"].ToString() == "" ||
-                        drData["NoContribution12"].ToString() == "" || drData["NutrientManagementPlan13"].ToString() == "" || drData["Permits14"].ToString() == "" ||
+                        //drData["NoContribution12"].ToString() == "" || 
+                        drData["NutrientManagementPlan13"].ToString() == "" || drData["Permits14"].ToString() == "" ||
                         drData["Confident_Sharing"].ToString() == "" || drData["Confident_Funding"].ToString() == "" || drData["Confident_Signature"].ToString() == "" || drData["Confident_Date"].ToString() == ""
                         )
                         LogMessage("Missing required information, please check the application.");
