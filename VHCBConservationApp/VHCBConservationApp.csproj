@@ -47,6 +47,10 @@
       <HintPath>..\packages\AjaxControlToolkit-1.0.20229.24049.1.0.20229.24049\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NodaTime, Version=2.4.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NodaTime.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -85,6 +89,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Content\Tabs.css" />
+    <Content Include="EasementConfig.aspx" />
     <Content Include="FirstPage.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Images\MatchSurce.png" />
@@ -96,6 +101,8 @@
     <Content Include="Images\vhcb_logo_1_rgb_sm11.jpg" />
     <Content Include="Images\vhcb_logo_1_rgb_sm12.jpg" />
     <Content Include="Login.aspx" />
+    <Content Include="Page4.aspx" />
+    <Content Include="FarmManagement.aspx" />
     <Content Include="Scripts\accounting.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -135,9 +142,18 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="SecondPage.aspx" />
+    <Content Include="ThirdPage.aspx" />
+    <Content Include="WaterManagement.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EasementConfig.aspx.cs">
+      <DependentUpon>EasementConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EasementConfig.aspx.designer.cs">
+      <DependentUpon>EasementConfig.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FirstPage.aspx.cs">
       <DependentUpon>FirstPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -153,6 +169,20 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Page4.aspx.cs">
+      <DependentUpon>Page4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page4.aspx.designer.cs">
+      <DependentUpon>Page4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FarmManagement.aspx.cs">
+      <DependentUpon>FarmManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FarmManagement.aspx.designer.cs">
+      <DependentUpon>FarmManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecondPage.aspx.cs">
       <DependentUpon>SecondPage.aspx</DependentUpon>
@@ -167,6 +197,20 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ThirdPage.aspx.cs">
+      <DependentUpon>ThirdPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ThirdPage.aspx.designer.cs">
+      <DependentUpon>ThirdPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WaterManagement.aspx.cs">
+      <DependentUpon>WaterManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WaterManagement.aspx.designer.cs">
+      <DependentUpon>WaterManagement.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -114,7 +114,7 @@ namespace vhcbcloud
                         LogMessage("Conservation Project not exist");
 
                     else
-                        LogMessage("Conservation Project added successfully");
+                        LogMessage("This project has already been opened for remote access");
                 }
                 else
                 {

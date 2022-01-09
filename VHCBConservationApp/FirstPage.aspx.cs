@@ -65,7 +65,7 @@ namespace VHCBConservationApp
                     txtDateSubmitted.Text = drPage1tDetails["Date_Submit"].ToString();
                     txtConservedAcres.Text = drPage1tDetails["ConservedAcres"].ToString();
                     PopulateDropDown(ddlBoardDate, drPage1tDetails["Board_Meet_Date"].ToString());
-                    txtFundsRequested.Text = drPage1tDetails["Funds_Requested"].ToString();
+                    txtFundsRequested.Text = Regex.Replace(drPage1tDetails["Funds_Requested"].ToString(), "[^0-9a-zA-Z.]+", "");
                     txtTotalExpenses.Text = drPage1tDetails["Total_Expenses"].ToString();
                     txtAppOrgan.Text = drPage1tDetails["App_Organ"].ToString();
                     txtProjectManager.Text = drPage1tDetails["Project_Manager"].ToString();
@@ -171,8 +171,8 @@ namespace VHCBConservationApp
 
 
                 ConservationApplicationData.ConservationApplicationPage1(projectNumber, DataUtils.GetDate(txtDateSubmitted.Text), DataUtils.GetDate(ddlBoardDate.Text), DataUtils.GetDecimal(txtConservedAcres.Text),
-                      DataUtils.GetDecimal(Regex.Replace(txtFundsRequested.Text, "[^0-9a-zA-Z.]+", "")),
-                    DataUtils.GetDecimal(Regex.Replace(txtTotalExpenses.Text, "[^0-9a-zA-Z.]+", "")),
+                    txtFundsRequested.Text,
+                    txtTotalExpenses.Text,
                     txtAppOrgan.Text, txtProjectManager.Text, txtAppPhone.Text, txtAppEmail.Text,
                     txtLONames.Text, txtloStreetNo.Text, txtLoAddress1.Text, txtLoAddress2.Text, txtLoTown.Text, txtLOZipCode.Text, txtLOZipCode.Text, ddlLOCounty.Text, txtLOEmail.Text, txtLOHomephone.Text, txtLoCellPhone.Text,
                     txtFarmerName.Text, txtFarmerStreet.Text, txtFarmerAdd1.Text, txtFarmerAdd2.Text, txtFarmerTown.Text, txtFarmerZip.Text, txtFarmerVillage.Text, ddlFarmerCounty.SelectedItem.Text, txtFarmerEmail.Text, txtFarmerHomePhone.Text, txtFarmerCell.Text,
@@ -188,7 +188,7 @@ namespace VHCBConservationApp
             saveData();
 
             ClientScript.RegisterStartupScript(this.GetType(),
-                   "script", Helper.GetExagoURL(projectNumber, "Conservation Online Application"));
+                   "script", Helper.GetExagoURL("9999-999-999", "Conservation Online Application"));
         }
 
         private void LogMessage(string message)

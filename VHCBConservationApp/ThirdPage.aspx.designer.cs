@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbExternalApp
+namespace VHCBConservationApp
 {
 
 
-    public partial class BudgetNarrativeTables
+    public partial class ThirdPage
     {
 
         /// <summary>
@@ -51,40 +51,58 @@ namespace vhcbExternalApp
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
 
         /// <summary>
-        /// txtSupportingFunds control.
+        /// txtExecSummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSupportingFunds;
+        protected global::System.Web.UI.WebControls.TextBox txtExecSummary;
 
         /// <summary>
-        /// txtNRCSExpensesandStatus control.
+        /// rdBtnSellorConvey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNRCSExpensesandStatus;
+        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSellorConvey;
 
         /// <summary>
-        /// txtWaverRequest control.
+        /// part2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWaverRequest;
+        protected global::System.Web.UI.HtmlControls.HtmlTable part2;
 
         /// <summary>
-        /// previousButton control.
+        /// cblFarmerTransfer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button previousButton;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblFarmerTransfer;
+
+        /// <summary>
+        /// txtFarmerPlans control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFarmerPlans;
+
+        /// <summary>
+        /// btnPrevious control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPrevious;
 
         /// <summary>
         /// btnNext control.

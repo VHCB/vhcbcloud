@@ -401,6 +401,7 @@
                                                     <asp:ListItem Text="Horizon Organic" Value="Horizon Organic" />
                                                     <asp:ListItem Text="Stonyfield" Value="Stonyfield" />
                                                     <asp:ListItem Text="HP Hood" Value="HP Hood" />
+                                                    <asp:ListItem Text="Upstate Niagara" Value="Upstate Niagara" />
                                                     <asp:ListItem Text="N/A" Value="N/A" />
                                                     <asp:ListItem Text="Other" Value="Other" />
                                                 </asp:CheckBoxList>

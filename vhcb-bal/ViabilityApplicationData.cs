@@ -296,7 +296,7 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void ViabilityApplicationPage6(string ProjNumber, string SupportingFunds, string NRCSExpensesandStatus)
+        public static void ViabilityApplicationPage6(string ProjNumber, string SupportingFunds, string NRCSExpensesandStatus, string WaverRequest)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -307,6 +307,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
                 command.Parameters.Add(new SqlParameter("SupportingFunds", SupportingFunds));
                 command.Parameters.Add(new SqlParameter("NRCSExpensesandStatus", NRCSExpensesandStatus));
+                command.Parameters.Add(new SqlParameter("WaverRequest", WaverRequest));
+
                 using (connection)
                 {
                     connection.Open();
@@ -431,7 +433,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Confident_Sharing", Confident_Sharing));
                 command.Parameters.Add(new SqlParameter("Confident_Funding", Confident_Funding));
                 command.Parameters.Add(new SqlParameter("Confident_Signature", Confident_Signature));
-                command.Parameters.Add(new SqlParameter("Confident_Date", Confident_Date));
+                command.Parameters.Add(new SqlParameter("Confident_Date", Confident_Date.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : Confident_Date));
                
                 using (connection)
                 {

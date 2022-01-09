@@ -316,7 +316,9 @@
                                 </tr>--%>
                                 <tr>
                                     <td colspan="3" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                        &nbsp;&nbsp;<asp:Button ID="btnPrint" runat="server" Text="Print Application PDF" class="btn btn-info" OnClick="btnPrint_Click" />
+                                    </td>
                                 </tr>
                                   <tr>
                                     <td colspan="3" style="height: 10px"></td>

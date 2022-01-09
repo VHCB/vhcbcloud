@@ -370,6 +370,9 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td colspan="6" style="height: 5px"><span class="labelClass">Note: If unit # = 0 is “Common Area” and unit # =99 is “Exterior”</span></td>
+                                    </tr>
+                                     <tr>
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
@@ -479,6 +482,10 @@
                                         <td style="width: 250px">
                                             <asp:DropDownList ID="ddlWorkLocation" CssClass="clsDropDown" runat="server"></asp:DropDownList>
                                         </td>
+                                         <td style="width: 150px"><span class="labelClass">Order#</span></td>
+                                        <td style="width: 250px">
+                                           <asp:TextBox ID="txtOrder" runat="Server" CssClass="clsTextBoxBlueSm"  Visible="true" MaxLength="2"></asp:TextBox>
+                                        </td>
                                         <td style="width: 104px">
                                             <span class="labelClass">Active</span>
                                         </td>
@@ -526,6 +533,14 @@
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Order">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblOrdernum" runat="Server" Text='<%# Eval("Ordernum") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>  
+                                                <asp:TextBox ID="txtOrdernum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Ordernum") %>' Visible="true"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Work Location">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblWorkLocation" runat="Server" Text='<%# Eval("WorkLocation") %>' />
@@ -535,6 +550,15 @@
                                                 <asp:TextBox ID="txtLocationID" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LocationID") %>' Visible="false"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Location Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLocationDescription" runat="Server" Text='<%# Eval("LocationDesc") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>  
+                                                <asp:TextBox ID="txtLocationDesc" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LocationDesc") %>' Visible="true"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+ 
                                         <asp:TemplateField HeaderText="Active">
                                             <ItemTemplate>
                                                 <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
@@ -654,6 +678,15 @@
                                         <td colspan="6" style="height: 5px"></td>
                                     </tr>
                                     <tr>
+                                        <td class="auto-style1"><span class="labelClass">Order#</span></td>
+                                        <td class="auto-style2">
+                                            <asp:TextBox ID="txtSpecOrder" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                      <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                    <tr>
                                         <td class="auto-style5">
                                             <span class="labelClass">Active</span>
                                         </td>
@@ -696,6 +729,14 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblProjectLeadSpecID" runat="Server" Text='<%# Eval("ProjectLeadSpecID") %>' />
                                             </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Order">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblOrdernum" runat="Server" Text='<%# Eval("Ordernum") %>' />
+                                            </ItemTemplate>
+                                            <%--<EditItemTemplate>  
+                                                <asp:TextBox ID="txtOrdernum" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Ordernum") %>' Visible="true"></asp:TextBox>
+                                            </EditItemTemplate>--%>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Spec Detail">
                                             <ItemTemplate>

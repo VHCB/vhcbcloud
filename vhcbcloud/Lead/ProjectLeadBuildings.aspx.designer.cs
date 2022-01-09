@@ -600,6 +600,15 @@ namespace vhcbcloud.Lead
         protected global::System.Web.UI.WebControls.DropDownList ddlWorkLocation;
 
         /// <summary>
+        /// txtOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOrder;
+
+        /// <summary>
         /// cbWorkLocationActive control.
         /// </summary>
         /// <remarks>
@@ -769,6 +778,15 @@ namespace vhcbcloud.Lead
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUnitCost;
+
+        /// <summary>
+        /// txtSpecOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSpecOrder;
 
         /// <summary>
         /// cbSpecActive control.

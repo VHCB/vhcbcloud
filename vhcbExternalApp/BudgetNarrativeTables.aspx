@@ -58,9 +58,9 @@
                                 <ul>
                                     <li>the practices that these funding sources will pay for,</li>
                                     <ul>
-                                        <li>-  whether there are any expenses that these programs cannot cover, and</li>
+                                        <li>  whether there are any expenses that these programs cannot cover, and</li>
 
-                                        <li>-  the status of these grants (i.e. when contracts will be signed if they are not already).</li>
+                                        <li>  the status of these grants (i.e. when contracts will be signed if they are not already).</li>
 
                                     </ul>
                             </span>
@@ -74,6 +74,20 @@
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">In some cases, the Viability Program may consider awarding Water Quality Grants to applicants who cannot meet the 50% match requirement. If you do not have the funds to contribute a 50% match for this project and would like to request a waiver, please explain. (100 words)
+                            </span>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                         <tr>
+                            <td colspan="2" style="margin-left: 10px">&nbsp;&nbsp;&nbsp;
+                               
+                                 <asp:TextBox ID="txtWaverRequest" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;

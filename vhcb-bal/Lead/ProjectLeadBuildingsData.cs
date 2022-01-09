@@ -460,7 +460,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
-        public static void UpdateProjectLeadTypeofWork(int WorkTypeID, int typeOfWorkId, bool IsRowIsActive)
+        public static void UpdateProjectLeadTypeofWork(int WorkTypeID, int typeOfWorkId, int OrderNum, bool IsRowIsActive)
         {
             try
             {
@@ -476,6 +476,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
 
                         command.Parameters.Add(new SqlParameter("WorkTypeID", WorkTypeID));
                         command.Parameters.Add(new SqlParameter("typeOfWorkId", typeOfWorkId));
+                        command.Parameters.Add(new SqlParameter("OrderNum", OrderNum));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
                         
                         command.CommandTimeout = 60 * 5;
@@ -490,7 +491,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
             }
         }
 
-        public static void UpdateWorkLocation(int WorkLocationID, int LocationID, bool IsRowIsActive)
+        public static void UpdateWorkLocation(int WorkLocationID, int LocationID, int OrderNum, string LocationDesc,  bool IsRowIsActive)
         {
             try
             {
@@ -506,6 +507,8 @@ namespace VHCBCommon.DataAccessLayer.Lead
 
                         command.Parameters.Add(new SqlParameter("WorkLocationID", WorkLocationID));
                         command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+                        command.Parameters.Add(new SqlParameter("OrderNum", OrderNum));
+                        command.Parameters.Add(new SqlParameter("LocationDesc", LocationDesc));
                         command.Parameters.Add(new SqlParameter("IsRowIsActive", IsRowIsActive));
 
                         command.CommandTimeout = 60 * 5;
@@ -520,7 +523,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
             }
         }
 
-        public static LeadBuildResult AddWorkLocation(int LeadBldgID, int LeadUnitID, int LocationID)
+        public static LeadBuildResult AddWorkLocation(int LeadBldgID, int LeadUnitID, int LocationID, int Ordernum)
         {
             try
             {
@@ -537,6 +540,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
                         command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
                         command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+                        command.Parameters.Add(new SqlParameter("Ordernum", Ordernum));
 
                         SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -1029,6 +1033,80 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
+        public static string GetProjectLeadSpecsNextOrderNum(int ProjectID, int LocationID, bool IsActiveOnly)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectLeadSpecsNextOrderNum";
+
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
+                        command.Parameters.Add(new SqlParameter("LocationID", LocationID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        SqlParameter parmMessage = new SqlParameter("@NextOrderNum", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return command.Parameters["@NextOrderNum"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static string GetWorkLocationListOrderNum(int LeadBldgID, int LeadUnitID, bool IsActiveOnly)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetWorkLocationListOrderNum";
+
+                        command.Parameters.Add(new SqlParameter("LeadBldgID", LeadBldgID));
+                        command.Parameters.Add(new SqlParameter("LeadUnitID", LeadUnitID));
+                        command.Parameters.Add(new SqlParameter("IsActiveOnly", IsActiveOnly));
+
+                        SqlParameter parmMessage = new SqlParameter("@NextOrderNum", SqlDbType.Int);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return command.Parameters["@NextOrderNum"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static DataRow GetProjectLeadSpecsById(int ProjectLeadSpecID)
         {
             DataRow dt = null;
@@ -1062,7 +1140,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
             return dt;
         }
 
-        public static void UpdateProjectLeadSpecsById(int ProjectLeadSpecID, string Spec_Detail, string Spec_Note, decimal Units, decimal UnitCost,  bool RowIsActive)
+        public static void UpdateProjectLeadSpecsById(int ProjectLeadSpecID, string Spec_Detail, string Spec_Note, decimal Units, decimal UnitCost, int OrderNum, bool RowIsActive)
         {
             try
             {
@@ -1081,6 +1159,7 @@ namespace VHCBCommon.DataAccessLayer.Lead
                         command.Parameters.Add(new SqlParameter("Spec_Note", Spec_Note));
                         command.Parameters.Add(new SqlParameter("Units", Units));
                         command.Parameters.Add(new SqlParameter("UnitCost", UnitCost));
+                        command.Parameters.Add(new SqlParameter("OrderNum", OrderNum));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
                         command.CommandTimeout = 60 * 5;

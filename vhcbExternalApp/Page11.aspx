@@ -15,7 +15,7 @@
                     </div>
                     <table style="width=100%">
                           <tr>
-                            <td colspan="2"><span class="labelClass"><strong>1.	VIABILITY PROGRAM BUDGET SHEET – REQUIRED</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;1.	VIABILITY PROGRAM BUDGET SHEET – REQUIRED</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -25,11 +25,11 @@
                             <td colspan="2"><span class="labelClass">Please use the download link on page 5, SECTION D: BUDGET NARRATIVE AND TABLES, of this application to download a blank budget. Please follow the instructions on the blank workbook</span>
                             </td>
                         </tr>
-                          <tr>
-                            <td colspan="2" style="height: 5px"></td>
+                        <tr>
+                            <td colspan="2"  style="height: 15px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>2.	FINANCIAL STATEMENTS - REQUIRED</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;2.	FINANCIAL STATEMENTS - REQUIRED</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -77,53 +77,61 @@
                             <td colspan="2" style="margin-left: 25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>REQUIRED</strong>: cash-flow projection for current and next year <br />&nbsp;&nbsp;&nbsp;&nbsp;
 <strong>OPTIONAL</strong>: cash-flow projections beyond next year</td>
                         </tr>
-                        <tr>
-                            <td colspan="2" style="margin-left: 25px"></td>
+                       <tr>
+                            <td colspan="2"  style="height: 15px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>3.	MAP - REQUIRED</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;3.	MAP - REQUIRED</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
                             <td colspan="2"><span class="labelClass">Please provide a map of your farm operation; at least one map is required. The map should illustrate where the proposed project will be located. The map should also show on-farm surface waters.</span>
                             </td>
                         </tr>
-
+                       <tr>
+                            <td colspan="2"  style="height: 15px"></td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>4.	VT AGENCY of AGRICULTURE, FOOD, AND MARKETS AGENCY or USDA-NRCS PROJECT BUDGETS – REQUIRED FOR PROJECTS RECEIVING VAAFM OR USDA-NRCS GRANT FUNDS</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;4.	VT AGENCY of AGRICULTURE, FOOD, AND MARKETS AGENCY or USDA-NRCS PROJECT BUDGETS – REQUIRED FOR PROJECTS RECEIVING VAAFM OR USDA-NRCS GRANT FUNDS</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
                             <td colspan="2"><span>If your project is receiving funding from either the Vermont Agency of Agriculture, Food & Markets or the USDA-Natural Resources Conservation Service, please provide project budgets that show a list of the practices that these funding sources will pay for and at what rates.</span>
                             </td>
                         </tr>
+                      <tr>
+                            <td colspan="2"  style="height: 15px"></td>
+                        </tr>
 
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>5.	LETTERS OF SUPPORT – REQUIRED IN SOME CASES</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;5.	LETTERS OF SUPPORT – REQUIRED IN SOME CASES</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
                             <td colspan="2"><span>If you are receiving funds from USDA-NRCS or the Vermont Agency of Agriculture, Food & Markets, please attach a letter or email confirming that these funds have been secured. If your project is designed to fix a water quality problem or a regulatory issue, please include a letter of support from any technical advisor or state employee who is helping you address the problem. This is not required, but can strengthen an application.</span>
                             </td>
                         </tr>
+                       <tr>
+                            <td colspan="2"  style="height: 15px"></td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>6.	BUSINESS PLAN – OPTIONAL</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;6.	BUSINESS PLAN – OPTIONAL</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
@@ -131,12 +139,15 @@
                             </span>
                             </td>
                         </tr>
+                       <tr>
+                            <td colspan="2"  style="height: 15px"></td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>7.	PHOTOS - OPTIONAL</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;7.	PHOTOS - OPTIONAL</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
@@ -145,11 +156,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>8.	QUOTES - REQUIRED IF YOU ARE APPLYING FOR A GRANT TO PURCHASE EQUIPMENT</strong></span>
+                            <td colspan="2"  style="height: 15px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;8.	QUOTES - REQUIRED IF YOU ARE APPLYING FOR A GRANT TO PURCHASE EQUIPMENT</strong></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 15px"></td>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
 
                         <tr>
@@ -161,7 +175,7 @@
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                          <tr>
-                            <td colspan="2" style="height: 5px; margin-left: 10px"> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" runat="server" id="UploadLink">Upload all attachments using this link</a>
+                            <td colspan="2" style="height: 5px; margin-left: 10px"> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" runat="server" id="UploadLink"><strong><span style="font-size: large">Upload all attachments using this link</span></strong></a>
                             </td>
                         </tr>
                         <tr>

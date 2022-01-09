@@ -97,7 +97,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="3" style="height: 10px"></td>
+                            <td colspan="3" style="height: 15px"></td>
                         </tr>
                     </table>
 
@@ -147,7 +147,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="height: 10px"></td>
+                            <td colspan="3" style="height: 15px"></td>
                         </tr>
 
                     </table>
@@ -264,7 +264,7 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 5px"></td>
+                                                <td colspan="6" style="height: 10px"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -273,6 +273,9 @@
                         </div>
 
                         <table>
+                            <tr>
+                                                <td colspan="6" style="height: 15px"></td>
+                                            </tr>
                             <tr>
                                 <td colspan="2" style="text-decoration: underline;" class="auto-style7"><strong>C.  FARMER INFORMATION </strong></td>
                             </tr>
@@ -391,6 +394,9 @@
 
                         <table>
                             <tr>
+                                                <td colspan="6" style="height: 15px"></td>
+                                            </tr>
+                            <tr>
                                 <td colspan="2" style="text-decoration: underline;" class="auto-style13"><strong>D.  PROPERTY INFORMATION (if different from above) </strong></td>
                             </tr>
                             <tr>
@@ -451,19 +457,19 @@
                                                     <asp:TextBox ID="txtPropertyOtherTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                 </td>
                                                 <td class="auto-style10">
-                                                    <span class="labelClass">State</span>
+                                                    <span class="labelClass">Zip</span>
                                                 </td>
                                                 <td style="width: 270px">
-                                                    <asp:TextBox ID="txtPropertyState" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                                     <asp:TextBox ID="txtPropertyZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 150px"><span class="labelClass">Zip</span></td>
+                                                <td style="width: 150px"><span class="labelClass"></span></td>
                                                 <td class="auto-style9">
-                                                    <asp:TextBox ID="txtPropertyZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                                   
                                                 </td>
                                                 <td style="width: 100px">
                                                     <span class="labelClass" runat="server" id="Span2" visible="true"></span>
@@ -474,14 +480,11 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                              <tr>
-                                                <td colspan="6" style="height: 15px"></td>
-                                            </tr>
-
+                                            
                                             <tr>
                                                 <td colspan="6" style="height: 5px">
-                                                      <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /> &nbsp; &nbsp;
-                                                     <asp:Button ID="btnPrint" runat="server" Text="Print Application PDF" class="btn btn-info" OnClick="btnPrint_Click" />
+                                                     <asp:Button ID="btnPrint" runat="server" Text="Print Application PDF" class="btn btn-info" OnClick="btnPrint_Click" />  &nbsp; &nbsp;
+                                                    <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
                                                 </td>
                                             </tr>
 

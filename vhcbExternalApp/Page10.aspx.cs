@@ -47,10 +47,10 @@ namespace vhcbExternalApp
                     //else
                     //    rdBtnConfidentSharing.SelectedIndex = 1;
 
-                    if (drPage1tDetails["Confident_Funding"].ToString().ToLower() == "yes")
-                        rdbtnConfidentFunding.SelectedIndex = 0;
-                    else
-                        rdbtnConfidentFunding.SelectedIndex = 1;
+                    //if (drPage1tDetails["Confident_Funding"].ToString().ToLower() == "yes")
+                    //    rdbtnConfidentFunding.SelectedIndex = 0;
+                    //else
+                    //    rdbtnConfidentFunding.SelectedIndex = 1;
 
                     txtConfidentSignature.Text = drPage1tDetails["Confident_Signature"].ToString();
                     txtConfidentDate.Text = drPage1tDetails["Confident_Date"].ToString();
@@ -77,7 +77,7 @@ namespace vhcbExternalApp
 
                 //bool IsConfident_Sharing = rdBtnConfidentSharing.SelectedItem.Text == "Yes" ? true : false;
 
-                ViabilityApplicationData.ViabilityApplicationPage10(projectNumber, false, rdbtnConfidentFunding.SelectedItem.Text, txtConfidentSignature.Text, DataUtils.GetDate( txtConfidentDate.Text));
+                ViabilityApplicationData.ViabilityApplicationPage10(projectNumber, false, "False", txtConfidentSignature.Text, DataUtils.GetDate( txtConfidentDate.Text));
 
                 LogMessage("Successfully Saved Data");
             }

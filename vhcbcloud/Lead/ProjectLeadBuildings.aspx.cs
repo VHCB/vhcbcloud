@@ -724,6 +724,7 @@ namespace vhcbcloud.Lead
                     gvTypeOfWork.DataSource = null;
                     gvTypeOfWork.DataBind();
                 }
+                //txtSpecOrder.Text = ProjectLeadBuildingsData.GetProjectLeadSpecsNextOrderNum(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfWorkLocationID.Value), cbActiveOnly.Checked);
             }
             catch (Exception ex)
             {
@@ -826,8 +827,9 @@ namespace vhcbcloud.Lead
             int WorkTypeID = DataUtils.GetInt(((Label)gvTypeOfWork.Rows[rowIndex].FindControl("lblWorkTypeID")).Text);
             string typeOfWorkId = ((DropDownList)gvTypeOfWork.Rows[rowIndex].FindControl("ddlTypeOfWork")).SelectedValue.ToString();
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTypeOfWork.Rows[rowIndex].FindControl("chkActiveEditTypeOfWork")).Checked); ;
+            int OrderNum = DataUtils.GetInt(((TextBox)gvTypeOfWork.Rows[rowIndex].FindControl("txtOrdernum")).Text);
 
-            ProjectLeadBuildingsData.UpdateProjectLeadTypeofWork(WorkTypeID, DataUtils.GetInt(typeOfWorkId), RowIsActive);
+            ProjectLeadBuildingsData.UpdateProjectLeadTypeofWork(WorkTypeID, DataUtils.GetInt(typeOfWorkId), OrderNum, RowIsActive);
             gvTypeOfWork.EditIndex = -1;
 
             BindLeadTypeofWorkGrid();
@@ -854,6 +856,7 @@ namespace vhcbcloud.Lead
                         txtSpecNotes.Text = dr["Spec_Note"].ToString();
                         txtUnits.Text = dr["Units"].ToString();
                         txtUnitCost.Text = dr["UnitCost"].ToString();
+                        txtSpecOrder.Text = dr["OrderNum"].ToString();
                         cbSpecActive.Checked = DataUtils.GetBool(dr["RowIsActive"].ToString());
                     }
                 }
@@ -879,6 +882,7 @@ namespace vhcbcloud.Lead
                     gvWorkLocationGrid.DataSource = null;
                     gvWorkLocationGrid.DataBind();
                 }
+                txtOrder.Text = ProjectLeadBuildingsData.GetWorkLocationListOrderNum(DataUtils.GetInt(hfLeadBldgID.Value), DataUtils.GetInt(hfLeadUnitID.Value), cbActiveOnly.Checked);
             }
             catch (Exception ex)
             {
@@ -898,17 +902,21 @@ namespace vhcbcloud.Lead
             LeadBuildResult objLeadBuildResult = ProjectLeadBuildingsData.AddWorkLocation(
                 DataUtils.GetInt(hfLeadBldgID.Value),
                 DataUtils.GetInt(hfLeadUnitID.Value),
-                DataUtils.GetInt(ddlWorkLocation.SelectedValue.ToString()));
+                DataUtils.GetInt(ddlWorkLocation.SelectedValue.ToString()), DataUtils.GetInt(txtOrder.Text));
 
             ddlWorkLocation.SelectedIndex = -1;
             BindWorkLocationGrid();
             cbAddWorkLocation.Checked = false;
+
             if (objLeadBuildResult.IsDuplicate && !objLeadBuildResult.IsActive)
                 LogMessage("Work Location already exist as in-active");
             else if (objLeadBuildResult.IsDuplicate)
                 LogMessage("Work Location already exist");
             else
+            {
                 LogMessage("Work Location Added Successfully");
+                txtOrder.Text = "";
+            }
         }
 
         protected void gvWorkLocationGrid_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -929,8 +937,15 @@ namespace vhcbcloud.Lead
             int WorkLocationID = DataUtils.GetInt(((Label)gvWorkLocationGrid.Rows[rowIndex].FindControl("lblWorkLocationID")).Text);
             string LocationId = ((DropDownList)gvWorkLocationGrid.Rows[rowIndex].FindControl("ddlWorkLocation")).SelectedValue.ToString();
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvWorkLocationGrid.Rows[rowIndex].FindControl("chkActiveEditWorkLocation")).Checked); ;
+            int OrderNum = DataUtils.GetInt(((TextBox)gvWorkLocationGrid.Rows[rowIndex].FindControl("txtOrdernum")).Text);
+            string LocationDesc = ((TextBox)gvWorkLocationGrid.Rows[rowIndex].FindControl("txtLocationDesc")).Text.Trim();
 
-            ProjectLeadBuildingsData.UpdateWorkLocation(WorkLocationID, DataUtils.GetInt(LocationId), RowIsActive);
+            ProjectLeadBuildingsData.UpdateWorkLocation(
+                WorkLocationID,
+                DataUtils.GetInt(LocationId),
+                OrderNum,
+                LocationDesc,
+                RowIsActive);
             gvWorkLocationGrid.EditIndex = -1;
 
             BindWorkLocationGrid();
@@ -1029,7 +1044,7 @@ namespace vhcbcloud.Lead
         protected void btnUpdateSpecDetails_Click(object sender, EventArgs e)
         {
             ProjectLeadBuildingsData.UpdateProjectLeadSpecsById(DataUtils.GetInt(hfProjectLeadSpecID.Value), txtSpecDetails.Text, txtSpecNotes.Text, DataUtils.GetDecimal(txtUnits.Text),
-                DataUtils.GetDecimal(Regex.Replace(txtUnitCost.Text, "[^0-9a-zA-Z.]+", "")), cbSpecActive.Checked);
+                DataUtils.GetDecimal(Regex.Replace(txtUnitCost.Text, "[^0-9a-zA-Z.]+", "")),  DataUtils.GetInt(txtSpecOrder.Text), cbSpecActive.Checked);
 
             dvSpecDetails.Visible = false;
             hfProjectLeadSpecID.Value = "";
@@ -1037,6 +1052,7 @@ namespace vhcbcloud.Lead
             txtSpecNotes.Text = "";
             txtUnits.Text = "";
             txtUnitCost.Text = "";
+            txtSpecOrder.Text = "";
             gvTypeOfWork.EditIndex = -1;
             BindLeadTypeofWorkGrid();
             LogMessage("Spec details updated successfully");

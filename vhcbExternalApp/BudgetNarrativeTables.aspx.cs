@@ -37,6 +37,7 @@ namespace vhcbExternalApp
                 {
                     txtSupportingFunds.Text = drPage1tDetails["SupportingFunds"].ToString();
                     txtNRCSExpensesandStatus.Text = drPage1tDetails["NRCSExpensesandStatus"].ToString();
+                    txtWaverRequest.Text = drPage1tDetails["WaverRequest"].ToString();
                 }
             }
         }
@@ -58,7 +59,7 @@ namespace vhcbExternalApp
             if (projectNumber != "")
             {
 
-                ViabilityApplicationData.ViabilityApplicationPage6(projectNumber, txtSupportingFunds.Text, txtNRCSExpensesandStatus.Text);
+                ViabilityApplicationData.ViabilityApplicationPage6(projectNumber, txtSupportingFunds.Text, txtNRCSExpensesandStatus.Text, txtWaverRequest.Text);
 
                 LogMessage("Farm Business Information Data Added Successfully");
             }

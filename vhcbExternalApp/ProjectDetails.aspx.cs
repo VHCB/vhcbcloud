@@ -1,12 +1,17 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
+using WebReports.Api;
+using WebReports.Api.Data;
+using WebReports.Api.Reports;
 
 namespace vhcbExternalApp
 {
@@ -210,6 +215,43 @@ namespace vhcbExternalApp
                 lblPrimeAdvisor.Visible = false;
                 txtPrimeAdvisor.Visible = false;
             }
+        }
+
+        protected void btnPrint_Click(object sender, EventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(),
+                   "script", GetExagoURL("9999-999-999", "Online Application - emailed"));
+        }
+
+        public static string GetExagoURL(string Projnum, string ReportName)
+        {
+            string URL = string.Empty;
+            Api api = new Api(@"/eWebReports");
+
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+
+            // Set the action to execute the report
+            api.Action = wrApiAction.ExecuteReport;
+            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("Projnum");
+            parameter.Value = Projnum;
+            parameter.IsHidden = true;
+
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Viability\" + ReportName);
+
+
+            if (report != null)
+                api.ReportObjectFactory.SaveToApi(report);
+
+            URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<script type = 'text/javascript'>");
+            sb.Append("window.open('");
+            sb.Append(URL);
+            sb.Append("', '_blank');");
+            sb.Append("</script>");
+            return sb.ToString();
         }
     }
 }

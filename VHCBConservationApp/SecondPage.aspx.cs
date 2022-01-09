@@ -39,9 +39,24 @@ namespace VHCBConservationApp
                     txtZoningDistrict.Text = drPage2tDetails["ZoningDistrict"].ToString();
                     txtMinLotSize.Text = drPage2tDetails["MinLotSize"].ToString();
                     txtFrontageFeet.Text = drPage2tDetails["FrontageFeet"].ToString();
-                    cbPublicWater.Checked = DataUtils.GetBool(drPage2tDetails["PublicWater"].ToString());
-                    cbPublicSewer.Checked = DataUtils.GetBool(drPage2tDetails["PublicSewer"].ToString());
-                    cbEnrolledUseValue.Checked = DataUtils.GetBool(drPage2tDetails["EnrolledUseValue"].ToString());
+
+                    if (DataUtils.GetBool(drPage2tDetails["PublicWater"].ToString()))
+                        rdBtnPublicWater.SelectedIndex = 0;
+                    else
+                        rdBtnPublicWater.SelectedIndex = 1;
+                    //cbPublicWater.Checked = DataUtils.GetBool(drPage2tDetails["PublicWater"].ToString());
+                    //cbPublicSewer.Checked = DataUtils.GetBool(drPage2tDetails["PublicSewer"].ToString());
+                    if (DataUtils.GetBool(drPage2tDetails["PublicSewer"].ToString()))
+                        rdbtnPublicSewer.SelectedIndex = 0;
+                    else
+                        rdbtnPublicSewer.SelectedIndex = 1;
+
+                    //cbEnrolledUseValue.Checked = DataUtils.GetBool(drPage2tDetails["EnrolledUseValue"].ToString());
+                    if (DataUtils.GetBool(drPage2tDetails["EnrolledUseValue"].ToString()))
+                        rdBtnEnrolledUseValue.SelectedIndex = 0;
+                    else
+                        rdBtnEnrolledUseValue.SelectedIndex = 1;
+
                     txtAcresExcluded.Text = drPage2tDetails["AcresExcluded"].ToString();
                     PopulateDropDown(ddlAcresDerived, drPage2tDetails["AcresDerived"].ToString());
                     txtExcludedLand.Text = drPage2tDetails["ExcludedLand"].ToString();
@@ -81,13 +96,13 @@ namespace VHCBConservationApp
             if (projectNumber != "")
             {
 
-                ConservationApplicationData.ConservationApplicationPage2(projectNumber, txtZoningDistrict.Text, txtMinLotSize.Text, DataUtils.GetDecimal(txtFrontageFeet.Text), cbPublicWater.Checked, cbPublicSewer.Checked, cbEnrolledUseValue.Checked, DataUtils.GetDecimal(txtAcresExcluded.Text),
+                ConservationApplicationData.ConservationApplicationPage2(projectNumber, txtZoningDistrict.Text, txtMinLotSize.Text, DataUtils.GetDecimal(txtFrontageFeet.Text),
+                    DataUtils.GetBool(rdBtnPublicWater.SelectedValue.Trim()), DataUtils.GetBool(rdbtnPublicSewer.SelectedValue.Trim()), DataUtils.GetBool(rdBtnEnrolledUseValue.SelectedValue.Trim()), DataUtils.GetDecimal(txtAcresExcluded.Text),
                     ddlAcresDerived.SelectedValue, txtExcludedLand.Text, txtDeedMatch.Text, ddlSurveyRequired.SelectedValue, txtDeedRestrictions.Text);
 
 
                 LogMessage("Conservation Application Data Added Successfully");
 
-                //Response.Redirect("#");
             }
         }
 
@@ -102,7 +117,7 @@ namespace VHCBConservationApp
         {
             saveData();
 
-            Response.Redirect("#");
+            Response.Redirect("ThirdPage.aspx");
         }
 
         private void LogMessage(string message)

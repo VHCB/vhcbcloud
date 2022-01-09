@@ -11,7 +11,7 @@ namespace VHCBConservationApp
 {
 
 
-    public partial class SecondPage
+    public partial class WaterManagement
     {
 
         /// <summary>
@@ -51,112 +51,175 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
 
         /// <summary>
-        /// txtZoningDistrict control.
+        /// txtWetlands control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtZoningDistrict;
+        protected global::System.Web.UI.WebControls.TextBox txtWetlands;
 
         /// <summary>
-        /// txtMinLotSize control.
+        /// txtPonds control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMinLotSize;
+        protected global::System.Web.UI.WebControls.TextBox txtPonds;
 
         /// <summary>
-        /// txtFrontageFeet control.
+        /// txtFloodplain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFrontageFeet;
+        protected global::System.Web.UI.WebControls.TextBox txtFloodplain;
 
         /// <summary>
-        /// rdBtnPublicWater control.
+        /// txtStreamfeet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnPublicWater;
+        protected global::System.Web.UI.WebControls.TextBox txtStreamfeet;
 
         /// <summary>
-        /// rdbtnPublicSewer control.
+        /// txtPondFeet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdbtnPublicSewer;
+        protected global::System.Web.UI.WebControls.TextBox txtPondFeet;
 
         /// <summary>
-        /// rdBtnEnrolledUseValue control.
+        /// txtWaterBodies control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdBtnEnrolledUseValue;
+        protected global::System.Web.UI.WebControls.TextBox txtWaterBodies;
 
         /// <summary>
-        /// txtAcresExcluded control.
+        /// ddlWatershed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAcresExcluded;
+        protected global::System.Web.UI.WebControls.DropDownList ddlWatershed;
 
         /// <summary>
-        /// ddlAcresDerived control.
+        /// ddlSubWatershed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAcresDerived;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSubWatershed;
 
         /// <summary>
-        /// txtExcludedLand control.
+        /// ddlSecWatershed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtExcludedLand;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSecWatershed;
 
         /// <summary>
-        /// txtDeedMatch control.
+        /// ddlSecSubWatershed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDeedMatch;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSecSubWatershed;
 
         /// <summary>
-        /// ddlSurveyRequired control.
+        /// txtTacticalBasin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSurveyRequired;
+        protected global::System.Web.UI.WebControls.TextBox txtTacticalBasin;
 
         /// <summary>
-        /// txtDeedRestrictions control.
+        /// ddlDrainageDitches control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDeedRestrictions;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDrainageDitches;
+
+        /// <summary>
+        /// ddlDrainageTiles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlDrainageTiles;
+
+        /// <summary>
+        /// txtWasteInfrastucture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWasteInfrastucture;
+
+        /// <summary>
+        /// txtProtectWater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProtectWater;
+
+        /// <summary>
+        /// rdbtParticipateWaterGrant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdbtParticipateWaterGrant;
+
+        /// <summary>
+        /// txtParticipateWaterGrant control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtParticipateWaterGrant;
+
+        /// <summary>
+        /// ddlLivestockExcluded control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLivestockExcluded;
+
+        /// <summary>
+        /// txtWaterQualityConcerns control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWaterQualityConcerns;
 
         /// <summary>
         /// btnPrevious control.

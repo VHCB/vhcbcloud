@@ -12,7 +12,7 @@
                     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
                     </asp:ToolkitScriptManager>
                     <div id="dvMessage" runat="server">
-                        <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
+                        <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red" Visible="false"></asp:Label></p>
                     </div>
                     <table style="width=100%">
 
@@ -31,10 +31,10 @@
                                 </asp:RadioButtonList>
                             </td>
                         </tr>--%>
-                         <tr>
+                       <%--   <tr>
                             <td colspan="2" style="height: 15px"></td>
                         </tr>
-                        <tr>
+                       <tr>
                             <td colspan="2"><span class="labelClass">If your project is receiving funding from USDA-NRCS or the Vermont Agency of Agriculture, Food & Markets, do we have your permission to discuss your project with staff at those agencies?</span>
                             </td>
                         </tr>
@@ -49,23 +49,27 @@
                         </tr>
                        <tr>
                             <td colspan="2" style="height: 15px"></td>
-                        </tr>
+                        </tr>--%>
                         <tr>
-                            <td colspan="2"><span class="labelClass">Please read section 7 of the instructions. By submitting your application materials, you agree to allow all of your application materials to be read by members of the Review Committee and by staff at the Vermont Farm & Forest Viability Program in accordance with our program’s Confidentiality Policy.  In addition, you agree to allow the project description and grant request amount to be shared with USDA-NRCS or Vermont Agency of Agriculture, Food & Markets. No other persons will have access to your application, and all copies will be collected for safekeeping following the meeting of the Review Committee.</span>
+                            <td colspan="2"><span class="labelClass">
+                                Please read section 8 of the instructions. By submitting your application materials, you agree to allow all of your application materials to be read by members of the Water Quality Grant Review Committee and by staff at the Vermont Farm & Forest Viability Program. In addition, you agree to allow the project description and grant request amount to be shared with USDA-NRCS or Vermont Agency of Agriculture, Food & Markets. Notwithstanding the terms and conditions of Section 3 (Compliance with Regulations) no other persons will have access to your application, and all copies will be collected for safekeeping following the meeting of the Review Committee.
+                                                                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="margin-left: 25px"></td>
                         </tr>
-                        <tr>
-                            <td colspan="2" style="margin-left: 25px"></td>
+                       <tr>
+                            <td colspan="2" style="height: 15px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="height: 5px">Signature: The information provided in this application and all attachments is true to the best of my (our) knowledge. I/We agree to allow the above-mentioned committee and staff members to read our application. NOTE: Signatures typed within this application are acceptable.
+                            <td colspan="2" style="height: 5px">
+                                Signature: The information provided in this application and all attachments is true to the best of my (our) knowledge. I/We agree to allow the above-mentioned committee and staff members to read our application. NOTE: Signatures typed within this PDF are acceptable.
+                                      
                             </td>
                         </tr>
                        <tr>
-                            <td colspan="2" style="height: 25px"></td>
+                            <td colspan="2" style="height: 35px"></td>
                         </tr>
                         <tr>
                             <td colspan="2"><span class="labelClass">Signature(s) </span>
