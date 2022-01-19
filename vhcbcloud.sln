@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vhcbExternalApp", "vhcbExte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHCBConservationApp", "VHCBConservationApp\VHCBConservationApp.csproj", "{411EC745-524D-476E-BBE0-6B263E46F5CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpGrantApp", "ImpGrantApp\ImpGrantApp.csproj", "{358E742E-8526-408F-BBE9-D37AA67F4FF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{411EC745-524D-476E-BBE0-6B263E46F5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{411EC745-524D-476E-BBE0-6B263E46F5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{411EC745-524D-476E-BBE0-6B263E46F5CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358E742E-8526-408F-BBE9-D37AA67F4FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358E742E-8526-408F-BBE9-D37AA67F4FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358E742E-8526-408F-BBE9-D37AA67F4FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358E742E-8526-408F-BBE9-D37AA67F4FF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

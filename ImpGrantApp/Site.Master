@@ -1,0 +1,63 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="ImpGrantApp.Site" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VHCB External Application</title>
+    <link rel="stylesheet" href="Content/bootstrap.css">
+
+    <style type="text/css">
+        .auto-style6 {
+            width: 300px;
+            height: 110px;
+            border-radius: 6px;
+        }
+    </style>
+
+</head>
+<body>
+    <form runat="server">
+        <div class="page">
+            
+            <br />
+            <div class="navbar navbar-inverse ">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+
+                        </button>
+                        <a class="navbar-brand" href="#" runat="server" id="logoURL">
+                             <img alt="" src="~/Images/vhcb_logo_1_rgb_sm1.png" class="auto-style6" runat="server" />
+                            <%--<img alt="" src="~/Images/vhcb_logo_1_rgb_sm1.jpg" class="img-responsive img-rounded" runat="server" />--%>
+                           </a>
+                        </div>
+
+                </div>
+            </div>
+            <div class="container body-content">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+                <hr />
+                <footer>
+                    <table cellspacing="2" style="height: 10px" width="100%">
+                        <tr style="height: 10px">
+                            <td style="background-color: #c1ca66"></td>
+                            <td style="background-color: #f78b0e"></td>
+                            <td style="background-color: #3589a4"></td>
+                        </tr>
+                    </table>
+                    <p>&copy; <%: DateTime.Now.Year %> - Vermont Housing & Conservation Board</p>
+                </footer>
+            </div>
+        </div>
+
+    </form>
+</body>
+</html>

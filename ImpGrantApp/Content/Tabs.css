@@ -1,0 +1,95 @@
+﻿
+ol,ul,li,
+menu,nav{margin:0;padding:0;border:0;font:inherit;font-size:100%;vertical-align:baseline;}html{line-height:1;}ol,ul{list-style:none;}
+a img{border:none;}menu,nav{display:block;}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+
+a,a:visited,a:active{color:#0678be;text-decoration:none;}a:hover,a:focus{color:#0678be;text-decoration:underline;}
+a.all{font-weight:bold;}a.tabledrag-handle .handle{height:2em;width:2em;} 
+@media all and (min-width:794px) {
+.container-12{margin-left:1px;margin-right:auto;width:100%;max-width:1960px;padding:0 1px;}
+}
+@media (min-width:47.5em) {
+ #nav-content li.active, #nav-content li.active-parent a{background-color:white;border:1px solid gainsboro;border-bottom:0;-webkit-border-radius:7px 7px 0 0;-moz-border-radius:7px 7px 0 0;-ms-border-radius:7px 7px 0 0;-o-border-radius:7px 7px 0 0;border-radius:7px 7px 0 0;} 
+}
+/*#nav-content ul{*zoom:1;display:block;border:0;border-bottom:1px solid gainsboro;padding:0;margin-left:0;margin-bottom:1.154em;}*/
+#nav-content ul:after{content:"";display:table;clear:both;}
+#nav-content ul li{float:left;margin-bottom:-1px; margin-left:15px;}
+#nav-content ul li a{color:#0678be;display:block;float:left;height:32px;padding:0;margin-right:1.384614em;}
+
+/*@media (min-width:47.5em) {
+ #nav-content ul li a{padding:5px 11px 0 11px;padding:4px 12px 5px 12px;margin-right:0;} 
+}*/
+
+#nav-content li.active a.active,#nav-content li.active-parent a{padding:0;margin-right:1.384614em;}
+
+@media (min-width:47.5em) {
+ #nav-content li.active a.active,
+ #nav-content li.active-parent a{padding:0.307692em 0.692307em 0.846153em 0.692307em;margin-right:0;} 
+}
+
+#nav-content li.active a.active,
+#nav-content li.active-parent a,
+#nav-content li a:hover,
+#nav-content li a:focus,
+#nav-content li.active-parent a{color:black;}
+#nav-content li a:hover,
+#nav-content li a:focus{text-decoration:none;}
+
+/*#page{flex:auto;margin-bottom:2.077em;margin-top:1.385em;}*/
+.RoundedCornerTop
+{
+       -moz-border-top-left-radius: 5px;
+       -moz-border-top-right-radius: 5px;
+       -webkit-border-top-left-radius: 5px;
+       -webkit-border-top-right-radius: 5px;
+       border-top-left-radius: 5px;
+       border-top-right-radius: 5px;
+}
+ 
+#VehicleDetail ul.vdp-tabs
+{
+       margin: 20px 0 0px 5px;
+       padding-left: 10px;
+}
+ 
+#VehicleDetail ul.vdp-tabs > li
+{
+       height: 30px;
+       margin: 0 3px -1px 0;
+       display: inline-block;
+       border: solid 1px #dddddd;
+       background-color: #DAE9FF;
+       border-bottom: none;
+       /* Below added for IE7*/
+       zoom: 1;
+       *display: inline;
+}
+ 
+#VehicleDetail ul.vdp-tabs > li > a
+{
+       color: #000;
+       font-size: 13px;
+       text-decoration: none;
+       padding: 7px 24px;
+       line-height: 30px;
+}
+ 
+#VehicleDetail ul.vdp-tabs > li.selected
+{
+       background-color: #f5f5f5;
+       /*border: solid 2px #dddddd;*/
+       /*border-bottom: solid 2px #fff;*/
+       /*margin-bottom: -1px;*/
+       /*padding-bottom: 2px;*/
+}
+ 
+#VehicleDetail ul.vdp-tabs > li.selected > a
+{
+       color: #000;
+       background-color: #f5f5f5;
+}
+ 
+#VehicleDetail ul.vdp-tabs > li:not(.selected):hover
+{
+       background-color: #A9C8ED;
+}
