@@ -10,7 +10,7 @@ using WebReports.Api.Reports;
 
 namespace VHCBConservationApp
 {
-    public static class Helper
+    public static class Helper 
     {
         public static string GetExagoURL(string Projnum, string ReportName)
         {
