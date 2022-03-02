@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Manage User Info" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ManageUserInfo.aspx.cs" Inherits="vhcbcloud.Account.ManageUserInfo" %>
+﻿<%@ Page Title="Manage User Info" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="ManageUserInfo.aspx.cs" Inherits="vhcbcloud.Account.ManageUserInfo" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -347,7 +347,7 @@
                                     </table>
                                     <br />
                                     <asp:GridView ID="gvPageSecurity" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
-                                        GridLines="None" OnRowDeleting="gvPageSecurity_RowDeleting" PagerSettings-Mode="NextPreviousFirstLast" TabIndex="7" Width="100%">
+                                        GridLines="None" OnRowDeleting="gvPageSecurity_RowDeleting" PagerSettings-Mode="NextPreviousFirstLast" TabIndex="7" Width="100%" AllowSorting="true" OnSorting="gvPageSecurity_Sorting">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />
@@ -415,7 +415,7 @@
                                     </table>
                                     <br />
                                     <asp:GridView ID="gvSecFunctions" runat="server" AutoGenerateColumns="False" CssClass="gridView" EnableTheming="True"
-                                        GridLines="None" OnRowDeleting="gvSecFunctions_RowDeleting" PagerSettings-Mode="NextPreviousFirstLast" TabIndex="7" Width="100%">
+                                        GridLines="None" OnRowDeleting="gvSecFunctions_RowDeleting" PagerSettings-Mode="NextPreviousFirstLast" TabIndex="7" Width="100%" OnSorting="gvSecFunctions_Sorting" AllowSorting="true">
                                         <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                         <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
                                         <HeaderStyle CssClass="headerStyle" />

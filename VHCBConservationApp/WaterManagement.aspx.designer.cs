@@ -123,13 +123,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.DropDownList ddlSubWatershed;
 
         /// <summary>
-        /// ddlSecWatershed control.
+        /// ddlHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSecWatershed;
+        protected global::System.Web.UI.WebControls.DropDownList ddlHUC12;
 
         /// <summary>
         /// ddlSecSubWatershed control.
@@ -141,13 +141,22 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.DropDownList ddlSecSubWatershed;
 
         /// <summary>
-        /// txtTacticalBasin control.
+        /// ddlSecHUC12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTacticalBasin;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSecHUC12;
+
+        /// <summary>
+        /// ddlTacticalBasin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTacticalBasin;
 
         /// <summary>
         /// ddlDrainageDitches control.

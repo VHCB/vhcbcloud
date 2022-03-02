@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="WaterQualityGrants.aspx.cs" Inherits="ImpGrantApp.WaterQualityGrants" Async="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="WaterQualityGrants.aspx.cs" Inherits="ImpGrantApp.WaterQualityGrants" Async="true" MaintainScrollPositionOnPostback="true"%>
 
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -70,7 +70,7 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                     <%--   <tr>
+                        <%--   <tr>
                             <td class="auto-style9"><span class="labelClass" style="margin-left: 10px">Watershed:</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlWaterShed" CssClass="clsDropDown" runat="server"></asp:DropDownList>
@@ -119,6 +119,30 @@
                                                     <%--  <asp:DropDownList ID="ddlProduct" CssClass="clsDropDown" runat="server">
                                                     </asp:DropDownList>--%>
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><span class="labelClass">Did you complete a planning project through the Viability Program in 2020, 2021, or 2022?</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="margin-left: 10px">
+                                                    <asp:RadioButtonList ID="rdBtnCompletePlanning" runat="server" AutoPostBack="True" RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnCompletePlanning_SelectedIndexChanged">
+                                                        <asp:ListItem>Yes</asp:ListItem>
+                                                        <asp:ListItem>No</asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 5px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="height: 15px"><span class="labelClass" style="margin-left: 10px" id="lblCompletePlanningMessage" runat="server" visible="false"><strong>If you did not complete a planning project through the Viability Program between 2020 and 2022, you are not eligible for this round of grant funding. Please reach out to Aaron Guman, Aaron@vhcb.org or 802-828-5587, for questions regarding eligibility.</strong></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>

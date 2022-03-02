@@ -96,39 +96,11 @@
                        <tr>
                             <td colspan="2"  style="height: 15px"></td>
                         </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;4.	MAP - REQUIRED</strong></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="height: 5px"></td>
-                        </tr>
+                        
+                       
 
                         <tr>
-                            <td colspan="2"><span class="labelClass">Please provide a map of your farm operation; at least one map is required. The map should illustrate where the proposed project will be located. The map should also show on-farm surface waters.</span>
-                            </td>
-                        </tr>
-                       <tr>
-                            <td colspan="2"  style="height: 15px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;5.	VT AGENCY of AGRICULTURE, FOOD, AND MARKETS AGENCY or USDA-NRCS PROJECT BUDGETS – REQUIRED FOR PROJECTS RECEIVING VAAFM OR USDA-NRCS GRANT FUNDS</strong></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="height: 5px"></td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2"><span>If your project is receiving funding from either the Vermont Agency of Agriculture, Food & Markets or the USDA-Natural Resources Conservation Service, please provide project budgets that show a list of the practices that these funding sources will pay for and at what rates.</span>
-                            </td>
-                        </tr>
-                      <tr>
-                            <td colspan="2"  style="height: 15px"></td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;6.	LETTERS OF SUPPORT – OPTIONAL BUT RECOMMENDED</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;4.	LETTERS OF SUPPORT – OPTIONAL BUT RECOMMENDED</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -144,7 +116,7 @@
                         </tr>
                        
                         <tr>
-                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;7.	PHOTOS - OPTIONAL</strong></span>
+                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;5.	PHOTOS - OPTIONAL</strong></span>
                             </td>
                         </tr>
                         <tr>
@@ -159,22 +131,7 @@
                         <tr>
                             <td colspan="2"  style="height: 15px"></td>
                         </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass"><strong>&nbsp;&nbsp;8.	QUOTES - REQUIRED IF YOU ARE APPLYING FOR A GRANT TO PURCHASE EQUIPMENT</strong></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="height: 5px"></td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2"><span>If you are applying for a grant to purchase equipment, please provide a quote for the type of equipment you are planning to purchase. This quote should include both the specifications of the particular piece of equipment you plan to purchase, and the cost.
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="height: 5px"></td>
-                        </tr>
+                       
                          <tr>
                             <td colspan="2" style="height: 5px; margin-left: 10px"> &nbsp;&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" runat="server" id="UploadLink"><strong><span style="font-size: large">Upload all attachments using this link</span></strong></a>
                             </td>

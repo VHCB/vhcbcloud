@@ -34,9 +34,27 @@ namespace vhcbcloud.Conservation
 
                 BindControls();
                 GetRoleAccess();
+                BindTransferType();
                 BindConConserveForm();
+                
             }
             //GetRoleAuth();
+        }
+
+        protected void BindTransferType()
+        {
+            try
+            {
+                lbTransferType.DataSource = LookupValuesData.Getlookupvalues(2286);
+                lbTransferType.DataValueField = "typeid";
+                lbTransferType.DataTextField = "Description";
+                lbTransferType.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMsg.Text = ex.Message;
+                lblErrorMsg.Focus();
+            }
         }
 
         protected bool GetIsVisibleBasedOnRole()
@@ -183,6 +201,13 @@ namespace vhcbcloud.Conservation
                 //pctPrime.InnerText = "0";
                 //pctState.InnerText = "0";
                 //otherAcres.InnerText = "0";
+
+                foreach (ListItem item in lbTransferType.Items)
+                {
+                    foreach (string  transType in drConserve["TransferType"].ToString().Split(',').ToList())
+                        if (transType == item.Text.ToString())
+                            item.Selected = true;
+                }
 
                 //if (DataUtils.GetInt(txtTotProjAcres.Text) != 0)
                 //{
@@ -414,14 +439,27 @@ namespace vhcbcloud.Conservation
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            ConservationSummaryData.SubmitConserve(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlConservationTrack.SelectedValue.ToString()),
+            string transfetType = string.Empty;
+
+            foreach (ListItem listItem in lbTransferType.Items)
+            {
+                if (listItem.Selected == true)
+                {
+                    if (transfetType.Length == 0)
+                        transfetType = listItem.Text;
+                    else
+                        transfetType = transfetType + "," + listItem.Text;
+                }
+            }
+
+                ConservationSummaryData.SubmitConserve(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(ddlConservationTrack.SelectedValue.ToString()),
                 DataUtils.GetInt(txtEasements.Text), //DataUtils.GetInt(ddlPSO.SelectedValue.ToString()), 
                 0,//DataUtils.GetInt(txtTotProjAcres.Text),
                 DataUtils.GetDecimal(txtWooded.Text), DataUtils.GetDecimal(txtPrime.Text), DataUtils.GetDecimal(txtStateWide.Text),
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), DataUtils.GetDecimal(txtSugarbush.Text),
                 GetUserId(),
-                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString())) ;
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType) ;
 
             BindConConserveForm();
 

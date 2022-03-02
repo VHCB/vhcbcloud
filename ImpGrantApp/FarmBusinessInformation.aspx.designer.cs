@@ -78,6 +78,15 @@ namespace ImpGrantApp
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnOrgStructure;
 
         /// <summary>
+        /// txtOrgStructureOther control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOrgStructureOther;
+
+        /// <summary>
         /// dvNewAddress control.
         /// </summary>
         /// <remarks>

@@ -28,7 +28,7 @@ namespace ImpGrantApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("WaterQualityGrants.aspx");
+            Response.Redirect("Eligibility.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
@@ -38,27 +38,27 @@ namespace ImpGrantApp
 
             if (txtFederalGrant.Text != "")
             {
-                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";";
+                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";  ";
                 ENtGrantMatch += "26620-" + txtFederalGrant.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtStateGrant.Text != "")
             {
-                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";";
+                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";  ";
                 ENtGrantMatch += "26621-" + txtStateGrant.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtLoan.Text != "")
             {
-                strGrantMatch += "Loan - " + txtLoan.Text + ";";
+                strGrantMatch += "Loan - " + txtLoan.Text + ";  ";
                 ENtGrantMatch += "26685-" + txtLoan.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtCash.Text != "")
             {
-                strGrantMatch += "Cash - " + txtCash.Text + ";";
+                strGrantMatch += "Cash - " + txtCash.Text + ";  ";
                 ENtGrantMatch += "26686-" + txtCash.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtKind.Text != "")
             {
-                strGrantMatch += "Kind - " + txtKind.Text + ";";
+                strGrantMatch += "Kind - " + txtKind.Text + ";  ";
                 ENtGrantMatch += "26687-" + txtKind.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtOther.Text != "")
@@ -69,7 +69,7 @@ namespace ImpGrantApp
 
             ImpGrantApplicationData.InsertImpGrantRequest(projectNumber, txtProjTitle.Text, txtProjDesc.Text,
                 DataUtils.GetDecimal(txtProjCost.Text.Replace("$", "")),
-                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text, strGrantMatch.TrimEnd(';'), ENtGrantMatch.TrimEnd(';'));
+                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text, strGrantMatch.TrimEnd(';'), ENtGrantMatch.TrimEnd(';'), txtCash.Text, txtKind.Text, txtLoan.Text, txtStateGrant.Text, txtFederalGrant.Text, txtOther.Text);
 
             LogMessage("Farm Business Information Data Added Successfully");
 

@@ -253,7 +253,7 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">For non-dairy farms - Number of:</h3>
+                                            <h3 class="panel-title">For non-dairy farms - Provide Numbers of:</h3>
                                         </td>
                                         <td style="text-align: right"></td>
                                     </tr>
@@ -313,7 +313,7 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">For dairy farms:</h3>
+                                            <h3 class="panel-title">For dairy farms - Provide Numbers of:</h3>
                                         </td>
                                         <td style="text-align: right"></td>
                                     </tr>
@@ -394,7 +394,7 @@
                                             <td colspan="2">
                                                 <asp:CheckBoxList Width="300px" ID="lstMilkSold" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"
                                                     Datafield="description" DataValueField="value" CssClass="checkboxlist_nowrap">
-                                                    <asp:ListItem Text="St. Albans Cooperative Creamery/Dairy Farmers of America" Value="St. Albans Cooperative Creamery/Dairy Farmers of America" />
+                                                    <asp:ListItem Text="St. Albans Coop/Dairy Farmers of America" Value="St. Albans Coop/Dairy Farmers of America" />
                                                     <asp:ListItem Text="Organic Valley" Value="Organic Valley" />
                                                     <asp:ListItem Text="NFO" Value="NFO" />
                                                     <asp:ListItem Text="Agrimark" Value="Agrimark" />

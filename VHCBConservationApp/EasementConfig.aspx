@@ -13,7 +13,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -131,8 +131,8 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbEcoZoneChk" runat="server" Text="Ecological protection zone: list number of zones, approximate acreages, and show location on map " /></span></td>
+                            <td colspan="2">&nbsp;&nbsp;&nbsp;
+                                <asp:CheckBox ID="cbEcoZoneChk" runat="server" Text="Ecological protection zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone on one of your attached maps." /></td>
 
                         </tr>
                         <tr>
@@ -156,7 +156,7 @@
 
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbWetlandZoneChk" runat="server" Text="Wetland protection zone: list number of zones, approximate acreages, and show location on map" /></span></td>
+                                <asp:CheckBox ID="cbWetlandZoneChk" runat="server" Text="Wetland protection zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone(s) on one of your attached maps." /></span></td>
 
                         </tr>
                         <tr>
@@ -179,7 +179,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbRiparianZoneChk" runat="server" Text="Riparian buffer zone: list number of zones, approximate acreages, and show location on map" /></span></td>
+                                <asp:CheckBox ID="cbRiparianZoneChk" runat="server" Text="Riparian buffer zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone(s) on one of your attached maps." /></span></td>
 
                         </tr>
                         <tr>
@@ -202,7 +202,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbArcheoZoneChk" runat="server" Text="Archaeological zone: list number of zones and approximate acreages, and show location on map" /></span></td>
+                                <asp:CheckBox ID="cbArcheoZoneChk" runat="server" Text="Archaeological zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone(s) on one of your attached maps." /></span></td>
 
                         </tr>
                         <tr>
@@ -225,7 +225,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbRiverEasementChk" runat="server" Text="River corridor easement: list acreage and location and show location on map" /></span></td>
+                                <asp:CheckBox ID="cbRiverEasementChk" runat="server" Text="River corridor easement: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone(s) on one of your attached maps." /></span></td>
 
                         </tr>
                         <tr>
@@ -248,7 +248,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbHistoricProvisionChk" runat="server" Text="Historic notice provision: describe what it is covering" /></span></td>
+                                <asp:CheckBox ID="cbHistoricProvisionChk" runat="server" Text="Historic notice provision: In the box below, describe the historical resources that will be protected." /></span></td>
 
                         </tr>
                         <tr>
@@ -271,7 +271,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
-                                <asp:CheckBox ID="cbPublicAccessChk" runat="server" Text="Public access: describe the purpose of the public access – trail corridor easement etc" /></span></td>
+                                <asp:CheckBox ID="cbPublicAccessChk" runat="server" Text="Public access: In the box below, describe the terms of any public access language that will be included in the easement, such as a trail corridor easement." /></span></td>
 
                         </tr>
                         <tr>

@@ -76,9 +76,9 @@ namespace VHCBConservationApp
                 {
                     hfConserveId.Value = dr["conserveId"].ToString();
                     txtHay.Text = dr["Hay"].ToString();
-                    txtRoundBales.Text = dr["RoundBales"].ToString();
-                    txtSquareBales.Text = dr["SquareBales"].ToString();
-                    txtTonsperacreperYear.Text = dr["TonsperacreperYear"].ToString();
+                    //txtRoundBales.Text = dr["RoundBales"].ToString();
+                    //txtSquareBales.Text = dr["SquareBales"].ToString();
+                    //txtTonsperacreperYear.Text = dr["TonsperacreperYear"].ToString();
                     txtPasture.Text = dr["Pasture"].ToString();
                     txtVegetables.Text = dr["Vegetables"].ToString();
                     txtVegetableTypes.Text = dr["VegetableTypes"].ToString();
@@ -126,6 +126,7 @@ namespace VHCBConservationApp
                     txtTotal.Text = dr["Total"].ToString();
                     txtTillable.Text = dr["Tillable"].ToString();
                     txtOtherTrail.Text = dr["othertrail"].ToString();
+                    txtrecuses.Text = dr["recuses"].ToString();  
                     //foreach (ListItem li in cblTrailName.Items)
                     //{
                     //    if (dr["TrailNames"].ToString().Split(',').ToList().Contains(li.Text))
@@ -167,13 +168,13 @@ namespace VHCBConservationApp
             //}
 
 
-            ConservationApplicationData.ConservationApplicationPage4(projectNumber, DataUtils.GetDecimal(txtHay.Text), txtRoundBales.Text, txtSquareBales.Text,  txtTonsperacreperYear.Text, DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtVegetables.Text),
+            ConservationApplicationData.ConservationApplicationPage4(projectNumber, DataUtils.GetDecimal(txtHay.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtVegetables.Text),
     txtVegetableTypes.Text, DataUtils.GetDecimal(txtFruit.Text), txtFruitTypes.Text, DataUtils.GetDecimal(txtLivestock.Text), txtLivestockTypes.Text, DataUtils.GetDecimal(txtChristmasTrees.Text), DataUtils.GetDecimal(txtNurseryStock.Text), DataUtils.GetDecimal(txtOrganic.Text), 
     txtOrganicAreas.Text, DataUtils.GetDecimal(txtSugarbush.Text), DataUtils.GetDecimal(txtManagedTimber.Text), DataUtils.GetDecimal(txtOtherForest.Text), DataUtils.GetBool(rdbtnManagementPlan.SelectedValue.Trim()), DataUtils.GetDecimal(txtOtherAgriculture.Text),
     txtOtherAgricultureProduction.Text, DataUtils.GetDecimal(txtUnmanaged.Text), txtAgritourism.Text, DataUtils.GetBool(rdbTrails.SelectedValue.Trim()), DataUtils.GetDecimal(txtTrailfeet.Text), trailName,
     DataUtils.GetDecimal(txtPrimeNonFootnoted.Text), DataUtils.GetDecimal(txtPrimeNonNotedPCent.Text), DataUtils.GetDecimal(txtPrimeNoted.Text), DataUtils.GetDecimal(txtPrimeNotedPCent.Text), DataUtils.GetDecimal(txtStatewideNonNoted.Text), DataUtils.GetDecimal(txtStatewideNonNotedPCent.Text),
     DataUtils.GetDecimal(txtStatewideNoted.Text), DataUtils.GetDecimal(txtStatewideNotedPCent.Text), DataUtils.GetDecimal(txtOtherNonAgSoils.Text), DataUtils.GetDecimal(txtOtherNonAgSoilsPCent.Text), DataUtils.GetDecimal(txtTotal.Text), 
-    DataUtils.GetDecimal(txtTillable.Text), trailNameIds, txtOtherTrail.Text);
+    DataUtils.GetDecimal(txtTillable.Text), trailNameIds, txtOtherTrail.Text, txtrecuses.Text);
 
 
            // BindTrailCheckBoxList();
@@ -205,9 +206,8 @@ namespace VHCBConservationApp
 
         protected void btnTrails_Click(object sender, EventArgs e)
         {
-            Result objResult = ConservationSummaryData.AddConserveTrails(DataUtils.GetInt(hfConserveId.Value),
-              DataUtils.GetInt(ddlTrailName.SelectedValue.ToString()),
-              DataUtils.GetDecimal(txtTrailMiles.Text),
+            Result objResult = ConservationSummaryData.AddConserveTrailsFromApp(DataUtils.GetInt(hfConserveId.Value),
+              DataUtils.GetInt(ddlTrailName.SelectedValue.ToString()), DataUtils.GetInt(txtTrailFeets.Text),
               true);
 
             if (objResult.IsDuplicate && !objResult.IsActive)
@@ -218,7 +218,7 @@ namespace VHCBConservationApp
                 LogMessage("New Trail Miles added successfully");
 
             ddlTrailName.SelectedIndex = -1;
-            txtTrailMiles.Text = "";
+            txtTrailFeets.Text = "";
             cbAddTrail.Checked = false;
             BindTrailMilesGrid();
         }
@@ -263,25 +263,25 @@ namespace VHCBConservationApp
         {
             int rowIndex = e.RowIndex;
 
-            string strMiles = ((TextBox)gvTrailMileage.Rows[rowIndex].FindControl("txtMiles")).Text;
+            string strFeet = ((TextBox)gvTrailMileage.Rows[rowIndex].FindControl("txtFeet")).Text;
 
-            if (string.IsNullOrWhiteSpace(strMiles) == true)
+            if (string.IsNullOrWhiteSpace(strFeet) == true)
             {
                 LogMessage("Enter Miles");
                 return;
             }
-            if (DataUtils.GetDecimal(strMiles) <= 0)
+            if (DataUtils.GetInt(strFeet) <= 0)
             {
-                LogMessage("Enter valid Miles");
+                LogMessage("Enter valid Feet");
                 return;
             }
 
             int ConserveTrailsID = DataUtils.GetInt(((Label)gvTrailMileage.Rows[rowIndex].FindControl("lblConserveTrailsID")).Text);
-            decimal Miles = DataUtils.GetDecimal(strMiles);
+            int Feet = DataUtils.GetInt(strFeet);
             bool RowIsActive = Convert.ToBoolean(((CheckBox)gvTrailMileage.Rows[rowIndex].FindControl("chkActive")).Checked);
           
 
-            ConservationSummaryData.UpdateConserveTrails(ConserveTrailsID, Miles, true, RowIsActive);
+            ConservationSummaryData.UpdateConserveTrailsFromApp(ConserveTrailsID, Feet, true, RowIsActive);
             gvTrailMileage.EditIndex = -1;
 
             BindTrailMilesGrid();

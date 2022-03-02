@@ -13,6 +13,33 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class ViabilityApplicationData
     {
+        public static void InsertDefaultDataForViabilityWaterQuality(string ProjNumber)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "InsertDefaultDataForViabilityWaterQuality";
+                command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+                
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void ViabilityApplicationPage1(string ProjNumber, string PrimContact, string AllOwners, 
             string MAStreet, string MAAdd1, string MAAdd2, string MACity, string MAZip, string MAVillage, string MACounty,
             string PAStreet, string PAAdd1, string PAAdd2, string PACity, string PAZip, string PAVillage, string PACounty, 
@@ -103,8 +130,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void ViabilityApplicationPage2(string ProjNumber, string OrgName, string Website, string Org_Structure,
-           int Cows, int Hogs, int Poultry, string Other, int Milked_Daily, string Primary_Animals, int Herd, int Rolling_Herd,
-           int Milk_Pounds, int Cull, int Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
+           string Cows, string Hogs, string Poultry, string Other, string Milked_Daily, string Primary_Animals, string Herd, string Rolling_Herd,
+           string Milk_Pounds, string Cull, string Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
            decimal FamilyFTE, decimal NonFamilyFTE, int FiscalYr, decimal AcresInProduction, decimal AcresOwned, decimal AcresLeased, decimal PastureAcres, 
            string LandYouOwn, string LandOwnText)
         {

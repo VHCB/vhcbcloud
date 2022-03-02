@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FirstPage.aspx.cs" Inherits="VHCBConservationApp.FirstPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FirstPage.aspx.cs"  MaintainScrollPositionOnPostback="true" Inherits="VHCBConservationApp.FirstPage" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -29,9 +29,16 @@
         .auto-style13 {
             width: 416px;
         }
+        .auto-style14 {
+            height: 15px;
+            width: 376px;
+        }
+        .auto-style15 {
+            width: 376px;
+        }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -81,7 +88,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td class="auto-style7"><span class="labelClass" style="margin-left: 10px">Total Funds Requested from VHCB</span></td>
+                            <td class="auto-style7"><span class="labelClass" style="margin-left: 10px">Total Funds Requested from VHCB (VHCB and NRCS funds)</span></td>
                             <td colspan="2">
                                 <asp:TextBox ID="txtFundsRequested" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                             </td>
@@ -210,61 +217,50 @@
                                             <tr>
                                                 <td style="width: 170px"><span class="labelClass">Town</span></td>
                                                 <td class="auto-style9">
-                                                    <asp:TextBox ID="txtLoTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
+                                                      <asp:DropDownList ID="ddlLoTown" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlLoTown_SelectedIndexChanged">
+                                                    </asp:DropDownList>
+                                                    
                                                 </td>
                                                 <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                                 <td style="width: 250px">
                                                     <asp:TextBox ID="txtLOZipCode" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                 </td>
                                                 <td class="auto-style10">
-                                                    <span class="labelClass">Village</span>
+                                                   <span class="labelClass">County</span>
                                                 </td>
                                                 <td style="width: 270px">
-                                                    <asp:TextBox ID="txtLOVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                                    <asp:Label runat="server" ID="lblLoCounty" class="labelClass"></asp:Label>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 150px"><span class="labelClass">County</span></td>
+                                                <td style="width: 150px"> <span class="labelClass" runat="server" id="spnVillage" visible="true">Email</span></td>
                                                 <td class="auto-style9">
-                                                    <asp:DropDownList ID="ddlLOCounty" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
-                                                    </asp:DropDownList>
+                                                    <asp:TextBox ID="txtLOEmail" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
                                                 </td>
                                                 <td style="width: 100px">
-                                                    <span class="labelClass" runat="server" id="spnVillage" visible="true">Email</span>
+                                                   <span class="labelClass">Home phone</span>
                                                 </td>
                                                 <td style="width: 270px">
-                                                    <asp:TextBox ID="txtLOEmail" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox></td>
-                                                <td class="auto-style10"><span class="labelClass">Home phone</span>
-
-                                                </td>
-                                                <td>
-                                                    <asp:TextBox ID="txtLOHomephone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
+                                                     <asp:TextBox ID="txtLOHomephone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                     <asp:MaskedEditExtender ID="MaskedEditExtender3" runat="server" TargetControlID="txtLOHomephone"
                                                         Mask="(999)-999-9999" MessageValidatorTip="true" ErrorTooltipEnabled="True">
                                                     </asp:MaskedEditExtender>
+                                                   </td>
+                                                <td class="auto-style10">
+                                                    <span class="labelClass">Cell phone</span>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6" style="height: 5px"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 150px"><span class="labelClass">Cell phone</span></td>
-                                                <td class="auto-style9">
-                                                    <asp:TextBox ID="txtLoCellPhone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
+                                                <td>
+                                                     <asp:TextBox ID="txtLoCellPhone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                     <asp:MaskedEditExtender ID="MaskedEditExtender2" runat="server" TargetControlID="txtLoCellPhone"
                                                         Mask="(999)-999-9999" MessageValidatorTip="true" ErrorTooltipEnabled="True">
                                                     </asp:MaskedEditExtender>
                                                 </td>
-                                                <td style="width: 100px"></td>
-                                                <td style="width: 270px"></td>
-                                                <td class="auto-style10"></td>
-                                                <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" style="height: 10px"></td>
+                                                <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -274,17 +270,19 @@
 
                         <table>
                             <tr>
-                                                <td colspan="6" style="height: 15px"></td>
+                                                <td colspan="6" class="auto-style14"></td>
                                             </tr>
                             <tr>
-                                <td colspan="2" style="text-decoration: underline;" class="auto-style7"><strong>C.  FARMER INFORMATION </strong></td>
+                                <td colspan="2" style="text-decoration: underline;" class="auto-style15"><strong>C.  FARMER INFORMATION (if different from above)</strong></td>
                             </tr>
+                            </table>
+                        <table>
                             <tr>
                                 <td colspan="3" style="height: 10px"></td>
                             </tr>
                             <tr>
-                                <td><span class="labelClass" style="margin-left: 10px">Name</span></td>
-                                <td colspan="2">
+                                <td><span class="labelClass" style="margin-left: 10px">Name      </span></td>
+                                <td colspan="2" style="margin-left: 30px">&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:TextBox ID="txtFarmerName" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox>
                                 <tr>
                                     <td colspan="3" style="height: 10px"></td>
@@ -330,62 +328,53 @@
                                             <tr>
                                                 <td style="width: 170px"><span class="labelClass">Town</span></td>
                                                 <td class="auto-style9">
-                                                    <asp:TextBox ID="txtFarmerTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
+                                                   
+                                                      <asp:DropDownList ID="ddlFarmerTown" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlFarmerTown_SelectedIndexChanged">
+                                                    </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 150px"><span class="labelClass">Zip Code</span></td>
                                                 <td style="width: 250px">
                                                     <asp:TextBox ID="txtFarmerZip" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                 </td>
                                                 <td class="auto-style10">
-                                                    <span class="labelClass">Village</span>
+                                                   <span class="labelClass">County</span>
                                                 </td>
                                                 <td style="width: 270px">
-                                                    <asp:TextBox ID="txtFarmerVillage" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                                     <asp:Label runat="server" ID="lblFarmerCounty" class="labelClass"></asp:Label>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 150px"><span class="labelClass">County</span></td>
+                                                <td style="width: 150px"> <span class="labelClass" runat="server" id="Span1" visible="true">Email</span></td>
                                                 <td class="auto-style9">
-                                                    <asp:DropDownList ID="ddlFarmerCounty" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
-                                                    </asp:DropDownList>
+                                                   <asp:TextBox ID="txtFarmerEmail" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
                                                 </td>
                                                 <td style="width: 100px">
-                                                    <span class="labelClass" runat="server" id="Span1" visible="true">Email</span>
+                                                   <span class="labelClass">Home phone</span>
                                                 </td>
                                                 <td style="width: 270px">
-                                                    <asp:TextBox ID="txtFarmerEmail" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox></td>
-                                                <td class="auto-style10"><span class="labelClass">Home phone</span>
-
-                                                </td>
-                                                <td>
-                                                    <asp:TextBox ID="txtFarmerHomePhone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
+                                                     <asp:TextBox ID="txtFarmerHomePhone" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                     <asp:MaskedEditExtender ID="MaskedEditExtender5" runat="server" TargetControlID="txtFarmerHomePhone"
                                                         Mask="(999)-999-9999" MessageValidatorTip="true" ErrorTooltipEnabled="True">
                                                     </asp:MaskedEditExtender>
+                                                   </td>
+                                                <td class="auto-style10">
+                                                    <span class="labelClass">Cell phone</span>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6" style="height: 5px"></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 150px"><span class="labelClass">Cell phone</span></td>
-                                                <td class="auto-style9">
-                                                    <asp:TextBox ID="txtFarmerCell" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
+                                                <td>
+                                                     <asp:TextBox ID="txtFarmerCell" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10"></asp:TextBox>
                                                     <asp:MaskedEditExtender ID="MaskedEditExtender4" runat="server" TargetControlID="txtFarmerCell"
                                                         Mask="(999)-999-9999" MessageValidatorTip="true" ErrorTooltipEnabled="True">
                                                     </asp:MaskedEditExtender>
                                                 </td>
-                                                <td style="width: 100px"></td>
-                                                <td style="width: 270px"></td>
-                                                <td class="auto-style10"></td>
-                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
+                                          
+                                       
                                         </table>
                                     </div>
                                 </asp:Panel>

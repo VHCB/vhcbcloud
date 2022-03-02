@@ -219,8 +219,10 @@ namespace vhcbExternalApp
 
         protected void btnPrint_Click(object sender, EventArgs e)
         {
+            ViabilityApplicationData.InsertDefaultDataForViabilityWaterQuality(projectNumber);
+
             ClientScript.RegisterStartupScript(this.GetType(),
-                   "script", GetExagoURL("9999-999-999", "Online Application - emailed"));
+                   "script", GetExagoURL(projectNumber, "Online Application - emailed"));
         }
 
         public static string GetExagoURL(string Projnum, string ReportName)

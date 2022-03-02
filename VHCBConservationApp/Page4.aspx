@@ -17,7 +17,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -26,7 +26,7 @@
                     <div id="dvMessage" runat="server" visible="false">
                         <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
                     </div>
-                    <table>
+                   <table>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
@@ -43,40 +43,14 @@
                         </tr>
                         <tr>
                             <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"><strong>Hay</strong></span></td>
-                            <td style="height: 10px"><span>Acres avg yield/year </span></td>
+                            <td style="height: 10px"><span>Acres </span></td>
                             <td style="height: 10px">
                                 <asp:TextBox ID="txtHay" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                        <tr>
-                            <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"></span></td>
-                            <td style="height: 10px"><span>Round Bales:</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtRoundBales" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"></span></td>
-                            <td style="height: 10px"><span>Square bales:</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtSquareBales" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"></span></td>
-                            <td style="height: 10px"><span>Tons per acre per year:</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtTonsperacreperYear" CssClass="clsTextBoxBlue1" runat="server" MaxLength="4" Width="60px"></asp:TextBox></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
+
                         <tr>
                             <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"><strong>Pasture</strong></span></td>
                             <td style="height: 10px"><span>Acres</span></td>
@@ -159,6 +133,29 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
+
+                        <tr>
+                            <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Other agricultural land (Acres)</strong></span></td>
+
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtOtherAgriculture" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Other Agricultural Land (production info, as relevant)</strong></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px">
+
+                                <asp:TextBox ID="txtOtherAgricultureProduction" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="971px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        >
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
@@ -226,27 +223,7 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                        <tr>
-                            <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Other agricultural land (Acres)</strong></span></td>
 
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtOtherAgriculture" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Other Agricultural Land (production info, as relevant)</strong></span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px">
-
-                                <asp:TextBox ID="txtOtherAgricultureProduction" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="971px" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
                         <tr>
                             <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Unmanaged/incidental land: Acres</strong></span></td>
 
@@ -268,8 +245,43 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
+                    </table>
+                    <table style="width: 100%;">
                         <tr>
-                            <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Existing recreational trails: Open to the public: </strong></span></td>
+                            <td>
+                                <div class="panel-width" runat="server" id="Div1">
+                                    <div class="panel panel-default ">
+                                        <div class="panel-heading ">
+                                            <table style="width: 30%;">
+                                                <tr>
+                                                    <td>
+                                                        <h3 class="panel-title">Recreation </h3>
+                                                    </td>
+                                                    <td style="text-align: right"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td colspan="3" style="height: 10px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px">Describe any recreational uses on the property such as hiking, cross-country skiing, biking, etc</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="height: 10px">
+                                                    <asp:TextBox ID="txtrecuses" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="971px" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Are there any public recreational trails on the property: </strong></span></td>
 
                             <td style="height: 10px">
                                 <asp:RadioButtonList ID="rdbTrails" runat="server"
@@ -289,7 +301,7 @@
                                 <asp:TextBox ID="txtTrailfeet" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
                             </td>
                         </tr>
-                      <%--  <tr>
+                        <%--  <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
@@ -320,7 +332,8 @@
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px">
-                                <!--<asp:TextBox ID="txtAgsoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>--></td>
+                                <!--<asp:TextBox ID="txtAgsoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>-->
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
@@ -397,7 +410,10 @@
                                 <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
                             </td>
                         </tr>
+
                     </table>
+
+
                     <br />
                     <table style="width: 100%;">
                         <tr>
@@ -427,11 +443,11 @@
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td style="width: 70px">
-                                                            <span class="labelClass">Miles
+                                                            <span class="labelClass">Feet
                                                             </span>
                                                         </td>
                                                         <td style="width: 180px">
-                                                            <asp:TextBox ID="txtTrailMiles" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtTrailFeets" CssClass="clsTextBoxBlue1" Style="width: 100px" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td style="width: 170px">
                                                             <asp:Button ID="btnTrails" runat="server" Text="Add" class="btn btn-info" OnClick="btnTrails_Click" /></td>
@@ -469,12 +485,17 @@
                                                                 <asp:Label ID="lblTrailDescription" runat="Server" Text='<%# Eval("Description") %>' />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Miles">
+                                                         <asp:TemplateField HeaderText="Miles">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblMiles" runat="Server" Text='<%# Eval("Miles") %>' />
                                                             </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Feet">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblFeets" runat="Server" Text='<%# Eval("Feet") %>' />
+                                                            </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <asp:TextBox ID="txtMiles" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Miles") %>'>
+                                                                <asp:TextBox ID="txtFeet" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Feet") %>'>
                                                                 </asp:TextBox>
                                                             </EditItemTemplate>
                                                         </asp:TemplateField>
@@ -507,11 +528,11 @@
                     </table>
 
                     <table>
-                         <tr>
+                        <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Other Trail</strong></span></td>
+                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Describe Other Trail</strong></span></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px">

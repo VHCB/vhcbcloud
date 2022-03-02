@@ -14,6 +14,34 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class ImpGrantApplicationData
     {
+        public static void InsertDefaultDataForImpGrants(string ProjNumber)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "InsertDefaultDataForImpGrants";
+                command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+                
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static DataRow GetViabilityImpGrantApplicationPage1(string ProjNumber)
         {
             DataRow dr = null;
@@ -50,7 +78,7 @@ namespace VHCBCommon.DataAccessLayer
         public static void ViabilityImpGrantApplicationPage1(string ProjNumber, string PrimContact, string AllOwners,
            string MAStreet, string MAAdd1, string MAAdd2, string MACity, string MAZip, string MAVillage, string MACounty,
            string PAStreet, string PAAdd1, string PAAdd2, string PACity, string PAZip, string PAVillage, string PACounty,
-           string WorkPhone, string CellPhone, string HomePhone, string Email, int HearAbout, string PrimeAdvisor)
+           string WorkPhone, string CellPhone, string HomePhone, string Email, int HearAbout)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -84,7 +112,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Email", Email));
                 command.Parameters.Add(new SqlParameter("HearAbout", HearAbout));
        
-                command.Parameters.Add(new SqlParameter("PrimeAdvisor", PrimeAdvisor));
+                //command.Parameters.Add(new SqlParameter("PrimeAdvisor", PrimeAdvisor));
                 using (connection)
                 {
                     connection.Open();
@@ -136,8 +164,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void ViabilityImpGrantApplicationPage2(string ProjNumber, string OrgName, string Website, string Org_Structure,
-          int Cows, int Hogs, int Poultry, string Other, int Milked_Daily, string Primary_Animals, int Herd, int Rolling_Herd,
-          int Milk_Pounds, int Cull, int Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
+          string Cows, string Hogs, string Poultry, string Other, string Milked_Daily, string Primary_Animals, string Herd, string Rolling_Herd,
+          string Milk_Pounds, string Cull, string Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
           decimal FamilyFTE, decimal NonFamilyFTE, int FiscalYr, decimal AcresInProduction, decimal AcresOwned, decimal AcresLeased, decimal PastureAcres,
           string LandYouOwn, string LandOwnText)
         {
@@ -195,7 +223,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static void ImpGrantsWaterQualityGrants(string ProjNumber, int Farmsize, string FarmsizeText, int PrimaryProduct, string LKProducts, string SecProducts)
+        public static void ImpGrantsWaterQualityGrants(string ProjNumber, int Farmsize, string FarmsizeText, int PrimaryProduct, string LKProducts, string SecProducts, bool CompletePlanning)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -210,6 +238,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("PrimaryProduct", PrimaryProduct));
                 command.Parameters.Add(new SqlParameter("LKProducts", LKProducts));
                 command.Parameters.Add(new SqlParameter("SecProducts", SecProducts));
+                command.Parameters.Add(new SqlParameter("CompletePlanning", CompletePlanning));
 
                 using (connection)
                 {
@@ -261,7 +290,8 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void InsertImpGrantRequest(string ProjNumber, string ProjTitle, string ProjDesc, decimal ProjCost, decimal Request, string strProjCost, string strRequest, string strGrantMatch, string ENtGrantMatch)
+        public static void InsertImpGrantRequest(string ProjNumber, string ProjTitle, string ProjDesc, decimal ProjCost, decimal Request, string strProjCost, string strRequest, string strGrantMatch, string ENtGrantMatch, 
+            string FarmCash, string FarmInKind, string FarmLoan, string StateGrant, string FedGrant, string Other)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -278,6 +308,13 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("strRequest", strRequest));
                 command.Parameters.Add(new SqlParameter("strGrantMatch", strGrantMatch));
                 command.Parameters.Add(new SqlParameter("ENtGrantMatch", ENtGrantMatch));
+
+                command.Parameters.Add(new SqlParameter("FarmCash", FarmCash));
+                command.Parameters.Add(new SqlParameter("FarmInKind", FarmInKind));
+                command.Parameters.Add(new SqlParameter("FarmLoan", FarmLoan));
+                command.Parameters.Add(new SqlParameter("StateGrant", StateGrant));
+                command.Parameters.Add(new SqlParameter("FedGrant", FedGrant));
+                command.Parameters.Add(new SqlParameter("Other", Other));
 
                 using (connection)
                 {
@@ -329,7 +366,7 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void ViabilityImpGrantApplicationPage6(string ProjNumber, string SupportingFunds)
+        public static void ViabilityImpGrantApplicationPage6(string ProjNumber, string Budget)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -338,7 +375,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "ViabilityImpGrantApplicationPage6";
                 command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
-                command.Parameters.Add(new SqlParameter("SupportingFunds", SupportingFunds));
+                command.Parameters.Add(new SqlParameter("Budget", Budget));
                 //command.Parameters.Add(new SqlParameter("NRCSExpensesandStatus", NRCSExpensesandStatus));
                 //command.Parameters.Add(new SqlParameter("WaverRequest", WaverRequest));
 
@@ -516,7 +553,7 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void EligibilitySave(string ProjNumber, bool CompletePlanning,  string PrimeAdvisor2, int AdvisorOrg, string OtherAdvisor)
+        public static void EligibilitySave(string ProjNumber,  string PrimeAdvisor2, string AdvisorOrg, string OtherAdvisor)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -525,7 +562,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "EligibilitySave";
                 command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
-                command.Parameters.Add(new SqlParameter("CompletePlanning", CompletePlanning));
+                //command.Parameters.Add(new SqlParameter("CompletePlanning", CompletePlanning));
                 command.Parameters.Add(new SqlParameter("PrimeAdvisor2", PrimeAdvisor2));
                 command.Parameters.Add(new SqlParameter("AdvisorOrg", AdvisorOrg));
                 command.Parameters.Add(new SqlParameter("OtherAdvisor", OtherAdvisor));

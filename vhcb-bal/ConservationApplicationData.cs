@@ -8,6 +8,34 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class ConservationApplicationData
     {
+        public static void InsertDefaultDataForConserveApp(string ProjNumber)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "InsertDefaultDataForConserveApp";
+                command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+              
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public static void ConservationApplicationPage1(string ProjNumber, DateTime DateSubmit,  DateTime BoardMeetDate, decimal ConservedAcres, string Funds_Requested, string Total_Expenses,
         string App_Organ, string Project_Manager, string App_Phone, string App_Email, string Landowner_Names,
         string LOStreet, string LOAdd1, string LOAdd2, string LOTown, string LOZip, string LOVillage, string LOCounty, string LOEmail, string LOHomephone, string LOCell,
@@ -77,7 +105,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void FarmManagement(string ProjNumber, string FarmSize, string RAPCompliance, decimal RentedLand, decimal FullTime, decimal PartTime, string GrossIncome, string GrossIncomeDescription, bool WrittenLease, bool CompletedBusinessPlan, 
-            bool ShareBusinessPlan, string MitigateClimate, string HEL, string NutrientPlan, string Dumps, bool ExistingInfastructure, string InfrastuctureDescription, string ConservationMeasures, string OtherConservationMeasures, string FarmOperation)
+            bool ShareBusinessPlan, string MitigateClimate, string HEL, string NutrientPlan, string Dumps, bool ExistingInfastructure, string InfrastuctureDescription, string ConservationMeasures, string OtherConservationMeasures, 
+            string FarmOperation, bool OtherTechnicalAdvisors, bool CurrentBusinessPlan, decimal FullTimeSeasonal, decimal PartTimeSeasonal)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -105,7 +134,11 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("ConservationMeasures", ConservationMeasures));
                 command.Parameters.Add(new SqlParameter("OtherConservationMeasures", OtherConservationMeasures));
                 command.Parameters.Add(new SqlParameter("FarmOperation", FarmOperation));
-              
+                command.Parameters.Add(new SqlParameter("OtherTechnicalAdvisors", OtherTechnicalAdvisors));
+                command.Parameters.Add(new SqlParameter("CurrentBusinessPlan", CurrentBusinessPlan));
+                command.Parameters.Add(new SqlParameter("FullTimeSeasonal", FullTimeSeasonal));
+                command.Parameters.Add(new SqlParameter("PartTimeSeasonal", PartTimeSeasonal));
+
                 using (connection)
                 {
                     connection.Open();
@@ -127,7 +160,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void WaterManagement(string ProjNumber, decimal Wetlands, decimal Ponds, decimal FloodPlain, decimal StreamFeet, decimal PondFeet, string WaterBodies, string Watershed, string SubWatershed, string TacticalBasin, string DrainageDitches, 
             string DrainageTiles, string WasteInfrastructure, string ProtectWater, bool ParticipateWaterGrant, string ParticipateWaterGrantDiscussion, string LivestockExcluded, string WaterQualityConcerns,
-            int LKWatershed, int LKSubWatershed, int secLKWatershed, int secLKSubWatershed)
+            int LKWatershed, int LKSubWatershed, int LKSecSubWatershed, int HUC12, int secHUC12, string SubBasin, string SubBasin2)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -156,8 +189,11 @@ namespace VHCBCommon.DataAccessLayer
                // command.Parameters.Add(new SqlParameter("Acretypes", Acretypes));
                 command.Parameters.Add(new SqlParameter("LKWatershed", LKWatershed));
                 command.Parameters.Add(new SqlParameter("LKSubWatershed", LKSubWatershed));
-                command.Parameters.Add(new SqlParameter("secLKWatershed", secLKWatershed));
-                command.Parameters.Add(new SqlParameter("secLKSubWatershed", secLKSubWatershed));
+                command.Parameters.Add(new SqlParameter("LKSecSubWatershed", LKSecSubWatershed));
+                command.Parameters.Add(new SqlParameter("HUC12", HUC12));
+                command.Parameters.Add(new SqlParameter("secHUC12", secHUC12));
+                command.Parameters.Add(new SqlParameter("SubBasin", SubBasin));
+                command.Parameters.Add(new SqlParameter("SubBasin2", SubBasin2));
 
                 using (connection)
                 {
@@ -414,11 +450,11 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void ConservationApplicationPage4(string ProjNumber, decimal Hay, string RoundBales, string SquareBales, string TonsperacreperYear, decimal Pasture, decimal Vegetables,
+        public static void ConservationApplicationPage4(string ProjNumber, decimal Hay, decimal Pasture, decimal Vegetables,
             string VegetableTypes, decimal Fruit, string FruitTypes, decimal Livestock, string LivestockTypes, decimal ChristmasTrees, decimal NurseryStock, decimal Organic, string OrganicAreas, decimal SugarBush, decimal ManagedTimber,  decimal OtherForest, bool ManagementPlan, 
             decimal OtherAgriculture, string OtherAgricultureProduction, decimal Unmanaged, string Agritourism, bool Trails, decimal TrailFeet, string TrailNames, decimal PrimeNonNoted,
             decimal PrimeNonNotedPCent, decimal PrimeNoted, decimal PrimeNotedPCent, decimal StatewideNonNoted,
-            decimal StatewideNonNotedPCent, decimal StatewideNoted, decimal StatewideNotedPCent, decimal OtherNonAgSoils, decimal OtherNonAgSoilsPCent, decimal Total, decimal Tillable, string TrailNameIds, string othertrail)
+            decimal StatewideNonNotedPCent, decimal StatewideNoted, decimal StatewideNotedPCent, decimal OtherNonAgSoils, decimal OtherNonAgSoilsPCent, decimal Total, decimal Tillable, string TrailNameIds, string othertrail, string Recuses)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -428,9 +464,9 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandText = "ConservationApplicationPage4";
                 command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
                 command.Parameters.Add(new SqlParameter("Hay", Hay));
-                command.Parameters.Add(new SqlParameter("RoundBales", RoundBales));
-                command.Parameters.Add(new SqlParameter("SquareBales", SquareBales));
-                command.Parameters.Add(new SqlParameter("TonsperacreperYear", TonsperacreperYear));
+                //command.Parameters.Add(new SqlParameter("RoundBales", RoundBales));
+                //command.Parameters.Add(new SqlParameter("SquareBales", SquareBales));
+                //command.Parameters.Add(new SqlParameter("TonsperacreperYear", TonsperacreperYear));
                 command.Parameters.Add(new SqlParameter("Pasture", Pasture));
                 command.Parameters.Add(new SqlParameter("Vegetables", Vegetables));
                 command.Parameters.Add(new SqlParameter("VegetableTypes", VegetableTypes));
@@ -468,6 +504,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Tillable", Tillable));
                 command.Parameters.Add(new SqlParameter("TrailNameIds", TrailNameIds));
                 command.Parameters.Add(new SqlParameter("othertrail", othertrail));
+                command.Parameters.Add(new SqlParameter("Recuses", Recuses));
 
                 using (connection)
                 {

@@ -17,7 +17,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -102,7 +102,7 @@
                         </tr>
 
                         <tr>
-                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">7. Total acreage to be excluded:</span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">7. Total acreage to be excluded from conserved land:</span></td>
                             <td colspan="2">
                                 <asp:TextBox ID="txtAcresExcluded" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
                             </td>
@@ -111,7 +111,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">8. How is the acreage derived? </span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">8. How is the conserved acreage derived? </span></td>
                             <td colspan="2">
                                 <asp:DropDownList runat="Server" ID="ddlAcresDerived">
                                     <asp:ListItem Text="Select One" Value="NA"></asp:ListItem>

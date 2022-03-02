@@ -96,6 +96,24 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtPartTime;
 
         /// <summary>
+        /// txtFullTimeSeasonal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFullTimeSeasonal;
+
+        /// <summary>
+        /// txtPartTimeSeasonal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPartTimeSeasonal;
+
+        /// <summary>
         /// txtGrossIncome control.
         /// </summary>
         /// <remarks>
@@ -139,6 +157,33 @@ namespace VHCBConservationApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdbtShareBusinessPlan;
+
+        /// <summary>
+        /// tblOptinalQuestions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblOptinalQuestions;
+
+        /// <summary>
+        /// rdbtOtherTechnicalAdvisors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdbtOtherTechnicalAdvisors;
+
+        /// <summary>
+        /// rdbtnCurrentBusinessPlan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdbtnCurrentBusinessPlan;
 
         /// <summary>
         /// txtMitigateClimate control.

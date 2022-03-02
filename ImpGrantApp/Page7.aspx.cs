@@ -43,7 +43,7 @@ namespace ImpGrantApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Eligibility.aspx");
+            Response.Redirect("BudgetNarrativeTables.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)

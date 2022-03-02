@@ -26,7 +26,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span class="labelClass">On the blank worksheet, Tab 1 is an example page. Please do not attempt to edit this tab. Please complete tab 2 with your project’s budget expenses. All totals will be added for you. Further instructions are included on the spreadsheet. You will be able to upload the spreadsheet at the end of this application</span></td>
+                            <td colspan="2"><span class="labelClass">On the blank worksheet, tab 1 is an example page. Please do not attempt to edit this tab. Please complete tab 2 with your project’s budget expenses. All totals will be added for you. Further instructions are included on the spreadsheet. You will be able to upload the spreadsheet at the end of this application</span></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>
@@ -39,16 +39,16 @@
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Budget Narrative::</strong> Please complete the above budget sheet (required), and provide a budget narrative to demonstrate how VHCB funds will be used, where matching funds are expected to come from, and what matching funds are already secured. In addition, you may provide a more detailed project budget in your own format, or identify where such project details are described in your business plan, although this is not required. (~150 words)
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Budget Narrative:</strong> Please complete the above budget sheet (required), and provide a budget narrative to demonstrate how VHCB funds will be used, where matching funds are expected to come from, and what matching funds are already secured. In addition, you may provide a more detailed project budget in your own format, or identify where such project details are described in your business plan, although this is not required. (~150 words)
                                 </span>
                             </td>
                         </tr>
-                      <%--  <tr>
+                        <tr>
                             <td colspan="2" style="margin-left: 10px">&nbsp;&nbsp;&nbsp;
                               
-                                 <asp:TextBox ID="txtSupportingFunds" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
+                                 <asp:TextBox ID="txtSupportingFunds" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="900px" Height="100px" />
                             </td>
-                        </tr>--%>
+                        </tr>
 <%--                        <tr>
                             <td colspan="2" style="height: 5px"></td>
                         </tr>

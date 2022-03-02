@@ -26,7 +26,7 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2"><span class="labelClass">On the blank worksheet, Tab 1 is an example page. Please do not attempt to edit this tab. Please complete tab 2 with your project’s budget expenses. All totals will be added for you. Further instructions are included on the spreadsheet. You will be able to upload the spreadsheet at the end of this application</span></td>
+                            <td colspan="2"><span class="labelClass">On the blank worksheet, tab 1 is an example page. Please do not attempt to edit this tab. Please complete tab 2 with your project’s budget expenses. All totals will be added for you. Further instructions are included on the spreadsheet. You will be able to upload the spreadsheet at the end of this application</span></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>

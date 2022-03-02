@@ -38,27 +38,27 @@ namespace vhcbExternalApp
 
             if (txtFederalGrant.Text != "")
             {
-                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";";
+                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";  ";
                 ENtGrantMatch += "26620-" + txtFederalGrant.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtStateGrant.Text != "")
             {
-                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";";
+                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";  ";
                 ENtGrantMatch += "26621-" + txtStateGrant.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtLoan.Text != "")
             {
-                strGrantMatch += "Loan - " + txtLoan.Text + ";";
+                strGrantMatch += "Loan - " + txtLoan.Text + ";  ";
                 ENtGrantMatch += "26685-" + txtLoan.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtCash.Text != "")
             {
-                strGrantMatch += "Cash - " + txtCash.Text + ";";
+                strGrantMatch += "Cash - " + txtCash.Text + ";  ";
                 ENtGrantMatch += "26686-" + txtCash.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtKind.Text != "")
             {
-                strGrantMatch += "Kind - " + txtKind.Text + ";";
+                strGrantMatch += "Kind - " + txtKind.Text + ";  ";
                 ENtGrantMatch += "26687-" + txtKind.Text.Replace("$", "").Replace(",", "") + ";";
             }
             if (txtOther.Text != "")

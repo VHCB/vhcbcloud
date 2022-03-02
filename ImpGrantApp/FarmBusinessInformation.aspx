@@ -69,14 +69,18 @@
                         </tr>
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">Ownership Structure:</span></td>
-                            <td colspan="2">
-                                <asp:RadioButtonList ID="rdBtnOrgStructure" runat="server" Width="270px" RepeatDirection="Vertical" RepeatLayout="Table" CssClass="FormatRadioButtonList">
+                            <td style="vertical-align:bottom">
+                                <asp:RadioButtonList ID="rdBtnOrgStructure" runat="server" Width="158px" RepeatDirection="Vertical" RepeatLayout="Table" CssClass="FormatRadioButtonList">
                                     <asp:ListItem>Sole Proprietor</asp:ListItem>
                                     <asp:ListItem>Partnership</asp:ListItem>
                                     <asp:ListItem>LLC</asp:ListItem>
                                     <asp:ListItem>Corporation</asp:ListItem>
                                     <asp:ListItem>Other (Specify)</asp:ListItem>
                                 </asp:RadioButtonList>
+                          
+                            
+                                <asp:TextBox ID="txtOrgStructureOther" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox>
+
                             </td>
                         </tr>
                         <tr>
@@ -394,7 +398,7 @@
                                             <td colspan="2">
                                                 <asp:CheckBoxList Width="300px" ID="lstMilkSold" runat="server" RepeatDirection="Vertical" RepeatColumns="1" BorderWidth="0"
                                                     Datafield="description" DataValueField="value" CssClass="checkboxlist_nowrap">
-                                                    <asp:ListItem Text="St. Albans Cooperative Creamery/Dairy Farmers of America" Value="St. Albans Cooperative Creamery/Dairy Farmers of America" />
+                                                    <asp:ListItem Text="St. Albans Coop/Dairy Farmers of America" Value="St. Albans Coop/Dairy Farmers of America" />
                                                     <asp:ListItem Text="Organic Valley" Value="Organic Valley" />
                                                     <asp:ListItem Text="NFO" Value="NFO" />
                                                     <asp:ListItem Text="Agrimark" Value="Agrimark" />

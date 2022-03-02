@@ -281,7 +281,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static bool CheckExternalUserLogin(string ProjectNumber, string UserName, string Password)
+        public static bool CheckExternalUserLogin(string ProjectNumber, string UserName, string Password, int ApplicationID)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -292,6 +292,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
                 command.Parameters.Add(new SqlParameter("Username", UserName));
                 command.Parameters.Add(new SqlParameter("Password", Password));
+                command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
 
                 SqlParameter parmIsValid = new SqlParameter("@IsValidUser", SqlDbType.Bit);
                 parmIsValid.Direction = ParameterDirection.Output;

@@ -11,7 +11,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, //int PrimStew, 
             decimal TotalAcres, decimal Wooded,
             decimal Prime, decimal Statewide, decimal Tillable, decimal Pasture, decimal Unmanaged, decimal FarmResident, decimal NaturalRec, decimal Sugarbush,
-            int UserID, int GeoSignificance)
+            int UserID, int GeoSignificance, string TransferType)
         {
             try
             {
@@ -39,6 +39,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("FarmResident", FarmResident));
                         command.Parameters.Add(new SqlParameter("NaturalRec", NaturalRec));
                         command.Parameters.Add(new SqlParameter("Sugarbush", Sugarbush));
+                        command.Parameters.Add(new SqlParameter("TransferType", TransferType));
 
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
                         command.Parameters.Add(new SqlParameter("GeoSignificance", GeoSignificance));
@@ -801,7 +802,53 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                 throw ex;
             }
         }
-        public static void UpdateConserveTrails(int ConserveTrailsID, decimal Miles, bool Protected, bool RowIsActive)
+
+        public static Result AddConserveTrailsFromApp(int ConserveID, int LKTrail, int Feet, bool Protected)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddConserveTrailsFromApp";
+
+                        command.Parameters.Add(new SqlParameter("ConserveID", ConserveID));
+                        command.Parameters.Add(new SqlParameter("LKTrail", LKTrail));
+                        command.Parameters.Add(new SqlParameter("Feet", Feet));
+                        command.Parameters.Add(new SqlParameter("Protected", Protected));
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Int);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        Result objResult = new Result();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void UpdateConserveTrails(int ConserveTrailsID, decimal Feet, bool Protected, bool RowIsActive)
         {
             try
             {
@@ -816,7 +863,38 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.CommandText = "UpdateConserveTrails";
 
                         command.Parameters.Add(new SqlParameter("ConserveTrailsID", ConserveTrailsID));
-                        command.Parameters.Add(new SqlParameter("Miles", Miles));
+                        command.Parameters.Add(new SqlParameter("Feet", Feet));
+                        command.Parameters.Add(new SqlParameter("Protected", Protected));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void UpdateConserveTrailsFromApp(int ConserveTrailsID, int Feet, bool Protected, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "UpdateConserveTrailsFromApp";
+
+                        command.Parameters.Add(new SqlParameter("ConserveTrailsID", ConserveTrailsID));
+                        command.Parameters.Add(new SqlParameter("Feet", Feet));
                         command.Parameters.Add(new SqlParameter("Protected", Protected));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 

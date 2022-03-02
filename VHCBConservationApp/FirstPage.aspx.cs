@@ -26,9 +26,50 @@ namespace VHCBConservationApp
             if (!IsPostBack)
             {
                 BindBoardDates(ddlBoardDate);
-                BindCounty(ddlLOCounty);
-                BindCounty(ddlFarmerCounty);
+                BindTown(ddlLoTown);
+                BindTown(ddlFarmerTown);
+                
                 LoadFirstPage();
+            }
+        }
+
+        private void BindLoCounty(DropDownList ddl, string town)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetCountysByTown(town);
+
+                ddl.Items.Clear();
+                ddl.DataSource = dt;
+                ddl.DataValueField = "County";
+                ddl.DataTextField = "County";
+                ddl.DataBind();
+                ddl.Items.Insert(0, new ListItem("Select", "NA"));
+
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCounty", "Control ID:" + ddl.ID, ex.Message);
+            }
+        }
+
+        private void BindTown(DropDownList ddlTown)
+        {
+            try
+            {
+                DataTable dt = ProjectMaintenanceData.GetTowns();
+
+                ddlTown.Items.Clear();
+                ddlTown.DataSource = dt;
+                ddlTown.DataValueField = "Town";
+                ddlTown.DataTextField = "Town";
+                ddlTown.DataBind();
+                ddlTown.Items.Insert(0, new ListItem("Select", "NA"));
+
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindCounty", "Control ID:" + ddlTown.ID, ex.Message);
             }
         }
 
@@ -75,10 +116,15 @@ namespace VHCBConservationApp
                     txtloStreetNo.Text = drPage1tDetails["LOStreet"].ToString();
                     txtLoAddress1.Text = drPage1tDetails["LOAdd1"].ToString();
                     txtLoAddress2.Text = drPage1tDetails["LOAdd2"].ToString();
-                    txtLoTown.Text = drPage1tDetails["LOTown"].ToString();
+                    //txtLoTown.Text = drPage1tDetails["LOTown"].ToString();
+                    PopulateDropDown(ddlLoTown, drPage1tDetails["LOTown"].ToString());
+
+                    //BindLoCounty(ddlLOCounty, drPage1tDetails["LOTown"].ToString());
+                    lblLoCounty.Text = drPage1tDetails["LOCounty"].ToString();
+                    //PopulateDropDown(ddlLOCounty, drPage1tDetails["LOCounty"].ToString());
                     txtLOZipCode.Text = drPage1tDetails["LOZip"].ToString();
-                    txtLOVillage.Text = drPage1tDetails["LOVillage"].ToString();
-                    PopulateDropDown(ddlLOCounty, drPage1tDetails["LOCounty"].ToString());
+                    //txtLOVillage.Text = drPage1tDetails["LOVillage"].ToString();
+                    
                     txtLOEmail.Text = drPage1tDetails["LOEmail"].ToString();
                     txtLOHomephone.Text = drPage1tDetails["LOHomephone"].ToString();
                     txtLoCellPhone.Text = drPage1tDetails["LOCell"].ToString();
@@ -86,10 +132,15 @@ namespace VHCBConservationApp
                     txtFarmerStreet.Text = drPage1tDetails["FarmerStreet"].ToString();
                     txtFarmerAdd1.Text = drPage1tDetails["FarmerAdd1"].ToString();
                     txtFarmerAdd2.Text = drPage1tDetails["FarmerAdd2"].ToString();
-                    txtFarmerTown.Text = drPage1tDetails["FarmerTown"].ToString();
+                    //txtFarmerTown.Text = drPage1tDetails["FarmerTown"].ToString();
+                    PopulateDropDown(ddlFarmerTown, drPage1tDetails["FarmerTown"].ToString());
                     txtFarmerZip.Text = drPage1tDetails["FarmerZip"].ToString();
-                    txtFarmerVillage.Text = drPage1tDetails["FarmerVillage"].ToString();
-                    PopulateDropDown(ddlFarmerCounty, drPage1tDetails["FarmerCounty"].ToString());
+                    //txtFarmerVillage.Text = drPage1tDetails["FarmerVillage"].ToString();
+
+                    //BindLoCounty(ddlFarmerCounty, drPage1tDetails["FarmerTown"].ToString());
+                    //PopulateDropDown(ddlFarmerCounty, drPage1tDetails["FarmerCounty"].ToString());
+                    lblFarmerCounty.Text = drPage1tDetails["FarmerCounty"].ToString();
+
                     txtFarmerEmail.Text = drPage1tDetails["FarmerEmail"].ToString();
                     txtFarmerHomePhone.Text = drPage1tDetails["FarmerHomePhone"].ToString();
                     txtFarmerCell.Text = drPage1tDetails["FarmerCell"].ToString();
@@ -174,8 +225,8 @@ namespace VHCBConservationApp
                     txtFundsRequested.Text,
                     txtTotalExpenses.Text,
                     txtAppOrgan.Text, txtProjectManager.Text, txtAppPhone.Text, txtAppEmail.Text,
-                    txtLONames.Text, txtloStreetNo.Text, txtLoAddress1.Text, txtLoAddress2.Text, txtLoTown.Text, txtLOZipCode.Text, txtLOZipCode.Text, ddlLOCounty.Text, txtLOEmail.Text, txtLOHomephone.Text, txtLoCellPhone.Text,
-                    txtFarmerName.Text, txtFarmerStreet.Text, txtFarmerAdd1.Text, txtFarmerAdd2.Text, txtFarmerTown.Text, txtFarmerZip.Text, txtFarmerVillage.Text, ddlFarmerCounty.SelectedItem.Text, txtFarmerEmail.Text, txtFarmerHomePhone.Text, txtFarmerCell.Text,
+                    txtLONames.Text, txtloStreetNo.Text, txtLoAddress1.Text, txtLoAddress2.Text, ddlLoTown.Text, txtLOZipCode.Text, "", lblLoCounty.Text, txtLOEmail.Text, txtLOHomephone.Text, txtLoCellPhone.Text,
+                    txtFarmerName.Text, txtFarmerStreet.Text, txtFarmerAdd1.Text, txtFarmerAdd2.Text, ddlFarmerTown.Text, txtFarmerZip.Text, "", lblFarmerCounty.Text, txtFarmerEmail.Text, txtFarmerHomePhone.Text, txtFarmerCell.Text,
                     txtPropertyStreet.Text, txtPropertyAdd1.Text, txtPropertyTown.Text, txtPropertyOtherTown.Text, txtPropertyZip.Text); 
 
 
@@ -187,8 +238,10 @@ namespace VHCBConservationApp
         {
             saveData();
 
+            ConservationApplicationData.InsertDefaultDataForConserveApp(projectNumber);
+
             ClientScript.RegisterStartupScript(this.GetType(),
-                   "script", Helper.GetExagoURL("9999-999-999", "Conservation Online Application"));
+                   "script", Helper.GetExagoURL(projectNumber, "Farm Conservation Online Application"));
         }
 
         private void LogMessage(string message)
@@ -196,5 +249,31 @@ namespace VHCBConservationApp
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
+
+        protected void ddlLoTown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblLoCounty.Text = getCounty(ddlLoTown.SelectedItem.Text);
+        }
+
+        protected void ddlFarmerTown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblFarmerCounty.Text = getCounty(ddlFarmerTown.SelectedItem.Text);
+        }
+
+        private string getCounty(string town)
+        {
+            try
+            {
+                string county = ProjectMaintenanceData.GetCountyByTown(town);
+
+                return county;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -115,7 +115,7 @@ namespace ImpGrantApp
                 ImpGrantApplicationData.ViabilityImpGrantApplicationPage1(projectNumber, txtPrimaryContact.Text, txtOwners.Text,
                 txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtCity.Text, txtZipCode.Text, txtVillage.Text, ddlCounty.SelectedValue,
                 txtPhyStreet1.Text, txtPhyAddress1.Text, txtPhyAddress2.Text, txtPhyCity.Text, txtPhyZip.Text, txtPhyVillage.Text, ddlPhyCounty.SelectedValue,
-                txtWorkPhone.Text, txtCellPhone.Text, txtHomePhone.Text, txtEmail.Text, DataUtils.GetInt(ddlHearAbout.SelectedValue), txtPrimeAdvisor.Text);
+                txtWorkPhone.Text, txtCellPhone.Text, txtHomePhone.Text, txtEmail.Text, DataUtils.GetInt(ddlHearAbout.SelectedValue));
 
                 LogMessage("Viability Application Data Added Successfully");
 
@@ -157,12 +157,12 @@ namespace ImpGrantApp
                     txtHomePhone.Text = drPage1tDetails["HomePhone"].ToString();
                     txtEmail.Text = drPage1tDetails["Email"].ToString();
                     //rdBtnPriorParticipation.SelectedValue = drPage1tDetails["PriorParticipation"].ToString();
-                    txtPrimeAdvisor.Text = drPage1tDetails["PrimeAdvisor"].ToString();
+                    //txtPrimeAdvisor.Text = drPage1tDetails["PrimeAdvisor"].ToString();
                     PopulateDropDown(ddlHearAbout, drPage1tDetails["HearAbout"].ToString());
 
 
-                    lblPrimeAdvisor.Visible = true;
-                    txtPrimeAdvisor.Visible = true;
+                    //lblPrimeAdvisor.Visible = true;
+                    //txtPrimeAdvisor.Visible = true;
                 }
             }
         }
@@ -195,8 +195,10 @@ namespace ImpGrantApp
 
         protected void btnPrint_Click(object sender, EventArgs e)
         {
+            ImpGrantApplicationData.InsertDefaultDataForImpGrants(projectNumber);
+
             ClientScript.RegisterStartupScript(this.GetType(),
-                   "script", GetExagoURL("9999-999-999", "Online Application - Implementation Grant"));
+                   "script", GetExagoURL(projectNumber, "Online Application - Implementation Grant"));
         }
 
         public static string GetExagoURL(string Projnum, string ReportName)

@@ -109,8 +109,11 @@
                                     <td>
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>--%>
-                                    <td></td>
-                                    <td></td>
+                                    <td><span class="labelClass">Transfer Type:</span></td>
+                                    <td> <asp:ListBox runat="server" SelectionMode="Multiple" Height="42px" Width="150px" ID="lbTransferType" CssClass="clsTextBoxBlue1">
+                                            
+                                            </asp:ListBox>
+                                    </td>
                                 </tr>
 
                                 <tr>

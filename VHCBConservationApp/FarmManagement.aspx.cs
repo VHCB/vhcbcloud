@@ -69,17 +69,26 @@ namespace VHCBConservationApp
                     txtGrossIncome.Text = Regex.Replace(dr["GrossIncome"].ToString(), "[^0-9a-zA-Z.]+", ""); 
                     txtGrossIncomeDescription.Text = dr["GrossIncomeDescription"].ToString();
 
+                    txtFullTimeSeasonal.Text = dr["FullTimeSeasonal"].ToString();
+                    txtPartTimeSeasonal.Text = dr["PartTimeSeasonal"].ToString();
+
                     if (DataUtils.GetBool(dr["WrittenLease"].ToString()))
                         rdbtWrittenLease.SelectedIndex = 0;
                     else
                         rdbtWrittenLease.SelectedIndex = 1;
 
                     if (DataUtils.GetBool(dr["CompletedBusinessPlan"].ToString()))
+                    {
                         rdbtCompletedBusinessPlan.SelectedIndex = 0;
+                        tblOptinalQuestions.Visible = false;
+                    }
                     else
+                    {
                         rdbtCompletedBusinessPlan.SelectedIndex = 1;
+                        tblOptinalQuestions.Visible = true;
+                    }
 
-                    if (DataUtils.GetBool(dr["ShareBusinessPlan"].ToString()))
+                        if (DataUtils.GetBool(dr["ShareBusinessPlan"].ToString()))
                         rdbtShareBusinessPlan.SelectedIndex = 0;
                     else
                         rdbtShareBusinessPlan.SelectedIndex = 1;
@@ -98,7 +107,15 @@ namespace VHCBConservationApp
                     txtOtherConservationMeasures.Text = dr["OtherConservationMeasures"].ToString();
                     txtFarmOperation.Text = dr["FarmOperation"].ToString();
 
+                    if (DataUtils.GetBool(dr["OtherTechnicalAdvisors"].ToString()))
+                        rdbtOtherTechnicalAdvisors.SelectedIndex = 0;
+                    else
+                        rdbtOtherTechnicalAdvisors.SelectedIndex = 1;
 
+                    if (DataUtils.GetBool(dr["CurrentBusinessPlan"].ToString()))
+                        rdbtnCurrentBusinessPlan.SelectedIndex = 0;
+                    else
+                        rdbtnCurrentBusinessPlan.SelectedIndex = 1;
 
 
                     foreach (ListItem li in cblConservationMeasures.Items)
@@ -144,7 +161,7 @@ namespace VHCBConservationApp
                 txtGrossIncomeDescription.Text, DataUtils.GetBool(rdbtWrittenLease.SelectedValue), DataUtils.GetBool(rdbtCompletedBusinessPlan.SelectedValue),
                 DataUtils.GetBool(rdbtShareBusinessPlan.SelectedValue), txtMitigateClimate.Text, ddlHEL.SelectedValue, ddlNutrientPlan.SelectedValue, ddlDumps.SelectedValue, DataUtils.GetBool(rdbExistingInfrastructure.SelectedValue),
                 txtInfrastructureDescription.Text, conservationMeasuresList,
-                txtOtherConservationMeasures.Text, txtFarmOperation.Text);
+                txtOtherConservationMeasures.Text, txtFarmOperation.Text, DataUtils.GetBool(rdbtOtherTechnicalAdvisors.SelectedValue.Trim()), DataUtils.GetBool(rdbtnCurrentBusinessPlan.SelectedValue.Trim()), DataUtils.GetDecimal(txtFullTimeSeasonal.Text), DataUtils.GetDecimal(txtPartTimeSeasonal.Text));
 
             LogMessage("Conservation Application Data Added Successfully");
         }
@@ -191,6 +208,14 @@ namespace VHCBConservationApp
         {
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
+        }
+
+        protected void rdbtCompletedBusinessPlan_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rdbtCompletedBusinessPlan.SelectedValue.Trim() == "No")
+                tblOptinalQuestions.Visible = true;
+            else
+                tblOptinalQuestions.Visible = false;
         }
     }
 }

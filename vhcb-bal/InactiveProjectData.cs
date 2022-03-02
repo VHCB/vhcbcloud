@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -235,7 +236,7 @@ namespace VHCBCommon.DataAccessLayer
             return dtManagers;
         }
 
-        public static void AddOnlineEmailAddresses(int Program, int ApplicationType, string Name, string Email_Address, string ProjectNumber)
+        public static ProjectMaintResult AddOnlineEmailAddresses(int Program, int ApplicationType, string Name, string Email_Address, string ProjectNumber)
         {
             try
             {
@@ -254,20 +255,26 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Email_Address", Email_Address));
                         command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
 
-                        //SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
-                        //parmMessage.Direction = ParameterDirection.Output;
-                        //command.Parameters.Add(parmMessage);
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Bit);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
 
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
 
-                        //InactiveProjectResult ap = new InactiveProjectResult();
-
-                        //ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        ProjectMaintResult objResult = new ProjectMaintResult();
 
 
-                        //return ap;
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
                     }
                 }
             }

@@ -87,6 +87,19 @@ namespace ImpGrantApp
 
                 if (drPage1tDetails != null)
                 {
+                    if (drPage1tDetails["CompletePlanning"].ToString() == "True")
+                    {
+                        rdBtnCompletePlanning.SelectedIndex = 0;
+                        lblCompletePlanningMessage.Visible = false;
+                    }
+                    else
+                    {
+                        rdBtnCompletePlanning.SelectedIndex = 1;
+                        lblCompletePlanningMessage.Visible = true;
+                    }
+
+                    rdBtnCompletePlanning.SelectedValue = drPage1tDetails["CompletePlanning"].ToString();
+
                     PopulateDropDown(ddlFarmSize, drPage1tDetails["Farmsize"].ToString());
                     //PopulateDropDown(ddlWaterShed, drPage1tDetails["LKWatershed"].ToString());
                     PopulateDropDown(ddlPrimaryProduct, drPage1tDetails["PrimaryProduct"].ToString());
@@ -130,7 +143,8 @@ namespace ImpGrantApp
         protected void btnNext_Click(object sender, EventArgs e)
         {
             Save();
-            Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
+            Response.Redirect("Eligibility.aspx");
+            //Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
         }
 
         private void LogError(string pagename, string method, string message, string error)
@@ -167,16 +181,28 @@ namespace ImpGrantApp
                         else
                         {
                             secProduct = secProduct + ',' + item.Value;
-                            secProductNames = secProductNames + ',' + item.Text;
+                            secProductNames = secProductNames + ",  " + item.Text;
                         }
                     }
                 }
 
                 string farmSizeText = ddlFarmSize.SelectedIndex == 0 ? null: ddlFarmSize.SelectedItem.Text;
 
-                ImpGrantApplicationData.ImpGrantsWaterQualityGrants(projectNumber, DataUtils.GetInt(ddlFarmSize.SelectedValue), farmSizeText,  DataUtils.GetInt(ddlPrimaryProduct.SelectedValue), secProduct, secProductNames);
+                ImpGrantApplicationData.ImpGrantsWaterQualityGrants(projectNumber, DataUtils.GetInt(ddlFarmSize.SelectedValue), farmSizeText,  DataUtils.GetInt(ddlPrimaryProduct.SelectedValue), secProduct, secProductNames, DataUtils.GetBool(rdBtnCompletePlanning.SelectedValue));
 
                 LogMessage("Farm Business Information Data Added Successfully");
+            }
+        }
+
+        protected void rdBtnCompletePlanning_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (rdBtnCompletePlanning.SelectedValue.ToLower() == "yes")
+            {
+                lblCompletePlanningMessage.Visible = false;
+            }
+            else
+            {
+                lblCompletePlanningMessage.Visible = true;
             }
         }
     }

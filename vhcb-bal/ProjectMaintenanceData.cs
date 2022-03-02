@@ -1016,6 +1016,40 @@ namespace DataAccessLayer
             return dt;
         }
 
+        public static string GetCountyByTown(string Town)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetCountyByTown";
+
+                        command.Parameters.Add(new SqlParameter("Town", Town));
+
+
+                        SqlParameter parmMessage = new SqlParameter("@County", SqlDbType.NVarChar, 510);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                        return command.Parameters["@County"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static DataTable GetStates()
         {
             DataTable dt = null;

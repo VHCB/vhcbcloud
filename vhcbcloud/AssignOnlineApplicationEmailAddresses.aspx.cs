@@ -128,12 +128,21 @@ namespace vhcbcloud
                 InactiveProjectData.UpdateOnlineEmailAddresses(DataUtils.GetInt(hfEmailAddressID.Value), DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text, chkEmailActive.Checked);
                 
                 gvEmail.EditIndex = -1;
+
+                LogMessage("Saved Data Scuccessfully!");
             }
             else
             {
                 if (txtName1.Text != "" && txtEmail1.Text != "")
                 {
-                    InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+                    ProjectMaintResult obProjectMaintResult =  InactiveProjectData.AddOnlineEmailAddresses(DataUtils.GetInt(ddlProgram.SelectedValue), DataUtils.GetInt(ddlApplicationType.SelectedValue), txtName1.Text, txtEmail1.Text, txtProjectNumber.Text);
+
+                    if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                        LogMessage("Record already exists");
+                    else if (obProjectMaintResult.IsDuplicate)
+                        LogMessage("Record already exists");
+                    else
+                        LogMessage("Saved Data Scuccessfully!");
                 }
             }
             chkEmailActive.Checked = true;
@@ -143,7 +152,6 @@ namespace vhcbcloud
             ClearEmailForm();
             hfEmailAddressID.Value = "";
             btnSubmit.Text = "Submit";
-            LogMessage("Saved Data Scuccessfully!");
         }
 
         private void LogMessage(string message)

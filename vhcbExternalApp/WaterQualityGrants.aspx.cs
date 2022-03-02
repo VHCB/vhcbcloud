@@ -167,7 +167,7 @@ namespace vhcbExternalApp
                         else
                         {
                             secProduct = secProduct + ',' + item.Value;
-                            secProductNames = secProductNames + ',' + item.Text;
+                            secProductNames = secProductNames + ",  " + item.Text;
                         }
                     }
                 }

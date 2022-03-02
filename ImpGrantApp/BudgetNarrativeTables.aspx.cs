@@ -31,27 +31,27 @@ namespace ImpGrantApp
         {
             if (projectNumber != "")
             {
-                //DataRow drPage1tDetails = ImpGrantApplicationData.GetViabilityImpGrantApplicationData(projectNumber);
+                DataRow drPage1tDetails = ImpGrantApplicationData.GetViabilityImpGrantApplicationData(projectNumber);
 
-                //if (drPage1tDetails != null)
-                //{
-                //    txtSupportingFunds.Text = drPage1tDetails["SupportingFunds"].ToString();
-                //    //txtNRCSExpensesandStatus.Text = drPage1tDetails["NRCSExpensesandStatus"].ToString();
-                //    //txtWaverRequest.Text = drPage1tDetails["WaverRequest"].ToString();
-                //}
+                if (drPage1tDetails != null)
+                {
+                    txtSupportingFunds.Text = drPage1tDetails["Budget"].ToString();
+                    //txtNRCSExpensesandStatus.Text = drPage1tDetails["NRCSExpensesandStatus"].ToString();
+                    //txtWaverRequest.Text = drPage1tDetails["WaverRequest"].ToString();
+                }
             }
         }
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
-            //Save();
+            Save();
             Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            //Save();
-            Response.Redirect("Eligibility.aspx");
+            Save();
+            Response.Redirect("Page7.aspx");
         }
 
         protected void Save()
@@ -59,9 +59,9 @@ namespace ImpGrantApp
             if (projectNumber != "")
             {
 
-                //ImpGrantApplicationData.ViabilityImpGrantApplicationPage6(projectNumber, txtSupportingFunds.Text);
+                ImpGrantApplicationData.ViabilityImpGrantApplicationPage6(projectNumber, txtSupportingFunds.Text);
 
-                //LogMessage("Farm Business Information Data Added Successfully");
+                LogMessage("Farm Business Information Data Added Successfully");
             }
         }
 

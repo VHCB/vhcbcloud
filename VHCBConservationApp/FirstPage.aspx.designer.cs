@@ -231,13 +231,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtLoAddress2;
 
         /// <summary>
-        /// txtLoTown control.
+        /// ddlLoTown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLoTown;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLoTown;
 
         /// <summary>
         /// txtLOZipCode control.
@@ -249,22 +249,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtLOZipCode;
 
         /// <summary>
-        /// txtLOVillage control.
+        /// lblLoCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLOVillage;
-
-        /// <summary>
-        /// ddlLOCounty control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLOCounty;
+        protected global::System.Web.UI.WebControls.Label lblLoCounty;
 
         /// <summary>
         /// spnVillage control.
@@ -384,13 +375,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtFarmerAdd2;
 
         /// <summary>
-        /// txtFarmerTown control.
+        /// ddlFarmerTown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFarmerTown;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFarmerTown;
 
         /// <summary>
         /// txtFarmerZip control.
@@ -402,22 +393,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtFarmerZip;
 
         /// <summary>
-        /// txtFarmerVillage control.
+        /// lblFarmerCounty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFarmerVillage;
-
-        /// <summary>
-        /// ddlFarmerCounty control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFarmerCounty;
+        protected global::System.Web.UI.WebControls.Label lblFarmerCounty;
 
         /// <summary>
         /// Span1 control.

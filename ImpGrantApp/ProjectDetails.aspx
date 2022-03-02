@@ -15,7 +15,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Viability Application</p>
+        <p class="lead">Viability Implementation Grant 	Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -294,7 +294,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" style="height: 10px"></td>
-                                </tr>--%>
+                                </tr>
                                  <tr>
                                     <td class="auto-style1"><span class="labelClass" style="margin-left: 10px" id="lblPrimeAdvisor" runat="server" visible="false">When and who was your business advisor?</span></td>
                                     <td colspan="2">
@@ -304,7 +304,7 @@
                                 <tr>
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
-                                <%--<tr>
+                                <tr>
                                     <td style="width: 252px"><span class="labelClass" style="margin-left: 10px">Which is your preferred contact?</span>  </td>
                                     <td colspan="2">
                                         <asp:RadioButtonList ID="rbPreferredContact" runat="server" Width="270px" RepeatDirection="Vertical" CssClass="FormatRadioButtonList">

@@ -17,7 +17,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -82,7 +82,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">6. What are the names of the water bodies on the property? </span></td>
+                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">6. What are the names of the water bodies on the property?</span></td>
 
                         </tr>
                         <tr>
@@ -94,7 +94,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. What watershed is the project located in?</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. What major drainage basin is the project located in? <a href="https://dec.vermont.gov/watershed/map/program/major-basins" target="_blank">Visit this Website </a></span></td>
                             <td>
                                 <asp:DropDownList ID="ddlWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" OnSelectedIndexChanged="ddlWatershed_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
@@ -104,7 +104,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8. What subwatershed is the project located in? (to locate the subwatershed, visit <a href="https://geodata.vermont.gov/datasets/vt-subwatershed-boundaries-huc12/explore?location">this website</a>.)</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8. What sub basin (HUC 8) is the project located in? <a href="https://geodata.vermont.gov/datasets/vt-subbasin-boundaries-huc8/explore?location=33.787323%2C-72.459750%2C3.00" target="_blank">visit this website</a>.)</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -114,29 +114,42 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Secondary Watershed</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What sub watershed (HUC 12) is the project located in? <a href="https://geodata.vermont.gov/datasets/vt-subwatershed-boundaries-huc12/explore?location=43.870450%2C-72.459750%2C8.39" target="_blank">Visit this Website</a></span></td>
                             <td>
-                                <asp:DropDownList ID="ddlSecWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" OnSelectedIndexChanged="ddlSecWatershed_SelectedIndexChanged" AutoPostBack="true">
+                                <asp:DropDownList ID="ddlHUC12" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
                             </td>
                         </tr>
+                          <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                      
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What secondary sub basin (HUC 8) is the project located in?</span></td>
+                            <td>
+                                 <asp:DropDownList ID="ddlSecSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                           <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What secondary sub watershed (HUC 12) is the project located in?</span></td>
+                            <td>
+                                <asp:DropDownList ID="ddlSecHUC12" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                       
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Secondary subwatershed</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in (to locate the tactical basin, visit <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location">this website</a>.) </span></td>
                             <td>
-                                <asp:DropDownList ID="ddlSecSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
+                                 <asp:DropDownList ID="ddlTacticalBasin" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in [pull-down menu] (to locate the tactical basin, visit <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location">this website</a>.) </span></td>
-                            <td>
-                                <asp:TextBox ID="txtTacticalBasin" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -217,7 +230,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><span class="labelClass" style="margin-left: 10px"> If so, please briefly describe how the funds were used to support water quality improvements.</span></td>
+                            <td colspan="3"><span class="labelClass" style="margin-left: 10px"> If so, briefly describe what programs were used and how the funds supported water quality improvements.</span></td>
                         </tr>
                          <tr>
                             <td colspan="3" style="height: 10px">

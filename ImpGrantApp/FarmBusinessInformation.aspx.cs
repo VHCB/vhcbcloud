@@ -70,10 +70,17 @@ namespace ImpGrantApp
                 {
                     txtOrgName.Text = drPage1tDetails["OrgName"].ToString();
                     txtWebsite.Text = drPage1tDetails["Website"].ToString();
+                    string[] OrgStructure = drPage1tDetails["Org_Structure"].ToString().Split(':');
+
+                    if (OrgStructure[0] == "Other (Specify)")
+                    {
+                        if(OrgStructure.Length > 1)
+                        txtOrgStructureOther.Text = OrgStructure[1];
+                    }
 
                     foreach (ListItem li in rdBtnOrgStructure.Items)
                     {
-                        if (li.Value == drPage1tDetails["Org_Structure"].ToString())
+                        if (li.Value == OrgStructure[0])
                         {
                             li.Selected = true;
                         }
@@ -124,10 +131,17 @@ namespace ImpGrantApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
+            Save();
             Response.Redirect("ProjectDetails.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
+        {
+            Save();
+            Response.Redirect("WaterQualityGrants.aspx");
+        }
+
+        private void Save()
         {
             if (projectNumber != "")
             {
@@ -166,24 +180,25 @@ namespace ImpGrantApp
 
                 string orgStruct = rdBtnOrgStructure.SelectedItem == null ? "0" : rdBtnOrgStructure.SelectedItem.ToString();
 
+                if (orgStruct == "Other (Specify)")
+                {
+                    orgStruct = orgStruct + ":" + txtOrgStructureOther.Text;
+                }
 
-            ImpGrantApplicationData.ViabilityImpGrantApplicationPage2(projectNumber, txtOrgName.Text, txtWebsite.Text, orgStruct, DataUtils.GetInt(txtCows.Text), DataUtils.GetInt(txtHogs.Text),
-            DataUtils.GetInt(txtPoultry.Text), txtOtherNonDiaryFarms.Text, DataUtils.GetInt(txtMilkedDaily.Text), txtPrimaryAnimalTypes.Text, DataUtils.GetInt(txtHerd.Text), DataUtils.GetInt(txtRollingHerd.Text),
-            DataUtils.GetInt(txtMilkPounds.Text), DataUtils.GetInt(txtAvgCullRate.Text), DataUtils.GetInt(txtSomaticCell.Text), MilkSold,
-            txtGrossSales.Text,
-            txtNetIncome.Text,
-            //DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")),
-            //DataUtils.GetDecimal(Regex.Replace(txtNetWorth.Text, "[^0-9a-zA-Z.]+", "")),
-            DataUtils.GetDecimal(txtFamilyETF.Text),
-            DataUtils.GetDecimal(txtNonFamilyETF.Text), DataUtils.GetInt(ddlFiscalyr.SelectedValue), DataUtils.GetDecimal(txtAcresinProduction.Text), DataUtils.GetDecimal(txtAcresOwned.Text),
-            DataUtils.GetDecimal(txtAcresLeased.Text), DataUtils.GetDecimal(txtPastureAcres.Text), LandOwn, LandOwnText);
+                ImpGrantApplicationData.ViabilityImpGrantApplicationPage2(projectNumber, txtOrgName.Text, txtWebsite.Text, orgStruct, txtCows.Text, txtHogs.Text,
+                txtPoultry.Text, txtOtherNonDiaryFarms.Text, txtMilkedDaily.Text, txtPrimaryAnimalTypes.Text, txtHerd.Text, txtRollingHerd.Text,
+                txtMilkPounds.Text, txtAvgCullRate.Text, txtSomaticCell.Text, MilkSold,
+                txtGrossSales.Text,
+                txtNetIncome.Text,
+                //DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")),
+                //DataUtils.GetDecimal(Regex.Replace(txtNetWorth.Text, "[^0-9a-zA-Z.]+", "")),
+                DataUtils.GetDecimal(txtFamilyETF.Text),
+                DataUtils.GetDecimal(txtNonFamilyETF.Text), DataUtils.GetInt(ddlFiscalyr.SelectedValue), DataUtils.GetDecimal(txtAcresinProduction.Text), DataUtils.GetDecimal(txtAcresOwned.Text),
+                DataUtils.GetDecimal(txtAcresLeased.Text), DataUtils.GetDecimal(txtPastureAcres.Text), LandOwn, LandOwnText);
 
                 LogMessage("Farm Business Information Data Added Successfully");
-
-                Response.Redirect("WaterQualityGrants.aspx");
             }
         }
-
         private void BindLookUP1(CheckBoxList ddList, int LookupType)
         {
             try

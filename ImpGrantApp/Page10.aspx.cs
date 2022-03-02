@@ -137,6 +137,8 @@ namespace ImpGrantApp
 
                         if (EmailList.Count > 0)
                             GetExagoURLForReport(projectNumber, "Online Application - Implementation Grant", EmailList);
+
+                        Response.Redirect("Login.aspx");
                     }
                 }
                 else
@@ -181,17 +183,17 @@ namespace ImpGrantApp
             string jobId;           // Use to retrieve schedule info later for editing
             int hostIdx;            // Assigned execution host id
 
-            string subject = $"Online Viability Application for Project ({Projnum})";
+            string subject = $"Online Viability Implementation Grant Application for Project ({Projnum})";
 
             ReportScheduleInfo newSchedule = new ReportScheduleInfoOnce()
             {
-                ScheduleName = "Online Viability Application",             // Schedule name
+                ScheduleName = "Online Viability Implementation Grant",             // Schedule name
                 ReportType = wrReportType.Advanced,            // Report type
                 RangeStartDate = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),                   // Start date
                 ScheduleTime = new LocalTime(DateTime.Now.Hour, DateTime.Now.Minute), // Start time
                 SendReportInEmail = true,                             // Email or save
                 EmailSubject = subject,
-                EmailBody = "PDF of your Online Viability Application"
+                EmailBody = "PDF of your Online Viability Implementation Grant Application"
             };
             newSchedule.EmailToList.AddRange(EmailList);
 

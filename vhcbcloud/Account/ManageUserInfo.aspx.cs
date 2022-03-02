@@ -574,5 +574,31 @@ namespace vhcbcloud.Account
         {
             BindUserInfo();
         }
+
+        protected void gvPageSecurity_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+
+            DataTable dt = UserSecurityData.GetuserPageSecurity(Convert.ToInt32(hfUserId.Value));
+
+            gvPageSecurity.DataSource = SortDataTable(dt, false);
+            gvPageSecurity.DataBind();
+            gvPageSecurity.PageIndex = pageIndex;
+        }
+
+        protected void gvSecFunctions_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            GridViewSortExpression = e.SortExpression;
+            int pageIndex = 0;
+
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(Convert.ToInt32(hfUserId.Value));
+            gvSecFunctions.DataSource = SortDataTable(dt, false);
+            gvSecFunctions.DataBind();
+
+           
+            gvPageSecurity.PageIndex = pageIndex;
+        }
     }
 }

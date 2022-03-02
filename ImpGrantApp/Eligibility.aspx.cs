@@ -38,18 +38,18 @@ namespace ImpGrantApp
 
                 if (drPage1tDetails != null)
                 {
-                    if (drPage1tDetails["CompletePlanning"].ToString() == "True")
-                    {
-                        rdBtnCompletePlanning.SelectedIndex = 0;
-                        lblCompletePlanningMessage.Visible = true;
-                    }
-                    else
-                    {
-                        rdBtnCompletePlanning.SelectedIndex = 1;
-                        lblCompletePlanningMessage.Visible = false;
-                    }
+                    //if (drPage1tDetails["CompletePlanning"].ToString() == "True")
+                    //{
+                    //    rdBtnCompletePlanning.SelectedIndex = 0;
+                    //    lblCompletePlanningMessage.Visible = false;
+                    //}
+                    //else
+                    //{
+                    //    rdBtnCompletePlanning.SelectedIndex = 1;
+                    //    lblCompletePlanningMessage.Visible = true;
+                    //}
 
-                        rdBtnCompletePlanning.SelectedValue = drPage1tDetails["CompletePlanning"].ToString();
+                    //    rdBtnCompletePlanning.SelectedValue = drPage1tDetails["CompletePlanning"].ToString();
                     txtPrimeAdvisor2.Text = drPage1tDetails["PrimeAdvisor2"].ToString();
                     PopulateDropDown(ddlAdvisorOrg, drPage1tDetails["AdvisorOrg"].ToString());
                     txtOtherAdvisor.Text = drPage1tDetails["OtherAdvisor"].ToString();
@@ -61,7 +61,7 @@ namespace ImpGrantApp
         {
             foreach (ListItem item in ddl.Items)
             {
-                if (DBSelectedvalue.Trim() == item.Value.ToString())
+                if (DBSelectedvalue.Trim() == item.Text.ToString())
                 {
                     ddl.ClearSelection();
                     item.Selected = true;
@@ -104,13 +104,15 @@ namespace ImpGrantApp
         protected void previousButton_Click(object sender, EventArgs e)
         {
             Save();
-            Response.Redirect("BudgetNarrativeTables.aspx");
+            Response.Redirect("WaterQualityGrants.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
             Save();
-            Response.Redirect("Page7.aspx");
+            
+            Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
+            //Response.Redirect("Page7.aspx");
         }
 
         private void Save()
@@ -118,23 +120,23 @@ namespace ImpGrantApp
             if (projectNumber != "")
             {
 
-                ImpGrantApplicationData.EligibilitySave(projectNumber, DataUtils.GetBool(rdBtnCompletePlanning.SelectedValue), txtPrimeAdvisor2.Text, DataUtils.GetInt(ddlAdvisorOrg.SelectedValue), txtOtherAdvisor.Text);
+                ImpGrantApplicationData.EligibilitySave(projectNumber, txtPrimeAdvisor2.Text, ddlAdvisorOrg.SelectedItem.Text, txtOtherAdvisor.Text);
 
                 LogMessage("Eligibility Added Successfully");
             }
         }
 
-        protected void rdBtnCompletePlanning_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        //protected void rdBtnCompletePlanning_SelectedIndexChanged(object sender, EventArgs e)
+        //{
 
-            if (rdBtnCompletePlanning.SelectedValue.ToLower() == "yes")
-            {
-                lblCompletePlanningMessage.Visible = true;
-            }
-            else
-            {
-                lblCompletePlanningMessage.Visible = false;
-            }
-        }
+        //    if (rdBtnCompletePlanning.SelectedValue.ToLower() == "yes")
+        //    {
+        //        lblCompletePlanningMessage.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        lblCompletePlanningMessage.Visible = true;
+        //    }
+        //}
     }
 }

@@ -33,8 +33,30 @@ namespace VHCBConservationApp
         private void BindControls()
         {
             BindLookUP(ddlWatershed, 143);
-            BindLookUP(ddlSecWatershed, 143);
+            //BindLookUP(ddlSecWatershed, 143);
+            BindHUC12(ddlHUC12);
+            BindHUC12(ddlSecHUC12);
             // BindLookUP(ddlSubWatershed, 261);
+            BindLookUP(ddlTacticalBasin, 2284);
+            
+
+        }
+
+        private void BindHUC12(DropDownList ddList)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                ddList.DataSource = HUC12Data.GetHUC12ListForApp();
+                ddList.DataValueField = "Name";
+                ddList.DataTextField = "Name";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindHUC12", "Control ID:" + ddList.ID, ex.Message);
+            }
 
         }
 
@@ -88,7 +110,9 @@ namespace VHCBConservationApp
                     PopulateWaterShed(dr["Watershed"].ToString());
 
                     txtWaterBodies.Text = dr["WaterBodies"].ToString();
-                    txtTacticalBasin.Text = dr["TacticalBasin"].ToString();
+
+                    PopulateDropDownByText(ddlTacticalBasin, dr["TacticalBasin"].ToString());
+
                     PopulateDropDownByText(ddlDrainageDitches, dr["DrainageDitches"].ToString());
                     PopulateDropDownByText(ddlDrainageTiles, dr["DrainageTiles"].ToString());
 
@@ -105,6 +129,8 @@ namespace VHCBConservationApp
 
                     txtWaterQualityConcerns.Text = dr["WaterQualityConcerns"].ToString();
                     PopulateDropDownByText(ddlLivestockExcluded, dr["LivestockExcluded"].ToString());
+                    PopulateDropDownByText(ddlHUC12, dr["SubBasin"].ToString());
+                    PopulateDropDownByText(ddlSecHUC12, dr["SubBasin2"].ToString());
                 }
             }
         }
@@ -129,12 +155,12 @@ namespace VHCBConservationApp
                 var secWaterShedArray = waterShedSubwatershedArray[1].Split('~');
                 if (secWaterShedArray.Length == 2)
                 {
-                    PopulateSecWaterShedByText(ddlSecWatershed, secWaterShedArray[0]);
+                    //PopulateSecWaterShedByText(ddlSecWatershed, secWaterShedArray[0]);
                     PopulateDropDownByText(ddlSecSubWatershed, secWaterShedArray[1]);
                 }
                 else
                 {
-                    PopulateSecWaterShedByText(ddlSecWatershed, secWaterShedArray[0]);
+                    //PopulateSecWaterShedByText(ddlSecWatershed, secWaterShedArray[0]);
                 }
             }
 
@@ -176,12 +202,12 @@ namespace VHCBConservationApp
                 finalWatershed = finalWatershed + '~' + subWaterShed;
             }
 
-            if (ddlSecWatershed.SelectedItem.Text.ToLower() != "select")
-            {
-                secWaterShed = ddlSecWatershed.SelectedItem.Text;
+            //if (ddlSecWatershed.SelectedItem.Text.ToLower() != "select")
+            //{
+            //    secWaterShed = ddlSecWatershed.SelectedItem.Text;
 
-                finalSecWatershed = secWaterShed;
-            }
+            //    finalSecWatershed = secWaterShed;
+            //}
             if (ddlSecSubWatershed.SelectedItem != null && ddlSecSubWatershed.SelectedItem.Text.ToLower() != "select")
             {
                 SecSubWaterShed = ddlSecSubWatershed.SelectedItem.Text;
@@ -213,12 +239,6 @@ namespace VHCBConservationApp
             else
                 LKSUBWatershed = DataUtils.GetInt(ddlSubWatershed.SelectedItem.Value);
 
-            int LKSecWatershed;
-            if (ddlSecWatershed.SelectedItem == null)
-                LKSecWatershed = 0;
-            else
-                LKSecWatershed = DataUtils.GetInt(ddlSecWatershed.SelectedItem.Value);
-
             int LKSecSUBWatershed;
             if (ddlSecSubWatershed.SelectedItem == null)
                 LKSecSUBWatershed = 0;
@@ -226,9 +246,9 @@ namespace VHCBConservationApp
                 LKSecSUBWatershed = DataUtils.GetInt(ddlSecSubWatershed.SelectedItem.Value);
 
             ConservationApplicationData.WaterManagement(projectNumber, DataUtils.GetDecimal(txtWetlands.Text), DataUtils.GetDecimal(txtPonds.Text), DataUtils.GetDecimal(txtFloodplain.Text), DataUtils.GetDecimal(txtStreamfeet.Text), DataUtils.GetDecimal(txtPondFeet.Text),
-                    txtWaterBodies.Text, waterShedInfo, "", txtTacticalBasin.Text, ddlDrainageDitches.SelectedItem.Text, ddlDrainageTiles.SelectedItem.Text,
+                    txtWaterBodies.Text, waterShedInfo, "", ddlTacticalBasin.SelectedItem.Text, ddlDrainageDitches.SelectedItem.Text, ddlDrainageTiles.SelectedItem.Text,
                     txtWasteInfrastucture.Text, txtProtectWater.Text, DataUtils.GetBool(rdbtParticipateWaterGrant.SelectedValue), txtParticipateWaterGrant.Text, ddlLivestockExcluded.SelectedItem.Text, txtWaterQualityConcerns.Text,
-                    LKWatershed, LKSUBWatershed, LKSecWatershed, LKSecSUBWatershed);
+                    LKWatershed, LKSUBWatershed, LKSecSUBWatershed, DataUtils.GetInt(ddlHUC12.SelectedItem.Value), DataUtils.GetInt(ddlSecHUC12.SelectedItem.Value), ddlHUC12.SelectedItem.Text, ddlSecHUC12.SelectedItem.Text);
 
             LogMessage("Conservation Application Data Added Successfully");
         }
@@ -253,9 +273,16 @@ namespace VHCBConservationApp
         protected void ddlWatershed_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlWatershed.SelectedIndex > 0)
+            {
                 BindLookupSubWatershed(ddlSubWatershed, DataUtils.GetInt(ddlWatershed.SelectedValue));
+                BindLookupSubWatershed(ddlSecSubWatershed, DataUtils.GetInt(ddlWatershed.SelectedValue));
+            }
+
             else
+            {
                 ddlSubWatershed.Items.Clear();
+                ddlSecSubWatershed.Items.Clear();
+            }
         }
 
         private void PopulateDropDown(DropDownList ddl, string DBSelectedvalue)
@@ -290,6 +317,7 @@ namespace VHCBConservationApp
                     ddl.ClearSelection();
                     item.Selected = true;
                     BindLookupSubWatershed(ddlSubWatershed, DataUtils.GetInt(item.Value));
+                    BindLookupSubWatershed(ddlSecSubWatershed, DataUtils.GetInt(item.Value));
                 }
             }
         }
@@ -307,10 +335,10 @@ namespace VHCBConservationApp
         }
         protected void ddlSecWatershed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlSecWatershed.SelectedIndex > 0)
-                BindLookupSubWatershed(ddlSecSubWatershed, DataUtils.GetInt(ddlSecWatershed.SelectedValue));
-            else
-                ddlSecSubWatershed.Items.Clear();
+            //if (ddlSecWatershed.SelectedIndex > 0)
+            //    BindLookupSubWatershed(ddlSecSubWatershed, DataUtils.GetInt(ddlSecWatershed.SelectedValue));
+            //else
+            //    ddlSecSubWatershed.Items.Clear();
         }
     }
 }

@@ -60,33 +60,6 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtHay;
 
         /// <summary>
-        /// txtRoundBales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRoundBales;
-
-        /// <summary>
-        /// txtSquareBales control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSquareBales;
-
-        /// <summary>
-        /// txtTonsperacreperYear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTonsperacreperYear;
-
-        /// <summary>
         /// txtPasture control.
         /// </summary>
         /// <remarks>
@@ -168,6 +141,24 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtNurseryStock;
 
         /// <summary>
+        /// txtOtherAgriculture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOtherAgriculture;
+
+        /// <summary>
+        /// txtOtherAgricultureProduction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOtherAgricultureProduction;
+
+        /// <summary>
         /// txtOrganic control.
         /// </summary>
         /// <remarks>
@@ -222,24 +213,6 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtOtherForest;
 
         /// <summary>
-        /// txtOtherAgriculture control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOtherAgriculture;
-
-        /// <summary>
-        /// txtOtherAgricultureProduction control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOtherAgricultureProduction;
-
-        /// <summary>
         /// txtUnmanaged control.
         /// </summary>
         /// <remarks>
@@ -256,6 +229,24 @@ namespace VHCBConservationApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAgritourism;
+
+        /// <summary>
+        /// Div1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
+
+        /// <summary>
+        /// txtrecuses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtrecuses;
 
         /// <summary>
         /// rdbTrails control.
@@ -438,13 +429,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTrailName;
 
         /// <summary>
-        /// txtTrailMiles control.
+        /// txtTrailFeets control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTrailMiles;
+        protected global::System.Web.UI.WebControls.TextBox txtTrailFeets;
 
         /// <summary>
         /// btnTrails control.

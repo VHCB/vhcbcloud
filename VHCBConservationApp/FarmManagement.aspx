@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FarmManagement.aspx.cs" Inherits="VHCBConservationApp.Page5"  MaintainScrollPositionOnPostback="true" EnableEventValidation="false"%>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FarmManagement.aspx.cs" Inherits="VHCBConservationApp.Page5" MaintainScrollPositionOnPostback="true" EnableEventValidation="false" %>
 
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -17,7 +17,7 @@
         }
     </style>
     <div class="jumbotron">
-        <p class="lead">Conservation Application</p>
+        <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
@@ -64,7 +64,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">3. Acres of land rented from others</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">3. Acres of land rented from others that is part of the same operation and relates to the land being conserved</span></td>
                             <td>
                                 <asp:TextBox ID="txtRentedLand" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
                             </td>
@@ -75,12 +75,26 @@
                         <tr>
                             <td><span class="labelClass" style="margin-left: 10px">4. Total employees (including family members + self)</span></td>
                             <td class="auto-style7">
-                                <span class="labelClass" style="margin-left: 10px">Full Time </span>&nbsp; &nbsp;
+                                <span class="labelClass" style="margin-left: 10px">Full-Time Year-Round</span>&nbsp; &nbsp;
                                 <asp:TextBox ID="txtFullTime" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
                             </td>
                             <td>
-                                <span class="labelClass" style="margin-left: 10px">Part Time </span>&nbsp; &nbsp;
+                                <span class="labelClass" style="margin-left: 10px">Part-Time Year-Round</span>&nbsp; &nbsp;
                                 <asp:TextBox ID="txtPartTime" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                         <tr>
+                            <td><span class="labelClass" style="margin-left: 10px"></span></td>
+                            <td class="auto-style7">
+                                <span class="labelClass" style="margin-left: 10px">Full-Time Seasonal</span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                <asp:TextBox ID="txtFullTimeSeasonal" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
+                            </td>
+                            <td>
+                                <span class="labelClass" style="margin-left: 10px">Part-Time Seasonal</span>&nbsp; &nbsp;&nbsp; &nbsp;
+                                <asp:TextBox ID="txtPartTimeSeasonal" CssClass="clsTextBoxBlue1" runat="server" Width="50px"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -121,9 +135,8 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. Is the farm enrolled or has it completed a business plan through the VHCB Farm & Forest Viability Program (or another program)</span></td>
-                            <td>
-                                <asp:RadioButtonList ID="rdbtCompletedBusinessPlan" runat="server" CellPadding="2" CellSpacing="4"
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. Has the farmer worked with the VHCB Farm and Forest Viability Program on business planning or other support services?</span></td>
+                            <td>&nbsp;<asp:RadioButtonList ID="rdbtCompletedBusinessPlan" runat="server" CellPadding="2" CellSpacing="4" OnSelectedIndexChanged="rdbtCompletedBusinessPlan_SelectedIndexChanged" AutoPostBack="true"
                                     RepeatDirection="Horizontal">
                                     <asp:ListItem>Yes &nbsp;</asp:ListItem>
                                     <asp:ListItem> No &nbsp;</asp:ListItem>
@@ -136,7 +149,7 @@
                         </tr>
                         <tr>
                             <td colspan="2"><span class="labelClass" style="margin-left: 10px">If so, are the farmers willing to share the business plan, if it is still applicable? </span></td>
-                            <td>
+                            <td>&nbsp;&nbsp;&nbsp;
                                 <asp:RadioButtonList ID="rdbtShareBusinessPlan" runat="server" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal">
                                     <asp:ListItem>Yes &nbsp;</asp:ListItem>
@@ -145,6 +158,38 @@
 
                             </td>
                         </tr>
+                    </table>
+                    <table runat="server" id="tblOptinalQuestions" visible="false">
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Have they worked with other business planning technical advisors? </span></td>
+                            <td>
+                                <asp:RadioButtonList ID="rdbtOtherTechnicalAdvisors" runat="server" CellPadding="2" CellSpacing="4"
+                                    RepeatDirection="Horizontal">
+                                    <asp:ListItem>Yes &nbsp;</asp:ListItem>
+                                    <asp:ListItem> No &nbsp;</asp:ListItem>
+                                </asp:RadioButtonList>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Does the farmer have a current business plan? </span></td>
+                            <td>
+                                <asp:RadioButtonList ID="rdbtnCurrentBusinessPlan" runat="server" CellPadding="2" CellSpacing="4"
+                                    RepeatDirection="Horizontal">
+                                    <asp:ListItem>Yes &nbsp;</asp:ListItem>
+                                    <asp:ListItem> No &nbsp;</asp:ListItem>
+                                </asp:RadioButtonList>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
@@ -266,7 +311,7 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                       
+
                     </table>
 
                     <table>
