@@ -113,6 +113,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Eligibility.aspx" />
     <Content Include="FarmBusinessInformation.aspx" />
+    <Content Include="Images\ImpGrantLogo.jpg" />
     <Content Include="Images\MatchSurce.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm %281%29.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm-old.png" />

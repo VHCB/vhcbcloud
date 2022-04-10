@@ -34,9 +34,16 @@
                                 <asp:TextBox ID="txtProjectOutcomes" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="879px" Height="150px" />
                             </td>
                         </tr>
+                         <tr>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass">5.	Project Timeline.Please provide a timeline for the project. Assuming successful funding, when do you expect completion of this project? (~100 words)
+
+                            <td colspan="2"><span class="labelClass">5.	Project Timeline. Please provide a timeline for the project. Assuming successful funding, when do you expect completion of this project? (~100 words)
                                 <em><strong>(Required)</strong></em></span></td>
+                        </tr>
+                         <tr>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="margin-left: 10px">
@@ -49,6 +56,9 @@
                         <tr>
                             <td colspan="2"><span class="labelClass">6.	Contingencies and Permits. Please list any other applications upon which your project is contingent (i.e. other grants or bank loans) if applicable. Please list any federal, state, or local permits or approvals that will be necessary for you to implement this project, and their status. <em><strong>(Required)</strong></em></span>
                             </td>
+                        </tr>
+                         <tr>
+                            <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="margin-left: 10px">

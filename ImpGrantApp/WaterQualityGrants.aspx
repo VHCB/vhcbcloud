@@ -142,7 +142,7 @@
                                                 <td colspan="2" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2" style="height: 15px"><span class="labelClass" style="margin-left: 10px" id="lblCompletePlanningMessage" runat="server" visible="false"><strong>If you did not complete a planning project through the Viability Program between 2020 and 2022, you are not eligible for this round of grant funding. Please reach out to Aaron Guman, Aaron@vhcb.org or 802-828-5587, for questions regarding eligibility.</strong></span></td>
+                                                <td colspan="2" style="height: 15px"><span class="labelClass" style="margin-left: 10px" id="lblCompletePlanningMessage" runat="server" visible="false"><strong>If you did not complete a planning project through the Viability Program between 2020 and 2022, you are not eligible for this round of grant funding. Please reach out to Betsy McGavisk, Betsy@vhcb.org or 802-828-5562, for questions regarding eligibility.</strong></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>

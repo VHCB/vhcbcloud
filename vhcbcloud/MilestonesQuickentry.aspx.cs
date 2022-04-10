@@ -563,7 +563,7 @@ namespace vhcbcloud
                 int ProjectEventID = Convert.ToInt32(((Label)gvMilestone.Rows[e.RowIndex].FindControl("lblProjectEventID")).Text);
                 MilestoneData.DeleteMilestone(ProjectEventID);
                 BindMilestoneGrid();
-                LogMessage("Milestone Event deleted scuccessfully");
+                LogMessage("Milestone Event deleted successfully");
             }
             catch (Exception ex)
             {
@@ -578,7 +578,7 @@ namespace vhcbcloud
                 int ProjectEventID = Convert.ToInt32(((Label)gvEntityMilestone.Rows[e.RowIndex].FindControl("lblProjectEventID")).Text);
                 MilestoneData.DeleteMilestone(ProjectEventID);
                 BindEntityMilestoneGrid();
-                LogMessage("Milestone Event deleted scuccessfully");
+                LogMessage("Milestone Event deleted successfully");
             }
             catch (Exception ex)
             {

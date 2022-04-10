@@ -129,7 +129,7 @@ namespace vhcbcloud
                 
                 gvEmail.EditIndex = -1;
 
-                LogMessage("Saved Data Scuccessfully!");
+                LogMessage("Saved Data Successfully!");
             }
             else
             {
@@ -142,7 +142,7 @@ namespace vhcbcloud
                     else if (obProjectMaintResult.IsDuplicate)
                         LogMessage("Record already exists");
                     else
-                        LogMessage("Saved Data Scuccessfully!");
+                        LogMessage("Saved Data Successfully!");
                 }
             }
             chkEmailActive.Checked = true;

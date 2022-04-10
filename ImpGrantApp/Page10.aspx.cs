@@ -162,6 +162,10 @@ namespace ImpGrantApp
             parameter.Value = Projnum;
             parameter.IsHidden = true;
 
+            api.SetupData.StorageMgmtConfig.SetIdentity("userId", "Dherman");
+            api.SetupData.StorageMgmtConfig.SetIdentity("companyId", "VHCB");
+          
+
             ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Viability\" + ReportName);
 
             //api.Action = wrApiAction.ExecuteReport;
