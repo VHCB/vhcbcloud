@@ -207,7 +207,7 @@ namespace vhcbcloud
             string ddlMilestoneSelectedValue = HttpContext.Current.Request.Form["ctl00$MainContent$ddlMilestone"];
 
             dvSearchResults.Visible = true;
-            DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text, txtPrimaryApplicant.Text,
+            DataTable dtSearchResults = ProjectSearchData.ProjectSearch(txtProjNum.Text, txtProjectName.Text.Replace("'", "''"), txtPrimaryApplicant.Text.Replace("'","''"),
                 ddlProgram.SelectedValue.ToString(), ddlProjectType.SelectedValue.ToString(), ddlTown.SelectedValue.ToString(),
                 ddlCounty.SelectedValue.ToString(), cbPrimaryApplicant.Checked, cbProjectActive.Checked, 
                 ddlTargetYear.SelectedValue.ToString(), rbMilestone.SelectedValue, ddlMilestoneSelectedValue,

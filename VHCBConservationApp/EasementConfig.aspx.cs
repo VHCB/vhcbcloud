@@ -196,12 +196,12 @@ namespace VHCBConservationApp
 
             if (projectNumber != "")
             {
-                saveData();
-
                 List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
                 if (EmailList.Count > 0)
                     GetExagoURLForReport(projectNumber, "Farm Conservation Online Application", EmailList);
+
+                saveData();
 
             }
 

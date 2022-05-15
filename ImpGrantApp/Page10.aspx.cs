@@ -129,14 +129,14 @@ namespace ImpGrantApp
                         LogMessage("Missing required information, please check the application.");
                     else
                     {
-                        ViabilityApplicationData.SubmitApplication(projectNumber);
-
-                        LogMessage("Viability Application Submitted Successfully");
-
                         List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
                         if (EmailList.Count > 0)
                             GetExagoURLForReport(projectNumber, "Online Application - Implementation Grant", EmailList);
+
+                        ViabilityApplicationData.SubmitApplication(projectNumber);
+
+                        LogMessage("Viability Application Submitted Successfully");
 
                         Response.Redirect("Login.aspx");
                     }
