@@ -222,11 +222,11 @@
                                                 <td style="width: 151px">
                                                     <asp:DropDownList ID="ddlAffPeriod" CssClass="clsDropDown" runat="server" Style="margin-left: 18">
                                                     </asp:DropDownList>
-                                                    <asp:TextBox ID="txtAffPeriod" CssClass="clsTextBoxBlueSm" Text="30" runat="server" ></asp:TextBox>
+                                                    <%--<asp:TextBox ID="txtAffPeriod" CssClass="clsTextBoxBlueSm" Text="30" runat="server" ></asp:TextBox>
                                                      <asp:RangeValidator runat="server" Type="Integer" class="lblErrMsg" SetFocusOnError="True" 
                                                          MinimumValue="30" MaximumValue="9999"
                                                         ControlToValidate="txtAffPeriod" ErrorMessage="Affordability Period not be less than 30 Years"
-                                                        Style="top: 435px; left: 730px; position: absolute; height: 218px; width: 355px" />
+                                                        Style="top: 435px; left: 730px; position: absolute; height: 218px; width: 355px" />--%>
                                                 </td>
                                                 <td style="width: 235px"><span class="labelClass">Affordability Period Start Date</span></td>
                                                 <td style="width: 180px">
@@ -1040,9 +1040,9 @@
                 PopupAffrdEndDate();
             });
 
-             $('#<%= txtAffPeriod.ClientID%>').change(function () {
+            <%-- $('#<%= txtAffPeriod.ClientID%>').change(function () {
                 PopupAffrdEndDate();
-             });
+             });--%>
 
             <%--$('#<%= txtFreq.ClientID%>').blur(function () {
                 PopupNextInspectionYear();
@@ -1135,12 +1135,15 @@
                     case "20 years":
                         noYears = 20;
                         break;
+                    case "30 years":
+                        noYears = 30;
+                        break;
                     default:
                         noYears = 0;
                 }
              
-                if ($('#<%=hfProjectFedProgram.ClientID%>').val() == 'HTF')
-                    noYears = parseInt($('#<%=txtAffPeriod.ClientID%>').val(), 10);
+                <%--if ($('#<%=hfProjectFedProgram.ClientID%>').val() == 'HTF')
+                    noYears = parseInt($('#<%=txtAffPeriod.ClientID%>').val(), 10);--%>
 
                 var startDate = new Date($('#<%=txtAffrdStartDate.ClientID%>').val());
                 var endDate = new Date(startDate.getFullYear() + noYears, startDate.getMonth(), startDate.getDate())

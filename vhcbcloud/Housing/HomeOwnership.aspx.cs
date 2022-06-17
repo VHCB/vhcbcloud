@@ -61,13 +61,16 @@ namespace vhcbcloud.Housing
 
             if (dr != null)
             {
+                bool IsUserHasSameProgram = UserSecurityData.IsUserHasSameProgramId(DataUtils.GetInt(dr["userid"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+
                 if (dr["usergroupid"].ToString() == "0") // Admin Only
                 {
                     hfIsVisibleBasedOnRole.Value = "true";
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
@@ -79,7 +82,8 @@ namespace vhcbcloud.Housing
                 }
                 else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
                 {
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";

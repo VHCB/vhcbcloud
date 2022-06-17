@@ -60,13 +60,16 @@ namespace vhcbcloud.Housing
 
             if (dr != null)
             {
+                bool IsUserHasSameProgram = UserSecurityData.IsUserHasSameProgramId(DataUtils.GetInt(dr["userid"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+
                 if (dr["usergroupid"].ToString() == "0") // Admin Only
                 {
                     hfIsVisibleBasedOnRole.Value = "true";
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
@@ -78,7 +81,8 @@ namespace vhcbcloud.Housing
                 }
                 else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
                 {
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
@@ -384,7 +388,7 @@ namespace vhcbcloud.Housing
             if (hfProjectFedProgram.Value.ToLower() == "home" || hfProjectFedProgram.Value.ToLower() == "nsp")
             {
                 string labelText = "";
-                if(hfProjectFedProgram.Value.ToLower() == "home")
+                if (hfProjectFedProgram.Value.ToLower() == "home")
                     labelText = "HOME";
                 else
                     labelText = "NSP";
@@ -402,7 +406,7 @@ namespace vhcbcloud.Housing
                 chkCHDO.Visible = spnCHDORequest.Visible = true;
                 spnCHDORecertMonth.Visible = true;
                 ddlCHRDoRecert.Visible = true;
-                txtAffPeriod.Visible = false;
+               // txtAffPeriod.Visible = false;
                 ddlAffPeriod.Visible = true;
                 spnUARegulations.Visible = true;
                 chkUARegulation.Visible = true;
@@ -425,13 +429,37 @@ namespace vhcbcloud.Housing
                 chkCHDO.Visible = false;
                 spnCHDORecertMonth.Visible = false;
                 ddlCHRDoRecert.Visible = false;
-                txtAffPeriod.Visible = true;
-                ddlAffPeriod.Visible = false;
+                //txtAffPeriod.Visible = true;
+                ddlAffPeriod.Visible = true;
                 spnUARegulations.Visible = false;
                 chkUARegulation.Visible = false;
 
                 BindLookUP(ddlHomeAff, 174);
                 BindLookUP(ddlUnitType, 175);
+            }
+            else if (hfProjectFedProgram.Value.ToLower() == "home-arp")
+            {
+                string labelText = "HOME-ARP";
+                spnFormTitle.InnerText = labelText;
+                cbAddHomeAff.Text = "Add New " + labelText + " Income Restriction";
+                cbAddRentalAffordability.Text = "Add New " + labelText + " Rent Restriction";
+                cbAddUnitOccupancy.Text = "Add New " + labelText + " Unit Sizes";
+                spnUnitSizes.InnerText = labelText + " Unit Sizes";
+                spnRentRest.InnerText = labelText + " Rent Restrictions";
+                spnIncomeRest.InnerText = labelText + " Income Restrictions";
+                spnIncomeRestrictionsLabel.InnerText = labelText;
+
+                spnCHDORequest.Visible = false;
+                chkCHDO.Visible = spnCHDORequest.Visible = false;
+                spnCHDORecertMonth.Visible = false;
+                ddlCHRDoRecert.Visible = false;
+                //txtAffPeriod.Visible = false;
+                ddlAffPeriod.Visible = true;
+                spnUARegulations.Visible = false;
+                chkUARegulation.Visible = false;
+
+                BindLookUP(ddlHomeAff, 173);
+                BindLookUP(ddlUnitType, 168);
             }
 
             dvFedProgramHome.Visible = true;
@@ -441,8 +469,11 @@ namespace vhcbcloud.Housing
             dvNewInspections.Visible = true;
             BindInspectionsGrid();
 
-            dvNewHomeAff.Visible = true;
-            BindHomeAffordGrid();
+            if (hfProjectFedProgram.Value.ToLower() != "home-arp")
+            {
+                dvNewHomeAff.Visible = true;
+                BindHomeAffordGrid();
+            }
 
             dvRentalAffordability.Visible = true;
             BindRentalAffordabilityGrid();
@@ -520,7 +551,7 @@ namespace vhcbcloud.Housing
         {
             ddlRecreationMonth.SelectedIndex = -1;
             ddlAffPeriod.SelectedIndex = -1;
-            txtAffPeriod.Text = "30";
+            //txtAffPeriod.Text = "30";
             txtAffrdStartDate.Text = "";
             chkCHDO.Checked = false;
             ddlCHRDoRecert.SelectedIndex = -1;
@@ -623,7 +654,7 @@ namespace vhcbcloud.Housing
                     if (btnSubmitHomeForm.Text.ToLower() == "submit")
                     {
                         HousingFederalProgramsData.AddProjectFederalProgramDetail(DataUtils.GetInt(hfProjectFederalID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
-                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetInt(txtAffPeriod.Text),  DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text),
                             txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
@@ -637,7 +668,7 @@ namespace vhcbcloud.Housing
                     else
                     {
                         HousingFederalProgramsData.UpdateProjectFederalProgramDetail(DataUtils.GetInt(hfProjectFederalProgramDetailID.Value), DataUtils.GetInt(ddlRecreationMonth.SelectedValue.ToString()),
-                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetInt(txtAffPeriod.Text), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
+                            DataUtils.GetInt(ddlAffPeriod.SelectedValue.ToString()), DataUtils.GetDate(txtAffrdStartDate.Text), DataUtils.GetDate(txtAffrdEndDate.Text), chkCHDO.Checked,
                             DataUtils.GetInt(ddlCHRDoRecert.SelectedValue.ToString()), DataUtils.GetInt(txtFreq.Text), txtIDSNum.Text, DataUtils.GetDate(txtSetupDate.Text), DataUtils.GetInt(ddlCompletedBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtFundedDate.Text), DataUtils.GetInt(ddlFundedDateCompleteBy.SelectedValue.ToString()),
                             DataUtils.GetDate(txtCloseDate.Text), DataUtils.GetInt(ddlIDISCompletionDateCompletedBy.SelectedValue.ToString()), 

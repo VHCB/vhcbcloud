@@ -68,6 +68,17 @@
                                 <td style="height: 30px"></td>
                                 <td style="height: 30px"></td>
                             </tr>
+                             <tr>
+                                <td style="height: 30px">
+                                    <span class="labelClass">Portfolio Type</span>
+                                </td>
+                                <td style="height: 30px">
+                                    <asp:DropDownList ID="ddlPortfolio" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="height: 30px"></td>
+                                <td style="height: 30px"></td>
+                            </tr>
                             <%-- <tr>
                                 <td style="height: 30px"><span class="labelClass">Active</span></td>
                                 <td style="height: 30px">

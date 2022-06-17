@@ -201,6 +201,7 @@
     <Content Include="Conservation\ConservationSummary.aspx" />
     <Content Include="Content\Tabs.css" />
     <Content Include="Dashboard.aspx" />
+    <Content Include="DefaultSecurityValues.aspx" />
     <Content Include="Entity.aspx" />
     <Content Include="EntityMaintenance.aspx" />
     <Content Include="EntityNotes.aspx" />
@@ -256,6 +257,7 @@
     <Content Include="Housing\HousingFederalPrograms.aspx" />
     <Content Include="Housing\HousingSourcesUses.aspx" />
     <Content Include="Housing\HousingUnitsServices.aspx" />
+    <Content Include="Housing\PortfolioData.aspx" />
     <Content Include="HUC12.aspx" />
     <Content Include="Images\%24%24.jpg" />
     <Content Include="Images\%24%24.png" />
@@ -537,6 +539,13 @@
     </Compile>
     <Compile Include="Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultSecurityValues.aspx.cs">
+      <DependentUpon>DefaultSecurityValues.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultSecurityValues.aspx.designer.cs">
+      <DependentUpon>DefaultSecurityValues.aspx</DependentUpon>
     </Compile>
     <Compile Include="GeoResponse.cs" />
     <Compile Include="ConservationAct250.aspx.cs">
@@ -921,6 +930,13 @@
     </Compile>
     <Compile Include="Housing\HousingUnitsServices.aspx.designer.cs">
       <DependentUpon>HousingUnitsServices.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Housing\PortfolioData.aspx.cs">
+      <DependentUpon>PortfolioData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Housing\PortfolioData.aspx.designer.cs">
+      <DependentUpon>PortfolioData.aspx</DependentUpon>
     </Compile>
     <Compile Include="HUC12.aspx.cs">
       <DependentUpon>HUC12.aspx</DependentUpon>

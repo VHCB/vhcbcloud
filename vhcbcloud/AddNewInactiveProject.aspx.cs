@@ -62,6 +62,7 @@ namespace vhcbcloud
 
             BindPrograms();
             BindLookUP(ddlApplication, 2283);
+            BindLookUP(ddlPortfolio, 2287);
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -108,7 +109,8 @@ namespace vhcbcloud
             {
                 if (ddlProgram.SelectedValue == "8888") //Conservation
                 {
-                    InactiveConservationProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveConservationProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text, DataUtils.GetInt(ddlApplication.SelectedValue), true);
+                    InactiveConservationProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveConservationProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text,
+                        DataUtils.GetInt(ddlApplication.SelectedValue), DataUtils.GetInt(ddlPortfolio.SelectedValue), true);
 
                     if (objInactiveProjectResult.IsProjectNotExist)
                         LogMessage("Conservation Project not exist");
@@ -125,7 +127,8 @@ namespace vhcbcloud
                     else
                         ProjNumber = txtprojectNumber.Text;
 
-                    InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(ProjNumber, txtLoginName.Text, txtPassword.Text, DataUtils.GetInt(ddlApplication.SelectedValue), true);
+                    InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(ProjNumber, txtLoginName.Text, txtPassword.Text, 
+                        DataUtils.GetInt(ddlApplication.SelectedValue), DataUtils.GetInt(ddlPortfolio.SelectedValue), true);
 
                     if (objInactiveProjectResult.IsDuplicate)
                         LogMessage("Project already exist");

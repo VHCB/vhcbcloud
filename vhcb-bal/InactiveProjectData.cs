@@ -9,7 +9,7 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class InactiveProjectData
     {
-        public static InactiveProjectResult AddInactiveProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, bool RowIsActive)
+        public static InactiveProjectResult AddInactiveProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, int PortfolioTypeId, bool RowIsActive)
         {
             try
             {
@@ -26,6 +26,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LoginName", LoginName));
                         command.Parameters.Add(new SqlParameter("Password", Password));
                         command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
+                        command.Parameters.Add(new SqlParameter("PortfolioTypeId", PortfolioTypeId));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
 
@@ -571,7 +572,7 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
-        public static InactiveConservationProjectResult AddInactiveConservationProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, bool RowIsActive)
+        public static InactiveConservationProjectResult AddInactiveConservationProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, int PortfolioTypeId, bool RowIsActive)
         {
             try
             {
@@ -588,6 +589,7 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LoginName", LoginName));
                         command.Parameters.Add(new SqlParameter("Password", Password));
                         command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
+                        command.Parameters.Add(new SqlParameter("PortfolioTypeId", PortfolioTypeId));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
 

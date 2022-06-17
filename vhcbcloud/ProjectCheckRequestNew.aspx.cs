@@ -72,6 +72,8 @@ namespace vhcbcloud
 
             if (dr != null)
             {
+                bool IsUserHasSameProgram = UserSecurityData.IsUserHasSameProgramId(DataUtils.GetInt(dr["userid"].ToString()), DataUtils.GetInt(hfProjId.Value));
+
                 if (dr["usergroupid"].ToString() == "0") // Admin Only
                 {
                     hfIsAdmin.Value = "true";
@@ -80,7 +82,9 @@ namespace vhcbcloud
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
                     hfIsprgramAdmin.Value = "true";
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly(); 
 
@@ -96,14 +100,14 @@ namespace vhcbcloud
                 }
                 else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
                 {
-                    if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    //if (dr["dfltprg"].ToString() != drProjectDetails["LkProgram"].ToString())
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
                     }
                     else
                     {
-
                         DataTable dtEPCR = ProjectCheckRequestData.GetExistingPCRByProjId(hfProjId.Value.ToString());
                         if (dtEPCR.Rows.Count > 0)
                         {

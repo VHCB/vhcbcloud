@@ -144,7 +144,8 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void AddUserInfo(string firstName, string lastName, string password, 
-            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool Dashboard, string DashboardName, bool isReceivePDF)
+            string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool Dashboard, string DashboardName, bool isReceivePDF,
+            bool isHousing, bool isViability, bool isConservation, bool isAdmin, bool isLead)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -163,6 +164,11 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
                 command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
                 command.Parameters.Add(new SqlParameter("isReceivePDF", isReceivePDF));
+                command.Parameters.Add(new SqlParameter("isHousing", isHousing));
+                command.Parameters.Add(new SqlParameter("isViability", isViability));
+                command.Parameters.Add(new SqlParameter("isConservation", isConservation));
+                command.Parameters.Add(new SqlParameter("isAdmin", isAdmin));
+                command.Parameters.Add(new SqlParameter("isLead", isLead));
                 using (connection)
                 {
                     connection.Open();
@@ -182,7 +188,8 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void UpdateUserInfo(int UserId, string firstName, string lastName, string password, 
             string email, int DfltPrg, int dfltSecGrp, string NumbProj, string HostSite, bool RowIsActive, 
-            bool Dashboard, string DashboardName, bool isReceivePDF)
+            bool Dashboard, string DashboardName, bool isReceivePDF,
+            bool isHousing, bool isViability, bool isConservation, bool isAdmin, bool isLead)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -203,6 +210,11 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Dashboard", Dashboard));
                 command.Parameters.Add(new SqlParameter("DashboardName", DashboardName));
                 command.Parameters.Add(new SqlParameter("isReceivePDF", isReceivePDF));
+                command.Parameters.Add(new SqlParameter("isHousing", isHousing));
+                command.Parameters.Add(new SqlParameter("isViability", isViability));
+                command.Parameters.Add(new SqlParameter("isConservation", isConservation));
+                command.Parameters.Add(new SqlParameter("isAdmin", isAdmin));
+                command.Parameters.Add(new SqlParameter("isLead", isLead));
 
                 using (connection)
                 {

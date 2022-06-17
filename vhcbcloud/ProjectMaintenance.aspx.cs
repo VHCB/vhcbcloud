@@ -169,6 +169,9 @@ namespace vhcbcloud
             DataRow dr = UserSecurityData.GetUserSecurity(Context.User.Identity.Name);
             if (dr != null)
             {
+                bool IsUserHasSameProgram = UserSecurityData.IsUserHasSameProgramId(DataUtils.GetInt(dr["userid"].ToString()), DataUtils.GetInt(Request.QueryString["ProjectId"]));
+                
+
                 //if (ddlManager.SelectedValue == dr["userid"].ToString())
                 //    chkApprove.Enabled = true;
                 //else
@@ -182,7 +185,8 @@ namespace vhcbcloud
                 }
                 else if (dr["usergroupid"].ToString() == "1") // Program Admin Only
                 {
-                    if (dr["dfltprg"].ToString() != hfProgramId.Value)
+                   // if (dr["dfltprg"].ToString() != hfProgramId.Value)
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";
@@ -197,7 +201,8 @@ namespace vhcbcloud
                 }
                 else if (dr["usergroupid"].ToString() == "2") //2. Program Staff  
                 {
-                    if (dr["dfltprg"].ToString() != hfProgramId.Value)
+                    //if (dr["dfltprg"].ToString() != hfProgramId.Value)
+                    if (!IsUserHasSameProgram)
                     {
                         RoleViewOnly();
                         hfIsVisibleBasedOnRole.Value = "false";

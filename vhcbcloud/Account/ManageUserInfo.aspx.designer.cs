@@ -132,6 +132,51 @@ namespace vhcbcloud.Account
         protected global::System.Web.UI.WebControls.DropDownList ddlVHCBProgram;
 
         /// <summary>
+        /// cbHousing control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbHousing;
+
+        /// <summary>
+        /// cbViability control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbViability;
+
+        /// <summary>
+        /// cbConservation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbConservation;
+
+        /// <summary>
+        /// cbAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAdmin;
+
+        /// <summary>
+        /// cbLead control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLead;
+
+        /// <summary>
         /// ddlSecurityGroup control.
         /// </summary>
         /// <remarks>
