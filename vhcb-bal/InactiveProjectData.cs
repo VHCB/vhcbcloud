@@ -9,7 +9,7 @@ namespace VHCBCommon.DataAccessLayer
 {
     public class InactiveProjectData
     {
-        public static InactiveProjectResult AddInactiveProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, int PortfolioTypeId, bool RowIsActive)
+        public static InactiveProjectResult AddInactiveProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, int PortfolioTypeId, int Year, bool RowIsActive)
         {
             try
             {
@@ -27,6 +27,52 @@ namespace VHCBCommon.DataAccessLayer
                         command.Parameters.Add(new SqlParameter("Password", Password));
                         command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
                         command.Parameters.Add(new SqlParameter("PortfolioTypeId", PortfolioTypeId));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
+
+
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        InactiveProjectResult ap = new InactiveProjectResult();
+
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+
+
+                        return ap;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static InactiveProjectResult AddInactiveHousingProject(string ProjectNumber, string LoginName, string Password, int ApplicationID, int PortfolioTypeId, int Year, bool RowIsActive)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "AddInactiveHousingProject";
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("Password", Password));
+                        command.Parameters.Add(new SqlParameter("ApplicationID", ApplicationID));
+                        command.Parameters.Add(new SqlParameter("PortfolioTypeId", PortfolioTypeId));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
                         command.Parameters.Add(new SqlParameter("RowIsActive", RowIsActive));
 
 

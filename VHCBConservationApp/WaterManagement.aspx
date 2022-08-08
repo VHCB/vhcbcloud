@@ -94,7 +94,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. What major drainage basin is the project located in? <a href="https://dec.vermont.gov/watershed/map/program/major-basins" target="_blank">Visit this Website </a></span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">7. What major drainage basin is the project located in? For more information, <a href="https://dec.vermont.gov/watershed/map/program/major-basins" target="_blank">visit this website.</a></span></td>
                             <td>
                                 <asp:DropDownList ID="ddlWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" OnSelectedIndexChanged="ddlWatershed_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
@@ -104,7 +104,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8. What sub basin (HUC 8) is the project located in? <a href="https://geodata.vermont.gov/datasets/vt-subbasin-boundaries-huc8/explore?location=33.787323%2C-72.459750%2C3.00" target="_blank">visit this website</a>.)</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8. What sub basin (HUC 8) is the project located in? For more information, <a href="https://geodata.vermont.gov/datasets/vt-subbasin-boundaries-huc8/explore?location=33.787323%2C-72.459750%2C3.00" target="_blank">visit this website.</a></span></td>
                             <td>
                                 <asp:DropDownList ID="ddlSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -114,7 +114,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What sub watershed (HUC 12) is the project located in? <a href="https://geodata.vermont.gov/datasets/vt-subwatershed-boundaries-huc12/explore?location=43.870450%2C-72.459750%2C8.39" target="_blank">Visit this Website</a></span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.1 What sub watershed (HUC 12) is the project located in? For more information, <a href="https://geodata.vermont.gov/datasets/vt-subwatershed-boundaries-huc12/explore?location=43.870450%2C-72.459750%2C8.39" target="_blank">visit this website.</a></span></td>
                             <td>
                                 <asp:DropDownList ID="ddlHUC12" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -125,7 +125,7 @@
                         </tr>
                       
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What secondary sub basin (HUC 8) is the project located in?</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.2 If the project area is in two watersheds, what secondary sub basin (HUC 8) is the project located in?</span></td>
                             <td>
                                  <asp:DropDownList ID="ddlSecSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -135,7 +135,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">What secondary sub watershed (HUC 12) is the project located in?</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.3  If the project area is in two watershed, what secondary sub watershed (HUC 12) is the project located in?</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlSecHUC12" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -146,7 +146,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in (to locate the tactical basin, visit <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location">this website</a>.) </span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in (to locate the tactical basin, <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location">visit this website.</a>) </span></td>
                             <td>
                                  <asp:DropDownList ID="ddlTacticalBasin" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -209,12 +209,7 @@
                         </tr>
                         <tr>
                             <td colspan="2"><span class="labelClass" style="margin-left: 10px">14. Has the landowner ever participated in the VHCB water quality grants program and/or other water quality focused state or federal programs including, 
-                                
-                                but not limited to,
-                                <br />
-                                the Conservation Reserve Enhancement Program (CREP), the Capital Equipment Assistance Program (CEAP), Best Management Practices (BMP) program,
-                                <br />
-                                the Environmental Quality Incentives Program (EQIP)?</span>
+                                but not limited to, the Conservation Reserve Enhancement Program (CREP), the Capital Equipment Assistance Program (CEAP), Best Management Practices (BMP) program, the Environmental Quality Incentives Program (EQIP)?</span>
                             </td>
                                <td>
                                  <asp:RadioButtonList ID="rdbtParticipateWaterGrant" runat="server" CellPadding="2" CellSpacing="4"

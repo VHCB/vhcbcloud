@@ -375,7 +375,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
+                                <asp:Button ID="btnSubmit" runat="server" Text="Save" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 5px"></td>

@@ -62,7 +62,7 @@
                                     <span class="labelClass">Application ID</span>
                                 </td>
                                 <td style="height: 30px">
-                                    <asp:DropDownList ID="ddlApplication" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                    <asp:DropDownList ID="ddlApplication" CssClass="clsDropDown" runat="server" Style="margin-left: 0" AutoPostBack="true" OnSelectedIndexChanged="ddlApplication_SelectedIndexChanged">
                                     </asp:DropDownList>
                                 </td>
                                 <td style="height: 30px"></td>
@@ -70,10 +70,21 @@
                             </tr>
                              <tr>
                                 <td style="height: 30px">
-                                    <span class="labelClass">Portfolio Type</span>
+                                    <span class="labelClass" id="spnPortfolioType" runat="server" visible="false">Portfolio Type</span>
                                 </td>
                                 <td style="height: 30px">
-                                    <asp:DropDownList ID="ddlPortfolio" CssClass="clsDropDown" runat="server" Style="margin-left: 0">
+                                    <asp:DropDownList ID="ddlPortfolio" CssClass="clsDropDown" runat="server" Style="margin-left: 0" visible="false">
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="height: 30px"></td>
+                                <td style="height: 30px"></td>
+                            </tr>
+                             <tr>
+                                <td style="height: 30px">
+                                    <span class="labelClass" id="spnYear" runat="server" visible="false">Year</span>
+                                </td>
+                                <td style="height: 30px">
+                                    <asp:DropDownList ID="ddlYear" CssClass="clsDropDown" runat="server" Style="margin-left: 0" Visible="false">
                                     </asp:DropDownList>
                                 </td>
                                 <td style="height: 30px"></td>

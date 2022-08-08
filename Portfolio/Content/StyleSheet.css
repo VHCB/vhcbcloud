@@ -1,0 +1,620 @@
+﻿
+.CustomTabStyle .ajax__tab_header
+{
+    font-family: helvetica, sans-serif;
+    height:60px;
+}
+
+.lbl_footer {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    
+}
+
+.infoHeader {
+    font-family: helvetica, sans-serif;
+    font-size: X-Large;
+    color: Gray;
+    font-weight: bold;
+    
+}
+
+.lbl {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    font-weight: bold;
+    
+}
+
+.labelClass
+{
+    margin-bottom: 20px;
+    font-size: 12.099999999999998px;
+    font-weight: 160;
+    line-height: 1.4;
+}
+
+.smalllabelClass {
+    margin-bottom: 20px;
+    font-size: 6.099999999999998px;
+    line-height: 1.4;
+}
+.cssWater {
+    height: 16px;
+    width: 140px;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: small;
+    font-style: italic;
+    font-family: Microsoft Sans Serif;
+    background-color: #edeeee;
+    color: Gray;
+    text-align: center;
+    font-weight: lighter;
+}
+
+.gridViewLbl {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    font-weight: bold;
+    
+}
+
+.igTabStyle {
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    
+    border-color: #f78b0e;
+}
+
+.lbllogin {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: left;
+    font-weight: bold;
+    
+}
+
+.lblWelcome {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #f78b0e;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblWelcomeGreen {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #c1ca66;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblWelcomeBlue {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: left;
+    font-weight: bold;
+}
+
+.lblCopyright {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: gray;
+    text-align: left;
+    font-size: 8pt;
+    
+}
+
+.lblErrMsg {
+    font-size: 8pt;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: Red;
+    text-align: left;
+    
+    font-weight: bold;
+}
+
+.ChkBox {
+    font-size: Smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    
+}
+
+.lblSM {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: right;
+    
+}
+
+.lblshow {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    text-align: center;
+    
+    font-weight: bold;
+}
+
+.hlink {
+    font-size: xx-small;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: Blue;
+    
+}
+
+.txbox {
+    background-color: #DEE6F4;
+    border-bottom-width: medium;
+    height: 16px;
+    width: 150px;
+    font-family: helvetica, sans-serif;
+    font-size: 8pt;
+    
+}
+
+.ignav {
+    font-family: helvetica, sans-serif;
+    Font-Size: 8pt;
+    Cursor: Default;
+    font-weight: bold;
+    
+}
+
+.style14 {
+    text-align: center;
+    font-size: small;
+    color: #FFFFFF;
+    background-color: #40839a;
+    font-weight: bold;
+    
+    font-family: helvetica, sans-serif;
+}
+
+.Line {
+    text-align: center;
+    font-size: small;
+    color: #3589a4; /*#709AD1;*/
+    background-color: #E6F4FB;
+    font-family: helvetica, sans-serif;
+    
+    width: 100%;
+}
+
+.style13 {
+    border: 1px solid #f78b0e;
+    background-color: White;
+    font-family: helvetica, sans-serif;
+    
+}
+
+.clsTextBoxBlue {
+    height: 16px;
+    width: 140px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsAutoExtDropDown {
+    margin:0px;
+    padding:2px;
+    border: 1px solid #678FC2;
+    background-color: #edeeee;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+    /*min-width: 300px;
+    overflow:auto;
+    white-space: nowrap;*/
+}
+
+.clsDropDown {
+    border: 1px solid #678FC2;
+    width: 140px;
+    height: 20px;
+    background-color: #edeeee;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDownLong {
+    height: 20px;
+    width: 200px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDropDownDynamic {
+    height: 20px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSMDL {
+    border: 1px solid #678FC2;
+    text-align:left;
+    width: 240px;
+    background-color: #edeeee;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsApplicantBlue {
+    height: 22px;
+    text-align:left;
+    width: 300px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+
+.clsTextBoxBlue1 {
+    border: 1px solid #678FC2;
+    text-align:left;
+    background-color: #edeeee;
+    margin-left: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxMoney {
+    border: 1px solid #678FC2;
+    height: 22px;
+    width: 140px;
+    text-align:right;
+    background-color: #edeeee;
+    margin-left: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+
+.clsDropDownSall {
+    height: 20px;
+    width: 50px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSm {
+    border: 1px solid #678FC2;
+    height: 22px;
+    width: 80px;
+    background-color: #edeeee;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.clsTextBoxBlueSmMid {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 100px;
+    background-color: #edeeee;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    text-align: center;
+    font-family: helvetica, sans-serif;
+}
+
+.clsDollorAmts {
+    height: 16px;
+    width: 140px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+    text-align: right;
+}
+
+.clsDollorAmtsSM {
+}
+
+
+.clsEditItemTextBox {
+    border: 1px solid #678FC2;
+    height: 16px;
+    width: 70px;
+    background-color: #edeeee;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+}
+
+.DDLBoxBlue {
+    height: 20px;
+    width: 70px;
+    background-color: #edeeee;
+    border-color: #678FC2;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 8pt;
+    font-family: helvetica, sans-serif;
+    
+}
+
+.modalBackground {
+    background-color: Gray;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+}
+
+.modalPopup {
+    font-size: 8pt;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    background-color: #ffffdd;
+    border-width: 3px;
+    border-style: solid;
+    border-color: Gray;
+    padding: 3px;
+    width: 250px;
+}
+
+.popupControl {
+    font-size: smaller;
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    background-color: #AAD4FF;
+    position: absolute;
+    visibility: hidden;
+    border-style: solid;
+    border-color: Black;
+    border-width: 2px;
+    
+}
+
+.hidePanel {
+    visibility: hidden;
+    
+}
+
+.Menu {
+    text-align: left;
+    font-family: helvetica, sans-serif;
+    
+    font-weight: bold;
+}
+
+.MainMenu {
+    text-align: center;
+    font-family: helvetica, sans-serif;
+    
+    font-weight: bold;
+}
+
+.LineHt {
+    padding: 0 !important;
+    height: 6px !important;
+    line-height: 6px !important;
+    font-size: 12px !important;
+}
+
+.gridviewChkBox {
+    font-style: normal;
+    font-family: helvetica, sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    
+}
+
+.gridView {
+    font-family: helvetica,sans-serif;
+    background-color: White;
+    font-weight:normal;
+    font-size: smaller;
+    margin-top: 0px;
+}
+
+.alternativeRowStyle {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.alternativeRowStyleLeft {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: left;
+    height: 30px;
+}
+
+.pagerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: left;
+    height: 2px;
+    word-spacing: 2px;
+}
+
+.headerStyle {
+    font-family: helvetica,sans-serif;
+    color: #546407;
+    font-weight: bold;
+    
+    background-color: #c1ca66;
+    font-size: small;
+    vertical-align: middle;
+    text-align:center;
+    height: 30px;
+    
+}
+.headerClass > th 
+{
+    text-align:center;
+}
+
+.rowStyle {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    text-align: left;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.rowStyleLeft {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    text-align: left;
+    font-weight: bold;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.footerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #FFFFFF;
+    vertical-align: middle;
+    text-align: left;
+    height: 20px
+}
+
+.footerStyleTotals {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #FFFFFF;
+    vertical-align: middle;
+    text-align: left;
+     height: 20px
+}
+
+.detailView {
+    font-family: helvetica,sans-serif;
+    background-color: White;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.detailViewalternativeRowStyle {
+    color: #4D4D4D;
+    background-color: #EDEEEE;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewpagerStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #f78b0e;
+    vertical-align: middle;
+    text-align: left;
+    height: 2px;
+}
+
+.detailViewheaderStyle {
+    font-family: helvetica,sans-serif;
+    color: #3589a4;
+    font-weight: bold;
+    
+    background-color: #c1ca66;
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewrowStyle {
+    font-family: helvetica,sans-serif;
+    color: #4D4D4D;
+    font-weight: bold;
+    
+    font-size: smaller;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.detailViewfooterStyle {
+    background-color: #3589a4;
+    font-weight: bold;
+    color: #FFFFFF;
+    vertical-align: middle;
+    text-align: left;
+    height: 5px;
+}
+
+.WizardStyle {
+    vertical-align: top;
+    
+    font-family: helvetica,sans-serif;
+}
+
+.modalBackgroundProcess {
+    background-color: Gray;
+    filter: alpha(opacity=60);
+    opacity: 0.60;
+}
+
+.updateProgress {
+    border-width: 1px;
+    border-style: solid;
+    background-color: #FFFFFF;
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    vertical-align: middle;
+}
+
+.updateProgressMessage {
+    margin: auto;
+    font-family: helvetica,sans-serif;
+    font-size: small;
+    vertical-align: middle;
+}
+
+.divUpdateProgress {
+    text-align: center;
+    margin: 4px;
+    vertical-align: middle;
+}

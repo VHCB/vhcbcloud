@@ -15,6 +15,11 @@
         .auto-style8 {
             width: 454px;
         }
+
+        .AcresDerivedStyle td {
+            margin-right: 10px;
+            padding-right: 20px;
+        }
     </style>
     <div class="jumbotron">
         <p class="lead">Farm Conservation Application</p>
@@ -61,7 +66,7 @@
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">4. Is the area serviced by a public water supply?</span></td>
                             <td colspan="2">
-                                  <asp:RadioButtonList ID="rdBtnPublicWater" runat="server" CellPadding="2" CellSpacing="4"
+                                <asp:RadioButtonList ID="rdBtnPublicWater" runat="server" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal">
                                     <asp:ListItem>Yes &nbsp;</asp:ListItem>
                                     <asp:ListItem> No &nbsp;</asp:ListItem>
@@ -74,7 +79,7 @@
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">5. Is the area serviced by a public sewer system:</span></td>
                             <td colspan="2">
-                                 <asp:RadioButtonList ID="rdbtnPublicSewer" runat="server" CellPadding="2" CellSpacing="4"
+                                <asp:RadioButtonList ID="rdbtnPublicSewer" runat="server" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal">
                                     <asp:ListItem>Yes &nbsp;</asp:ListItem>
                                     <asp:ListItem> No &nbsp;</asp:ListItem>
@@ -87,7 +92,7 @@
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">6. Is the farm enrolled in Vermont use value appraisal program? </span></td>
                             <td colspan="2">
-                              
+
                                 <asp:RadioButtonList ID="rdBtnEnrolledUseValue" runat="server" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal">
                                     <asp:ListItem>Yes &nbsp;</asp:ListItem>
@@ -113,14 +118,12 @@
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">8. How is the conserved acreage derived? </span></td>
                             <td colspan="2">
-                                <asp:DropDownList runat="Server" ID="ddlAcresDerived">
-                                    <asp:ListItem Text="Select One" Value="NA"></asp:ListItem>
-                                    <asp:ListItem Text="Deed" Value="Deed"></asp:ListItem>
-                                    <asp:ListItem Text="Survey" Value="Survey"></asp:ListItem>
-                                    <asp:ListItem Text="GIS" Value="GIS"></asp:ListItem>
-                                    <asp:ListItem Text="Other" Value="Other"></asp:ListItem>
-                                </asp:DropDownList>
-
+                                <asp:CheckBoxList ID="cblAcresDerived" runat="server" RepeatDirection="Horizontal" CssClass="AcresDerivedStyle">
+                                    <asp:ListItem Value="Deed">Deed</asp:ListItem>
+                                    <asp:ListItem Value="Survey">Survey</asp:ListItem>
+                                    <asp:ListItem Value="GIS">GIS</asp:ListItem>
+                                    <asp:ListItem Value="Other">Other</asp:ListItem>
+                                </asp:CheckBoxList>
                             </td>
                         </tr>
                         <tr>
@@ -133,8 +136,8 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                               &nbsp;&nbsp; <asp:TextBox ID="txtExcludedLand" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
+                            <td colspan="2">&nbsp;&nbsp;
+                                <asp:TextBox ID="txtExcludedLand" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
 
                             </td>
                         </tr>
@@ -149,9 +152,8 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
-
-                               &nbsp;&nbsp; <asp:TextBox ID="txtDeedMatch" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
+                            <td colspan="3">&nbsp;&nbsp;
+                                <asp:TextBox ID="txtDeedMatch" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
                             </td>
                         </tr>
                         <tr>
@@ -164,7 +166,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                             <td colspan="3">&nbsp;&nbsp;
+                            <td colspan="3">&nbsp;&nbsp;
                                 <asp:DropDownList runat="Server" ID="ddlSurveyRequired">
                                     <asp:ListItem Text="Select One" Value="NA"></asp:ListItem>
                                     <asp:ListItem Text="Yes" Value="Yes"></asp:ListItem>
@@ -174,23 +176,22 @@
                                 <span class="labelClass">*if, yes, VHCB can pay up to $3,000 towards a survey.  Please include in a budget. </span>
                             </td>
                         </tr>
-                          <tr>
+                        <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
                             <td colspan="3"><span class="labelClass" style="margin-left: 10px">12. To the best knowledge of the landowner, are there any deed restrictions, such as restrictive covenants or mineral rights, which encumber use of the property?  If yes, describe.  A full title search will be required prior to disbursement of VHCB funds.</span></td>
-                            
+
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
-
-                               &nbsp;&nbsp; <asp:TextBox ID="txtDeedRestrictions" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
+                            <td colspan="3">&nbsp;&nbsp;
+                                <asp:TextBox ID="txtDeedRestrictions" TextMode="multiline" CssClass="clsTextBoxBlue1" Columns="50" Rows="2" runat="server" Width="974px" />
                             </td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
 

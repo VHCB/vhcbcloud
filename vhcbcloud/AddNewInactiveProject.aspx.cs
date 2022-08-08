@@ -63,6 +63,27 @@ namespace vhcbcloud
             BindPrograms();
             BindLookUP(ddlApplication, 2283);
             BindLookUP(ddlPortfolio, 2287);
+            
+        }
+
+        private void BindYearLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                DataView dvYears = new DataView(LookupValuesData.Getlookupvalues(LookupType));
+                dvYears.Sort = "description desc";
+
+                ddList.DataSource = dvYears;
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindYearLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -118,6 +139,30 @@ namespace vhcbcloud
                     else
                         LogMessage("Project added successfully");
                 }
+                else if (ddlProgram.SelectedValue == "7777" && ddlApplication.SelectedValue == "39365") //Housing && Portfolio Data
+                {
+                    if (ddlPortfolio.SelectedIndex == 0)
+                    {
+                        LogMessage("Select Portfolio Type");
+                        ddlPortfolio.Focus();
+                    }
+                    else if (DataUtils.GetInt(ddlYear.SelectedItem.Text) == 0)
+                    {
+                        LogMessage("Select Year");
+                        ddlYear.Focus();
+                    }
+                    else
+                    {
+                        InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveHousingProject(txtprojectNumber.Text, txtLoginName.Text, txtPassword.Text,
+                           DataUtils.GetInt(ddlApplication.SelectedValue), DataUtils.GetInt(ddlPortfolio.SelectedValue), DataUtils.GetInt(ddlYear.SelectedItem.Text), true);
+
+                        if (objInactiveProjectResult.IsDuplicate)
+                            LogMessage("Project already exist");
+
+                        else
+                            LogMessage("Project added successfully");
+                    }
+                }
                 else
                 {
                     string ProjNumber = string.Empty;
@@ -128,7 +173,7 @@ namespace vhcbcloud
                         ProjNumber = txtprojectNumber.Text;
 
                     InactiveProjectResult objInactiveProjectResult = InactiveProjectData.AddInactiveProject(ProjNumber, txtLoginName.Text, txtPassword.Text, 
-                        DataUtils.GetInt(ddlApplication.SelectedValue), DataUtils.GetInt(ddlPortfolio.SelectedValue), true);
+                        DataUtils.GetInt(ddlApplication.SelectedValue),0, 0, true);
 
                     if (objInactiveProjectResult.IsDuplicate)
                         LogMessage("Project already exist");
@@ -171,7 +216,6 @@ namespace vhcbcloud
             else
                 spnViabilityProjectPrefix.Visible = false;
 
-
             SetProjectName();
         }
 
@@ -188,6 +232,26 @@ namespace vhcbcloud
                 ProjNumbers.Add("'" + dt.Rows[i][0].ToString() + "'");
             }
             return ProjNumbers.ToArray();
+        }
+
+        protected void ddlApplication_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(ddlApplication.SelectedValue == "39365")
+            {
+
+                    spnPortfolioType.Visible = true;
+                    ddlPortfolio.Visible = true;
+                    spnYear.Visible = true;
+                    ddlYear.Visible = true;
+                    BindYearLookUP(ddlYear, 76);
+            }
+            else
+            {
+                spnPortfolioType.Visible = false;
+                ddlPortfolio.Visible = false;
+                spnYear.Visible = false;
+                ddlYear.Visible = false;
+            }
         }
     }
 }

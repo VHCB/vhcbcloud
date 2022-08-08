@@ -163,8 +163,27 @@ namespace vhcbcloud.Housing
 
         private void BindControls()
         {
-            BindLookUP(ddlyear, 76);
+            BindYearLookUP(ddlyear, 76);
             BindLookUP(ddlPortfolioType, 2287);
+        }
+        private void BindYearLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                DataView dvYears = new DataView(LookupValuesData.Getlookupvalues(LookupType));
+                dvYears.Sort = "description desc";
+
+                ddList.DataSource = dvYears;
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindYearLookUP", "Control ID:" + ddList.ID, ex.Message);
+            }
         }
         private void BindLookUP(DropDownList ddList, int LookupType)
         {
@@ -186,14 +205,14 @@ namespace vhcbcloud.Housing
         {
             try
             {
-                    if (btnSubmit.Text.ToLower() == "submit")
+                    if (btnSubmit.Text.ToLower() == "save")
                     {
                         PortfolioDataData.AddProjectPortfolio(DataUtils.GetInt(ddlPortfolioType.SelectedValue), ddlyear.SelectedItem.Text, DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(txtTotalUnits.Text),
                             DataUtils.GetInt(txtMGender.Text), DataUtils.GetInt(txtFGender.Text), DataUtils.GetInt(txtUGender.Text), DataUtils.GetInt(txtWhite.Text),
                             DataUtils.GetInt(txtBlack.Text), DataUtils.GetInt(txtAsian.Text), DataUtils.GetInt(txtIndian.Text), DataUtils.GetInt(txtHawaiian.Text),
                             DataUtils.GetInt(txtUnknownRace.Text), DataUtils.GetInt(txtHispanic.Text), DataUtils.GetInt(txtNonHisp.Text), DataUtils.GetInt(txtUnknownEthnicity.Text),
                             DataUtils.GetInt(txtHomeless.Text), DataUtils.GetInt(txtMarketRate.Text), DataUtils.GetInt(txtI100.Text), DataUtils.GetInt(txtI80.Text),
-                            DataUtils.GetInt(txtI75.Text), DataUtils.GetInt(txtI60.Text), DataUtils.GetInt(txtI50.Text), DataUtils.GetInt(txtI30.Text), DataUtils.GetInt(txtI20.Text));
+                            DataUtils.GetInt(txtI75.Text), DataUtils.GetInt(txtI60.Text), DataUtils.GetInt(txtI50.Text), DataUtils.GetInt(txtI30.Text), DataUtils.GetInt(txtI20.Text), false);
                         ClearForm();
                     ddlyear.SelectedIndex = -1;
                         LogMessage("Portfolio data added successfully");
@@ -276,7 +295,7 @@ namespace vhcbcloud.Housing
         {
             string year = ddlyear.SelectedItem.Text.ToString();
             hfProjectPortfolioID.Value = "";
-            btnSubmit.Text = "Submit";
+            btnSubmit.Text = "Save";
             ClearForm();
 
             if (ddlyear.SelectedIndex != 0)

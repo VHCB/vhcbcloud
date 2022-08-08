@@ -150,13 +150,20 @@ namespace VHCBConservationApp
                     txtConformancePlans.Text = dr["ConformancePlans"].ToString();
                     txtNoLeverage.Text = dr["NoLeverage"].ToString();
                     txtInformTowns.Text = dr["InformTowns"].ToString();
-                    PopulateDropDownByText(ddlPlanCommisionsInformed, dr["LetterSentTo"].ToString());
+                    //PopulateDropDownByText(ddlPlanCommisionsInformed, dr["LetterSentTo"].ToString());
 
                     //txtLetterSentToOther.Text = dr["LetterSentToOther"].ToString();
                     txtEndorsements.Text = dr["Endorsements"].ToString();
                     txtDualGoals.Text = dr["DualGoals"].ToString();
                     txtClarification.Text = dr["Clarification"].ToString();
 
+                    foreach (ListItem li in cblPlanCommisionsInformed.Items)
+                    {
+                        if (dr["LetterSentTo"].ToString().Split(',').ToList().Contains(li.Value))
+                        {
+                            li.Selected = true;
+                        }
+                    }
                 }
             }
         }
@@ -179,13 +186,30 @@ namespace VHCBConservationApp
 
         private void saveData()
         {
+            string LetterSentToList = string.Empty;
+
+            foreach (ListItem listItem in cblPlanCommisionsInformed.Items)
+            {
+                if (listItem.Selected == true)
+                {
+                    if (LetterSentToList == string.Empty)
+                    {
+                        LetterSentToList = listItem.Value;
+                    }
+                    else
+                    {
+                        LetterSentToList = LetterSentToList + ',' + listItem.Value;
+                    }
+                }
+            }
+
             ConservationApplicationData.EasementConfig(projectNumber, DataUtils.GetInt(txtNumEase.Text), "",
                 cbBldgComplexChk.Checked, txtBldgComplex.Text, cbSoleDiscretionChk.Checked, txtSoleDiscretion.Text, cbFarmLaborChk.Checked, txtFarmLabor.Text, cbSubdivisionChk.Checked, txtSubdivision.Text, cbCampRightChk.Checked, txtCampRight.Text,
                 cbEasementTermsOtherChk.Checked, txtEasementTermsOther.Text, cbEcoZoneChk.Checked, txtEcoZone.Text, DataUtils.GetDecimal(txtEcoZoneAcres.Text), cbWetlandZoneChk.Checked, txtWetlandZone.Text, DataUtils.GetDecimal(txtWetlandZoneAcres.Text),
                 cbRiparianZoneChk.Checked, txtRiparianZone.Text, DataUtils.GetDecimal(txtRiparianZoneAcres.Text), cbArcheoZoneChk.Checked, txtArcheoZone.Text, DataUtils.GetDecimal(txtArcheoZoneAcres.Text),
                 cbRiverEasementChk.Checked, txtRiverEasement.Text, DataUtils.GetDecimal(txtRiverEasementAcres.Text), cbHistoricProvisionChk.Checked, txtHistoricProvision.Text, DataUtils.GetDecimal(txtHistoricProvisionAcres.Text),
                 cbPublicAccessChk.Checked, txtPublicAccessDesc.Text, DataUtils.GetDecimal(txtPublicAccess.Text), txtEasementTermsOther2.Text, cbEasementTermsOther2Chk.Checked, txtConformancePlans.Text, txtNoLeverage.Text,
-                txtInformTowns.Text, ddlPlanCommisionsInformed.SelectedItem.Text, "", txtEndorsements.Text, txtDualGoals.Text, txtClarification.Text);
+                txtInformTowns.Text, LetterSentToList, "", txtEndorsements.Text, txtDualGoals.Text, txtClarification.Text);
 
             LogMessage("Conservation Application Data Added Successfully");
 

@@ -44,7 +44,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 
         public static void AddProjectPortfolio(int PortfolioType, string  Year, int  ProjectID,  int TotalUnits, 
             int MGender, int FGender, int UGender, int White, int Black, int Asian, int Indian, int Hawaiian, int UnknownRace, int Hispanic, int NonHisp, int UnknownEthnicity, int Homeless,
-            int MarketRate, int I100, int I80, int I75, int I60, int I50, int I30, int I120)
+            int MarketRate, int I100, int I80, int I75, int I60, int I50, int I30, int I120, bool IsSubmit)
         {
             try
             {
@@ -83,6 +83,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("I50", I50));
                         command.Parameters.Add(new SqlParameter("I30", I30));
                         command.Parameters.Add(new SqlParameter("I120", I120));
+                        command.Parameters.Add(new SqlParameter("IsSubmit", IsSubmit));
 
                         command.CommandTimeout = 60 * 5;
 
@@ -112,7 +113,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "UpdateProjectPortfolio";
                         
-                        command.Parameters.Add(new SqlParameter("ProjectPortfolioID", @ProjectPortfolioID));
+                        command.Parameters.Add(new SqlParameter("ProjectPortfolioID", ProjectPortfolioID));
                         command.Parameters.Add(new SqlParameter("PortfolioType", PortfolioType));
                         command.Parameters.Add(new SqlParameter("Year", Year));
                         command.Parameters.Add(new SqlParameter("TotalUnits", TotalUnits));
@@ -149,5 +150,73 @@ namespace VHCBCommon.DataAccessLayer.Housing
                 throw ex;
             }
         }
+
+        public static DataRow GetPortfolioDataForOnLineApp(string LoginName, string ProjectNumber)
+        {
+            DataRow dt = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPortfolioDataForOnLineApp";
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dt = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dt;
+        }
+        public static void SubmitPortfolioData(string LoginName, int Year)
+        {
+            DataRow dt = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "SubmitPortfolioData";
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
     }
 }

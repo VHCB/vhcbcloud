@@ -63,7 +63,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td class="auto-style9"><span class="labelClass" style="margin-left: 10px">1 Are there plans to sell or convey all or part of the farm to new landowners?  </span></td>
+                            <td class="auto-style9"><span class="labelClass" style="margin-left: 10px">1. Are there plans to sell or convey all or part of the farm to new landowners?  </span></td>
                             <td colspan="2">
                                 <asp:RadioButtonList ID="rdBtnSellorConvey" runat="server" CellPadding="2" CellSpacing="4"
                                     RepeatDirection="Horizontal" OnSelectedIndexChanged="rdBtnSellorConvey_SelectedIndexChanged" AutoPostBack="true">
@@ -78,7 +78,7 @@
                     </table>
                     <table runat="server" id="part2" visible="false">
                         <tr>
-                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">2 Is this farm transfer a: [check all that apply]: family transfer, new buyer, farm access program</span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">2. Is this farm transfer a: [check all that apply]: family transfer, new buyer, farm access program</span></td>
                             <td colspan="2">
                                 <asp:CheckBoxList ID="cblFarmerTransfer" runat="server">
                                     <asp:ListItem Value="Family Transfer">Family Transfer</asp:ListItem>
@@ -91,7 +91,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">Incoming farmer(s) plans:  Briefly describe the incoming farmer(s)’ operation and their plans for this property.  Summarize the incoming farmer(s)’ experience with farming and any support services, such as business planning support, they are receiving. (Specifically note if the farmers are enrolled in VHCB’s Farm and Forest Viability program.) How will acquiring this parcel impact their farm operation?</span></td>
+                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">3. Incoming farmer(s) plans:  Briefly describe the incoming farmer(s)’ operation and their plans for this property.  Summarize the incoming farmer(s)’ experience with farming and any support services, such as business planning support, they are receiving. (Specifically note if the farmers are enrolled in VHCB’s Farm and Forest Viability program.) How will acquiring this parcel impact their farm operation?</span></td>
 
                         </tr>
                         <tr>

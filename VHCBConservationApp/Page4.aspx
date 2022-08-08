@@ -15,18 +15,17 @@
         .auto-style7 {
             width: 274px;
         }
-    </style>
+        </style>
     <div class="jumbotron">
         <p class="lead">Farm Conservation Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
-                    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
-                    </asp:ToolkitScriptManager>
+                    
                     <div id="dvMessage" runat="server" visible="false">
                         <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
                     </div>
-                   <table>
+                    <table>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
@@ -60,6 +59,17 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
+                            <tr>
+                            <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"><strong>Total tillable land</strong></span></td>
+                            <td style="height: 10px"><span>Acres</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtTillable" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                       
+
                         <tr>
                             <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"><strong>Vegetables</strong></span></td>
                             <td style="height: 10px"><span>Acres</span></td>
@@ -144,7 +154,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Other Agricultural Land (production info, as relevant)</strong></span></td>
+                            <td style="height: 10px" colspan="3"><span class="labelClass" style="margin-left: 10px"><strong>Describe other agricultural land (production info, as relevant)</strong></span></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px">
@@ -155,7 +165,7 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                        >
+                       
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
@@ -225,8 +235,8 @@
                         </tr>
 
                         <tr>
-                            <td style="height: 10px" colspan="2"><span class="labelClass" style="margin-left: 10px"><strong>Unmanaged/incidental land: Acres</strong></span></td>
-
+                            <td style="height: 10px"><span class="labelClass" style="margin-left: 10px"><strong>Unmanaged/incidental land:</strong></span></td>
+                             <td style="height: 10px"><span>Acres</span></td>
                             <td style="height: 10px">
                                 <asp:TextBox ID="txtUnmanaged" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox></td>
                         </tr>
@@ -246,6 +256,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                     </table>
+
                     <table style="width: 100%;">
                         <tr>
                             <td>
@@ -318,17 +329,12 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">2. What are the total acres of tillable land?</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtTillable" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
+                        
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">3. What are the acreages of agricultural soils on the property? Enter Below (For more information on soils data, please see USDA’s Web Soil Survey or contact your local Natural Resources Conservation Service) </span></td>
+                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">2. What are the acreages of agricultural soils on the property? Enter Below (For more information on soils data, please see USDA’s Web Soil Survey or contact your local Natural Resources Conservation Service(NRCS) office.) </span></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px">

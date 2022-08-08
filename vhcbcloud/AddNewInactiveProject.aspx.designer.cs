@@ -87,6 +87,15 @@ namespace vhcbcloud
         protected global::System.Web.UI.WebControls.DropDownList ddlApplication;
 
         /// <summary>
+        /// spnPortfolioType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnPortfolioType;
+
+        /// <summary>
         /// ddlPortfolio control.
         /// </summary>
         /// <remarks>
@@ -94,6 +103,24 @@ namespace vhcbcloud
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPortfolio;
+
+        /// <summary>
+        /// spnYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnYear;
+
+        /// <summary>
+        /// ddlYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlYear;
 
         /// <summary>
         /// btnSubmit control.

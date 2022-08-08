@@ -11,6 +11,10 @@
         .FormatRadioButtonList label {
             margin-left: 5px;
         }
+         .cblPlanCommisionsInformedStyle td {
+            margin-right: 10px;
+            padding-right: 20px;
+        }
     </style>
     <div class="jumbotron">
         <p class="lead">Farm Conservation Application</p>
@@ -131,8 +135,8 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2">&nbsp;&nbsp;&nbsp;
-                                <asp:CheckBox ID="cbEcoZoneChk" runat="server" Text="Ecological protection zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone on one of your attached maps." /></td>
+                            <td colspan="2">&nbsp;&nbsp;&nbsp;<span class="labelClass" style="margin-left: 10px">
+                                <asp:CheckBox ID="cbEcoZoneChk" runat="server" Text="Ecological protection zone: In the box below, describe the reason for the zone(s) – what is it protecting? Show the approximate location of the zone on one of your attached maps." /></span></td>
 
                         </tr>
                         <tr>
@@ -352,14 +356,23 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Please confirm that a letter has been sent to: </span></td>
-                            <td>
-                                <asp:DropDownList ID="ddlPlanCommisionsInformed" CssClass="clsDropDown" runat="server" Height="23px" Width="295px">
-                                    <asp:ListItem>Municipal officials</asp:ListItem>
-                                    <asp:ListItem>Regional Planning Commission</asp:ListItem>
-                                    <asp:ListItem>Other</asp:ListItem>
-                                </asp:DropDownList>
+                            <td colspan="3">
+                                <table>
+                                    <tr>
+                                        <td style="width: 40%"><span class="labelClass" style="margin-left: 10px">Please confirm that a letter has been sent to: </span></td>
+                                        <td style="width: 60%">
+                                            <asp:CheckBoxList ID="cblPlanCommisionsInformed" runat="server" RepeatDirection="Horizontal" CssClass="cblPlanCommisionsInformedStyle">
+                                                <asp:ListItem Value="Municipal officials">Municipal officials</asp:ListItem>
+                                                <asp:ListItem Value="Regional Planning Commission">Regional Planning Commission</asp:ListItem>
+                                                <asp:ListItem Value="Other">Other</asp:ListItem>
+                                            </asp:CheckBoxList>
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </td>
+
+
                         </tr>
                         <tr>
                             <td colspan="3" style="height: 10px"></td>

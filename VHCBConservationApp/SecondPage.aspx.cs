@@ -58,11 +58,19 @@ namespace VHCBConservationApp
                         rdBtnEnrolledUseValue.SelectedIndex = 1;
 
                     txtAcresExcluded.Text = drPage2tDetails["AcresExcluded"].ToString();
-                    PopulateDropDown(ddlAcresDerived, drPage2tDetails["AcresDerived"].ToString());
+                    //PopulateDropDown(ddlAcresDerived, drPage2tDetails["AcresDerived"].ToString());
                     txtExcludedLand.Text = drPage2tDetails["ExcludedLand"].ToString();
                     txtDeedMatch.Text = drPage2tDetails["DeedMatch"].ToString();
                     PopulateDropDown(ddlSurveyRequired, drPage2tDetails["SurveyRequired"].ToString());
-                    txtDeedRestrictions.Text = drPage2tDetails["DeedRestrictions"].ToString(); 
+                    txtDeedRestrictions.Text = drPage2tDetails["DeedRestrictions"].ToString();
+
+                    foreach (ListItem li in cblAcresDerived.Items)
+                    {
+                        if (drPage2tDetails["AcresDerived"].ToString().Split(',').ToList().Contains(li.Value))
+                        {
+                            li.Selected = true;
+                        }
+                    }
                 }
             }
         }
@@ -92,13 +100,27 @@ namespace VHCBConservationApp
 
         private void saveData()
         {
-
+            string AcresDerivedList = string.Empty;
             if (projectNumber != "")
             {
+                foreach (ListItem listItem in cblAcresDerived.Items)
+                {
+                    if (listItem.Selected == true)
+                    {
+                        if (AcresDerivedList == string.Empty)
+                        {
+                            AcresDerivedList = listItem.Value;
+                        }
+                        else
+                        {
+                            AcresDerivedList = AcresDerivedList + ',' + listItem.Value;
+                        }
+                    }
+                }
 
                 ConservationApplicationData.ConservationApplicationPage2(projectNumber, txtZoningDistrict.Text, txtMinLotSize.Text, DataUtils.GetDecimal(txtFrontageFeet.Text),
                     DataUtils.GetBool(rdBtnPublicWater.SelectedValue.Trim()), DataUtils.GetBool(rdbtnPublicSewer.SelectedValue.Trim()), DataUtils.GetBool(rdBtnEnrolledUseValue.SelectedValue.Trim()), DataUtils.GetDecimal(txtAcresExcluded.Text),
-                    ddlAcresDerived.SelectedValue, txtExcludedLand.Text, txtDeedMatch.Text, ddlSurveyRequired.SelectedValue, txtDeedRestrictions.Text);
+                    AcresDerivedList, txtExcludedLand.Text, txtDeedMatch.Text, ddlSurveyRequired.SelectedValue, txtDeedRestrictions.Text);
 
 
                 LogMessage("Conservation Application Data Added Successfully");

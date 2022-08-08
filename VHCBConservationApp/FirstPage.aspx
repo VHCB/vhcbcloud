@@ -269,11 +269,9 @@
                         </div>
 
                         <table>
+                            
                             <tr>
-                                                <td colspan="6" class="auto-style14"></td>
-                                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-decoration: underline;" class="auto-style15"><strong>C.  FARMER INFORMATION (if different from above)</strong></td>
+                                <td colspan="3" style="text-decoration: underline;"><strong>C.  FARMER INFORMATION (if different from above; e.g., farmer leasing land)</strong></td>
                             </tr>
                             </table>
                         <table>
@@ -305,7 +303,7 @@
                                     <div id="Div2" runat="server">
 
                                         <table style="width: 100%">
-                                            <tr>
+                                           <%-- <tr>
                                                 <td style="width: 150px"><span class="labelClass">Street #</span></td>
                                                 <td class="auto-style9">
                                                     <asp:TextBox ID="txtFarmerStreet" CssClass="clsTextBoxBlue1" runat="server" MaxLength="12"></asp:TextBox>
@@ -345,7 +343,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="6" style="height: 5px"></td>
-                                            </tr>
+                                            </tr>--%>
                                             <tr>
                                                 <td style="width: 150px"> <span class="labelClass" runat="server" id="Span1" visible="true">Email</span></td>
                                                 <td class="auto-style9">
@@ -386,7 +384,7 @@
                                                 <td colspan="6" style="height: 15px"></td>
                                             </tr>
                             <tr>
-                                <td colspan="2" style="text-decoration: underline;" class="auto-style13"><strong>D.  PROPERTY INFORMATION (if different from above) </strong></td>
+                                <td colspan="2" style="text-decoration: underline;" class="auto-style13"><strong>D. PROPERTY TO BE CONSESRVED (if different from above) </strong></td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="auto-style12"></td>
@@ -439,7 +437,9 @@
                                             <tr>
                                                 <td style="width: 170px"><span class="labelClass">Town</span></td>
                                                 <td class="auto-style9">
-                                                    <asp:TextBox ID="txtPropertyTown" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
+                                                    <asp:DropDownList ID="ddlPropertyTown" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" 
+                                                        AutoPostBack="true" OnSelectedIndexChanged="ddlPropertyTown_SelectedIndexChanged">
+                                                    </asp:DropDownList>
                                                 </td>
                                                 <td style="width: 150px"><span class="labelClass">Other Town(s)</span></td>
                                                 <td style="width: 250px">
@@ -456,9 +456,11 @@
                                                 <td colspan="6" style="height: 5px"></td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 150px"><span class="labelClass"></span></td>
-                                                <td class="auto-style9">
-                                                   
+                                                 <td class="auto-style10">
+                                                   <span class="labelClass">County</span>
+                                                </td>
+                                                <td style="width: 270px">
+                                                     <asp:Label runat="server" ID="lblPropertyCounty" class="labelClass"></asp:Label>
                                                 </td>
                                                 <td style="width: 100px">
                                                     <span class="labelClass" runat="server" id="Span2" visible="true"></span>

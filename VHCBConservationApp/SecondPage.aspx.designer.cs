@@ -114,13 +114,13 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.TextBox txtAcresExcluded;
 
         /// <summary>
-        /// ddlAcresDerived control.
+        /// cblAcresDerived control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAcresDerived;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblAcresDerived;
 
         /// <summary>
         /// txtExcludedLand control.

@@ -24,15 +24,6 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvEntityRole;
 
         /// <summary>
-        /// ToolkitScriptManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-
-        /// <summary>
         /// dvMessage control.
         /// </summary>
         /// <remarks>
@@ -67,6 +58,15 @@ namespace VHCBConservationApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPasture;
+
+        /// <summary>
+        /// txtTillable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTillable;
 
         /// <summary>
         /// txtVegetables control.
@@ -265,15 +265,6 @@ namespace VHCBConservationApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTrailfeet;
-
-        /// <summary>
-        /// txtTillable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTillable;
 
         /// <summary>
         /// txtAgsoils control.
