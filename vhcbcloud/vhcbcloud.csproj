@@ -300,6 +300,7 @@
     <Content Include="ProjectDesc.aspx" />
     <Content Include="Assignments.aspx" />
     <Content Include="QAManagement.aspx" />
+    <Content Include="ResetTempApplication.aspx" />
     <Content Include="Scripts\CurrencyController.js" />
     <Content Include="Scripts\gridviewScroll.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
@@ -1103,6 +1104,13 @@
     </Compile>
     <Compile Include="Reallocations.aspx.designer.cs">
       <DependentUpon>Reallocations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ResetTempApplication.aspx.cs">
+      <DependentUpon>ResetTempApplication.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResetTempApplication.aspx.designer.cs">
+      <DependentUpon>ResetTempApplication.aspx</DependentUpon>
     </Compile>
     <Compile Include="SetTemporaryProjectToActive.aspx.cs">
       <DependentUpon>SetTemporaryProjectToActive.aspx</DependentUpon>

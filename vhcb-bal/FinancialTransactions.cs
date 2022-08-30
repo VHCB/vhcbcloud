@@ -702,7 +702,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static DataTable AddStaffAssignment(int FromProjectId, int ToProjectId, DateTime transDate, int Fromfundid, int Fromfundtranstype,
                           decimal Fromfundamount, int Tofundid, int Tofundtranstype, decimal Tofundamount, Nullable<int> fromTransId, Nullable<int> toTransId, 
-                          string transGuid, int UserId, int LandUsePermitID, int LandUsePermitIDTo)
+                          string transGuid, int UserId, int LandUsePermitID, int LandUsePermitIDTo, int TargetYr)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             DataTable dtable = null;
@@ -726,7 +726,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("UserId", UserId));
                 command.Parameters.Add(new SqlParameter("LandUsePermitID", LandUsePermitID));
                 command.Parameters.Add(new SqlParameter("LandUsePermitIDTo", LandUsePermitIDTo));
-                
+                command.Parameters.Add(new SqlParameter("TargetYr", TargetYr));
+
                 using (connection)
                 {
                     connection.Open();

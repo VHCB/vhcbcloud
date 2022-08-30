@@ -42,6 +42,15 @@ namespace Portfolio
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjectNum;
 
         /// <summary>
+        /// ProjName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjName;
+
+        /// <summary>
         /// dvMessage control.
         /// </summary>
         /// <remarks>
@@ -517,6 +526,15 @@ namespace Portfolio
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfPortfolioType;
+
+        /// <summary>
+        /// hfPortfolioTypeName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPortfolioTypeName;
 
         /// <summary>
         /// hfYear control.

@@ -18,11 +18,15 @@
         <div class="container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <table style="width: 25%;">
+                    <table style="width: 50%;">
                         <tr>
                              <td><span class="labelClass">Project #</span></td>
                             <td>
                                 <span class="labelClass" id="ProjectNum" runat="server"></span>
+                            </td>
+                            <td><b><span class="labelClass">Project Name:</span></td>
+                            <td style="text-align: left">
+                                <span class="labelClass" id="ProjName" runat="server"></span>
                             </td>
                         </tr>
                    
@@ -246,7 +250,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">Income</h3>
+                                            <h3 class="panel-title">Rent Restrictions</h3>
                                         </td>
                                     </tr>
                                     <tr>
@@ -367,6 +371,7 @@
     <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
     <asp:HiddenField ID="hfProjectPortfolioID" runat="server" />
      <asp:HiddenField ID="hfPortfolioType" runat="server" />
+    <asp:HiddenField ID="hfPortfolioTypeName" runat="server" />
      <asp:HiddenField ID="hfYear" runat="server" />
     <script language="javascript">
         $(document).ready(function () {

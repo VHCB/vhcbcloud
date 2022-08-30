@@ -220,13 +220,18 @@ namespace VHCBConservationApp
 
             if (projectNumber != "")
             {
+                saveData();
+
                 List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
                 if (EmailList.Count > 0)
                     GetExagoURLForReport(projectNumber, "Farm Conservation Online Application", EmailList);
 
-                saveData();
+                ViabilityApplicationData.SubmitApplication(projectNumber);
 
+                LogMessage("Conservation Online Application Submitted Successfully");
+
+                Response.Redirect("Login.aspx");
             }
 
         }
@@ -248,7 +253,7 @@ namespace VHCBConservationApp
             api.SetupData.StorageMgmtConfig.SetIdentity("userId", "Dherman");
             api.SetupData.StorageMgmtConfig.SetIdentity("companyId", "VHCB");
 
-            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"conservation\" + ReportName);
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Conservation\" + ReportName);
 
             //api.Action = wrApiAction.ExecuteReport;
             //WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");

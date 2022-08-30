@@ -48,7 +48,7 @@ namespace VHCBConservationApp
             {
                 ddList.Items.Clear();
                 ddList.DataSource = HUC12Data.GetHUC12ListForApp();
-                ddList.DataValueField = "Name";
+                ddList.DataValueField = "HUCID";
                 ddList.DataTextField = "Name";
                 ddList.DataBind();
                 ddList.Items.Insert(0, new ListItem("Select", "NA"));
@@ -107,7 +107,10 @@ namespace VHCBConservationApp
                     txtStreamfeet.Text = dr["StreamFeet"].ToString();
                     txtPondFeet.Text = dr["PondFeet"].ToString();
                     txtWaterBodies.Text = dr["WaterBodies"].ToString();
-                    PopulateWaterShed(dr["Watershed"].ToString());
+                    //PopulateWaterShed(dr["Watershed"].ToString());
+                    PopulateWaterShedByText(ddlWatershed, dr["DrainageBasin"].ToString());
+                    PopulateDropDownByText(ddlSubWatershed, dr["SubBasinHUC8"].ToString());
+                    PopulateDropDownByText(ddlSecSubWatershed, dr["SubBasin2HUC8"].ToString());
 
                     txtWaterBodies.Text = dr["WaterBodies"].ToString();
 
@@ -129,8 +132,8 @@ namespace VHCBConservationApp
 
                     txtWaterQualityConcerns.Text = dr["WaterQualityConcerns"].ToString();
                     PopulateDropDownByText(ddlLivestockExcluded, dr["LivestockExcluded"].ToString());
-                    PopulateDropDownByText(ddlHUC12, dr["SubBasin"].ToString());
-                    PopulateDropDownByText(ddlSecHUC12, dr["SubBasin2"].ToString());
+                    PopulateDropDownByText(ddlHUC12, dr["SubWatershedHUC12"].ToString());
+                    PopulateDropDownByText(ddlSecHUC12, dr["SubWatershed2HUC12"].ToString());
                 }
             }
         }
@@ -245,10 +248,13 @@ namespace VHCBConservationApp
             else
                 LKSecSUBWatershed = DataUtils.GetInt(ddlSecSubWatershed.SelectedItem.Value);
 
-            ConservationApplicationData.WaterManagement(projectNumber, DataUtils.GetDecimal(txtWetlands.Text), DataUtils.GetDecimal(txtPonds.Text), DataUtils.GetDecimal(txtFloodplain.Text), DataUtils.GetDecimal(txtStreamfeet.Text), DataUtils.GetDecimal(txtPondFeet.Text),
-                    txtWaterBodies.Text, waterShedInfo, "", ddlTacticalBasin.SelectedItem.Text, ddlDrainageDitches.SelectedItem.Text, ddlDrainageTiles.SelectedItem.Text,
+            ConservationApplicationData.WaterManagement(projectNumber, DataUtils.GetDecimal(txtWetlands.Text), DataUtils.GetDecimal(txtPonds.Text), DataUtils.GetDecimal(txtFloodplain.Text), 
+                DataUtils.GetDecimal(txtStreamfeet.Text), DataUtils.GetDecimal(txtPondFeet.Text),
+                    txtWaterBodies.Text, waterShed, subWaterShed, ddlTacticalBasin.SelectedItem.Text, ddlDrainageDitches.SelectedItem.Text, ddlDrainageTiles.SelectedItem.Text,
                     txtWasteInfrastucture.Text, txtProtectWater.Text, DataUtils.GetBool(rdbtParticipateWaterGrant.SelectedValue), txtParticipateWaterGrant.Text, ddlLivestockExcluded.SelectedItem.Text, txtWaterQualityConcerns.Text,
-                    LKWatershed, LKSUBWatershed, LKSecSUBWatershed, DataUtils.GetInt(ddlHUC12.SelectedItem.Value), DataUtils.GetInt(ddlSecHUC12.SelectedItem.Value), ddlHUC12.SelectedItem.Text, ddlSecHUC12.SelectedItem.Text);
+                    LKWatershed, LKSUBWatershed, LKSecSUBWatershed, DataUtils.GetInt(ddlHUC12.SelectedItem.Value), DataUtils.GetInt(ddlSecHUC12.SelectedItem.Value), 
+                    ddlHUC12.SelectedItem.Text, ddlSecHUC12.SelectedItem.Text,
+                     DataUtils.GetInt(ddlTacticalBasin.Text), SecSubWaterShed);
 
             LogMessage("Conservation Application Data Added Successfully");
         }

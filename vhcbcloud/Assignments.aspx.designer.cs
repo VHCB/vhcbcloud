@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbcloud {
-    
-    
-    public partial class Assignments {
-        
+namespace vhcbcloud
+{
+
+
+    public partial class Assignments
+    {
+
         /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
+
         /// <summary>
         /// rdBtnFinancial control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnFinancial;
-        
+
         /// <summary>
         /// pnlReallocations control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlReallocations;
-        
+
         /// <summary>
         /// rdBtnSelection control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rdBtnSelection;
-        
+
         /// <summary>
         /// imgSearch control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgSearch;
-        
+
         /// <summary>
         /// imgNewAwardSummary control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgNewAwardSummary;
-        
+
         /// <summary>
         /// imgExistingAwardSummary control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgExistingAwardSummary;
-        
+
         /// <summary>
         /// btnProjectNotes control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
-        
+
         /// <summary>
         /// cbActiveOnly control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
-        
+
         /// <summary>
         /// mpExtender control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpExtender;
-        
+
         /// <summary>
         /// pnlProjectNotes control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlProjectNotes;
-        
+
         /// <summary>
         /// ifProjectNotes control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlIframe ifProjectNotes;
-        
+
         /// <summary>
         /// btnClose control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnClose;
-        
+
         /// <summary>
         /// pnlReallocateFrom control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlReallocateFrom;
-        
+
         /// <summary>
         /// ddlRFromProj control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRFromProj;
-        
+
         /// <summary>
         /// txtFromProjNum control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFromProjNum;
-        
+
         /// <summary>
         /// aaceProjName control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender aaceProjName;
-        
+
         /// <summary>
         /// txtFromCommitedProjNum control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFromCommitedProjNum;
-        
+
         /// <summary>
         /// aceCommitAuto control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender aceCommitAuto;
-        
+
         /// <summary>
         /// txtRfromDate control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRfromDate;
-        
+
         /// <summary>
         /// CalendarExtender1 control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CalendarExtender CalendarExtender1;
-        
+
         /// <summary>
         /// lblProjName1 control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProjName1;
-        
+
         /// <summary>
         /// ddlAccountFrom control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlAccountFrom;
-        
+
         /// <summary>
         /// txtAcctNumFrom control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAcctNumFrom;
-        
+
         /// <summary>
         /// AutoCompleteExtender3 control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender3;
-        
+
         /// <summary>
         /// ddlRFromFund control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRFromFund;
-        
+
         /// <summary>
         /// ddlRFromFundType control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRFromFundType;
-        
+
         /// <summary>
         /// txtRfromAmt control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRfromAmt;
-        
+
         /// <summary>
         /// lblAvailFund control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAvailFund;
-        
+
         /// <summary>
         /// lblAvailVisibleFund control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAvailVisibleFund;
-        
+
         /// <summary>
         /// lblUsePermit control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUsePermit;
-        
+
         /// <summary>
         /// ddlUsePermit control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlUsePermit;
-        
+
         /// <summary>
         /// lblRErrorMsg control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRErrorMsg;
-        
+
         /// <summary>
         /// divReallocateTo control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReallocateTo;
-        
+
         /// <summary>
         /// tblReallocateTo control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblReallocateTo;
-        
+
         /// <summary>
         /// ddlRToProj control.
         /// </summary>
@@ -335,7 +337,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRToProj;
-        
+
         /// <summary>
         /// txtToProjNum control.
         /// </summary>
@@ -344,7 +346,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtToProjNum;
-        
+
         /// <summary>
         /// AutoCompleteExtender1 control.
         /// </summary>
@@ -353,7 +355,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.AutoCompleteExtender AutoCompleteExtender1;
-        
+
         /// <summary>
         /// ddlRToFund control.
         /// </summary>
@@ -362,7 +364,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRToFund;
-        
+
         /// <summary>
         /// lblProjName2 control.
         /// </summary>
@@ -371,7 +373,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProjName2;
-        
+
         /// <summary>
         /// ddlRtoFundType control.
         /// </summary>
@@ -380,7 +382,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRtoFundType;
-        
+
         /// <summary>
         /// txtRToAmt control.
         /// </summary>
@@ -389,7 +391,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRToAmt;
-        
+
         /// <summary>
         /// lblAvailFundTo control.
         /// </summary>
@@ -398,7 +400,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAvailFundTo;
-        
+
         /// <summary>
         /// lblAvailVisibleFundTo control.
         /// </summary>
@@ -407,7 +409,16 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAvailVisibleFundTo;
-        
+
+        /// <summary>
+        /// ddlTargetYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTargetYear;
+
         /// <summary>
         /// lblUsePermitTo control.
         /// </summary>
@@ -416,7 +427,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUsePermitTo;
-        
+
         /// <summary>
         /// ddlUsePermitTo control.
         /// </summary>
@@ -425,7 +436,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlUsePermitTo;
-        
+
         /// <summary>
         /// btnReallocateSubmit control.
         /// </summary>
@@ -434,7 +445,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnReallocateSubmit;
-        
+
         /// <summary>
         /// gvReallocate control.
         /// </summary>
@@ -443,7 +454,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvReallocate;
-        
+
         /// <summary>
         /// btnNewTransaction control.
         /// </summary>
@@ -452,7 +463,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNewTransaction;
-        
+
         /// <summary>
         /// hfTransAmt control.
         /// </summary>
@@ -461,7 +472,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfTransAmt;
-        
+
         /// <summary>
         /// hfBalAmt control.
         /// </summary>
@@ -470,7 +481,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfBalAmt;
-        
+
         /// <summary>
         /// hfTransId control.
         /// </summary>
@@ -479,7 +490,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfTransId;
-        
+
         /// <summary>
         /// hfRFromTransId control.
         /// </summary>
@@ -488,7 +499,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfRFromTransId;
-        
+
         /// <summary>
         /// hfProjId control.
         /// </summary>
@@ -497,7 +508,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjId;
-        
+
         /// <summary>
         /// hfToProjId control.
         /// </summary>
@@ -506,7 +517,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfToProjId;
-        
+
         /// <summary>
         /// hfReallocateGuid control.
         /// </summary>
@@ -515,7 +526,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfReallocateGuid;
-        
+
         /// <summary>
         /// hdnValue control.
         /// </summary>
@@ -524,7 +535,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnValue;
-        
+
         /// <summary>
         /// hdnCommitedProjValue control.
         /// </summary>
@@ -533,7 +544,7 @@ namespace vhcbcloud {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCommitedProjValue;
-        
+
         /// <summary>
         /// hdnToValue control.
         /// </summary>

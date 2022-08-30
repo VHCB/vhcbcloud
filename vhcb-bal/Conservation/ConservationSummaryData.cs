@@ -11,7 +11,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
         public static void SubmitConserve(int ProjectId, int LkConsTrack, int NumEase, //int PrimStew, 
             decimal TotalAcres, decimal Wooded,
             decimal Prime, decimal Statewide, decimal Tillable, decimal Pasture, decimal Unmanaged, decimal FarmResident, decimal NaturalRec, decimal Sugarbush,
-            int UserID, int GeoSignificance, string TransferType)
+            int UserID, int GeoSignificance, string TransferType, int TacticalBasin)
         {
             try
             {
@@ -40,6 +40,7 @@ namespace VHCBCommon.DataAccessLayer.Conservation
                         command.Parameters.Add(new SqlParameter("NaturalRec", NaturalRec));
                         command.Parameters.Add(new SqlParameter("Sugarbush", Sugarbush));
                         command.Parameters.Add(new SqlParameter("TransferType", TransferType));
+                        command.Parameters.Add(new SqlParameter("TacticalBasin", TacticalBasin));
 
                         command.Parameters.Add(new SqlParameter("UserID", UserID));
                         command.Parameters.Add(new SqlParameter("GeoSignificance", GeoSignificance));

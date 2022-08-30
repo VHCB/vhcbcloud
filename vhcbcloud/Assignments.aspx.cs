@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using DataAccessLayer;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,6 +33,8 @@ namespace vhcbcloud
                 hfReallocateGuid.Value = "";
                 BindProjects();
                 CheckPageAccess();
+                BindLookUP(ddlTargetYear, 2272);
+                CheckTargetYearAccess();
             }
             if (rdBtnSelection.SelectedIndex == 0)
             {
@@ -432,7 +435,7 @@ namespace vhcbcloud
             DataTable dtProjects = FinancialTransactions.GetBoardCommitmentsByProject(Convert.ToInt32(hfToProjId.Value));
 
             lblProjName2.Text = dtProjects.Rows.Count > 0 ? dtProjects.Rows[0]["Description"].ToString() : "";
-
+            
             //hfTransId.Value = ""; hfRFromTransId.Value = "";
             /*DO NOT Remove the below code*/
             //if (ddlRToProj.SelectedIndex != ddlRFromProj.SelectedIndex)
@@ -557,6 +560,27 @@ namespace vhcbcloud
                 }
                 else
                     ddlRToFund.Enabled = true;
+            }
+        }
+
+        private void BindLookUP(DropDownList ddList, int LookupType)
+        {
+            try
+            {
+                ddList.Items.Clear();
+                DataView dv = LookupValuesData.Getlookupvalues(LookupType).DefaultView;
+                dv.Sort = "typeid desc";
+                DataTable sortedDT = dv.ToTable();
+
+                ddList.DataSource = sortedDT;
+                ddList.DataValueField = "typeid";
+                ddList.DataTextField = "description";
+                ddList.DataBind();
+                ddList.Items.Insert(0, new ListItem("Select", "NA"));
+            }
+            catch (Exception ex)
+            {
+                //LogError(Pagename, "BindLookUP", "Control ID:" + ddList.ID, ex.Message);
             }
         }
 
@@ -1287,7 +1311,8 @@ namespace vhcbcloud
                                                                       hfTransId.Value == "" ? nullable : Convert.ToInt32(hfTransId.Value), 
                                                                       hfReallocateGuid.Value.ToString(), GetUserId(),
                                                                       DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()),
-                                                                      DataUtils.GetInt(ddlUsePermitTo.SelectedValue.ToString()));
+                                                                      DataUtils.GetInt(ddlUsePermitTo.SelectedValue.ToString()),
+                                                                      DataUtils.GetInt(ddlTargetYear.SelectedValue.ToString()));
 
                 hfRFromTransId.Value = dtable.Rows[0][0].ToString();
                 hfTransId.Value = dtable.Rows[0][0].ToString();
@@ -1681,6 +1706,20 @@ namespace vhcbcloud
                 }
             }
             return false;
+        }
+
+        private void CheckTargetYearAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "37661")
+                    ddlTargetYear.Enabled = true;
+            }
+            if (!rdBtnSelection.Items[0].Enabled)
+                rdBtnSelection.SelectedIndex = 1;
         }
     }
 }

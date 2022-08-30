@@ -227,10 +227,17 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 10%; float: left">
-                                            <asp:Label ID="lblUsePermitTo" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                                            <span class="labelClass">Target Year</span>
                                         </td>
                                         <td style="width: 20%; float: left">
-                                            <asp:DropDownList ID="ddlUsePermitTo" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" 
+                                           <asp:DropDownList ID="ddlTargetYear" Enabled="true" CssClass="clsDropDown" runat="server" TabIndex="5">
+                                                        </asp:DropDownList>
+                                        </td>
+                                         <td style="width: 10%; float: left">
+                                             <asp:Label ID="lblUsePermitTo" class="labelClass" runat="server" Visible="false" Text="Use Permit:"></asp:Label>
+                                         </td>
+                                        <td style="width: 20%; float: left">
+                                             <asp:DropDownList ID="ddlUsePermitTo" CssClass="clsDropDown" runat="server" Visible="false" TabIndex="10" 
                                                 AutoPostBack="true" OnSelectedIndexChanged="ddlUsePermitTo_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>

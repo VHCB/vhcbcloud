@@ -145,6 +145,11 @@
                                         <asp:Label ID="lblUserName" runat="Server" Text='<%# Eval("UserName", "{0:C2}") %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Target Year" ItemStyle-Width="100px" ItemStyle-HorizontalAlign="Left">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblTargetYear" runat="Server" Text='<%# Eval("TargetYr")%>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField>
                                     <HeaderTemplate>Transaction Details</HeaderTemplate>
                                     <ItemTemplate>

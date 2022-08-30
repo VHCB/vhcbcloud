@@ -202,6 +202,7 @@ namespace vhcbcloud.Conservation
                 pctWooded.InnerText = "0.0 %";
                 pctSugarBush.InnerText = "0.0 %";
                 PopulateDropDown(ddlGeoSignificance, drConserve["GeoSignificance"].ToString());
+                PopulateDropDown(ddlTacticalBasin, drConserve["TacticalBasin"].ToString());
                 //pctPrime.InnerText = "0";
                 //pctState.InnerText = "0";
                 //otherAcres.InnerText = "0";
@@ -335,6 +336,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlTrail, 1270);
             BindLookUP(ddlAllowedSpecialUses, 1271);
             BindHUC12CheckBoxList();
+            BindLookUP(ddlTacticalBasin, 2284);
         }
 
         private void BindHUC12CheckBoxList()
@@ -463,7 +465,7 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), DataUtils.GetDecimal(txtSugarbush.Text),
                 GetUserId(),
-                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType) ;
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType, DataUtils.GetInt(ddlTacticalBasin.SelectedValue.ToString())) ;
 
             BindConConserveForm();
 

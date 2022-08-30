@@ -110,12 +110,19 @@
                                         <asp:TextBox ID="txtTotProjAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>--%>
                                     <td><span class="labelClass">Transfer Type:</span></td>
-                                    <td> <asp:ListBox runat="server" SelectionMode="Multiple" Height="42px" Width="150px" ID="lbTransferType" CssClass="clsTextBoxBlue1">
-                                            
-                                            </asp:ListBox>
+                                    <td>
+                                        <asp:ListBox runat="server" SelectionMode="Multiple" Height="42px" Width="150px" ID="lbTransferType" CssClass="clsTextBoxBlue1"></asp:ListBox>
                                     </td>
                                 </tr>
 
+                                <tr>
+                                    <td style="height: 5px"><span class="labelClass">Tactical Basin:</span></td>
+                                    <td style="height: 5px">
+                                        <asp:DropDownList ID="ddlTacticalBasin" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
+                                </asp:DropDownList>
+                                    </td>
+                                    <td colspan="4" style="height: 5px"></td>
+                                </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
@@ -202,15 +209,14 @@
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td><span class="labelClass">Natural/Rec</span></td>
-                                    <td><asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                                    <td><span class="labelClass">Total Project Acres:</span></td>
-                                    <td><span class="labelClass"  id="spnTotalProject" runat="server"></span></td>
-                                    <td><span class="labelClass"></span></td>
                                     <td>
-                                        
-                                    </td>
+                                        <asp:TextBox ID="txtNaturalRec" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                                    <td><span class="labelClass">Total Project Acres:</span></td>
+                                    <td><span class="labelClass" id="spnTotalProject" runat="server"></span></td>
+                                    <td><span class="labelClass"></span></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
@@ -224,15 +230,16 @@
                                     <td><span class="labelClass" id="pctSugarBush" runat="server"></span></td>
 
                                     <td><span class="labelClass"></span></td>
-                                    <td><asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
-                                        </td>
+                                    <td>
+                                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
+                                    </td>
 
 
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                               
+
                             </table>
                         </div>
                     </div>
@@ -816,7 +823,7 @@
                                             </asp:DropDownList>
                                         </td>
                                         <td>
-                                            <span class="labelClass">Sub-Watershed</span>
+                                            <span class="labelClass">Sub-Watershed (HUC8)</span>
                                         </td>
                                         <td>
                                             <asp:DropDownList ID="ddlSubWatershedNew" CssClass="clsDropDown" runat="server">
@@ -1024,15 +1031,15 @@
 
                     var totPS = totPrime + totStateWide;
                     var pctPS = Math.round(totPS * 100 / Total);
-                   // console.log(pctPS);
-                   // console.log(pctPS.toPrecision(2));
+                    // console.log(pctPS);
+                    // console.log(pctPS.toPrecision(2));
                     $('#<%=pctPrimeStateWide.ClientID%>').text(pctPS + ' %');
 
                     var pctWooded = Math.round($('#<%=txtWooded.ClientID%>').val() * 100 / Total);
                     $('#<%=pctWooded.ClientID%>').text(pctWooded.toPrecision(2) + ' %');
                 }
 
-                
+
                 console.log(totWooded);
                 console.log(totSugarbush);
 

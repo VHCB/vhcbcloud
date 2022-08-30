@@ -160,7 +160,7 @@ namespace VHCBCommon.DataAccessLayer
 
         public static void WaterManagement(string ProjNumber, decimal Wetlands, decimal Ponds, decimal FloodPlain, decimal StreamFeet, decimal PondFeet, string WaterBodies, string Watershed, string SubWatershed, string TacticalBasin, string DrainageDitches, 
             string DrainageTiles, string WasteInfrastructure, string ProtectWater, bool ParticipateWaterGrant, string ParticipateWaterGrantDiscussion, string LivestockExcluded, string WaterQualityConcerns,
-            int LKWatershed, int LKSubWatershed, int LKSecSubWatershed, int HUC12, int secHUC12, string SubBasin, string SubBasin2)
+            int LKWatershed, int LKSubWatershed, int LKSecSubWatershed, int HUC12, int secHUC12, string SubBasin, string SubBasin2, int TacticalBasinInt, string SecSubWaterShed)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -194,6 +194,8 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("secHUC12", secHUC12));
                 command.Parameters.Add(new SqlParameter("SubBasin", SubBasin));
                 command.Parameters.Add(new SqlParameter("SubBasin2", SubBasin2));
+                command.Parameters.Add(new SqlParameter("TacticalBasinInt", TacticalBasinInt));
+                command.Parameters.Add(new SqlParameter("SecSubWaterShed", SecSubWaterShed));
 
                 using (connection)
                 {

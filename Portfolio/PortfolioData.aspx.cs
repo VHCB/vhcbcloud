@@ -1,6 +1,8 @@
 ﻿using DataAccessLayer;
+using NodaTime;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,10 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VHCBCommon.DataAccessLayer;
 using VHCBCommon.DataAccessLayer.Housing;
+using WebReports.Api;
+using WebReports.Api.Data;
+using WebReports.Api.Reports;
+using WebReports.Api.Scheduler;
 
 namespace Portfolio
 {
@@ -20,6 +26,7 @@ namespace Portfolio
         int ProjectId;
         int Year = 0;
         int PortfolioType = 0;
+        string PortfolioTypeName = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,11 +61,13 @@ namespace Portfolio
             {
                 hfProjectPortfolioID.Value = drPortfolioData["ProjectPortfolioID"].ToString();
                 spnYear.InnerHtml = drPortfolioData["Year"].ToString();
-                spnPortfolioType.InnerHtml = drPortfolioData["PortfolioTypeName"].ToString();
+                PortfolioTypeName = drPortfolioData["PortfolioTypeName"].ToString();
+                spnPortfolioType.InnerHtml = PortfolioTypeName;
                 PortfolioType = DataUtils.GetInt(drPortfolioData["PortfolioType"].ToString());
                 Year = DataUtils.GetInt(drPortfolioData["Year"].ToString());
 
                 hfPortfolioType.Value = PortfolioType.ToString();
+                hfPortfolioTypeName.Value = PortfolioTypeName;
                 hfYear.Value = Year.ToString();
 
                 if (DataUtils.GetInt(drPortfolioData["TotalUnits"].ToString()) != 0)
@@ -161,7 +170,7 @@ namespace Portfolio
             if (dr != null)
             {
                 //ProjectNum.InnerText = dr["ProjNumber"].ToString();
-                //ProjName.InnerText = dr["ProjectName"].ToString();
+                ProjName.InnerText = dr["ProjectName"].ToString();
             }
         }
 
@@ -193,14 +202,87 @@ namespace Portfolio
                 if (btnSave.Text.ToLower() == "save")
                 {
                     Save();
-
-                    LogMessage("Portfolio data saved successfully");
                 }
             }
             catch (Exception ex)
             {
-                LogError(Pagename, "btnSubmit_Click", "", ex.Message);
+                LogError(Pagename, "btnSave_Click", "", ex.Message);
             }
+        }
+
+        public static void GetExagoURLForReport(string Projnum, string ReportName, List<string> EmailList, string PortfolioType, string Year)
+        {
+            string URL = string.Empty;
+            Api api = new Api(@"/eWebReports");
+
+            DataSource ds = api.DataSources.GetDataSource("VHCB");
+            ds.DataConnStr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
+
+            // Set the action to execute the report
+            api.Action = wrApiAction.ExecuteReport;
+            WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("Projnum");
+            parameter.Value = Projnum;
+            parameter.IsHidden = true;
+
+            WebReports.Api.Common.Parameter parameter1 = api.Parameters.GetParameter("PortfolioType");
+            parameter1.Value = PortfolioType;
+            parameter1.IsHidden = true;
+
+            WebReports.Api.Common.Parameter parameter2 = api.Parameters.GetParameter("Year");
+            parameter2.Value = Year;
+            parameter2.IsHidden = true;
+
+            api.SetupData.StorageMgmtConfig.SetIdentity("userId", "Dherman");
+            api.SetupData.StorageMgmtConfig.SetIdentity("companyId", "VHCB");
+
+
+            ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Housing\" + ReportName);
+
+            //api.Action = wrApiAction.ExecuteReport;
+            //WebReports.Api.Common.Parameter parameter = api.Parameters.GetParameter("ProjID");
+            //parameter.Value = "10161";
+            //parameter.IsHidden = true;
+            //ReportName = "Grid Project Milestone";
+            //ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Utility\Grid Reports\" + ReportName);
+
+            if (report != null)
+            {
+                report.ExportType = wrExportType.Pdf;
+                api.ReportObjectFactory.SaveToApi(report);
+            }
+            // URL = ConfigurationManager.AppSettings["ExagoURL"] + api.GetUrlParamString("ExagoHome", true);
+
+
+            // Run-once, immediately save to disk
+            string jobId;           // Use to retrieve schedule info later for editing
+            int hostIdx;            // Assigned execution host id
+
+            string subject = $"Online Housing Portfolio Application ({Projnum})";
+
+            ReportScheduleInfo newSchedule = new ReportScheduleInfoOnce()
+            {
+                ScheduleName = "Online Housing Portfolio Application",             // Schedule name
+                ReportType = wrReportType.Advanced,            // Report type
+                RangeStartDate = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),                   // Start date
+                ScheduleTime = new LocalTime(DateTime.Now.Hour, DateTime.Now.Minute), // Start time
+                SendReportInEmail = true,                             // Email or save
+                EmailSubject = subject,
+                EmailBody = "PDF of your Online Housing Portfolio Application"
+            };
+            newSchedule.EmailToList.AddRange(EmailList);
+
+            //newSchedule.EmailToList.Add("dan@vhcb.org");
+            //newSchedule.EmailToList.Add("aaron @vhcb.org");
+            //newSchedule.EmailToList.Add("b.mcgavisk @vhcb.org");
+            //newSchedule.EmailToList.Add("Marcy @vhcb.org");
+
+            // Send to the scheduler; wrap in try/catch to handle exceptions
+            try
+            {
+                api.ReportScheduler.AddReport(
+                  new ReportSchedule(api.PageInfo) { ScheduleInfo = newSchedule }, out jobId, out hostIdx);
+            }
+            catch (Exception) { }
         }
 
         private void Save()
@@ -385,16 +467,17 @@ namespace Portfolio
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             Save();
-            SubmitPortfolioData();
-        }
 
-        private void SubmitPortfolioData()
-        {
-            PortfolioDataData.SubmitPortfolioData(Session["UserId"].ToString(), DataUtils.GetInt(hfYear.Value));
+            List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
-            LogMessage("Portfolio data Submitted successfully");
+            if (EmailList.Count > 0)
+                GetExagoURLForReport(projectNumber, "Housing Portfolio Data-Portrait", EmailList, hfPortfolioTypeName.Value.ToString(), hfYear.Value.ToString());
 
-            Response.Redirect("login.aspx");
+            ViabilityApplicationData.SubmitApplication(projectNumber);
+
+            LogMessage("Porfolio Online Application Submitted Successfully");
+
+            Response.Redirect("Login.aspx");
         }
     }
 }

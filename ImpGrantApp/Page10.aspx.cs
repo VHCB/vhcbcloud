@@ -23,6 +23,9 @@ namespace ImpGrantApp
         string projectNumber = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+            dvMessage.Visible = false;
+            lblErrorMsg.Text = "";
+
             if (Session["ProjectNumber"] == null)
                 Response.Redirect("Login.aspx");
             else
@@ -54,7 +57,7 @@ namespace ImpGrantApp
 
                     txtConfidentSignature.Text = drPage1tDetails["Confident_Signature"].ToString();
                     txtConfidentDate.Text = drPage1tDetails["Confident_Date"].ToString();
-                   
+
                 }
             }
         }
@@ -77,7 +80,7 @@ namespace ImpGrantApp
 
                 //bool IsConfident_Sharing = rdBtnConfidentSharing.SelectedItem.Text == "Yes" ? true : false;
 
-                ImpGrantApplicationData.ViabilityImpGrantApplicationPage10(projectNumber, false, "False", txtConfidentSignature.Text, DataUtils.GetDate( txtConfidentDate.Text));
+                ImpGrantApplicationData.ViabilityImpGrantApplicationPage10(projectNumber, false, "False", txtConfidentSignature.Text, DataUtils.GetDate(txtConfidentDate.Text));
 
                 LogMessage("Successfully Saved Data");
             }
@@ -113,38 +116,16 @@ namespace ImpGrantApp
             {
                 Save();
 
-                DataRow drData = ViabilityApplicationData.CheckFullValidation(projectNumber);
+                List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
-                if (drData != null)
-                {
-                    if (drData["ProjTitle"].ToString() == "" || drData["ProjDesc"].ToString() == "" || drData["ProjCost"].ToString() == "0" || drData["Request"].ToString() == "0" ||
-                        //drData["Budget"].ToString() == "" || 
-                        drData["FarmBusiness1"].ToString() == "" || drData["FarmProduction2"].ToString() == "" || drData["ProductsProduced3"].ToString() == "" ||
-                        drData["FarmOwners4"].ToString() == "" || drData["SurfaceWaters5"].ToString() == "" || drData["MajorGoals6"].ToString() == "" || drData["PositiveImpact7"].ToString() == "" ||
-                        drData["TechAdvisors8"].ToString() == "" || drData["LongTermPlans9"].ToString() == "" || drData["NoGrant10"].ToString() == "" || drData["Timeline11"].ToString() == "" ||
-                        //drData["NoContribution12"].ToString() == "" || 
-                        drData["NutrientManagementPlan13"].ToString() == "" || drData["Permits14"].ToString() == "" ||
-                        drData["Confident_Sharing"].ToString() == "" || drData["Confident_Funding"].ToString() == "" || drData["Confident_Signature"].ToString() == "" || drData["Confident_Date"].ToString() == ""
-                        )
-                        LogMessage("Missing required information, please check the application.");
-                    else
-                    {
-                        List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
+                if (EmailList.Count > 0)
+                    GetExagoURLForReport(projectNumber, "Online Application - Implementation Grant", EmailList);
 
-                        if (EmailList.Count > 0)
-                            GetExagoURLForReport(projectNumber, "Online Application - Implementation Grant", EmailList);
+                ViabilityApplicationData.SubmitApplication(projectNumber);
 
-                        ViabilityApplicationData.SubmitApplication(projectNumber);
+                LogMessage("Viability Application Submitted Successfully");
 
-                        LogMessage("Viability Application Submitted Successfully");
-
-                        Response.Redirect("Login.aspx");
-                    }
-                }
-                else
-                {
-                    LogMessage("Missing required information, please check the application.");
-                }
+                Response.Redirect("Login.aspx");
             }
         }
 
@@ -164,7 +145,7 @@ namespace ImpGrantApp
 
             api.SetupData.StorageMgmtConfig.SetIdentity("userId", "Dherman");
             api.SetupData.StorageMgmtConfig.SetIdentity("companyId", "VHCB");
-          
+
 
             ReportObject report = api.ReportObjectFactory.LoadFromRepository(@"Viability\" + ReportName);
 

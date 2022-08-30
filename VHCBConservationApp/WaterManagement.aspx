@@ -125,7 +125,7 @@
                         </tr>
                       
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.2 If the project area is in two watersheds, what secondary sub basin (HUC 8) is the project located in?</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.2 If the project area is within two sub basins, what secondary sub basin (HUC 8) is the project area also located in?</span></td>
                             <td>
                                  <asp:DropDownList ID="ddlSecSubWatershed" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -135,7 +135,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.3  If the project area is in two watershed, what secondary sub watershed (HUC 12) is the project located in?</span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">8.3 If the project area is within two sub watersheds, what secondary sub watershed (HUC 12) is the project area also located in?</span></td>
                             <td>
                                 <asp:DropDownList ID="ddlSecHUC12" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>

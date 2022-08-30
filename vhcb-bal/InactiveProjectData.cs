@@ -242,7 +242,40 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+        public static bool ActivateTempProjectByProjectNum(string ProjectNumber)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "ActivateTempProjectByProjectNum";
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        
+
+                        SqlParameter parmMessage = new SqlParameter("@IsProjExist", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        
+                        command.CommandTimeout = 60 * 5;
+
+                        command.ExecuteNonQuery();
+
+                        return  DataUtils.GetBool(command.Parameters["@IsProjExist"].Value.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public static DataTable GetTempApplicationTypes(int Program)
         {
             DataTable dtManagers = null;
