@@ -123,13 +123,13 @@ namespace vhcbExternalApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
-            Save();
+            saveData();
             Response.Redirect("FarmBusinessInformation.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            Save();
+            saveData();
             Response.Redirect("WaterQualityGrantsProgramPage4.aspx");
         }
 
@@ -149,7 +149,7 @@ namespace vhcbExternalApp
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
-        protected void Save()
+        protected void saveData()
         {
             if (projectNumber != "")
             {
@@ -178,6 +178,12 @@ namespace vhcbExternalApp
 
                 LogMessage("Farm Business Information Data Added Successfully");
             }
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

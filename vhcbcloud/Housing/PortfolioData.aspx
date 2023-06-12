@@ -74,7 +74,7 @@
                          <tr>
                             <td><span class="labelClass">Portfolio Type</span>&nbsp;</td>
                             <td>
-                                 <asp:DropDownList ID="ddlPortfolioType" CssClass="clsDropDown" runat="server">
+                                 <asp:DropDownList ID="ddlPortfolioType" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPortfolioType_SelectedIndexChanged">
                                 </asp:DropDownList>
                             </td>
                         </tr>
@@ -109,7 +109,7 @@
                                     <tr>
                                         <td><span class="labelClass">Male</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtMGender" CssClass="clsTextBoxBlueSm" runat="server" MaxLength="3"></asp:TextBox>
+                                            <asp:TextBox ID="txtMGender" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td>&nbsp;<span class="labelClass" id="spnMale" runat="server"></span></td>
                                     </tr>
@@ -269,7 +269,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">Income</h3>
+                                            <h3 class="panel-title">Rent Restrictions</h3>
                                         </td>
                                     </tr>
                                     <tr>

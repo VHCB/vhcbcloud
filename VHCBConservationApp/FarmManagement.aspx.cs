@@ -217,5 +217,11 @@ namespace VHCBConservationApp
             else
                 tblOptinalQuestions.Visible = false;
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

@@ -97,72 +97,17 @@
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>
                                             </tr>
-                                            <tr>
+                                           <!-- <tr>
                                                 <td class="auto-style64"><span class="labelClass" style="margin-left: 10px">Funding Totals By Match Source:</span></td>
                                                 <td>
-
-                                                    <table>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">Farm Cash</span></td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtCash" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" style="height: 5px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">Farm In-Kind</span>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtKind" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" style="height: 5px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">Farm Loan </span>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtLoan" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" style="height: 5px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">State Grant</span>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtStateGrant" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" style="height: 5px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">Federal Grant</span>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtFederalGrant" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" style="height: 5px"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="labelClass" style="margin-left: 10px">Other</span>
-                                                            </td>
-                                                            <td>
-                                                                <asp:TextBox ID="txtOther" CssClass="clsTextBoxBlue1" runat="server" Style="margin-left: 24" Width="97px"></asp:TextBox>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                              
+                                                    
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" style="height: 5px"></td>
                                             </tr>
+                                               -->
                                             <tr>
                                                 <td colspan="2"><span class="labelClass" style="margin-left: 10px">Total Project Cost (Please include all matching funds, including USDA-NRCS and Vermont Agency of Agriculture, Food & Markets grants, bank loans, and/or farm cash that will be used to pay for the project) <em><strong>(Required)</strong></em>:</span></td>
                                             </tr>
@@ -181,7 +126,22 @@
                                             <tr>
                                                 <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                                     &nbsp;&nbsp;<asp:Label runat="server" ID="Label1" class="labelClass" Text="Go To"></asp:Label>
+                                                   <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                            <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Applicant Information" Value="ProjectDetails.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information" Value="FarmBusinessInformation.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information - continued" Value="WaterQualityGrants.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Grant Request" Value="WaterQualityGrantsProgramPage4.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Budget Tables & Narrative" Value="BudgetNarrativeTables.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions" Value="Page7.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions - continued" Value="Page8.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Project Questions" Value="Page9.aspx"></asp:ListItem>
+                                             <asp:ListItem Text="Attachments" Value="Page11.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Confidentiality/Submit" Value="Page10.aspx"></asp:ListItem>
+                                        </asp:DropDownList>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -195,7 +155,7 @@
     </div>
     <script language="javascript">
         $(document).ready(function () {
-            toCurrencyControl($('#<%= txtRequest.ClientID%>').val(), $('#<%= txtRequest.ClientID%>'));
+           <%-- toCurrencyControl($('#<%= txtRequest.ClientID%>').val(), $('#<%= txtRequest.ClientID%>'));
             toCurrencyControl($('#<%= txtProjCost.ClientID%>').val(), $('#<%= txtProjCost.ClientID%>'));
             toCurrencyControl($('#<%= txtCash.ClientID%>').val(), $('#<%= txtCash.ClientID%>'));
             toCurrencyControl($('#<%= txtKind.ClientID%>').val(), $('#<%= txtKind.ClientID%>'));
@@ -227,7 +187,7 @@
             });
             $('#<%= txtOther.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtOther.ClientID%>').val(), $('#<%= txtOther.ClientID%>'));
-              });
+              });--%>
         });
     </script>
 </asp:Content>

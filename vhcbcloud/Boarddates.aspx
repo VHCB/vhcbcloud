@@ -45,7 +45,7 @@
                                 <Columns>
                                     <asp:TemplateField HeaderText="Board Date" SortExpression="Boarddate">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblBDate" runat="Server" Text='<%# Eval("Boarddate", "{0:M-dd-yyyy}") %>' />
+                                            <asp:Label ID="lblBDate" runat="Server" Text='<%# Eval("Boarddate", "{0:MM/dd/yyyy}") %>' />
                                         </ItemTemplate>
                                         <EditItemTemplate>
                                             <asp:TextBox ID="txtBoardDate" runat="Server" CssClass="clsTextBoxBlueSMDL" Text='<%# Eval("Boarddate", "{0:MM-dd-yyyy}") %>'></asp:TextBox>

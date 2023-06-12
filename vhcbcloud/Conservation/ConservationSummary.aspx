@@ -231,10 +231,24 @@
 
                                     <td><span class="labelClass"></span></td>
                                     <td>
+                                        
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="6" style="height: 5px"></td>
+                                </tr>
+                                 <tr>
+                                    <td><span class="labelClass">Hay</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtHay" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                    </td>
+                                    <td><span class="labelClass"></span></td>
+                                    <td><span class="labelClass" id="Span1" runat="server"></span></td>
+
+                                    <td><span class="labelClass"></span></td>
+                                    <td>
                                         <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" />
                                     </td>
-
-
                                 </tr>
                                 <tr>
                                     <td colspan="6" style="height: 5px"></td>

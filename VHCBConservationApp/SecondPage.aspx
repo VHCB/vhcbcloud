@@ -38,7 +38,7 @@
                         <tr>
                             <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">1. Within what zoning district(s) is the farm located?</span></td>
                             <td colspan="2">
-                                <asp:TextBox ID="txtZoningDistrict" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20"></asp:TextBox>
+                                <asp:TextBox ID="txtZoningDistrict" CssClass="clsTextBoxBlue1" runat="server" MaxLength="50"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -200,6 +200,19 @@
                                 &nbsp; &nbsp;
                                 <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
                                 &nbsp; &nbsp;
+                                &nbsp; &nbsp; 
+                                                    <asp:Label runat="server" ID="Label1" class="labelClass" Text ="Go To"></asp:Label>
+                                                    <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                                        <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                                       
+                                                        <asp:ListItem Text="FirstPage" Value="FirstPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Project Summary" Value="ThirdPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Land Resources" Value="Page4.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Farm Management" Value="FarmManagement.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Water Management" Value="WaterManagement.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Easement Config" Value="EasementConfig.aspx"></asp:ListItem>
+
+                                                    </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>

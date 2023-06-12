@@ -255,6 +255,91 @@
                         <tr>
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">2. What are the acreages of agricultural soils on the property? Enter Below (For more information on soils data, please see USDA’s Web Soil Survey or contact your local Natural Resources Conservation Service(NRCS) office.) </span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px">
+                                <!--<asp:TextBox ID="txtAgsoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>-->
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td colspan="2"></td>
+                            <td style="height: 10px">
+                                <span class="labelClass" style="margin-left: 10px"><strong>Acres</strong></span>
+                                <span class="labelClass" style="margin-left: 45px"><strong>%</strong></span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Prime agricultural soils (non-footnoted)</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtPrimeNonFootnoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                                <span class="labelClass" style="margin-left: 10px"></span>
+                                <asp:TextBox ID="txtPrimeNonNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Prime agricultural soils (footnoted)</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtPrimeNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                                <span class="labelClass" style="margin-left: 10px"></span>
+                                <asp:TextBox ID="txtPrimeNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Statewide agricultural soils (non-footnoted)</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtStatewideNonNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                                <span class="labelClass" style="margin-left: 10px"></span>
+                                <asp:TextBox ID="txtStatewideNonNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Statewide agricultural soils (footnoted)</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtStatewideNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                                <span class="labelClass" style="margin-left: 10px"></span>
+                                <asp:TextBox ID="txtStatewideNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Other (non-agricultural) soils</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtOtherNonAgSoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                                <span class="labelClass" style="margin-left: 10px"></span>
+                                <asp:TextBox ID="txtOtherNonAgSoilsPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Total soils</span></td>
+                            <td style="height: 10px">
+                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
+                            </td>
+                        </tr>
+
                     </table>
 
                     <table style="width: 100%;">
@@ -330,93 +415,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><span class="labelClass" style="margin-left: 10px">2. What are the acreages of agricultural soils on the property? Enter Below (For more information on soils data, please see USDA’s Web Soil Survey or contact your local Natural Resources Conservation Service(NRCS) office.) </span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px">
-                                <!--<asp:TextBox ID="txtAgsoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>-->
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td style="height: 10px">
-                                <span class="labelClass" style="margin-left: 10px"><strong>Acres</strong></span>
-                                <span class="labelClass" style="margin-left: 45px"><strong>%</strong></span>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Prime agricultural soils (non-footnoted)</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtPrimeNonFootnoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                                <span class="labelClass" style="margin-left: 10px"></span>
-                                <asp:TextBox ID="txtPrimeNonNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Prime agricultural soils (footnoted)</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtPrimeNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                                <span class="labelClass" style="margin-left: 10px"></span>
-                                <asp:TextBox ID="txtPrimeNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Statewide agricultural soils (non-footnoted)</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtStatewideNonNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                                <span class="labelClass" style="margin-left: 10px"></span>
-                                <asp:TextBox ID="txtStatewideNonNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Statewide agricultural soils (footnoted)</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtStatewideNoted" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                                <span class="labelClass" style="margin-left: 10px"></span>
-                                <asp:TextBox ID="txtStatewideNotedPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Other (non-agricultural) soils</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtOtherNonAgSoils" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                                <span class="labelClass" style="margin-left: 10px"></span>
-                                <asp:TextBox ID="txtOtherNonAgSoilsPCent" CssClass="clsTextBoxBlue1" runat="server" MaxLength="10" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="height: 10px"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Total soils</span></td>
-                            <td style="height: 10px">
-                                <asp:TextBox ID="txtTotal" CssClass="clsTextBoxBlue1" runat="server" MaxLength="20" Width="60px"></asp:TextBox>
-                            </td>
-                        </tr>
-
+                        
                     </table>
 
 
@@ -556,7 +555,19 @@
                             <td colspan="6" style="margin-left: 10px">&nbsp; &nbsp;<asp:Button ID="btnPrevious" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="btnPrevious_Click" />
                                 &nbsp; &nbsp;
                                 <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                 &nbsp; &nbsp; 
+                                                    <asp:Label runat="server" ID="Label1" class="labelClass" Text ="Go To"></asp:Label>
+                                 <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                     <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="FirstPage" Value="FirstPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Farm Conservation Application" Value="SecondPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Project Summary" Value="ThirdPage.aspx"></asp:ListItem>
+                                                      
+                                                        <asp:ListItem Text="Farm Management" Value="FarmManagement.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Water Management" Value="WaterManagement.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Easement Config" Value="EasementConfig.aspx"></asp:ListItem>
 
+                                                    </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>

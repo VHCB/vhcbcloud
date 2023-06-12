@@ -242,7 +242,7 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
-        public static bool ActivateTempProjectByProjectNum(string ProjectNumber)
+        public static bool ActivateTempProjectByProjectNum(string ProjectNumber, int Year, int PortfolioTypeID)
         {
             try
             {
@@ -256,7 +256,9 @@ namespace VHCBCommon.DataAccessLayer
                         command.CommandType = CommandType.StoredProcedure;
                         command.CommandText = "ActivateTempProjectByProjectNum";
                         command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
-                        
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("PortfolioTypeID", PortfolioTypeID));
+
 
                         SqlParameter parmMessage = new SqlParameter("@IsProjExist", SqlDbType.Bit);
                         parmMessage.Direction = ParameterDirection.Output;
@@ -676,6 +678,12 @@ namespace VHCBCommon.DataAccessLayer
                         parmMessage.Direction = ParameterDirection.Output;
                         command.Parameters.Add(parmMessage);
 
+                        SqlParameter parmMessage1 = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
+                        
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
@@ -683,6 +691,7 @@ namespace VHCBCommon.DataAccessLayer
                         InactiveConservationProjectResult ap = new InactiveConservationProjectResult();
 
                         ap.IsProjectNotExist = DataUtils.GetBool(command.Parameters["@isProjectNotExist"].Value.ToString());
+                        ap.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
 
 
                         return ap;
@@ -695,7 +704,7 @@ namespace VHCBCommon.DataAccessLayer
             }
         }
 
-        public static DataTable GetConservationProjectNumbers(string ProjectNumPrefix)
+        public static DataTable GetConservationProjectNumbers(string ProjectNumPrefix, string ProgramId)
         {
             DataTable dtProjects = null;
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
@@ -705,6 +714,7 @@ namespace VHCBCommon.DataAccessLayer
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetConservationProjectNumbers";
                 command.Parameters.Add(new SqlParameter("ProjectNum", ProjectNumPrefix));
+                command.Parameters.Add(new SqlParameter("ProgramId", ProgramId));
                 using (connection)
                 {
                     connection.Open();
@@ -738,6 +748,7 @@ namespace VHCBCommon.DataAccessLayer
     public class InactiveConservationProjectResult
     {
         public bool IsProjectNotExist { set; get; }
+        public bool IsDuplicate { set; get; }
     }
 }
 

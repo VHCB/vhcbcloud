@@ -1439,28 +1439,36 @@ namespace vhcbcloud
 
                 int ApplicantId = ProjectMaintenanceData.GetApplicantId(txtEntityDDL.Text);
 
-                ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value),
-                    ApplicantId,
+                ProjectMaintResult obProjectMaintResult = ProjectMaintenanceData.AddProjectApplicant(DataUtils.GetInt(hfProjectId.Value), ApplicantId,
                     DataUtils.GetInt(ddlApplicantRole.SelectedValue.ToString()), isApplicant);
 
-                if (ddlApplicantRole.SelectedValue.ToString() == "26294")
+                if (obProjectMaintResult.IsDuplicate && !obProjectMaintResult.IsActive)
+                    LogMessage("Record already exist as in-active");
+                else if (obProjectMaintResult.IsDuplicate)
+                    LogMessage("Record already exists");
+                else
                 {
-                    GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                    LogMessage("Saved Data Successfully!");
+
+                    if (ddlApplicantRole.SelectedValue.ToString() == "26294")
+                    {
+                        GenerateTabs(DataUtils.GetInt(hfProjectId.Value), DataUtils.GetInt(hfProgramId.Value));
+                    }
+
+                    //ddlApplicantName.SelectedIndex = -1;
+                    txtEntityDDL.Text = "";
+                    txtEntityDDL.Text = "";
+                    ddlEntityRole.SelectedIndex = -1;
+                    ddlApplicantRole.SelectedIndex = -1;
+
+                    LogMessage("Entity Attached Successfully");
+
+                    gvEntity.EditIndex = -1;
+                    BindProjectEntityGrid();
+                    // dvEntity.Visible = false;
+                    dvEntityGrid.Visible = true;
+                    cbAttachNewEntity.Checked = false;
                 }
-
-                //ddlApplicantName.SelectedIndex = -1;
-                txtEntityDDL.Text = "";
-                txtEntityDDL.Text = "";
-                ddlEntityRole.SelectedIndex = -1;
-                ddlApplicantRole.SelectedIndex = -1;
-
-                LogMessage("Entity Attached Successfully");
-
-                gvEntity.EditIndex = -1;
-                BindProjectEntityGrid();
-                // dvEntity.Visible = false;
-                dvEntityGrid.Visible = true;
-                cbAttachNewEntity.Checked = false;
             }
         }
 

@@ -146,7 +146,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in (to locate the tactical basin, <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location">visit this website.</a>) </span></td>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">9. What tactical basin is the projected located in (to locate the tactical basin, <a href="https://geodata.vermont.gov/datasets/VTANR::tactical-basin-planning/explore?location" target="_blank">visit this website.</a>) </span></td>
                             <td>
                                  <asp:DropDownList ID="ddlTacticalBasin" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
                                 </asp:DropDownList>
@@ -267,7 +267,19 @@
                             <td colspan="6" style="margin-left: 10px">&nbsp; &nbsp;<asp:Button ID="btnPrevious" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="btnPrevious_Click" />
                                 &nbsp; &nbsp;
                                 <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                 &nbsp; &nbsp; 
+                                                    <asp:Label runat="server" ID="Label1" class="labelClass" Text ="Go To"></asp:Label>
+                                 <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                     <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="FirstPage" Value="FirstPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Farm Conservation Application" Value="SecondPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Project Summary" Value="ThirdPage.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Land Resources" Value="Page4.aspx"></asp:ListItem>
+                                                        <asp:ListItem Text="Farm Management" Value="FarmManagement.aspx"></asp:ListItem>
+                                                       
+                                                        <asp:ListItem Text="Easement Config" Value="EasementConfig.aspx"></asp:ListItem>
 
+                                                    </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>

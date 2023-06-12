@@ -86,7 +86,6 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("PropertyOtherTown", PropertyOtherTown));
                 command.Parameters.Add(new SqlParameter("PropertyZip", PropertyZip));
 
-
                 using (connection)
                 {
                     connection.Open();

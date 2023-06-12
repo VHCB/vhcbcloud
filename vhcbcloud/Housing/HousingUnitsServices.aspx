@@ -27,7 +27,7 @@
                             </td>
                             <td></td>
                             <td style="text-align: right">
-                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search" 
+                                <asp:ImageButton ID="imgSearch" ImageUrl="~/Images/search.png" ToolTip="Project Search"
                                     Style="border: none; vertical-align: middle;" runat="server" Text="Project Search"
                                     OnClientClick="window.location.href='../ProjectSearch.aspx'; return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="ibAwardSummary" runat="server" ImageUrl="~/Images/$$.png" Text="Award Summary" Style="border: none; vertical-align: middle;"
@@ -49,8 +49,9 @@
                                 </asp:DropDownList>
                             </td>
                             <td><span class="labelClass">Units from previous project:</span></td>
-                            <td><asp:TextBox ID="txtUnitsFromPreProject" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
-                                
+                            <td>
+                                <asp:TextBox ID="txtUnitsFromPreProject" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+
                             </td>
 
                             <td><span class="labelClass">New Units:</span></td>
@@ -84,47 +85,65 @@
                             </td>
                             <td><span class="labelClass">MHIP</span></td>
                             <td>
-                               <asp:TextBox ID="txtMHIP" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtMHIP" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                             </td>
                             <td><span class="labelClass">Federal Program Units</span></td>
                             <td>
-                               <span class="labelClass" id="snFederalProgramUnits" runat="server"></span>
+                                <span class="labelClass" id="snFederalProgramUnits" runat="server"></span>
                             </td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td><span class="labelClass">Service Supported Units</span></td>
-                            <td><asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                             <td><span class="labelClass">Total VHCB Affordable Units</span></td>
+                            <td>
+                                <asp:TextBox ID="txtSSUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                            <td><span class="labelClass">Total VHCB Affordable Units</span></td>
                             <td>
                                 <span class="labelClass" id="spnVHCBAffUnits" runat="server">0</span>
                             </td>
                             <td><span class="labelClass"># of Buildings</span></td>
-                            <td><asp:TextBox ID="txtBuildings" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                            <td>
+                                <asp:TextBox ID="txtBuildings" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
                             <td colspan="6" style="height: 5px"></td>
                         </tr>
                         <tr>
                             <td><span class="labelClass">Previous Affordable Units</span></td>
-                            <td><asp:TextBox ID="txtPrevAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
-                             <td><span class="labelClass">New Affordable Units</span></td>
+                            <td>
+                                <asp:TextBox ID="txtPrevAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
+                            <td><span class="labelClass">New Affordable Units</span></td>
                             <td>
                                 <asp:TextBox ID="txtNewAffordUnits" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td><span class="labelClass">Anticipated Construction Start</span></td>
+                            <td>
+                                <asp:TextBox ID="txtConstructionComp" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtConstructionComp" TargetControlID="txtConstructionComp">
+                                            </ajaxToolkit:CalendarExtender>
+                            </td>
                         </tr>
-
+                        <tr>
+                            <td colspan="6" style="height: 5px"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="labelClass">Anticipated/Actual occupancy</span></td>
+                            <td>
+                                <asp:TextBox ID="txtOccupancy" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                 <ajaxToolkit:CalendarExtender runat="server" ID="ce_txtOccupancy" TargetControlID="txtOccupancy">
+                                            </ajaxToolkit:CalendarExtender>
+                            </td>
+                            <td colspan="4"></td>
+                        </tr>
                         <tr>
                             <td colspan="5">
                                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-info" OnClick="btnSubmit_Click" /></td>
                         </tr>
                     </table>
                 </div>
-                 <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
+                <ajaxToolkit:ModalPopupExtender ID="mpExtender" runat="server" PopupControlID="pnlProjectNotes" TargetControlID="btnProjectNotes" CancelControlID="btnClose"
                     BackgroundCssClass="MEBackground">
                 </ajaxToolkit:ModalPopupExtender>
                 <asp:Panel ID="pnlProjectNotes" runat="server" CssClass="MEPopup" align="center" Style="display: none">
@@ -234,7 +253,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -252,96 +271,96 @@
                 </div>
 
                 <div class="panel-width" runat="server" id="dvTaxCredit">
-                            <div class="panel panel-default" style="margin-bottom: 2px;">
-                                <div class="panel-heading" style="padding: 5px 5px 1px 5px">
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td>
-                                                <h3 class="panel-title">Tax Credit</h3>
-                                            </td>
-                                            <td style="text-align: right">
-                                                <asp:CheckBox ID="cbAddTaxCredit" runat="server" Text="Add New Tax Credit" />
-                                                <asp:ImageButton ID="ImgTaxCredit" ImageUrl="~/Images/print.png" ToolTip="Tax Credit Report"
+                    <div class="panel panel-default" style="margin-bottom: 2px;">
+                        <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Tax Credit</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddTaxCredit" runat="server" Text="Add New Tax Credit" />
+                                        <asp:ImageButton ID="ImgTaxCredit" ImageUrl="~/Images/print.png" ToolTip="Tax Credit Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgTaxCredit_Click" />
-                                    
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
 
-                                <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvTaxCreditForm">
-                                    <asp:Panel runat="server" ID="Panel19">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td style="width: 240px"><span class="labelClass">Tax Credit</span></td>
-                                                <td style="width: 215px">
-                                                    <asp:DropDownList ID="ddlTaxCredit" CssClass="clsDropDownLong" runat="server">
-                                                    </asp:DropDownList>
-                                                </td>
-                                                <td style="width: 100px"></td>
-                                                <td style="width: 180px">
-                                                    <asp:Button ID="btnAddTaxCredit" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddTaxCredit_Click" />
-
-                                                </td>
-                                                <td style="width: 170px"></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6" style="height: 5px"></td>
-                                            </tr>
-                                        </table>
-                                    </asp:Panel>
-                                </div>
-
-                                <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvTaxCreditGrid" runat="server">
-                                    <asp:Panel runat="server" ID="Panel20" Width="100%" Height="100px" ScrollBars="Vertical">
-                                        <asp:GridView ID="gvTaxCredit" runat="server" AutoGenerateColumns="False"
-                                            Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
-                                            GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
-                                            OnRowEditing="gvTaxCredit_RowEditing" 
-                                            OnRowCancelingEdit="gvTaxCredit_RowCancelingEdit" 
-                                            OnRowUpdating="gvTaxCredit_RowUpdating">
-                                            <AlternatingRowStyle CssClass="alternativeRowStyle" />
-                                            <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
-                                            <HeaderStyle CssClass="headerStyle" />
-                                            <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
-                                            <RowStyle CssClass="rowStyle" />
-                                            <Columns>
-                                                <asp:TemplateField HeaderText="ProjectHouseTaxCredits" Visible="false">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="lblProjectHouseTaxCreditsID" runat="Server" Text='<%# Eval("ProjectHouseTaxCredits") %>' />
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Tax Credit">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="lblTaxCredit" runat="Server" Text='<%# Eval("TaxCreditDesc") %>' />
-                                                    </ItemTemplate>
-                                                    <ItemStyle Width="500px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Active">
-                                                    <ItemTemplate>
-                                                        <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                                    </ItemTemplate>
-                                                    <EditItemTemplate>
-                                                        <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
-                                                    </EditItemTemplate>
-                                                    <ItemStyle Width="350px" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="False">
-                                                    <EditItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
-                                                        &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
-                                                    </EditItemTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                            </Columns>
-                                        </asp:GridView>
-                                    </asp:Panel>
-                                </div>
-                            </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
+
+                        <div class="panel-body" style="padding: 10px 15px 0px 15px" runat="server" id="dvTaxCreditForm">
+                            <asp:Panel runat="server" ID="Panel19">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 240px"><span class="labelClass">Tax Credit</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlTaxCredit" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px"></td>
+                                        <td style="width: 180px">
+                                            <asp:Button ID="btnAddTaxCredit" runat="server" Text="Add" class="btn btn-info" OnClick="btnAddTaxCredit_Click" />
+
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" style="padding: 10px 10px 10px 10px" id="dvTaxCreditGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel20" Width="100%" Height="100px" ScrollBars="Vertical">
+                                <asp:GridView ID="gvTaxCredit" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true"
+                                    OnRowEditing="gvTaxCredit_RowEditing"
+                                    OnRowCancelingEdit="gvTaxCredit_RowCancelingEdit"
+                                    OnRowUpdating="gvTaxCredit_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="ProjectHouseTaxCredits" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProjectHouseTaxCreditsID" runat="Server" Text='<%# Eval("ProjectHouseTaxCredits") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Tax Credit">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTaxCredit" runat="Server" Text='<%# Eval("TaxCreditDesc") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle Width="500px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                            <ItemStyle Width="350px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="panel-width" runat="server" id="dvNewSingle">
                     <div class="panel panel-default ">
@@ -442,7 +461,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -532,7 +551,7 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblCharacteristic" runat="Server" Text='<%# Eval("Characteristic") %>' />
                                             </ItemTemplate>
-                                           <%-- <FooterTemplate>
+                                            <%-- <FooterTemplate>
                                                 Grand Total :
                                             </FooterTemplate>--%>
                                             <ItemStyle Width="400px" />
@@ -544,7 +563,7 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="txtNumunits" CssClass="clsTextBoxBlueSm" runat="server" Text='<%# Eval("Numunits") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                           <%-- <FooterTemplate>
+                                            <%-- <FooterTemplate>
                                                 <asp:Label runat="server" ID="lblFooterMultiUnitTotalUnits" Text=""></asp:Label>
                                             </FooterTemplate>--%>
                                             <ItemStyle Width="200px" />
@@ -558,7 +577,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -674,7 +693,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -741,7 +760,7 @@
                                 <asp:GridView ID="gvSecService" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                    OnRowEditing="gvSecService_RowEditing" OnRowCancelingEdit="gvSecService_RowCancelingEdit" 
+                                    OnRowEditing="gvSecService_RowEditing" OnRowCancelingEdit="gvSecService_RowCancelingEdit"
                                     OnRowUpdating="gvSecService_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -785,7 +804,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -812,7 +831,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <asp:CheckBox ID="cbAddAgeRes" runat="server" Text="Add New Age Restrictions" />
-                                         <asp:ImageButton ID="ImgAge" ImageUrl="~/Images/print.png" ToolTip="Age Restrictions Report"
+                                        <asp:ImageButton ID="ImgAge" ImageUrl="~/Images/print.png" ToolTip="Age Restrictions Report"
                                             Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgAge_Click" />
                                     </td>
                                 </tr>
@@ -848,7 +867,7 @@
                         </div>
 
                         <div class="panel-body" id="dvAgeRestrGrid" runat="server">
-                             <div id="dvAgeRestrWarning" runat="server">
+                            <div id="dvAgeRestrWarning" runat="server">
                                 <p class="bg-info">
                                     &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                                     <asp:Label runat="server" ID="lblAgeRestrWarning" class="labelClass"></asp:Label>
@@ -902,7 +921,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -1018,7 +1037,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -1091,8 +1110,8 @@
                                 <asp:GridView ID="gvTargetEff" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                    OnRowEditing="gvTargetEff_RowEditing" 
-                                    OnRowCancelingEdit="gvTargetEff_RowCancelingEdit" 
+                                    OnRowEditing="gvTargetEff_RowEditing"
+                                    OnRowCancelingEdit="gvTargetEff_RowCancelingEdit"
                                     OnRowUpdating="gvTargetEff_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -1136,7 +1155,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -1209,8 +1228,8 @@
                                 <asp:GridView ID="gvAffordableTo" runat="server" AutoGenerateColumns="False"
                                     Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
                                     GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="True"
-                                    OnRowEditing="gvAffordableTo_RowEditing" 
-                                    OnRowCancelingEdit="gvAffordableTo_RowCancelingEdit" 
+                                    OnRowEditing="gvAffordableTo_RowEditing"
+                                    OnRowCancelingEdit="gvAffordableTo_RowCancelingEdit"
                                     OnRowUpdating="gvAffordableTo_RowUpdating">
                                     <AlternatingRowStyle CssClass="alternativeRowStyle" />
                                     <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
@@ -1254,7 +1273,7 @@
                                             </EditItemTemplate>
                                             <ItemStyle Width="200px" />
                                         </asp:TemplateField>
-                                         <asp:TemplateField ShowHeader="False">
+                                        <asp:TemplateField ShowHeader="False">
                                             <EditItemTemplate>
                                                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
                                                 &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
@@ -1382,10 +1401,10 @@
     <asp:HiddenField ID="hfPrimaryServiceWarning" runat="server" />
     <asp:HiddenField ID="hfAgeRestrWarning" runat="server" />
     <asp:HiddenField ID="hfNotInCovenantCount" runat="server" Value="0" />
-     <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
+    <asp:HiddenField ID="hfIsVisibleBasedOnRole" runat="server" />
     <asp:HiddenField ID="hfTargetEffWarning" runat="server" />
     <asp:HiddenField ID="hfAffordableToWarning" runat="server" />
-   
+
     <script language="javascript">
         $(document).ready(function () {
            <%-- $('#<%= txtTotalUnits.ClientID%>').blur(function () {
@@ -1486,7 +1505,7 @@
 
         };
 
-        
+
         function PopupAwardSummary() {
             window.open('../awardsummary.aspx?projectid=' + $('#<%=hfProjectId.ClientID%>').val());
         };

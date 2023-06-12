@@ -31,7 +31,8 @@
                                     <span class="labelClass">Project Number</span>
                                 </td>
                                 <td style="height: 30px"><span class="labelClass" runat="server" visible="false" id="spnViabilityProjectPrefix"><strong>9999-001-</strong></span>
-                                    <asp:TextBox ID="txtprojectNumber" CssClass="clsTextBoxBlue1" runat="server" Width="100px" Height="22px"  ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
+
+                                    <asp:TextBox ID="txtprojectNumber" CssClass="clsTextBoxBlue1" runat="server" Width="100px" Height="22px" onkeyup="SetContextKey()"  ClientIDMode="Static" onblur="__doPostBack('tbOnBlur','OnBlur');"></asp:TextBox>
                                        <ajaxToolkit:AutoCompleteExtender ID="ae_txtProjNum" runat="server" TargetControlID="txtprojectNumber"
                                         MinimumPrefixLength="1" UseContextKey="true"
                                         EnableCaching="true" CompletionSetCount="1"
@@ -116,4 +117,9 @@
             </div>
         </div>
     </div>
+      <script language="javascript">
+          function SetContextKey() {
+              $find('<%=ae_txtProjNum.ClientID%>').set_contextKey($('#<%= ddlProgram.ClientID%>').val());
+        }
+      </script>
 </asp:Content>

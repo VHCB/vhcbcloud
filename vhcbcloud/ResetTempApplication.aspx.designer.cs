@@ -24,6 +24,24 @@ namespace vhcbcloud
         protected global::System.Web.UI.WebControls.TextBox txtProjNum;
 
         /// <summary>
+        /// ddlyear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlyear;
+
+        /// <summary>
+        /// ddlPortfolioType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPortfolioType;
+
+        /// <summary>
         /// dvMessage control.
         /// </summary>
         /// <remarks>

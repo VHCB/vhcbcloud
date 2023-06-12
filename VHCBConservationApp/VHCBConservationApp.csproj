@@ -14,7 +14,7 @@
     <RootNamespace>VHCBConservationApp</RootNamespace>
     <AssemblyName>VHCBConservationApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44393</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -92,6 +92,7 @@
     <Content Include="EasementConfig.aspx" />
     <Content Include="FirstPage.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
     <Content Include="Images\MatchSurce.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm %281%29.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm-old.png" />
@@ -160,6 +161,9 @@
     </Compile>
     <Compile Include="FirstPage.aspx.designer.cs">
       <DependentUpon>FirstPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="Login.aspx.cs">

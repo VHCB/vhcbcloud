@@ -86,10 +86,10 @@ namespace vhcbExternalApp
                     txtMilkedDaily.Text = drPage1tDetails["Milked_Daily"].ToString();
                     txtPrimaryAnimalTypes.Text = drPage1tDetails["Primary_Animals"].ToString();
                     txtHerd.Text = drPage1tDetails["Herd"].ToString();
-                    txtRollingHerd.Text = drPage1tDetails["Rolling_Herd"].ToString();
-                    txtMilkPounds.Text = drPage1tDetails["Milk_Pounds"].ToString();
-                    txtAvgCullRate.Text = drPage1tDetails["Cull"].ToString();
-                    txtSomaticCell.Text = drPage1tDetails["Somatic"].ToString();
+                    //txtRollingHerd.Text = drPage1tDetails["Rolling_Herd"].ToString();
+                    //txtMilkPounds.Text = drPage1tDetails["Milk_Pounds"].ToString();
+                    //txtAvgCullRate.Text = drPage1tDetails["Cull"].ToString();
+                    //txtSomaticCell.Text = drPage1tDetails["Somatic"].ToString();
 
                     foreach (ListItem li in lstMilkSold.Items)
                     {
@@ -124,6 +124,7 @@ namespace vhcbExternalApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
+            saveData();
             Response.Redirect("ProjectDetails.aspx");
         }
 
@@ -131,45 +132,55 @@ namespace vhcbExternalApp
         {
             if (projectNumber != "")
             {
-                string MilkSold = string.Empty;
+                saveData();
 
-                foreach (ListItem listItem in lstMilkSold.Items)
+                LogMessage("Farm Business Information Data Added Successfully");
+
+                Response.Redirect("WaterQualityGrants.aspx");
+            }
+        }
+
+        private void saveData()
+        {
+            string MilkSold = string.Empty;
+
+            foreach (ListItem listItem in lstMilkSold.Items)
+            {
+                if (listItem.Selected == true)
                 {
-                    if (listItem.Selected == true)
+                    if (MilkSold == string.Empty)
+                        MilkSold = listItem.Value;
+                    else
+                        MilkSold = MilkSold + ',' + listItem.Value;
+                }
+            }
+
+            string LandOwn = string.Empty;
+            string LandOwnText = string.Empty;
+
+            foreach (ListItem listItem in cbOwnLandList.Items)
+            {
+                if (listItem.Selected == true)
+                {
+                    if (LandOwn == string.Empty)
                     {
-                        if (MilkSold == string.Empty)
-                            MilkSold = listItem.Value;
-                        else
-                            MilkSold = MilkSold + ',' + listItem.Value;
+                        LandOwn = listItem.Value;
+                        LandOwnText = listItem.Text;
+                    }
+                    else
+                    {
+                        LandOwn = LandOwn + ',' + listItem.Value;
+                        LandOwnText = LandOwnText + ',' + listItem.Text;
                     }
                 }
+            }
 
-                string LandOwn = string.Empty;
-                string LandOwnText = string.Empty;
-
-                foreach (ListItem listItem in cbOwnLandList.Items)
-                {
-                    if (listItem.Selected == true)
-                    {
-                        if (LandOwn == string.Empty)
-                        {
-                            LandOwn = listItem.Value;
-                            LandOwnText = listItem.Text;
-                        }
-                        else
-                        {
-                            LandOwn = LandOwn + ',' + listItem.Value;
-                            LandOwnText = LandOwnText + ',' + listItem.Text;
-                        }
-                    }
-                }
-
-                string orgStruct = rdBtnOrgStructure.SelectedItem == null ? "0" : rdBtnOrgStructure.SelectedItem.ToString();
+            string orgStruct = rdBtnOrgStructure.SelectedItem == null ? "0" : rdBtnOrgStructure.SelectedItem.ToString();
 
 
             ViabilityApplicationData.ViabilityApplicationPage2(projectNumber, txtOrgName.Text, txtWebsite.Text, orgStruct, txtCows.Text, txtHogs.Text,
-            txtPoultry.Text,  txtOtherNonDiaryFarms.Text, txtMilkedDaily.Text, txtPrimaryAnimalTypes.Text, txtHerd.Text, txtRollingHerd.Text,
-            txtMilkPounds.Text, txtAvgCullRate.Text, txtSomaticCell.Text, MilkSold,
+            txtPoultry.Text, txtOtherNonDiaryFarms.Text, txtMilkedDaily.Text, txtPrimaryAnimalTypes.Text, txtHerd.Text, //txtRollingHerd.Text, txtMilkPounds.Text, txtAvgCullRate.Text, txtSomaticCell.Text, 
+            MilkSold,
             txtGrossSales.Text,
             txtNetIncome.Text,
             //DataUtils.GetDecimal(Regex.Replace(txtNetIncome.Text, "[^0-9a-zA-Z.]+", "")),
@@ -177,11 +188,6 @@ namespace vhcbExternalApp
             DataUtils.GetDecimal(txtFamilyETF.Text),
             DataUtils.GetDecimal(txtNonFamilyETF.Text), DataUtils.GetInt(ddlFiscalyr.SelectedValue), DataUtils.GetDecimal(txtAcresinProduction.Text), DataUtils.GetDecimal(txtAcresOwned.Text),
             DataUtils.GetDecimal(txtAcresLeased.Text), DataUtils.GetDecimal(txtPastureAcres.Text), LandOwn, LandOwnText);
-
-                LogMessage("Farm Business Information Data Added Successfully");
-
-                Response.Redirect("WaterQualityGrants.aspx");
-            }
         }
 
         private void BindLookUP1(CheckBoxList ddList, int LookupType)
@@ -246,6 +252,12 @@ namespace vhcbExternalApp
         {
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

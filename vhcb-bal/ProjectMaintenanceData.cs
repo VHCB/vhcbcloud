@@ -640,7 +640,7 @@ namespace DataAccessLayer
             }
         }
 
-        public static void AddProjectApplicant(int ProjectId, int ApplicantID, int LkApplicantRole, bool isApplicant)
+        public static ProjectMaintResult AddProjectApplicant(int ProjectId, int ApplicantID, int LkApplicantRole, bool isApplicant)
         {
             try
             {
@@ -660,9 +660,24 @@ namespace DataAccessLayer
                         command.Parameters.Add(new SqlParameter("LkApplicantRole", LkApplicantRole));
                         command.Parameters.Add(new SqlParameter("isApplicant", isApplicant));
 
+                        SqlParameter parmMessage = new SqlParameter("@isDuplicate", SqlDbType.Bit);
+                        parmMessage.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage);
+
+                        SqlParameter parmMessage1 = new SqlParameter("@isActive", SqlDbType.Bit);
+                        parmMessage1.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(parmMessage1);
+
                         command.CommandTimeout = 60 * 5;
 
                         command.ExecuteNonQuery();
+
+                        ProjectMaintResult objResult = new ProjectMaintResult();
+
+                        objResult.IsDuplicate = DataUtils.GetBool(command.Parameters["@isDuplicate"].Value.ToString());
+                        objResult.IsActive = DataUtils.GetBool(command.Parameters["@isActive"].Value.ToString());
+
+                        return objResult;
                     }
                 }
             }
@@ -1113,6 +1128,42 @@ namespace DataAccessLayer
             }
             return dt;
         }
+
+        public static DataTable GetProjectNumbersByLoginName(string LoginName, int ApplicationId)
+        {
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetProjectNumbersByLoginName";
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("ApplicationId", ApplicationId));
+
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dt = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
         public static DataTable GetVillages(int zip)
         {
             DataTable dt = null;

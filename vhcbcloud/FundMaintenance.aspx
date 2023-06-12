@@ -267,7 +267,6 @@
         $(document).ready(function () {
             $('#<%= dvFundForm.ClientID%>').toggle($('#<%= cbAddFund.ClientID%>').is(':checked'));
 
-
             $('#<%= cbAddFund.ClientID%>').click(function () {
                 $('#<%= dvFundForm.ClientID%>').toggle(this.checked);
          }).change();

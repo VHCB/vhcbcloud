@@ -346,5 +346,11 @@ namespace VHCBConservationApp
             //else
             //    ddlSecSubWatershed.Items.Clear();
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

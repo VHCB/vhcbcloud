@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.UI.WebControls;
 using System.Data;
 using VHCBCommon.DataAccessLayer;
+using DataAccessLayer;
 
 namespace VHCBConservationApp
 {
@@ -24,12 +25,13 @@ namespace VHCBConservationApp
         private void GeneralLogin()
         {
 
-            IsLoginValid(ProjectNumber.Text, UserId.Text, Password.Text);
+            IsLoginValid(ddlProjectNumber.SelectedValue, UserId.Text, Password.Text);
 
             if (IsValidUser)
             {
                 Session["UserId"] = UserId.Text;
-                Session["ProjectNumber"] = ProjectNumber.Text;
+                Session["ProjectNumber"] = ddlProjectNumber.SelectedValue;
+                //Session.Timeout = 30;
 
                 FormsAuthentication.SetAuthCookie(UserId.Text, true);
                 string url = "";
@@ -58,5 +60,23 @@ namespace VHCBConservationApp
             IsValidUser = AccountData.CheckExternalUserLogin(ProjectNumber, UserName, Password, 38775);
 
         }
+
+        private void LoadProjects()
+        { 
+                DataTable dt = ProjectMaintenanceData.GetProjectNumbersByLoginName(UserId.Text, 38775);
+
+                ddlProjectNumber.Items.Clear();
+                ddlProjectNumber.DataSource = dt;
+                ddlProjectNumber.DataValueField = "ProjectNumber";
+                ddlProjectNumber.DataTextField = "ProjectName";
+                ddlProjectNumber.DataBind();
+                ddlProjectNumber.Items.Insert(0, new ListItem("Select", "NA"));
+
+        }
+
+        protected void UserId_TextChanged(object sender, EventArgs e)
+        {
+            LoadProjects();
+        }
     }
-}
+}   

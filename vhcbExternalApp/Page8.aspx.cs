@@ -79,5 +79,11 @@ namespace vhcbExternalApp
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Save();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

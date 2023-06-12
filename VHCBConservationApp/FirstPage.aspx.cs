@@ -228,9 +228,8 @@ namespace VHCBConservationApp
                     txtAppOrgan.Text, txtProjectManager.Text, txtAppPhone.Text, txtAppEmail.Text,
                     txtLONames.Text, txtloStreetNo.Text, txtLoAddress1.Text, txtLoAddress2.Text, ddlLoTown.Text, txtLOZipCode.Text, "", lblLoCounty.Text, txtLOEmail.Text, txtLOHomephone.Text, txtLoCellPhone.Text,
                     txtFarmerName.Text, "","","","","", "", "", txtFarmerEmail.Text, txtFarmerHomePhone.Text, txtFarmerCell.Text,
-                    txtPropertyStreet.Text, txtPropertyAdd1.Text, ddlPropertyTown.Text, txtPropertyOtherTown.Text, txtPropertyZip.Text); 
-
-
+                    txtPropertyStreet.Text, txtPropertyAdd1.Text, ddlPropertyTown.Text, txtPropertyOtherTown.Text, txtPropertyZip.Text);
+                
                 LogMessage("Conservation Application Data Added Successfully");
             }
         }
@@ -279,6 +278,12 @@ namespace VHCBConservationApp
         protected void ddlPropertyTown_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblPropertyCounty.Text = getCounty(ddlPropertyTown.SelectedItem.Text);
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

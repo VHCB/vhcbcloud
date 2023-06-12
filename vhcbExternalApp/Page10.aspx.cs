@@ -54,7 +54,7 @@ namespace vhcbExternalApp
 
                     txtConfidentSignature.Text = drPage1tDetails["Confident_Signature"].ToString();
                     txtConfidentDate.Text = drPage1tDetails["Confident_Date"].ToString();
-                   
+
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace vhcbExternalApp
 
                 //bool IsConfident_Sharing = rdBtnConfidentSharing.SelectedItem.Text == "Yes" ? true : false;
 
-                ViabilityApplicationData.ViabilityApplicationPage10(projectNumber, false, "False", txtConfidentSignature.Text, DataUtils.GetDate( txtConfidentDate.Text));
+                ViabilityApplicationData.ViabilityApplicationPage10(projectNumber, false, "False", txtConfidentSignature.Text, DataUtils.GetDate(txtConfidentDate.Text));
 
                 LogMessage("Successfully Saved Data");
             }
@@ -97,6 +97,7 @@ namespace vhcbExternalApp
         private void LogMessage(string message)
         {
             dvMessage.Visible = true;
+            lblErrorMsg.Visible = true;
             lblErrorMsg.Text = message;
         }
 
@@ -111,6 +112,7 @@ namespace vhcbExternalApp
         {
             if (projectNumber != "")
             {
+                lblErrorMsg.Visible = false;
                 Save();
 
                 DataRow drData = ViabilityApplicationData.CheckFullValidation(projectNumber);
@@ -126,13 +128,16 @@ namespace vhcbExternalApp
                         drData["NutrientManagementPlan13"].ToString() == "" || drData["Permits14"].ToString() == "" ||
                         drData["Confident_Sharing"].ToString() == "" || drData["Confident_Funding"].ToString() == "" || drData["Confident_Signature"].ToString() == "" || drData["Confident_Date"].ToString() == ""
                         )
+                    {
                         LogMessage("Missing required information, please check the application.");
+                    }
                     else
                     {
+                        dvMessage.Visible = false;
                         List<string> EmailList = ViabilityApplicationData.GetMailAddressesForPDFEmail(projectNumber).Rows.OfType<DataRow>().Select(dr => dr.Field<string>("EmailAddress")).ToList();
 
                         if (EmailList.Count > 0)
-                            GetExagoURLForReport(projectNumber, "Online Application - emailed", EmailList);
+                            GetExagoURLForReport(projectNumber, "Online Water Quality 2023 Application", EmailList);
 
                         ViabilityApplicationData.SubmitApplication(projectNumber);
 
@@ -210,6 +215,12 @@ namespace vhcbExternalApp
                   new ReportSchedule(api.PageInfo) { ScheduleInfo = newSchedule }, out jobId, out hostIdx);
             }
             catch (Exception) { }
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Save();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

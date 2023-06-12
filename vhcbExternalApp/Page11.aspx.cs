@@ -165,5 +165,11 @@ namespace vhcbExternalApp
             //Save();
             Response.Redirect("Page10.aspx");
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

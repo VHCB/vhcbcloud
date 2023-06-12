@@ -130,8 +130,9 @@ namespace VHCBCommon.DataAccessLayer
         }
 
         public static void ViabilityApplicationPage2(string ProjNumber, string OrgName, string Website, string Org_Structure,
-           string Cows, string Hogs, string Poultry, string Other, string Milked_Daily, string Primary_Animals, string Herd, string Rolling_Herd,
-           string Milk_Pounds, string Cull, string Somatic, string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
+           string Cows, string Hogs, string Poultry, string Other, string Milked_Daily, string Primary_Animals, string Herd, 
+           //string Rolling_Herd, string Milk_Pounds, string Cull, string Somatic, 
+           string Milk_Sold, string GrossSales, string Netincome, //string GrossPayroll, string Networth, 
            decimal FamilyFTE, decimal NonFamilyFTE, int FiscalYr, decimal AcresInProduction, decimal AcresOwned, decimal AcresLeased, decimal PastureAcres, 
            string LandYouOwn, string LandOwnText)
         {
@@ -152,10 +153,10 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("Milked_Daily", Milked_Daily));
                 command.Parameters.Add(new SqlParameter("Primary_Animals", Primary_Animals));
                 command.Parameters.Add(new SqlParameter("Herd", Herd));
-                command.Parameters.Add(new SqlParameter("Rolling_Herd", Rolling_Herd));
-                command.Parameters.Add(new SqlParameter("Milk_Pounds", Milk_Pounds));
-                command.Parameters.Add(new SqlParameter("Cull", Cull));
-                command.Parameters.Add(new SqlParameter("Somatic", Somatic));
+                ///command.Parameters.Add(new SqlParameter("Rolling_Herd", Rolling_Herd));
+                //command.Parameters.Add(new SqlParameter("Milk_Pounds", Milk_Pounds));
+                //command.Parameters.Add(new SqlParameter("Cull", Cull));
+                //command.Parameters.Add(new SqlParameter("Somatic", Somatic));
                 command.Parameters.Add(new SqlParameter("Milk_Sold", Milk_Sold));
                 //command.Parameters.Add(new SqlParameter("Dairy_Other", Dairy_Other));
                 command.Parameters.Add(new SqlParameter("GrossSales", GrossSales));
@@ -323,7 +324,8 @@ namespace VHCBCommon.DataAccessLayer
             return dr;
         }
 
-        public static void ViabilityApplicationPage6(string ProjNumber, string SupportingFunds, string NRCSExpensesandStatus, string WaverRequest)
+        public static void ViabilityApplicationPage6(string ProjNumber, string SupportingFunds, string NRCSExpensesandStatus, string WaverRequest, 
+            string BMP, string BMPYes, string CEAP, string CEAPYes, string EQIP, string EQIPYes, string OtherYN, string OtherYes)
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
             try
@@ -335,6 +337,18 @@ namespace VHCBCommon.DataAccessLayer
                 command.Parameters.Add(new SqlParameter("SupportingFunds", SupportingFunds));
                 command.Parameters.Add(new SqlParameter("NRCSExpensesandStatus", NRCSExpensesandStatus));
                 command.Parameters.Add(new SqlParameter("WaverRequest", WaverRequest));
+
+                command.Parameters.Add(new SqlParameter("BMP", BMP));
+                command.Parameters.Add(new SqlParameter("BMPYes", BMPYes));
+
+                command.Parameters.Add(new SqlParameter("CEAP", CEAP));
+                command.Parameters.Add(new SqlParameter("CEAPYes", CEAPYes));
+
+                command.Parameters.Add(new SqlParameter("EQIP", EQIP));
+                command.Parameters.Add(new SqlParameter("EQIPYes", EQIPYes));
+
+                command.Parameters.Add(new SqlParameter("OtherYN", OtherYN));
+                command.Parameters.Add(new SqlParameter("OtherYes", OtherYes));
 
                 using (connection)
                 {

@@ -33,15 +33,6 @@ namespace VHCBConservationApp
         protected global::System.Web.UI.WebControls.Literal FailureText;
 
         /// <summary>
-        /// ProjectNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ProjectNumber;
-
-        /// <summary>
         /// UserId control.
         /// </summary>
         /// <remarks>
@@ -49,6 +40,15 @@ namespace VHCBConservationApp
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox UserId;
+
+        /// <summary>
+        /// ddlProjectNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlProjectNumber;
 
         /// <summary>
         /// Password control.

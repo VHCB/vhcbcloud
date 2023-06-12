@@ -198,6 +198,7 @@ namespace vhcbcloud.Conservation
                 txtFarmResident.Text = drConserve["FarmResident"].ToString();
                 txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
                 txtSugarbush.Text = drConserve["Sugarbush"].ToString();
+                txtHay.Text = drConserve["Hay"].ToString();
 
                 pctWooded.InnerText = "0.0 %";
                 pctSugarBush.InnerText = "0.0 %";
@@ -465,7 +466,7 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), DataUtils.GetDecimal(txtSugarbush.Text),
                 GetUserId(),
-                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType, DataUtils.GetInt(ddlTacticalBasin.SelectedValue.ToString())) ;
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType, DataUtils.GetInt(ddlTacticalBasin.SelectedValue.ToString()), DataUtils.GetDecimal(txtHay.Text)) ;
 
             BindConConserveForm();
 

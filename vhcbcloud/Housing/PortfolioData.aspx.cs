@@ -214,7 +214,8 @@ namespace vhcbcloud.Housing
                             DataUtils.GetInt(txtHomeless.Text), DataUtils.GetInt(txtMarketRate.Text), DataUtils.GetInt(txtI100.Text), DataUtils.GetInt(txtI80.Text),
                             DataUtils.GetInt(txtI75.Text), DataUtils.GetInt(txtI60.Text), DataUtils.GetInt(txtI50.Text), DataUtils.GetInt(txtI30.Text), DataUtils.GetInt(txtI20.Text), false);
                         ClearForm();
-                    ddlyear.SelectedIndex = -1;
+                        ddlyear.SelectedIndex = -1;
+                        ddlPortfolioType.SelectedIndex = -1;
                         LogMessage("Portfolio data added successfully");
                         btnSubmit.Text = "Update";
                     }
@@ -225,7 +226,7 @@ namespace vhcbcloud.Housing
                        DataUtils.GetInt(txtBlack.Text), DataUtils.GetInt(txtAsian.Text), DataUtils.GetInt(txtIndian.Text), DataUtils.GetInt(txtHawaiian.Text),
                        DataUtils.GetInt(txtUnknownRace.Text), DataUtils.GetInt(txtHispanic.Text), DataUtils.GetInt(txtNonHisp.Text), DataUtils.GetInt(txtUnknownEthnicity.Text),
                        DataUtils.GetInt(txtHomeless.Text), DataUtils.GetInt(txtMarketRate.Text), DataUtils.GetInt(txtI100.Text), DataUtils.GetInt(txtI80.Text),
-                       DataUtils.GetInt(txtI75.Text), DataUtils.GetInt(txtI60.Text), DataUtils.GetInt(txtI50.Text), DataUtils.GetInt(txtI30.Text), DataUtils.GetInt(txtI20.Text));
+                       DataUtils.GetInt(txtI75.Text), DataUtils.GetInt(txtI60.Text), DataUtils.GetInt(txtI50.Text), DataUtils.GetInt(txtI30.Text), DataUtils.GetInt(txtI20.Text), DataUtils.GetInt(hfProjectId.Value));
 
                     LogMessage("Portfolio data updated successfully");
                     }
@@ -238,7 +239,7 @@ namespace vhcbcloud.Housing
 
         private void ClearForm()
         {
-            ddlPortfolioType.SelectedIndex = -1;
+            //ddlPortfolioType.SelectedIndex = -1;
             txtTotalUnits.Text = "";
             txtMGender.Text = ""; txtFGender.Text = ""; txtUGender.Text = ""; txtWhite.Text = "";
             txtBlack.Text = ""; txtAsian.Text = ""; txtIndian.Text = ""; txtHawaiian.Text = "";
@@ -293,106 +294,112 @@ namespace vhcbcloud.Housing
 
         protected void ddlyear_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string year = ddlyear.SelectedItem.Text.ToString();
-            hfProjectPortfolioID.Value = "";
             btnSubmit.Text = "Save";
             ClearForm();
+            PopulateForm();
+        }
 
-            if (ddlyear.SelectedIndex != 0)
+        private void PopulateForm()
+        {
+            if (ddlyear.SelectedIndex != 0 && ddlPortfolioType.SelectedIndex != 0)
             {
-                DataRow drPortfolioData = PortfolioDataData.GetPortfolioData(DataUtils.GetInt(hfProjectId.Value), year);
+                DataRow drPortfolioData = PortfolioDataData.GetPortfolioData(DataUtils.GetInt(hfProjectId.Value), ddlyear.SelectedItem.Text.ToString(), DataUtils.GetInt(ddlPortfolioType.SelectedValue));
+                hfProjectPortfolioID.Value = "";
 
                 if (drPortfolioData != null)
                 {
                     hfProjectPortfolioID.Value = drPortfolioData["ProjectPortfolioID"].ToString();
                     int Totalunits = DataUtils.GetInt(drPortfolioData["TotalUnits"].ToString());
-                    PopulateDropDown(ddlPortfolioType, drPortfolioData["PortfolioType"].ToString());
-                    txtTotalUnits.Text = drPortfolioData["TotalUnits"].ToString();
+                    if (Totalunits != 0)
+                    {
+                        //PopulateDropDown(ddlPortfolioType, drPortfolioData["PortfolioType"].ToString());
+                        txtTotalUnits.Text = drPortfolioData["TotalUnits"].ToString();
 
-                    txtMGender.Text = drPortfolioData["MGender"].ToString();
-                    decimal perMale = Math.Round((DataUtils.GetDecimal(drPortfolioData["MGender"].ToString()) / Totalunits) * 100, 2);
-                    spnMale.InnerText = perMale.ToString()+" %";
+                        txtMGender.Text = drPortfolioData["MGender"].ToString();
+                        decimal perMale = Math.Round((DataUtils.GetDecimal(drPortfolioData["MGender"].ToString()) / Totalunits) * 100, 2);
+                        spnMale.InnerText = perMale.ToString() + " %";
 
-                    txtFGender.Text = drPortfolioData["FGender"].ToString();
-                    decimal perFeMale = Math.Round((DataUtils.GetDecimal(drPortfolioData["FGender"].ToString()) / Totalunits) * 100, 2);
-                    spnFeMale.InnerText = perFeMale.ToString() + " %";
+                        txtFGender.Text = drPortfolioData["FGender"].ToString();
+                        decimal perFeMale = Math.Round((DataUtils.GetDecimal(drPortfolioData["FGender"].ToString()) / Totalunits) * 100, 2);
+                        spnFeMale.InnerText = perFeMale.ToString() + " %";
 
-                    txtUGender.Text = drPortfolioData["UGender"].ToString();
-                    decimal perUGender = Math.Round((DataUtils.GetDecimal(drPortfolioData["UGender"].ToString()) / Totalunits) * 100, 2);
-                    spnUgender.InnerText = perUGender.ToString() + " %";
+                        txtUGender.Text = drPortfolioData["UGender"].ToString();
+                        decimal perUGender = Math.Round((DataUtils.GetDecimal(drPortfolioData["UGender"].ToString()) / Totalunits) * 100, 2);
+                        spnUgender.InnerText = perUGender.ToString() + " %";
 
-                    txtWhite.Text = drPortfolioData["White"].ToString();
-                    decimal perWhite = Math.Round((DataUtils.GetDecimal(drPortfolioData["White"].ToString()) / Totalunits) * 100, 2);
-                    spnWhite.InnerText = perWhite.ToString() + " %";
+                        txtWhite.Text = drPortfolioData["White"].ToString();
+                        decimal perWhite = Math.Round((DataUtils.GetDecimal(drPortfolioData["White"].ToString()) / Totalunits) * 100, 2);
+                        spnWhite.InnerText = perWhite.ToString() + " %";
 
-                    txtBlack.Text = drPortfolioData["Black"].ToString();
-                    decimal perBlack = Math.Round((DataUtils.GetDecimal(drPortfolioData["Black"].ToString()) / Totalunits) * 100, 2);
-                    spnBlack.InnerText = perBlack.ToString() + " %";
+                        txtBlack.Text = drPortfolioData["Black"].ToString();
+                        decimal perBlack = Math.Round((DataUtils.GetDecimal(drPortfolioData["Black"].ToString()) / Totalunits) * 100, 2);
+                        spnBlack.InnerText = perBlack.ToString() + " %";
 
-                    txtAsian.Text = drPortfolioData["Asian"].ToString();
-                    decimal perAsian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Asian"].ToString()) / Totalunits) * 100, 2);
-                    spnAsian.InnerText = perAsian.ToString() + " %";
+                        txtAsian.Text = drPortfolioData["Asian"].ToString();
+                        decimal perAsian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Asian"].ToString()) / Totalunits) * 100, 2);
+                        spnAsian.InnerText = perAsian.ToString() + " %";
 
-                    txtIndian.Text = drPortfolioData["Indian"].ToString();
-                    decimal perIndian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Indian"].ToString()) / Totalunits) * 100, 2);
-                    spnIndian.InnerText = perIndian.ToString() + " %";
+                        txtIndian.Text = drPortfolioData["Indian"].ToString();
+                        decimal perIndian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Indian"].ToString()) / Totalunits) * 100, 2);
+                        spnIndian.InnerText = perIndian.ToString() + " %";
 
-                    txtHawaiian.Text = drPortfolioData["Hawaiian"].ToString();
-                    decimal perHawaiian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Hawaiian"].ToString()) / Totalunits) * 100, 2);
-                    spnHawaiian.InnerText = perHawaiian.ToString() + " %";
+                        txtHawaiian.Text = drPortfolioData["Hawaiian"].ToString();
+                        decimal perHawaiian = Math.Round((DataUtils.GetDecimal(drPortfolioData["Hawaiian"].ToString()) / Totalunits) * 100, 2);
+                        spnHawaiian.InnerText = perHawaiian.ToString() + " %";
 
-                    txtUnknownRace.Text = drPortfolioData["UnknownRace"].ToString();
-                    decimal perUnknownRace = Math.Round((DataUtils.GetDecimal(drPortfolioData["UnknownRace"].ToString()) / Totalunits) * 100, 2);
-                    spnUnknownRace.InnerText = perUnknownRace.ToString() + " %";
+                        txtUnknownRace.Text = drPortfolioData["UnknownRace"].ToString();
+                        decimal perUnknownRace = Math.Round((DataUtils.GetDecimal(drPortfolioData["UnknownRace"].ToString()) / Totalunits) * 100, 2);
+                        spnUnknownRace.InnerText = perUnknownRace.ToString() + " %";
 
-                    txtHispanic.Text = drPortfolioData["Hispanic"].ToString();
-                    decimal perHispanic = Math.Round((DataUtils.GetDecimal(drPortfolioData["Hispanic"].ToString()) / Totalunits) * 100, 2);
-                    spnHispanic.InnerText = perHispanic.ToString() + " %";
+                        txtHispanic.Text = drPortfolioData["Hispanic"].ToString();
+                        decimal perHispanic = Math.Round((DataUtils.GetDecimal(drPortfolioData["Hispanic"].ToString()) / Totalunits) * 100, 2);
+                        spnHispanic.InnerText = perHispanic.ToString() + " %";
 
-                    txtNonHisp.Text = drPortfolioData["NonHisp"].ToString();
-                    decimal perNonHisp = Math.Round((DataUtils.GetDecimal(drPortfolioData["NonHisp"].ToString()) / Totalunits) * 100, 2);
-                    spnNonHisp.InnerText = perNonHisp.ToString() + " %";
+                        txtNonHisp.Text = drPortfolioData["NonHisp"].ToString();
+                        decimal perNonHisp = Math.Round((DataUtils.GetDecimal(drPortfolioData["NonHisp"].ToString()) / Totalunits) * 100, 2);
+                        spnNonHisp.InnerText = perNonHisp.ToString() + " %";
 
-                    txtUnknownEthnicity.Text = drPortfolioData["UnknownEthnicity"].ToString();
-                    decimal perUnknownEthnicity = Math.Round((DataUtils.GetDecimal(drPortfolioData["UnknownEthnicity"].ToString()) / Totalunits) * 100, 2);
-                    spnUnknownEthnicity.InnerText = perUnknownEthnicity.ToString() + " %";
+                        txtUnknownEthnicity.Text = drPortfolioData["UnknownEthnicity"].ToString();
+                        decimal perUnknownEthnicity = Math.Round((DataUtils.GetDecimal(drPortfolioData["UnknownEthnicity"].ToString()) / Totalunits) * 100, 2);
+                        spnUnknownEthnicity.InnerText = perUnknownEthnicity.ToString() + " %";
 
-                    txtHomeless.Text = drPortfolioData["Homeless"].ToString();
-                    decimal perHomeless = Math.Round((DataUtils.GetDecimal(drPortfolioData["Homeless"].ToString()) / Totalunits) * 100, 2);
-                    spnHomeless.InnerText = perHomeless.ToString() + " %";
+                        txtHomeless.Text = drPortfolioData["Homeless"].ToString();
+                        decimal perHomeless = Math.Round((DataUtils.GetDecimal(drPortfolioData["Homeless"].ToString()) / Totalunits) * 100, 2);
+                        spnHomeless.InnerText = perHomeless.ToString() + " %";
 
-                    txtMarketRate.Text = drPortfolioData["MarketRate"].ToString();
-                    decimal perMarketRate = Math.Round((DataUtils.GetDecimal(drPortfolioData["MarketRate"].ToString()) / Totalunits) * 100, 2);
-                    spntMarketRate.InnerText = perMarketRate.ToString() + " %";
+                        txtMarketRate.Text = drPortfolioData["MarketRate"].ToString();
+                        decimal perMarketRate = Math.Round((DataUtils.GetDecimal(drPortfolioData["MarketRate"].ToString()) / Totalunits) * 100, 2);
+                        spntMarketRate.InnerText = perMarketRate.ToString() + " %";
 
-                    txtI100.Text = drPortfolioData["I100"].ToString();
-                    decimal perI100 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I100"].ToString()) / Totalunits) * 100, 2);
-                    spnI100.InnerText = perI100.ToString() + " %";
+                        txtI100.Text = drPortfolioData["I100"].ToString();
+                        decimal perI100 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I100"].ToString()) / Totalunits) * 100, 2);
+                        spnI100.InnerText = perI100.ToString() + " %";
 
-                    txtI80.Text = drPortfolioData["I80"].ToString();
-                    decimal perI80 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I80"].ToString()) / Totalunits) * 100, 2);
-                    spnI80.InnerText = perI80.ToString() + " %";
+                        txtI80.Text = drPortfolioData["I80"].ToString();
+                        decimal perI80 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I80"].ToString()) / Totalunits) * 100, 2);
+                        spnI80.InnerText = perI80.ToString() + " %";
 
-                    txtI75.Text = drPortfolioData["I75"].ToString();
-                    decimal perI75 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I75"].ToString()) / Totalunits) * 100, 2);
-                    spnI75.InnerText = perI75.ToString() + " %";
+                        txtI75.Text = drPortfolioData["I75"].ToString();
+                        decimal perI75 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I75"].ToString()) / Totalunits) * 100, 2);
+                        spnI75.InnerText = perI75.ToString() + " %";
 
-                    txtI60.Text = drPortfolioData["I60"].ToString();
-                    decimal perI60 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I60"].ToString()) / Totalunits) * 100, 2);
-                    spnI60.InnerText = perI60.ToString() + " %";
+                        txtI60.Text = drPortfolioData["I60"].ToString();
+                        decimal perI60 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I60"].ToString()) / Totalunits) * 100, 2);
+                        spnI60.InnerText = perI60.ToString() + " %";
 
-                    txtI50.Text = drPortfolioData["I50"].ToString();
-                    decimal perI50 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I50"].ToString()) / Totalunits) * 100, 2);
-                    spnI50.InnerText = perI50.ToString() + " %";
+                        txtI50.Text = drPortfolioData["I50"].ToString();
+                        decimal perI50 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I50"].ToString()) / Totalunits) * 100, 2);
+                        spnI50.InnerText = perI50.ToString() + " %";
 
-                    txtI30.Text = drPortfolioData["I30"].ToString();
-                    decimal perI30 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I30"].ToString()) / Totalunits) * 100, 2);
-                    spnI30.InnerText = perI30.ToString() + " %";
+                        txtI30.Text = drPortfolioData["I30"].ToString();
+                        decimal perI30 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I30"].ToString()) / Totalunits) * 100, 2);
+                        spnI30.InnerText = perI30.ToString() + " %";
 
-                    txtI20.Text = drPortfolioData["I120"].ToString();
-                    decimal perI120 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I120"].ToString()) / Totalunits) * 100, 2);
-                    spnI20.InnerText = perI120.ToString() + " %";
+                        txtI20.Text = drPortfolioData["I120"].ToString();
+                        decimal perI120 = Math.Round((DataUtils.GetDecimal(drPortfolioData["I120"].ToString()) / Totalunits) * 100, 2);
+                        spnI20.InnerText = perI120.ToString() + " %";
 
+                    }
                     btnSubmit.Text = "Update";
                 }
             }
@@ -408,6 +415,13 @@ namespace vhcbcloud.Housing
                     item.Selected = true;
                 }
             }
+        }
+
+        protected void ddlPortfolioType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnSubmit.Text = "Save";
+            ClearForm();
+            PopulateForm();
         }
     }
 }

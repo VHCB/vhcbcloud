@@ -286,8 +286,12 @@
                                         <td>
                                             <asp:TextBox ID="txtLegalName" runat="server" CssClass="clsTextBoxBlue1" MaxLength="50"></asp:TextBox>
                                         </td>
-                                         <td></td>
-                                         <td></td>
+                                         <td> 
+                                             <span class="labelClass" runat="server" id="Span5">UEI</span>
+                                         </td>
+                                         <td> 
+                                              <asp:TextBox ID="txtUEI" runat="server" CssClass="clsTextBoxBlue1" MaxLength="12" oninput="this.value = this.value.toUpperCase()"></asp:TextBox>
+                                         </td>
                                     </tr>
                                      <tr>
                                         <td colspan="6" style="height: 5px"></td>

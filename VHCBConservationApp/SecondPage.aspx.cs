@@ -153,5 +153,11 @@ namespace VHCBConservationApp
             saveData();
             Response.Redirect("FirstPage.aspx");
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

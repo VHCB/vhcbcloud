@@ -13,22 +13,32 @@
                             <asp:Literal runat="server" ID="FailureText" />
                         </p>
                     </asp:PlaceHolder>
-                      <div class="form-group">
+                     <div class="form-group">
+                        <asp:Label runat="server" AssociatedControlID="UserId" CssClass="col-md-4 control-label">Enter Your Email Address</asp:Label>
+                        <div class="col-md-6">
+                            <asp:TextBox runat="server" ID="UserId" CssClass="form-control"  AutoPostBack="true" OnTextChanged="UserId_TextChanged"/>
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="UserId"
+                                CssClass="text-danger" ErrorMessage="The User Id field is required." />
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <asp:Label runat="server" AssociatedControlID="ddlProjectNumber" CssClass="col-md-4 control-label">Enter Project Number</asp:Label>
+                        <div class="col-md-6">
+                              <asp:DropDownList ID="ddlProjectNumber" CssClass="form-select" runat="server" Height="23px" Width="185px"></asp:DropDownList>
+                            <%--<asp:TextBox runat="server" ID="ProjectNumber" CssClass="form-control" />--%>
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlProjectNumber"
+                                CssClass="text-danger" ErrorMessage="The Project Number field is required." />
+                        </div>
+                    </div>
+
+                    <%--  <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="ProjectNumber" CssClass="col-md-4 control-label">Enter Project Number</asp:Label>
                         <div class="col-md-6">
                             <asp:TextBox runat="server" ID="ProjectNumber" CssClass="form-control" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="ProjectNumber"
                                 CssClass="text-danger" ErrorMessage="The Project Number field is required." />
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label runat="server" AssociatedControlID="UserId" CssClass="col-md-4 control-label">Enter Your Email Address</asp:Label>
-                        <div class="col-md-6">
-                            <asp:TextBox runat="server" ID="UserId" CssClass="form-control" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="UserId"
-                                CssClass="text-danger" ErrorMessage="The User Id field is required." />
-                        </div>
-                    </div>
+                    </div>--%>
                     <div class="form-group">
                         <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-4 control-label">Enter Your Password</asp:Label>
                         <div class="col-md-6">

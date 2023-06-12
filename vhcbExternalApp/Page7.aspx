@@ -11,7 +11,7 @@
                 <div id="dvEntityRole" runat="server">
                     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
                     </asp:ToolkitScriptManager>
-                     <div id="dvMessage" runat="server">
+                     <div id="dvMessage" runat="server" visible="false">
                         <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
                     </div>
                     <table style="width=100%">
@@ -20,11 +20,16 @@
                                SECTION E: NARRATIVE QUESTIONS</strong></span>
                             </td>
                         </tr>
-                         <tr>
-                            <td colspan="2">&nbsp;</td>
+                        <tr>
+                            <td>
+                                <span> The word counts indicated after each question are suggestions and are not required maximums or minimums. If you experience connectivity issues, please save your progress frequently during this section or copy and paste your answers from a plain text (.txt) document</span>
+                            </td>
                         </tr>
                          <tr>
-                            <td colspan="2"><span class="labelClass">FARM QUESTIONS</span>
+                            <td colspan="2" style="height: 5px"></td>
+                        </tr>
+                         <tr>
+                            <td colspan="2"><span class="labelClass"><b>FARM QUESTIONS</b></span>
                             </td>
                         </tr>
                          <tr>
@@ -67,7 +72,22 @@
                         <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                 &nbsp;&nbsp;<asp:Label runat="server" ID="Label1" class="labelClass" Text="Go To"></asp:Label>
+                               <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                            <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Applicant Information" Value="ProjectDetails.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information" Value="FarmBusinessInformation.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information - continued" Value="WaterQualityGrants.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Grant Request" Value="WaterQualityGrantsProgramPage4.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Budget Tables & Narrative" Value="BudgetNarrativeTables.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions" Value="Page7.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions - continued" Value="Page8.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Project Questions" Value="Page9.aspx"></asp:ListItem>
+                                             <asp:ListItem Text="Attachments" Value="Page11.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Confidentiality/Submit" Value="Page10.aspx"></asp:ListItem>
+                                        </asp:DropDownList>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>

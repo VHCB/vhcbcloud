@@ -135,7 +135,8 @@ namespace vhcbcloud
 
                     if (objInactiveProjectResult.IsProjectNotExist)
                         LogMessage("Conservation Project not exist");
-
+                    else if(objInactiveProjectResult.IsDuplicate)
+                         LogMessage("This record already exist");
                     else
                         LogMessage("Project added successfully");
                 }
@@ -224,7 +225,11 @@ namespace vhcbcloud
         public static string[] GetProjectNumber(string prefixText, int count, string contextKey)
         {
             DataTable dt = new DataTable();
-            dt = InactiveProjectData.GetConservationProjectNumbers(prefixText);//.Replace("_","").Replace("-", ""));
+
+            if (contextKey == null)
+                contextKey = "7777";
+
+            dt = InactiveProjectData.GetConservationProjectNumbers(prefixText, contextKey);//.Replace("_","").Replace("-", ""));
 
             List<string> ProjNumbers = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)

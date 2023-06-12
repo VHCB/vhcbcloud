@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace vhcbcloud.Housing {
-    
-    
-    public partial class HousingUnitsServices {
-        
+namespace vhcbcloud.Housing
+{
+
+
+    public partial class HousingUnitsServices
+    {
+
         /// <summary>
         /// dvTabs control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTabs;
-        
+
         /// <summary>
         /// Tabs control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tabs;
-        
+
         /// <summary>
         /// ProjectNum control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjectNum;
-        
+
         /// <summary>
         /// ProjName control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ProjName;
-        
+
         /// <summary>
         /// imgSearch control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgSearch;
-        
+
         /// <summary>
         /// ibAwardSummary control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ibAwardSummary;
-        
+
         /// <summary>
         /// btnProjectNotes control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton btnProjectNotes;
-        
+
         /// <summary>
         /// cbActiveOnly control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbActiveOnly;
-        
+
         /// <summary>
         /// ddlHousingType control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlHousingType;
-        
+
         /// <summary>
         /// txtUnitsFromPreProject control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUnitsFromPreProject;
-        
+
         /// <summary>
         /// txtNetNewUnits control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNetNewUnits;
-        
+
         /// <summary>
         /// txtUnitsRemoved control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUnitsRemoved;
-        
+
         /// <summary>
         /// spnTotalUnits control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnTotalUnits;
-        
+
         /// <summary>
         /// txtGrossLivingSpace control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtGrossLivingSpace;
-        
+
         /// <summary>
         /// chkSash control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkSash;
-        
+
         /// <summary>
         /// txtMHIP control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMHIP;
-        
+
         /// <summary>
         /// snFederalProgramUnits control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl snFederalProgramUnits;
-        
+
         /// <summary>
         /// txtSSUnits control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSSUnits;
-        
+
         /// <summary>
         /// spnVHCBAffUnits control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnVHCBAffUnits;
-        
+
         /// <summary>
         /// txtBuildings control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBuildings;
-        
+
         /// <summary>
         /// txtPrevAffordUnits control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrevAffordUnits;
-        
+
         /// <summary>
         /// txtNewAffordUnits control.
         /// </summary>
@@ -209,7 +211,43 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNewAffordUnits;
-        
+
+        /// <summary>
+        /// txtConstructionComp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtConstructionComp;
+
+        /// <summary>
+        /// ce_txtConstructionComp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtConstructionComp;
+
+        /// <summary>
+        /// txtOccupancy  control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOccupancy;
+
+        /// <summary>
+        /// ce_txtOccupancy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.CalendarExtender ce_txtOccupancy;
+
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -218,7 +256,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
+
         /// <summary>
         /// mpExtender control.
         /// </summary>
@@ -227,7 +265,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ModalPopupExtender mpExtender;
-        
+
         /// <summary>
         /// pnlProjectNotes control.
         /// </summary>
@@ -236,7 +274,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlProjectNotes;
-        
+
         /// <summary>
         /// ifProjectNotes control.
         /// </summary>
@@ -245,7 +283,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlIframe ifProjectNotes;
-        
+
         /// <summary>
         /// btnClose control.
         /// </summary>
@@ -254,7 +292,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnClose;
-        
+
         /// <summary>
         /// dvMessage control.
         /// </summary>
@@ -263,7 +301,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMessage;
-        
+
         /// <summary>
         /// lblErrorMsg control.
         /// </summary>
@@ -272,7 +310,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrorMsg;
-        
+
         /// <summary>
         /// dvNewHousingSubType control.
         /// </summary>
@@ -281,7 +319,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewHousingSubType;
-        
+
         /// <summary>
         /// cbAddHousingSubType control.
         /// </summary>
@@ -290,7 +328,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddHousingSubType;
-        
+
         /// <summary>
         /// ImgHousingSubType control.
         /// </summary>
@@ -299,7 +337,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgHousingSubType;
-        
+
         /// <summary>
         /// dvHousingSubTypeForm control.
         /// </summary>
@@ -308,7 +346,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHousingSubTypeForm;
-        
+
         /// <summary>
         /// Panel8 control.
         /// </summary>
@@ -317,7 +355,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel8;
-        
+
         /// <summary>
         /// ddlHousingSubType control.
         /// </summary>
@@ -326,7 +364,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlHousingSubType;
-        
+
         /// <summary>
         /// txtHousingSubTypeUnits control.
         /// </summary>
@@ -335,7 +373,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHousingSubTypeUnits;
-        
+
         /// <summary>
         /// btnAddHousingSubType control.
         /// </summary>
@@ -344,7 +382,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddHousingSubType;
-        
+
         /// <summary>
         /// dvHousingSubTypeGrid control.
         /// </summary>
@@ -353,7 +391,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvHousingSubTypeGrid;
-        
+
         /// <summary>
         /// dvSubTypeWarning control.
         /// </summary>
@@ -362,7 +400,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSubTypeWarning;
-        
+
         /// <summary>
         /// lblSubTypeWarning control.
         /// </summary>
@@ -371,7 +409,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubTypeWarning;
-        
+
         /// <summary>
         /// Panel1 control.
         /// </summary>
@@ -380,7 +418,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel1;
-        
+
         /// <summary>
         /// gvHousingSubType control.
         /// </summary>
@@ -389,16 +427,16 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvHousingSubType;
-        
+
         /// <summary>
-        /// dvTax Credit control.
+        /// dvTaxCredit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTaxCredit;
-        
+
         /// <summary>
         /// cbAddTaxCredit control.
         /// </summary>
@@ -407,7 +445,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddTaxCredit;
-        
+
         /// <summary>
         /// ImgTaxCredit control.
         /// </summary>
@@ -416,7 +454,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgTaxCredit;
-        
+
         /// <summary>
         /// dvTaxCreditForm control.
         /// </summary>
@@ -425,7 +463,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTaxCreditForm;
-        
+
         /// <summary>
         /// Panel19 control.
         /// </summary>
@@ -434,7 +472,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel19;
-        
+
         /// <summary>
         /// ddlTaxCredit control.
         /// </summary>
@@ -443,7 +481,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTaxCredit;
-        
+
         /// <summary>
         /// btnAddTaxCredit control.
         /// </summary>
@@ -452,7 +490,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddTaxCredit;
-        
+
         /// <summary>
         /// dvTaxCreditGrid control.
         /// </summary>
@@ -461,7 +499,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTaxCreditGrid;
-        
+
         /// <summary>
         /// Panel20 control.
         /// </summary>
@@ -470,7 +508,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel20;
-        
+
         /// <summary>
         /// gvTaxCredit control.
         /// </summary>
@@ -479,7 +517,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvTaxCredit;
-        
+
         /// <summary>
         /// dvNewSingle control.
         /// </summary>
@@ -488,7 +526,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewSingle;
-        
+
         /// <summary>
         /// cbAddSingleUnit control.
         /// </summary>
@@ -497,7 +535,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSingleUnit;
-        
+
         /// <summary>
         /// ImgNewConst control.
         /// </summary>
@@ -506,7 +544,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgNewConst;
-        
+
         /// <summary>
         /// dvSingleForm control.
         /// </summary>
@@ -515,7 +553,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSingleForm;
-        
+
         /// <summary>
         /// Panel2 control.
         /// </summary>
@@ -524,7 +562,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel2;
-        
+
         /// <summary>
         /// ddlSingleUnitCharacteristic control.
         /// </summary>
@@ -533,7 +571,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSingleUnitCharacteristic;
-        
+
         /// <summary>
         /// txtSingleUnitNumUnits control.
         /// </summary>
@@ -542,7 +580,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSingleUnitNumUnits;
-        
+
         /// <summary>
         /// btnAddSingleUnitCharacteristic control.
         /// </summary>
@@ -551,7 +589,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddSingleUnitCharacteristic;
-        
+
         /// <summary>
         /// dvSingleGrid control.
         /// </summary>
@@ -560,7 +598,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSingleGrid;
-        
+
         /// <summary>
         /// dvSingleUnitWarning control.
         /// </summary>
@@ -569,7 +607,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSingleUnitWarning;
-        
+
         /// <summary>
         /// lblSingleUnitWarning control.
         /// </summary>
@@ -578,7 +616,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSingleUnitWarning;
-        
+
         /// <summary>
         /// Panel3 control.
         /// </summary>
@@ -587,7 +625,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel3;
-        
+
         /// <summary>
         /// gvSingle control.
         /// </summary>
@@ -596,7 +634,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvSingle;
-        
+
         /// <summary>
         /// dvNewMultiple control.
         /// </summary>
@@ -605,7 +643,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewMultiple;
-        
+
         /// <summary>
         /// cbAddMultiUnit control.
         /// </summary>
@@ -614,7 +652,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddMultiUnit;
-        
+
         /// <summary>
         /// ImgAccessible control.
         /// </summary>
@@ -623,7 +661,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgAccessible;
-        
+
         /// <summary>
         /// dvMultipleForm control.
         /// </summary>
@@ -632,7 +670,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMultipleForm;
-        
+
         /// <summary>
         /// Panel4 control.
         /// </summary>
@@ -641,7 +679,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel4;
-        
+
         /// <summary>
         /// ddlMultipleUnitCharacteristic control.
         /// </summary>
@@ -650,7 +688,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMultipleUnitCharacteristic;
-        
+
         /// <summary>
         /// txtMultiUnitNumUnits control.
         /// </summary>
@@ -659,7 +697,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMultiUnitNumUnits;
-        
+
         /// <summary>
         /// btnAddMultiUnitCharacteristic control.
         /// </summary>
@@ -668,7 +706,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddMultiUnitCharacteristic;
-        
+
         /// <summary>
         /// dvMultipleGrid control.
         /// </summary>
@@ -677,7 +715,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMultipleGrid;
-        
+
         /// <summary>
         /// Panel5 control.
         /// </summary>
@@ -686,7 +724,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel5;
-        
+
         /// <summary>
         /// gvMultiple control.
         /// </summary>
@@ -695,7 +733,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvMultiple;
-        
+
         /// <summary>
         /// dvNewSuppServices control.
         /// </summary>
@@ -704,7 +742,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewSuppServices;
-        
+
         /// <summary>
         /// cbAddSuppService control.
         /// </summary>
@@ -713,7 +751,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSuppService;
-        
+
         /// <summary>
         /// ImgPrimary control.
         /// </summary>
@@ -722,7 +760,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgPrimary;
-        
+
         /// <summary>
         /// dvSuppServiceForm control.
         /// </summary>
@@ -731,7 +769,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSuppServiceForm;
-        
+
         /// <summary>
         /// Panel6 control.
         /// </summary>
@@ -740,7 +778,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel6;
-        
+
         /// <summary>
         /// ddlSuppService control.
         /// </summary>
@@ -749,7 +787,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSuppService;
-        
+
         /// <summary>
         /// txtSuppServiceUnits control.
         /// </summary>
@@ -758,7 +796,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSuppServiceUnits;
-        
+
         /// <summary>
         /// btnAddSuppServices control.
         /// </summary>
@@ -767,7 +805,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddSuppServices;
-        
+
         /// <summary>
         /// dvSuppServiceGrid control.
         /// </summary>
@@ -776,7 +814,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSuppServiceGrid;
-        
+
         /// <summary>
         /// dvPrimaryServiceWarning control.
         /// </summary>
@@ -785,7 +823,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvPrimaryServiceWarning;
-        
+
         /// <summary>
         /// lblPrimaryServiceWarning control.
         /// </summary>
@@ -794,7 +832,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPrimaryServiceWarning;
-        
+
         /// <summary>
         /// Panel7 control.
         /// </summary>
@@ -803,7 +841,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel7;
-        
+
         /// <summary>
         /// gvSuppService control.
         /// </summary>
@@ -812,7 +850,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvSuppService;
-        
+
         /// <summary>
         /// dvNewSecServices control.
         /// </summary>
@@ -821,7 +859,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewSecServices;
-        
+
         /// <summary>
         /// cbAddSecService control.
         /// </summary>
@@ -830,7 +868,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddSecService;
-        
+
         /// <summary>
         /// ImgSecondary control.
         /// </summary>
@@ -839,7 +877,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgSecondary;
-        
+
         /// <summary>
         /// dvSecServiceForm control.
         /// </summary>
@@ -848,7 +886,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSecServiceForm;
-        
+
         /// <summary>
         /// Panel11 control.
         /// </summary>
@@ -857,7 +895,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel11;
-        
+
         /// <summary>
         /// ddlSecService control.
         /// </summary>
@@ -866,7 +904,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSecService;
-        
+
         /// <summary>
         /// txtSecServiceUnits control.
         /// </summary>
@@ -875,7 +913,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSecServiceUnits;
-        
+
         /// <summary>
         /// btnAddSecServices control.
         /// </summary>
@@ -884,7 +922,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddSecServices;
-        
+
         /// <summary>
         /// dvSecServiceGrid control.
         /// </summary>
@@ -893,7 +931,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSecServiceGrid;
-        
+
         /// <summary>
         /// Panel12 control.
         /// </summary>
@@ -902,7 +940,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel12;
-        
+
         /// <summary>
         /// gvSecService control.
         /// </summary>
@@ -911,7 +949,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvSecService;
-        
+
         /// <summary>
         /// dvNewAgeRestrictions control.
         /// </summary>
@@ -920,7 +958,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewAgeRestrictions;
-        
+
         /// <summary>
         /// cbAddAgeRes control.
         /// </summary>
@@ -929,7 +967,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddAgeRes;
-        
+
         /// <summary>
         /// ImgAge control.
         /// </summary>
@@ -938,7 +976,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgAge;
-        
+
         /// <summary>
         /// dvAgeRestForm control.
         /// </summary>
@@ -947,7 +985,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAgeRestForm;
-        
+
         /// <summary>
         /// Panel13 control.
         /// </summary>
@@ -956,7 +994,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel13;
-        
+
         /// <summary>
         /// ddlAgeRest control.
         /// </summary>
@@ -965,7 +1003,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlAgeRest;
-        
+
         /// <summary>
         /// txtAgeRestUnits control.
         /// </summary>
@@ -974,7 +1012,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAgeRestUnits;
-        
+
         /// <summary>
         /// btnAddAgeRest control.
         /// </summary>
@@ -983,7 +1021,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddAgeRest;
-        
+
         /// <summary>
         /// dvAgeRestrGrid control.
         /// </summary>
@@ -992,7 +1030,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAgeRestrGrid;
-        
+
         /// <summary>
         /// dvAgeRestrWarning control.
         /// </summary>
@@ -1001,7 +1039,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAgeRestrWarning;
-        
+
         /// <summary>
         /// lblAgeRestrWarning control.
         /// </summary>
@@ -1010,7 +1048,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAgeRestrWarning;
-        
+
         /// <summary>
         /// Panel14 control.
         /// </summary>
@@ -1019,7 +1057,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel14;
-        
+
         /// <summary>
         /// gvAgeRestr control.
         /// </summary>
@@ -1028,7 +1066,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvAgeRestr;
-        
+
         /// <summary>
         /// dvNewVHCBAff control.
         /// </summary>
@@ -1037,7 +1075,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewVHCBAff;
-        
+
         /// <summary>
         /// cbAddVHCBAff control.
         /// </summary>
@@ -1046,7 +1084,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddVHCBAff;
-        
+
         /// <summary>
         /// ImgVHCBAff control.
         /// </summary>
@@ -1055,7 +1093,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgVHCBAff;
-        
+
         /// <summary>
         /// dvVHCBAffForm control.
         /// </summary>
@@ -1064,7 +1102,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvVHCBAffForm;
-        
+
         /// <summary>
         /// Panel9 control.
         /// </summary>
@@ -1073,7 +1111,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel9;
-        
+
         /// <summary>
         /// ddlVHCBAff control.
         /// </summary>
@@ -1082,7 +1120,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlVHCBAff;
-        
+
         /// <summary>
         /// txtVHCBUnits control.
         /// </summary>
@@ -1091,7 +1129,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtVHCBUnits;
-        
+
         /// <summary>
         /// btnAddVHCBAff control.
         /// </summary>
@@ -1100,7 +1138,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddVHCBAff;
-        
+
         /// <summary>
         /// dvVHCBAffGrid control.
         /// </summary>
@@ -1109,7 +1147,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvVHCBAffGrid;
-        
+
         /// <summary>
         /// dvVHCBUnitWarning control.
         /// </summary>
@@ -1118,7 +1156,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvVHCBUnitWarning;
-        
+
         /// <summary>
         /// lblVHCBUnitWarning control.
         /// </summary>
@@ -1127,7 +1165,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblVHCBUnitWarning;
-        
+
         /// <summary>
         /// Panel10 control.
         /// </summary>
@@ -1136,7 +1174,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel10;
-        
+
         /// <summary>
         /// gvVHCBAff control.
         /// </summary>
@@ -1145,7 +1183,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvVHCBAff;
-        
+
         /// <summary>
         /// dvNewTargetEff control.
         /// </summary>
@@ -1154,7 +1192,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewTargetEff;
-        
+
         /// <summary>
         /// cbAddTargetEff control.
         /// </summary>
@@ -1163,7 +1201,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddTargetEff;
-        
+
         /// <summary>
         /// ImgTargetEff control.
         /// </summary>
@@ -1172,7 +1210,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgTargetEff;
-        
+
         /// <summary>
         /// dvTargetEffForm control.
         /// </summary>
@@ -1181,7 +1219,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTargetEffForm;
-        
+
         /// <summary>
         /// Panel15 control.
         /// </summary>
@@ -1190,7 +1228,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel15;
-        
+
         /// <summary>
         /// ddlTargetEff control.
         /// </summary>
@@ -1199,7 +1237,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTargetEff;
-        
+
         /// <summary>
         /// txtTargetUnits control.
         /// </summary>
@@ -1208,7 +1246,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTargetUnits;
-        
+
         /// <summary>
         /// btnAddTargetEff control.
         /// </summary>
@@ -1217,7 +1255,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddTargetEff;
-        
+
         /// <summary>
         /// dvTargetEffGrid control.
         /// </summary>
@@ -1226,7 +1264,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTargetEffGrid;
-        
+
         /// <summary>
         /// dvTargetEffWarning control.
         /// </summary>
@@ -1235,7 +1273,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvTargetEffWarning;
-        
+
         /// <summary>
         /// lblTargetEffWarning control.
         /// </summary>
@@ -1244,7 +1282,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTargetEffWarning;
-        
+
         /// <summary>
         /// Panel16 control.
         /// </summary>
@@ -1253,7 +1291,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel16;
-        
+
         /// <summary>
         /// gvTargetEff control.
         /// </summary>
@@ -1262,7 +1300,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvTargetEff;
-        
+
         /// <summary>
         /// dvNewAffordableTo control.
         /// </summary>
@@ -1271,7 +1309,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNewAffordableTo;
-        
+
         /// <summary>
         /// cbAddAffordableTo control.
         /// </summary>
@@ -1280,7 +1318,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbAddAffordableTo;
-        
+
         /// <summary>
         /// ImgAffordableTo control.
         /// </summary>
@@ -1289,7 +1327,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImgAffordableTo;
-        
+
         /// <summary>
         /// dvAffordableToForm control.
         /// </summary>
@@ -1298,7 +1336,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAffordableToForm;
-        
+
         /// <summary>
         /// Panel17 control.
         /// </summary>
@@ -1307,7 +1345,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel17;
-        
+
         /// <summary>
         /// ddlAffordableTo control.
         /// </summary>
@@ -1316,7 +1354,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlAffordableTo;
-        
+
         /// <summary>
         /// txtAffordableToUnits control.
         /// </summary>
@@ -1325,7 +1363,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAffordableToUnits;
-        
+
         /// <summary>
         /// btnAddAffordableTo control.
         /// </summary>
@@ -1334,7 +1372,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddAffordableTo;
-        
+
         /// <summary>
         /// dvAffordableToGrid control.
         /// </summary>
@@ -1343,7 +1381,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAffordableToGrid;
-        
+
         /// <summary>
         /// dvAffordableToWarning control.
         /// </summary>
@@ -1352,7 +1390,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvAffordableToWarning;
-        
+
         /// <summary>
         /// lblAffordableToWarning control.
         /// </summary>
@@ -1361,7 +1399,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAffordableToWarning;
-        
+
         /// <summary>
         /// Panel18 control.
         /// </summary>
@@ -1370,7 +1408,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel18;
-        
+
         /// <summary>
         /// gvAffordableTo control.
         /// </summary>
@@ -1379,7 +1417,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvAffordableTo;
-        
+
         /// <summary>
         /// hfProjectId control.
         /// </summary>
@@ -1388,7 +1426,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProjectId;
-        
+
         /// <summary>
         /// hfHousingID control.
         /// </summary>
@@ -1397,7 +1435,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfHousingID;
-        
+
         /// <summary>
         /// hfTotalUnitsFromDB control.
         /// </summary>
@@ -1406,7 +1444,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfTotalUnitsFromDB;
-        
+
         /// <summary>
         /// hfSubTypeWarning control.
         /// </summary>
@@ -1415,7 +1453,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfSubTypeWarning;
-        
+
         /// <summary>
         /// hfSingleUnitWarning control.
         /// </summary>
@@ -1424,7 +1462,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfSingleUnitWarning;
-        
+
         /// <summary>
         /// hfVHCBUnitWarning control.
         /// </summary>
@@ -1433,7 +1471,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfVHCBUnitWarning;
-        
+
         /// <summary>
         /// hfPrimaryServiceWarning control.
         /// </summary>
@@ -1442,7 +1480,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfPrimaryServiceWarning;
-        
+
         /// <summary>
         /// hfAgeRestrWarning control.
         /// </summary>
@@ -1451,7 +1489,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAgeRestrWarning;
-        
+
         /// <summary>
         /// hfNotInCovenantCount control.
         /// </summary>
@@ -1460,7 +1498,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfNotInCovenantCount;
-        
+
         /// <summary>
         /// hfIsVisibleBasedOnRole control.
         /// </summary>
@@ -1469,7 +1507,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfIsVisibleBasedOnRole;
-        
+
         /// <summary>
         /// hfTargetEffWarning control.
         /// </summary>
@@ -1478,7 +1516,7 @@ namespace vhcbcloud.Housing {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfTargetEffWarning;
-        
+
         /// <summary>
         /// hfAffordableToWarning control.
         /// </summary>

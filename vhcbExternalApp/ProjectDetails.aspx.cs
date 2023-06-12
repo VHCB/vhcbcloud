@@ -112,20 +112,25 @@ namespace vhcbExternalApp
         {
             if (projectNumber != "")
             {
-                string PrimeAdvisor = string.Empty;
-                if (rdBtnPriorParticipation.Text.ToLower() == "yes")
-                    PrimeAdvisor = txtPrimeAdvisor.Text;
-
-                ViabilityApplicationData.ViabilityApplicationPage1(projectNumber, txtPrimaryContact.Text, txtOwners.Text,
-                txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtCity.Text, txtZipCode.Text, txtVillage.Text, ddlCounty.SelectedValue,
-                txtPhyStreet1.Text, txtPhyAddress1.Text, txtPhyAddress2.Text, txtPhyCity.Text, txtPhyZip.Text, txtPhyVillage.Text, ddlPhyCounty.SelectedValue,
-                txtWorkPhone.Text, txtCellPhone.Text, txtHomePhone.Text, txtEmail.Text, DataUtils.GetInt(ddlHearAbout.SelectedValue), rdBtnPriorParticipation.Text, PrimeAdvisor);
+                saveData();
 
                 LogMessage("Viability Application Data Added Successfully");
 
                 Response.Redirect("FarmBusinessInformation.aspx");
             }
 
+        }
+
+        private void saveData()
+        {
+            string PrimeAdvisor = string.Empty;
+            if (rdBtnPriorParticipation.Text.ToLower() == "yes")
+                PrimeAdvisor = txtPrimeAdvisor.Text;
+
+            ViabilityApplicationData.ViabilityApplicationPage1(projectNumber, txtPrimaryContact.Text, txtOwners.Text,
+            txtStreetNo.Text, txtAddress1.Text, txtAddress2.Text, txtCity.Text, txtZipCode.Text, txtVillage.Text, ddlCounty.SelectedValue,
+            txtPhyStreet1.Text, txtPhyAddress1.Text, txtPhyAddress2.Text, txtPhyCity.Text, txtPhyZip.Text, txtPhyVillage.Text, ddlPhyCounty.SelectedValue,
+            txtWorkPhone.Text, txtCellPhone.Text, txtHomePhone.Text, txtEmail.Text, DataUtils.GetInt(ddlHearAbout.SelectedValue), rdBtnPriorParticipation.Text, PrimeAdvisor);
         }
 
         private void LoadViabilityApplicationPage1()
@@ -222,7 +227,7 @@ namespace vhcbExternalApp
             ViabilityApplicationData.InsertDefaultDataForViabilityWaterQuality(projectNumber);
 
             ClientScript.RegisterStartupScript(this.GetType(),
-                   "script", GetExagoURL(projectNumber, "Online Application - emailed"));
+                   "script", GetExagoURL(projectNumber, "Online Water Quality 2023 Application"));
         }
 
         public static string GetExagoURL(string Projnum, string ReportName)
@@ -254,6 +259,12 @@ namespace vhcbExternalApp
             sb.Append("', '_blank');");
             sb.Append("</script>");
             return sb.ToString();
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

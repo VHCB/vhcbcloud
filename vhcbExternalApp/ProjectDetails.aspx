@@ -7,25 +7,48 @@
         .FormatRadioButtonList label {
             margin-left: 5px;
         }
+
         .auto-style1 {
-            width: 500px
+            width: 535px
         }
+
         .auto-style7 {
             height: 5px;
         }
+
+        .auto-style8 {
+            width: 312px;
+        }
     </style>
     <div class="jumbotron">
-        <p class="lead">Viability Application</p>
+        <p class="lead">Viability Water Quality 2023 Application</p>
         <div class="container">
             <div class="panel panel-default">
                 <div id="dvEntityRole" runat="server">
                     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
                     </asp:ToolkitScriptManager>
-                    <div id="dvMessage" runat="server">
+                    <div id="dvMessage" runat="server" visible="false">
                         <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg" ForeColor="Red"></asp:Label></p>
                     </div>
-                    <table>
+                    <div class="panel-heading" style="padding: 5px 5px 1px 5px">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>
+                                    <h3 class="panel-title">Introduction</h3>
+                                </td>
+                                <td style="text-align: right"></td>
+                            </tr>
+                        </table>
+                    </div>
 
+                    <table>
+                        <tr>
+                            <td colspan="2"><span class="labelClass" style="margin-left: 10px">Please review Application Instructions thoroughly before you begin this grant application to ensure that your project is eligible for funding. Please contact Betsy McGavisk at Betsy@vhcb.org with any questions.
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
                         <%-- <tr>
                             <td><span class="labelClass" style="margin-left: 10px">Which of these best describes you</span></td>
                             <td>
@@ -45,7 +68,10 @@
                             <td colspan="2" style="text-decoration: underline;" class="auto-style7"><strong>Applicant Information</strong></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass" style="margin-left: 10px">All Owners/Operators (including primary contact)</span></td>
+                            <td colspan="3" style="height: 10px"></td>
+                        </tr>
+                        <tr>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">All Owners/Operators (including primary contact)</span></td>
                             <td colspan="2">
                                 <asp:TextBox ID="txtOwners" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox>
                             </td>
@@ -54,7 +80,7 @@
                             <td colspan="3" style="height: 10px"></td>
                         </tr>
                         <tr>
-                            <td><span class="labelClass" style="margin-left: 10px">Primary Contact </span></td>
+                            <td class="auto-style8"><span class="labelClass" style="margin-left: 10px">Primary Contact </span></td>
                             <td colspan="2">
                                 <asp:TextBox ID="txtPrimaryContact" CssClass="clsTextBoxBlue1" runat="server" Width="253px"></asp:TextBox>
                             </td>
@@ -272,7 +298,7 @@
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
                                 <tr>
-                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">How did you hear about the Vermont Farm & Forest Viability Program?</span></td>
+                                    <td class="auto-style1"><span class="labelClass" style="margin-left: 10px">How did you hear about the Vermont Farm & Forest Viability Water Quality Grant?</span></td>
                                     <td colspan="2">
                                         <asp:DropDownList ID="ddlHearAbout" CssClass="clsDropDown" runat="server" Visible="true">
                                         </asp:DropDownList>
@@ -295,10 +321,10 @@
                                 <tr>
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td class="auto-style1"><span class="labelClass" style="margin-left: 10px" id="lblPrimeAdvisor" runat="server" visible="false">When and who was your business advisor?</span></td>
                                     <td colspan="2">
-                                      <asp:TextBox ID="txtPrimeAdvisor" CssClass="clsTextBoxBlue1" runat="server" Width="253px" Visible="false"></asp:TextBox>
+                                        <asp:TextBox ID="txtPrimeAdvisor" CssClass="clsTextBoxBlue1" runat="server" Width="253px" Visible="false"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -318,9 +344,23 @@
                                     <td colspan="3" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                         <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
                                         &nbsp;&nbsp;<asp:Button ID="btnPrint" runat="server" Text="Print Application PDF" class="btn btn-info" OnClick="btnPrint_Click" />
+                                        &nbsp;&nbsp;<asp:Label runat="server" ID="Label1" class="labelClass" Text="Go To"></asp:Label>
+                                        <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                            <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Applicant Information" Value="ProjectDetails.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information" Value="FarmBusinessInformation.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information - continued" Value="WaterQualityGrants.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Grant Request" Value="WaterQualityGrantsProgramPage4.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Budget Tables & Narrative" Value="BudgetNarrativeTables.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions" Value="Page7.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions - continued" Value="Page8.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Project Questions" Value="Page9.aspx"></asp:ListItem>
+                                             <asp:ListItem Text="Attachments" Value="Page11.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Confidentiality/Submit" Value="Page10.aspx"></asp:ListItem>
+                                        </asp:DropDownList>
                                     </td>
                                 </tr>
-                                  <tr>
+                                <tr>
                                     <td colspan="3" style="height: 10px"></td>
                                 </tr>
                             </table>

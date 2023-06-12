@@ -1278,17 +1278,17 @@ namespace vhcbcloud
 
                 if (ddlUsePermitTo.Visible && ddlUsePermitTo.SelectedIndex > 0)
                 {
-                    if (DataUtils.GetDecimal(lblAvailFundTo.Text) <= 0)
+                    if (DataUtils.GetDecimal(lblAvailFundTo.Text) < 0)
                     {
                         lblRErrorMsg.Text = "Commitments are greater than Developer Payments Balance";
                         return;
                     }
-                    else if (DataUtils.GetDecimal(lblAvailFundTo.Text) < DataUtils.GetDecimal(txtRToAmt.Text))
+                   /* else if (DataUtils.GetDecimal(lblAvailFundTo.Text) < DataUtils.GetDecimal(txtRToAmt.Text))
                     {
                         lblRErrorMsg.Text = "There is not enough Developer Payments Balance";
                         txtRToAmt.Focus();
                         return;
-                    }
+                    }*/
                 }
                 #endregion
 
@@ -1675,10 +1675,25 @@ namespace vhcbcloud
 
             if (ddlUsePermit.SelectedIndex > 0)
             {
-                decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                //decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermit.SelectedValue.ToString()));
+                //lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
+                //lblAvailFund.Text = mitigationFundBalance.ToString(); ;
 
-                lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
-                lblAvailFund.Text = mitigationFundBalance.ToString(); ;
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfProjId.Value),
+                                DataUtils.GetInt(ddlRFromFund.SelectedValue.ToString()),
+                                DataUtils.GetInt(ddlRFromFundType.SelectedValue.ToString()),
+                                ddlUsePermit.SelectedValue);
+
+                if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                {
+                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()));
+                    lblAvailFund.Text = Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()).ToString();
+                }
+                else
+                {
+                    lblAvailVisibleFund.Text = CommonHelper.myDollarFormat("0.00");
+                    lblAvailFund.Text = CommonHelper.myDollarFormat("0.00");
+                }
             }
         }
 
@@ -1686,10 +1701,27 @@ namespace vhcbcloud
         {
             if (ddlUsePermitTo.SelectedIndex > 0)
             {
-                decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermitTo.SelectedValue.ToString()));
+                //decimal mitigationFundBalance = FinancialTransactions.Act250MitigationFundBalance(DataUtils.GetInt(ddlUsePermitTo.SelectedValue.ToString()));
 
-                lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
-                lblAvailFundTo.Text = mitigationFundBalance.ToString();
+                //lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat(mitigationFundBalance);
+                //lblAvailFundTo.Text = mitigationFundBalance.ToString();
+
+                DataTable dtAvailFunds = FinancialTransactions.GetAvailableFundAmount(Convert.ToInt32(hfToProjId.Value),
+                                DataUtils.GetInt(ddlRToFund.SelectedValue.ToString()),
+                                DataUtils.GetInt(ddlRtoFundType.SelectedValue.ToString()),
+                                ddlUsePermitTo.SelectedValue);
+
+                if (dtAvailFunds != null && dtAvailFunds.Rows.Count > 0)
+                {
+                    lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat(Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()));
+                    lblAvailFundTo.Text = Convert.ToDecimal(dtAvailFunds.Rows[0]["Balanced"].ToString()).ToString();
+                }
+                else
+                {
+                    lblAvailVisibleFundTo.Text = CommonHelper.myDollarFormat("0.00");
+                    lblAvailFundTo.Text = CommonHelper.myDollarFormat("0.00");
+                }
+
             }
         }
 

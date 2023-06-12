@@ -8,7 +8,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 {
     public class PortfolioDataData
     {
-        public static DataRow GetPortfolioData(int ProjectId, string Year)
+        public static DataRow GetPortfolioData(int ProjectId, string Year, int PortfolioType)
         {
             DataRow dr = null;
             try
@@ -24,6 +24,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "GetPortfolioData";
                         command.Parameters.Add(new SqlParameter("ProjectId", ProjectId));
                         command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("PortfolioType", PortfolioType));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);
@@ -99,7 +100,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
 
         public static void UpdateProjectPortfolio(int ProjectPortfolioID, int PortfolioType, string Year, int TotalUnits,
             int MGender, int FGender, int UGender, int White, int Black, int Asian, int Indian, int Hawaiian, int UnknownRace, int Hispanic, int NonHisp, int UnknownEthnicity, int Homeless,
-            int MarketRate, int I100, int I80, int I75, int I60, int I50, int I30, int I120)
+            int MarketRate, int I100, int I80, int I75, int I60, int I50, int I30, int I120, int ProjectID)
         {
             try
             {
@@ -116,6 +117,7 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.Parameters.Add(new SqlParameter("ProjectPortfolioID", ProjectPortfolioID));
                         command.Parameters.Add(new SqlParameter("PortfolioType", PortfolioType));
                         command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("ProjectID", ProjectID));
                         command.Parameters.Add(new SqlParameter("TotalUnits", TotalUnits));
                         command.Parameters.Add(new SqlParameter("MGender", MGender));
                         command.Parameters.Add(new SqlParameter("FGender", FGender));
@@ -150,8 +152,170 @@ namespace VHCBCommon.DataAccessLayer.Housing
                 throw ex;
             }
         }
+        public static DataTable GetPopulatePortfolioTypesByProj(string ProjectNumber, string Year)
+        {
+            DataTable dtLookupvalues = null;
 
-        public static DataRow GetPortfolioDataForOnLineApp(string LoginName, string ProjectNumber)
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPopulatePortfolioTypesByProj";
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtLookupvalues = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtLookupvalues;
+        }
+        public static DataTable GetPopulatePortfolioTypes(string LoginName, string ProjectNumber, string Year)
+        {
+            DataTable dtLookupvalues = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPopulatePortfolioTypes";
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtLookupvalues = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtLookupvalues;
+        }
+
+        public static DataTable GetPortfolioYearsbyProj(string ProjectNumber)
+        {
+            DataTable dtLookupvalues = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPortfolioYearsbyProj";
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtLookupvalues = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtLookupvalues;
+        }
+
+        public static DataTable GetPortfolioYearsbyLoginProj(string LoginName, string ProjectNumber)
+        {
+            DataTable dtLookupvalues = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetPortfolioYearsbyLoginProj";
+                        command.Parameters.Add(new SqlParameter("LoginName", LoginName));
+                        command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+
+                        command.CommandTimeout = 60 * 5;
+
+                        var ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+
+                        da.Fill(ds);
+
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null)
+                        {
+                            dtLookupvalues = ds.Tables[0];
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dtLookupvalues;
+        }
+
+        public static DataRow GetPortfolioDataForOnLineApp(string LoginName, string ProjectNumber, string Year, string PortfolioTypeID)
         {
             DataRow dt = null;
 
@@ -168,6 +332,8 @@ namespace VHCBCommon.DataAccessLayer.Housing
                         command.CommandText = "GetPortfolioDataForOnLineApp";
                         command.Parameters.Add(new SqlParameter("LoginName", LoginName));
                         command.Parameters.Add(new SqlParameter("ProjectNumber", ProjectNumber));
+                        command.Parameters.Add(new SqlParameter("Year", Year));
+                        command.Parameters.Add(new SqlParameter("PortfolioTypeID", PortfolioTypeID));
 
                         DataSet ds = new DataSet();
                         var da = new SqlDataAdapter(command);

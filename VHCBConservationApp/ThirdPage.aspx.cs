@@ -113,5 +113,11 @@ namespace VHCBConservationApp
                 dvMessage.Visible = true;
                 lblErrorMsg.Text = message;
             }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
+    }
     }

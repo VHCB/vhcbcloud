@@ -28,52 +28,58 @@ namespace vhcbExternalApp
 
         protected void previousButton_Click(object sender, EventArgs e)
         {
+            saveData();
             Response.Redirect("WaterQualityGrants.aspx");
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            string strGrantMatch = "";
-            string ENtGrantMatch = "";
-
-            if (txtFederalGrant.Text != "")
-            {
-                strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";  ";
-                ENtGrantMatch += "26620-" + txtFederalGrant.Text.Replace("$", "").Replace(",", "") + ";";
-            }
-            if (txtStateGrant.Text != "")
-            {
-                strGrantMatch += "State Grant - " + txtStateGrant.Text + ";  ";
-                ENtGrantMatch += "26621-" + txtStateGrant.Text.Replace("$", "").Replace(",", "") + ";";
-            }
-            if (txtLoan.Text != "")
-            {
-                strGrantMatch += "Loan - " + txtLoan.Text + ";  ";
-                ENtGrantMatch += "26685-" + txtLoan.Text.Replace("$", "").Replace(",", "") + ";";
-            }
-            if (txtCash.Text != "")
-            {
-                strGrantMatch += "Cash - " + txtCash.Text + ";  ";
-                ENtGrantMatch += "26686-" + txtCash.Text.Replace("$", "").Replace(",", "") + ";";
-            }
-            if (txtKind.Text != "")
-            {
-                strGrantMatch += "Kind - " + txtKind.Text + ";  ";
-                ENtGrantMatch += "26687-" + txtKind.Text.Replace("$", "").Replace(",", "") + ";";
-            }
-            if (txtOther.Text != "")
-            {
-                strGrantMatch += "Other - " + txtOther.Text;
-                ENtGrantMatch += "26688-" + txtOther.Text.Replace("$", "").Replace(",","") + ";";
-            }
-
-            ViabilityApplicationData.InsertGrantRequest(projectNumber, txtProjTitle.Text, txtProjDesc.Text,
-                DataUtils.GetDecimal(txtProjCost.Text.Replace("$", "")),
-                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text, strGrantMatch.TrimEnd(';'), ENtGrantMatch.TrimEnd(';'));
+            saveData();
 
             LogMessage("Farm Business Information Data Added Successfully");
 
             Response.Redirect("BudgetNarrativeTables.aspx");
+        }
+
+        private void saveData()
+        {
+            string strGrantMatch = "";
+            string ENtGrantMatch = "";
+
+            //if (txtFederalGrant.Text != "")
+            //{
+            //    strGrantMatch += "Federal Grant - " + txtFederalGrant.Text + ";  ";
+            //    ENtGrantMatch += "26620-" + txtFederalGrant.Text.Replace("$", "").Replace(",", "") + ";";
+            //}
+            //if (txtStateGrant.Text != "")
+            //{
+            //    strGrantMatch += "State Grant - " + txtStateGrant.Text + ";  ";
+            //    ENtGrantMatch += "26621-" + txtStateGrant.Text.Replace("$", "").Replace(",", "") + ";";
+            //}
+            //if (txtLoan.Text != "")
+            //{
+            //    strGrantMatch += "Loan - " + txtLoan.Text + ";  ";
+            //    ENtGrantMatch += "26685-" + txtLoan.Text.Replace("$", "").Replace(",", "") + ";";
+            //}
+            //if (txtCash.Text != "")
+            //{
+            //    strGrantMatch += "Cash - " + txtCash.Text + ";  ";
+            //    ENtGrantMatch += "26686-" + txtCash.Text.Replace("$", "").Replace(",", "") + ";";
+            //}
+            //if (txtKind.Text != "")
+            //{
+            //    strGrantMatch += "Kind - " + txtKind.Text + ";  ";
+            //    ENtGrantMatch += "26687-" + txtKind.Text.Replace("$", "").Replace(",", "") + ";";
+            //}
+            //if (txtOther.Text != "")
+            //{
+            //    strGrantMatch += "Other - " + txtOther.Text;
+            //    ENtGrantMatch += "26688-" + txtOther.Text.Replace("$", "").Replace(",","") + ";";
+            //}
+
+            ViabilityApplicationData.InsertGrantRequest(projectNumber, txtProjTitle.Text, txtProjDesc.Text,
+                DataUtils.GetDecimal(txtProjCost.Text.Replace("$", "")),
+                 DataUtils.GetDecimal(txtRequest.Text.Replace("$", "")), txtProjCost.Text, txtRequest.Text, strGrantMatch.TrimEnd(';'), ENtGrantMatch.TrimEnd(';'));
         }
 
         private void LoadGrantRequestPage()
@@ -94,18 +100,18 @@ namespace vhcbExternalApp
                     {
                         var grant = grantMatchDetails.Split('-');
                             
-                        if (grant[0].Trim() == "Federal Grant")
-                            txtFederalGrant.Text = grant[1].Trim();
-                        else if (grant[0].Trim() == "State Grant")
-                            txtStateGrant.Text = grant[1].Trim();
-                        else if (grant[0].Trim() == "Loan")
-                            txtLoan.Text = grant[1].Trim();
-                        else if (grant[0].Trim() == "Cash")
-                            txtCash.Text = grant[1].Trim();
-                        else if (grant[0].Trim() == "Kind")
-                            txtKind.Text = grant[1].Trim();
-                        else if (grant[0].Trim() == "Other")
-                            txtOther.Text = grant[1].Trim();
+                        //if (grant[0].Trim() == "Federal Grant")
+                        //    txtFederalGrant.Text = grant[1].Trim();
+                        //else if (grant[0].Trim() == "State Grant")
+                        //    txtStateGrant.Text = grant[1].Trim();
+                        //else if (grant[0].Trim() == "Loan")
+                        //    txtLoan.Text = grant[1].Trim();
+                        //else if (grant[0].Trim() == "Cash")
+                        //    txtCash.Text = grant[1].Trim();
+                        //else if (grant[0].Trim() == "Kind")
+                        //    txtKind.Text = grant[1].Trim();
+                        //else if (grant[0].Trim() == "Other")
+                        //    txtOther.Text = grant[1].Trim();
                     }
                 }
             }
@@ -126,6 +132,12 @@ namespace vhcbExternalApp
         {
             dvMessage.Visible = true;
             lblErrorMsg.Text = message;
+        }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
     }
 }

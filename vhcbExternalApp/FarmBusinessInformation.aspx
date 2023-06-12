@@ -90,7 +90,9 @@
                                 <table style="width: 100%;">
                                     <tr>
                                         <td>
-                                            <h3 class="panel-title">Please provide financial information for the most recent tax year (REQUIRED):</h3>
+                                            <h3 class="panel-title">All grantees are required to have completed their most recent taxes at the time the grant agreements are made.
+                                            <br />
+                                                Please provide financial information for the most recent tax year (REQUIRED):</h3>
                                         </td>
                                         <td style="text-align: right"></td>
                                     </tr>
@@ -352,7 +354,7 @@
                                         <tr>
                                             <td colspan="2" style="height: 5px"></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td class="auto-style2"><span class="labelClass" style="margin-left: 10px">Rolling Herd Average:</span></td>
                                             <td colspan="2">
                                                 <asp:TextBox ID="txtRollingHerd" CssClass="clsTextBoxBlue1" runat="server"></asp:TextBox>
@@ -388,7 +390,7 @@
                                         <tr>
                                             <td colspan="2" style="height: 5px"></td>
 
-                                        </tr>
+                                        </tr>-->
                                         <tr>
                                             <td class="auto-style2"><span class="labelClass" style="margin-left: 10px">Where do you sell your milk? (Select all that apply):</span></td>
                                             <td colspan="2">
@@ -398,13 +400,13 @@
                                                     <asp:ListItem Text="Organic Valley" Value="Organic Valley" />
                                                     <asp:ListItem Text="NFO" Value="NFO" />
                                                     <asp:ListItem Text="Agrimark" Value="Agrimark" />
-                                                    <asp:ListItem Text="Horizon Organic" Value="Horizon Organic" />
+
                                                     <asp:ListItem Text="Stonyfield" Value="Stonyfield" />
                                                     <asp:ListItem Text="HP Hood" Value="HP Hood" />
                                                     <asp:ListItem Text="Upstate Niagara" Value="Upstate Niagara" />
                                                     <asp:ListItem Text="N/A" Value="N/A" />
                                                     <asp:ListItem Text="Other" Value="Other" />
-                                                </asp:CheckBoxList>
+                                                </asp:CheckBoxList><!--<asp:ListItem Text="Horizon Organic" Value="Horizon Organic" />-->
                                             </td>
                                         </tr>
                                         <tr>
@@ -414,7 +416,22 @@
                                         <tr>
                                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                                &nbsp;&nbsp;<asp:Label runat="server" ID="Label1" class="labelClass" Text="Go To"></asp:Label>
+                                               <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                            <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Applicant Information" Value="ProjectDetails.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information" Value="FarmBusinessInformation.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information - continued" Value="WaterQualityGrants.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Grant Request" Value="WaterQualityGrantsProgramPage4.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Budget Tables & Narrative" Value="BudgetNarrativeTables.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions" Value="Page7.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions - continued" Value="Page8.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Project Questions" Value="Page9.aspx"></asp:ListItem>
+                                             <asp:ListItem Text="Attachments" Value="Page11.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Confidentiality/Submit" Value="Page10.aspx"></asp:ListItem>
+                                        </asp:DropDownList>
+                                            </td>
                                         </tr>
                                     </table>
 
@@ -435,10 +452,10 @@
 
             $('#<%= txtGrossSales.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtGrossSales.ClientID%>').val(), $('#<%= txtGrossSales.ClientID%>'));
-             });
+            });
             $('#<%= txtNetIncome.ClientID%>').keyup(function () {
                 toCurrencyControl($('#<%= txtNetIncome.ClientID%>').val(), $('#<%= txtNetIncome.ClientID%>'));
-             });
+            });
            <%--  $('#<%= txtNetWorth.ClientID%>').keyup(function () {
                  toCurrencyControl($('#<%= txtNetWorth.ClientID%>').val(), $('#<%= txtNetWorth.ClientID%>'));
               });

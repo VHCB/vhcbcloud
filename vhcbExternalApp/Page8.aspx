@@ -40,7 +40,7 @@
                             <td colspan="2" style="height: 5px"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><span class="labelClass">6.	Please describe your major goals for the farm, both short-term and long-term, and the actions you plan to take to maintain, improve, or grow your business. If you have done a SWOT analysis, please list the top 2-3 Strengths, Weaknesses, Opportunities and Threats to the business. (250 words) <em><strong>(Required)</strong></em></span>
+                            <td colspan="2"><span class="labelClass">6.	Please describe your major goals for the farm, both including short-term and long-term, and the actions you plan to take to maintain, improve, or grow your business. (250 words)<em><strong>(Required)</strong></em></span>
                             </td>
                         </tr>
                         <tr>
@@ -55,7 +55,22 @@
                         <tr>
                             <td colspan="2" style="height: 10px">&nbsp;&nbsp;&nbsp;&nbsp;
                                                  <asp:Button ID="previousButton" runat="server" Text="Previous Page/Save" class="btn btn-info" OnClick="previousButton_Click" />&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" /></td>
+                                        <asp:Button ID="btnNext" runat="server" Text="Next Page/Save" class="btn btn-info" OnClick="btnNext_Click" />
+                                 &nbsp;&nbsp;<asp:Label runat="server" ID="Label1" class="labelClass" Text="Go To"></asp:Label>
+                               <asp:DropDownList ID="ddlGoto" CssClass="clsDropDown" runat="server" Height="23px" Width="185px" AutoPostBack="true" OnSelectedIndexChanged="ddlGoto_SelectedIndexChanged">
+                                            <asp:ListItem Text="Select" Value="" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Applicant Information" Value="ProjectDetails.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information" Value="FarmBusinessInformation.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Farm Business Information - continued" Value="WaterQualityGrants.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Grant Request" Value="WaterQualityGrantsProgramPage4.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Budget Tables & Narrative" Value="BudgetNarrativeTables.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions" Value="Page7.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Narrative Questions - continued" Value="Page8.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Project Questions" Value="Page9.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Attachments" Value="Page11.aspx"></asp:ListItem>
+                                            <asp:ListItem Text="Confidentiality/Submit" Value="Page10.aspx"></asp:ListItem>
+                                        </asp:DropDownList>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="height: 5px"></td>

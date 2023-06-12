@@ -454,6 +454,7 @@ namespace vhcbcloud.Viability
         {
             BindProductGrid();
             BindAttributeGrid();
+            BindWatershedGrid();
         }
 
         protected void btnAddProducts_Click(object sender, EventArgs e)

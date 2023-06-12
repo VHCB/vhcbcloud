@@ -134,6 +134,7 @@ namespace vhcbcloud
 
                 //cbAddFund.Checked = true;
                 dvfundf.Visible = true;
+                dvFundForm.Visible = true;
                 txtFundName.Text = dr["name"].ToString();
                 txtAbbrev.Text = dr["abbrv"].ToString();
                 PopulateDropDown(ddlFundType, dr["LkFundType"].ToString());

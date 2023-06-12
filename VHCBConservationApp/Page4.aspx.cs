@@ -288,5 +288,11 @@ namespace VHCBConservationApp
 
             LogMessage("Trail Miles updated successfully");
         }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
+        }
     }
 }

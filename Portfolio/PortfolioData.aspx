@@ -46,7 +46,10 @@
                         <tr>
                             <td><span class="labelClass">Year</span></td>
                             <td>
-                                <span class="labelClass" runat="server" id="spnYear"></span>
+                                <asp:DropDownList ID="ddlYear" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlYear_SelectedIndexChanged">
+                                            </asp:DropDownList>
+
+                               <%-- <span class="labelClass" runat="server" id="spnYear"></span>--%>
                                
                             </td>
                         </tr>
@@ -55,8 +58,9 @@
                         </tr>
                          <tr>
                             <td><span class="labelClass">Portfolio Type</span>&nbsp;</td>
-                            <td>
-                                  <span class="labelClass" runat="server" id="spnPortfolioType"></span>
+                            <td> <asp:DropDownList ID="ddlPortfolioType" CssClass="clsDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPortfolioType_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                  <%--<span class="labelClass" runat="server" id="spnPortfolioType"></span>--%>
                             </td>
                         </tr>
                        
@@ -90,7 +94,7 @@
                                     <tr>
                                         <td><span class="labelClass">Male</span></td>
                                         <td>
-                                            <asp:TextBox ID="txtMGender" CssClass="clsTextBoxBlueSm" runat="server" MaxLength="3"></asp:TextBox>
+                                            <asp:TextBox ID="txtMGender" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                         </td>
                                         <td>&nbsp;<span class="labelClass" id="spnMale" runat="server"></span></td>
                                     </tr>

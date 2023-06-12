@@ -35,7 +35,8 @@ namespace VHCBConservationApp
                 //BindControls();
 
                 LoadPage();
-                UploadLink.HRef = "https://server3.vhcb.org/sharing/iU3AC409A";
+                //UploadLink.HRef = "https://server3.vhcb.org/sharing/iU3AC409A";
+                UploadLink.HRef = "https://server3.vhcb.org/sharing/PHNIi2Igo";
             }
         }
 
@@ -318,5 +319,12 @@ namespace VHCBConservationApp
                 dvMessage.Visible = true;
                 lblErrorMsg.Text = message;
             }
+
+        protected void ddlGoto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            saveData();
+            Response.Redirect(ddlGoto.SelectedItem.Value);
         }
+   
+    }
     }

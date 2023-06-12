@@ -246,6 +246,9 @@ namespace vhcbcloud.Housing
                 //spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewUnits"].ToString()) - DataUtils.GetInt(hfNotInCovenantCount.Value)).ToString();
                 spnVHCBAffUnits.InnerText = (DataUtils.GetInt(drHousing["NewAffordUnits"].ToString()) + DataUtils.GetInt(drHousing["PrevAffordUnits"].ToString())).ToString();
 
+                txtOccupancy.Text = drHousing["Occupancy"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["Occupancy"].ToString()).ToShortDateString(); ;
+                txtConstructionComp.Text = drHousing["Construction_Comp"].ToString() == "" ? "" : Convert.ToDateTime(drHousing["Construction_Comp"].ToString()).ToShortDateString(); ;
+
                 if (ddlHousingType.SelectedIndex == 0)
                 {
                     dvNewHousingSubType.Visible = false;
@@ -519,7 +522,7 @@ namespace vhcbcloud.Housing
                 DataUtils.GetInt(txtGrossLivingSpace.Text), DataUtils.GetInt(txtUnitsFromPreProject.Text),
                 DataUtils.GetInt(txtNetNewUnits.Text), DataUtils.GetInt(txtUnitsRemoved.Text), DataUtils.GetInt(txtMHIP.Text),
                 chkSash.Checked, DataUtils.GetInt(txtSSUnits.Text), DataUtils.GetInt(txtBuildings.Text),
-                DataUtils.GetInt(txtNewAffordUnits.Text), DataUtils.GetInt(txtPrevAffordUnits.Text));
+                DataUtils.GetInt(txtNewAffordUnits.Text), DataUtils.GetInt(txtPrevAffordUnits.Text), DataUtils.GetDate(txtConstructionComp.Text), DataUtils.GetDate(txtOccupancy.Text));
 
             BindHousingUnitsForm();
 

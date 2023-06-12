@@ -652,84 +652,92 @@ namespace vhcbcloud
             if (IsEntityFormValid())
             {
                 hfIsCreated.Value = "true";
-                if (btnEntitySubmit.Text == "Submit")
+
+                if (txtUEI.Text.Length > 0 && txtUEI.Text.Length != 12)
                 {
-                    string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
-                    string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
-                    string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
-
-                    if (ddlEntityRole.SelectedItem.ToString().ToLower() == "individual")
+                    LogMessage("Invalid UEI field.");
+                }
+                else
+                {
+                    if (btnEntitySubmit.Text == "Submit")
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
-                            txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
-                            txtTitle.Text, null, 0, 0, 0,
-                            0, 0, 0, false, null, null,
-                            0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text); //1=Individual
+                        string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
+                        string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
+                        string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
 
-                        if (objEntityMaintResult.IsDuplicate)
+                        if (ddlEntityRole.SelectedItem.ToString().ToLower() == "individual")
                         {
-                            if (objEntityMaintResult.DuplicateId == 1)
-                                LogMessage("Entity with same Email already exist");
-                            else if (objEntityMaintResult.DuplicateId == 2)
-                                LogMessage("Entity with same First Name and Last Name already exist");
-                            else if (objEntityMaintResult.DuplicateId == 3)
-                                LogMessage("Entity with same First Name, Last Name and Email already exist");
+                            EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
+                                txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
+                                txtTitle.Text, null, 0, 0, 0,
+                                0, 0, 0, false, null, null,
+                                0, null, 1, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text, txtUEI.Text); //1=Individual
+
+                            if (objEntityMaintResult.IsDuplicate)
+                            {
+                                if (objEntityMaintResult.DuplicateId == 1)
+                                    LogMessage("Entity with same Email already exist");
+                                else if (objEntityMaintResult.DuplicateId == 2)
+                                    LogMessage("Entity with same First Name and Last Name already exist");
+                                else if (objEntityMaintResult.DuplicateId == 3)
+                                    LogMessage("Entity with same First Name, Last Name and Email already exist");
+                            }
+                            else
+                            {
+                                ClearForm();
+                                PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
+                                LogMessage("New Entity Added Successfully");
+                            }
                         }
-                        else
+                        else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
                         {
+                            EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()),
+                                txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
+                               null, null, 0, 0, 0,
+                               0, 0, 0, false, null, null,
+                               0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked,
+                               txtEIN.Text, txtDUNS.Text, txtLegalName.Text, txtUEI.Text); //2=Organization
+                            ClearForm();
+                            PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
+                            LogMessage("New Entity Added Successfully");
+                        }
+                        else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
+                        {
+                            EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
+                               null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
+                               null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
+                               DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
+                               DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text, txtUEI.Text); //3=Farm
                             ClearForm();
                             PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
                             LogMessage("New Entity Added Successfully");
                         }
                     }
-                    else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "organization")
+                    else
                     {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()),
-                            txtWebsite.Text, txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
-                           null, null, 0, 0, 0,
-                           0, 0, 0, false, null, null,
-                           0, DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 2, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, 
-                           txtEIN.Text, txtDUNS.Text, txtLegalName.Text); //2=Organization
+                        int Operation = 0;
+
+                        if (ddlEntityRole.SelectedItem.Text.ToLower() == "individual")
+                            Operation = 1;
+                        else if (ddlEntityRole.SelectedItem.Text.ToLower() == "organization")
+                            Operation = 2;
+                        else if (ddlEntityRole.SelectedItem.Text.ToLower() == "farm")
+                            Operation = 3;
+
+                        string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
+                        string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
+                        string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
+
+                        EntityMaintenanceData.UpdateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
+                               txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
+                               txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
+                               DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
+                               DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked,
+                               txtEIN.Text, txtDUNS.Text, txtLegalName.Text, txtUEI.Text);
                         ClearForm();
-                        PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
-                        LogMessage("New Entity Added Successfully");
+                        PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
+                        LogMessage("Entity Updated Successfully");
                     }
-                    else if (ddlEntityRole.SelectedItem.ToString().ToLower() == "farm")
-                    {
-                        EntityMaintResult objEntityMaintResult = EntityMaintenanceData.AddNewEntity(DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
-                           null, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, null, null, 0,
-                           null, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
-                           DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), 3, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, null, null, txtLegalName.Text); //3=Farm
-                        ClearForm();
-                        PopulateEntity(objEntityMaintResult.ApplicantId, DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
-                        LogMessage("New Entity Added Successfully");
-                    }
-                }
-                else
-                {
-                    int Operation = 0;
-
-                    if (ddlEntityRole.SelectedItem.Text.ToLower() == "individual")
-                        Operation = 1;
-                    else if (ddlEntityRole.SelectedItem.Text.ToLower() == "organization")
-                        Operation = 2;
-                    else if (ddlEntityRole.SelectedItem.Text.ToLower() == "farm")
-                        Operation = 3;
-
-                    string HomePhoneNumber = new string(txtHomePhone.Text.Where(c => char.IsDigit(c)).ToArray());
-                    string WorkPhoneNumber = new string(txtWorkPhone.Text.Where(c => char.IsDigit(c)).ToArray());
-                    string CellPhoneNumber = new string(txtCellPhone.Text.Where(c => char.IsDigit(c)).ToArray());
-
-                    EntityMaintenanceData.UpdateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityType.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()), DataUtils.GetInt(ddlFYEnd.SelectedValue.ToString()), txtWebsite.Text,
-                           txtEmail.Text, HomePhoneNumber, WorkPhoneNumber, CellPhoneNumber, txtStateVendorId.Text, txtApplicantName.Text, txtFirstName.Text, txtLastName.Text, DataUtils.GetInt(ddlPosition.SelectedValue.ToString()),
-                           txtTitle.Text, txtFarmName.Text, DataUtils.GetInt(ddlFarmType.SelectedValue.ToString()), DataUtils.GetInt(txtAcresInProduction.Text), DataUtils.GetInt(txtAcresOwned.Text),
-                           DataUtils.GetInt(txtAcresLeased.Text), DataUtils.GetInt(txtAcresLeasedOut.Text), DataUtils.GetInt(txtTotalAcres.Text), cbIsNoLongerBusiness.Checked, txtNotes.Text, txtAgrEdu.Text,
-                           DataUtils.GetInt(txtYearsManagingForm.Text), DataUtils.GetInt(ddlDefaultRole.SelectedValue.ToString()), Operation, ckbW9.Checked, cbTear1.Checked, cbFileHold.Checked, cbMilestoneActive.Checked, 
-                           txtEIN.Text, txtDUNS.Text, txtLegalName.Text);
-                    ClearForm();
-                    PopulateEntity(DataUtils.GetInt(ddlEntityName.SelectedValue.ToString()), DataUtils.GetInt(ddlEntityRole.SelectedValue.ToString()));
-                    LogMessage("Entity Updated Successfully");
                 }
             }
         }
@@ -841,6 +849,7 @@ namespace vhcbcloud
             txtDUNS.Text= drEntityData["DUNS"].ToString();
             txtEIN.Text = drEntityData["EIN"].ToString();
             txtLegalName.Text = drEntityData["LegalName"].ToString();
+            txtUEI.Text = drEntityData["UEI"].ToString();
 
             if (drEntityData["WorkPhone"].ToString().Trim() == "")
                 txtWorkPhone.Text = "";
@@ -920,6 +929,7 @@ namespace vhcbcloud
             txtEIN.Text = "";
             txtDUNS.Text = "";
             txtLegalName.Text = "";
+            txtUEI.Text = "";
         }
 
         protected void gvAddress_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)

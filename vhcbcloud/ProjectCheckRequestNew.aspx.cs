@@ -2415,9 +2415,21 @@ namespace vhcbcloud
         /// <returns></returns>
         protected bool CheckIsVisible()
         {
-            return !DataUtils.GetBool(hfIsAllApproved.Value);
-        }
 
+            return !DataUtils.GetBool(hfIsAllApproved.Value) && !CheckCheckRequestApprovalAccess();
+        }
+        private bool CheckCheckRequestApprovalAccess()
+        {
+            DataTable dt = new DataTable();
+            dt = UserSecurityData.GetUserFxnSecurity(GetUserId());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row["FxnID"].ToString() == "39526") // Do NOT Allow Check Request Approval” - TypeID=39526
+                    return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Print PCR
         /// </summary>
