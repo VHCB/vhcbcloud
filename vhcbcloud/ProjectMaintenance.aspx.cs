@@ -50,6 +50,7 @@ namespace vhcbcloud
                 {
                     //ifProjectNotes.Src = "ProjectNotes.aspx?ProjectId=" + Request.QueryString["ProjectId"];
                     ifProjectDesc.Src = "ProjectDesc.aspx?ProjectId=" + Request.QueryString["ProjectId"];
+                    ifExecSummary.Src = "ExecSummary.aspx?ProjectId=" + Request.QueryString["ProjectId"];
                     ProjectNotesSetUp(Request.QueryString["ProjectId"]);
 
                     PopulateForm(DataUtils.GetInt(Request.QueryString["ProjectId"]));

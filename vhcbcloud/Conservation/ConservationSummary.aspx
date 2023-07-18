@@ -119,7 +119,7 @@
                                     <td style="height: 5px"><span class="labelClass">Tactical Basin:</span></td>
                                     <td style="height: 5px">
                                         <asp:DropDownList ID="ddlTacticalBasin" CssClass="clsDropDown" runat="server" Height="23px" Width="185px">
-                                </asp:DropDownList>
+                                        </asp:DropDownList>
                                     </td>
                                     <td colspan="4" style="height: 5px"></td>
                                 </tr>
@@ -230,20 +230,19 @@
                                     <td><span class="labelClass" id="pctSugarBush" runat="server"></span></td>
 
                                     <td><span class="labelClass"></span></td>
-                                    <td>
-                                        
-                                    </td>
+                                    <td></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td colspan="6" style="height: 5px"></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td><span class="labelClass">Hay</span></td>
                                     <td>
                                         <asp:TextBox ID="txtHay" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
                                     </td>
-                                    <td><span class="labelClass"></span></td>
-                                    <td><span class="labelClass" id="Span1" runat="server"></span></td>
+                                    <td><span class="labelClass"># of taps</span></td>
+                                    <td>
+                                        <asp:TextBox ID="txtTaps" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox></td>
 
                                     <td><span class="labelClass"></span></td>
                                     <td>
@@ -950,6 +949,127 @@
                                 </asp:GridView>
                             </asp:Panel>
                         </div>
+
+
+                    </div>
+                </div>
+
+                <div class="panel-width" runat="server" id="dvFarmProducts">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading ">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Farm Products</h3>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:CheckBox ID="cbAddFarmProducts" runat="server" Text="Add New Farm Products" />
+                                        <asp:ImageButton ID="ImgFarmProducts" ImageUrl="~/Images/print.png" ToolTip="Farm Products Report"
+                                            Style="border: none; vertical-align: middle;" runat="server" OnClick="ImgFarmProducts_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body" runat="server" id="dvFarmProductsForm">
+                            <asp:Panel runat="server" ID="Panel14">
+                                <table style="width: 100%">
+                                   <tr>
+                                        <td style="width: 140px"><span class="labelClass">Products</span></td>
+                                        <td style="width: 215px">
+                                            <asp:DropDownList ID="ddlFormProducts" CssClass="clsDropDownLong" runat="server">
+                                            </asp:DropDownList>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass">Acres</span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:TextBox ID="txtProductAcres" CssClass="clsTextBoxBlueSm" runat="server"></asp:TextBox>
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="labelClass"></span>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <asp:CheckBox ID="cbOrganic" CssClass="ChkBox" runat="server" Text="Organic" Checked="false" />
+                                        </td>
+                                        <td style="width: 170px"></td>
+                                        <td>
+                                            <asp:Button ID="btnFarmProducts" runat="server" Text="Add" class="btn btn-info" OnClick="btnFarmProducts_Click" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="height: 5px"></td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="panel-body" id="dvFarmProductsGrid" runat="server">
+                            <asp:Panel runat="server" ID="Panel13" Width="100%" Height="100px" ScrollBars="Vertical">
+                               <asp:GridView ID="gvFarmProducts" runat="server" AutoGenerateColumns="False"
+                                    Width="100%" CssClass="gridView" PageSize="50" PagerSettings-Mode="NextPreviousFirstLast"
+                                    GridLines="None" EnableTheming="True" AllowPaging="false" AllowSorting="true" ShowFooter="false"
+                                    OnRowEditing="gvFarmProducts_RowEditing"
+                                    OnRowCancelingEdit="gvFarmProducts_RowCancelingEdit"
+                                    OnRowUpdating="gvFarmProducts_RowUpdating">
+                                    <AlternatingRowStyle CssClass="alternativeRowStyle" />
+                                    <PagerStyle CssClass="pagerStyle" ForeColor="#F78B0E" />
+                                    <HeaderStyle CssClass="headerStyle" />
+                                    <PagerSettings Mode="NumericFirstLast" FirstPageText="&amp;lt;" LastPageText="&amp;gt;" PageButtonCount="5" />
+                                    <RowStyle CssClass="rowStyle" />
+                                    <FooterStyle CssClass="footerStyleTotals" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Conserve Products" Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConserveProductID" runat="Server" Text='<%# Eval("ConserveProductID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Product">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProductDescription" runat="Server" Text='<%# Eval("Description") %>' />
+                                            </ItemTemplate>
+                                            <%-- <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlTrail" CssClass="clsDropDown" runat="server"></asp:DropDownList>
+                                                <asp:TextBox ID="txtLKTrail" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("LKTrail") %>' Visible="false">
+                                                </asp:TextBox>
+                                            </EditItemTemplate>--%>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Acres">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAcres" runat="Server" Text='<%# Eval("Acres") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="txtAcres" runat="Server" CssClass="clsTextBoxBlueSm" Text='<%# Eval("Acres") %>'>
+                                                </asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Organic">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkOrganic" Enabled="false" runat="server" Checked='<%# Eval("Organic") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkOrganic" runat="server" Checked='<%# Eval("Organic") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Active">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkActive" Enabled="false" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:CheckBox ID="chkActive" runat="server" Checked='<%# Eval("RowIsActive") %>' />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField ShowHeader="False">
+                                            <EditItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                                                &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                                            </EditItemTemplate>
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit" Visible='<%# GetIsVisibleBasedOnRole() %>'></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </asp:Panel>
+                        </div>
                     </div>
                 </div>
 
@@ -999,6 +1119,12 @@
             $('#<%= cbAddWatershed.ClientID%>').click(function () {
                 $('#<%= dvNewWatershedForm.ClientID%>').toggle(this.checked);
             }).change();
+
+            $('#<%= dvFarmProductsForm.ClientID%>').toggle($('#<%= cbAddFarmProducts.ClientID%>').is(':checked'));
+            $('#<%= cbAddFarmProducts.ClientID%>').click(function () {
+                $('#<%= dvFarmProductsForm.ClientID%>').toggle(this.checked);
+            }).change();
+
 
 <%--             $('#<%= txtTillable.ClientID%>').keyup(function () {
                 $('#<%=txtTillable.ClientID%>').val($('#<%=txtTillable.ClientID%>').getNum());

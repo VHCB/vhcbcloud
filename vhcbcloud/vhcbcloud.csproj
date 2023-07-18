@@ -116,11 +116,11 @@
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+ <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi, Version=2021.1.6.144, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+    <Reference Include="WebReportsApi, Version=2023.1.2.7, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files\Exago\ExagoWeb\Bin\WebReportsApi.dll</HintPath>
     </Reference>
@@ -207,6 +207,7 @@
     <Content Include="EntityNotes.aspx" />
     <Content Include="EntitySearch.aspx" />
     <Content Include="EventMaintenance.aspx" />
+    <Content Include="ExecSummary.aspx" />
     <Content Include="ExistingAssignments.aspx" />
     <Content Include="FederalRentalAffordability.aspx" />
     <Content Include="FinalizeTransactions.aspx" />
@@ -264,6 +265,7 @@
     <Content Include="Images\%24%24_0.png" />
     <Content Include="Images\%24%24_1.png" />
     <Content Include="Images\currentpagenotes.png" />
+    <Content Include="Images\ExecSummary.jpg" />
     <Content Include="Images\image004.png" />
     <Content Include="FundType.aspx" />
     <Content Include="Images\Left.png" />
@@ -547,6 +549,13 @@
     </Compile>
     <Compile Include="DefaultSecurityValues.aspx.designer.cs">
       <DependentUpon>DefaultSecurityValues.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExecSummary.aspx.cs">
+      <DependentUpon>ExecSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecSummary.aspx.designer.cs">
+      <DependentUpon>ExecSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="GeoResponse.cs" />
     <Compile Include="ConservationAct250.aspx.cs">

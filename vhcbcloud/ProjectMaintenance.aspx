@@ -37,8 +37,13 @@
                                     OnClientClick="PopupAwardSummary(); return false;"></asp:ImageButton>
                                 <asp:ImageButton ID="btnProjectNotes1" runat="server" ImageUrl="~/Images/notes.png" Text="Project Notes"
                                     ToolTip="Project Notes" Style="border: none; vertical-align: middle;" Visible="false" />
+                                
                                 <asp:ImageButton ID="btnProjectDesc" runat="server" ImageUrl="~/Images/pen.png" Text="Project Description"
                                     ToolTip="Project Description" Style="border: none; vertical-align: middle;" Visible="true" />
+
+                                 <asp:ImageButton ID="btnExecSummary" runat="server" ImageUrl="~/Images/ExecSummary.png" Text="Executive Summary"
+                                    ToolTip="Executive Summary" Style="border: none; vertical-align: middle;" Visible="true" Height="22px" Width="28px" />
+
                                 <asp:CheckBox ID="cbActiveOnly" runat="server" Text="Active Only" Checked="true" AutoPostBack="true" OnCheckedChanged="cbActiveOnly_CheckedChanged" />
                             </td>
                         </tr>
@@ -53,7 +58,6 @@
                     <br />
                     <asp:Button ID="btnClose" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
-
                 <ajaxToolkit:ModalPopupExtender ID="mpExtender1" runat="server" PopupControlID="pnlProjectDesc" TargetControlID="btnProjectDesc"
                     CancelControlID="btnClose1"
                     BackgroundCssClass="MEBackground">
@@ -63,7 +67,14 @@
                     <br />
                     <asp:Button ID="btnClose1" runat="server" Text="Close" class="btn btn-info" />
                 </asp:Panel>
-
+                <ajaxToolkit:ModalPopupExtender ID="mpExtenderExecSummary" runat="server" PopupControlID="pnlExecSummary" TargetControlID="btnExecSummary" CancelControlID="btnExecSummaryClose"
+                    BackgroundCssClass="MEBackground">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlExecSummary" runat="server" CssClass="MEPopup" align="center" Style="display: none">
+                    <iframe style="width: 750px; height: 600px;" id="ifExecSummary" src="ExecSummary.aspx" runat="server"></iframe>
+                    <br />
+                    <asp:Button ID="btnExecSummaryClose" runat="server" Text="Close" class="btn btn-info" />
+                </asp:Panel>
                 <div id="dvMessage" runat="server">
                     <p class="lblErrMsg">&nbsp;&nbsp;&nbsp;<asp:Label runat="server" ID="lblErrorMsg"></asp:Label></p>
                 </div>

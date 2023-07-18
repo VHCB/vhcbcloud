@@ -36,6 +36,7 @@ namespace vhcbcloud.Conservation
                 GetRoleAccess();
                 BindTransferType();
                 BindConConserveForm();
+                BindFarmProductsGrid();
                 
             }
             //GetRoleAuth();
@@ -199,6 +200,7 @@ namespace vhcbcloud.Conservation
                 txtNaturalRec.Text = drConserve["NaturalRec"].ToString();
                 txtSugarbush.Text = drConserve["Sugarbush"].ToString();
                 txtHay.Text = drConserve["Hay"].ToString();
+                txtTaps.Text = drConserve["Taps"].ToString();
 
                 pctWooded.InnerText = "0.0 %";
                 pctSugarBush.InnerText = "0.0 %";
@@ -338,6 +340,7 @@ namespace vhcbcloud.Conservation
             BindLookUP(ddlAllowedSpecialUses, 1271);
             BindHUC12CheckBoxList();
             BindLookUP(ddlTacticalBasin, 2284);
+            BindLookUP(ddlFormProducts, 106);
         }
 
         private void BindHUC12CheckBoxList()
@@ -420,6 +423,7 @@ namespace vhcbcloud.Conservation
             BindWatershedGrid();
             BindTrailMilesGrid();
             BindTrailUsageGrid();
+            BindFarmProductsGrid();
         }
 
         private void BindLookUP(DropDownList ddList, int LookupType)
@@ -466,7 +470,7 @@ namespace vhcbcloud.Conservation
                 DataUtils.GetDecimal(txtTillable.Text), DataUtils.GetDecimal(txtPasture.Text), DataUtils.GetDecimal(txtUnManaged.Text),
                 DataUtils.GetDecimal(txtFarmResident.Text), DataUtils.GetDecimal(txtNaturalRec.Text), DataUtils.GetDecimal(txtSugarbush.Text),
                 GetUserId(),
-                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType, DataUtils.GetInt(ddlTacticalBasin.SelectedValue.ToString()), DataUtils.GetDecimal(txtHay.Text)) ;
+                DataUtils.GetInt(ddlGeoSignificance.SelectedValue.ToString()), transfetType, DataUtils.GetInt(ddlTacticalBasin.SelectedValue.ToString()), DataUtils.GetDecimal(txtHay.Text), DataUtils.GetInt(txtTaps.Text)) ;
 
             BindConConserveForm();
 
@@ -1219,5 +1223,121 @@ namespace vhcbcloud.Conservation
 
             LogMessage("Project Watershed updated successfully");
         }
+
+        protected void ImgFarmProducts_Click(object sender, ImageClickEventArgs e)
+        {
+
+        }
+
+        protected void btnFarmProducts_Click(object sender, EventArgs e)
+        {
+            if (ddlFormProducts.SelectedIndex == 0)
+            {
+                LogMessage("Select Farm Product");
+                ddlFormProducts.Focus();
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtProductAcres.Text) == true)
+            {
+                LogMessage("Enter Farm Product Acres");
+                txtProductAcres.Focus();
+                return;
+            }
+            if (DataUtils.GetInt(txtProductAcres.Text) <= 0)
+            {
+                LogMessage("Enter valid Farm Product Acres");
+                txtProductAcres.Focus();
+                return;
+            }
+
+            Result objResult = ConservationSummaryData.AddConserveProducts(DataUtils.GetInt(hfProjectId.Value),
+             DataUtils.GetInt(ddlFormProducts.SelectedValue.ToString()),
+             DataUtils.GetInt(txtProductAcres.Text),
+             cbOrganic.Checked);
+
+            if (objResult.IsDuplicate && !objResult.IsActive)
+                LogMessage("Farm Product already exist as in-active");
+            else if (objResult.IsDuplicate)
+                LogMessage("Farm Product already exist");
+            else
+                LogMessage("New Farm Product added successfully");
+
+            ddlFormProducts.SelectedIndex = -1;
+            txtProductAcres.Text = "";
+            cbOrganic.Checked = false;
+            BindFarmProductsGrid();
+        }
+
+        protected void gvFarmProducts_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gvFarmProducts.EditIndex = -1;
+            BindFarmProductsGrid();
+        }
+
+        protected void gvFarmProducts_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gvFarmProducts.EditIndex = e.NewEditIndex;
+            BindFarmProductsGrid();
+        }
+
+        protected void gvFarmProducts_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            string strAcres = ((TextBox)gvFarmProducts.Rows[rowIndex].FindControl("txtAcres")).Text;
+
+            if (string.IsNullOrWhiteSpace(strAcres) == true)
+            {
+                LogMessage("Enter Acres");
+                return;
+            }
+            if (DataUtils.GetInt(strAcres) <= 0)
+            {
+                LogMessage("Enter valid Acres");
+                return;
+            }
+
+            int ConserveProductID = DataUtils.GetInt(((Label)gvFarmProducts.Rows[rowIndex].FindControl("lblConserveProductID")).Text);
+            int Acres = DataUtils.GetInt(strAcres);
+            bool RowIsActive = Convert.ToBoolean(((CheckBox)gvFarmProducts.Rows[rowIndex].FindControl("chkActive")).Checked);
+            bool Organic = Convert.ToBoolean(((CheckBox)gvFarmProducts.Rows[rowIndex].FindControl("chkOrganic")).Checked);
+
+            ConservationSummaryData.UpdateConserveProducts(ConserveProductID, Acres, Organic, RowIsActive);
+            gvFarmProducts.EditIndex = -1;
+
+            BindFarmProductsGrid();
+
+            LogMessage("Farm Product updated successfully");
+        }
+
+
+        private void BindFarmProductsGrid()
+        {
+            try
+            {
+                DataTable dtTrails = ConservationSummaryData.GetConserveProductsList(DataUtils.GetInt(hfProjectId.Value), cbActiveOnly.Checked);
+
+                if (dtTrails.Rows.Count > 0)
+                {
+                    dvFarmProductsGrid.Visible = true;
+                    gvFarmProducts.DataSource = dtTrails;
+                    gvFarmProducts.DataBind();
+                }
+                else
+                {
+                    dvFarmProductsGrid.Visible = false;
+                    gvFarmProducts.DataSource = null;
+                    gvFarmProducts.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(Pagename, "BindTrailMilesGrid", "", ex.Message);
+            }
+        }
+
+
     }
 }
