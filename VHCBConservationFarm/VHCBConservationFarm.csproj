@@ -7,16 +7,16 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{358E742E-8526-408F-BBE9-D37AA67F4FF7}</ProjectGuid>
+    <ProjectGuid>{76A372AD-FBBA-40CB-9C73-3CD65F1A2B92}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImpGrantApp</RootNamespace>
-    <AssemblyName>ImpGrantApp</AssemblyName>
+    <RootNamespace>VHCBConservationFarm</RootNamespace>
+    <AssemblyName>VHCBConservationFarm</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44399</IISExpressSSLPort>
+    <IISExpressSSLPort>44393</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -46,48 +46,28 @@
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\packages\AjaxControlToolkit-1.0.20229.24049.1.0.20229.24049\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="AspNet.ScriptManager.bootstrap">
-      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.0.0\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
-    </Reference>
-    <Reference Include="AspNet.ScriptManager.jQuery">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.1.10.2\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    <Reference Include="NodaTime, Version=2.4.4.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NodaTime.dll</HintPath>
     </Reference>
-    <Reference Include="NodaTime">
-      <HintPath>C:\Program Files\Exago\eWebReports\Bin\NodaTime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WebReportsApi, Version=2021.1.6.144, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="WebReportsApi">
       <HintPath>..\..\..\..\Program Files\Exago\ExagoWebAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -97,7 +77,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BudgetNarrativeTables.aspx" />
     <Content Include="Content\Absolute.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -110,10 +89,10 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Content\Tabs.css" />
-    <Content Include="Default.aspx" />
-    <Content Include="Eligibility.aspx" />
-    <Content Include="FarmBusinessInformation.aspx" />
-    <Content Include="Images\ImpGrantLogo.jpg" />
+    <Content Include="EasementConfig.aspx" />
+    <Content Include="FirstPage.aspx" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
     <Content Include="Images\MatchSurce.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm %281%29.png" />
     <Content Include="Images\vhcb_logo_1_rgb_sm-old.png" />
@@ -123,12 +102,8 @@
     <Content Include="Images\vhcb_logo_1_rgb_sm11.jpg" />
     <Content Include="Images\vhcb_logo_1_rgb_sm12.jpg" />
     <Content Include="Login.aspx" />
-    <Content Include="Page10.aspx" />
-    <Content Include="Page11.aspx" />
-    <Content Include="Page7.aspx" />
-    <Content Include="Page8.aspx" />
-    <Content Include="Page9.aspx" />
-    <Content Include="ProjectDetails.aspx" />
+    <Content Include="Page4.aspx" />
+    <Content Include="FarmManagement.aspx" />
     <Content Include="Scripts\accounting.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -167,40 +142,30 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="WaterQualityGrants.aspx" />
-    <Content Include="WaterQualityGrantsProgramPage4.aspx" />
+    <Content Include="SecondPage.aspx" />
+    <Content Include="ThirdPage.aspx" />
+    <Content Include="WaterManagement.aspx" />
     <Content Include="Web.config" />
-    <Content Include="Site.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BudgetNarrativeTables.aspx.cs">
-      <DependentUpon>BudgetNarrativeTables.aspx</DependentUpon>
+    <Compile Include="EasementConfig.aspx.cs">
+      <DependentUpon>EasementConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BudgetNarrativeTables.aspx.designer.cs">
-      <DependentUpon>BudgetNarrativeTables.aspx</DependentUpon>
+    <Compile Include="EasementConfig.aspx.designer.cs">
+      <DependentUpon>EasementConfig.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="FirstPage.aspx.cs">
+      <DependentUpon>FirstPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="FirstPage.aspx.designer.cs">
+      <DependentUpon>FirstPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Eligibility.aspx.cs">
-      <DependentUpon>Eligibility.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Eligibility.aspx.designer.cs">
-      <DependentUpon>Eligibility.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="FarmBusinessInformation.aspx.cs">
-      <DependentUpon>FarmBusinessInformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FarmBusinessInformation.aspx.designer.cs">
-      <DependentUpon>FarmBusinessInformation.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,49 +173,28 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Page10.aspx.cs">
-      <DependentUpon>Page10.aspx</DependentUpon>
+    <Compile Include="Page4.aspx.cs">
+      <DependentUpon>Page4.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page10.aspx.designer.cs">
-      <DependentUpon>Page10.aspx</DependentUpon>
+    <Compile Include="Page4.aspx.designer.cs">
+      <DependentUpon>Page4.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Page11.aspx.cs">
-      <DependentUpon>Page11.aspx</DependentUpon>
+    <Compile Include="FarmManagement.aspx.cs">
+      <DependentUpon>FarmManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Page11.aspx.designer.cs">
-      <DependentUpon>Page11.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Page7.aspx.cs">
-      <DependentUpon>Page7.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Page7.aspx.designer.cs">
-      <DependentUpon>Page7.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Page8.aspx.cs">
-      <DependentUpon>Page8.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Page8.aspx.designer.cs">
-      <DependentUpon>Page8.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Page9.aspx.cs">
-      <DependentUpon>Page9.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Page9.aspx.designer.cs">
-      <DependentUpon>Page9.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectDetails.aspx.cs">
-      <DependentUpon>ProjectDetails.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ProjectDetails.aspx.designer.cs">
-      <DependentUpon>ProjectDetails.aspx</DependentUpon>
+    <Compile Include="FarmManagement.aspx.designer.cs">
+      <DependentUpon>FarmManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecondPage.aspx.cs">
+      <DependentUpon>SecondPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecondPage.aspx.designer.cs">
+      <DependentUpon>SecondPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -258,23 +202,27 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="WaterQualityGrants.aspx.cs">
-      <DependentUpon>WaterQualityGrants.aspx</DependentUpon>
+    <Compile Include="ThirdPage.aspx.cs">
+      <DependentUpon>ThirdPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WaterQualityGrants.aspx.designer.cs">
-      <DependentUpon>WaterQualityGrants.aspx</DependentUpon>
+    <Compile Include="ThirdPage.aspx.designer.cs">
+      <DependentUpon>ThirdPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WaterQualityGrantsProgramPage4.aspx.cs">
-      <DependentUpon>WaterQualityGrantsProgramPage4.aspx</DependentUpon>
+    <Compile Include="WaterManagement.aspx.cs">
+      <DependentUpon>WaterManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WaterQualityGrantsProgramPage4.aspx.designer.cs">
-      <DependentUpon>WaterQualityGrantsProgramPage4.aspx</DependentUpon>
+    <Compile Include="WaterManagement.aspx.designer.cs">
+      <DependentUpon>WaterManagement.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="packages.config" />
+    <Content Include="Site.Master" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -302,9 +250,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52877</DevelopmentServerPort>
+          <DevelopmentServerPort>63651</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ImpGrantApp</IISUrl>
+          <IISUrl>http://localhost/VHCBConservationFarm</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -35,7 +35,99 @@ namespace VHCBCommon.DataAccessLayer
                 connection.Close();
             }
         }
+        public static void ConservationFarmApplicationPage1(string ProjNumber, DateTime BoardMeetDate, decimal ConservedAcres, string Funds_Requested, string Total_Expenses,
+       string App_Organ, string Project_Manager, string App_Phone, string App_Email, string Landowner_Names,
+       string LOStreet, string LOAdd1, string LOAdd2, string LOTown, string LOZip, string LOCounty, string LOEmail, string LOHomephone, string LOCell,
+       string FarmerName, string FarmerStreet, string FarmerAdd1, string FarmerAdd2, string FarmerTown, string FarmerZip, string FarmerCounty, string FarmerEmail, string FarmerHomePhone, string FarmerCell,
+       string PropertyStreet, string PropertyAdd1, string PropertyTown, string PropertyZip,
+       string ProposedStreet, string ProposedAdd1, string ProposedAdd2, string ProposedTown, string ProposedZip, string PropsedCounty,
+                    string ProposedContact, string ProposedEmail, string ProposedHomePhone, string ProposedCellPhone, string ProposedRelation,
+            bool Notify, DateTime App_Date, string FarmerTransfer, string AppCellPhone
 
+            )
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ConservationFarmApplicationPage1";
+                command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+                //command.Parameters.Add(new SqlParameter("DateSubmit", DateSubmit.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : DateSubmit));
+                command.Parameters.Add(new SqlParameter("BoardMeetDate", BoardMeetDate.ToShortDateString() == "1/1/0001" ? System.Data.SqlTypes.SqlDateTime.Null : BoardMeetDate));
+                command.Parameters.Add(new SqlParameter("ConservedAcres", ConservedAcres));
+                command.Parameters.Add(new SqlParameter("Funds_Requested", Funds_Requested));
+                command.Parameters.Add(new SqlParameter("Total_Expenses", Total_Expenses));
+                command.Parameters.Add(new SqlParameter("App_Organ", App_Organ));
+                command.Parameters.Add(new SqlParameter("Project_Manager", Project_Manager));
+                command.Parameters.Add(new SqlParameter("App_Phone", App_Phone));
+                command.Parameters.Add(new SqlParameter("App_Email", App_Email));
+                command.Parameters.Add(new SqlParameter("Landowner_Names", Landowner_Names));
+                command.Parameters.Add(new SqlParameter("LOStreet", LOStreet));
+                command.Parameters.Add(new SqlParameter("LOAdd1", LOAdd1));
+                command.Parameters.Add(new SqlParameter("LOAdd2", LOAdd2));
+                command.Parameters.Add(new SqlParameter("LOTown", LOTown));
+                command.Parameters.Add(new SqlParameter("LOZip", LOZip));
+               // command.Parameters.Add(new SqlParameter("LOVillage", LOVillage));
+                command.Parameters.Add(new SqlParameter("LOCounty", LOCounty));
+                command.Parameters.Add(new SqlParameter("LOEmail", LOEmail));
+                command.Parameters.Add(new SqlParameter("LOHomephone", LOHomephone));
+                command.Parameters.Add(new SqlParameter("LOCell", LOCell));
+                command.Parameters.Add(new SqlParameter("FarmerName", FarmerName));
+                command.Parameters.Add(new SqlParameter("FarmerStreet", FarmerStreet));
+                command.Parameters.Add(new SqlParameter("FarmerAdd1", FarmerAdd1));
+                command.Parameters.Add(new SqlParameter("FarmerAdd2", FarmerAdd2));
+                command.Parameters.Add(new SqlParameter("FarmerTown", FarmerTown));
+                command.Parameters.Add(new SqlParameter("FarmerZip", FarmerZip));
+                //command.Parameters.Add(new SqlParameter("FarmerVillage", FarmerVillage));
+                command.Parameters.Add(new SqlParameter("FarmerCounty", FarmerCounty));
+                command.Parameters.Add(new SqlParameter("FarmerEmail", FarmerEmail));
+                command.Parameters.Add(new SqlParameter("FarmerHomePhone", FarmerHomePhone));
+                command.Parameters.Add(new SqlParameter("FarmerCell", FarmerCell));
+                command.Parameters.Add(new SqlParameter("PropertyStreet", PropertyStreet));
+                command.Parameters.Add(new SqlParameter("PropertyAdd1", PropertyAdd1));
+                command.Parameters.Add(new SqlParameter("PropertyTown", PropertyTown));
+                //command.Parameters.Add(new SqlParameter("PropertyOtherTown", PropertyOtherTown));
+                command.Parameters.Add(new SqlParameter("PropertyZip", PropertyZip));
+
+                command.Parameters.Add(new SqlParameter("ProposedStreet", ProposedStreet));
+                command.Parameters.Add(new SqlParameter("ProposedAdd1", ProposedAdd1));
+                command.Parameters.Add(new SqlParameter("ProposedAdd2", ProposedAdd2));
+                command.Parameters.Add(new SqlParameter("ProposedTown", ProposedTown));
+                command.Parameters.Add(new SqlParameter("ProposedZip", ProposedZip));
+                command.Parameters.Add(new SqlParameter("PropsedCounty", PropsedCounty));
+                command.Parameters.Add(new SqlParameter("ProposedContact", ProposedContact));
+                command.Parameters.Add(new SqlParameter("ProposedEmail", ProposedEmail));
+                command.Parameters.Add(new SqlParameter("ProposedHomePhone", ProposedHomePhone));
+                command.Parameters.Add(new SqlParameter("ProposedCellPhone", ProposedCellPhone));
+                command.Parameters.Add(new SqlParameter("ProposedRelation", ProposedRelation));
+
+                
+                command.Parameters.Add(new SqlParameter("App_Date", App_Date));
+                command.Parameters.Add(new SqlParameter("FarmerTransfer", FarmerTransfer));
+
+                command.Parameters.Add(new SqlParameter("AppCellPhone", AppCellPhone));
+                command.Parameters.Add(new SqlParameter("Notify", Notify));
+
+                
+
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
         public static void ConservationApplicationPage1(string ProjNumber, DateTime DateSubmit,  DateTime BoardMeetDate, decimal ConservedAcres, string Funds_Requested, string Total_Expenses,
         string App_Organ, string Project_Manager, string App_Phone, string App_Email, string Landowner_Names,
         string LOStreet, string LOAdd1, string LOAdd2, string LOTown, string LOZip, string LOVillage, string LOCounty, string LOEmail, string LOHomephone, string LOCell,
@@ -213,8 +305,39 @@ namespace VHCBCommon.DataAccessLayer
             }
 
         }
+        
+        public static DataRow GetConservationFarmApplicationPage1(string ProjNumber)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConservationFarmApplicationPage1";
+                        command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
 
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
         public static DataRow GetConservationApplicationPage1(string ProjNumber)
         {
             DataRow dr = null;
@@ -354,6 +477,39 @@ namespace VHCBCommon.DataAccessLayer
             return dt;
         }
 
+        public static DataRow GetConservationFarmApplicationPage3(string ProjNumber)
+        {
+            DataRow dr = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "GetConservationFarmApplicationPage3";
+                        command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+
+                        DataSet ds = new DataSet();
+                        var da = new SqlDataAdapter(command);
+                        da.Fill(ds);
+                        if (ds.Tables.Count == 1 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                        {
+                            dr = ds.Tables[0].Rows[0];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dr;
+        }
+
         public static DataRow GetConservationApplicationPage3(string ProjNumber)
         {
             DataRow dr = null;
@@ -385,6 +541,37 @@ namespace VHCBCommon.DataAccessLayer
                 throw ex;
             }
             return dr;
+        }
+
+        public static void ConservationFarmApplicationPage3(string ProjNumber, string ExecSummary, bool SellorConvey, string FarmerPlans)
+        {
+            var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ConservationFarmApplicationPage3";
+                command.Parameters.Add(new SqlParameter("ProjNumber", ProjNumber));
+                command.Parameters.Add(new SqlParameter("ExecSummary", ExecSummary));
+                command.Parameters.Add(new SqlParameter("SellorConvey", SellorConvey));
+               // command.Parameters.Add(new SqlParameter("FarmerTransfer", FarmerTransfer));
+                command.Parameters.Add(new SqlParameter("FarmerPlans", FarmerPlans));
+
+                using (connection)
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public static void ConservationApplicationPage3(string ProjNumber, string ExecSummary, bool SellorConvey, string FarmerTransfer, string FarmerPlans)

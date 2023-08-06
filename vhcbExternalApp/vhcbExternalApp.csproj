@@ -89,8 +89,9 @@
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WebReportsApi">
-      <HintPath>C:\Program Files\Exago\eWebReports\Bin\WebReportsApi.dll</HintPath>
+    <Reference Include="WebReportsApi, Version=2021.1.6.144, Culture=neutral, PublicKeyToken=3be9896d52b1d3a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Exago\ExagoWebAPI\Bin\WebReportsApi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
